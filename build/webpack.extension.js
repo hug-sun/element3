@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const demoConfig = require('./webpack.demo');
 const webpack = require('webpack');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const {VueLoaderPlugin} = require('vue-loader');
 
 demoConfig.entry = {
   background: path.join(process.cwd(), './examples/extension/src/background'),

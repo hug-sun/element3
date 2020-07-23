@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const {VueLoaderPlugin} = require('vue-loader');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
@@ -31,7 +31,7 @@ const webpackConfig = {
   },
   devServer: {
     host: '0.0.0.0',
-    port: 8085,
+    port: 8086,
     publicPath: '/',
     hot: true
   },
@@ -43,12 +43,12 @@ const webpackConfig = {
   },
   module: {
     rules: [
-      {
-        enforce: 'pre',
-        test: /\.(vue|jsx?)$/,
-        exclude: /node_modules/,
-        loader: 'eslint-loader'
-      },
+      // {
+      //   enforce: 'pre',
+      //   test: /\.(vue|jsx?)$/,
+      //   exclude: /node_modules/,
+      //   loader: 'eslint-loader'
+      // },
       {
         test: /\.(jsx?|babel|es6)$/,
         include: process.cwd(),

@@ -1,5 +1,6 @@
-const { compileTemplate } = require('@vue/component-compiler-utils');
-const compiler = require('vue-template-compiler');
+// const { compileTemplate } = require('@vue/component-compiler-utils');
+// const compiler = require('vue-template-compiler');
+const compiler = require('@vue/compiler-dom') // 模板
 
 function stripScript(content) {
   const result = content.match(/<(script)>([\s\S]+)<\/\1>/);
@@ -28,27 +29,25 @@ function pad(source) {
 }
 
 function genInlineComponentText(template, script) {
-  // https://github.com/vuejs/vue-loader/blob/423b8341ab368c2117931e909e2da9af74503635/lib/loaders/templateLoader.js#L46
-  const finalOptions = {
-    source: `<div>${template}</div>`,
-    filename: 'inline-component', // TODO：这里有待调整
-    compiler
-  };
-  const compiled = compileTemplate(finalOptions);
-  // tips
-  if (compiled.tips && compiled.tips.length) {
-    compiled.tips.forEach(tip => {
-      console.warn(tip);
-    });
-  }
+
+  // const finalOptions = {
+  //   source: `<div>${template}</div>`,
+  //   filename: 'inline-component', // TODO：这里有待调整
+  //   compiler
+  // };
+
+  const compiled = compiler.compile(template ,{mode:"module"})
+  // const compiled = compiler.compile(template )
+  // const compiled = compileTemplate(finalOptions);
+
   // errors
-  if (compiled.errors && compiled.errors.length) {
-    console.error(
-      `\n  Error compiling template:\n${pad(compiled.source)}\n` +
-        compiled.errors.map(e => `  - ${e}`).join('\n') +
-        '\n'
-    );
-  }
+  // if (compiled.errors && compiled.errors.length) {
+  //   console.error(
+  //     `\n  Error compiling template:\n${pad(compiled.source)}\n` +
+  //       compiled.errors.map(e => `  - ${e}`).join('\n') +
+  //       '\n'
+  //   );
+  // }
   let demoComponentContent = `
     ${compiled.code}
   `;
@@ -64,7 +63,6 @@ function genInlineComponentText(template, script) {
     ${script}
     return {
       render,
-      staticRenderFns,
       ...democomponentExport
     }
   })()`;

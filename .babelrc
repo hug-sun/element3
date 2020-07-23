@@ -12,7 +12,7 @@
     ],
     "stage-2"
   ],
-  "plugins": ["transform-vue-jsx"],
+  "plugins": ["syntax-dynamic-import", "transform-vue-jsx"],
   "env": {
     "utils": {
       "presets": [

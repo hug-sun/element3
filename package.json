@@ -11,7 +11,7 @@
   ],
   "typings": "types/index.d.ts",
   "scripts": {
-    "bootstrap": "yarn || npm i",
+    "bootstrap": "npm i",
     "build:file": "node build/bin/iconInit.js & node build/bin/build-entry.js & node build/bin/i18n.js & node build/bin/version.js",
     "build:theme": "node build/bin/gen-cssfile && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
     "build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js",
@@ -68,9 +68,11 @@
     "throttle-debounce": "^1.0.1"
   },
   "peerDependencies": {
-    "vue": "^2.5.17"
+    "vue": "^3.0.0-rc.4"
   },
   "devDependencies": {
+    "@vue/compiler-dom": "^3.0.0-rc.4",
+    "@vue/compiler-sfc": "^3.0.0-rc.4",
     "@vue/component-compiler-utils": "^2.6.0",
     "algoliasearch": "^3.24.5",
     "babel-cli": "^6.26.0",
@@ -79,6 +81,7 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-istanbul": "^4.1.1",
     "babel-plugin-module-resolver": "^2.2.0",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-vue-jsx": "^3.7.0",
     "babel-preset-env": "^1.7.0",
@@ -135,11 +138,9 @@
     "uglifyjs-webpack-plugin": "^2.1.1",
     "uppercamelcase": "^1.1.0",
     "url-loader": "^1.0.1",
-    "vue": "2.5.21",
-    "vue-loader": "^15.7.0",
-    "vue-router": "^3.0.1",
-    "vue-template-compiler": "2.5.21",
-    "vue-template-es2015-compiler": "^1.6.0",
+    "vue": "^3.0.0-rc.4",
+    "vue-loader": "^16.0.0-beta.4",
+    "vue-router": "^4.0.0-beta.3",
     "webpack": "^4.14.0",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.11",

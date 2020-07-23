@@ -24,7 +24,7 @@ fileList
 
     transform(file, name, function(err, result) {
       if (err) {
-        console.error(err);
+        // console.error(err);
       } else {
         var code = result.code;
 

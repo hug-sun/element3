@@ -26,7 +26,11 @@ module.exports = function(source) {
     const commentContent = content.slice(commentStart + startTagLen, commentEnd);
     const html = stripTemplate(commentContent);
     const script = stripScript(commentContent);
+
     let demoComponentContent = genInlineComponentText(html, script);
+    // console.log(html)
+    // console.log(script)
+    // console.log(demoComponentContent)
     const demoComponentName = `element-demo${id}`;
     output.push(`<template slot="source"><${demoComponentName} /></template>`);
     componenetsString += `${JSON.stringify(demoComponentName)}: ${demoComponentContent},`;
