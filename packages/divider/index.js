@@ -1,8 +1,8 @@
-import Divider from './src/main';
+import Divider from './src/main'
 
 /* istanbul ignore next */
 Divider.install = function(Vue) {
-  Vue.component(Divider.name, Divider);
-};
+  Vue.component(Divider.name, Divider)
+}
 
-export default Divider;
+export default Divider

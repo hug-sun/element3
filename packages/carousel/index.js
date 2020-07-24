@@ -1,8 +1,8 @@
-import Carousel from './src/main';
+import Carousel from './src/main'
 
 /* istanbul ignore next */
 Carousel.install = function(Vue) {
-  Vue.component(Carousel.name, Carousel);
-};
+  Vue.component(Carousel.name, Carousel)
+}
 
-export default Carousel;
+export default Carousel

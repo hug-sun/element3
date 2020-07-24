@@ -1,10 +1,10 @@
-import { createVue, triggerClick, destroyVM, triggerKeyDown } from '../util';
+import { createVue, triggerClick, destroyVM, triggerKeyDown } from '../util'
 
 describe('Autocomplete', () => {
-  let vm;
+  let vm
   afterEach(() => {
-    destroyVM(vm);
-  });
+    destroyVM(vm)
+  })
   it('create', done => {
     vm = createVue({
       template: `
@@ -22,18 +22,18 @@ describe('Autocomplete', () => {
         return {
           restaurants: [],
           state: ''
-        };
+        }
       },
       methods: {
         querySearch(queryString, cb) {
-          var restaurants = this.restaurants;
-          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-          cb(results);
+          var restaurants = this.restaurants
+          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+          cb(results)
         },
         createFilter(queryString) {
           return (restaurant) => {
-            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0);
-          };
+            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0)
+          }
         },
         loadAll() {
           return [
@@ -41,31 +41,31 @@ describe('Autocomplete', () => {
             { 'value': 'Hot honey 首尔炸鸡（仙霞路）', 'address': '上海市长宁区淞虹路661号' },
             { 'value': '新旺角茶餐厅', 'address': '上海市普陀区真北路988号创邑金沙谷6号楼113' },
             { 'value': '泷千家(天山西路店)', 'address': '天山西路438号' }
-          ];
+          ]
         }
       },
       mounted() {
-        this.restaurants = this.loadAll();
+        this.restaurants = this.loadAll()
       }
-    }, true);
-    let elm = vm.$el;
-    let inputElm = elm.querySelector('input');
-    inputElm.focus();
+    }, true)
+    let elm = vm.$el
+    let inputElm = elm.querySelector('input')
+    inputElm.focus()
 
-    expect(inputElm.getAttribute('placeholder')).to.be.equal('请输入内容autocomplete1');
+    expect(inputElm.getAttribute('placeholder')).to.be.equal('请输入内容autocomplete1')
 
     setTimeout(_ => {
-      const suggestions = vm.$refs.autocomplete.$refs.suggestions.$el;
-      expect(suggestions.style.display).to.not.equal('none');
-      expect(suggestions.querySelectorAll('.el-autocomplete-suggestion__list li').length).to.be.equal(4);
+      const suggestions = vm.$refs.autocomplete.$refs.suggestions.$el
+      expect(suggestions.style.display).to.not.equal('none')
+      expect(suggestions.querySelectorAll('.el-autocomplete-suggestion__list li').length).to.be.equal(4)
 
-      triggerClick(document);
+      triggerClick(document)
       setTimeout(_ => {
-        expect(suggestions.style.display).to.be.equal('none');
-        done();
-      }, 500);
-    }, 500);
-  });
+        expect(suggestions.style.display).to.be.equal('none')
+        done()
+      }, 500)
+    }, 500)
+  })
   it('select', done => {
     vm = createVue({
       template: `
@@ -80,18 +80,18 @@ describe('Autocomplete', () => {
         return {
           restaurants: [],
           state: ''
-        };
+        }
       },
       methods: {
         querySearch(queryString, cb) {
-          var restaurants = this.restaurants;
-          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-          cb(results);
+          var restaurants = this.restaurants
+          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+          cb(results)
         },
         createFilter(queryString) {
           return (restaurant) => {
-            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0);
-          };
+            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0)
+          }
         },
         loadAll() {
           return [
@@ -99,34 +99,34 @@ describe('Autocomplete', () => {
             { 'value': 'Hot honey 首尔炸鸡（仙霞路）', 'address': '上海市长宁区淞虹路661号' },
             { 'value': '新旺角茶餐厅', 'address': '上海市普陀区真北路988号创邑金沙谷6号楼113' },
             { 'value': '泷千家(天山西路店)', 'address': '天山西路438号' }
-          ];
+          ]
         }
       },
       mounted() {
-        this.restaurants = this.loadAll();
+        this.restaurants = this.loadAll()
       }
-    }, true);
-    const autocomplete = vm.$refs.autocomplete;
-    const elm = vm.$el;
-    const inputElm = elm.querySelector('input');
-    const spy = sinon.spy();
+    }, true)
+    const autocomplete = vm.$refs.autocomplete
+    const elm = vm.$el
+    const inputElm = elm.querySelector('input')
+    const spy = sinon.spy()
 
-    autocomplete.$on('select', spy);
-    inputElm.focus();
+    autocomplete.$on('select', spy)
+    inputElm.focus()
 
     setTimeout(_ => {
-      const suggestions = autocomplete.$refs.suggestions.$el;
-      const suggestionList = suggestions.querySelectorAll('.el-autocomplete-suggestion__list li');
-      suggestionList[1].click();
+      const suggestions = autocomplete.$refs.suggestions.$el
+      const suggestionList = suggestions.querySelectorAll('.el-autocomplete-suggestion__list li')
+      suggestionList[1].click()
       setTimeout(_ => {
-        expect(inputElm.value).to.be.equal('Hot honey 首尔炸鸡（仙霞路）');
-        expect(vm.state).to.be.equal('Hot honey 首尔炸鸡（仙霞路）');
-        expect(spy.withArgs().calledOnce).to.be.true;
-        expect(suggestions.style.display).to.be.equal('none');
-        done();
-      }, 500);
-    }, 500);
-  });
+        expect(inputElm.value).to.be.equal('Hot honey 首尔炸鸡（仙霞路）')
+        expect(vm.state).to.be.equal('Hot honey 首尔炸鸡（仙霞路）')
+        expect(spy.withArgs().calledOnce).to.be.true
+        expect(suggestions.style.display).to.be.equal('none')
+        done()
+      }, 500)
+    }, 500)
+  })
   it('input', done => {
     vm = createVue({
       template: `
@@ -141,18 +141,18 @@ describe('Autocomplete', () => {
         return {
           restaurants: [],
           state: ''
-        };
+        }
       },
       methods: {
         querySearch(queryString, cb) {
-          var restaurants = this.restaurants;
-          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-          cb(results);
+          var restaurants = this.restaurants
+          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+          cb(results)
         },
         createFilter(queryString) {
           return (restaurant) => {
-            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0);
-          };
+            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0)
+          }
         },
         loadAll() {
           return [
@@ -160,27 +160,27 @@ describe('Autocomplete', () => {
             { 'value': 'Hot honey 首尔炸鸡（仙霞路）', 'address': '上海市长宁区淞虹路661号' },
             { 'value': '新旺角茶餐厅', 'address': '上海市普陀区真北路988号创邑金沙谷6号楼113' },
             { 'value': '泷千家(天山西路店)', 'address': '天山西路438号' }
-          ];
+          ]
         }
       },
       mounted() {
-        this.restaurants = this.loadAll();
+        this.restaurants = this.loadAll()
       }
-    }, true);
-    const autocomplete = vm.$refs.autocomplete;
-    const input = autocomplete.$refs.input;
-    input.$emit('input', '三');
+    }, true)
+    const autocomplete = vm.$refs.autocomplete
+    const input = autocomplete.$refs.input
+    input.$emit('input', '三')
     setTimeout(() => {
-      expect(vm.state).to.be.equal('三');
-      expect(autocomplete.suggestions[0].value).to.be.equal('三全鲜食（北新泾店）');
-      input.$emit('input', '');
+      expect(vm.state).to.be.equal('三')
+      expect(autocomplete.suggestions[0].value).to.be.equal('三全鲜食（北新泾店）')
+      input.$emit('input', '')
       setTimeout(() => {
-        expect(vm.state).to.be.equal('');
-        expect(autocomplete.suggestions.length).to.be.equal(0);
-        done();
-      }, 500);
-    }, 500);
-  });
+        expect(vm.state).to.be.equal('')
+        expect(autocomplete.suggestions.length).to.be.equal(0)
+        done()
+      }, 500)
+    }, 500)
+  })
   describe('enter select', () => {
     const createVm = (selectWhenUnmatched = false) => {
       return createVue({
@@ -200,18 +200,18 @@ describe('Autocomplete', () => {
             state: '',
             selectWhenUnmatched: selectWhenUnmatched,
             item: {}
-          };
+          }
         },
         methods: {
           querySearch(queryString, cb) {
-            var restaurants = this.restaurants;
-            var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-            cb(results);
+            var restaurants = this.restaurants
+            var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+            cb(results)
           },
           createFilter(queryString) {
             return (restaurant) => {
-              return (restaurant.value.indexOf(queryString.toLowerCase()) === 0);
-            };
+              return (restaurant.value.indexOf(queryString.toLowerCase()) === 0)
+            }
           },
           loadAll() {
             return [
@@ -219,50 +219,50 @@ describe('Autocomplete', () => {
               { 'value': 'Hot honey 首尔炸鸡（仙霞路）', 'address': '上海市长宁区淞虹路661号' },
               { 'value': '新旺角茶餐厅', 'address': '上海市普陀区真北路988号创邑金沙谷6号楼113' },
               { 'value': '泷千家(天山西路店)', 'address': '天山西路438号' }
-            ];
+            ]
           },
           handleSelect(item) {
-            this.item = item;
+            this.item = item
           }
         },
         mounted() {
-          this.restaurants = this.loadAll();
+          this.restaurants = this.loadAll()
         }
-      }, true);
-    };
+      }, true)
+    }
     it('select', done => {
-      vm = createVm();
-      const autocomplete = vm.$refs.autocomplete;
-      const input = autocomplete.$refs.input;
-      input.$el.querySelector('input').focus();
-      input.$emit('input', '三');
+      vm = createVm()
+      const autocomplete = vm.$refs.autocomplete
+      const input = autocomplete.$refs.input
+      input.$el.querySelector('input').focus()
+      input.$emit('input', '三')
       setTimeout(() => {
-        triggerKeyDown(input.$el, 40); // down
+        triggerKeyDown(input.$el, 40) // down
         setTimeout(() => {
-          triggerKeyDown(input.$el, 13); // enter
+          triggerKeyDown(input.$el, 13) // enter
           setTimeout(() => {
-            expect(vm.item.address).to.be.equal('长宁区新渔路144号');
-            done();
-          }, 200);
-        }, 200);
-      }, 500);
-    });
+            expect(vm.item.address).to.be.equal('长宁区新渔路144号')
+            done()
+          }, 200)
+        }, 200)
+      }, 500)
+    })
     it('select unmatched', done => {
-      vm = createVm(true);
-      const autocomplete = vm.$refs.autocomplete;
-      const input = autocomplete.$refs.input;
-      input.$emit('input', '关键字');
+      vm = createVm(true)
+      const autocomplete = vm.$refs.autocomplete
+      const input = autocomplete.$refs.input
+      input.$emit('input', '关键字')
       setTimeout(() => {
-        expect(autocomplete.suggestions.length).to.be.equal(0);
-        triggerKeyDown(input.$el, 13); // enter
+        expect(autocomplete.suggestions.length).to.be.equal(0)
+        triggerKeyDown(input.$el, 13) // enter
         setTimeout(() => {
-          expect(autocomplete.highlightedIndex).to.be.equal(-1);
-          expect(vm.item.value).to.be.equal('关键字');
-          done();
-        }, 500);
-      }, 500);
-    });
-  });
+          expect(autocomplete.highlightedIndex).to.be.equal(-1)
+          expect(vm.item.value).to.be.equal('关键字')
+          done()
+        }, 500)
+      }, 500)
+    })
+  })
   it('props', done => {
     vm = createVue({
       template: `
@@ -278,18 +278,18 @@ describe('Autocomplete', () => {
         return {
           restaurants: [],
           state: ''
-        };
+        }
       },
       methods: {
         querySearch(queryString, cb) {
-          var restaurants = this.restaurants;
-          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-          cb(results);
+          var restaurants = this.restaurants
+          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+          cb(results)
         },
         createFilter(queryString) {
           return (restaurant) => {
-            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0);
-          };
+            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0)
+          }
         },
         loadAll() {
           return [
@@ -297,35 +297,35 @@ describe('Autocomplete', () => {
             { 'name': 'Hot honey 首尔炸鸡（仙霞路）', 'address': '上海市长宁区淞虹路661号' },
             { 'name': '新旺角茶餐厅', 'address': '上海市普陀区真北路988号创邑金沙谷6号楼113' },
             { 'name': '泷千家(天山西路店)', 'address': '天山西路438号' }
-          ];
+          ]
         }
       },
       mounted() {
-        this.restaurants = this.loadAll();
+        this.restaurants = this.loadAll()
       }
-    }, true);
-    const autocomplete = vm.$refs.autocomplete;
-    const elm = vm.$el;
-    const inputElm = elm.querySelector('input');
-    const spy = sinon.spy();
+    }, true)
+    const autocomplete = vm.$refs.autocomplete
+    const elm = vm.$el
+    const inputElm = elm.querySelector('input')
+    const spy = sinon.spy()
 
-    autocomplete.$on('select', spy);
-    inputElm.focus();
+    autocomplete.$on('select', spy)
+    inputElm.focus()
 
     setTimeout(_ => {
-      const suggestions = autocomplete.$refs.suggestions.$el;
-      const suggestionList = suggestions.querySelectorAll('.el-autocomplete-suggestion__list li');
-      expect(suggestionList[1].innerHTML === '上海市长宁区淞虹路661号');
-      suggestionList[1].click();
+      const suggestions = autocomplete.$refs.suggestions.$el
+      const suggestionList = suggestions.querySelectorAll('.el-autocomplete-suggestion__list li')
+      expect(suggestionList[1].innerHTML === '上海市长宁区淞虹路661号')
+      suggestionList[1].click()
       setTimeout(_ => {
-        expect(inputElm.value).to.be.equal('上海市长宁区淞虹路661号');
-        expect(vm.state).to.be.equal('上海市长宁区淞虹路661号');
-        expect(spy.withArgs().calledOnce).to.be.true;
-        expect(suggestions.style.display).to.be.equal('none');
-        done();
-      }, 500);
-    }, 500);
-  });
+        expect(inputElm.value).to.be.equal('上海市长宁区淞虹路661号')
+        expect(vm.state).to.be.equal('上海市长宁区淞虹路661号')
+        expect(spy.withArgs().calledOnce).to.be.true
+        expect(suggestions.style.display).to.be.equal('none')
+        done()
+      }, 500)
+    }, 500)
+  })
   it('highlight', done => {
     vm = createVue({
       template: `
@@ -340,18 +340,18 @@ describe('Autocomplete', () => {
         return {
           restaurants: [],
           state: ''
-        };
+        }
       },
       methods: {
         querySearch(queryString, cb) {
-          var restaurants = this.restaurants;
-          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-          cb(results);
+          var restaurants = this.restaurants
+          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+          cb(results)
         },
         createFilter(queryString) {
           return (restaurant) => {
-            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0);
-          };
+            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0)
+          }
         },
         loadAll() {
           return [
@@ -377,30 +377,30 @@ describe('Autocomplete', () => {
             { 'value': '枪会山', 'address': '上海市普陀区棕榈路' },
             { 'value': '纵食', 'address': '元丰天山花园(东门) 双流路267号' },
             { 'value': '钱记', 'address': '上海市长宁区天山西路' }
-          ];
+          ]
         }
       },
       mounted() {
-        this.restaurants = this.loadAll();
+        this.restaurants = this.loadAll()
       }
-    }, true);
-    const autocomplete = vm.$refs.autocomplete;
-    const inputElm = autocomplete.$el.querySelector('input');
+    }, true)
+    const autocomplete = vm.$refs.autocomplete
+    const inputElm = autocomplete.$el.querySelector('input')
 
-    inputElm.focus();
+    inputElm.focus()
 
     setTimeout(_ => {
-      autocomplete.highlight(8);
+      autocomplete.highlight(8)
       vm.$nextTick(_ => {
-        const suggestions = autocomplete.$refs.suggestions.$el.querySelector('.el-autocomplete-suggestion__wrap');
-        let suggestionsList = suggestions.querySelectorAll('.el-autocomplete-suggestion__list li');
-        let highlightedItem = suggestionsList[8];
-        expect(highlightedItem.classList.contains('highlighted')).to.be.true;
-        expect(suggestions.scrollTop === highlightedItem.scrollHeight).to.be.true;
-        done();
-      });
-    }, 500);
-  });
+        const suggestions = autocomplete.$refs.suggestions.$el.querySelector('.el-autocomplete-suggestion__wrap')
+        let suggestionsList = suggestions.querySelectorAll('.el-autocomplete-suggestion__list li')
+        let highlightedItem = suggestionsList[8]
+        expect(highlightedItem.classList.contains('highlighted')).to.be.true
+        expect(suggestions.scrollTop === highlightedItem.scrollHeight).to.be.true
+        done()
+      })
+    }, 500)
+  })
   it('highlight out of bounds', done => {
     vm = createVue({
       template: `
@@ -415,18 +415,18 @@ describe('Autocomplete', () => {
         return {
           restaurants: [],
           state: ''
-        };
+        }
       },
       methods: {
         querySearch(queryString, cb) {
-          var restaurants = this.restaurants;
-          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-          cb(results);
+          var restaurants = this.restaurants
+          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+          cb(results)
         },
         createFilter(queryString) {
           return (restaurant) => {
-            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0);
-          };
+            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0)
+          }
         },
         loadAll() {
           return [
@@ -442,28 +442,28 @@ describe('Autocomplete', () => {
             { 'value': '星移浓缩咖啡', 'address': '上海市嘉定区新郁路817号' },
             { 'value': '阿姨奶茶/豪大大', 'address': '嘉定区曹安路1611号' },
             { 'value': '新麦甜四季甜品炸鸡', 'address': '嘉定区曹安公路2383弄55号' }
-          ];
+          ]
         }
       },
       mounted() {
-        this.restaurants = this.loadAll();
+        this.restaurants = this.loadAll()
       }
-    }, true);
-    const autocomplete = vm.$refs.autocomplete;
-    let inputElm = vm.$el.querySelector('input');
-    inputElm.focus();
+    }, true)
+    const autocomplete = vm.$refs.autocomplete
+    let inputElm = vm.$el.querySelector('input')
+    inputElm.focus()
 
     setTimeout(_ => {
-      autocomplete.highlight(15);
+      autocomplete.highlight(15)
       vm.$nextTick(_ => {
-        const suggestions = autocomplete.$refs.suggestions.$el;
-        const suggestionsList = suggestions.querySelectorAll('.el-autocomplete-suggestion__list li');
-        let highlightedItem = suggestionsList[11];
-        expect(highlightedItem.className).to.be.equal('highlighted');
-        done();
-      });
-    }, 500);
-  });
+        const suggestions = autocomplete.$refs.suggestions.$el
+        const suggestionsList = suggestions.querySelectorAll('.el-autocomplete-suggestion__list li')
+        let highlightedItem = suggestionsList[11]
+        expect(highlightedItem.className).to.be.equal('highlighted')
+        done()
+      })
+    }, 500)
+  })
   it('triggerOnFocus', done => {
     vm = createVue({
       template: `
@@ -479,18 +479,18 @@ describe('Autocomplete', () => {
         return {
           restaurants: [],
           state: ''
-        };
+        }
       },
       methods: {
         querySearch(queryString, cb) {
-          var restaurants = this.restaurants;
-          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-          cb(results);
+          var restaurants = this.restaurants
+          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+          cb(results)
         },
         createFilter(queryString) {
           return (restaurant) => {
-            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0);
-          };
+            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0)
+          }
         },
         loadAll() {
           return [
@@ -498,22 +498,22 @@ describe('Autocomplete', () => {
             { 'value': 'Hot honey 首尔炸鸡（仙霞路）', 'address': '上海市长宁区淞虹路661号' },
             { 'value': '新旺角茶餐厅', 'address': '上海市普陀区真北路988号创邑金沙谷6号楼113' },
             { 'value': '泷千家(天山西路店)', 'address': '天山西路438号' }
-          ];
+          ]
         }
       },
       mounted() {
-        this.restaurants = this.loadAll();
+        this.restaurants = this.loadAll()
       }
-    }, true);
-    let inputElm = vm.$el.querySelector('input');
-    inputElm.focus();
+    }, true)
+    let inputElm = vm.$el.querySelector('input')
+    inputElm.focus()
 
     setTimeout(_ => {
-      let suggestions = vm.$refs.autocomplete.$refs.suggestions.$el;
-      expect(suggestions.style.display).to.be.equal('none');
-      done();
-    }, 500);
-  });
+      let suggestions = vm.$refs.autocomplete.$refs.suggestions.$el
+      expect(suggestions.style.display).to.be.equal('none')
+      done()
+    }, 500)
+  })
   it('event:focus & blur', done => {
     vm = createVue({
       template: `
@@ -529,18 +529,18 @@ describe('Autocomplete', () => {
         return {
           restaurants: [],
           state: ''
-        };
+        }
       },
       methods: {
         querySearch(queryString, cb) {
-          var restaurants = this.restaurants;
-          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-          cb(results);
+          var restaurants = this.restaurants
+          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+          cb(results)
         },
         createFilter(queryString) {
           return (restaurant) => {
-            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0);
-          };
+            return (restaurant.value.indexOf(queryString.toLowerCase()) === 0)
+          }
         },
         loadAll() {
           return [
@@ -548,28 +548,28 @@ describe('Autocomplete', () => {
             { 'value': 'Hot honey 首尔炸鸡（仙霞路）', 'address': '上海市长宁区淞虹路661号' },
             { 'value': '新旺角茶餐厅', 'address': '上海市普陀区真北路988号创邑金沙谷6号楼113' },
             { 'value': '泷千家(天山西路店)', 'address': '天山西路438号' }
-          ];
+          ]
         }
       },
       mounted() {
-        this.restaurants = this.loadAll();
+        this.restaurants = this.loadAll()
       }
-    }, true);
+    }, true)
 
-    const spyFocus = sinon.spy();
-    const spyBlur = sinon.spy();
+    const spyFocus = sinon.spy()
+    const spyBlur = sinon.spy()
 
-    vm.$refs.input.$on('focus', spyFocus);
-    vm.$refs.input.$on('blur', spyBlur);
-    vm.$el.querySelector('input').focus();
-    vm.$el.querySelector('input').blur();
+    vm.$refs.input.$on('focus', spyFocus)
+    vm.$refs.input.$on('blur', spyBlur)
+    vm.$el.querySelector('input').focus()
+    vm.$el.querySelector('input').blur()
 
     vm.$nextTick(_ => {
-      expect(spyFocus.calledOnce).to.be.true;
-      expect(spyBlur.calledOnce).to.be.true;
-      done();
-    });
-  });
+      expect(spyFocus.calledOnce).to.be.true
+      expect(spyBlur.calledOnce).to.be.true
+      done()
+    })
+  })
   it('can highlight first item', done => {
     vm = createVue({
       template: `
@@ -584,7 +584,7 @@ describe('Autocomplete', () => {
         return {
           restaurants: [],
           state: ''
-        };
+        }
       },
       methods: {
         querySearch(queryString, cb) {
@@ -593,31 +593,31 @@ describe('Autocomplete', () => {
             { 'value': '11' },
             { 'value': '2' },
             { 'value': '22' }
-          ];
+          ]
           cb(
             queryString
               ? opts.filter(opt => opt.value.indexOf(queryString) >= 0)
               : opts
-          );
+          )
         }
       }
-    }, true);
-    let elm = vm.$el;
-    let inputElm = elm.querySelector('input');
-    inputElm.focus();
+    }, true)
+    let elm = vm.$el
+    let inputElm = elm.querySelector('input')
+    inputElm.focus()
 
-    const autocomplete = vm.$refs.autocomplete;
-    const input = autocomplete.$refs.input;
-    input.$emit('input', '1');
+    const autocomplete = vm.$refs.autocomplete
+    const input = autocomplete.$refs.input
+    input.$emit('input', '1')
 
     setTimeout(_ => {
-      const suggestions = vm.$refs.autocomplete.$refs.suggestions.$el;
-      const items = suggestions.querySelectorAll('.el-autocomplete-suggestion__list li');
+      const suggestions = vm.$refs.autocomplete.$refs.suggestions.$el
+      const items = suggestions.querySelectorAll('.el-autocomplete-suggestion__list li')
 
-      expect(items.length).to.equal(2);
-      expect(items[0].classList.contains('highlighted')).to.be.true;
+      expect(items.length).to.equal(2)
+      expect(items[0].classList.contains('highlighted')).to.be.true
 
-      done();
-    }, 500);
-  });
-});
+      done()
+    }, 500)
+  })
+})

@@ -1,2 +1,2 @@
-import Notification from './src/main.js';
-export default Notification;
+import Notification from './src/main.js'
+export default Notification

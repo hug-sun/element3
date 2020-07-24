@@ -1,4 +1,4 @@
-const webpackConfig = require('../../build/webpack.test');
+const webpackConfig = require('../../build/webpack.test')
 
 module.exports = function(config) {
   const configuration = {
@@ -25,7 +25,7 @@ module.exports = function(config) {
         timeout: 4000
       }
     }
-  };
+  }
 
-  config.set(configuration);
-};
+  config.set(configuration)
+}

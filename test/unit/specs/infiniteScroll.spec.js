@@ -1,10 +1,10 @@
-import { createVue, wait, destroyVM } from '../util';
+import { createVue, wait, destroyVM } from '../util'
 
 describe('InfiniteScroll', () => {
-  let vm;
+  let vm
   afterEach(() => {
-    destroyVM(vm);
-  });
+    destroyVM(vm)
+  })
 
   it('create', async() => {
     vm = createVue({
@@ -16,18 +16,18 @@ describe('InfiniteScroll', () => {
       data() {
         return {
           count: 0
-        };
+        }
       },
       methods: {
         load() {
-          this.count += 2;
+          this.count += 2
         }
       }
-    }, true);
-    vm.$refs.scrollTarget.scrollTop = 2000;
-    await wait();
-    expect(vm.$el.innerText.indexOf('2') > -1).to.be.true;
-  });
+    }, true)
+    vm.$refs.scrollTarget.scrollTop = 2000
+    await wait()
+    expect(vm.$el.innerText.indexOf('2') > -1).to.be.true
+  })
 
   it('invisible element not trigger', async() => {
     vm = createVue({
@@ -41,18 +41,18 @@ describe('InfiniteScroll', () => {
       data() {
         return {
           count: 0
-        };
+        }
       },
       methods: {
         load() {
-          this.count += 2;
+          this.count += 2
         }
       }
-    }, true);
-    vm.$refs.scrollTarget.scrollTop = 2000;
-    await wait();
-    expect(vm.$el.innerText.indexOf('2') > -1).to.be.false;
-  });
+    }, true)
+    vm.$refs.scrollTarget.scrollTop = 2000
+    await wait()
+    expect(vm.$el.innerText.indexOf('2') > -1).to.be.false
+  })
 
-});
+})
 

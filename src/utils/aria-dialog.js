@@ -1,4 +1,4 @@
-import Utils from './aria-utils';
+import Utils from './aria-utils'
 
 /**
  * @constructor
@@ -17,74 +17,74 @@ import Utils from './aria-utils';
  *          DOM node to focus when the dialog opens. If not specified, the
  *          first focusable element in the dialog will receive focus.
  */
-var aria = aria || {};
-var tabEvent;
+var aria = aria || {}
+var tabEvent
 
 aria.Dialog = function(dialog, focusAfterClosed, focusFirst) {
-  this.dialogNode = dialog;
+  this.dialogNode = dialog
   if (this.dialogNode === null || this.dialogNode.getAttribute('role') !== 'dialog') {
-    throw new Error('Dialog() requires a DOM element with ARIA role of dialog.');
+    throw new Error('Dialog() requires a DOM element with ARIA role of dialog.')
   }
 
   if (typeof focusAfterClosed === 'string') {
-    this.focusAfterClosed = document.getElementById(focusAfterClosed);
+    this.focusAfterClosed = document.getElementById(focusAfterClosed)
   } else if (typeof focusAfterClosed === 'object') {
-    this.focusAfterClosed = focusAfterClosed;
+    this.focusAfterClosed = focusAfterClosed
   } else {
-    this.focusAfterClosed = null;
+    this.focusAfterClosed = null
   }
 
   if (typeof focusFirst === 'string') {
-    this.focusFirst = document.getElementById(focusFirst);
+    this.focusFirst = document.getElementById(focusFirst)
   } else if (typeof focusFirst === 'object') {
-    this.focusFirst = focusFirst;
+    this.focusFirst = focusFirst
   } else {
-    this.focusFirst = null;
+    this.focusFirst = null
   }
 
   if (this.focusFirst) {
-    this.focusFirst.focus();
+    this.focusFirst.focus()
   } else {
-    Utils.focusFirstDescendant(this.dialogNode);
+    Utils.focusFirstDescendant(this.dialogNode)
   }
 
-  this.lastFocus = document.activeElement;
+  this.lastFocus = document.activeElement
   tabEvent = (e) => {
-    this.trapFocus(e);
-  };
-  this.addListeners();
-};
+    this.trapFocus(e)
+  }
+  this.addListeners()
+}
 
 aria.Dialog.prototype.addListeners = function() {
-  document.addEventListener('focus', tabEvent, true);
-};
+  document.addEventListener('focus', tabEvent, true)
+}
 
 aria.Dialog.prototype.removeListeners = function() {
-  document.removeEventListener('focus', tabEvent, true);
-};
+  document.removeEventListener('focus', tabEvent, true)
+}
 
 aria.Dialog.prototype.closeDialog = function() {
-  this.removeListeners();
+  this.removeListeners()
   if (this.focusAfterClosed) {
     setTimeout(() => {
-      this.focusAfterClosed.focus();
-    });
+      this.focusAfterClosed.focus()
+    })
   }
-};
+}
 
 aria.Dialog.prototype.trapFocus = function(event) {
   if (Utils.IgnoreUtilFocusChanges) {
-    return;
+    return
   }
   if (this.dialogNode.contains(event.target)) {
-    this.lastFocus = event.target;
+    this.lastFocus = event.target
   } else {
-    Utils.focusFirstDescendant(this.dialogNode);
+    Utils.focusFirstDescendant(this.dialogNode)
     if (this.lastFocus === document.activeElement) {
-      Utils.focusLastDescendant(this.dialogNode);
+      Utils.focusLastDescendant(this.dialogNode)
     }
-    this.lastFocus = document.activeElement;
+    this.lastFocus = document.activeElement
   }
-};
+}
 
-export default aria.Dialog;
+export default aria.Dialog

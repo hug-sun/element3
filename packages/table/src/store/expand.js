@@ -1,4 +1,4 @@
-import { toggleRowStatus, getKeysMap, getRowIdentity } from '../util';
+import { toggleRowStatus, getKeysMap, getRowIdentity } from '../util'
 
 export default {
   data() {
@@ -7,59 +7,59 @@ export default {
         defaultExpandAll: false,
         expandRows: []
       }
-    };
+    }
   },
 
   methods: {
     updateExpandRows() {
-      const { data = [], rowKey, defaultExpandAll, expandRows } = this.states;
+      const { data = [], rowKey, defaultExpandAll, expandRows } = this.states
       if (defaultExpandAll) {
-        this.states.expandRows = data.slice();
+        this.states.expandRows = data.slice()
       } else if (rowKey) {
         // TODO：这里的代码可以优化
-        const expandRowsMap = getKeysMap(expandRows, rowKey);
+        const expandRowsMap = getKeysMap(expandRows, rowKey)
         this.states.expandRows = data.reduce((prev, row) => {
-          const rowId = getRowIdentity(row, rowKey);
-          const rowInfo = expandRowsMap[rowId];
+          const rowId = getRowIdentity(row, rowKey)
+          const rowInfo = expandRowsMap[rowId]
           if (rowInfo) {
-            prev.push(row);
+            prev.push(row)
           }
-          return prev;
-        }, []);
+          return prev
+        }, [])
       } else {
-        this.states.expandRows = [];
+        this.states.expandRows = []
       }
     },
 
     toggleRowExpansion(row, expanded) {
-      const changed = toggleRowStatus(this.states.expandRows, row, expanded);
+      const changed = toggleRowStatus(this.states.expandRows, row, expanded)
       if (changed) {
-        this.table.$emit('expand-change', row, this.states.expandRows.slice());
-        this.scheduleLayout();
+        this.table.$emit('expand-change', row, this.states.expandRows.slice())
+        this.scheduleLayout()
       }
     },
 
     setExpandRowKeys(rowKeys) {
-      this.assertRowKey();
+      this.assertRowKey()
       // TODO：这里的代码可以优化
-      const { data, rowKey } = this.states;
-      const keysMap = getKeysMap(data, rowKey);
+      const { data, rowKey } = this.states
+      const keysMap = getKeysMap(data, rowKey)
       this.states.expandRows = rowKeys.reduce((prev, cur) => {
-        const info = keysMap[cur];
+        const info = keysMap[cur]
         if (info) {
-          prev.push(info.row);
+          prev.push(info.row)
         }
-        return prev;
-      }, []);
+        return prev
+      }, [])
     },
 
     isRowExpanded(row) {
-      const { expandRows = [], rowKey } = this.states;
+      const { expandRows = [], rowKey } = this.states
       if (rowKey) {
-        const expandMap = getKeysMap(expandRows, rowKey);
-        return !!expandMap[getRowIdentity(row, rowKey)];
+        const expandMap = getKeysMap(expandRows, rowKey)
+        return !!expandMap[getRowIdentity(row, rowKey)]
       }
-      return expandRows.indexOf(row) !== -1;
+      return expandRows.indexOf(row) !== -1
     }
   }
-};
+}

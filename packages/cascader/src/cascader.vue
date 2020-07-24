@@ -12,7 +12,7 @@
     @click="() => toggleDropDownVisible(readonly ? undefined : true)"
     @keydown="handleKeyDown">
 
-    <el-input
+    <!-- <el-input
       ref="input"
       v-model="multiple ? presentText : inputValue"
       :size="realSize"
@@ -40,7 +40,7 @@
           ]"
           @click.stop="toggleDropDownVisible()"></i>
       </template>
-    </el-input>
+    </el-input> -->
 
     <div v-if="multiple" class="el-cascader__tags">
       <el-tag

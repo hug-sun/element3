@@ -1,8 +1,8 @@
-import Timeline from './src/main';
+import Timeline from './src/main'
 
 /* istanbul ignore next */
 Timeline.install = function(Vue) {
-  Vue.component(Timeline.name, Timeline);
-};
+  Vue.component(Timeline.name, Timeline)
+}
 
-export default Timeline;
+export default Timeline

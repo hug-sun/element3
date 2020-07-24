@@ -1,8 +1,8 @@
-import InfiniteScroll from './src/main.js';
+import InfiniteScroll from './src/main.js'
 
 /* istanbul ignore next */
 InfiniteScroll.install = function(Vue) {
-  Vue.directive(InfiniteScroll.name, InfiniteScroll);
-};
+  Vue.directive(InfiniteScroll.name, InfiniteScroll)
+}
 
-export default InfiniteScroll;
+export default InfiniteScroll

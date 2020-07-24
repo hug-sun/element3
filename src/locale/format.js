@@ -1,6 +1,6 @@
-import { hasOwn } from 'element-ui/src/utils/util';
+import { hasOwn } from 'element-ui/src/utils/util'
 
-const RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g;
+const RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g
 /**
  *  String format template
  *  - Inspired:
@@ -18,29 +18,29 @@ export default function(Vue) {
 
   function template(string, ...args) {
     if (args.length === 1 && typeof args[0] === 'object') {
-      args = args[0];
+      args = args[0]
     }
 
     if (!args || !args.hasOwnProperty) {
-      args = {};
+      args = {}
     }
 
     return string.replace(RE_NARGS, (match, prefix, i, index) => {
-      let result;
+      let result
 
       if (string[index - 1] === '{' &&
         string[index + match.length] === '}') {
-        return i;
+        return i
       } else {
-        result = hasOwn(args, i) ? args[i] : null;
+        result = hasOwn(args, i) ? args[i] : null
         if (result === null || result === undefined) {
-          return '';
+          return ''
         }
 
-        return result;
+        return result
       }
-    });
+    })
   }
 
-  return template;
+  return template
 }

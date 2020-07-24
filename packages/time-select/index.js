@@ -1,8 +1,8 @@
-import TimeSelect from '../date-picker/src/picker/time-select';
+import TimeSelect from '../date-picker/src/picker/time-select'
 
 /* istanbul ignore next */
 TimeSelect.install = function(Vue) {
-  Vue.component(TimeSelect.name, TimeSelect);
-};
+  Vue.component(TimeSelect.name, TimeSelect)
+}
 
-export default TimeSelect;
+export default TimeSelect

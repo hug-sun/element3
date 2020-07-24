@@ -1,8 +1,8 @@
-import Drawer from './src/main';
+import Drawer from './src/main'
 
 /* istanbul ignore next */
 Drawer.install = function(Vue) {
-  Vue.component(Drawer.name, Drawer);
-};
+  Vue.component(Drawer.name, Drawer)
+}
 
-export default Drawer;
+export default Drawer

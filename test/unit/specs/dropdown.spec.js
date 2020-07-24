@@ -1,10 +1,10 @@
-import { createVue, triggerEvent, destroyVM, triggerKeyDown } from '../util';
+import { createVue, triggerEvent, destroyVM, triggerKeyDown } from '../util'
 
 describe('Dropdown', () => {
-  let vm;
+  let vm
   afterEach(() => {
-    destroyVM(vm);
-  });
+    destroyVM(vm)
+  })
 
   it('create', done => {
     vm = createVue({
@@ -22,24 +22,24 @@ describe('Dropdown', () => {
           </el-dropdown-menu>
         </el-dropdown>
       `
-    }, true);
-    let dropdown = vm.$refs.dropdown;
-    let dropdownElm = dropdown.$el;
-    let triggerElm = dropdownElm.children[0];
+    }, true)
+    let dropdown = vm.$refs.dropdown
+    let dropdownElm = dropdown.$el
+    let triggerElm = dropdownElm.children[0]
 
-    triggerEvent(triggerElm, 'mouseenter');
+    triggerEvent(triggerElm, 'mouseenter')
     setTimeout(_ => {
-      expect(dropdown.visible).to.be.true;
+      expect(dropdown.visible).to.be.true
 
-      triggerEvent(triggerElm, 'mouseleave');
+      triggerEvent(triggerElm, 'mouseleave')
       setTimeout(_ => {
-        expect(dropdown.visible).to.not.true;
-        done();
-      }, 300);
-    }, 400);
-  });
+        expect(dropdown.visible).to.not.true
+        done()
+      }, 300)
+    }, 400)
+  })
   it('menu click', done => {
-    const myCommandObject = { name: 'CommandC' };
+    const myCommandObject = { name: 'CommandC' }
     vm = createVue({
       template: `
         <el-dropdown ref="dropdown">
@@ -58,26 +58,26 @@ describe('Dropdown', () => {
       data() {
         return {
           myCommandObject
-        };
+        }
       }
-    }, true);
-    let dropdown = vm.$refs.dropdown;
-    let dropdownElm = dropdown.$el;
-    let triggerElm = dropdownElm.children[0];
-    let callback = sinon.spy();
+    }, true)
+    let dropdown = vm.$refs.dropdown
+    let dropdownElm = dropdown.$el
+    let triggerElm = dropdownElm.children[0]
+    let callback = sinon.spy()
 
-    dropdown.$on('command', callback);
+    dropdown.$on('command', callback)
 
-    triggerEvent(triggerElm, 'mouseenter');
+    triggerEvent(triggerElm, 'mouseenter')
     setTimeout(_ => {
-      vm.$refs.commandC.$el.click();
+      vm.$refs.commandC.$el.click()
       setTimeout(_ => {
-        expect(dropdown.visible).to.not.true;
-        expect(callback.calledWith(myCommandObject)).to.be.true;
-        done();
-      }, 300);
-    }, 300);
-  });
+        expect(dropdown.visible).to.not.true
+        expect(callback.calledWith(myCommandObject)).to.be.true
+        done()
+      }, 300)
+    }, 300)
+  })
   it('trigger', done => {
     vm = createVue({
       template: `
@@ -94,21 +94,21 @@ describe('Dropdown', () => {
           </el-dropdown-menu>
         </el-dropdown>
       `
-    }, true);
-    let dropdownElm = vm.$el;
-    let dropdown = vm.$refs.dropdown;
-    let triggerElm = dropdownElm.children[0];
+    }, true)
+    let dropdownElm = vm.$el
+    let dropdown = vm.$refs.dropdown
+    let triggerElm = dropdownElm.children[0]
 
-    triggerEvent(triggerElm, 'mouseenter');
+    triggerEvent(triggerElm, 'mouseenter')
     dropdown.$nextTick(_ => {
-      expect(dropdown.visible).to.not.true;
-      triggerElm.click();
+      expect(dropdown.visible).to.not.true
+      triggerElm.click()
       setTimeout(_ => {
-        expect(dropdown.visible).to.be.true;
-        done();
-      }, 300);
-    });
-  });
+        expect(dropdown.visible).to.be.true
+        done()
+      }, 300)
+    })
+  })
   it('split button', done => {
     vm = createVue({
       template: `
@@ -123,31 +123,31 @@ describe('Dropdown', () => {
           </el-dropdown-menu>
         </el-dropdown>
       `
-    }, true);
+    }, true)
 
-    let dropdown = vm.$refs.dropdown;
-    let dropdownElm = dropdown.$el;
-    let triggerElm = dropdownElm.querySelector('.el-dropdown__caret-button');
-    var callback = sinon.spy();
+    let dropdown = vm.$refs.dropdown
+    let dropdownElm = dropdown.$el
+    let triggerElm = dropdownElm.querySelector('.el-dropdown__caret-button')
+    var callback = sinon.spy()
 
-    dropdown.$on('click', callback);
-    dropdownElm.querySelector('.el-button').click();
+    dropdown.$on('click', callback)
+    dropdownElm.querySelector('.el-button').click()
 
     setTimeout(_ => {
-      expect(callback.called).to.be.true;
-    }, 300);
+      expect(callback.called).to.be.true
+    }, 300)
 
-    triggerEvent(triggerElm, 'mouseenter');
+    triggerEvent(triggerElm, 'mouseenter')
     setTimeout(_ => {
-      expect(dropdown.visible).to.be.true;
+      expect(dropdown.visible).to.be.true
 
-      triggerEvent(triggerElm, 'mouseleave');
+      triggerEvent(triggerElm, 'mouseleave')
       setTimeout(_ => {
-        expect(dropdown.visible).to.not.true;
-        done();
-      }, 300);
-    }, 300);
-  });
+        expect(dropdown.visible).to.not.true
+        done()
+      }, 300)
+    }, 300)
+  })
   it('hide on click', done => {
     vm = createVue({
       template: `
@@ -164,24 +164,24 @@ describe('Dropdown', () => {
           </el-dropdown-menu>
         </el-dropdown>
       `
-    }, true);
-    let dropdown = vm.$refs.dropdown;
-    let dropdownElm = dropdown.$el;
-    let triggerElm = dropdownElm.children[0];
-    let callback = sinon.spy();
+    }, true)
+    let dropdown = vm.$refs.dropdown
+    let dropdownElm = dropdown.$el
+    let triggerElm = dropdownElm.children[0]
+    let callback = sinon.spy()
 
-    dropdown.$on('command', callback);
+    dropdown.$on('command', callback)
 
-    triggerEvent(triggerElm, 'mouseenter');
+    triggerEvent(triggerElm, 'mouseenter')
     setTimeout(_ => {
-      vm.$refs.commandC.$el.click();
+      vm.$refs.commandC.$el.click()
       setTimeout(_ => {
-        expect(dropdown.visible).to.true;
-        expect(callback.calledWith('c')).to.be.true;
-        done();
-      }, 300);
-    }, 300);
-  });
+        expect(dropdown.visible).to.true
+        expect(callback.calledWith('c')).to.be.true
+        done()
+      }, 300)
+    }, 300)
+  })
   it('triggerElm keydown', done => {
     vm = createVue({
       template: `
@@ -198,20 +198,20 @@ describe('Dropdown', () => {
           </el-dropdown-menu>
         </el-dropdown>
       `
-    }, true);
-    let dropdown = vm.$refs.dropdown;
-    let dropdownElm = dropdown.$el;
-    let triggerElm = dropdownElm.children[0];
-    triggerKeyDown(triggerElm, 13); // enter
+    }, true)
+    let dropdown = vm.$refs.dropdown
+    let dropdownElm = dropdown.$el
+    let triggerElm = dropdownElm.children[0]
+    triggerKeyDown(triggerElm, 13) // enter
     setTimeout(() => {
-      expect(dropdown.visible).to.be.true;
-      triggerKeyDown(triggerElm, 27); // esc
+      expect(dropdown.visible).to.be.true
+      triggerKeyDown(triggerElm, 27) // esc
       setTimeout(() => {
-        expect(dropdown.visible).to.be.false;
-        done();
-      }, 300);
-    }, 400);
-  });
+        expect(dropdown.visible).to.be.false
+        done()
+      }, 300)
+    }, 400)
+  })
   it('dropdown menu keydown', done => {
     vm = createVue({
       template: `
@@ -228,26 +228,26 @@ describe('Dropdown', () => {
           </el-dropdown-menu>
         </el-dropdown>
       `
-    }, true);
-    let dropdown = vm.$refs.dropdown;
-    let dropdownElm = dropdown.$el;
-    let triggerElm = dropdownElm.children[0];
-    let dropdownMenu = dropdown.dropdownElm;
+    }, true)
+    let dropdown = vm.$refs.dropdown
+    let dropdownElm = dropdown.$el
+    let triggerElm = dropdownElm.children[0]
+    let dropdownMenu = dropdown.dropdownElm
 
-    triggerEvent(triggerElm, 'mouseenter');
+    triggerEvent(triggerElm, 'mouseenter')
 
     setTimeout(() => {
-      expect(dropdown.visible).to.be.true;
-      triggerKeyDown(dropdownMenu, 40); // down
+      expect(dropdown.visible).to.be.true
+      triggerKeyDown(dropdownMenu, 40) // down
       setTimeout(() => {
-        triggerKeyDown(dropdownMenu, 13); // enter
+        triggerKeyDown(dropdownMenu, 13) // enter
         setTimeout(() => {
-          expect(dropdown.visible).to.be.false;
-          done();
-        }, 100);
-      }, 100);
-    }, 300);
-  });
+          expect(dropdown.visible).to.be.false
+          done()
+        }, 100)
+      }, 100)
+    }, 300)
+  })
   it('updatePopper', done => {
     vm = createVue({
       template: `
@@ -264,20 +264,20 @@ describe('Dropdown', () => {
           </el-dropdown-menu>
         </el-dropdown>
       `
-    }, true);
-    let dropdown = vm.$refs.dropdown;
-    let dropdownElm = dropdown.$el;
-    let triggerElm = dropdownElm.children[0];
+    }, true)
+    let dropdown = vm.$refs.dropdown
+    let dropdownElm = dropdown.$el
+    let triggerElm = dropdownElm.children[0]
 
-    triggerEvent(triggerElm, 'mouseenter');
+    triggerEvent(triggerElm, 'mouseenter')
     setTimeout(() => {
-      const zIndex1 = document.querySelector('.el-dropdown-menu').style.zIndex;
-      dropdown.broadcast('ElDropdownMenu', 'updatePopper');
+      const zIndex1 = document.querySelector('.el-dropdown-menu').style.zIndex
+      dropdown.broadcast('ElDropdownMenu', 'updatePopper')
       setTimeout(() => {
-        const zIndex2 = document.querySelector('.el-dropdown-menu').style.zIndex;
-        expect(zIndex2 > zIndex1).to.be.true;
-        done();
-      }, 100);
-    }, 300);
-  });
-});
+        const zIndex2 = document.querySelector('.el-dropdown-menu').style.zIndex
+        expect(zIndex2 > zIndex1).to.be.true
+        done()
+      }, 100)
+    }, 300)
+  })
+})

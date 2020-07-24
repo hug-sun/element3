@@ -1,8 +1,8 @@
-import Transfer from './src/main';
+import Transfer from './src/main'
 
 /* istanbul ignore next */
 Transfer.install = function(Vue) {
-  Vue.component(Transfer.name, Transfer);
-};
+  Vue.component(Transfer.name, Transfer)
+}
 
-export default Transfer;
+export default Transfer

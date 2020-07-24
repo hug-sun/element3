@@ -1,10 +1,10 @@
-import { createVue, triggerEvent, destroyVM } from '../util';
+import { createVue, triggerEvent, destroyVM } from '../util'
 
 describe('Menu', () => {
-  let vm;
+  let vm
   afterEach(() => {
-    destroyVM(vm);
-  });
+    destroyVM(vm)
+  })
 
   it('create', done => {
     vm = createVue({
@@ -14,19 +14,19 @@ describe('Menu', () => {
           <el-menu-item index="2" ref="item2">订单管理</el-menu-item>
         </el-menu>
       `
-    }, true);
-    var item1 = vm.$refs.item1;
-    var item2 = vm.$refs.item2;
-    item1.$el.click();
+    }, true)
+    var item1 = vm.$refs.item1
+    var item2 = vm.$refs.item2
+    item1.$el.click()
     setTimeout(_ => {
-      expect(item1.$el.classList.contains('is-active')).to.be.true;
-      item2.$el.click();
+      expect(item1.$el.classList.contains('is-active')).to.be.true
+      item2.$el.click()
       setTimeout(_ => {
-        expect(item2.$el.classList.contains('is-active')).to.be.true;
-        done();
-      }, 20);
-    }, 20);
-  });
+        expect(item2.$el.classList.contains('is-active')).to.be.true
+        done()
+      }, 20)
+    }, 20)
+  })
   it('background-color', done => {
     vm = createVue({
       template: `
@@ -38,17 +38,17 @@ describe('Menu', () => {
           <el-menu-item index="2" ref="item2">订单管理</el-menu-item>
         </el-menu>
       `
-    }, true);
-    expect(vm.$el.style.backgroundColor).to.equal('rgb(255, 0, 0)');
-    expect(vm.$refs.item1.$el.style.backgroundColor).to.equal('rgb(255, 0, 0)');
-    expect(vm.$refs.item1.$el.style.color).to.equal('rgb(0, 0, 0)');
-    expect(vm.$refs.item2.$el.style.color).to.equal('rgb(0, 255, 0)');
-    triggerEvent(vm.$refs.item1.$el, 'mouseenter');
+    }, true)
+    expect(vm.$el.style.backgroundColor).to.equal('rgb(255, 0, 0)')
+    expect(vm.$refs.item1.$el.style.backgroundColor).to.equal('rgb(255, 0, 0)')
+    expect(vm.$refs.item1.$el.style.color).to.equal('rgb(0, 0, 0)')
+    expect(vm.$refs.item2.$el.style.color).to.equal('rgb(0, 255, 0)')
+    triggerEvent(vm.$refs.item1.$el, 'mouseenter')
     setTimeout(_ => {
-      expect(vm.$refs.item1.$el.style.backgroundColor).to.equal('rgb(204, 0, 0)');
-      done();
-    }, 20);
-  });
+      expect(vm.$refs.item1.$el.style.backgroundColor).to.equal('rgb(204, 0, 0)')
+      done()
+    }, 20)
+  })
   it('menu-item click', done => {
     vm = createVue({
       template: `
@@ -59,25 +59,25 @@ describe('Menu', () => {
       `,
       methods: {
         onMenuItemClick(el) {
-          expect(el).to.be.equal(vm.$refs.item1);
-          this.clicksCount = this.clicksCount + 1;
+          expect(el).to.be.equal(vm.$refs.item1)
+          this.clicksCount = this.clicksCount + 1
         }
       },
       data() {
         return {
           clicksCount: 0
-        };
+        }
       }
-    }, true);
-    var item1 = vm.$refs.item1;
-    item1.$el.click();
+    }, true)
+    var item1 = vm.$refs.item1
+    item1.$el.click()
 
     setTimeout(_ => {
-      expect(vm.clicksCount).to.be.equal(1);
-      done();
-    }, 20);
+      expect(vm.clicksCount).to.be.equal(1)
+      done()
+    }, 20)
 
-  });
+  })
   it('menu-item disabled', done => {
     vm = createVue({
       template: `
@@ -86,14 +86,14 @@ describe('Menu', () => {
           <el-menu-item index="2" ref="item2">订单管理</el-menu-item>
         </el-menu>
       `
-    }, true);
-    expect(vm.$refs.item2.$el.classList.contains('is-active')).to.be.true;
-    vm.$refs.item1.$el.click();
+    }, true)
+    expect(vm.$refs.item2.$el.classList.contains('is-active')).to.be.true
+    vm.$refs.item1.$el.click()
     setTimeout(_ => {
-      expect(vm.$refs.item1.$el.classList.contains('is-active')).to.be.false;
-      done();
-    }, 20);
-  });
+      expect(vm.$refs.item1.$el.classList.contains('is-active')).to.be.false
+      done()
+    }, 20)
+  })
   describe('default active', () => {
     it('normal active', done => {
       vm = createVue({
@@ -103,14 +103,14 @@ describe('Menu', () => {
             <el-menu-item index="2" ref="item2">订单管理</el-menu-item>
           </el-menu>
         `
-      }, true);
-      expect(vm.$refs.item2.$el.classList.contains('is-active')).to.be.true;
-      vm.$refs.item1.$el.click();
+      }, true)
+      expect(vm.$refs.item2.$el.classList.contains('is-active')).to.be.true
+      vm.$refs.item1.$el.click()
       setTimeout(_ => {
-        expect(vm.$refs.item1.$el.classList.contains('is-active')).to.be.true;
-        done();
-      }, 20);
-    });
+        expect(vm.$refs.item1.$el.classList.contains('is-active')).to.be.true
+        done()
+      }, 20)
+    })
     it('dynamic active', done => {
       vm = createVue({
         template: `
@@ -122,17 +122,17 @@ describe('Menu', () => {
         data() {
           return {
             active: '2'
-          };
+          }
         }
-      }, true);
+      }, true)
       setTimeout(_ => {
-        vm.active = '1';
+        vm.active = '1'
         setTimeout(_ => {
-          expect(vm.$refs.item1.$el.classList.contains('is-active')).to.be.true;
-          done();
-        }, 20);
-      }, 100);
-    });
+          expect(vm.$refs.item1.$el.classList.contains('is-active')).to.be.true
+          done()
+        }, 20)
+      }, 100)
+    })
     it('vertical submenu item active', done => {
       vm = createVue({
         template: `
@@ -149,15 +149,15 @@ describe('Menu', () => {
             </el-menu>
           </div>
         `
-      }, true);
-      expect(vm.$refs.submenuItem2.$el.classList.contains('is-active')).to.be.true;
+      }, true)
+      expect(vm.$refs.submenuItem2.$el.classList.contains('is-active')).to.be.true
 
       setTimeout(_ => {
-        expect(vm.$refs.submenu.$el.classList.contains('is-opened')).to.be.true;
-        expect(vm.$refs.submenu.$el.classList.contains('is-active')).to.be.true;
-        done();
-      }, 20);
-    });
+        expect(vm.$refs.submenu.$el.classList.contains('is-opened')).to.be.true
+        expect(vm.$refs.submenu.$el.classList.contains('is-active')).to.be.true
+        done()
+      }, 20)
+    })
     it('horizontal submenu item active', done => {
       vm = createVue({
         template: `
@@ -174,16 +174,16 @@ describe('Menu', () => {
             </el-menu>
           </div>
         `
-      }, true);
-      expect(vm.$refs.submenuItem2.$el.classList.contains('is-active')).to.be.true;
+      }, true)
+      expect(vm.$refs.submenuItem2.$el.classList.contains('is-active')).to.be.true
 
       setTimeout(_ => {
-        expect(vm.$refs.submenu.$el.classList.contains('is-opened')).to.be.true;
-        expect(vm.$refs.submenu.$el.classList.contains('is-active')).to.be.true;
-        done();
-      }, 20);
-    });
-  });
+        expect(vm.$refs.submenu.$el.classList.contains('is-opened')).to.be.true
+        expect(vm.$refs.submenu.$el.classList.contains('is-active')).to.be.true
+        done()
+      }, 20)
+    })
+  })
   describe('submenu', function() {
     it('toggle', done => {
       vm = createVue({
@@ -201,25 +201,25 @@ describe('Menu', () => {
         `,
         data() {
           return {
-          };
+          }
         }
-      }, true);
-      var submenuItem2 = vm.$refs.submenuItem2;
-      var submenu = vm.$refs.submenu;
-      submenu.$el.querySelector('.el-submenu__title').click();
+      }, true)
+      var submenuItem2 = vm.$refs.submenuItem2
+      var submenu = vm.$refs.submenu
+      submenu.$el.querySelector('.el-submenu__title').click()
       setTimeout(_ => {
-        expect(submenu.$el.classList.contains('is-opened')).to.be.true;
-        submenuItem2.$el.click();
+        expect(submenu.$el.classList.contains('is-opened')).to.be.true
+        submenuItem2.$el.click()
         setTimeout(_ => {
-          expect(submenuItem2.$el.classList.contains('is-active')).to.be.true;
-          submenu.$el.querySelector('.el-submenu__title').click();
+          expect(submenuItem2.$el.classList.contains('is-active')).to.be.true
+          submenu.$el.querySelector('.el-submenu__title').click()
           setTimeout(_ => {
-            expect(submenu.$el.classList.contains('is-opened')).to.not.true;
-            done();
-          }, 20);
-        }, 20);
-      }, 20);
-    });
+            expect(submenu.$el.classList.contains('is-opened')).to.not.true
+            done()
+          }, 20)
+        }, 20)
+      }, 20)
+    })
     it('default opened', done => {
       vm = createVue({
         template: `
@@ -242,18 +242,18 @@ describe('Menu', () => {
         data() {
           return {
             defaultOpeneds: ['2', '3']
-          };
+          }
         }
-      }, true);
-      expect(vm.$refs.submenu1.$el.classList.contains('is-opened')).to.be.true;
-      expect(vm.$refs.submenu2.$el.classList.contains('is-opened')).to.be.true;
-      vm.defaultOpeneds = ['2'];
+      }, true)
+      expect(vm.$refs.submenu1.$el.classList.contains('is-opened')).to.be.true
+      expect(vm.$refs.submenu2.$el.classList.contains('is-opened')).to.be.true
+      vm.defaultOpeneds = ['2']
       setTimeout(_ => {
-        expect(vm.$refs.submenu1.$el.classList.contains('is-opened')).to.be.true;
-        expect(vm.$refs.submenu2.$el.classList.contains('is-opened')).to.not.true;
-        done();
-      }, 20);
-    });
+        expect(vm.$refs.submenu1.$el.classList.contains('is-opened')).to.be.true
+        expect(vm.$refs.submenu2.$el.classList.contains('is-opened')).to.not.true
+        done()
+      }, 20)
+    })
     it('disabled', done => {
       vm = createVue({
         template: `
@@ -268,15 +268,15 @@ describe('Menu', () => {
             <el-menu-item index="3">订单管理</el-menu-item>
           </el-menu>
         `
-      }, true);
-      var submenu = vm.$refs.submenu;
-      submenu.$el.querySelector('.el-submenu__title').click();
+      }, true)
+      var submenu = vm.$refs.submenu
+      submenu.$el.querySelector('.el-submenu__title').click()
       setTimeout(_ => {
-        expect(submenu.$el.classList.contains('is-opened')).to.be.false;
-        done();
-      }, 20);
-    });
-  });
+        expect(submenu.$el.classList.contains('is-opened')).to.be.false
+        done()
+      }, 20)
+    })
+  })
   it('unique-opened', done => {
     vm = createVue({
       template: `
@@ -298,15 +298,15 @@ describe('Menu', () => {
       `,
       data() {
         return {
-        };
+        }
       }
-    }, true);
-    vm.$refs.submenu2.$el.querySelector('.el-submenu__title').click();
+    }, true)
+    vm.$refs.submenu2.$el.querySelector('.el-submenu__title').click()
     setTimeout(_ => {
-      expect(vm.$refs.submenu1.$el.classList.contains('is-opened')).to.not.true;
-      done();
-    }, 20);
-  });
+      expect(vm.$refs.submenu1.$el.classList.contains('is-opened')).to.not.true
+      done()
+    }, 20)
+  })
   it('horizontal mode', done => {
     vm = createVue({
       template: `
@@ -323,17 +323,17 @@ describe('Menu', () => {
       `,
       data() {
         return {
-        };
+        }
       }
-    }, true);
-    expect(vm.$el.classList.contains('el-menu--horizontal')).to.be.true;
-    var submenu = vm.$refs.submenu;
-    triggerEvent(submenu.$el, 'mouseenter');
+    }, true)
+    expect(vm.$el.classList.contains('el-menu--horizontal')).to.be.true
+    var submenu = vm.$refs.submenu
+    triggerEvent(submenu.$el, 'mouseenter')
     setTimeout(_ => {
-      expect(document.body.querySelector('.el-menu--popup').parentElement.style.display).to.not.ok;
-      done();
-    }, 500);
-  });
+      expect(document.body.querySelector('.el-menu--popup').parentElement.style.display).to.not.ok
+      done()
+    }, 500)
+  })
   it('menu trigger click', done => {
     vm = createVue({
       template: `
@@ -350,25 +350,25 @@ describe('Menu', () => {
       `,
       data() {
         return {
-        };
+        }
       }
-    }, true);
-    expect(vm.$el.classList.contains('el-menu--horizontal')).to.be.true;
-    var submenu = vm.$refs.submenu;
-    var triggerElm = submenu.$el.querySelector('.el-submenu__title');
+    }, true)
+    expect(vm.$el.classList.contains('el-menu--horizontal')).to.be.true
+    var submenu = vm.$refs.submenu
+    var triggerElm = submenu.$el.querySelector('.el-submenu__title')
 
-    triggerEvent(submenu.$el, 'mouseenter');
-    triggerElm.click();
+    triggerEvent(submenu.$el, 'mouseenter')
+    triggerElm.click()
 
     setTimeout(_ => {
-      expect(document.body.querySelector('.el-menu--popup').parentElement.style.display).to.not.ok;
-      triggerElm.click();
+      expect(document.body.querySelector('.el-menu--popup').parentElement.style.display).to.not.ok
+      triggerElm.click()
       setTimeout(_ => {
-        expect(document.body.querySelector('.el-menu--popup').parentElement.style.display).to.be.equal('none');
-        done();
-      }, 1000);
-    }, 500);
-  });
+        expect(document.body.querySelector('.el-menu--popup').parentElement.style.display).to.be.equal('none')
+        done()
+      }, 1000)
+    }, 500)
+  })
   it('menu group', () => {
     vm = createVue({
       template: `
@@ -386,9 +386,9 @@ describe('Menu', () => {
           </el-submenu>
         </el-menu>
       `
-    }, true);
-    expect(vm.$refs.group1.$el.querySelector('.el-menu-item-group__title').innerText).to.be.equal('分组一');
-  });
+    }, true)
+    expect(vm.$refs.group1.$el.querySelector('.el-menu-item-group__title').innerText).to.be.equal('分组一')
+  })
   it('dynamic menus, issue 9092', done => {
     vm = createVue({
       template: `
@@ -405,20 +405,20 @@ describe('Menu', () => {
         return {
           active: '',
           menus: []
-        };
+        }
       }
-    }, true);
+    }, true)
     setTimeout(_ => {
-      vm.active = '2';
+      vm.active = '2'
       vm.menus = [
         {name: '1', description: 'happy'},
         {name: '2', description: 'new'},
         {name: '3', description: 'year'}
-      ];
+      ]
       setTimeout(_ => {
-        expect(vm.$el.querySelector('.el-menu-item.is-active').innerText).to.equal('new');
-        done();
-      }, 20);
-    }, 100);
-  });
-});
+        expect(vm.$el.querySelector('.el-menu-item.is-active').innerText).to.equal('new')
+        done()
+      }, 20)
+    }, 100)
+  })
+})

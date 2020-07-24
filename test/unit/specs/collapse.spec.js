@@ -1,17 +1,17 @@
-import { createVue, destroyVM } from '../util';
+import { createVue, destroyVM } from '../util'
 
 describe('Collapse', () => {
-  let vm;
+  let vm
   afterEach(() => {
-    destroyVM(vm);
-  });
+    destroyVM(vm)
+  })
 
   it('create', done => {
     vm = createVue({
       data() {
         return {
           activeNames: ['1']
-        };
+        }
       },
       template: `
         <el-collapse v-model="activeNames" ref="collapse">
@@ -34,29 +34,29 @@ describe('Collapse', () => {
           </el-collapse-item>
         </el-collapse>
       `
-    }, true);
+    }, true)
 
-    expect(vm.$refs.item1.isActive).to.be.true;
-    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click();
+    expect(vm.$refs.item1.isActive).to.be.true
+    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click()
     vm.$nextTick(_ => {
-      expect(vm.$refs.item1.isActive).to.be.true;
-      expect(vm.$refs.item3.isActive).to.be.true;
+      expect(vm.$refs.item1.isActive).to.be.true
+      expect(vm.$refs.item3.isActive).to.be.true
 
-      vm.$refs.item1.$el.querySelector('.el-collapse-item__header').click();
+      vm.$refs.item1.$el.querySelector('.el-collapse-item__header').click()
 
       vm.$nextTick(_ => {
-        expect(vm.$refs.item1.isActive).to.be.false;
-        done();
-      });
-    });
-  });
+        expect(vm.$refs.item1.isActive).to.be.false
+        done()
+      })
+    })
+  })
 
   it('accordion', done => {
     vm = createVue({
       data() {
         return {
           activeNames: ['1']
-        };
+        }
       },
       template: `
         <el-collapse accordion v-model="activeNames" ref="collapse">
@@ -79,23 +79,23 @@ describe('Collapse', () => {
           </el-collapse-item>
         </el-collapse>
       `
-    }, true);
+    }, true)
 
-    expect(vm.$refs.item1.isActive).to.be.true;
-    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click();
+    expect(vm.$refs.item1.isActive).to.be.true
+    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click()
     vm.$nextTick(_ => {
-      expect(vm.$refs.item1.isActive).to.be.false;
-      expect(vm.$refs.item3.isActive).to.be.true;
-      done();
-    });
-  });
+      expect(vm.$refs.item1.isActive).to.be.false
+      expect(vm.$refs.item3.isActive).to.be.true
+      done()
+    })
+  })
 
   it('event:change', done => {
     vm = createVue({
       data() {
         return {
           activeNames: ['1']
-        };
+        }
       },
       template: `
         <el-collapse v-model="activeNames" ref="collapse">
@@ -118,13 +118,13 @@ describe('Collapse', () => {
           </el-collapse-item>
         </el-collapse>
       `
-    }, true);
-    const spy = sinon.spy();
-    vm.$refs.collapse.$on('change', spy);
-    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click();
+    }, true)
+    const spy = sinon.spy()
+    vm.$refs.collapse.$on('change', spy)
+    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click()
     vm.$nextTick(_ => {
-      expect(spy.withArgs().calledOnce).to.be.true;
-      done();
-    });
-  });
-});
+      expect(spy.withArgs().calledOnce).to.be.true
+      done()
+    })
+  })
+})

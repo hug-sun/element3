@@ -1,10 +1,10 @@
-import { createVue, destroyVM } from '../util';
+import { createVue, destroyVM } from '../util'
 
 describe('Timeline', () => {
-  let vm;
+  let vm
   afterEach(() => {
-    destroyVM(vm);
-  });
+    destroyVM(vm)
+  })
 
   it('create', () => {
     vm = createVue({
@@ -30,18 +30,18 @@ describe('Timeline', () => {
             content: '活动按期开始',
             timestamp: '2018-04-15'
           }]
-        };
+        }
       }
-    }, true);
-    let contentElms = vm.$el.querySelectorAll('.el-timeline-item__content');
+    }, true)
+    let contentElms = vm.$el.querySelectorAll('.el-timeline-item__content')
     contentElms.forEach((elm, index) => {
-      expect(elm.innerText).to.equal(vm.activities[index].content);
-    });
-    let timestampElms = vm.$el.querySelectorAll('.el-timeline-item__timestamp');
+      expect(elm.innerText).to.equal(vm.activities[index].content)
+    })
+    let timestampElms = vm.$el.querySelectorAll('.el-timeline-item__timestamp')
     timestampElms.forEach((elm, index) => {
-      expect(elm.innerText).to.equal(vm.activities[index].timestamp);
-    });
-  });
+      expect(elm.innerText).to.equal(vm.activities[index].timestamp)
+    })
+  })
 
   it('reverse', done => {
     vm = createVue({
@@ -69,24 +69,24 @@ describe('Timeline', () => {
             content: '活动按期开始',
             timestamp: '2018-04-15'
           }]
-        };
+        }
       }
-    }, true);
+    }, true)
 
-    const contentElms = vm.$el.querySelectorAll('.el-timeline-item__content');
+    const contentElms = vm.$el.querySelectorAll('.el-timeline-item__content')
     contentElms.forEach((elm, index) => {
-      expect(elm.innerText).to.equal(vm.activities[vm.activities.length - index - 1].content);
-    });
+      expect(elm.innerText).to.equal(vm.activities[vm.activities.length - index - 1].content)
+    })
 
-    vm.reverse = false;
+    vm.reverse = false
     vm.$nextTick(() => {
-      const contentElms = vm.$el.querySelectorAll('.el-timeline-item__content');
+      const contentElms = vm.$el.querySelectorAll('.el-timeline-item__content')
       contentElms.forEach((elm, index) => {
-        expect(elm.innerText).to.equal(vm.activities[index].content);
-      });
-      done();
-    });
-  });
+        expect(elm.innerText).to.equal(vm.activities[index].content)
+      })
+      done()
+    })
+  })
 
   it('placement', () => {
     vm = createVue({
@@ -115,13 +115,13 @@ describe('Timeline', () => {
             content: '活动按期开始',
             timestamp: '2018-04-15'
           }]
-        };
+        }
       }
-    }, true);
+    }, true)
 
-    const timestampElm = vm.$el.querySelectorAll('.el-timeline-item__timestamp')[0];
-    expect(timestampElm.classList.contains('is-top')).to.true;
-  });
+    const timestampElm = vm.$el.querySelectorAll('.el-timeline-item__timestamp')[0]
+    expect(timestampElm.classList.contains('is-top')).to.true
+  })
 
   it('hide-timestamp', () => {
     vm = createVue({
@@ -150,13 +150,13 @@ describe('Timeline', () => {
             content: '活动按期开始',
             timestamp: '2018-04-15'
           }]
-        };
+        }
       }
-    }, true);
+    }, true)
 
-    const timestampElms = vm.$el.querySelectorAll('.el-timeline-item__timestamp');
-    expect(timestampElms.length).to.equal(2);
-  });
+    const timestampElms = vm.$el.querySelectorAll('.el-timeline-item__timestamp')
+    expect(timestampElms.length).to.equal(2)
+  })
 
   it('color', () => {
     vm = createVue({
@@ -169,11 +169,11 @@ describe('Timeline', () => {
           </el-timeline-item>
         </el-timeline>
       `
-    }, true);
+    }, true)
 
-    const nodeElm = vm.$el.querySelector('.el-timeline-item__node');
-    expect(nodeElm.style.backgroundColor).to.equal('rgb(255, 0, 0)');
-  });
+    const nodeElm = vm.$el.querySelector('.el-timeline-item__node')
+    expect(nodeElm.style.backgroundColor).to.equal('rgb(255, 0, 0)')
+  })
 
   it('type', () => {
     vm = createVue({
@@ -186,11 +186,11 @@ describe('Timeline', () => {
           </el-timeline-item>
         </el-timeline>
       `
-    }, true);
+    }, true)
 
-    const nodeElm = vm.$el.querySelector('.el-timeline-item__node');
-    expect(nodeElm.classList.contains('el-timeline-item__node--primary')).to.true;
-  });
+    const nodeElm = vm.$el.querySelector('.el-timeline-item__node')
+    expect(nodeElm.classList.contains('el-timeline-item__node--primary')).to.true
+  })
 
   it('size', () => {
     vm = createVue({
@@ -203,11 +203,11 @@ describe('Timeline', () => {
           </el-timeline-item>
         </el-timeline>
       `
-    }, true);
+    }, true)
 
-    const nodeElm = vm.$el.querySelector('.el-timeline-item__node');
-    expect(nodeElm.classList.contains('el-timeline-item__node--large')).to.true;
-  });
+    const nodeElm = vm.$el.querySelector('.el-timeline-item__node')
+    expect(nodeElm.classList.contains('el-timeline-item__node--large')).to.true
+  })
 
   it('icon', () => {
     vm = createVue({
@@ -220,9 +220,9 @@ describe('Timeline', () => {
           </el-timeline-item>
         </el-timeline>
       `
-    }, true);
+    }, true)
 
-    const nodeElm = vm.$el.querySelector('.el-timeline-item__icon');
-    expect(nodeElm.classList.contains('el-icon-more')).to.true;
-  });
-});
+    const nodeElm = vm.$el.querySelector('.el-timeline-item__icon')
+    expect(nodeElm.classList.contains('el-icon-more')).to.true
+  })
+})

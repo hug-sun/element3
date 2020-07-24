@@ -117,4 +117,4 @@ export default {
       cancelButtonText: 'Отмена'
     }
   }
-};
+}

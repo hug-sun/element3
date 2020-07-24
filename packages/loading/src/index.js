@@ -1,11 +1,11 @@
-import Vue from 'vue';
-import loadingVue from './loading.vue';
-import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom';
-import { PopupManager } from 'element-ui/src/utils/popup';
-import afterLeave from 'element-ui/src/utils/after-leave';
-import merge from 'element-ui/src/utils/merge';
+import Vue from 'vue'
+import loadingVue from './loading.vue'
+import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom'
+import { PopupManager } from 'element-ui/src/utils/popup'
+import afterLeave from 'element-ui/src/utils/after-leave'
+import merge from 'element-ui/src/utils/merge'
 
-const LoadingConstructor = Vue.extend(loadingVue);
+const LoadingConstructor = Vue.extend(loadingVue)
 
 const defaults = {
   text: null,
@@ -13,94 +13,94 @@ const defaults = {
   body: false,
   lock: false,
   customClass: ''
-};
+}
 
-let fullscreenLoading;
+let fullscreenLoading
 
-LoadingConstructor.prototype.originalPosition = '';
-LoadingConstructor.prototype.originalOverflow = '';
+LoadingConstructor.prototype.originalPosition = ''
+LoadingConstructor.prototype.originalOverflow = ''
 
 LoadingConstructor.prototype.close = function() {
   if (this.fullscreen) {
-    fullscreenLoading = undefined;
+    fullscreenLoading = undefined
   }
   afterLeave(this, _ => {
     const target = this.fullscreen || this.body
       ? document.body
-      : this.target;
-    removeClass(target, 'el-loading-parent--relative');
-    removeClass(target, 'el-loading-parent--hidden');
+      : this.target
+    removeClass(target, 'el-loading-parent--relative')
+    removeClass(target, 'el-loading-parent--hidden')
     if (this.$el && this.$el.parentNode) {
-      this.$el.parentNode.removeChild(this.$el);
+      this.$el.parentNode.removeChild(this.$el)
     }
-    this.$destroy();
-  }, 300);
-  this.visible = false;
-};
+    this.$destroy()
+  }, 300)
+  this.visible = false
+}
 
 const addStyle = (options, parent, instance) => {
-  let maskStyle = {};
+  let maskStyle = {}
   if (options.fullscreen) {
-    instance.originalPosition = getStyle(document.body, 'position');
-    instance.originalOverflow = getStyle(document.body, 'overflow');
-    maskStyle.zIndex = PopupManager.nextZIndex();
+    instance.originalPosition = getStyle(document.body, 'position')
+    instance.originalOverflow = getStyle(document.body, 'overflow')
+    maskStyle.zIndex = PopupManager.nextZIndex()
   } else if (options.body) {
     instance.originalPosition = getStyle(document.body, 'position');
     ['top', 'left'].forEach(property => {
-      let scroll = property === 'top' ? 'scrollTop' : 'scrollLeft';
+      let scroll = property === 'top' ? 'scrollTop' : 'scrollLeft'
       maskStyle[property] = options.target.getBoundingClientRect()[property] +
         document.body[scroll] +
         document.documentElement[scroll] +
-        'px';
+        'px'
     });
     ['height', 'width'].forEach(property => {
-      maskStyle[property] = options.target.getBoundingClientRect()[property] + 'px';
-    });
+      maskStyle[property] = options.target.getBoundingClientRect()[property] + 'px'
+    })
   } else {
-    instance.originalPosition = getStyle(parent, 'position');
+    instance.originalPosition = getStyle(parent, 'position')
   }
   Object.keys(maskStyle).forEach(property => {
-    instance.$el.style[property] = maskStyle[property];
-  });
-};
+    instance.$el.style[property] = maskStyle[property]
+  })
+}
 
 const Loading = (options = {}) => {
-  if (Vue.prototype.$isServer) return;
-  options = merge({}, defaults, options);
+  if (Vue.prototype.$isServer) return
+  options = merge({}, defaults, options)
   if (typeof options.target === 'string') {
-    options.target = document.querySelector(options.target);
+    options.target = document.querySelector(options.target)
   }
-  options.target = options.target || document.body;
+  options.target = options.target || document.body
   if (options.target !== document.body) {
-    options.fullscreen = false;
+    options.fullscreen = false
   } else {
-    options.body = true;
+    options.body = true
   }
   if (options.fullscreen && fullscreenLoading) {
-    return fullscreenLoading;
+    return fullscreenLoading
   }
 
-  let parent = options.body ? document.body : options.target;
+  let parent = options.body ? document.body : options.target
   let instance = new LoadingConstructor({
     el: document.createElement('div'),
     data: options
-  });
+  })
 
-  addStyle(options, parent, instance);
+  addStyle(options, parent, instance)
   if (instance.originalPosition !== 'absolute' && instance.originalPosition !== 'fixed') {
-    addClass(parent, 'el-loading-parent--relative');
+    addClass(parent, 'el-loading-parent--relative')
   }
   if (options.fullscreen && options.lock) {
-    addClass(parent, 'el-loading-parent--hidden');
+    addClass(parent, 'el-loading-parent--hidden')
   }
-  parent.appendChild(instance.$el);
+  parent.appendChild(instance.$el)
   Vue.nextTick(() => {
-    instance.visible = true;
-  });
+    instance.visible = true
+  })
   if (options.fullscreen) {
-    fullscreenLoading = instance;
+    fullscreenLoading = instance
   }
-  return instance;
-};
+  return instance
+}
 
-export default Loading;
+export default Loading

@@ -1,8 +1,8 @@
-import Link from './src/main';
+import Link from './src/main'
 
 /* istanbul ignore next */
 Link.install = function(Vue) {
-  Vue.component(Link.name, Link);
-};
+  Vue.component(Link.name, Link)
+}
 
-export default Link;
+export default Link

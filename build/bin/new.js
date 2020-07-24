@@ -1,23 +1,23 @@
-'use strict';
+'use strict'
 
-console.log();
+console.log()
 process.on('exit', () => {
-  console.log();
-});
+  console.log()
+})
 
 if (!process.argv[2]) {
-  console.error('[组件名]必填 - Please enter new component name');
-  process.exit(1);
+  console.error('[组件名]必填 - Please enter new component name')
+  process.exit(1)
 }
 
-const path = require('path');
-const fs = require('fs');
-const fileSave = require('file-save');
-const uppercamelcase = require('uppercamelcase');
-const componentname = process.argv[2];
-const chineseName = process.argv[3] || componentname;
-const ComponentName = uppercamelcase(componentname);
-const PackagePath = path.resolve(__dirname, '../../packages', componentname);
+const path = require('path')
+const fs = require('fs')
+const fileSave = require('file-save')
+const uppercamelcase = require('uppercamelcase')
+const componentname = process.argv[2]
+const chineseName = process.argv[3] || componentname
+const ComponentName = uppercamelcase(componentname)
+const PackagePath = path.resolve(__dirname, '../../packages', componentname)
 const Files = [
   {
     filename: 'index.js',
@@ -92,64 +92,64 @@ describe('${ComponentName}', () => {
 export declare class El${ComponentName} extends ElementUIComponent {
 }`
   }
-];
+]
 
 // 添加到 components.json
-const componentsFile = require('../../components.json');
+const componentsFile = require('../../components.json')
 if (componentsFile[componentname]) {
-  console.error(`${componentname} 已存在.`);
-  process.exit(1);
+  console.error(`${componentname} 已存在.`)
+  process.exit(1)
 }
-componentsFile[componentname] = `./packages/${componentname}/index.js`;
+componentsFile[componentname] = `./packages/${componentname}/index.js`
 fileSave(path.join(__dirname, '../../components.json'))
   .write(JSON.stringify(componentsFile, null, '  '), 'utf8')
-  .end('\n');
+  .end('\n')
 
 // 添加到 index.scss
-const sassPath = path.join(__dirname, '../../packages/theme-chalk/src/index.scss');
-const sassImportText = `${fs.readFileSync(sassPath)}@import "./${componentname}.scss";`;
+const sassPath = path.join(__dirname, '../../packages/theme-chalk/src/index.scss')
+const sassImportText = `${fs.readFileSync(sassPath)}@import "./${componentname}.scss";`
 fileSave(sassPath)
   .write(sassImportText, 'utf8')
-  .end('\n');
+  .end('\n')
 
 // 添加到 element-ui.d.ts
-const elementTsPath = path.join(__dirname, '../../types/element-ui.d.ts');
+const elementTsPath = path.join(__dirname, '../../types/element-ui.d.ts')
 
 let elementTsText = `${fs.readFileSync(elementTsPath)}
 /** ${ComponentName} Component */
-export class ${ComponentName} extends El${ComponentName} {}`;
+export class ${ComponentName} extends El${ComponentName} {}`
 
-const index = elementTsText.indexOf('export') - 1;
-const importString = `import { El${ComponentName} } from './${componentname}'`;
+const index = elementTsText.indexOf('export') - 1
+const importString = `import { El${ComponentName} } from './${componentname}'`
 
-elementTsText = elementTsText.slice(0, index) + importString + '\n' + elementTsText.slice(index);
+elementTsText = elementTsText.slice(0, index) + importString + '\n' + elementTsText.slice(index)
 
 fileSave(elementTsPath)
   .write(elementTsText, 'utf8')
-  .end('\n');
+  .end('\n')
 
 // 创建 package
 Files.forEach(file => {
   fileSave(path.join(PackagePath, file.filename))
     .write(file.content, 'utf8')
-    .end('\n');
-});
+    .end('\n')
+})
 
 // 添加到 nav.config.json
-const navConfigFile = require('../../examples/nav.config.json');
+const navConfigFile = require('../../examples/nav.config.json')
 
 Object.keys(navConfigFile).forEach(lang => {
-  let groups = navConfigFile[lang][4].groups;
+  let groups = navConfigFile[lang][4].groups
   groups[groups.length - 1].list.push({
     path: `/${componentname}`,
     title: lang === 'zh-CN' && componentname !== chineseName
       ? `${ComponentName} ${chineseName}`
       : ComponentName
-  });
-});
+  })
+})
 
 fileSave(path.join(__dirname, '../../examples/nav.config.json'))
   .write(JSON.stringify(navConfigFile, null, '  '), 'utf8')
-  .end('\n');
+  .end('\n')
 
-console.log('DONE!');
+console.log('DONE!')

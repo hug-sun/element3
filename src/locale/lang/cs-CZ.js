@@ -119,4 +119,4 @@ export default {
       cancelButtonText: 'No' // to be translated
     }
   }
-};
+}

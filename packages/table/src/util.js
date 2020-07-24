@@ -1,255 +1,255 @@
-import { getValueByPath } from 'element-ui/src/utils/util';
+import { getValueByPath } from 'element-ui/src/utils/util'
 
 export const getCell = function(event) {
-  let cell = event.target;
+  let cell = event.target
 
   while (cell && cell.tagName.toUpperCase() !== 'HTML') {
     if (cell.tagName.toUpperCase() === 'TD') {
-      return cell;
+      return cell
     }
-    cell = cell.parentNode;
+    cell = cell.parentNode
   }
 
-  return null;
-};
+  return null
+}
 
 const isObject = function(obj) {
-  return obj !== null && typeof obj === 'object';
-};
+  return obj !== null && typeof obj === 'object'
+}
 
 export const orderBy = function(array, sortKey, reverse, sortMethod, sortBy) {
   if (!sortKey && !sortMethod && (!sortBy || Array.isArray(sortBy) && !sortBy.length)) {
-    return array;
+    return array
   }
   if (typeof reverse === 'string') {
-    reverse = reverse === 'descending' ? -1 : 1;
+    reverse = reverse === 'descending' ? -1 : 1
   } else {
-    reverse = (reverse && reverse < 0) ? -1 : 1;
+    reverse = (reverse && reverse < 0) ? -1 : 1
   }
   const getKey = sortMethod ? null : function(value, index) {
     if (sortBy) {
       if (!Array.isArray(sortBy)) {
-        sortBy = [sortBy];
+        sortBy = [sortBy]
       }
       return sortBy.map(function(by) {
         if (typeof by === 'string') {
-          return getValueByPath(value, by);
+          return getValueByPath(value, by)
         } else {
-          return by(value, index, array);
+          return by(value, index, array)
         }
-      });
+      })
     }
     if (sortKey !== '$key') {
-      if (isObject(value) && '$value' in value) value = value.$value;
+      if (isObject(value) && '$value' in value) value = value.$value
     }
-    return [isObject(value) ? getValueByPath(value, sortKey) : value];
-  };
+    return [isObject(value) ? getValueByPath(value, sortKey) : value]
+  }
   const compare = function(a, b) {
     if (sortMethod) {
-      return sortMethod(a.value, b.value);
+      return sortMethod(a.value, b.value)
     }
     for (let i = 0, len = a.key.length; i < len; i++) {
       if (a.key[i] < b.key[i]) {
-        return -1;
+        return -1
       }
       if (a.key[i] > b.key[i]) {
-        return 1;
+        return 1
       }
     }
-    return 0;
-  };
+    return 0
+  }
   return array.map(function(value, index) {
     return {
       value: value,
       index: index,
       key: getKey ? getKey(value, index) : null
-    };
+    }
   }).sort(function(a, b) {
-    let order = compare(a, b);
+    let order = compare(a, b)
     if (!order) {
       // make stable https://en.wikipedia.org/wiki/Sorting_algorithm#Stability
-      order = a.index - b.index;
+      order = a.index - b.index
     }
-    return order * reverse;
-  }).map(item => item.value);
-};
+    return order * reverse
+  }).map(item => item.value)
+}
 
 export const getColumnById = function(table, columnId) {
-  let column = null;
+  let column = null
   table.columns.forEach(function(item) {
     if (item.id === columnId) {
-      column = item;
+      column = item
     }
-  });
-  return column;
-};
+  })
+  return column
+}
 
 export const getColumnByKey = function(table, columnKey) {
-  let column = null;
+  let column = null
   for (let i = 0; i < table.columns.length; i++) {
-    const item = table.columns[i];
+    const item = table.columns[i]
     if (item.columnKey === columnKey) {
-      column = item;
-      break;
+      column = item
+      break
     }
   }
-  return column;
-};
+  return column
+}
 
 export const getColumnByCell = function(table, cell) {
-  const matches = (cell.className || '').match(/el-table_[^\s]+/gm);
+  const matches = (cell.className || '').match(/el-table_[^\s]+/gm)
   if (matches) {
-    return getColumnById(table, matches[0]);
+    return getColumnById(table, matches[0])
   }
-  return null;
-};
+  return null
+}
 
 export const getRowIdentity = (row, rowKey) => {
-  if (!row) throw new Error('row is required when get row identity');
+  if (!row) throw new Error('row is required when get row identity')
   if (typeof rowKey === 'string') {
     if (rowKey.indexOf('.') < 0) {
-      return row[rowKey];
+      return row[rowKey]
     }
-    let key = rowKey.split('.');
-    let current = row;
+    let key = rowKey.split('.')
+    let current = row
     for (let i = 0; i < key.length; i++) {
-      current = current[key[i]];
+      current = current[key[i]]
     }
-    return current;
+    return current
   } else if (typeof rowKey === 'function') {
-    return rowKey.call(null, row);
+    return rowKey.call(null, row)
   }
-};
+}
 
 export const getKeysMap = function(array, rowKey) {
   const arrayMap = {};
   (array || []).forEach((row, index) => {
-    arrayMap[getRowIdentity(row, rowKey)] = { row, index };
-  });
-  return arrayMap;
-};
+    arrayMap[getRowIdentity(row, rowKey)] = { row, index }
+  })
+  return arrayMap
+}
 
 function hasOwn(obj, key) {
-  return Object.prototype.hasOwnProperty.call(obj, key);
+  return Object.prototype.hasOwnProperty.call(obj, key)
 }
 
 export function mergeOptions(defaults, config) {
-  const options = {};
-  let key;
+  const options = {}
+  let key
   for (key in defaults) {
-    options[key] = defaults[key];
+    options[key] = defaults[key]
   }
   for (key in config) {
     if (hasOwn(config, key)) {
-      const value = config[key];
+      const value = config[key]
       if (typeof value !== 'undefined') {
-        options[key] = value;
+        options[key] = value
       }
     }
   }
-  return options;
+  return options
 }
 
 export function parseWidth(width) {
   if (width !== undefined) {
-    width = parseInt(width, 10);
+    width = parseInt(width, 10)
     if (isNaN(width)) {
-      width = null;
+      width = null
     }
   }
-  return width;
+  return width
 }
 
 export function parseMinWidth(minWidth) {
   if (typeof minWidth !== 'undefined') {
-    minWidth = parseWidth(minWidth);
+    minWidth = parseWidth(minWidth)
     if (isNaN(minWidth)) {
-      minWidth = 80;
+      minWidth = 80
     }
   }
-  return minWidth;
+  return minWidth
 };
 
 export function parseHeight(height) {
   if (typeof height === 'number') {
-    return height;
+    return height
   }
   if (typeof height === 'string') {
     if (/^\d+(?:px)?$/.test(height)) {
-      return parseInt(height, 10);
+      return parseInt(height, 10)
     } else {
-      return height;
+      return height
     }
   }
-  return null;
+  return null
 }
 
 // https://github.com/reduxjs/redux/blob/master/src/compose.js
 export function compose(...funcs) {
   if (funcs.length === 0) {
-    return arg => arg;
+    return arg => arg
   }
   if (funcs.length === 1) {
-    return funcs[0];
+    return funcs[0]
   }
-  return funcs.reduce((a, b) => (...args) => a(b(...args)));
+  return funcs.reduce((a, b) => (...args) => a(b(...args)))
 }
 
 export function toggleRowStatus(statusArr, row, newVal) {
-  let changed = false;
-  const index = statusArr.indexOf(row);
-  const included = index !== -1;
+  let changed = false
+  const index = statusArr.indexOf(row)
+  const included = index !== -1
 
   const addRow = () => {
-    statusArr.push(row);
-    changed = true;
-  };
+    statusArr.push(row)
+    changed = true
+  }
   const removeRow = () => {
-    statusArr.splice(index, 1);
-    changed = true;
-  };
+    statusArr.splice(index, 1)
+    changed = true
+  }
 
   if (typeof newVal === 'boolean') {
     if (newVal && !included) {
-      addRow();
+      addRow()
     } else if (!newVal && included) {
-      removeRow();
+      removeRow()
     }
   } else {
     if (included) {
-      removeRow();
+      removeRow()
     } else {
-      addRow();
+      addRow()
     }
   }
-  return changed;
+  return changed
 }
 
 export function walkTreeNode(root, cb, childrenKey = 'children', lazyKey = 'hasChildren') {
-  const isNil = (array) => !(Array.isArray(array) && array.length);
+  const isNil = (array) => !(Array.isArray(array) && array.length)
 
   function _walker(parent, children, level) {
-    cb(parent, children, level);
+    cb(parent, children, level)
     children.forEach(item => {
       if (item[lazyKey]) {
-        cb(item, null, level + 1);
-        return;
+        cb(item, null, level + 1)
+        return
       }
-      const children = item[childrenKey];
+      const children = item[childrenKey]
       if (!isNil(children)) {
-        _walker(item, children, level + 1);
+        _walker(item, children, level + 1)
       }
-    });
+    })
   }
 
   root.forEach(item => {
     if (item[lazyKey]) {
-      cb(item, null, 0);
-      return;
+      cb(item, null, 0)
+      return
     }
-    const children = item[childrenKey];
+    const children = item[childrenKey]
     if (!isNil(children)) {
-      _walker(item, children, 0);
+      _walker(item, children, 0)
     }
-  });
+  })
 }

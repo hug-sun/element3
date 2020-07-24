@@ -22,14 +22,14 @@ export default {
 
   computed: {
     style() {
-      const ret = {};
+      const ret = {}
 
       if (this.gutter) {
-        ret.marginLeft = `-${this.gutter / 2}px`;
-        ret.marginRight = ret.marginLeft;
+        ret.marginLeft = `-${this.gutter / 2}px`
+        ret.marginRight = ret.marginLeft
       }
 
-      return ret;
+      return ret
     }
   },
 
@@ -42,6 +42,6 @@ export default {
         { 'el-row--flex': this.type === 'flex' }
       ],
       style: this.style
-    }, this.$slots.default);
+    }, this.$slots.default)
   }
-};
+}

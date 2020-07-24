@@ -1,8 +1,8 @@
-import Footer from './src/main';
+import Footer from './src/main'
 
 /* istanbul ignore next */
 Footer.install = function(Vue) {
-  Vue.component(Footer.name, Footer);
-};
+  Vue.component(Footer.name, Footer)
+}
 
-export default Footer;
+export default Footer

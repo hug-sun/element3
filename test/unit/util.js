@@ -1,29 +1,29 @@
-import Vue from 'vue';
-import Element from 'main/index.js';
+import Vue from 'vue'
+import Element from 'main/index.js'
 
-Vue.use(Element);
+Vue.use(Element)
 
-let id = 0;
+let id = 0
 
 const createElm = function() {
-  const elm = document.createElement('div');
+  const elm = document.createElement('div')
 
-  elm.id = 'app' + ++id;
-  document.body.appendChild(elm);
+  elm.id = 'app' + ++id
+  document.body.appendChild(elm)
 
-  return elm;
-};
+  return elm
+}
 
 /**
  * 回收 vm
  * @param  {Object} vm
  */
 export const destroyVM = function(vm) {
-  vm.$destroy && vm.$destroy();
+  vm.$destroy && vm.$destroy()
   vm.$el &&
   vm.$el.parentNode &&
-  vm.$el.parentNode.removeChild(vm.$el);
-};
+  vm.$el.parentNode.removeChild(vm.$el)
+}
 
 /**
  * 创建一个 Vue 的实例对象
@@ -33,10 +33,10 @@ export const destroyVM = function(vm) {
  */
 export const createVue = function(Compo, mounted = false) {
   if (Object.prototype.toString.call(Compo) === '[object String]') {
-    Compo = { template: Compo };
+    Compo = { template: Compo }
   }
-  return new Vue(Compo).$mount(mounted === false ? null : createElm());
-};
+  return new Vue(Compo).$mount(mounted === false ? null : createElm())
+}
 
 /**
  * 创建一个测试组件实例
@@ -48,13 +48,13 @@ export const createVue = function(Compo, mounted = false) {
  */
 export const createTest = function(Compo, propsData = {}, mounted = false) {
   if (propsData === true || propsData === false) {
-    mounted = propsData;
-    propsData = {};
+    mounted = propsData
+    propsData = {}
   }
-  const elm = createElm();
-  const Ctor = Vue.extend(Compo);
-  return new Ctor({ propsData }).$mount(mounted === false ? null : elm);
-};
+  const elm = createElm()
+  const Ctor = Vue.extend(Compo)
+  return new Ctor({ propsData }).$mount(mounted === false ? null : elm)
+}
 
 /**
  * 触发一个事件
@@ -64,24 +64,24 @@ export const createTest = function(Compo, propsData = {}, mounted = false) {
  * @param  {*} opts
  */
 export const triggerEvent = function(elm, name, ...opts) {
-  let eventName;
+  let eventName
 
   if (/^mouse|click/.test(name)) {
-    eventName = 'MouseEvents';
+    eventName = 'MouseEvents'
   } else if (/^key/.test(name)) {
-    eventName = 'KeyboardEvent';
+    eventName = 'KeyboardEvent'
   } else {
-    eventName = 'HTMLEvents';
+    eventName = 'HTMLEvents'
   }
-  const evt = document.createEvent(eventName);
+  const evt = document.createEvent(eventName)
 
-  evt.initEvent(name, ...opts);
+  evt.initEvent(name, ...opts)
   elm.dispatchEvent
     ? elm.dispatchEvent(evt)
-    : elm.fireEvent('on' + name, evt);
+    : elm.fireEvent('on' + name, evt)
 
-  return elm;
-};
+  return elm
+}
 
 /**
  * 触发 “mouseup” 和 “mousedown” 事件
@@ -89,11 +89,11 @@ export const triggerEvent = function(elm, name, ...opts) {
  * @param {*} opts
  */
 export const triggerClick = function(elm, ...opts) {
-  triggerEvent(elm, 'mousedown', ...opts);
-  triggerEvent(elm, 'mouseup', ...opts);
+  triggerEvent(elm, 'mousedown', ...opts)
+  triggerEvent(elm, 'mouseup', ...opts)
 
-  return elm;
-};
+  return elm
+}
 
 /**
  * 触发 keydown 事件
@@ -101,21 +101,21 @@ export const triggerClick = function(elm, ...opts) {
  * @param {keyCode} int
  */
 export const triggerKeyDown = function(el, keyCode) {
-  const evt = document.createEvent('Events');
-  evt.initEvent('keydown', true, true);
-  evt.keyCode = keyCode;
-  el.dispatchEvent(evt);
-};
+  const evt = document.createEvent('Events')
+  evt.initEvent('keydown', true, true)
+  evt.keyCode = keyCode
+  el.dispatchEvent(evt)
+}
 
 /**
  * 等待 ms 毫秒，返回 Promise
  * @param {Number} ms
  */
 export const wait = function(ms = 50) {
-  return new Promise(resolve => setTimeout(() => resolve(), ms));
-};
+  return new Promise(resolve => setTimeout(() => resolve(), ms))
+}
 
 /**
  * 等待一个 Tick，代替 Vue.nextTick，返回 Promise
  */
-export const waitImmediate = () => wait(0);
+export const waitImmediate = () => wait(0)

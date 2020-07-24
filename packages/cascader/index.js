@@ -1,8 +1,8 @@
-import Cascader from './src/cascader';
+import Cascader from './src/cascader'
 
 /* istanbul ignore next */
 Cascader.install = function(Vue) {
-  Vue.component(Cascader.name, Cascader);
-};
+  Vue.component(Cascader.name, Cascader)
+}
 
-export default Cascader;
+export default Cascader
