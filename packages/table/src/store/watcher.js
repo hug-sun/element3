@@ -224,7 +224,7 @@ export default {
         if (rowKey) {
           selectedMap = getKeysMap(selection, rowKey)
         }
-        const isSelected = function (row) {
+        const isSelected = function(row) {
           if (selectedMap) {
             return !!selectedMap[getRowIdentity(row, rowKey)]
           } else {

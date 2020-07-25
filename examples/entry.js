@@ -1,7 +1,7 @@
 import {createApp,reactive,nextTick} from 'vue';
 import entry from './app';
 
-import { createRouter,createWebHashHistory} from 'vue-router';
+import { createRouter,createWebHashHistory,createWebHistory} from 'vue-router';
 import Element from 'main/index.js';
 import hljs from 'highlight.js';
 import routes from './route.config';
@@ -44,7 +44,7 @@ app.mixin({
 app.config.globalProperties.$icon = icon
 
 const router = createRouter({
-  hash: createWebHashHistory(__dirname),
+  history: createWebHashHistory(__dirname),
   // history: createWebHistory(__dirname),
   routes
 })

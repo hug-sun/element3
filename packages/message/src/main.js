@@ -2,7 +2,7 @@ import { nextTick } from 'vue'
 import Main from './main.vue'
 import { PopupManager } from 'element-ui/src/utils/popup'
 import { isVNode } from 'element-ui/src/utils/vdom'
-let MessageConstructor = {extends:Main}
+let MessageConstructor = {extends: Main}
 
 let instance
 let instances = []

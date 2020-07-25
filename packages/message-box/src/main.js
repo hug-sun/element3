@@ -40,7 +40,7 @@ import merge from 'element-ui/src/utils/merge'
 import { isVNode } from 'element-ui/src/utils/vdom'
 
 const MessageBoxConstructor = {
-  extends:msgboxVue
+  extends: msgboxVue
 }
 
 let currentMsg, instance

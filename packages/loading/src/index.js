@@ -5,7 +5,7 @@ import { PopupManager } from 'element-ui/src/utils/popup'
 import afterLeave from 'element-ui/src/utils/after-leave'
 import merge from 'element-ui/src/utils/merge'
 
-const LoadingConstructor = {extends:loadingVue}
+const LoadingConstructor = {extends: loadingVue}
 
 const defaults = {
   text: null,
