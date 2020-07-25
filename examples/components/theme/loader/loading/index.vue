@@ -10,7 +10,7 @@
 <script>
 
 import bus from '../../../../bus.js';
-import './progress.js';
+import progress from './progress.js';
 
 export default {
   data() {
@@ -23,11 +23,11 @@ export default {
       if (val) {
         this.count++;
         if (this.count > 1) return;
-        this.$bar.start();
+        progress.start();
       } else {
         this.count--;
         if (this.count) return;
-        this.$bar.finish();
+        progress.finish();
       }
     });
   }

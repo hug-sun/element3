@@ -33,6 +33,7 @@ const defaults = {
   distinguishCancelAndClose: false
 }
 
+// #todo
 import {nextTick,extend} from 'vue'
 import msgboxVue from './main.vue'
 import merge from 'element-ui/src/utils/merge'

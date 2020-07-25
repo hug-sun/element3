@@ -7,7 +7,7 @@ const Mask = Vue.extend(Loading)
 
 const loadingDirective = {}
 loadingDirective.install = Vue => {
-  if (Vue.prototype.$isServer) return
+  // if (Vue.prototype.$isServer) return
   const toggleLoading = (el, binding) => {
     if (binding.value) {
       Vue.nextTick(() => {

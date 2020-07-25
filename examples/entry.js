@@ -1,8 +1,7 @@
 import {createApp,reactive,nextTick} from 'vue';
 import entry from './app';
-console.log(entry)
 
-import { createRouter,createWebHistory,createWebHashHistory} from 'vue-router';
+import { createRouter,createWebHashHistory} from 'vue-router';
 import Element from 'main/index.js';
 import hljs from 'highlight.js';
 import routes from './route.config';
@@ -68,7 +67,6 @@ router.afterEach(route => {
   document.title = 'Element';
   ga('send', 'event', 'PageView', route.name);
 });
-new Vue({ // eslint-disable-line
-  ...entry,
-  router
-}).$mount('#app');
+app.mount('#app');
+
+export default app
