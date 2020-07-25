@@ -1,7 +1,6 @@
-import Vue from 'vue'
 
 export default function scrollIntoView(container, selected) {
-  if (Vue.prototype.$isServer) return
+  // if (Vue.prototype.$isServer) return
 
   if (!selected) {
     container.scrollTop = 0

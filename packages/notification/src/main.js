@@ -1,16 +1,16 @@
-import Vue from 'vue'
+import {extend} from 'vue'
 import Main from './main.vue'
 import merge from 'element-ui/src/utils/merge'
 import { PopupManager } from 'element-ui/src/utils/popup'
 import { isVNode } from 'element-ui/src/utils/vdom'
-const NotificationConstructor = Vue.extend(Main)
+const NotificationConstructor = extend(Main)
 
 let instance
 let instances = []
 let seed = 1
 
 const Notification = function(options) {
-  if (Vue.prototype.$isServer) return
+  // if (Vue.prototype.$isServer) return
   options = merge({}, options)
   const userOnClose = options.onClose
   const id = 'notification_' + seed++

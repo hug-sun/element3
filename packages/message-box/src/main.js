@@ -33,12 +33,12 @@ const defaults = {
   distinguishCancelAndClose: false
 }
 
-import Vue from 'vue'
+import {nextTick,extend} from 'vue'
 import msgboxVue from './main.vue'
 import merge from 'element-ui/src/utils/merge'
 import { isVNode } from 'element-ui/src/utils/vdom'
 
-const MessageBoxConstructor = Vue.extend(msgboxVue)
+const MessageBoxConstructor = extend(msgboxVue)
 
 let currentMsg, instance
 let msgQueue = []
@@ -113,7 +113,7 @@ const showNextMsg = () => {
       })
       document.body.appendChild(instance.$el)
 
-      Vue.nextTick(() => {
+      nextTick(() => {
         instance.visible = true
       })
     }
@@ -121,7 +121,7 @@ const showNextMsg = () => {
 }
 
 const MessageBox = function(options, callback) {
-  if (Vue.prototype.$isServer) return
+  // if (Vue.prototype.$isServer) return
   if (typeof options === 'string' || isVNode(options)) {
     options = {
       message: options
