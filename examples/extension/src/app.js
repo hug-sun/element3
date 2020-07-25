@@ -12,6 +12,7 @@ export default () => {
     console.log(arguments);
   };
 
+  
   new Vue({ // eslint-disable-line
     render: h => h(App)
   }).$mount(root);

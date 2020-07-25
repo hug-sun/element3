@@ -9,4 +9,4 @@ const app = createApp({ // eslint-disable-line
 })
 app.use(Element);
 
-app.$mount('#app')
+app.mount('#app')
