@@ -43,7 +43,7 @@ import Tree from '../packages/tree/index.js';
 import Alert from '../packages/alert/index.js';
 import Notification from '../packages/notification/index.js';
 import Slider from '../packages/slider/index.js';
-import Loading from '../packages/loading/index.js';
+// import Loading from '../packages/loading/index.js';
 import Icon from '../packages/icon/index.js';
 import Row from '../packages/row/index.js';
 import Col from '../packages/col/index.js';
@@ -175,14 +175,14 @@ const install = function(Vue, opts = {}) {
   });
 
   Vue.use(InfiniteScroll);
-  Vue.use(Loading.directive);
+  // Vue.use(Loading.directive);
 
   Vue.prototype.$ELEMENT = {
     size: opts.size || '',
     zIndex: opts.zIndex || 2000
   };
 
-  Vue.prototype.$loading = Loading.service;
+  // Vue.prototype.$loading = Loading.service;
   Vue.prototype.$msgbox = MessageBox;
   Vue.prototype.$alert = MessageBox.alert;
   Vue.prototype.$confirm = MessageBox.confirm;
@@ -203,7 +203,7 @@ export default {
   i18n: locale.i18n,
   install,
   CollapseTransition,
-  Loading,
+  // Loading,
   Pagination,
   Dialog,
   Autocomplete,
