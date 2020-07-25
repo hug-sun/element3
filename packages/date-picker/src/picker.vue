@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import {h} from 'vue';
 import Clickoutside from 'element-ui/src/utils/clickoutside';
 import { formatDate, parseDate, isDateObject, getWeekNumber } from 'element-ui/src/utils/date-util';
 import Popper from 'element-ui/src/utils/vue-popper';

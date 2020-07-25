@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import {nextTick} from 'vue'
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width'
 import { parseHeight } from './util'
 
@@ -55,12 +55,12 @@ class TableLayout {
   }
 
   setHeight(value, prop = 'height') {
-    if (Vue.prototype.$isServer) return
+    // if (Vue.prototype.$isServer) return
     const el = this.table.$el
     value = parseHeight(value)
     this.height = value
 
-    if (!el && (value || value === 0)) return Vue.nextTick(() => this.setHeight(value, prop))
+    if (!el && (value || value === 0)) return nextTick(() => this.setHeight(value, prop))
 
     if (typeof value === 'number') {
       el.style[prop] = value + 'px'
@@ -90,7 +90,7 @@ class TableLayout {
   }
 
   updateElsHeight() {
-    if (!this.table.$ready) return Vue.nextTick(() => this.updateElsHeight())
+    if (!this.table.$ready) return nextTick(() => this.updateElsHeight())
     const { headerWrapper, appendWrapper, footerWrapper } = this.table.$refs
     this.appendHeight = appendWrapper ? appendWrapper.offsetHeight : 0
 
@@ -102,7 +102,7 @@ class TableLayout {
 
     const headerHeight = this.headerHeight = !this.showHeader ? 0 : headerWrapper.offsetHeight
     if (this.showHeader && !noneHeader && headerWrapper.offsetWidth > 0 && (this.table.columns || []).length > 0 && headerHeight < 2) {
-      return Vue.nextTick(() => this.updateElsHeight())
+      return nextTick(() => this.updateElsHeight())
     }
     const tableHeight = this.tableHeight = this.table.$el.clientHeight
     const footerHeight = this.footerHeight = footerWrapper ? footerWrapper.offsetHeight : 0
@@ -131,7 +131,7 @@ class TableLayout {
   }
 
   updateColumnsWidth() {
-    if (Vue.prototype.$isServer) return
+    // if (Vue.prototype.$isServer) return
     const fit = this.fit
     const bodyWidth = this.table.$el.clientWidth
     let bodyMinWidth = 0

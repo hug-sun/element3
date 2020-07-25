@@ -1,15 +1,15 @@
-import Vue from 'vue'
+import { nextTick } from 'vue'
 import Main from './main.vue'
 import { PopupManager } from 'element-ui/src/utils/popup'
 import { isVNode } from 'element-ui/src/utils/vdom'
-let MessageConstructor = Vue.extend(Main)
+let MessageConstructor = {extends:Main}
 
 let instance
 let instances = []
 let seed = 1
 
 const Message = function(options) {
-  if (Vue.prototype.$isServer) return
+  // if (Vue.prototype.$isServer) return
   options = options || {}
   if (typeof options === 'string') {
     options = {

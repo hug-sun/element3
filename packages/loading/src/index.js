@@ -1,11 +1,11 @@
-import Vue from 'vue'
+import { nextTick } from 'vue'
 import loadingVue from './loading.vue'
 import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom'
 import { PopupManager } from 'element-ui/src/utils/popup'
 import afterLeave from 'element-ui/src/utils/after-leave'
 import merge from 'element-ui/src/utils/merge'
 
-const LoadingConstructor = Vue.extend(loadingVue)
+const LoadingConstructor = {extends:loadingVue}
 
 const defaults = {
   text: null,
@@ -65,7 +65,7 @@ const addStyle = (options, parent, instance) => {
 }
 
 const Loading = (options = {}) => {
-  if (Vue.prototype.$isServer) return
+  // if (Vue.prototype.$isServer) return
   options = merge({}, defaults, options)
   if (typeof options.target === 'string') {
     options.target = document.querySelector(options.target)
@@ -94,7 +94,7 @@ const Loading = (options = {}) => {
     addClass(parent, 'el-loading-parent--hidden')
   }
   parent.appendChild(instance.$el)
-  Vue.nextTick(() => {
+  nextTick(() => {
     instance.visible = true
   })
   if (options.fullscreen) {

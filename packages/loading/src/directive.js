@@ -1,16 +1,16 @@
-import Vue from 'vue'
+import {nextTick} from 'vue'
 import Loading from './loading.vue'
 import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom'
 import { PopupManager } from 'element-ui/src/utils/popup'
 import afterLeave from 'element-ui/src/utils/after-leave'
-const Mask = Vue.extend(Loading)
+const Mask = {extends: Loading}
 
 const loadingDirective = {}
-loadingDirective.install = Vue => {
+loadingDirective.install = app => {
   // if (Vue.prototype.$isServer) return
   const toggleLoading = (el, binding) => {
     if (binding.value) {
-      Vue.nextTick(() => {
+      nextTick(() => {
         if (binding.modifiers.fullscreen) {
           el.originalPosition = getStyle(document.body, 'position')
           el.originalOverflow = getStyle(document.body, 'overflow')
@@ -73,7 +73,7 @@ loadingDirective.install = Vue => {
       el.domVisible = true
 
       parent.appendChild(el.mask)
-      Vue.nextTick(() => {
+      nextTick(() => {
         if (el.instance.hiding) {
           el.instance.$emit('after-leave')
         } else {
@@ -86,8 +86,7 @@ loadingDirective.install = Vue => {
       el.instance.hiding = false
     }
   }
-
-  Vue.directive('loading', {
+  app.directive('loading', {
     bind: function(el, binding, vnode) {
       const textExr = el.getAttribute('element-loading-text')
       const spinnerExr = el.getAttribute('element-loading-spinner')

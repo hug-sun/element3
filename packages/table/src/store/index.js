@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { nextTick } from 'vue'
 import Watcher from './watcher'
 import { arrayFind } from 'element-ui/src/utils/util'
 
@@ -141,7 +141,7 @@ Watcher.prototype.commit = function(name, ...args) {
 }
 
 Watcher.prototype.updateTableScrollY = function() {
-  Vue.nextTick(this.table.updateScrollY)
+  nextTick(this.table.updateScrollY)
 }
 
 export default Watcher
