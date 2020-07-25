@@ -1,8 +1,8 @@
 import ElTabs from './src/tabs'
 
 /* istanbul ignore next */
-ElTabs.install = function(Vue) {
-  Vue.component(ElTabs.name, ElTabs)
+ElTabs.install = function(app) {
+  app.component(ElTabs.name, ElTabs)
 }
 
 export default ElTabs

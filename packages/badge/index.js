@@ -1,8 +1,8 @@
 import Badge from './src/main'
 
 /* istanbul ignore next */
-Badge.install = function(Vue) {
-  Vue.component(Badge.name, Badge)
+Badge.install = function(app) {
+  app.component(Badge.name, Badge)
 }
 
 export default Badge

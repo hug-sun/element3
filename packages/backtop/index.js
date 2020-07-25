@@ -1,8 +1,8 @@
 import Backtop from './src/main'
 
 /* istanbul ignore next */
-Backtop.install = function(Vue) {
-  Vue.component(Backtop.name, Backtop)
+Backtop.install = function(app) {
+  app.component(Backtop.name, Backtop)
 }
 
 export default Backtop

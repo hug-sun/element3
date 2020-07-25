@@ -43,7 +43,6 @@ app.mixin({
   }
 });
 app.config.globalProperties.$icon = icon
-// Vue.prototype.$icon = icon; // Icon 列表页用
 
 const router = createRouter({
   hash: createWebHashHistory(__dirname),
@@ -51,12 +50,6 @@ const router = createRouter({
   routes
 })
 app.use(router)
-
-// const router = new VueRouter({
-//   mode: 'hash',
-//   base: __dirname,
-//   routes
-// });
 
 router.afterEach(route => {
   // https://github.com/highlightjs/highlight.js/issues/909#issuecomment-131686186
