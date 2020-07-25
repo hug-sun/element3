@@ -34,12 +34,14 @@ const defaults = {
 }
 
 // #todo
-import {nextTick,extend} from 'vue'
+import {nextTick} from 'vue'
 import msgboxVue from './main.vue'
 import merge from 'element-ui/src/utils/merge'
 import { isVNode } from 'element-ui/src/utils/vdom'
 
-const MessageBoxConstructor = extend(msgboxVue)
+const MessageBoxConstructor = {
+  extends:msgboxVue
+}
 
 let currentMsg, instance
 let msgQueue = []
