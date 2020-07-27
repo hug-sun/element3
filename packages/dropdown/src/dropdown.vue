@@ -1,4 +1,5 @@
 <script>
+  import { h } from 'vue'
   import Clickoutside from 'element-ui/src/utils/clickoutside';
   import Emitter from 'element-ui/src/mixins/emitter';
   import Migrating from 'element-ui/src/mixins/migrating';
@@ -249,7 +250,7 @@
       }
     },
 
-    render(h) {
+    render() {
       let { hide, splitButton, type, dropdownSize } = this;
 
       const handleMainButtonClick = (event) => {

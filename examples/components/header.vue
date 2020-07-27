@@ -287,7 +287,7 @@
         <!-- nav -->
         <ul class="nav">
           <li class="nav-item nav-algolia-search" v-show="isComponentPage">
-            <algolia-search></algolia-search>
+            <!-- <algolia-search></algolia-search> -->
           </li>
           <li class="nav-item">
             <router-link
@@ -376,7 +376,7 @@
 </template>
 <script>
   import ThemePicker from './theme-picker.vue';
-  import AlgoliaSearch from './search.vue';
+  // import AlgoliaSearch from './search.vue';
   import compoLang from '../i18n/component.json';
   import Element from 'main/index.js';
   import themeLoader from './theme/loader';
@@ -407,7 +407,7 @@
 
     components: {
       ThemePicker,
-      AlgoliaSearch
+      // AlgoliaSearch
     },
 
     computed: {
