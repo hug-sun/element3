@@ -19,30 +19,29 @@ const components = [
   CollapseTransition
 ];
 
-const install = function(Vue, opts = {}) {
+const install = function(app, opts = {}) {
   locale.use(opts.locale);
   locale.i18n(opts.i18n);
 
   components.forEach(component => {
-    Vue.component(component.name, component);
+    app.component(component.name, component);
   });
 
-  Vue.use(InfiniteScroll);
-  Vue.use(Loading.directive);
+  app.use(InfiniteScroll);
+  // app.use(Loading.directive);
 
-  Vue.prototype.$ELEMENT = {
+  app.config.globalProperties.$ELEMENT = {
     size: opts.size || '',
     zIndex: opts.zIndex || 2000
   };
 
-  Vue.prototype.$loading = Loading.service;
-  Vue.prototype.$msgbox = MessageBox;
-  Vue.prototype.$alert = MessageBox.alert;
-  Vue.prototype.$confirm = MessageBox.confirm;
-  Vue.prototype.$prompt = MessageBox.prompt;
-  Vue.prototype.$notify = Notification;
-  Vue.prototype.$message = Message;
-
+  // app.config.globalProperties.$loading = Loading.service;
+  app.config.globalProperties.$msgbox = MessageBox;
+  app.config.globalProperties.$alert = MessageBox.alert;
+  app.config.globalProperties.$confirm = MessageBox.confirm;
+  app.config.globalProperties.$prompt = MessageBox.prompt;
+  app.config.globalProperties.$notify = Notification;
+  app.config.globalProperties.$message = Message;
 };
 
 /* istanbul ignore if */
@@ -56,7 +55,7 @@ export default {
   i18n: locale.i18n,
   install,
   CollapseTransition,
-  Loading,
+  // Loading,
 {{list}}
 };
 `
@@ -70,6 +69,9 @@ var installTemplate = []
 var listTemplate = []
 
 ComponentNames.forEach(name => {
+  if(['table','table-column','loading'].indexOf(name)>-1){
+    return 
+  }
   var componentName = uppercamelcase(name)
 
   includeComponentTemplate.push(render(IMPORT_TEMPLATE, {

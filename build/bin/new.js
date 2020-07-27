@@ -24,8 +24,8 @@ const Files = [
     content: `import ${ComponentName} from './src/main';
 
 /* istanbul ignore next */
-${ComponentName}.install = function(Vue) {
-  Vue.component(${ComponentName}.name, ${ComponentName});
+${ComponentName}.install = function(app) {
+  app.component(${ComponentName}.name, ${ComponentName});
 };
 
 export default ${ComponentName};`

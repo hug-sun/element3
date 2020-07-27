@@ -24,8 +24,6 @@ import Option from '../packages/option/index.js';
 import OptionGroup from '../packages/option-group/index.js';
 import Button from '../packages/button/index.js';
 import ButtonGroup from '../packages/button-group/index.js';
-// import Table from '../packages/table/index.js';
-// import TableColumn from '../packages/table-column/index.js';
 import DatePicker from '../packages/date-picker/index.js';
 import TimeSelect from '../packages/time-select/index.js';
 import TimePicker from '../packages/time-picker/index.js';
@@ -43,7 +41,6 @@ import Tree from '../packages/tree/index.js';
 import Alert from '../packages/alert/index.js';
 import Notification from '../packages/notification/index.js';
 import Slider from '../packages/slider/index.js';
-// import Loading from '../packages/loading/index.js';
 import Icon from '../packages/icon/index.js';
 import Row from '../packages/row/index.js';
 import Col from '../packages/col/index.js';
@@ -110,8 +107,6 @@ const components = [
   OptionGroup,
   Button,
   ButtonGroup,
-  // Table,
-  // TableColumn,
   DatePicker,
   TimeSelect,
   TimePicker,
@@ -189,7 +184,6 @@ const install = function(app, opts = {}) {
   app.config.globalProperties.$prompt = MessageBox.prompt;
   app.config.globalProperties.$notify = Notification;
   app.config.globalProperties.$message = Message;
-
 };
 
 /* istanbul ignore if */
@@ -228,8 +222,6 @@ export default {
   OptionGroup,
   Button,
   ButtonGroup,
-  // Table,
-  // TableColumn,
   DatePicker,
   TimeSelect,
   TimePicker,

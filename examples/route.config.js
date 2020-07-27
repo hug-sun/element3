@@ -1,26 +1,20 @@
+import {defineAsyncComponent} from 'vue'
 import navConfig from './nav.config';
 import langs from './i18n/route';
 
 const LOAD_MAP = {
   'zh-CN': name => {
-    return r => require.ensure([], () =>
-      r(require(`./pages/zh-CN/${name}.vue`)),
-    'zh-CN');
+    return defineAsyncComponent(()=> import(`./pages/zh-CN/${name}.vue`))
   },
   'en-US': name => {
-    return r => require.ensure([], () =>
-      r(require(`./pages/en-US/${name}.vue`)),
-    'en-US');
+    return defineAsyncComponent(()=> import(`./pages/en-US/${name}.vue`))
+
   },
   'es': name => {
-    return r => require.ensure([], () =>
-      r(require(`./pages/es/${name}.vue`)),
-    'es');
+    return defineAsyncComponent(()=> import(`./pages/es/${name}.vue`))
   },
   'fr-FR': name => {
-    return r => require.ensure([], () =>
-      r(require(`./pages/fr-FR/${name}.vue`)),
-    'fr-FR');
+    return defineAsyncComponent(()=> import(`./pages/fr-FR/${name}.vue`))
   }
 };
 
@@ -30,24 +24,16 @@ const load = function(lang, path) {
 
 const LOAD_DOCS_MAP = {
   'zh-CN': path => {
-    return r => require.ensure([], () =>
-      r(require(`./docs/zh-CN${path}.md`)),
-    'zh-CN');
+    return defineAsyncComponent(()=> import(`./docs/zh-CN${path}.md`))
   },
   'en-US': path => {
-    return r => require.ensure([], () =>
-      r(require(`./docs/en-US${path}.md`)),
-    'en-US');
+    return defineAsyncComponent(()=> import(`./docs/en-US${path}.md`))
   },
   'es': path => {
-    return r => require.ensure([], () =>
-      r(require(`./docs/es${path}.md`)),
-    'es');
+    return defineAsyncComponent(()=> import(`./docs/es${path}.md`))
   },
   'fr-FR': path => {
-    return r => require.ensure([], () =>
-      r(require(`./docs/fr-FR${path}.md`)),
-    'fr-FR');
+    return defineAsyncComponent(()=> import(`./docs/fr-FR${path}.md`))
   }
 };
 
@@ -187,5 +173,5 @@ route = route.concat([{
 //   redirect: defaultPath
 // }
 ]);
-
+console.log(route)
 export default route;
