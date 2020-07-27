@@ -1,7 +1,7 @@
 import {createApp,reactive,nextTick} from 'vue';
 import entry from './app';
 
-import { createRouter,createWebHashHistory,createWebHistory} from 'vue-router';
+import { createRouter,createWebHashHistory} from 'vue-router';
 import Element from 'main/index.js';
 import hljs from 'highlight.js';
 import routes from './route.config';
@@ -24,7 +24,7 @@ const app = createApp({ // eslint-disable-line
 app.use(Element);
 // app.use(VueRouter);
 app.component('demo-block', demoBlock);
-app.component('main-footer', MainFooter);
+// app.component('main-footer', MainFooter);
 app.component('main-header', MainHeader);
 app.component('side-nav', SideNav);
 app.component('footer-nav', FooterNav);

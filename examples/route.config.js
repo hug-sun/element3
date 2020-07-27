@@ -166,12 +166,12 @@ if (userLanguage.indexOf('zh-') !== -1) {
 
 route = route.concat([{
   path: '/',
-  redirect: defaultPath
+  redirect: {path:defaultPath}
 }, 
-// {
-//   path: '*',
-//   redirect: defaultPath
-// }
+{
+  path: '',
+  redirect: {path:defaultPath}
+}
 ]);
 console.log(route)
 export default route;

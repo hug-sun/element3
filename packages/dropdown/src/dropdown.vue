@@ -81,9 +81,11 @@
         return this.size || (this.$ELEMENT || {}).size;
       }
     },
-
+    emits:{
+      // 'menu-item-click':this.handleMenuItemClick
+    },
     mounted() {
-      this.$on('menu-item-click', this.handleMenuItemClick);
+      // this.$on('menu-item-click', this.handleMenuItemClick);
     },
 
     watch: {
@@ -259,7 +261,7 @@
       };
 
       let triggerElm = !splitButton
-        ? this.$slots.default
+        ? this.$slots.default()
         : (<el-button-group>
           <el-button type={type} size={dropdownSize} nativeOn-click={handleMainButtonClick}>
             {this.$slots.default}

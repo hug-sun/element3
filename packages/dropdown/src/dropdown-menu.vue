@@ -35,12 +35,12 @@
     inject: ['dropdown'],
 
     created() {
-      this.$on('updatePopper', () => {
-        if (this.showPopper) this.updatePopper();
-      });
-      this.$on('visible', val => {
-        this.showPopper = val;
-      });
+      // this.$on('updatePopper', () => {
+      //   if (this.showPopper) this.updatePopper();
+      // });
+      // this.$on('visible', val => {
+      //   this.showPopper = val;
+      // });
     },
 
     mounted() {

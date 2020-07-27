@@ -419,7 +419,7 @@
     },
 
     created() {
-      this.$on('inputSelect', this.select);
+      // this.$on('inputSelect', this.select);
     },
 
     mounted() {
