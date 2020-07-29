@@ -68,15 +68,15 @@
     "throttle-debounce": "^1.0.1"
   },
   "peerDependencies": {
-    "vue": "^3.0.0-rc.4"
+    "vue": "^3.0.0-rc.5"
   },
   "devDependencies": {
     "@ant-design-vue/babel-plugin-jsx": "^1.0.0-beta.4",
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "@types/jest": "^26.0.7",
-    "@vue/compiler-dom": "^3.0.0-rc.4",
-    "@vue/compiler-sfc": "^3.0.0-rc.4",
+    "@vue/compiler-dom": "^3.0.0-rc.5",
+    "@vue/compiler-sfc": "^3.0.0-rc.5",
     "@vue/component-compiler-utils": "^2.6.0",
     "@vue/test-utils": "^2.0.0-beta.0",
     "algoliasearch": "^3.24.5",
