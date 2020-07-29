@@ -69,9 +69,10 @@ var listTemplate = []
 
 ComponentNames.forEach(name => {
 
-  if (['alert', 'scrollbar', 'backtop', 'popover', 'button', 'dialog', 'icon', 'tooltip','transition',
+  if (['alert', 'scrollbar', 'backtop', 'popover', 'button','button-group','link', 'dialog', 'icon', 'tooltip','transition',
           'col','row',
-          'container','header','footer','main','aside'
+          'container','header','footer','main','aside',
+          
       ].indexOf(name)>-1){ // 白名单 挨个替换
     var componentName = uppercamelcase(name)
 
