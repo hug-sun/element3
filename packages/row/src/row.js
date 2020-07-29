@@ -1,3 +1,4 @@
+import { h } from 'vue'
 export default {
   name: 'ElRow',
 
@@ -33,7 +34,7 @@ export default {
     }
   },
 
-  render(h) {
+  render() {
     return h(this.tag, {
       class: [
         'el-row',
@@ -42,6 +43,6 @@ export default {
         { 'el-row--flex': this.type === 'flex' }
       ],
       style: this.style
-    }, this.$slots.default)
+    }, this.$slots.default())
   }
 }

@@ -2,7 +2,7 @@ import Popper from 'element-ui/src/utils/vue-popper'
 import debounce from 'throttle-debounce/debounce'
 import { addClass, removeClass, on, off } from 'element-ui/src/utils/dom'
 import { generateId } from 'element-ui/src/utils/util'
-import {h} from 'vue'
+import { h, createApp} from 'vue'
 
 export default {
   name: 'ElTooltip',
@@ -65,12 +65,12 @@ export default {
   beforeCreate() {
     if (this.$isServer) return
 
-    this.popperVM = new Vue({
+    this.popperVM = createApp({
       data: { node: '' },
       render(h) {
         return this.node
       }
-    }).$mount()
+    })
 
     this.debounceClose = debounce(200, () => this.handleClosePopper())
   },

@@ -20,14 +20,14 @@
       ref="control"
       :class="{ 'is-fixed': fixedControl }"
       @click="isExpanded = !isExpanded">
-      <transition name="arrow-slide">
+      <!-- <transition name="arrow-slide"> -->
         <i :class="[iconClass, { 'hovering': hovering }]"></i>
-      </transition>
-      <transition name="text-slide">
+      <!-- </transition> -->
+      <!-- <transition name="text-slide"> -->
         <span v-show="hovering">{{ controlText }}</span>
-      </transition>
-      <el-tooltip effect="dark" :content="langConfig['tooltip-text']" placement="right">
-        <transition name="text-slide">
+      <!-- </transition> -->
+      <!-- <el-tooltip effect="dark" :content="langConfig['tooltip-text']" placement="right"> -->
+        <!-- <transition name="text-slide"> -->
           <el-button
             v-show="hovering || isExpanded"
             size="small"
@@ -36,8 +36,8 @@
             @click.stop="goCodepen">
             {{ langConfig['button-text'] }}
           </el-button>
-        </transition>
-      </el-tooltip>
+        <!-- </transition> -->
+      <!-- </el-tooltip> -->
     </div>
   </div>
 </template>
@@ -181,6 +181,7 @@
 </style>
 
 <script type="text/babel">
+  import {nextTick} from 'vue'
   import compoLang from '../i18n/component.json';
   import Element from 'main/index.js';
   import { stripScript, stripStyle, stripTemplate } from '../util';
@@ -260,7 +261,7 @@
       },
 
       blockClass() {
-        return `demo-${ this.lang } demo-${ this.$router.currentRoute.path.split('/').pop() }`;
+        return `demo-${ this.lang } demo-${ this.$router.currentRoute.value.path.split('/').pop() }`;
       },
 
       iconClass() {
@@ -321,7 +322,7 @@
     },
 
     mounted() {
-      this.$nextTick(() => {
+      nextTick(() => {
         let highlight = this.$el.getElementsByClassName('highlight')[0];
         if (this.$el.getElementsByClassName('description').length === 0) {
           highlight.style.width = '100%';

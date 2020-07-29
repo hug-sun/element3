@@ -4,7 +4,7 @@
     <div class="main-cnt">
       <router-view></router-view>
     </div>
-    <main-footer v-if="lang !== 'play' && !isComponent"></main-footer>
+    <!-- <main-footer v-if="lang !== 'play' && !isComponent"></main-footer> -->
   </div>
 </template>
 

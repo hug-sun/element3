@@ -50,23 +50,37 @@ const router = createRouter({
 })
 app.use(router)
 
-router.afterEach(route => {
-  // https://github.com/highlightjs/highlight.js/issues/909#issuecomment-131686186
-  nextTick(() => {
+
+router.isReady().then(()=>{
+  console.log('>>', document.querySelectorAll('pre code:not(.hljs)'))
+
+  router.afterEach(async route => {
+
+    await nextTick()
+
     const blocks = document.querySelectorAll('pre code:not(.hljs)');
+    console.log(blocks)
     Array.prototype.forEach.call(blocks, hljs.highlightBlock);
-  });
-  
-  const data = title[route.meta.lang];
-  for (let val in data) {
-    if (new RegExp('^' + val, 'g').test(route.name)) {
-      document.title = data[val];
-      return;
+
+    // https://github.com/highlightjs/highlight.js/issues/909#issuecomment-131686186
+
+    // setTimeout(()=>{
+    //   const blocks = document.querySelectorAll('pre code:not(.hljs)');
+    //   Array.prototype.forEach.call(blocks, hljs.highlightBlock);
+    // },1000)
+
+    const data = title[route.meta.lang];
+    for (let val in data) {
+      if (new RegExp('^' + val, 'g').test(route.name)) {
+        document.title = data[val];
+        return;
+      }
     }
-  }
-  document.title = 'Element';
-  ga('send', 'event', 'PageView', route.name);
-});
-app.mount('#app');
+    document.title = 'Element';
+    ga('send', 'event', 'PageView', route.name);
+  });
+  app.mount('#app');
+
+})
 
 export default app

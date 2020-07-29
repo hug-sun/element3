@@ -69,7 +69,10 @@ var listTemplate = []
 
 ComponentNames.forEach(name => {
 
-  if(['alert','popover','button','dialog','dropdown-menu','dropdown-item','dropdown'].indexOf(name)>-1){ // 白名单 挨个替换
+  if (['alert', 'scrollbar', 'backtop', 'popover', 'button', 'dialog', 'icon', 'tooltip','transition',
+          'col','row',
+          'container','header','footer','main','aside'
+      ].indexOf(name)>-1){ // 白名单 挨个替换
     var componentName = uppercamelcase(name)
 
     includeComponentTemplate.push(render(IMPORT_TEMPLATE, {

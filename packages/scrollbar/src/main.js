@@ -1,5 +1,5 @@
 // reference https://github.com/noeldelgado/gemini-scrollbar/blob/master/index.js
-
+import { h,nextTick } from 'vue'
 import { addResizeListener, removeResizeListener } from 'element-ui/src/utils/resize-event'
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width'
 import { toObject } from 'element-ui/src/utils/util'
@@ -39,7 +39,7 @@ export default {
     }
   },
 
-  render(h) {
+  render() {
     let gutter = scrollbarWidth()
     let style = this.wrapStyle
 
@@ -60,7 +60,7 @@ export default {
       class: ['el-scrollbar__view', this.viewClass],
       style: this.viewStyle,
       ref: 'resize'
-    }, this.$slots.default)
+    }, this.$slots.default())
     const wrap = (
       <div
         ref="wrap"
@@ -119,7 +119,7 @@ export default {
 
   mounted() {
     if (this.native) return
-    this.$nextTick(this.update)
+    nextTick(this.update)
     !this.noresize && addResizeListener(this.$refs.resize, this.update)
   },
 

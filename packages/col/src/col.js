@@ -1,3 +1,4 @@
+import { h } from 'vue'
 export default {
   name: 'ElCol',
 
@@ -29,7 +30,7 @@ export default {
       return parent ? parent.gutter : 0
     }
   },
-  render(h) {
+  render() {
     let classList = []
     let style = {}
 
@@ -66,6 +67,6 @@ export default {
     return h(this.tag, {
       class: ['el-col', classList],
       style
-    }, this.$slots.default)
+    }, this.$slots.default())
   }
 }
