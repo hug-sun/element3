@@ -72,6 +72,7 @@ ComponentNames.forEach(name => {
   if (['alert', 'scrollbar', 'backtop', 'popover', 'button','button-group','link', 'dialog', 'icon', 'tooltip','transition',
           'col','row',
           'container','header','footer','main','aside',
+          'switch'
           
       ].indexOf(name)>-1){ // 白名单 挨个替换
     var componentName = uppercamelcase(name)

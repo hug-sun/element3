@@ -49,7 +49,7 @@
       }
     },
     props: {
-      value: {
+      modelValue: {
         type: [Boolean, String, Number],
         default: false
       },
@@ -103,13 +103,13 @@
       };
     },
     created() {
-      if (!~[this.activeValue, this.inactiveValue].indexOf(this.value)) {
-        this.$emit('input', this.inactiveValue);
+      if (!~[this.activeValue, this.inactiveValue].indexOf(this.modelValue)) {
+        this.$emit('update:modelValue', this.inactiveValue);
       }
     },
     computed: {
       checked() {
-        return this.value === this.activeValue;
+        return this.modelValue === this.activeValue;
       },
       switchDisabled() {
         return this.disabled || (this.elForm || {}).disabled;
@@ -122,14 +122,14 @@
           this.setBackgroundColor();
         }
         if (this.validateEvent) {
-          this.dispatch('ElFormItem', 'el.form.change', [this.value]);
+          this.dispatch('ElFormItem', 'el.form.change', [this.modelValue]);
         }
       }
     },
     methods: {
       handleChange(event) {
         const val = this.checked ? this.inactiveValue : this.activeValue;
-        this.$emit('input', val);
+        this.$emit('update:modelValue', val);
         this.$emit('change', val);
         this.$nextTick(() => {
           // set input's checked property
