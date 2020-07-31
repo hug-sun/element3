@@ -1,12 +1,11 @@
-<template functional>
+<template>
   <div
-    v-bind="data.attrs"
-    v-on="listeners"
-    :class="[data.staticClass, 'el-divider', `el-divider--${props.direction}`]"
+    v-bind="$attrs"
+    :class="['el-divider', `el-divider--${direction}`]"
   >
     <div
-      v-if="slots().default && props.direction !== 'vertical'"
-      :class="['el-divider__text', `is-${props.contentPosition}`]"
+      v-if="$slots.default && direction !== 'vertical'"
+      :class="['el-divider__text', `is-${contentPosition}`]"
      >
       <slot />
     </div>

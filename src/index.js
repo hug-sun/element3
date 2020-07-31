@@ -16,6 +16,7 @@ import Aside from '../packages/aside/index.js';
 import Main from '../packages/main/index.js';
 import Footer from '../packages/footer/index.js';
 import Link from '../packages/link/index.js';
+import Divider from '../packages/divider/index.js';
 import Backtop from '../packages/backtop/index.js';
 import locale from 'element-ui/src/locale';
  import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
@@ -38,8 +39,9 @@ const components = [
   Main,
   Footer,
   Link,
+  Divider,
   Backtop,
-   CollapseTransition
+  CollapseTransition
 ];
 
 const install = function(app, opts = {}) {
@@ -96,5 +98,6 @@ export default {
   Main,
   Footer,
   Link,
+  Divider,
   Backtop
 };
