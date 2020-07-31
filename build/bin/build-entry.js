@@ -72,7 +72,8 @@ ComponentNames.forEach(name => {
   if (['alert', 'scrollbar', 'backtop', 'popover', 'button','button-group','link', 'dialog', 'icon', 'tooltip','transition',
           'col','row',
           'container','header','footer','main','aside',
-          'switch',
+          'switch',          
+          'radio-group', 'radio-button','radio',
           'divider'
           
       ].indexOf(name)>-1){ // 白名单 挨个替换
