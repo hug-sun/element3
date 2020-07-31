@@ -74,7 +74,7 @@
 |        Carousel 走马灯        |   ❌   |                                  |
 |       Collapse 折叠面板       |   ❌   |                                  |
 |        Timeline 时间线        |   ❌   |                                  |
-|        Divider 分割线         |   ❌   |                                  |
+|        Divider 分割线         |   ✅   |  功能完成，没写测试
 |         Calendar 日历         |   ❌   |                                  |
 |          Image 图片           |   ❌   |                                  |
 |       Backtop 回到顶部        |   ❌   |                                  |
