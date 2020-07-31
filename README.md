@@ -1,3 +1,73 @@
+# (wip) element for vue3
+
+### basic
+- [x] layout
+- [x] container
+- [x] color
+- [x] typography
+- [x] border
+- [x] icon
+- [x] button
+- [x] link
+
+### form
+- [ ] radio
+- [ ] checkbox
+- [ ] input
+- [ ] inputNumber
+- [ ] select
+- [ ] cascader
+- [ ] switch
+- [ ] slider
+- [ ] timePicker
+- [ ] timePicker
+- [ ] datePicker
+- [ ] dateTimePicker
+- [ ] Upload
+- [ ] Rate
+- [ ] ColorPicker
+- [ ] Transfer
+- [ ] Form
+
+### data
+- [ ] Table
+- [ ] Tag
+- [ ] Progress
+- [ ] Tree
+- [ ] Pagination
+- [ ] Badge
+- [ ] Avatar
+
+### Notice
+- [ ] Alert
+- [ ] Loading
+- [ ] Message
+- [ ] MessageBox
+- [ ] Notification
+
+### Navigation
+- [ ] Navmenu
+- [ ] Tabs
+- [ ] Breadcrumb
+- [ ] dropdown
+- [ ] steps
+
+
+### other
+- [ ] dialog
+- [ ] tooltip
+- [ ] popover
+- [ ] popoconfirm
+- [ ] Card
+- [ ] Carousel
+- [ ] Collapse
+- [ ] Timeline
+- [ ] divider
+- [ ] Calendar
+- [ ] image
+- [ ] backtop
+- [ ] infiniteScroll
+- [ ] drawer
 <p align="center">
   <img src="https://cdn.rawgit.com/ElemeFE/element/dev/element_logo.svg">
 </p>
