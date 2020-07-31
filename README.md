@@ -1,5 +1,9 @@
 # (wip) element for vue3
 
+1. 修改build/bin/buld-entry.js的72行
+2. 组件加上白名单，比如加一个'input'，执行'npm run dev'
+3. 访问文档，在对应的组件页面调试报错即可，完成的记得标记
+
 ### basic
 - [x] layout
 - [x] container
