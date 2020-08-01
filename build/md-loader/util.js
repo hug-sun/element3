@@ -21,12 +21,12 @@ function stripTemplate(content) {
   return content.replace(/<(script|style)[\s\S]+<\/\1>/g, '').trim()
 }
 
-function pad(source) {
-  return source
-    .split(/\r?\n/)
-    .map(line => `  ${line}`)
-    .join('\n')
-}
+// function pad(source) {
+//   return source
+//     .split(/\r?\n/)
+//     .map(line => `  ${line}`)
+//     .join('\n')
+// }
 
 function genInlineComponentText(template, script) {
 

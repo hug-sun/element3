@@ -1,114 +1,114 @@
-import Button from "../../../packages/button/src/button.vue";
-import { mount } from "@vue/test-utils";
-describe("Button.vue", () => {
-  describe("props", () => {
-    it("type", () => {
+import Button from '../../../packages/button/src/button.vue'
+import { mount } from '@vue/test-utils'
+describe('Button.vue', () => {
+  describe('props', () => {
+    it('type', () => {
       const wrapper = mount(Button, {
         props: {
-          type: "primary",
-        },
-      });
+          type: 'primary'
+        }
+      })
 
-      expect(wrapper.classes()).toContain("el-button--primary");
-    });
+      expect(wrapper.classes()).toContain('el-button--primary')
+    })
 
-    it("icon", () => {
+    it('icon', () => {
       const wrapper = mount(Button, {
         props: {
-          icon: "el-icon-search",
-        },
-      });
+          icon: 'el-icon-search'
+        }
+      })
 
-      expect(wrapper.classes()).toContain("el-button--default");
-    });
+      expect(wrapper.classes()).toContain('el-button--default')
+    })
 
-    it("nativeType", () => {
+    it('nativeType', () => {
       const wrapper = mount(Button, {
         props: {
-          nativeType: "submit",
-        },
-      });
+          nativeType: 'submit'
+        }
+      })
 
-      expect(wrapper.attributes("type")).toBe("submit");
-    });
+      expect(wrapper.attributes('type')).toBe('submit')
+    })
 
-    it("loading", () => {
+    it('loading', () => {
       const wrapper = mount(Button, {
         props: {
-          loading: true,
-        },
-      });
+          loading: true
+        }
+      })
 
-      expect(wrapper.classes()).toContain("is-loading");
-      expect(wrapper.find(".el-icon-loading").exists()).toBe(true);
-    });
+      expect(wrapper.classes()).toContain('is-loading')
+      expect(wrapper.find('.el-icon-loading').exists()).toBe(true)
+    })
 
-    it("disabled", () => {
+    it('disabled', () => {
       const wrapper = mount(Button, {
         props: {
-          disabled: true,
-        },
-      });
+          disabled: true
+        }
+      })
 
-      expect(wrapper.classes()).toContain("is-disabled");
-    });
+      expect(wrapper.classes()).toContain('is-disabled')
+    })
 
-    it("size", () => {
+    it('size', () => {
       const wrapper = mount(Button, {
         props: {
-          size: "medium",
-        },
-      });
+          size: 'medium'
+        }
+      })
 
-      expect(wrapper.classes()).toContain("el-button--medium");
-    });
+      expect(wrapper.classes()).toContain('el-button--medium')
+    })
 
-    it("plain", () => {
+    it('plain', () => {
       const wrapper = mount(Button, {
         props: {
-          plain: true,
-        },
-      });
+          plain: true
+        }
+      })
 
-      expect(wrapper.classes()).toContain("is-plain");
-    });
+      expect(wrapper.classes()).toContain('is-plain')
+    })
 
-    it("round", () => {
+    it('round', () => {
       const wrapper = mount(Button, {
         props: {
-          round: true,
-        },
-      });
+          round: true
+        }
+      })
 
-      expect(wrapper.classes()).toContain("is-round");
-    });
+      expect(wrapper.classes()).toContain('is-round')
+    })
 
-    it("circle", () => {
+    it('circle', () => {
       const wrapper = mount(Button, {
         props: {
-          circle: true,
-        },
-      });
+          circle: true
+        }
+      })
 
-      expect(wrapper.classes()).toContain("is-circle");
-    });
-  });
+      expect(wrapper.classes()).toContain('is-circle')
+    })
+  })
 
-  it("captures click events emitted via click", () => {
-    const wrapper = mount(Button);
-    wrapper.trigger("click");
+  it('captures click events emitted via click', () => {
+    const wrapper = mount(Button)
+    wrapper.trigger('click')
 
-    expect(wrapper.emitted("click")).toBeTruthy();
-  });
+    expect(wrapper.emitted('click')).toBeTruthy()
+  })
 
   it("can't captures click events emitted via click when loading ", () => {
     const wrapper = mount(Button, {
       props: {
-        loading: true,
-      },
-    });
-    wrapper.trigger("click");
+        loading: true
+      }
+    })
+    wrapper.trigger('click')
 
-    expect(wrapper.emitted("click")).toBeFalsy();
-  });
-});
+    expect(wrapper.emitted('click')).toBeFalsy()
+  })
+})

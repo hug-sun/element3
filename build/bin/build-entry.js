@@ -69,30 +69,30 @@ var listTemplate = []
 
 ComponentNames.forEach(name => {
 
-  if (['alert', 'scrollbar', 'backtop', 'popover', 'button','button-group','link', 'dialog', 'icon', 'tooltip','transition',
-          'col','row',
-          'container','header','footer','main','aside',
-          'radio-group', 'radio-button','radio',
-          'switch'
-          
-      ].indexOf(name)>-1){ // 白名单 挨个替换
+  if (['alert', 'scrollbar', 'backtop', 'popover', 'button', 'button-group', 'link', 'dialog', 'icon', 'tooltip', 'transition',
+    'col', 'row',
+    'container', 'header', 'footer', 'main', 'aside',
+    'radio-group', 'radio-button', 'radio',
+    'switch'
+
+  ].indexOf(name) > -1) { // 白名单 挨个替换
     var componentName = uppercamelcase(name)
 
     includeComponentTemplate.push(render(IMPORT_TEMPLATE, {
       name: componentName,
       package: name
     }))
-  
+
     if (['Loading', 'MessageBox', 'Notification', 'Message', 'InfiniteScroll'].indexOf(componentName) === -1) {
       installTemplate.push(render(INSTALL_COMPONENT_TEMPLATE, {
         name: componentName,
         component: name
       }))
     }
-  
+
     if (componentName !== 'Loading') listTemplate.push(`  ${componentName}`)
-  }else{
-    
+  } else {
+
   }
 
 })

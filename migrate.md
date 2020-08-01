@@ -31,7 +31,7 @@
 |          Border 边框          |   ❌   |                无                |
 |           Icon 图标           |   ❌   |                无                |
 |            Button             |   ✅   | 修改 From 组件时需要处理一些逻辑 |
-|             Lint              |   ✅   |                无                |
+|             Link              |   ✅   |                无                |
 |         Radio 单选框          |   ❌   |                无                |
 |        Checkbox 多选框        |   ❌   |                无                |
 |         Input 输入框          |   ❌   |                无                |

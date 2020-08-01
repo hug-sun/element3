@@ -1,5 +1,5 @@
 // reference https://github.com/noeldelgado/gemini-scrollbar/blob/master/index.js
-import { h,nextTick } from 'vue'
+import { h, nextTick } from 'vue'
 import { addResizeListener, removeResizeListener } from 'element-ui/src/utils/resize-event'
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width'
 import { toObject } from 'element-ui/src/utils/util'

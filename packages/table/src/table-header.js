@@ -1,4 +1,5 @@
-import {h} from 'vue'
+// import {h} from 'vue'
+import * as Vue from 'vue'
 import { hasClass, addClass, removeClass } from 'element-ui/src/utils/dom'
 import ElCheckbox from 'element-ui/packages/checkbox'
 import FilterPanel from './filter-panel.vue'

@@ -4,7 +4,7 @@ import Format from './format'
 
 const format = Format()
 let lang = defaultLang
-let merged = false
+// let merged = false
 let i18nHandler = function() {
   // #todo
   // const vuei18n = Object.getPrototypeOf(this || Vue).$t
