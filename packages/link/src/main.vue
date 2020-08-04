@@ -22,33 +22,33 @@
 
 <script>
 export default {
-  name: "ElLink",
+  name: 'ElLink',
 
   props: {
     type: {
       type: String,
-      default: "default",
+      default: 'default'
     },
     underline: {
       type: Boolean,
-      default: true,
+      default: true
     },
     disabled: Boolean,
     href: String,
-    icon: String,
+    icon: String
   },
 
   setup(props, { emit }) {
     const handleClick = (evt) => {
-      if (props.disabled) return;
-      if (props.href) return;
+      if (props.disabled) return
+      if (props.href) return
 
-      emit("click", evt);
-    };
+      emit('click', evt)
+    }
 
     return {
-      handleClick,
-    };
-  },
-};
+      handleClick
+    }
+  }
+}
 </script>
