@@ -3,6 +3,27 @@ import { mount } from '@vue/test-utils'
 import '@testing-library/jest-dom'
 describe('Badge', () => {
   describe('props', () => {
+    it('value', () => {
+      const wrapper = mount(Badge, {
+        props: {
+          value: 13
+        }
+      })
+
+      expect(wrapper.find('.el-badge__content').text()).toContain('13')
+    })
+
+    it('max', () => {
+      const wrapper = mount(Badge, {
+        props: {
+          value: 99,
+          max: 13
+        }
+      })
+
+      expect(wrapper.find('.el-badge__content').text()).toContain('13')
+    })
+
     it('isDot', () => {
       const wrapper = mount(Badge, {
         props: {
@@ -27,6 +48,7 @@ describe('Badge', () => {
     it('type', ()=>{
       const wrapper = mount(Badge, {
         props: {
+          value: 12,
           type: 'success'
         }
       })

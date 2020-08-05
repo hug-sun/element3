@@ -40,19 +40,27 @@ export default {
   setup(props){
     const { isDot,max,value } = toRefs(props)
 
-    const content = computed(() => {
-      if (isDot) return
+    console.log(isDot,max,value)
 
-      if (typeof value === 'number' && typeof max === 'number') {
-        return max < value ? `${max}+` : value
-      }
-
-      return value
-    })
+    const content = useContent(isDot,max,value)
 
     return {
       content
     }
   }
+}
+
+const useContent = (isDot,max,value) => {
+  const content = computed(() => {
+      if (isDot.value) return
+
+      if (max && typeof value.value === 'number' && typeof max.value === 'number') {
+        return max.value < value.value ? `${max.value}+` : value.value
+      }
+
+      return value.value
+    })
+
+    return content
 }
 </script>
