@@ -64,12 +64,7 @@
       const {
         title,
         description,
-        type,
-        closable,
-        closeText,
-        showIcon,
-        center,
-        effect
+        type
       } = toRefs(props)
 
       const visible = ref(true)
@@ -98,11 +93,6 @@
         title,
         description,
         type,
-        closable,
-        closeText,
-        showIcon,
-        center,
-        effect,
         visible,
         typeClass,
         iconClass,
