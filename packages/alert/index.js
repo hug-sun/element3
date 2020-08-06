@@ -1,8 +1,8 @@
-import Alert from './src/main'
+import ElAlert from './src/main'
 
 /* istanbul ignore next */
-Alert.install = function(app) {
-  app.component(Alert.name, Alert)
+ElAlert.install = function(app) {
+  app.component(ElAlert.name, ElAlert)
 }
 
-export default Alert
+export default ElAlert
