@@ -37,7 +37,7 @@ function genInlineComponentText(template, script) {
   // };
 
   // const compiled = compiler.compile(template, { mode: "module"})
-  const compiled = compiler.compile(template, { prefixIdentifiers: true})
+  const compiled = compiler.compile(template, { prefixIdentifiers: true })
   // const compiled = compileTemplate(finalOptions);
 
   // errors
@@ -48,9 +48,15 @@ function genInlineComponentText(template, script) {
   //       '\n'
   //   );
   // }
+
+  const code = compiled.code.replace(/return\s+?function\s+?render/, () => {
+    return 'function render '
+  })
+
   let demoComponentContent = `
-    ${compiled.code}
+    ${code}
   `
+
   // todo: 这里采用了硬编码有待改进
   script = script.trim()
   if (script) {
