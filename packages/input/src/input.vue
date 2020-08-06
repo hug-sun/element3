@@ -29,7 +29,7 @@
         :type="showPassword ? (passwordVisible ? 'text': 'password') : type"
         :disabled="inputDisabled"
         :readonly="readonly"
-        :autocomplete="autoComplete || autocomplete"
+        :autocomplete="autocomplete"
         ref="input"
         @compositionstart="handleCompositionStart"
         @compositionupdate="handleCompositionUpdate"
@@ -90,7 +90,7 @@
       v-bind="$attrs"
       :disabled="inputDisabled"
       :readonly="readonly"
-      :autocomplete="autoComplete || autocomplete"
+      :autocomplete="autocomplete"
       :style="textareaStyle"
       @focus="handleFocus"
       @blur="handleBlur"
@@ -110,6 +110,8 @@ import Migrating from "element-ui/src/mixins/migrating";
 import calcTextareaHeight from "./calcTextareaHeight";
 import merge from "element-ui/src/utils/merge";
 import { isKorean } from "element-ui/src/utils/shared";
+
+import { useInputSize, useValidate, useInputDisabled } from "./use";
 
 export default {
   name: "ElInput",
@@ -138,9 +140,16 @@ export default {
       isComposing: false,
       passwordVisible: false,
     });
-
+    const { size, disabled } = props;
+    const inputSize = useInputSize(size);
+    const { validateState, validateIcon } = useValidate();
+    const inputDisabled = useInputDisabled(disabled);
     return {
       ...toRefs(state),
+      inputSize,
+      validateState,
+      validateIcon,
+      inputDisabled,
     };
   },
 
@@ -162,17 +171,6 @@ export default {
     autocomplete: {
       type: String,
       default: "off",
-    },
-    /** @Deprecated in next major version */
-    autoComplete: {
-      type: String,
-      validator(val) {
-        process.env.NODE_ENV !== "production" &&
-          console.warn(
-            "[Element Warn][Input]'auto-complete' property will be deprecated in next major version. please use 'autocomplete' instead."
-          );
-        return true;
-      },
     },
     validateEvent: {
       type: Boolean,
@@ -197,31 +195,14 @@ export default {
   },
 
   computed: {
-    _elFormItemSize() {
-      return (this.elFormItem || {}).elFormItemSize;
-    },
-    validateState() {
-      return this.elFormItem ? this.elFormItem.validateState : "";
-    },
     needStatusIcon() {
       return this.elForm ? this.elForm.statusIcon : false;
     },
-    validateIcon() {
-      return {
-        validating: "el-icon-loading",
-        success: "el-icon-circle-check",
-        error: "el-icon-circle-close",
-      }[this.validateState];
-    },
+
     textareaStyle() {
       return merge({}, this.textareaCalcStyle, { resize: this.resize });
     },
-    inputSize() {
-      return this.size || this._elFormItemSize || (this.$ELEMENT || {}).size;
-    },
-    inputDisabled() {
-      return this.disabled || (this.elForm || {}).disabled;
-    },
+
     nativeInputValue() {
       return this.modelValue === null || this.modelValue === undefined
         ? ""
