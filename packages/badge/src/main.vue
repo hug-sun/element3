@@ -40,8 +40,6 @@ export default {
   setup(props){
     const { isDot,max,value } = toRefs(props)
 
-    console.log(isDot,max,value)
-
     const content = useContent(isDot,max,value)
 
     return {

@@ -39,7 +39,7 @@
 - [ ] Progress
 - [ ] Tree
 - [ ] Pagination
-- [ ] Badge
+- [x] Badge
 - [ ] Avatar
 
 ### Notice
