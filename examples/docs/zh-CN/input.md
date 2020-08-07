@@ -124,13 +124,16 @@ export default {
   <el-input
     placeholder="请选择日期"
     v-model="input3">
-    <i slot="suffix" class="el-input__icon el-icon-date"></i>
+    <template #suffix>
+      <i class="el-input__icon el-icon-date"></i>
+    </template>
   </el-input>
-  <i  class="el-input__icon el-icon-search"></i>
   <el-input
     placeholder="请输入内容"
     v-model="input4">
-    <i slot="prefix" class="el-input__icon el-icon-search"></i>
+    <template v-slot:prefix>
+      <i class="el-input__icon el-icon-search"></i>
+    </template>
   </el-input>
 </div>
 
@@ -218,12 +221,12 @@ export default {
 ```html
 <div>
   <el-input placeholder="请输入内容" v-model="input1">
-    <template slot="prepend">Http://</template>
+    <template #prepend>Http://</template>
   </el-input>
 </div>
 <div style="margin-top: 15px;">
   <el-input placeholder="请输入内容" v-model="input2">
-    <template slot="append">.com</template>
+    <template #append>.com</template>
   </el-input>
 </div>
 <div style="margin-top: 15px;">
@@ -233,7 +236,9 @@ export default {
       <el-option label="订单号" value="2"></el-option>
       <el-option label="用户电话" value="3"></el-option>
     </el-select>
-    <el-button slot="append" icon="el-icon-search"></el-button>
+    <template #append >
+      <el-button icon="el-icon-search"></el-button>
+    </template>
   </el-input>
 </div>
 <style>

@@ -106,11 +106,23 @@
 <script>
 // todo:
 // 1. mixins 改成 use
+// 2. elForm  elFormItem 注入 功能待测
 
-import { reactive, toRefs, inject, ref, getCurrentInstance, toRef } from "vue";
+import {
+  reactive,
+  toRefs,
+  inject,
+  ref,
+  getCurrentInstance,
+  toRef,
+  onMounted,
+  onUpdated,
+  nextTick,
+  watch,
+  unref,
+} from "vue";
 import emitter from "element-ui/src/mixins/emitter";
 import Migrating from "element-ui/src/mixins/migrating";
-
 import {
   useValidate,
   useTextarea,
@@ -136,10 +148,10 @@ export default {
       default: "",
     },
   },
+
   emits: ["input", "change", "blur", "clear", "focus", "update:modelValue"],
 
   setup(props, { attrs, emit, slots }) {
-    console.log(JSON.stringify(slots));
     const state = reactive({
       textareaCalcStyle: {},
       hovering: false,
@@ -159,14 +171,14 @@ export default {
       showPassword,
       validateEvent,
       clearable,
+      suffixIcon,
     } = toRefs(props);
-
+    const instance = getCurrentInstance();
+    const { needStatusIcon } = useStatusIcon();
     const { validateState, validateIcon } = useValidate();
     const { textarea, textareaStyle, resizeTextarea } = useTextarea(
-      autosize,
-      type,
-      resize,
-      state.textareaCalcStyle
+      toRefs(props),
+      toRef(state, "textareaCalcStyle")
     );
     const {
       input,
@@ -179,19 +191,17 @@ export default {
       inputExceed,
       showClear,
       showPwdVisible,
+      getSuffixVisible,
     } = useInput(
-      size,
-      type,
-      disabled,
-      modelValue,
-      readonly,
-      clearable,
-      showPassword,
-      showWordLimit,
+      toRefs(props),
       toRefs(state),
       textarea,
-      attrs
+      attrs,
+      validateState,
+      needStatusIcon,
+      slots
     );
+
     const {
       focus,
       blur,
@@ -208,16 +218,38 @@ export default {
       handlePasswordVisible,
       updateIconOffset,
     } = useInteractive(
-      getCurrentInstance(),
+      instance,
       input,
-      nativeInputValue,
-      modelValue,
+      toRefs(props),
       toRefs(state),
-      validateEvent,
+      nativeInputValue,
       emit,
       slots
     );
-    const { needStatusIcon } = useStatusIcon();
+
+    // when change between <input> and <textarea>,
+    // update DOM dependent value and styles
+    // https://github.com/ElemeFE/element/issues/14857
+    watch(
+      () => type,
+      () => {
+        nextTick(() => {
+          setNativeInputValue();
+          resizeTextarea();
+          updateIconOffset();
+        });
+      }
+    );
+
+    onMounted(() => {
+      setNativeInputValue();
+      resizeTextarea();
+      updateIconOffset();
+    });
+
+    onUpdated(() => {
+      nextTick(updateIconOffset);
+    });
 
     return {
       ...toRefs(state),
@@ -232,6 +264,7 @@ export default {
       textLength,
       textarea,
       textareaStyle,
+      getSuffixVisible,
       resizeTextarea,
       input,
       showClear,
@@ -294,31 +327,6 @@ export default {
     },
     tabindex: String,
   },
-  watch: {
-    modelValue(val) {
-      this.$nextTick(this.resizeTextarea);
-      if (this.validateEvent) {
-        this.dispatch("ElFormItem", "el.form.change", [val]);
-      }
-    },
-    // native input value is set explicitly
-    // do not use v-model / :value in template
-    // see: https://github.com/ElemeFE/element/issues/14521
-    nativeInputValue() {
-      this.setNativeInputValue();
-    },
-    // when change between <input> and <textarea>,
-    // update DOM dependent value and styles
-    // https://github.com/ElemeFE/element/issues/14857
-    type() {
-      this.$nextTick(() => {
-        this.setNativeInputValue();
-        this.resizeTextarea();
-        this.updateIconOffset();
-      });
-    },
-  },
-
   methods: {
     getMigratingConfig() {
       return {
@@ -331,27 +339,6 @@ export default {
         },
       };
     },
-
-    getSuffixVisible() {
-      return (
-        this.$slots.suffix ||
-        this.suffixIcon ||
-        this.showClear ||
-        this.showPassword ||
-        this.isWordLimitVisible ||
-        (this.validateState && this.needStatusIcon)
-      );
-    },
-  },
-
-  mounted() {
-    this.setNativeInputValue();
-    this.resizeTextarea();
-    this.updateIconOffset();
-  },
-
-  updated() {
-    this.$nextTick(this.updateIconOffset);
   },
 };
 </script>
