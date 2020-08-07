@@ -126,6 +126,7 @@ export default {
     v-model="input3">
     <i slot="suffix" class="el-input__icon el-icon-date"></i>
   </el-input>
+  <i  class="el-input__icon el-icon-search"></i>
   <el-input
     placeholder="请输入内容"
     v-model="input4">

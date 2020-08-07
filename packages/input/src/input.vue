@@ -104,14 +104,20 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs, inject } from "vue";
+// todo:
+// 1. mixins 改成 use
+
+import { reactive, toRefs, inject, ref, getCurrentInstance, toRef } from "vue";
 import emitter from "element-ui/src/mixins/emitter";
 import Migrating from "element-ui/src/mixins/migrating";
-import calcTextareaHeight from "./calcTextareaHeight";
-import merge from "element-ui/src/utils/merge";
-import { isKorean } from "element-ui/src/utils/shared";
 
-import { useInputSize, useValidate, useInputDisabled } from "./use";
+import {
+  useValidate,
+  useTextarea,
+  useInput,
+  useInteractive,
+  useStatusIcon,
+} from "./use";
 
 export default {
   name: "ElInput",
@@ -132,7 +138,8 @@ export default {
   },
   emits: ["input", "change", "blur", "clear", "focus", "update:modelValue"],
 
-  setup(props) {
+  setup(props, { attrs, emit, slots }) {
+    console.log(JSON.stringify(slots));
     const state = reactive({
       textareaCalcStyle: {},
       hovering: false,
@@ -140,16 +147,110 @@ export default {
       isComposing: false,
       passwordVisible: false,
     });
-    const { size, disabled } = props;
-    const inputSize = useInputSize(size);
+    const {
+      size,
+      disabled,
+      resize,
+      autosize,
+      type,
+      modelValue,
+      showWordLimit,
+      readonly,
+      showPassword,
+      validateEvent,
+      clearable,
+    } = toRefs(props);
+
     const { validateState, validateIcon } = useValidate();
-    const inputDisabled = useInputDisabled(disabled);
+    const { textarea, textareaStyle, resizeTextarea } = useTextarea(
+      autosize,
+      type,
+      resize,
+      state.textareaCalcStyle
+    );
+    const {
+      input,
+      inputSize,
+      inputDisabled,
+      nativeInputValue,
+      textLength,
+      upperLimit,
+      isWordLimitVisible,
+      inputExceed,
+      showClear,
+      showPwdVisible,
+    } = useInput(
+      size,
+      type,
+      disabled,
+      modelValue,
+      readonly,
+      clearable,
+      showPassword,
+      showWordLimit,
+      toRefs(state),
+      textarea,
+      attrs
+    );
+    const {
+      focus,
+      blur,
+      select,
+      setNativeInputValue,
+      handleBlur,
+      handleFocus,
+      handleInput,
+      handleChange,
+      handleCompositionStart,
+      handleCompositionUpdate,
+      handleCompositionEnd,
+      clear,
+      handlePasswordVisible,
+      updateIconOffset,
+    } = useInteractive(
+      getCurrentInstance(),
+      input,
+      nativeInputValue,
+      modelValue,
+      toRefs(state),
+      validateEvent,
+      emit,
+      slots
+    );
+    const { needStatusIcon } = useStatusIcon();
+
     return {
       ...toRefs(state),
       inputSize,
       validateState,
       validateIcon,
       inputDisabled,
+      nativeInputValue,
+      upperLimit,
+      isWordLimitVisible,
+      inputExceed,
+      textLength,
+      textarea,
+      textareaStyle,
+      resizeTextarea,
+      input,
+      showClear,
+      showPwdVisible,
+      focus,
+      blur,
+      select,
+      setNativeInputValue,
+      handleBlur,
+      handleFocus,
+      handleInput,
+      handleChange,
+      handleCompositionStart,
+      handleCompositionUpdate,
+      handleCompositionEnd,
+      clear,
+      handlePasswordVisible,
+      updateIconOffset,
+      needStatusIcon,
     };
   },
 
@@ -193,64 +294,6 @@ export default {
     },
     tabindex: String,
   },
-
-  computed: {
-    needStatusIcon() {
-      return this.elForm ? this.elForm.statusIcon : false;
-    },
-
-    textareaStyle() {
-      return merge({}, this.textareaCalcStyle, { resize: this.resize });
-    },
-
-    nativeInputValue() {
-      return this.modelValue === null || this.modelValue === undefined
-        ? ""
-        : String(this.modelValue);
-    },
-    showClear() {
-      return (
-        this.clearable &&
-        !this.inputDisabled &&
-        !this.readonly &&
-        this.nativeInputValue &&
-        (this.focused || this.hovering)
-      );
-    },
-    showPwdVisible() {
-      return (
-        this.showPassword &&
-        !this.inputDisabled &&
-        !this.readonly &&
-        (!!this.nativeInputValue || this.focused)
-      );
-    },
-    isWordLimitVisible() {
-      return (
-        this.showWordLimit &&
-        this.$attrs.maxlength &&
-        (this.type === "text" || this.type === "textarea") &&
-        !this.inputDisabled &&
-        !this.readonly &&
-        !this.showPassword
-      );
-    },
-    upperLimit() {
-      return this.$attrs.maxlength;
-    },
-    textLength() {
-      if (typeof this.modelValue === "number") {
-        return String(this.modelValue).length;
-      }
-
-      return (this.modelValue || "").length;
-    },
-    inputExceed() {
-      // show exceed style if length of initial value greater then maxlength
-      return this.isWordLimitVisible && this.textLength > this.upperLimit;
-    },
-  },
-
   watch: {
     modelValue(val) {
       this.$nextTick(this.resizeTextarea);
@@ -277,12 +320,6 @@ export default {
   },
 
   methods: {
-    focus() {
-      this.getInput().focus();
-    },
-    blur() {
-      this.getInput().blur();
-    },
     getMigratingConfig() {
       return {
         props: {
@@ -294,122 +331,7 @@ export default {
         },
       };
     },
-    handleBlur(event) {
-      this.focused = false;
-      this.$emit("blur", event);
-      if (this.validateEvent) {
-        this.dispatch("ElFormItem", "el.form.blur", [this.modelValue]);
-      }
-    },
-    select() {
-      this.getInput().select();
-    },
-    resizeTextarea() {
-      if (this.$isServer) return;
-      const { autosize, type } = this;
-      if (type !== "textarea") return;
-      if (!autosize) {
-        this.textareaCalcStyle = {
-          minHeight: calcTextareaHeight(this.$refs.textarea).minHeight,
-        };
-        return;
-      }
-      const minRows = autosize.minRows;
-      const maxRows = autosize.maxRows;
 
-      this.textareaCalcStyle = calcTextareaHeight(
-        this.$refs.textarea,
-        minRows,
-        maxRows
-      );
-    },
-    setNativeInputValue() {
-      const input = this.getInput();
-      if (!input) return;
-      if (input.value === this.nativeInputValue) return;
-      input.value = this.nativeInputValue;
-    },
-    handleFocus(event) {
-      this.focused = true;
-      this.$emit("focus", event);
-    },
-    handleCompositionStart() {
-      this.isComposing = true;
-    },
-    handleCompositionUpdate(event) {
-      const text = event.target.value;
-      const lastCharacter = text[text.length - 1] || "";
-      this.isComposing = !isKorean(lastCharacter);
-    },
-    handleCompositionEnd(event) {
-      if (this.isComposing) {
-        this.isComposing = false;
-        this.handleInput(event);
-      }
-    },
-    handleInput(event) {
-      // should not emit input during composition
-      // see: https://github.com/ElemeFE/element/issues/10516
-      if (this.isComposing) return;
-
-      // hack for https://github.com/ElemeFE/element/issues/8548
-      // should remove the following line when we don't support IE
-      if (event.target.value === this.nativeInputValue) return;
-      this.$emit("update:modelValue", event.target.value);
-      this.$emit("input", event.target.value);
-
-      // ensure native input value is controlled
-      // see: https://github.com/ElemeFE/element/issues/12850
-      this.$nextTick(this.setNativeInputValue);
-    },
-    handleChange(event) {
-      this.$emit("update:modelValue", event.target.value);
-      this.$emit("change", event.target.value);
-    },
-    calcIconOffset(place) {
-      let elList = [].slice.call(
-        this.$el.querySelectorAll(`.el-input__${place}`) || []
-      );
-      if (!elList.length) return;
-      let el = null;
-      for (let i = 0; i < elList.length; i++) {
-        if (elList[i].parentNode === this.$el) {
-          el = elList[i];
-          break;
-        }
-      }
-      if (!el) return;
-      const pendantMap = {
-        suffix: "append",
-        prefix: "prepend",
-      };
-
-      const pendant = pendantMap[place];
-      if (this.$slots[pendant]) {
-        el.style.transform = `translateX(${place === "suffix" ? "-" : ""}${
-          this.$el.querySelector(`.el-input-group__${pendant}`).offsetWidth
-        }px)`;
-      } else {
-        el.removeAttribute("style");
-      }
-    },
-    updateIconOffset() {
-      this.calcIconOffset("prefix");
-      this.calcIconOffset("suffix");
-    },
-    clear() {
-      this.$emit("update:modelValue", "");
-      this.$emit("input", "");
-      this.$emit("change", "");
-      this.$emit("clear");
-    },
-    handlePasswordVisible() {
-      this.passwordVisible = !this.passwordVisible;
-      this.focus();
-    },
-    getInput() {
-      return this.$refs.input || this.$refs.textarea;
-    },
     getSuffixVisible() {
       return (
         this.$slots.suffix ||
