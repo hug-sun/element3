@@ -195,6 +195,7 @@ export default {
     } = useInput(
       toRefs(props),
       toRefs(state),
+      instance,
       textarea,
       attrs,
       validateState,
@@ -220,6 +221,7 @@ export default {
     } = useInteractive(
       instance,
       input,
+      textarea,
       toRefs(props),
       toRefs(state),
       nativeInputValue,
@@ -231,13 +233,25 @@ export default {
     // update DOM dependent value and styles
     // https://github.com/ElemeFE/element/issues/14857
     watch(
-      () => type,
+      () => unref(type),
       () => {
         nextTick(() => {
           setNativeInputValue();
           resizeTextarea();
           updateIconOffset();
         });
+      }
+    );
+    watch(
+      () => unref(modelValue),
+      (val) => {
+        nextTick(() => {
+          setNativeInputValue();
+          resizeTextarea();
+        });
+        if (unref(validateEvent)) {
+          instance.proxy.dispatch("ElFormItem", "el.form.change", [val]);
+        }
       }
     );
 

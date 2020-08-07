@@ -1,5 +1,5 @@
 
-import { computed, getCurrentInstance, inject, ref, unref, nextTick, watch } from 'vue'
+import { computed, inject, ref, unref, nextTick, watch } from 'vue'
 import merge from 'element-ui/src/utils/merge'
 import { isKorean } from 'element-ui/src/utils/shared'
 
@@ -21,7 +21,7 @@ export const useValidate = () => {
   return { validateState, validateIcon }
 }
 
-export const useTextarea = ({ autosize, type, resize, modelValue, validateEvent }, textareaCalcStyle, instance) => {
+export const useTextarea = ({ autosize, type, resize }, textareaCalcStyle, instance) => {
   const textarea = ref(null)
 
   const textareaStyle = computed(() => {
@@ -39,7 +39,6 @@ export const useTextarea = ({ autosize, type, resize, modelValue, validateEvent 
     }
     const minRows = autosize.value.minRows
     const maxRows = autosize.value.maxRows
-
     textareaCalcStyle.value = calcTextareaHeight(
       unref(textarea),
       minRows,
@@ -47,20 +46,10 @@ export const useTextarea = ({ autosize, type, resize, modelValue, validateEvent 
     )
   }
 
-  watch(
-    () => modelValue,
-    (val) => {
-      nextTick(resizeTextarea)
-      if (unref(validateEvent)) {
-        instance.proxy.dispatch('ElFormItem', 'el.form.change', [val])
-      }
-    }
-  )
-
   return { textarea, textareaStyle, resizeTextarea }
 }
 
-export const useInput = ({ size, type, disabled, modelValue, suffixIcon, readonly, clearable, showPassword, showWordLimit }, { hovering, focused }, textarea, attrs, validateState, needStatusIcon, slots) => {
+export const useInput = ({ size, type, disabled, modelValue, suffixIcon, readonly, clearable, showPassword, showWordLimit }, { hovering, focused }, instance, textarea, attrs, validateState, needStatusIcon, slots) => {
   const input = ref(null)
 
   const elFormItem = inject('elFormItem', {})
@@ -70,7 +59,7 @@ export const useInput = ({ size, type, disabled, modelValue, suffixIcon, readonl
     return unref(elFormItem.elFormItemSize)
   })
   const inputSize = computed(() => {
-    return unref(size) || unref(_elFormItemSize) || (getCurrentInstance().proxy.$ELEMENT || {}).size
+    return unref(size) || unref(_elFormItemSize) || (instance.proxy.$ELEMENT || {}).size
   })
 
   const inputDisabled = computed(() => {
@@ -92,50 +81,50 @@ export const useInput = ({ size, type, disabled, modelValue, suffixIcon, readonl
   })
 
   const upperLimit = computed(() => {
-    return attrs.maxlength
+    return Number(attrs.maxlength)
   })
 
   const isWordLimitVisible = computed(() => {
     return (
       unref(showWordLimit) &&
-            attrs.maxlength &&
-            (unref(type) === 'text' || unref(type) === 'textarea') &&
-            !unref(inputDisabled) &&
-            !unref(readonly) &&
-            !unref(showPassword)
+      attrs.maxlength &&
+      (unref(type) === 'text' || unref(type) === 'textarea') &&
+      !unref(inputDisabled) &&
+      !unref(readonly) &&
+      !unref(showPassword)
     )
   })
 
   const inputExceed = computed(() => {
     // show exceed style if length of initial value greater then maxlength
-    return unref(isWordLimitVisible) && unref(textLength) > unref(upperLimit)
+    return unref(isWordLimitVisible) && unref(textLength) >= unref(upperLimit)
   })
 
   const showClear = computed(() => {
     return (
       unref(clearable) &&
-            !unref(inputDisabled) &&
-            !unref(readonly) &&
-            unref(nativeInputValue) &&
-            (unref(focused) || unref(hovering))
+      !unref(inputDisabled) &&
+      !unref(readonly) &&
+      unref(nativeInputValue) &&
+      (unref(focused) || unref(hovering))
     )
   })
   const showPwdVisible = computed(() => {
     return (
       unref(showPassword) &&
-            !unref(inputDisabled) &&
-            !unref(readonly) &&
-            (!!unref(nativeInputValue) || unref(focused))
+      !unref(inputDisabled) &&
+      !unref(readonly) &&
+      (!!unref(nativeInputValue) || unref(focused))
     )
   })
   const getSuffixVisible = () => {
     return (
       slots.suffix ||
-            unref(suffixIcon) ||
-            unref(showClear) ||
-            unref(showPassword) ||
-            unref(isWordLimitVisible) ||
-            (unref(validateState) && unref(needStatusIcon))
+      unref(suffixIcon) ||
+      unref(showClear) ||
+      unref(showPassword) ||
+      unref(isWordLimitVisible) ||
+      (unref(validateState) && unref(needStatusIcon))
     )
   }
 
@@ -154,24 +143,29 @@ export const useInput = ({ size, type, disabled, modelValue, suffixIcon, readonl
   }
 }
 
-export const useInteractive = (instance, input, { type, modelValue, validateEvent }, { focused, isComposing, passwordVisible }, nativeInputValue, emit, slots) => {
+export const useInteractive = (instance, input, textarea, { type, modelValue, validateEvent }, { focused, isComposing, passwordVisible }, nativeInputValue, emit, slots) => {
+
+  const getInput = () => {
+    return unref(input) || unref(textarea)
+  }
 
   const focus = () => {
-    unref(input).focus()
+    getInput().focus()
   }
 
   const blur = () => {
-    unref(input).blur()
+    getInput().blur()
   }
 
   const select = () => {
-    unref(input).select()
+    getInput().select()
   }
 
   const setNativeInputValue = () => {
-    if (!unref(input)) return
-    if (input.value.value === unref(nativeInputValue)) return
-    input.value.value = unref(nativeInputValue)
+    const input = getInput()
+    if (!input) return
+    if (input.value === unref(nativeInputValue)) return
+    input.value = unref(nativeInputValue)
   }
 
   const handleBlur = (event) => {
@@ -272,7 +266,7 @@ export const useInteractive = (instance, input, { type, modelValue, validateEven
   }
 
   watch(
-    () => nativeInputValue,
+    () => unref(nativeInputValue),
     () => {
       setNativeInputValue()
     }
@@ -283,6 +277,7 @@ export const useInteractive = (instance, input, { type, modelValue, validateEven
     blur,
     select,
     setNativeInputValue,
+    getInput,
     handleBlur,
     handleFocus,
     handleInput,
