@@ -73,7 +73,7 @@ ComponentNames.forEach(name => {
     'col', 'row',
     'container', 'header', 'footer', 'main', 'aside',
     'radio-group', 'radio-button', 'radio',
-    'switch'
+    'switch', 'alert', 'carousel'
 
   ].indexOf(name) > -1) { // 白名单 挨个替换
     var componentName = uppercamelcase(name)
