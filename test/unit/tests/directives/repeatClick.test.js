@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import repeatClick from '../../../../src/directives/new-repeat-click'
+import repeatClick from '../../../../src/directives/repeatClick'
 describe('directives: repeat-click', () => {
   test('should called repeat click callback when emitted mousedown event ', (done) => {
     const handleRepeatClick = jest.fn()
