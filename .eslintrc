@@ -1,5 +1,6 @@
 {
   "globals": {
+    "jest":true,
     "ga": true,
     "chrome": true
   },
