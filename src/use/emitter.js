@@ -20,10 +20,11 @@ export function useBroadcast(componentName, eventName, params) {
     const children = componentInstance.subTree.children
     if (children) {
       children.forEach((vnode) => {
-        if (vnode.component.type.name === componentName) {
-          vnode.component.emit(eventName, ...params)
+        const childComponent = vnode.component
+        if (childComponent.type.name === componentName) {
+          childComponent.emit(eventName, ...params)
         } else {
-          broadcast(vnode.component)
+          broadcast(childComponent)
         }
       })
     }
