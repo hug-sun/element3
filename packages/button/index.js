@@ -1,4 +1,4 @@
-import ElButton from './src/button'
+import ElButton from './Button'
 
 /* istanbul ignore next */
 ElButton.install = function(app) {

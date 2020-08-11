@@ -72,6 +72,7 @@ function genInlineComponentText(template, script) {
       ...democomponentExport
     }
   })()`
+  // console.log(demoComponentContent)
   return demoComponentContent
 }
 
