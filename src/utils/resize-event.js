@@ -1,3 +1,4 @@
+import { onMounted, getCurrentInstance } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
 
 const isServer = typeof window === 'undefined'
@@ -11,6 +12,36 @@ const resizeHandler = function(entries) {
         fn()
       })
     }
+  }
+}
+
+export const useResizeEvent = () => {
+  let element = null
+
+  const addResizeListener = (fn) => {
+    element.__resizeListeners__.push(fn)
+  }
+
+  const removeResizeListener = (fn) => {
+    if (!element || !element.__resizeListeners__) return
+    element.__resizeListeners__.splice(element.__resizeListeners__.indexOf(fn), 1)
+    if (!element.__resizeListeners__.length) {
+      element.__ro__.disconnect()
+    }
+  }
+  onMounted(() => {
+    element = getCurrentInstance().vnode.el
+    if (isServer) return
+    if (!element.__resizeListeners__) {
+      element.__resizeListeners__ = []
+      element.__ro__ = new ResizeObserver(resizeHandler)
+      element.__ro__.observe(element)
+    }
+  })
+
+  return {
+    addResizeListener,
+    removeResizeListener
   }
 }
 
