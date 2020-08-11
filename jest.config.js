@@ -6,4 +6,7 @@ module.exports = {
   },
   moduleFileExtensions: ["vue", "js", "json", "jsx", "ts", "tsx", "node"],
   testMatch: ["**/tests/?(*.)+(test).[jt]s?(x)"],
+  moduleNameMapper: {
+    "^element-ui(.*)$": "<rootDir>/$1"
+  }
 };
