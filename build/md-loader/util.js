@@ -49,7 +49,7 @@ function genInlineComponentText(template, script) {
   //   );
   // }
   let demoComponentContent = `
-    ${compiled.code}
+    ${compiled.code.replace('return function render', 'function render')}
   `
   // todo: 这里采用了硬编码有待改进
   script = script.trim()
@@ -66,6 +66,7 @@ function genInlineComponentText(template, script) {
       ...democomponentExport
     }
   })()`
+  // console.log(demoComponentContent)
   return demoComponentContent
 }
 
