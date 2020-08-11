@@ -75,7 +75,7 @@ ComponentNames.forEach(name => {
     'radio-group', 'radio-button', 'radio',
     'switch',
     'badge',
-    'avatar'
+    'avatar',
     'tag', 'input',
     'alert',
     'carousel'
