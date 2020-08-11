@@ -52,11 +52,11 @@ export default {
       <span
         class={classes}
         style={{ backgroundColor: color }}
-        on-click={handleClick}
+        onClick={handleClick}
       >
         {slots.default && slots.default()}
         {closable && (
-          <i class="el-tag__close el-icon-close" on-click={handleClose}></i>
+          <i class="el-tag__close el-icon-close" onClick={handleClose}></i>
         )}
       </span>
     );

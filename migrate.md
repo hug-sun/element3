@@ -55,7 +55,7 @@
 |        Pagination 分页        |   ❌   |                                  |
 |          Badge 标记           |   ❌   |                                  |
 |          Avatar 头像          |   ❌   |                                  |
-|          Alert 警告           |   ❌   |                                  |
+|          Alert 警告           |   ✅   |                                  |
 |         Loading 加载          |   ❌   |                                  |
 |       Message 消息提示        |   ❌   |                                  |
 |        MessageBox 弹框        |   ❌   |                                  |
@@ -71,7 +71,7 @@
 |        Popover 弹出框         |   ❌   |                                  |
 |     Popconfirm 气泡确认框     |   ❌   |                                  |
 |           Card 卡片           |   ❌   |                                  |
-|        Carousel 走马灯        |   ❌   |                                  |
+|        Carousel 走马灯        |   ✅   |                                  |
 |       Collapse 折叠面板       |   ❌   |                                  |
 |        Timeline 时间线        |   ❌   |                                  |
 |        Divider 分割线         |   ❌   |                                  |

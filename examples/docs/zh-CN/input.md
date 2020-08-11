@@ -414,6 +414,7 @@ export default {
 :::demo 使用`scoped slot`自定义输入建议的模板。该 scope 的参数为`item`，表示当前输入建议对象。
 ```html
 <el-autocomplete
+  v-if="false"
   popper-class="my-autocomplete"
   v-model="state"
   :fetch-suggestions="querySearch"

@@ -1,8 +1,8 @@
-import Carousel from './src/main'
+import ElCarousel from './src/main'
 
 /* istanbul ignore next */
-Carousel.install = function(app) {
-  app.component(Carousel.name, Carousel)
+ElCarousel.install = function(app) {
+  app.component(ElCarousel.name, ElCarousel)
 }
 
-export default Carousel
+export default ElCarousel
