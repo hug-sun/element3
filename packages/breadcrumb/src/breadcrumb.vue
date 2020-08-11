@@ -4,31 +4,33 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'ElBreadcrumb',
-
-    props: {
-      separator: {
-        type: String,
-        default: '/'
-      },
-      separatorClass: {
-        type: String,
-        default: ''
-      }
+import { toRefs, provide, onMounted, getCurrentInstance, reactive } from "vue";
+export default {
+  name: "ElBreadcrumb",
+  provide() {
+    return {
+      elBreadcrumb: this,
+    };
+  },
+  props: {
+    separator: {
+      type: String,
+      default: "/",
     },
-
-    provide() {
-      return {
-        elBreadcrumb: this
-      };
+    separatorClass: {
+      type: String,
+      default: "",
     },
-
-    mounted() {
-      const items = this.$el.querySelectorAll('.el-breadcrumb__item');
+  },
+  setup() {
+    onMounted(() => {
+      const items = getCurrentInstance().proxy.$el.querySelectorAll(
+        ".el-breadcrumb__item"
+      );
       if (items.length) {
-        items[items.length - 1].setAttribute('aria-current', 'page');
+        items[items.length - 1].setAttribute("aria-current", "page");
       }
-    }
-  };
+    });
+  },
+};
 </script>
