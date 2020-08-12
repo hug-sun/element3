@@ -1,4 +1,20 @@
+<template>
+  <span :class="avatarClass" :style="sizeStyle">
+    <img
+      v-if="isImageExist && src"
+      :src="src"
+      @error="handleError"
+      :alt="alt"
+      :srcSet="srcSet"
+      :style="{'object-fit': fit}"
+    />
+    <i v-else-if="icon" :class="icon" />
+    <slot v-else></slot>
+  </span>
+</template>
+
 <script>
+import { computed, toRefs, ref } from 'vue'
 export default {
   name: 'ElAvatar',
 
@@ -7,16 +23,16 @@ export default {
       type: [Number, String],
       validator(val) {
         if (typeof val === 'string') {
-          return ['large', 'medium', 'small'].includes(val);
+          return ['large', 'medium', 'small'].includes(val)
         }
-        return typeof val === 'number';
+        return typeof val === 'number'
       }
     },
     shape: {
       type: String,
       default: 'circle',
       validator(val) {
-        return ['circle', 'square'].includes(val);
+        return ['circle', 'square'].includes(val)
       }
     },
     icon: String,
@@ -26,82 +42,58 @@ export default {
     error: Function,
     fit: {
       type: String,
-      default: 'cover'
+      default: 'cover',
     }
   },
 
-  data() {
-    return {
-      isImageExist: true
-    };
-  },
+  setup(props) {
+    const { error, size, icon, shape } = toRefs(props)
 
-  computed: {
-    avatarClass() {
-      const { size, icon, shape } = this;
-      let classList = ['el-avatar'];
+    const isImageExist = ref(true)
 
-      if (size && typeof size === 'string') {
-        classList.push(`el-avatar--${size}`);
-      }
-
-      if (icon) {
-        classList.push('el-avatar--icon');
-      }
-
-      if (shape) {
-        classList.push(`el-avatar--${shape}`);
-      }
-
-      return classList.join(' ');
-    }
-  },
-
-  methods: {
-    handleError() {
-      const { error } = this;
-      const errorFlag = error ? error() : undefined;
+    const handleError = () => {
+      const errorFlag = error ? error.value() : undefined
       if (errorFlag !== false) {
-        this.isImageExist = false;
+        isImageExist.value = false
       }
-    },
-    renderAvatar() {
-      const { icon, src, alt, isImageExist, srcSet, fit } = this;
-
-      if (isImageExist && src) {
-        return <img
-          src={src}
-          onError={this.handleError}
-          alt={alt}
-          srcSet={srcSet}
-          style={{ 'object-fit': fit }}/>;
-      }
-
-      if (icon) {
-        return (<i class={icon} />);
-      }
-
-      return this.$slots.default;
     }
-  },
 
-  render() {
-    const { avatarClass, size } = this;
+    const sizeStyle = useSizeStyle(size)
+    const avatarClass = useAvatarClass(size, icon, shape)
 
-    const sizeStyle = typeof size === 'number' ? {
-      height: `${size}px`,
-      width: `${size}px`,
-      lineHeight: `${size}px`
-    } : {};
-
-    return (
-      <span class={ avatarClass } style={ sizeStyle }>
-        {
-          this.renderAvatar()
-        }
-      </span>
-    );
+    return { isImageExist, handleError, sizeStyle, avatarClass }
   }
+}
 
-};
+const useSizeStyle = (size) => {
+  return computed(() => {
+    return size && typeof size.value === 'number'
+      ? {
+          height: `${size.value}px`,
+          width: `${size.value}px`,
+          lineHeight: `${size.value}px`,
+        }
+      : {}
+  })
+}
+
+const useAvatarClass = (size, icon, shape) => {
+  return computed(() => {
+    let classList = ['el-avatar']
+
+    if (size && typeof size.value === 'string') {
+      classList.push(`el-avatar--${size.value}`)
+    }
+
+    if (icon) {
+      classList.push('el-avatar--icon')
+    }
+
+    if (shape) {
+      classList.push(`el-avatar--${shape.value}`)
+    }
+
+    return classList.join(' ')
+  })
+}
 </script>

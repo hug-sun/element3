@@ -40,7 +40,7 @@
 - [ ] Tree
 - [ ] Pagination
 - [ ] Badge
-- [ ] Avatar
+- [x] Avatar
 
 ### Notice
 - [ ] Alert
