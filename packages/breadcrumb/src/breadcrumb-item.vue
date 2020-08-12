@@ -18,7 +18,7 @@
   </span>
 </template>
 <script>
-import { toRefs, onMounted, reactive, inject, getCurrentInstance } from "vue";
+import { toRefs, onMounted, reactive, inject, getCurrentInstance, nextTick } from "vue";
 export default {
   name: "ElBreadcrumbItem",
   props: {

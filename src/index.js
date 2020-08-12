@@ -16,6 +16,7 @@ import Icon from '../packages/icon/index.js'
 import Row from '../packages/row/index.js'
 import Col from '../packages/col/index.js'
 import Badge from '../packages/badge/index.js'
+import Card from '../packages/card/index.js'
 import Scrollbar from '../packages/scrollbar/index.js'
 import Container from '../packages/container/index.js'
 import Header from '../packages/header/index.js'
@@ -45,6 +46,7 @@ const components = [
   Row,
   Col,
   Badge,
+  Card,
   Scrollbar,
   Container,
   Header,
@@ -110,6 +112,7 @@ export default {
   Row,
   Col,
   Badge,
+  Card,
   Scrollbar,
   Container,
   Header,
