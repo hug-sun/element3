@@ -15,7 +15,7 @@
 - [x] link
 
 ### form
-- [ ] radio
+- [x] radio
 - [ ] checkbox
 - [ ] input
 - [ ] inputNumber
