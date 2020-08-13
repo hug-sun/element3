@@ -28,87 +28,129 @@
     <span
       class="el-radio-button__inner"
       :style="value === label ? activeStyle : null"
-      @keydown.stop>
+      @keydown.stop
+    >
       <slot></slot>
       <template v-if="!$slots.default">{{label}}</template>
     </span>
   </label>
 </template>
 <script>
-  import Emitter from 'element-ui/src/mixins/emitter';
+import { toRefs, ref, inject, getCurrentInstance, computed, nextTick } from 'vue';
 
-  export default {
-    name: 'ElRadioButton',
+export default {
+  name: 'ElRadioButton',
 
-    mixins: [Emitter],
+  componentName: 'ElRadioButton',
 
-    inject: {
-      elForm: {
-        default: ''
-      },
-      elFormItem: {
-        default: ''
-      }
-    },
+  props: {
+    label: [String, Number, Symbol, Boolean],
+    disabled: Boolean,
+    name: String
+  },
 
-    props: {
-      label: {},
-      disabled: Boolean,
-      name: String
-    },
-    data() {
-      return {
-        focus: false
-      };
-    },
-    computed: {
-      value: {
-        get() {
-          return this._radioGroup.value;
-        },
-        set(value) {
-          this._radioGroup.$emit('input', value);
-        }
-      },
-      _radioGroup() {
-        let parent = this.$parent;
-        while (parent) {
-          if (parent.$options.componentName !== 'ElRadioGroup') {
-            parent = parent.$parent;
-          } else {
-            return parent;
-          }
-        }
-        return false;
-      },
-      activeStyle() {
-        return {
-          backgroundColor: this._radioGroup.fill || '',
-          borderColor: this._radioGroup.fill || '',
-          boxShadow: this._radioGroup.fill ? `-1px 0 0 0 ${this._radioGroup.fill}` : '',
-          color: this._radioGroup.textColor || ''
-        };
-      },
-      _elFormItemSize() {
-        return (this.elFormItem || {}).elFormItemSize;
-      },
-      size() {
-        return this._radioGroup.radioGroupSize || this._elFormItemSize || (this.$ELEMENT || {}).size;
-      },
-      isDisabled() {
-        return this.disabled || this._radioGroup.disabled || (this.elForm || {}).disabled;
-      },
-      tabIndex() {
-        return (this.isDisabled || (this._radioGroup && this.value !== this.label)) ? -1 : 0;
-      }
-    },
+  setup (props, ctx) {
+    const { label: labelRef = {}, disabled: disabledRef = {} } = toRefs(props);
+    const radioRef = ref();
+    const focusRef = ref(false);
 
-    methods: {
-      handleChange() {
-        this.$nextTick(() => {
-          this.dispatch('ElRadioGroup', 'handleChange', this.value);
-        });
-      }
-    }
+    const { elForm, elFormItem } = useInject();
+
+    const { radioGroup } = useCheckGroup();
+
+    const { valueRef, handleChange } = useModel({ radioGroup, labelRef, radioRef });
+
+    const { sizeRef, isDisabledRef, tabIndexRef, activeStyleRef } = useStyle({ radioGroup, disabledRef, valueRef, labelRef, elForm, elFormItem });
+
+    return {
+      radio: radioRef,
+      focus: focusRef,
+      value: valueRef,
+      size: sizeRef,
+      isDisabled: isDisabledRef,
+      tabIndex: tabIndexRef,
+      activeStyle: activeStyleRef,
+      handleChange,
+    };
+  }
+};
+
+function useInject () {
+  const elForm = inject('elFrom', {});
+  const elFormItem = inject('elFormItem', {});
+  return {
+    elForm,
+    elFormItem
   };
+}
+
+function useCheckGroup () {
+  let parent = getCurrentInstance().parent;
+  while (parent) {
+    if (parent.type.componentName !== 'ElRadioGroup') {
+      parent = parent.parent;
+    } else {
+      return {
+        isGroup: true,
+        radioGroup: parent
+      };
+    }
+  }
+  console.warn('ElementUI Warn: `<radio-button></radio-button>` must be use with <radio-group></radio-group>');
+  return {
+    isGroup: false,
+    radioGroup: null
+  };
+}
+
+function useModel ({ radioGroup, modelValueRef, radioRef, labelRef }) {
+  const valueRef = computed({
+    get () {
+      return radioGroup.props.modelValue;
+    },
+    set (val) {
+      radioGroup.emit('update:modelValue', val);
+      radioRef.checked = valueRef.value === labelRef.value;
+    },
+  });
+
+  async function handleChange (e) {
+    await nextTick();
+    radioGroup.emit('change', e.target.value);
+  }
+  return { valueRef, handleChange }
+}
+
+function useStyle ({ radioGroup, disabledRef, valueRef, labelRef, elForm, elFormItem }) {
+  const { ctx } = getCurrentInstance();
+  const elFormDisable = (elForm.props || {}).disabled;
+  const elFormItemSize = (elFormItem.ctx || {}).elFormItemSize;
+
+  const sizeRef = computed(() => {
+    const temRadioSize = elFormItemSize || (ctx.$ELEMENT || {}).size;
+    return radioGroup.ctx.radioGroupSize || temRadioSize;
+  });
+  const isDisabledRef = computed(() => {
+    return radioGroup.props.disabled || disabledRef.value || elFormDisable;
+  });
+  const tabIndexRef = computed(() => {
+    return isDisabledRef.value || (radioGroup && valueRef.value !== labelRef.value) ? -1 : 0;
+  });
+
+  const activeStyleRef = computed(() => {
+    return {
+      backgroundColor: radioGroup.props.fill || '',
+      borderColor: radioGroup.props.fill || '',
+      boxShadow: radioGroup.props.fill ? `-1px 0 0 0 ${radioGroup.props.fill}` : '',
+      color: radioGroup.props.textColor || ''
+    };
+  })
+
+  return {
+    sizeRef,
+    isDisabledRef,
+    tabIndexRef,
+    activeStyleRef
+  }
+}
 </script>
