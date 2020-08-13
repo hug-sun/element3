@@ -9,3 +9,4 @@ coverage
 *.scss
 *.woff
 *.ttf
+src/index.js

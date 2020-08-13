@@ -1,4 +1,4 @@
-import Button from '../../../packages/button/src/button.vue'
+import Button from '../Button.vue'
 import { mount } from '@vue/test-utils'
 describe('Button.vue', () => {
   describe('props', () => {

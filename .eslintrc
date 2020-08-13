@@ -1,4 +1,7 @@
 {
+  "env":{
+    "jest":true
+  },
   "globals": {
     "ga": true,
     "chrome": true
