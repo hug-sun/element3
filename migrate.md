@@ -16,6 +16,7 @@
 2.  使用 composition api 重构组件逻辑
 
 #### status 状态图标
+
 - ❌ - 还没处理
 - ⚰️ - 可以跑通 (使用 VTU 改写组件原有测试逻辑，并且可以在 dev 坏境下跑通组件原有逻辑)
 - ✅ - 重构完成 (使用 composition api 完成重构其逻辑)
@@ -32,7 +33,7 @@
 |           Icon 图标           |   ❌   |                无                |
 |            Button             |   ✅   | 修改 From 组件时需要处理一些逻辑 |
 |             Link              |   ✅   |                无                |
-|         Radio 单选框          |   ❌   |                无                |
+|         Radio 单选框          |   ✅   | 修改 From 组件时需要处理一些逻辑 |
 |        Checkbox 多选框        |   ❌   |                无                |
 |         Input 输入框          |   ❌   |                无                |
 |      InputNumber 计数器       |   ❌   |                无                |
