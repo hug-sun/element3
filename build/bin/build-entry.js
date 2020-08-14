@@ -79,6 +79,7 @@ ComponentNames.forEach(name => {
     'card',
     'breadcrumb',
     'breadcrumb-item'
+
   ].indexOf(name) > -1) { // 白名单 挨个替换
     var componentName = uppercamelcase(name)
 
