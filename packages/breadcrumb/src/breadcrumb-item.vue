@@ -11,31 +11,32 @@
   </span>
 </template>
 <script>
+import { inject, ref, onMounted, getCurrentInstance, toRefs } from 'vue';
   export default {
     name: 'ElBreadcrumbItem',
     props: {
       to: {},
       replace: Boolean
     },
-    data() {
-      return {
-        separator: '',
-        separatorClass: ''
-      };
-    },
-
-    inject: ['elBreadcrumb'],
-
-    mounted() {
-      this.separator = this.elBreadcrumb.separator;
-      this.separatorClass = this.elBreadcrumb.separatorClass;
-      const link = this.$refs.link;
-      link.setAttribute('role', 'link');
-      link.addEventListener('click', _ => {
-        const { to, $router } = this;
-        if (!to || !$router) return;
-        this.replace ? $router.replace(to) : $router.push(to);
+    setup(props){
+      const {to,replace} = toRefs(props);
+      const separator = inject("separator");
+      const separatorClass = inject("separatorClass");
+      const link = ref(null);
+      const {ctx} = getCurrentInstance();
+      onMounted(()=>{
+          link.value.setAttribute('role', 'link');
+          link.value.addEventListener('click', ()=> {
+            if (!to || !ctx.$router) return;
+            replace ? ctx.$router.replace(to) : ctx.$router.push(to);
+          });
       });
+      return {
+        separator,
+        separatorClass,
+        link,
+        to
+      }
     }
   };
 </script>
