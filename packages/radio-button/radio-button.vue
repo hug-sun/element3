@@ -50,26 +50,26 @@ export default {
   },
 
   setup (props, ctx) {
-    const { label: labelRef = {}, disabled: disabledRef = {} } = toRefs(props);
-    const radioRef = ref();
-    const focusRef = ref(false);
+    const { label, disabled } = toRefs(props);
+    const radio = ref();
+    const focus = ref(false);
 
     const { elForm, elFormItem } = useInject();
 
     const { radioGroup } = useCheckGroup();
 
-    const { valueRef, handleChange } = useModel({ radioGroup, labelRef, radioRef });
+    const { value, handleChange } = useModel({ radioGroup, label, radio });
 
-    const { sizeRef, isDisabledRef, tabIndexRef, activeStyleRef } = useStyle({ radioGroup, disabledRef, valueRef, labelRef, elForm, elFormItem });
+    const { size, isDisabled, tabIndex, activeStyle } = useStyle({ radioGroup, disabled, value, label, elForm, elFormItem });
 
     return {
-      radio: radioRef,
-      focus: focusRef,
-      value: valueRef,
-      size: sizeRef,
-      isDisabled: isDisabledRef,
-      tabIndex: tabIndexRef,
-      activeStyle: activeStyleRef,
+      radio,
+      focus,
+      value,
+      size,
+      isDisabled,
+      tabIndex,
+      activeStyle,
       handleChange,
     };
   }
@@ -85,9 +85,9 @@ function useInject () {
 }
 
 function useCheckGroup () {
-  let parent = getCurrentInstance().parent;
+  let {parent} = getCurrentInstance();
   while (parent) {
-    if (parent.type.componentName !== 'ElRadioGroup') {
+    if (parent.type.name !== 'ElRadioGroup') {
       parent = parent.parent;
     } else {
       return {
@@ -103,41 +103,41 @@ function useCheckGroup () {
   };
 }
 
-function useModel ({ radioGroup, modelValueRef, radioRef, labelRef }) {
-  const valueRef = computed({
+function useModel ({ radioGroup, label, radio }) {
+  const value = computed({
     get () {
       return radioGroup.props.modelValue;
     },
     set (val) {
       radioGroup.emit('update:modelValue', val);
-      radioRef.checked = valueRef.value === labelRef.value;
+      // radio.checked = value.value === label.value;
     },
   });
 
-  async function handleChange (e) {
+  async function handleChange () {
     await nextTick();
-    radioGroup.emit('change', e.target.value);
+    radioGroup.emit('change', value.value);
   }
-  return { valueRef, handleChange }
+  return { value, handleChange }
 }
 
-function useStyle ({ radioGroup, disabledRef, valueRef, labelRef, elForm, elFormItem }) {
+function useStyle ({ radioGroup, disabled, value, label, elForm, elFormItem }) {
   const { ctx } = getCurrentInstance();
   const elFormDisable = (elForm.props || {}).disabled;
   const elFormItemSize = (elFormItem.ctx || {}).elFormItemSize;
 
-  const sizeRef = computed(() => {
+  const size = computed(() => {
     const temRadioSize = elFormItemSize || (ctx.$ELEMENT || {}).size;
     return radioGroup.ctx.radioGroupSize || temRadioSize;
   });
-  const isDisabledRef = computed(() => {
-    return radioGroup.props.disabled || disabledRef.value || elFormDisable;
+  const isDisabled = computed(() => {
+    return radioGroup.props.disabled || disabled.value || elFormDisable;
   });
-  const tabIndexRef = computed(() => {
-    return isDisabledRef.value || (radioGroup && valueRef.value !== labelRef.value) ? -1 : 0;
+  const tabIndex = computed(() => {
+    return isDisabled.value || (radioGroup && value.value !== label.value) ? -1 : 0;
   });
 
-  const activeStyleRef = computed(() => {
+  const activeStyle = computed(() => {
     return {
       backgroundColor: radioGroup.props.fill || '',
       borderColor: radioGroup.props.fill || '',
@@ -147,10 +147,10 @@ function useStyle ({ radioGroup, disabledRef, valueRef, labelRef, elForm, elForm
   })
 
   return {
-    sizeRef,
-    isDisabledRef,
-    tabIndexRef,
-    activeStyleRef
+    size,
+    isDisabled,
+    tabIndex,
+    activeStyle
   }
 }
 </script>

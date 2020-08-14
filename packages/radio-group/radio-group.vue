@@ -11,7 +11,6 @@
 <script>
 import { useEmitter } from 'element-ui/src/use/emitter'
 import { getCurrentInstance, onMounted, watch, toRefs, computed, inject } from 'vue'
-
 const keyCode = Object.freeze({
   LEFT: 37,
   UP: 38,
@@ -35,22 +34,22 @@ export default {
   emits: ['update:modelValue', 'change'],
 
   setup(props) {
-    const { modelValue: modelValueRef = {}, size: sizeRef = {} } = toRefs(props)
+    const { modelValue = {}, size = {} } = toRefs(props)
     const { dispatch } = useEmitter()
 
     const elFormItem = inject('elFormItem', { ctx: {} })
 
-    watch(modelValueRef, (v) => {
+    watch(modelValue, (v) => {
       dispatch('ElFormItem', 'el.form.change', [v])
     })
 
     const { handleKeydown } = useKeyDown()
 
-    const { elTagRef, radioGroupSizeRef } = useStyle({ elFormItem, sizeRef })
+    const { elTag, radioGroupSize } = useStyle({ elFormItem, size })
 
     return {
-      elTag: elTagRef,
-      radioGroupSize: radioGroupSizeRef,
+      elTag,
+      radioGroupSize,
       handleKeydown
     }
   }
@@ -107,21 +106,21 @@ function useKeyDown() {
   return { handleKeydown }
 }
 
-function useStyle({ elFormItem, sizeRef }) {
+function useStyle({ elFormItem, size }) {
   const { ctx, vnode } = getCurrentInstance()
 
-  const radioGroupSizeRef = computed(() => {
+  const radioGroupSize = computed(() => {
     return (
-      sizeRef.value ||
+      size.value ||
       elFormItem.ctx.elFormItemSize ||
       (ctx.$ELEMENT || {}).size
     )
   })
 
-  const elTagRef = computed(() => {
+  const elTag = computed(() => {
     return (vnode.data || {}).tag || 'div'
   })
 
-  return { radioGroupSizeRef, elTagRef }
+  return { radioGroupSize, elTag }
 }
 </script>
