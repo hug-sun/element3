@@ -1,34 +1,47 @@
 import { getCurrentInstance } from 'vue'
 
-export function useDispatch(componentName, eventName, params) {
-  if (!getCurrentInstance()) return
-
-  let parent = getCurrentInstance().parent
-  while (parent && parent.type.name !== componentName) {
-    parent = parent.parent
-  }
-
-  if (parent) {
-    parent.emit(eventName, ...params)
+export function useEmitter() {
+  return {
+    dispatch: dispatch(),
+    broadcast: broadcast()
   }
 }
 
-export function useBroadcast(componentName, eventName, params) {
-  const broadcast = (componentInstance) => {
-    if (!componentInstance) return
+function dispatch() {
+  const instance = getCurrentInstance()
 
-    const children = componentInstance.subTree.children
-    if (children) {
-      children.forEach((vnode) => {
-        const childComponent = vnode.component
-        if (childComponent.type.name === componentName) {
-          childComponent.emit(eventName, ...params)
-        } else {
-          broadcast(childComponent)
-        }
-      })
+  return (componentName, eventName, params) => {
+    let parent = instance.parent
+    while (parent && parent.type.name !== componentName) {
+      parent = parent.parent
+    }
+
+    if (parent) {
+      parent.emit(eventName, ...params)
     }
   }
+}
 
-  broadcast(getCurrentInstance())
+function broadcast() {
+  const instance = getCurrentInstance()
+
+  return (componentName, eventName, params) => {
+    const _broadcast = (componentInstance) => {
+      if (!componentInstance) return
+
+      const children = componentInstance.subTree.children
+      if (children) {
+        children.forEach((vnode) => {
+          const childComponent = vnode.component
+          if (childComponent.type.name === componentName) {
+            childComponent.emit(eventName, ...params)
+          } else {
+            _broadcast(childComponent)
+          }
+        })
+      }
+    }
+
+    _broadcast(instance)
+  }
 }
