@@ -9,7 +9,7 @@
   </component>
 </template>
 <script>
-import emitter from 'element-ui/src/mixins/emitter'
+import { useEmitter } from 'element-ui/src/use/emitter'
 import { getCurrentInstance, onMounted, watch, toRefs, computed, inject } from 'vue'
 
 const keyCode = Object.freeze({
@@ -34,16 +34,14 @@ export default {
 
   emits: ['update:modelValue', 'change'],
 
-  mixins: [emitter],
-
   setup(props) {
-    const { ctx } = getCurrentInstance()
     const { modelValue: modelValueRef = {}, size: sizeRef = {} } = toRefs(props)
+    const { dispatch } = useEmitter()
 
     const elFormItem = inject('elFormItem', { ctx: {} })
 
     watch(modelValueRef, (v) => {
-      ctx.dispatch('ElFormItem', 'el.form.change', [v])
+      dispatch('ElFormItem', 'el.form.change', [v])
     })
 
     const { handleKeydown } = useKeyDown()

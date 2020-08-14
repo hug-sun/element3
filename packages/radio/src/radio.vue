@@ -47,7 +47,6 @@
   </label>
 </template>
 <script>
-import emitter from "element-ui/src/mixins/emitter.js";
 import { ref, computed, toRefs, nextTick, getCurrentInstance, inject } from "vue";
 
 export default {
@@ -65,8 +64,6 @@ export default {
   },
 
   emits: ["update:modelValue", "change"],
-
-  mixins:[emitter],
 
   setup (props, ctx) {
     const { modelValue: modelValueRef = {}, label: labelRef = {}, size: sizeRef = {}, disabled: disabledRef = {} } = toRefs(props);
