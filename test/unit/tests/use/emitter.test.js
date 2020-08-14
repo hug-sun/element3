@@ -1,4 +1,4 @@
-import { useDispatch, useBroadcast } from '../../../../src/use/emitter'
+import { useEmitter } from '../../../../src/use/emitter'
 import { mount } from '@vue/test-utils'
 import { onMounted } from 'vue'
 describe('emitter', () => {
@@ -7,7 +7,8 @@ describe('emitter', () => {
       const Child = {
         template: '<div></div>',
         setup() {
-          useDispatch('Parent', 'foo', [1, 2])
+          const { dispatch } = useEmitter()
+          dispatch('Parent', 'foo', [1, 2])
         }
       }
 
@@ -28,7 +29,8 @@ describe('emitter', () => {
       const Child = {
         template: '<div></div>',
         setup() {
-          useDispatch('Parent', 'foo', [1, 2])
+          const { dispatch } = useEmitter()
+          dispatch('Parent', 'foo', [1, 2])
         }
       }
 
@@ -48,7 +50,8 @@ describe('emitter', () => {
       const Foo = {
         template: '<div>foo</div>',
         setup() {
-          useDispatch('Parent', 'foo', [1, 2])
+          const { dispatch } = useEmitter()
+          dispatch('Parent', 'foo', [1, 2])
         }
       }
 
@@ -84,8 +87,9 @@ describe('emitter', () => {
         },
         template: '<div><child></child></div>',
         setup() {
+          const { broadcast } = useEmitter()
           onMounted(() => {
-            useBroadcast('Child', 'child', [1, 2])
+            broadcast('Child', 'child', [1, 2])
           })
         }
       }
@@ -109,8 +113,9 @@ describe('emitter', () => {
         },
         template: '<div><child></child></div>',
         setup() {
+          const { broadcast } = useEmitter()
           onMounted(() => {
-            useBroadcast('Foo', 'child', [1, 2])
+            broadcast('Foo', 'child', [1, 2])
           })
         }
       }
@@ -142,14 +147,17 @@ describe('emitter', () => {
         },
         setup() {
           onMounted(() => {
-            useBroadcast('Foo', 'foo', [1, 2])
+            const { broadcast } = useEmitter()
+            broadcast('Foo', 'foo', [1, 2])
           })
         }
       }
 
       const wrapper = mount(Parent)
 
-      expect(wrapper.findComponent({name: 'Foo'}).emitted('foo')).toEqual([[1, 2]])
+      expect(wrapper.findComponent({ name: 'Foo' }).emitted('foo')).toEqual([
+        [1, 2]
+      ])
     })
   })
 })

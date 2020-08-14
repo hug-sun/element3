@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { computed,toRefs } from "vue"
+import {computed, toRefs} from 'vue';
 
 export default {
   name: 'ElBadge',
@@ -37,12 +37,9 @@ export default {
     }
   },
 
-  setup(props){
-    const { isDot,max,value } = toRefs(props)
-
-    console.log(isDot,max,value)
-
-    const content = useContent(isDot,max,value)
+  setup (props) {
+    const {isDot, max, value} = toRefs(props);
+    const content = useContent(isDot, max, value);
 
     return {
       content
@@ -50,17 +47,17 @@ export default {
   }
 }
 
-const useContent = (isDot,max,value) => {
+const useContent = (isDot, max, value) => {
   const content = computed(() => {
-      if (isDot.value) return
+    if (isDot.value) return;
 
-      if (max && typeof value.value === 'number' && typeof max.value === 'number') {
-        return max.value < value.value ? `${max.value}+` : value.value
-      }
+    if (max && typeof value.value === 'number' && typeof max.value === 'number') {
+      return max.value < value.value ? `${max.value}+` : value.value;
+    }
 
-      return value.value
-    })
+    return value.value;
+  });
 
-    return content
+  return content;
 }
 </script>

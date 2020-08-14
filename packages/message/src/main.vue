@@ -1,5 +1,5 @@
 <template>
-  <transition name="el-message-fade" @after-leave="handleAfterLeave">
+  <transition name="el-message-fade">
     <div
       :class="[
         'el-message',
@@ -25,6 +25,8 @@
 </template>
 
 <script type="text/babel">
+  import {computed, reactive, watch, onMounted, onUnmounted} from 'vue'
+
   const typeMap = {
     success: 'success',
     info: 'info',
@@ -33,9 +35,58 @@
   };
 
   export default {
-    data() {
-      return {
-        visible: false,
+    props: {
+      visible: {
+        type: Boolean,
+        default: false,
+      },
+      message: {
+        type: String,
+        default: '',
+      },
+      duration: {
+        type: Number,
+        default: 3000,
+      },
+      type: {
+        type: String,
+        default: 'info',
+        validator(val) {
+          return ['success', 'warning', 'info', 'error'].indexOf(val) > -1;
+        },
+      },
+      iconClass: {
+        type: String,
+        default: '',
+      },
+      customClass: {
+        type: String,
+        default: '',
+      },
+      showClose: {
+        type: Boolean,
+        default: false,
+      },
+      closed: {
+        type: Boolean,
+        default: false,
+      },
+      verticalOffset: {
+        type: Number,
+        default: 20,
+      },
+      dangerouslyUseHTMLString: {
+        type: Boolean,
+        default: false,
+      },
+      center: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    setup () {
+      const state = reactive({
+        visible: true,
         message: '',
         duration: 3000,
         type: 'info',
@@ -48,70 +99,67 @@
         timer: null,
         dangerouslyUseHTMLString: false,
         center: false
-      };
-    },
+      })
 
-    computed: {
-      typeClass() {
-        return this.type && !this.iconClass
-          ? `el-message__icon el-icon-${ typeMap[this.type] }`
+      const typeClass = computed(() => {
+        return state.type && !state.iconClass
+          ? `el-message__icon el-icon-${ typeMap[state.type] }`
           : '';
-      },
-      positionStyle() {
+      })
+      const positionStyle = computed(() => {
         return {
-          'top': `${ this.verticalOffset }px`
-        };
-      }
-    },
+          top: `${state.verticalOffset}px`
+        }
+      })
 
-    watch: {
-      closed(newVal) {
-        if (newVal) {
-          this.visible = false;
+      const close = () => {
+        state.closed = true;
+        if (typeof state.onClose === 'function') {
+          state.onClose(this);
         }
       }
-    },
 
-    methods: {
-      handleAfterLeave() {
-        this.$destroy(true);
-        this.$el.parentNode.removeChild(this.$el);
-      },
+      const clearTimer = () => {
+        clearTimeout(state.timer);
+      }
 
-      close() {
-        this.closed = true;
-        if (typeof this.onClose === 'function') {
-          this.onClose(this);
-        }
-      },
-
-      clearTimer() {
-        clearTimeout(this.timer);
-      },
-
-      startTimer() {
-        if (this.duration > 0) {
-          this.timer = setTimeout(() => {
-            if (!this.closed) {
-              this.close();
+      const startTimer = () => {
+        if (state.duration > 0) {
+          state.timer = setTimeout(() => {
+            if (!state.closed) {
+              state.close();
             }
-          }, this.duration);
+          }, state.duration);
         }
-      },
-      keydown(e) {
+      }
+  
+      const keydown = (e) => {
         if (e.keyCode === 27) { // esc关闭消息
-          if (!this.closed) {
-            this.close();
+          if (!state.closed) {
+            state.close();
           }
         }
       }
+
+      watch(state.closed, (newVal) => {
+        if (newVal) {
+          state.visible = false;
+        }
+      })
+
+      onMounted(() => {
+        startTimer();
+        document.addEventListener('keydown', keydown);
+      })
+      onUnmounted(() => {
+        document.removeEventListener('keydown', keydown);
+      })
+
+      return {
+        typeClass,
+        positionStyle,
+        keydown,
+      }
     },
-    mounted() {
-      this.startTimer();
-      document.addEventListener('keydown', this.keydown);
-    },
-    beforeDestroy() {
-      document.removeEventListener('keydown', this.keydown);
-    }
   };
 </script>
