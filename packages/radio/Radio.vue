@@ -70,9 +70,9 @@ export default {
     const radioRef = ref();
     const focusRef = ref(false);
 
-    const { elForm, elFormItem } = useInject();
+    const { elForm, elFormItem, elRadioGroup } = useInject();
 
-    const { isGroup, radioGroup } = useCheckGroup();
+    const { isGroup, radioGroup } = useCheckGroup({ elRadioGroup });
 
     const { modelRef, handleChange } = useModel({ isGroup, radioGroup, modelValueRef, labelRef, radioRef });
 
@@ -91,29 +91,27 @@ export default {
 };
 
 function useInject () {
-  const elForm = inject('elFrom', {});
-  const elFormItem = inject('elFormItem', {});
+  const elForm = inject('elFrom', {props:{}, ctx:{}});
+  const elFormItem = inject('elFormItem', {props:{}, ctx:{}});
+  const elRadioGroup = inject('elRadioGroup', null);
   return {
     elForm,
-    elFormItem
+    elFormItem,
+    elRadioGroup
   };
 }
 
-function useCheckGroup () {
-  let parent = getCurrentInstance().parent;
-  while (parent) {
-    if (parent.type.componentName !== 'ElRadioGroup') {
-      parent = parent.parent;
-    } else {
-      return {
-        isGroup: true,
-        radioGroup: parent
-      };
+function useCheckGroup ({elRadioGroup}) {
+  console.log(elRadioGroup);
+  if(!elRadioGroup){
+    return {
+      isGroup: false,
+      radioGroup: null
     }
   }
   return {
-    isGroup: false,
-    radioGroup: null
+    isGroup: true,
+    radioGroup: elRadioGroup
   };
 }
 
@@ -144,8 +142,8 @@ function useModel ({ isGroup, radioGroup, modelValueRef, radioRef, labelRef }) {
 
 function useStyle ({ isGroup, radioGroup, sizeRef, disabledRef, modelRef, labelRef, elForm, elFormItem }) {
   const { ctx } = getCurrentInstance();
-  const elFormDisable = (elForm.props || {}).disabled;
-  const elFormItemSize = (elFormItem.ctx || {}).elFormItemSize;
+  const elFormDisable = elForm.props.disabled;
+  const elFormItemSize = elFormItem.ctx.elFormItemSize;
   const radioSizeRef = computed(() => {
     const temRadioSize = sizeRef.value || elFormItemSize || (ctx.$ELEMENT || {}).size;
     return isGroup ? radioGroup.ctx.radioGroupSize || temRadioSize : temRadioSize;

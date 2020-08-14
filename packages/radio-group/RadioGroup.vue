@@ -10,7 +10,7 @@
 </template>
 <script>
 import { useEmitter } from 'element-ui/src/use/emitter'
-import { getCurrentInstance, onMounted, watch, toRefs, computed, inject } from 'vue'
+import { getCurrentInstance, onMounted, watch, toRefs, computed, inject, provide } from 'vue'
 
 const keyCode = Object.freeze({
   LEFT: 37,
@@ -21,8 +21,6 @@ const keyCode = Object.freeze({
 
 export default {
   name: 'ElRadioGroup',
-
-  componentName: 'ElRadioGroup',
 
   props: {
     modelValue: [String, Number, Symbol, Boolean],
@@ -39,6 +37,8 @@ export default {
     const { dispatch } = useEmitter()
 
     const elFormItem = inject('elFormItem', { ctx: {} })
+
+    provide('elRadioGroup', getCurrentInstance());
 
     watch(modelValueRef, (v) => {
       dispatch('ElFormItem', 'el.form.change', [v])

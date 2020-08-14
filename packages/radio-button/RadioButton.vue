@@ -41,8 +41,6 @@ import { toRefs, ref, inject, getCurrentInstance, computed, nextTick } from 'vue
 export default {
   name: 'ElRadioButton',
 
-  componentName: 'ElRadioButton',
-
   props: {
     label: [String, Number, Symbol, Boolean],
     disabled: Boolean,
@@ -54,9 +52,9 @@ export default {
     const radioRef = ref();
     const focusRef = ref(false);
 
-    const { elForm, elFormItem } = useInject();
+    const { elForm, elFormItem, elRadioGroup } = useInject();
 
-    const { radioGroup } = useCheckGroup();
+    const { radioGroup } = useCheckGroup({ elRadioGroup });
 
     const { valueRef, handleChange } = useModel({ radioGroup, labelRef, radioRef });
 
@@ -76,32 +74,30 @@ export default {
 };
 
 function useInject () {
-  const elForm = inject('elFrom', {});
-  const elFormItem = inject('elFormItem', {});
+  const elForm = inject('elFrom', {props:{}, ctx:{}});
+  const elFormItem = inject('elFormItem', {props:{}, ctx:{}});
+  const elRadioGroup = inject('elRadioGroup', null);
   return {
     elForm,
-    elFormItem
+    elFormItem,
+    elRadioGroup
   };
 }
 
-function useCheckGroup () {
-  let parent = getCurrentInstance().parent;
-  while (parent) {
-    if (parent.type.componentName !== 'ElRadioGroup') {
-      parent = parent.parent;
-    } else {
-      return {
-        isGroup: true,
-        radioGroup: parent
-      };
+function useCheckGroup ({elRadioGroup}) {
+  console.log(elRadioGroup);
+  if(!elRadioGroup){
+    return {
+      isGroup: false,
+      radioGroup: null
     }
   }
-  console.warn('ElementUI Warn: `<radio-button></radio-button>` must be use with <radio-group></radio-group>');
   return {
-    isGroup: false,
-    radioGroup: null
+    isGroup: true,
+    radioGroup: elRadioGroup
   };
 }
+
 
 function useModel ({ radioGroup, modelValueRef, radioRef, labelRef }) {
   const valueRef = computed({
@@ -123,8 +119,8 @@ function useModel ({ radioGroup, modelValueRef, radioRef, labelRef }) {
 
 function useStyle ({ radioGroup, disabledRef, valueRef, labelRef, elForm, elFormItem }) {
   const { ctx } = getCurrentInstance();
-  const elFormDisable = (elForm.props || {}).disabled;
-  const elFormItemSize = (elFormItem.ctx || {}).elFormItemSize;
+  const elFormDisable = elForm.props.disabled;
+  const elFormItemSize = elFormItem.ctx.elFormItemSize;
 
   const sizeRef = computed(() => {
     const temRadioSize = elFormItemSize || (ctx.$ELEMENT || {}).size;

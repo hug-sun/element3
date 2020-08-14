@@ -16,6 +16,13 @@
       <el-radio label="2"></el-radio>
       <el-radio label="3"></el-radio>
     </el-radio-group>
+    <br>
+    <br>
+    <el-radio-group v-model="radio3" @change="onSelect">
+      <el-radio label="1"></el-radio>
+      <el-radio label="2"></el-radio>
+      <el-radio label="3"></el-radio>
+    </el-radio-group>
   </div>
 </template>
 
@@ -25,7 +32,8 @@
       return {
         radio:'1',
         radio1: '2',
-        radio2: '1'
+        radio2: '1',
+        radio3: '1',
       };
     },
     methods: {

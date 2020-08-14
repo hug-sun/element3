@@ -1,4 +1,4 @@
-import Radio from '../../../packages/radio/src/radio'
+import Radio from '../Radio'
 import { mount } from '@vue/test-utils'
 
 describe('Radio.vue', () => {
