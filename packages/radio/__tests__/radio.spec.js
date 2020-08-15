@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Radio from '../radio'
+import Radio from '../Radio'
 import RadioGroup from 'element-ui/packages/radio-group/radio-group'
 import {ref} from '@vue/reactivity'
 import {h, nextTick} from '@vue/runtime-core'

@@ -1,4 +1,4 @@
-import RadioButton from './radio-button.vue'
+import RadioButton from './RadioButton.vue'
 
 /* istanbul ignore next */
 RadioButton.install = function(app) {

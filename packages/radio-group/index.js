@@ -1,4 +1,4 @@
-import RadioGroup from './radio-group.vue'
+import RadioGroup from './RadioGroup.vue'
 
 /* istanbul ignore next */
 RadioGroup.install = function(app) {
