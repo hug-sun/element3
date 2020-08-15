@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils'
 import Radio from '../Radio'
-import RadioGroup from 'element-ui/packages/radio-group/radio-group'
+import RadioGroup from 'element-ui/packages/radio-group/RadioGroup'
 import {ref} from '@vue/reactivity'
 import {h, nextTick} from '@vue/runtime-core'
-import RadioButton from 'element-ui/packages/radio-button/radio-button'
+import RadioButton from 'element-ui/packages/radio-button/RadioButton'
 
 describe('Radio', () => {
   describe('props', () => {
