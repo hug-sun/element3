@@ -62,7 +62,8 @@
   "style": "lib/theme-chalk/index.css",
   "gitHooks": {
     "pre-commit": "lint-staged",
-    "commit-msg": "node build/verifyCommit.js"
+    "commit-msg": "node build/verifyCommit.js",
+    "pre-push":"npm run test:unit"
   },
   "lint-staged": {
     "*.js": [
