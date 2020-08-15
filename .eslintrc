@@ -1,6 +1,7 @@
 {
-  "env":{
-    "jest":true
+  "env": {
+    "jest": true,
+    "es6": true
   },
   "globals": {
     "ga": true,
@@ -10,7 +11,7 @@
   "extends": "elemefe",
   "rules": {
     "no-restricted-globals": ["error", "event", "fdescribe"],
-    "semi":[2,"never"]
+    "semi": [2, "never"]
   },
   "parserOptions": {
     "ecmaVersion": 8,
