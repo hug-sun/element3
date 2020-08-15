@@ -9,6 +9,8 @@ import Button from '../packages/button/index.js';
 import ButtonGroup from '../packages/button-group/index.js';
 import Popover from '../packages/popover/index.js';
 import Tooltip from '../packages/tooltip/index.js';
+import Breadcrumb from '../packages/breadcrumb/index.js';
+import BreadcrumbItem from '../packages/breadcrumb-item/index.js';
 import Tag from '../packages/tag/index.js';
 import Alert from '../packages/alert/index.js';
 import Icon from '../packages/icon/index.js';
@@ -39,6 +41,8 @@ const components = [
   ButtonGroup,
   Popover,
   Tooltip,
+  Breadcrumb,
+  BreadcrumbItem,
   Tag,
   Alert,
   Icon,
@@ -105,6 +109,8 @@ export default {
   ButtonGroup,
   Popover,
   Tooltip,
+  Breadcrumb,
+  BreadcrumbItem,
   Tag,
   Alert,
   Icon,
