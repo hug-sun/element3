@@ -8,7 +8,7 @@ describe('emitter', () => {
         template: '<div></div>',
         setup() {
           const { dispatch } = useEmitter()
-          dispatch('Parent', 'foo', [1, 2])
+          dispatch('Parent', 'foo', 1, 2)
         }
       }
 
@@ -51,7 +51,7 @@ describe('emitter', () => {
         template: '<div>foo</div>',
         setup() {
           const { dispatch } = useEmitter()
-          dispatch('Parent', 'foo', [1, 2])
+          dispatch('Parent', 'foo', 1, 2)
         }
       }
 
@@ -89,7 +89,7 @@ describe('emitter', () => {
         setup() {
           const { broadcast } = useEmitter()
           onMounted(() => {
-            broadcast('Child', 'child', [1, 2])
+            broadcast('Child', 'child', 1, 2)
           })
         }
       }
@@ -115,7 +115,7 @@ describe('emitter', () => {
         setup() {
           const { broadcast } = useEmitter()
           onMounted(() => {
-            broadcast('Foo', 'child', [1, 2])
+            broadcast('Foo', 'child', 1, 2)
           })
         }
       }
@@ -148,7 +148,7 @@ describe('emitter', () => {
         setup() {
           onMounted(() => {
             const { broadcast } = useEmitter()
-            broadcast('Foo', 'foo', [1, 2])
+            broadcast('Foo', 'foo', 1, 2)
           })
         }
       }

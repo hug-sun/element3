@@ -10,7 +10,7 @@ export function useEmitter() {
 function dispatch() {
   const instance = getCurrentInstance()
 
-  return (componentName, eventName, params) => {
+  return (componentName, eventName, ...params) => {
     let parent = instance.parent
     while (parent && parent.type.name !== componentName) {
       parent = parent.parent
@@ -25,7 +25,7 @@ function dispatch() {
 function broadcast() {
   const instance = getCurrentInstance()
 
-  return (componentName, eventName, params) => {
+  return (componentName, eventName, ...params) => {
     const _broadcast = (componentInstance) => {
       if (!componentInstance) return
 
