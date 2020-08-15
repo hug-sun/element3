@@ -13,7 +13,7 @@ describe('RadioGroup.vue', () => {
               <el-radio id="r3" label="3" border></el-radio>
             </el-radio-group>`,
       components: { elRadio: Radio, elRadioGroup: RadioGroup },
-      data () {
+      data() {
         return {
           value: '',
           size: '',
@@ -23,7 +23,7 @@ describe('RadioGroup.vue', () => {
       }
     })
     describe('props', () => {
-      it('modelValue/vModel', async () => {
+      it('modelValue/vModel', async() => {
         wrapper.find('#r1').trigger('click')
         await wrapper.vm.$nextTick()
         expect(wrapper.vm.value).toBe('1')
@@ -37,7 +37,7 @@ describe('RadioGroup.vue', () => {
         expect(wrapper.vm.value).toBe('3')
       })
 
-      it('size', async () => {
+      it('size', async() => {
         wrapper.vm.size = 'medium'
         await wrapper.vm.$nextTick()
         expect(wrapper.find('#r1').classes()).toContain('el-radio--medium')
@@ -51,7 +51,7 @@ describe('RadioGroup.vue', () => {
         expect(wrapper.find('#r1').classes()).toContain('el-radio--mini')
       })
 
-      it('disabled', async () => {
+      it('disabled', async() => {
         wrapper.vm.disabled = true
         await wrapper.vm.$nextTick()
         expect(wrapper.find('#r1').classes()).toContain('is-disabled')
@@ -63,7 +63,7 @@ describe('RadioGroup.vue', () => {
     })
 
     describe('event', () => {
-      it('change', async () => {
+      it('change', async() => {
 
         wrapper.find('#r1').trigger('click')
         await wrapper.vm.$nextTick()
@@ -89,7 +89,7 @@ describe('RadioGroup.vue', () => {
               <el-radio-button id="r3" label="3"></el-radio-button>
             </el-radio-group>`,
       components: { elRadioButton: RadioButton, elRadioGroup: RadioGroup },
-      data () {
+      data() {
         return {
           value: '1',
           textColor: '',
@@ -101,7 +101,7 @@ describe('RadioGroup.vue', () => {
       }
     })
     describe('props', () => {
-      it('modelValue/vModel', async () => {
+      it('modelValue/vModel', async() => {
         wrapper.find('#r1').trigger('click')
         await wrapper.vm.$nextTick()
 
@@ -116,7 +116,7 @@ describe('RadioGroup.vue', () => {
         expect(wrapper.vm.value).toBe('3')
       })
 
-      it('size', async () => {
+      it('size', async() => {
         wrapper.vm.size = 'medium'
         await wrapper.vm.$nextTick()
         expect(wrapper.find('#r1').classes()).toContain('el-radio-button--medium')
@@ -130,7 +130,7 @@ describe('RadioGroup.vue', () => {
         expect(wrapper.find('#r1').classes()).toContain('el-radio-button--mini')
       })
 
-      it('disabled', async () => {
+      it('disabled', async() => {
         wrapper.vm.disabled = true
         await wrapper.vm.$nextTick()
         expect(wrapper.find('#r1').classes()).toContain('is-disabled')
@@ -140,13 +140,13 @@ describe('RadioGroup.vue', () => {
         expect(wrapper.find('#r1').classes()).not.toContain('is-disabled')
       })
 
-      it('text-color', async () => {
+      it('text-color', async() => {
         wrapper.vm.textColor = 'blue'
         await wrapper.vm.$nextTick()
         expect(wrapper.findComponent(RadioGroup).vm.textColor).toBe('blue')
       })
 
-      it('fill', async () => {
+      it('fill', async() => {
         wrapper.vm.fill = 'red'
         await wrapper.vm.$nextTick()
         expect(wrapper.findComponent(RadioGroup).vm.fill).toBe('red')
@@ -154,7 +154,7 @@ describe('RadioGroup.vue', () => {
     })
 
     describe('event', () => {
-      it('change', async () => {
+      it('change', async() => {
 
         wrapper.find('#r1').trigger('click')
         await wrapper.vm.$nextTick()

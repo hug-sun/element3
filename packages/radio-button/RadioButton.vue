@@ -85,7 +85,6 @@ function useInject () {
 }
 
 function useCheckGroup ({elRadioGroup}) {
-  console.log(elRadioGroup);
   if(!elRadioGroup){
     return {
       isGroup: false,
