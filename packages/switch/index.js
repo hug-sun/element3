@@ -1,4 +1,4 @@
-import Switch from './src/component'
+import Switch from './Switch.vue'
 
 /* istanbul ignore next */
 Switch.install = function(app) {
