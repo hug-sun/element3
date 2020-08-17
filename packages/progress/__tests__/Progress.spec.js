@@ -118,5 +118,16 @@ describe("Progress.vue", () => {
       });
       expect(wrapper.classes()).toContain("el-progress--without-text");
     });
+
+    it("format content", () => {
+      const wrapper = mount(Progress, {
+        props: {
+          format: () => {
+            return `占比${50}%`;
+          },
+        },
+      });
+      expect(wrapper.find(".el-progress__text").text()).toContain("占比50%");
+    });
   });
 });
