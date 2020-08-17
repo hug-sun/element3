@@ -41,6 +41,7 @@
   import Popup from 'element-ui/src/utils/popup';
   import Migrating from 'element-ui/src/mixins/migrating';
   import emitter from 'element-ui/src/mixins/emitter';
+  import {popupProps,usePopup} from "element-ui/src/use/popup";
 
   export default {
     name: 'ElDialog',
@@ -106,8 +107,8 @@
         type: Boolean,
         default: false
       },
-
-      destroyOnClose: Boolean
+      destroyOnClose: Boolean,
+      ...popupProps
     },
 
     data() {
