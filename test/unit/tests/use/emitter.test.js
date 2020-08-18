@@ -2,8 +2,74 @@ import { useEmitter } from '../../../../src/use/emitter'
 import { mount } from '@vue/test-utils'
 import { onMounted } from 'vue'
 describe('emitter', () => {
-  describe('useDispatch', () => {
-    it('Parent component can capture event when Child component called useDispatch', () => {
+  describe('on', () => {
+    it('parent to child', () => {
+      const handleChild = jest.fn()
+
+      const Child = {
+        name: 'Child',
+        template: '<div></div>',
+        setup(props, {emit}) {
+          const { on } = useEmitter()
+
+          on('child', handleChild)
+        }
+      }
+
+      const Parent = {
+        components: {
+          Child
+        },
+
+        template: '<div><child></child></div>',
+        setup() {
+          const { broadcast } = useEmitter()
+          onMounted(() => {
+            broadcast('Child', 'child', 1, 2)
+          })
+        }
+      }
+
+      mount(Parent)
+
+      expect(handleChild).toBeCalledWith(1, 2)
+    })
+
+    it('child to parent', () => {
+
+      const handleFoo1 = jest.fn()
+      const handleFoo2 = jest.fn()
+
+      const Child = {
+        template: '<div></div>',
+        setup() {
+          const { dispatch } = useEmitter()
+          dispatch('Parent', 'foo', 1, 2)
+        }
+      }
+
+      const Parent = {
+        name: 'Parent',
+        template: '<div><child></child></div>',
+        components: {
+          Child
+        },
+        setup() {
+          const { on } = useEmitter()
+          on('foo', handleFoo1)
+          on('foo', handleFoo2)
+        }
+      }
+
+      mount(Parent)
+
+      expect(handleFoo1).toBeCalledWith(1, 2)
+      expect(handleFoo2).toBeCalledWith(1, 2)
+    })
+  })
+
+  describe('dispatch', () => {
+    it('Parent component can capture event when Child component called dispatch', () => {
       const Child = {
         template: '<div></div>',
         setup() {
@@ -74,8 +140,8 @@ describe('emitter', () => {
     })
   })
 
-  describe('useBroadcast', () => {
-    it('Child component can capture event when the parent component called useBroadcast', () => {
+  describe('broadcast', () => {
+    it('Child component can capture event when the parent component called broadcast', () => {
       const Child = {
         name: 'Child',
         template: '<div></div>'
