@@ -1,66 +1,43 @@
 <template>
   <div
     class="el-switch"
-    :class="{ 'is-disabled': switchDisabled, 'is-checked': checked }"
-    role="switch"
-    :aria-checked="checked"
-    :aria-disabled="switchDisabled"
-    @click.prevent="switchValue"
+    :class="{ 'is-checked': isChecked,'is-disabled': disabled}"
+    @click.prevent="handleClick"
   >
-    <input
-      class="el-switch__input"
-      type="checkbox"
-      @change="handleChange"
-      ref="input"
-      :id="id"
-      :name="name"
-      :true-value="activeValue"
-      :false-value="inactiveValue"
-      :disabled="switchDisabled"
-      @keydown.enter="switchValue"
-    />
+    <SwitchLabel
+      :active="!isChecked"
+      type="left"
+      :text="inactiveText"
+      :iconClass="inactiveIconClass"
+    ></SwitchLabel>
+
     <span
-      :class="['el-switch__label', 'el-switch__label--left', !checked ? 'is-active' : '']"
-      v-if="inactiveIconClass || inactiveText"
-    >
-      <i :class="[inactiveIconClass]" v-if="inactiveIconClass"></i>
-      <span v-if="!inactiveIconClass && inactiveText" :aria-hidden="checked">{{ inactiveText }}</span>
-    </span>
-    <span class="el-switch__core" ref="core" :style="{ 'width': coreWidth + 'px' }"></span>
-    <span
-      :class="['el-switch__label', 'el-switch__label--right', checked ? 'is-active' : '']"
-      v-if="activeIconClass || activeText"
-    >
-      <i :class="[activeIconClass]" v-if="activeIconClass"></i>
-      <span v-if="!activeIconClass && activeText" :aria-hidden="!checked">{{ activeText }}</span>
-    </span>
+      class="el-switch__core"
+      ref="core"
+      :style="{ 'width': width+'px','background': backgroundColor, 'border-color': backgroundColor }"
+    ></span>
+
+    <SwitchLabel :active="isChecked" type="right" :text="activeText" :iconClass="activeIconClass"></SwitchLabel>
   </div>
 </template>
 <script>
-import {
-  toRefs,
-  computed,
-  nextTick,
-  getCurrentInstance,
-  onMounted,
-  watch
-} from 'vue'
-import { useEmitter } from 'element-ui/src/use/emitter'
-import emitter from 'element-ui/src/mixins/emitter'
-import Focus from 'element-ui/src/mixins/focus'
-import Migrating from 'element-ui/src/mixins/migrating'
-
+import { computed, toRefs, onMounted } from 'vue'
+import SwitchLabel from './SwitchLabel'
 export default {
   name: 'ElSwitch',
-  mixins: [Focus('input'), Migrating, emitter],
-  inject: {
-    elForm: {
-      default: ''
-    }
+  components: {
+    SwitchLabel
   },
-  emits: ['onUpdate:modelValue', 'change'],
   props: {
     modelValue: {
+      type: [Boolean, String, Number],
+      default: false
+    },
+    activeValue: {
+      type: [Boolean, String, Number],
+      default: true
+    },
+    inactiveValue: {
       type: [Boolean, String, Number],
       default: false
     },
@@ -72,6 +49,8 @@ export default {
       type: Number,
       default: 40
     },
+    activeText: String,
+    inactiveText: String,
     activeIconClass: {
       type: String,
       default: ''
@@ -80,8 +59,6 @@ export default {
       type: String,
       default: ''
     },
-    activeText: String,
-    inactiveText: String,
     activeColor: {
       type: String,
       default: ''
@@ -89,99 +66,107 @@ export default {
     inactiveColor: {
       type: String,
       default: ''
-    },
-    activeValue: {
-      type: [Boolean, String, Number],
-      default: true
-    },
-    inactiveValue: {
-      type: [Boolean, String, Number],
-      default: false
-    },
-    name: {
-      type: String,
-      default: ''
-    },
-    validateEvent: {
-      type: Boolean,
-      default: true
-    },
-    id: String
+    }
   },
+  emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
+    // TODO 涉及到关于 elFrom 的逻辑全部被干掉了
+    // 后面处理 elFromItem || elFrom 的时候在添加对应的逻辑
+    // name
+    // validate-event
+    // fout
+    // input 相关逻辑
+    // 后续可以参考之前的逻辑
+    // el-tooltip 现在有问题 等修好了 tooltip 之后再处理 switch 的不同 value 的类型
+
     const {
-      width,
+      activeValue,
+      inactiveValue,
+      modelValue,
       disabled,
+      width,
+      activeText,
+      inactiveText,
+      activeIconClass,
+      inactiveIconClass,
+      activeColor,
+      inactiveColor
+    } = toRefs(props)
+
+    useNormalizeModelValue({
       modelValue,
       activeValue,
       inactiveValue,
-      activeColor,
-      inactiveColor,
-      validateEvent
-    } = toRefs(props)
-
-    const { ctx } = getCurrentInstance()
-    const { dispatch } = useEmitter()
-    const switchDisabled = computed(() => {
-      // TODO elForm 后面统一搞
-      // return this.disabled || (this.elForm || {}).disabled
-      return disabled.value
+      emit
     })
 
-    const checked = computed(() => {
+    const isChecked = computed(() => {
       return modelValue.value === activeValue.value
     })
 
-    const handleChange = (event) => {
-      const val = checked.value ? inactiveValue.value : activeValue.value
-      emit('update:modelValue', val)
-      emit('change', val)
-      nextTick(() => {
-        // set input's checked property
-        // in case parent refuses to change component's value
-        ctx.$refs.input.checked = checked.value
-      })
-    }
-
-    const switchValue = () => {
-      if (switchDisabled.value) return
-      handleChange()
-    }
-
-    const setBackgroundColor = () => {
-      let newColor = checked.value ? activeColor : inactiveColor
-      ctx.$refs.core.style.borderColor = newColor.value
-      ctx.$refs.core.style.backgroundColor = newColor.value
-    }
-
-    watch(checked, (value) => {
-      ctx.$refs.input.checked = checked.value
-      if (activeColor.value || inactiveColor.value) {
-        setBackgroundColor()
-      }
-      if (validateEvent.value) {
-        dispatch('ElFormItem', 'el.form.change', modelValue.value)
-      }
+    const backgroundColor = computed(() => {
+      return isChecked.value ? activeColor.value : inactiveColor.value
     })
 
-    onMounted(() => {
-
-      if (!~[activeValue.value, inactiveValue.value].indexOf(modelValue.value)) {
-        emit('update:modelValue', inactiveValue.value)
-      }
-
-      if (activeColor || inactiveColor) {
-        setBackgroundColor()
-      }
-      ctx.$refs.input.checked = checked.value
+    const { handleClick } = useClick({
+      isChecked,
+      inactiveValue,
+      activeValue,
+      disabled,
+      emit
     })
 
     return {
-      coreWidth: width,
-      checked,
-      switchValue,
-      switchDisabled
+      isChecked,
+      disabled,
+      width,
+      activeText,
+      inactiveText,
+      inactiveIconClass,
+      activeIconClass,
+      backgroundColor,
+      handleClick
     }
+  }
+}
+
+const useNormalizeModelValue = ({
+  modelValue,
+  activeValue,
+  inactiveValue,
+  emit
+}) => {
+  onMounted(() => {
+    if (
+      modelValue.value !== activeValue.value &&
+      modelValue.value !== inactiveValue.value
+    ) {
+      emit('update:modelValue', inactiveValue.value)
+    }
+  })
+}
+
+const useClick = ({
+  isChecked,
+  inactiveValue,
+  activeValue,
+  disabled,
+  emit
+}) => {
+  const getNewValue = () => {
+    return isChecked.value ? inactiveValue.value : activeValue.value
+  }
+
+  const handleClick = () => {
+    if (disabled.value) return
+
+    const newValue = getNewValue()
+    emit('update:modelValue', newValue)
+    emit('change', newValue)
+  }
+
+  return {
+    handleClick
   }
 }
 </script>
