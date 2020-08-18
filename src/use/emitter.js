@@ -3,7 +3,33 @@ import { getCurrentInstance } from 'vue'
 export function useEmitter() {
   return {
     dispatch: dispatch(),
-    broadcast: broadcast()
+    broadcast: broadcast(),
+    on: on()
+  }
+}
+
+function on() {
+  const instance = getCurrentInstance()
+
+  return (originalEventName, callback) => {
+    const eventName = 'on' + originalEventName.charAt(0).toUpperCase() + originalEventName.slice(1)
+
+    if (!instance.vnode.props) {
+      instance.vnode.props = {}
+    }
+
+    if (!instance.vnode.props[eventName]) {
+      instance.vnode.props[eventName] = (...params) => {
+        const callbacks = instance.vnode.props[eventName]['__events']
+        if (callbacks) {
+          callbacks.forEach(cf => {
+            cf(...params)
+          })
+        }
+      }
+      instance.vnode.props[eventName]['__events'] = []
+    }
+    instance.vnode.props[eventName]['__events'].push(callback)
   }
 }
 
