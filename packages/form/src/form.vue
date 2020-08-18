@@ -11,6 +11,7 @@
 </template>
 <script>
 import { reactive, computed, watch, toRefs, unref, provide } from 'vue'
+import useEmitter from 'element-ui/src/use/useEmitter'
 import objectAssign from 'element-ui/src/utils/merge'
 
 export default {
@@ -53,7 +54,7 @@ export default {
       deregisterLabelWidth,
     } = useLabelWidth()
 
-    const { fields, addField, removeField, resetFields } = useFileds(model)
+    const { fields, resetFields } = useFileds(model)
     const { validateField, validate, clearValidate } = useValidate(
       rules,
       model,
@@ -62,12 +63,11 @@ export default {
     )
 
     provide('elForm', {
+      name: 'ElForm',
       ...rest,
       autoLabelWidth,
       registerLabelWidth,
       deregisterLabelWidth,
-      addField,
-      removeField,
       resetFields,
       validateField,
       validate,
@@ -113,18 +113,19 @@ const useLabelWidth = () => {
 
 const useFileds = (model) => {
   const fields = reactive([])
+  const { on } = useEmitter()
 
-  const addField = (field) => {
+  on('el.form.addField', (field) => {
     if (field) {
       fields.push(field)
     }
-  }
+  })
 
-  const removeField = (field) => {
+  on('el.form.removeField', (field) => {
     if (field.prop) {
       fields.splice(fields.indexOf(field), 1)
     }
-  }
+  })
 
   const resetFields = () => {
     if (!unref(model)) {
@@ -138,7 +139,7 @@ const useFileds = (model) => {
     }
   }
 
-  return { fields, addField, removeField, resetFields }
+  return { fields, resetFields }
 }
 
 const useValidate = (rules, model, fields, validateOnRuleChange) => {
