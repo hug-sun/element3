@@ -217,8 +217,8 @@ describe('emitter', () => {
     })
   })
 
-  describe('broadcast', () => {
-    it('Child component can capture event when the parent component called broadcast', () => {
+  describe('useBroadcast', () => {
+    it('Child component can capture event when the parent component called useBroadcast', () => {
       const Child = {
         name: 'Child',
         template: '<div></div>'
