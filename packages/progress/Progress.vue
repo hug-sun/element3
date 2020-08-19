@@ -7,7 +7,7 @@
       {
         'el-progress--without-text': !showText,
         'el-progress--text-inside': textInside,
-      },
+      }
     ]"
     role="progressbar"
     :aria-valuenow="percentage"
@@ -15,22 +15,13 @@
     aria-valuemax="100"
   >
     <div class="el-progress-bar" v-if="type === 'line'">
-      <div
-        class="el-progress-bar__outer"
-        :style="{ height: strokeWidth + 'px' }"
-      >
+      <div class="el-progress-bar__outer" :style="{height: strokeWidth + 'px'}">
         <div class="el-progress-bar__inner" :style="barStyle">
-          <div class="el-progress-bar__innerText" v-if="showText && textInside">
-            {{ content }}
-          </div>
+          <div class="el-progress-bar__innerText" v-if="showText && textInside">{{content}}</div>
         </div>
       </div>
     </div>
-    <div
-      class="el-progress-circle"
-      :style="{ height: width + 'px', width: width + 'px' }"
-      v-else
-    >
+    <div class="el-progress-circle" :style="{height: width + 'px', width: width + 'px'}" v-else>
       <svg viewBox="0 0 100 100">
         <path
           class="el-progress-circle__track"
@@ -38,8 +29,7 @@
           stroke="#e5e9f2"
           :stroke-width="relativeStrokeWidth"
           fill="none"
-          :style="trailPathStyle"
-        ></path>
+          :style="trailPathStyle"></path>
         <path
           class="el-progress-circle__path"
           :d="trackPath"
@@ -47,16 +37,15 @@
           fill="none"
           :stroke-linecap="strokeLinecap"
           :stroke-width="percentage ? relativeStrokeWidth : 0"
-          :style="circlePathStyle"
-        ></path>
+          :style="circlePathStyle"></path>
       </svg>
     </div>
     <div
       class="el-progress__text"
       v-if="showText && !textInside"
-      :style="{ fontSize: progressTextSize + 'px' }"
+      :style="{fontSize: progressTextSize + 'px'}"
     >
-      <template v-if="!status">{{ content }}</template>
+      <template v-if="!status">{{content}}</template>
       <i v-else :class="iconClass"></i>
     </div>
   </div>
@@ -122,11 +111,10 @@ export default {
     } = toRefs(props);
 
     const getCurrentColor = (percentage) => {
-      const colorValue = color.value;
-      if (typeof colorValue === "function") {
-        return colorValue(percentage);
-      } else if (typeof colorValue === "string") {
-        return colorValue;
+      if (typeof color.value === "function") {
+        return color.value(percentage);
+      } else if (typeof color.value === "string") {
+        return color.value;
       } else {
         return getLevelColor(percentage);
       }
@@ -158,40 +146,24 @@ export default {
       });
     };
 
-    const barStyle = useBarStyle(percentage.value, getCurrentColor);
-    const relativeStrokeWidth = useRelativeStrokeWidth(
-      strokeWidth.value,
-      width.value
-    );
-    const radius = useRadius(type.value, relativeStrokeWidth.value);
-    const trackPath = useTrackPath(radius.value, type.value);
-    const perimeter = usePerimeter(radius.value);
-    const rate = useRate(type.value);
-    const strokeDashoffset = useStrokeDashoffset(perimeter.value, rate.value);
-    const trailPathStyle = useTrailPathStyle(
-      perimeter.value,
-      rate.value,
-      strokeDashoffset.value
-    );
+    const barStyle = useBarStyle(percentage, getCurrentColor);
+    const relativeStrokeWidth = useRelativeStrokeWidth(strokeWidth, width);
+    const radius = useRadius(type, relativeStrokeWidth);
+    const trackPath = useTrackPath(radius, type);
+    const perimeter = usePerimeter(radius);
+    const rate = useRate(type);
+    const strokeDashoffset = useStrokeDashoffset(perimeter, rate);
+    const trailPathStyle = useTrailPathStyle(perimeter, rate, strokeDashoffset);
     const circlePathStyle = useCirclePathStyle(
-      perimeter.value,
-      rate.value,
-      percentage.value,
-      strokeDashoffset.value
+      perimeter,
+      rate,
+      percentage,
+      strokeDashoffset
     );
-    const stroke = useStroke(
-      color.value,
-      getCurrentColor,
-      percentage.value,
-      status && status.value
-    );
-    const iconClass = useIconClass(status && status.value, type.value);
-    const progressTextSize = useProgressTextSize(
-      type.value,
-      strokeWidth.value,
-      width.value
-    );
-    const content = useContent(format && format.value, percentage.value);
+    const stroke = useStroke(color, getCurrentColor, percentage, status);
+    const iconClass = useIconClass(status, type);
+    const progressTextSize = useProgressTextSize(type, strokeWidth, width);
+    const content = useContent(format, percentage);
 
     return {
       barStyle,
@@ -220,8 +192,8 @@ export default {
 const useBarStyle = (percentage, getCurrentColor) => {
   const barStyle = computed(() => {
     const style = {};
-    style.width = percentage + "%";
-    style.backgroundColor = getCurrentColor(percentage);
+    style.width = percentage.value + "%";
+    style.backgroundColor = getCurrentColor(percentage.value);
     return style;
   });
   return barStyle;
@@ -229,15 +201,15 @@ const useBarStyle = (percentage, getCurrentColor) => {
 
 const useRelativeStrokeWidth = (strokeWidth, width) => {
   const relativeStrokeWidth = computed(() => {
-    return ((strokeWidth / width) * 100).toFixed(1);
+    return ((strokeWidth.value / width.value) * 100).toFixed(1);
   });
   return relativeStrokeWidth;
 };
 
 const useRadius = (type, relativeStrokeWidth) => {
   const radius = computed(() => {
-    if (type === "circle" || type === "dashboard") {
-      return parseInt(50 - parseFloat(relativeStrokeWidth) / 2, 10);
+    if (type.value === "circle" || type.value === "dashboard") {
+      return parseInt(50 - parseFloat(relativeStrokeWidth.value) / 2, 10);
     } else {
       return 0;
     }
@@ -247,12 +219,16 @@ const useRadius = (type, relativeStrokeWidth) => {
 
 const useTrackPath = (radius, type) => {
   const trackPath = computed(() => {
-    const isDashboard = type === "dashboard";
+    const isDashboard = type.value === "dashboard";
     return `
           M 50 50
-          m 0 ${isDashboard ? "" : "-"}${radius}
-          a ${radius} ${radius} 0 1 1 0 ${isDashboard ? "-" : ""}${radius * 2}
-          a ${radius} ${radius} 0 1 1 0 ${isDashboard ? "" : "-"}${radius * 2}
+          m 0 ${isDashboard ? "" : "-"}${radius.value}
+          a ${radius.value} ${radius.value} 0 1 1 0 ${isDashboard ? "-" : ""}${
+      radius.value * 2
+    }
+          a ${radius.value} ${radius.value} 0 1 1 0 ${isDashboard ? "" : "-"}${
+      radius.value * 2
+    }
           `;
   });
   return trackPath;
@@ -260,21 +236,21 @@ const useTrackPath = (radius, type) => {
 
 const usePerimeter = (radius) => {
   const perimeter = computed(() => {
-    return 2 * Math.PI * radius;
+    return 2 * Math.PI * radius.value;
   });
   return perimeter;
 };
 
 const useRate = (type) => {
   const rate = computed(() => {
-    return type === "dashboard" ? 0.75 : 1;
+    return type.value === "dashboard" ? 0.75 : 1;
   });
   return rate;
 };
 
 const useStrokeDashoffset = (perimeter, rate) => {
   const strokeDashoffset = computed(() => {
-    const offset = (-1 * perimeter * (1 - rate)) / 2;
+    const offset = (-1 * perimeter.value * (1 - rate.value)) / 2;
     return `${offset}px`;
   });
   return strokeDashoffset;
@@ -283,8 +259,10 @@ const useStrokeDashoffset = (perimeter, rate) => {
 const useTrailPathStyle = (perimeter, rate, strokeDashoffset) => {
   const trailPathStyle = computed(() => {
     return {
-      strokeDasharray: `${perimeter.vale * rate}px, ${perimeter}px`,
-      strokeDashoffset: strokeDashoffset,
+      strokeDasharray: `${perimeter.value * rate.value}px, ${
+        perimeter.value
+      }px`,
+      strokeDashoffset: strokeDashoffset.value,
     };
   });
   return trailPathStyle;
@@ -294,9 +272,9 @@ const useCirclePathStyle = (perimeter, rate, percentage, strokeDashoffset) => {
   const circlePathStyle = computed(() => {
     return {
       strokeDasharray: `${
-        perimeter * rate * (percentage / 100)
-      }px, ${perimeter}px`,
-      strokeDashoffset: strokeDashoffset,
+        perimeter.value * rate.value * (percentage.value / 100)
+      }px, ${perimeter.value}px`,
+      strokeDashoffset: strokeDashoffset.value,
       transition: "stroke-dasharray 0.6s ease 0s, stroke 0.6s ease",
     };
   });
@@ -305,11 +283,12 @@ const useCirclePathStyle = (perimeter, rate, percentage, strokeDashoffset) => {
 
 const useStroke = (color, getCurrentColor, percentage, status) => {
   const stroke = computed(() => {
+    const statusValue = status && status.value;
     let ret;
-    if (color) {
-      ret = getCurrentColor(percentage);
+    if (color.value) {
+      ret = getCurrentColor(percentage.value);
     } else {
-      switch (status) {
+      switch (statusValue) {
         case "success":
           ret = "#13ce66";
           break;
@@ -330,34 +309,35 @@ const useStroke = (color, getCurrentColor, percentage, status) => {
 
 const useIconClass = (status, type) => {
   const iconClass = computed(() => {
-    if (status === "warning") {
+    if (status.value === "warning") {
       return "el-icon-warning";
     }
-    if (type === "line") {
-      return status === "success"
+    if (type.value === "line") {
+      return status.value === "success"
         ? "el-icon-circle-check"
         : "el-icon-circle-close";
     } else {
-      return status === "success" ? "el-icon-check" : "el-icon-close";
+      return status.value === "success" ? "el-icon-check" : "el-icon-close";
     }
   });
-
   return iconClass;
 };
 
 const useProgressTextSize = (type, strokeWidth, width) => {
   const progressTextSize = computed(() => {
-    return type === "line" ? 12 + strokeWidth * 0.4 : width * 0.111111 + 2;
+    return type.value === "line"
+      ? 12 + strokeWidth.value * 0.4
+      : width.value * 0.111111 + 2;
   });
   return progressTextSize;
 };
 
 const useContent = (format, percentage) => {
   const content = computed(() => {
-    if (typeof format === "function") {
-      return format(percentage) || "";
+    if (format && typeof format.value === "function") {
+      return format.value(percentage.value) || "";
     } else {
-      return `${percentage}%`;
+      return `${percentage.value}%`;
     }
   });
   return content;

@@ -1,10 +1,13 @@
 import { getCurrentInstance } from 'vue'
+import { capitalize } from 'element-ui/src/utils/util'
+const EVENT_NAME_KEY = Symbol('ELEMENT_EVENTS')
 
 export function useEmitter() {
   return {
     dispatch: dispatch(),
     broadcast: broadcast(),
-    on: on()
+    on: on(),
+    off: off()
   }
 }
 
@@ -12,11 +15,16 @@ function on() {
   const instance = getCurrentInstance()
 
   return (originalEventName, callback) => {
-    const eventName = 'on' + originalEventName.charAt(0).toUpperCase() + originalEventName.slice(1)
+    const eventName = 'on' + capitalize(originalEventName)
 
     if (!instance.vnode.props) {
       instance.vnode.props = {}
     }
+
+    if (!instance.vnode.props[EVENT_NAME_KEY]) {
+      instance.vnode.props[EVENT_NAME_KEY] = new Set()
+    }
+    instance.vnode.props[EVENT_NAME_KEY].add(eventName)
 
     if (!instance.vnode.props[eventName]) {
       instance.vnode.props[eventName] = (...params) => {
@@ -30,6 +38,41 @@ function on() {
       instance.vnode.props[eventName]['__events'] = []
     }
     instance.vnode.props[eventName]['__events'].push(callback)
+  }
+}
+
+function off() {
+  const instance = getCurrentInstance()
+
+  return (originalEventName, callback) => {
+    const eventNameList = instance.vnode.props && instance.vnode.props[EVENT_NAME_KEY]
+    if (!eventNameList || !eventNameList.size) {
+      return
+    }
+
+    if (!originalEventName) {
+      eventNameList.forEach(eventName => {
+        delete instance.vnode.props[eventName]
+      })
+      eventNameList.clear()
+      return
+    }
+
+    const eventName = 'on' + capitalize(originalEventName)
+
+    if (!callback) {
+      delete instance.vnode.props[eventName]
+      eventNameList.delete(eventName)
+      return
+    }
+
+    const handlers = instance.vnode.props[eventName] && instance.vnode.props[eventName]['__events']
+    if (handlers && handlers.length) {
+      const index = handlers.indexOf(callback)
+      if (index > -1) {
+        handlers.splice(index, 1)
+      }
+    }
   }
 }
 
