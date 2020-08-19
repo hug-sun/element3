@@ -118,7 +118,7 @@ export default {
     destroyOnClose: Boolean,
     ...popupProps,
   },
-  emits: ["update:visible", "close", "opened","open"],
+  emits: ["update:visible", "close", "opened","open","closed"],
   setup(props, { emit }) {
     const { visible, rendered, open, close } = usePopup(props);
     const { appendToBody, fullscreen, top, width, closeOnClickModal,destroyOnClose } = toRefs(props);
@@ -216,7 +216,10 @@ export default {
       fullscreen,
       rendered,
       handleClose,
-      style
+      style,
+      handleWrapperClick,
+      afterEnter,
+      afterLeave
     }
   }
 };
