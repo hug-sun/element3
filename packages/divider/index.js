@@ -1,4 +1,4 @@
-import Divider from './src/Divider'
+import Divider from './Divider'
 
 /* istanbul ignore next */
 Divider.install = function(app) {
