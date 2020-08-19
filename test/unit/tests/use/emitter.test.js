@@ -68,6 +68,83 @@ describe('emitter', () => {
     })
   })
 
+  describe('off', () => {
+    it('off all', () => {
+      const handleFoo = jest.fn()
+      const handleBar = jest.fn()
+
+      const Foo = {
+        template: '<div></div>',
+        setup(props, { emit }) {
+          const { on, off } = useEmitter()
+          on('foo', handleFoo)
+          on('bar', handleBar)
+
+          off()
+          emit('foo')
+          emit('bar')
+        }
+      }
+
+      mount(Foo)
+
+      expect(handleFoo).toBeCalledTimes(0)
+      expect(handleBar).toBeCalledTimes(0)
+    })
+
+    it('off special event', () => {
+      const handleFoo1 = jest.fn()
+      const handleFoo2 = jest.fn()
+      const handleBar = jest.fn()
+
+      const Foo = {
+        template: '<div></div>',
+        setup(props, { emit }) {
+          const { on, off } = useEmitter()
+          on('foo', handleFoo1)
+          on('foo', handleFoo1)
+          on('bar', handleBar)
+
+          off('foo')
+          emit('foo')
+          emit('bar')
+        }
+      }
+
+      mount(Foo)
+
+      expect(handleFoo1).toBeCalledTimes(0)
+      expect(handleFoo2).toBeCalledTimes(0)
+      expect(handleBar).toBeCalledTimes(1)
+    })
+
+    it('off special handler', () => {
+      const handleFoo1 = jest.fn()
+      const handleFoo2 = jest.fn()
+      const handleBar = jest.fn()
+
+      const Foo = {
+        template: '<div></div>',
+        setup(props, { emit }) {
+          const { on, off } = useEmitter()
+          on('foo', handleFoo1)
+          on('foo', handleFoo2)
+          on('bar', handleBar)
+
+          off('foo', handleFoo1)
+          emit('foo')
+          emit('bar')
+        }
+      }
+
+      mount(Foo)
+
+      expect(handleFoo1).toBeCalledTimes(0)
+      expect(handleFoo2).toBeCalledTimes(1)
+      expect(handleBar).toBeCalledTimes(1)
+    })
+  })
+
   describe('dispatch', () => {
     it('Parent component can capture event when Child component called dispatch', () => {
       const Child = {
@@ -140,8 +217,8 @@ describe('emitter', () => {
     })
   })
 
-  describe('broadcast', () => {
-    it('Child component can capture event when the parent component called broadcast', () => {
+  describe('useBroadcast', () => {
+    it('Child component can capture event when the parent component called useBroadcast', () => {
       const Child = {
         name: 'Child',
         template: '<div></div>'

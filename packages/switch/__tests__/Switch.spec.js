@@ -1,147 +1,166 @@
 import Switch from '../Switch.vue'
 import { mount } from '@vue/test-utils'
 describe('Switch', () => {
-  describe('props', () => {
-    it('should is-checked when set modelValue to true', async() => {
-      const wrapper = mount(Switch, {
-        props: {
-          modelValue: true,
-          activeColor: '#13ce66',
-          inactiveColor: '#ff4949'
-        }
-      })
-
-      expect(wrapper.classes()).toContain('is-checked')
-    })
-    it('should show left label when set inactiveIconClass', () => {
-      const wrapper = mount(Switch, {
-        props: {
-          inactiveIconClass: 'el-icon-close'
-        }
-      })
-
-      const labelLeftElement = wrapper.find('.el-switch__label--left')
-      expect(labelLeftElement.exists()).toBe(true)
-      expect(labelLeftElement.find('i').classes()).toContain('el-icon-close')
+  it('modelValue', async() => {
+    const wrapper = mount(Switch, {
+      props: {
+        modelValue: false
+      }
     })
 
-    it('should show right label when set activeIconClass', () => {
-      const wrapper = mount(Switch, {
-        props: {
-          activeIconClass: 'el-icon-check'
-        }
-      })
+    expect(wrapper.classes()).not.toContain('is-checked')
 
-      const labelLeftElement = wrapper.find('.el-switch__label--right')
-      expect(labelLeftElement.exists()).toBe(true)
-      expect(labelLeftElement.find('i').classes()).toContain('el-icon-check')
+    await wrapper.setProps({
+      modelValue: true
     })
 
-    it('should show text on the right label when set activeText', () => {
-      const wrapper = mount(Switch, {
-        props: {
-          activeText: 'on'
-        }
-      })
-
-      const labelLeftElement = wrapper.find('.el-switch__label--right')
-      expect(labelLeftElement.find('span').text()).toBe('on')
-    })
-
-    it('should show text on the left label when set inactiveText', () => {
-      const wrapper = mount(Switch, {
-        props: {
-          inactiveText: 'off'
-        }
-      })
-
-      const labelLeftElement = wrapper.find('.el-switch__label--left')
-      expect(labelLeftElement.find('span').text()).toBe('off')
-    })
-
-    it('should not click when set disabled to true', () => {
-      const wrapper = mount(Switch, {
-        props: {
-          disabled: true
-        }
-      })
-
-      expect(wrapper.classes()).toContain('is-disabled')
-    })
-
-    it('width', () => {
-      const wrapper = mount(Switch, {
-        props: {
-          width: 50
-        }
-      })
-
-      expect(wrapper.find('.el-switch__core').attributes('style')).toContain(
-        'width: 50px'
-      )
-    })
-
-    it('name', () => {
-      const wrapper = mount(Switch, {
-        props: {
-          name: 'switchTest'
-        }
-      })
-
-      expect(wrapper.find('.el-switch__input').attributes('name')).toBe(
-        'switchTest'
-      )
-    })
-
-    describe('should emitted update:modelValue when created ', () => {
-      it('The value of modelValue is not equal to the value of activeValue', () => {
-        const wrapper = mount(Switch, {
-          props: {
-            activeValue: '1',
-            inactiveValue: false,
-            modelValue: '3'
-          }
-        })
-
-        expect(wrapper.emitted('update:modelValue')).toEqual([[false]])
-      })
-
-      it('The value of modelValue is not equal to the value of inactiveValue', () => {
-        const wrapper = mount(Switch, {
-          props: {
-            inactiveValue: '2',
-            modelValue: '3'
-          }
-        })
-
-        expect(wrapper.emitted('update:modelValue')).toEqual([['2']])
-      })
-    })
-
-    it.skip('activeColor', () => {
-      // todo
-      // activeColor 代码实现中的方式不可测试
-      // 重构完在测试
-      const wrapper = mount(Switch, {
-        activeColor: '0xff0000'
-      })
-
-      expect(wrapper.find('.el-switch__core').attributes('style')).toContain(
-        'borderColor'
-      )
-    })
-
-    it.skip('inactiveColor', () => {
-      // todo
-      // inactiveColor 代码实现中的方式不可测试
-      // 重构完在测试
-      const wrapper = mount(Switch, {
-        activeColor: '0xff0000'
-      })
-
-      expect(wrapper.find('.el-switch__core').attributes('style')).toContain(
-        'borderColor'
-      )
-    })
+    expect(wrapper.classes()).toContain('is-checked')
   })
+
+  it('should not click when set disabled to true', async() => {
+    const wrapper = mount(Switch, {
+      props: {
+        disabled: true
+      }
+    })
+
+    expect(wrapper.classes()).toContain('is-disabled')
+    await wrapper.trigger('click')
+    expect(wrapper.emitted('change')).toBeFalsy()
+  })
+
+  it('set width props', () => {
+    const wrapper = mount(Switch, {
+      props: {
+        width: 50
+      }
+    })
+
+    expect(wrapper.find('.el-switch__core').attributes('style')).toContain(
+      'width: 50px'
+    )
+  })
+
+  it('should show text on the right label when set activeText', () => {
+    const wrapper = mount(Switch, {
+      props: {
+        activeText: 'on'
+      }
+    })
+
+    const labelLeftElement = wrapper.find('.el-switch__label--right')
+    expect(labelLeftElement.find('span').text()).toBe('on')
+  })
+
+  it('should show text on the left label when set inactiveText', () => {
+    const wrapper = mount(Switch, {
+      props: {
+        inactiveText: 'off'
+      }
+    })
+
+    const labelLeftElement = wrapper.find('.el-switch__label--left')
+    expect(labelLeftElement.find('span').text()).toBe('off')
+  })
+
+  it('should show left label when set inactiveIconClass', () => {
+    const wrapper = mount(Switch, {
+      props: {
+        inactiveIconClass: 'el-icon-close'
+      }
+    })
+
+    const labelLeftElement = wrapper.find('.el-switch__label--left')
+    expect(labelLeftElement.exists()).toBe(true)
+    expect(labelLeftElement.find('i').classes()).toContain('el-icon-close')
+  })
+
+  it('should show right label when set activeIconClass', () => {
+    const wrapper = mount(Switch, {
+      props: {
+        activeIconClass: 'el-icon-check'
+      }
+    })
+
+    const labelLeftElement = wrapper.find('.el-switch__label--right')
+    expect(labelLeftElement.exists()).toBe(true)
+    expect(labelLeftElement.find('i').classes()).toContain('el-icon-check')
+  })
+
+  it('activeIconClass has a higher priority than activeText', () => {
+    const wrapper = mount(Switch, {
+      props: {
+        activeIconClass: 'el-icon-check',
+        activeText: 'on'
+      }
+    })
+
+    const labelRightElement = wrapper.find('.el-switch__label--right')
+    expect(labelRightElement.find('i').classes()).toContain('el-icon-check')
+    expect(labelRightElement.find('span').exists()).toBe(false)
+  })
+
+  it('inactiveIconClass has a higher priority than inactiveText', () => {
+    const wrapper = mount(Switch, {
+      props: {
+        inactiveIconClass: 'el-icon-check',
+        inactiveText: 'off'
+      }
+    })
+
+    const labelLeftElement = wrapper.find('.el-switch__label--left')
+    expect(labelLeftElement.find('i').classes()).toContain('el-icon-check')
+    expect(labelLeftElement.find('span').exists()).toBe(false)
+  })
+
+  it('should not show label when activeText and activeIconClass have not value', () => {
+    const wrapper = mount(Switch)
+
+    expect(wrapper.find('.el-switch__label--right').exists()).toBeFalsy()
+  })
+
+  it('should not show label when inactiveText and inactiveIconClass have not value', () => {
+    const wrapper = mount(Switch)
+
+    expect(wrapper.find('.el-switch__label--left').exists()).toBeFalsy()
+  })
+
+  it('core style contain border-color equal to #ff0000 when set activeColor', () => {
+    const wrapper = mount(Switch, {
+      props: {
+        modelValue: true,
+        activeColor: '#ff0000'
+      }
+    })
+
+    expect(wrapper.find('.el-switch__core').attributes('style')).toContain(
+      'border-color: #ff0000'
+    )
+  })
+
+  it('core style contain border-color equal to #ff0000 when set inactiveColor', () => {
+    const wrapper = mount(Switch, {
+      props: {
+        modelValue: false,
+        inactiveColor: '#ff0000'
+      }
+    })
+
+    expect(wrapper.find('.el-switch__core').attributes('style')).toContain(
+      'border-color: #ff0000'
+    )
+  })
+
+  it('modelValue should be forced to be equal to inactiveValue when modelValue not equal activeValue and inactiveValue ', () => {
+    const wrapper = mount(Switch, {
+      props: {
+        modelValue: '1',
+        activeValue: '2',
+        inactiveValue: '3'
+      }
+    })
+
+    expect(wrapper.emitted('update:modelValue')).toEqual([['3']])
+  })
+
 })
