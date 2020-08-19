@@ -30,7 +30,7 @@
 |          Color 色彩           |   ❌   |                无                |
 |        Typography 字体        |   ❌   |                无                |
 |          Border 边框          |   ❌   |                无                |
-|           Icon 图标           |   ❌   |                无                |
+|           Icon 图标           |   ✅   |                无                |
 |            Button             |   ✅   | 修改 From 组件时需要处理一些逻辑 |
 |             Link              |   ✅   |                无                |
 |         Radio 单选框          |   ✅   | 修改 From 组件时需要处理一些逻辑 |
@@ -45,7 +45,7 @@
 |     DatePicker 日期选择器     |   ❌   |                无                |
 | DateTimePicker 日期时间选择器 |   ❌   |                无                |
 |          Upload 上传          |   ❌   |                无                |
-|           Rate 评分           |   ❌   |                无                |
+|           Rate 评分           |   ✅   |                修改 From 组件时需要处理一些逻辑                |
 |    ColorPicker 颜色选择器     |   ❌   |                                  |
 |        Transfer 穿梭框        |   ❌   |                                  |
 |           Form 表单           |   ❌   |                                  |
