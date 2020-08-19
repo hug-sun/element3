@@ -28,7 +28,7 @@
 - [ ] datePicker
 - [ ] dateTimePicker
 - [ ] Upload
-- [ ] Rate
+- [x] Rate
 - [ ] ColorPicker
 - [ ] Transfer
 - [ ] Form
