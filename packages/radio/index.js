@@ -1,4 +1,4 @@
-import Radio from './src/radio'
+import Radio from './Radio'
 
 /* istanbul ignore next */
 Radio.install = function(app) {

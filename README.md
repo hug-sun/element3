@@ -15,7 +15,7 @@
 - [x] link
 
 ### form
-- [ ] radio
+- [x] radio
 - [ ] checkbox
 - [ ] input
 - [ ] inputNumber
@@ -28,7 +28,7 @@
 - [ ] datePicker
 - [ ] dateTimePicker
 - [ ] Upload
-- [ ] Rate
+- [x] Rate
 - [ ] ColorPicker
 - [ ] Transfer
 - [ ] Form

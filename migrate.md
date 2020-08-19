@@ -16,6 +16,7 @@
 2.  使用 composition api 重构组件逻辑
 
 #### status 状态图标
+
 - ❌ - 还没处理
 - ⚰️ - 可以跑通 (使用 VTU 改写组件原有测试逻辑，并且可以在 dev 坏境下跑通组件原有逻辑)
 - ✅ - 重构完成 (使用 composition api 完成重构其逻辑)
@@ -32,7 +33,7 @@
 |           Icon 图标           |   ❌   |                无                |
 |            Button             |   ✅   | 修改 From 组件时需要处理一些逻辑 |
 |             Link              |   ✅   |                无                |
-|         Radio 单选框          |   ❌   |                无                |
+|         Radio 单选框          |   ✅   | 修改 From 组件时需要处理一些逻辑 |
 |        Checkbox 多选框        |   ❌   |                无                |
 |         Input 输入框          |   ❌   |                无                |
 |      InputNumber 计数器       |   ❌   |                无                |
@@ -44,7 +45,7 @@
 |     DatePicker 日期选择器     |   ❌   |                无                |
 | DateTimePicker 日期时间选择器 |   ❌   |                无                |
 |          Upload 上传          |   ❌   |                无                |
-|           Rate 评分           |   ❌   |                无                |
+|           Rate 评分           |   ✅   |                修改 From 组件时需要处理一些逻辑                |
 |    ColorPicker 颜色选择器     |   ❌   |                                  |
 |        Transfer 穿梭框        |   ❌   |                                  |
 |           Form 表单           |   ❌   |                                  |
@@ -53,7 +54,7 @@
 |        Progress 进度条        |   ❌   |                                  |
 |         Tree 树形控件         |   ❌   |                                  |
 |        Pagination 分页        |   ❌   |                                  |
-|          Badge 标记           |   ❌   |                                  |
+|          Badge 标记           |   ✅   | 无 |
 |          Avatar 头像          |   ❌   |                                  |
 |          Alert 警告           |   ✅   |                                  |
 |         Loading 加载          |   ❌   |                                  |
