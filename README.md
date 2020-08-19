@@ -3,6 +3,13 @@
 1. 修改build/bin/buld-entry.js的72行
 2. 组件加上白名单，比如加一个'input'，执行'npm run dev'
 3. 访问文档，在对应的组件页面调试报错即可，完成的记得标记
+4. 
+## Join Discussion Group
+
+Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in discussion group :
+
+<img alt="Join Discusion Group" src="https://pic4.zhimg.com/80/v2-73947edcba4cbfe52cd779a3b1b974b5_1440w.png" width="300">
+
 
 <p align="center">
   <img src="https://cdn.rawgit.com/ElemeFE/element/dev/element_logo.svg">
@@ -163,10 +170,10 @@ French documentation is made possible by these community developers:
 - [smalesys](https://github.com/smalesys)
 - [blombard](https://github.com/blombard)
 
-## Donation
+<!-- ## Donation
 If you find Element useful, you can buy us a cup of coffee
 
-<img width="650" src="https://user-images.githubusercontent.com/14025786/44833997-5d7c4d80-ac62-11e8-8445-1dffec0eb13c.png" alt="donation">
+<img width="650" src="https://user-images.githubusercontent.com/14025786/44833997-5d7c4d80-ac62-11e8-8445-1dffec0eb13c.png" alt="donation"> -->
 
 ## Backers
 
@@ -238,12 +245,6 @@ Become a sponsor and get your logo on our README on Github with a link to your s
 <a href="https://opencollective.com/element/sponsor/27/website" target="_blank"><img src="https://opencollective.com/element/sponsor/27/avatar.svg"></a>
 <a href="https://opencollective.com/element/sponsor/28/website" target="_blank"><img src="https://opencollective.com/element/sponsor/28/avatar.svg"></a>
 <a href="https://opencollective.com/element/sponsor/29/website" target="_blank"><img src="https://opencollective.com/element/sponsor/29/avatar.svg"></a>
-
-## Join Discussion Group
-
-Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in discussion group :
-
-<img alt="Join Discusion Group" src="https://user-images.githubusercontent.com/17680888/66537329-9a4b9100-eb52-11e9-9d99-65469cfdae58.jpeg" width="300">
 
 
 ## LICENSE
