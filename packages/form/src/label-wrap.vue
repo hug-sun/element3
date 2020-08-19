@@ -1,78 +1,99 @@
 <script>
+import {
+  computed,
+  ref,
+  onMounted,
+  onUpdated,
+  onBeforeUnmount,
+  inject,
+  watch,
+  unref,
+} from 'vue'
 
 export default {
   props: {
     isAutoWidth: Boolean,
-    updateAll: Boolean
+    updateAll: Boolean,
   },
+  setup(props, { emit, slots }) {
+    const { labelStyle, labelRef } = useLabelWidth(props, slots)
 
-  inject: ['elForm', 'elFormItem'],
-
-  render() {
-    const slots = this.$slots.default;
-    if (!slots) return null;
-    if (this.isAutoWidth) {
-      const autoLabelWidth = this.elForm.autoLabelWidth;
-      const style = {};
-      if (autoLabelWidth && autoLabelWidth !== 'auto') {
-        const marginLeft = parseInt(autoLabelWidth, 10) - this.computedWidth;
-        if (marginLeft) {
-          style.marginLeft = marginLeft + 'px';
-        }
-      }
-      return (<div class="el-form-item__label-wrap" style={style}>
-        { slots }
-      </div>);
-    } else {
-      return slots[0];
-    }
-  },
-
-  methods: {
-    getLabelWidth() {
-      if (this.$el && this.$el.firstElementChild) {
-        const computedWidth = window.getComputedStyle(this.$el.firstElementChild).width;
-        return Math.ceil(parseFloat(computedWidth));
+    return () => {
+      if (!slots.default) return null
+      if (props.isAutoWidth) {
+        return (
+          <div ref={labelRef} class="el-form-item__label-wrap" style={labelStyle}>
+            {slots.default}
+          </div>
+        )
       } else {
-        return 0;
-      }
-    },
-    updateLabelWidth(action = 'update') {
-      if (this.$slots.default && this.isAutoWidth && this.$el.firstElementChild) {
-        if (action === 'update') {
-          this.computedWidth = this.getLabelWidth();
-        } else if (action === 'remove') {
-          this.elForm.deregisterLabelWidth(this.computedWidth);
-        }
+        return slots.default[0]
       }
     }
   },
+}
 
-  watch: {
-    computedWidth(val, oldVal) {
-      if (this.updateAll) {
-        this.elForm.registerLabelWidth(val, oldVal);
-        this.elFormItem.updateComputedLabelWidth(val);
-      }
+function useLabelWidth(props, slots) {
+  const computedWidth = ref(0)
+  const labelRef = ref(null)
+  const _elForm = inject('elForm')
+  const _elFormItem = inject('elFormItem')
+
+  const getLabelWidth = () => {
+    const $el = unref(labelRef)
+    if ($el && $el.firstElementChild) {
+      const computedWidth = window.getComputedStyle($el.firstElementChild).width
+      return Math.ceil(parseFloat(computedWidth))
+    } else {
+      return 0
     }
-  },
-
-  data() {
-    return {
-      computedWidth: 0
-    };
-  },
-
-  mounted() {
-    this.updateLabelWidth('update');
-  },
-
-  updated() {
-    this.updateLabelWidth('update');
-  },
-
-  beforeDestroy() {
-    this.updateLabelWidth('remove');
   }
-};
+
+  const updateLabelWidth = (action = 'update') => {
+    const $el = unref(labelRef)
+    if (slots.default && props.isAutoWidth && $el.firstElementChild) {
+      if (action === 'update') {
+        computedWidth.value = getLabelWidth()
+      } else if (action === 'remove') {
+        _elForm.deregisterLabelWidth(unref(computedWidth))
+      }
+    }
+  }
+
+  watch(computedWidth, (val, oldVal) => {
+    if (props.updateAll) {
+      _elForm.registerLabelWidth(val, oldVal)
+      _elFormItem.updateComputedLabelWidth(val)
+    }
+  })
+
+  const labelStyle = computed(() => {
+    const autoLabelWidth = _elForm.autoLabelWidth
+    const style = {}
+    if (autoLabelWidth && autoLabelWidth !== 'auto') {
+      const marginLeft = parseInt(autoLabelWidth, 10) - unref(computedWidth)
+      if (marginLeft) {
+        style.marginLeft = marginLeft + 'px'
+      }
+    }
+    return style
+  })
+
+  onMounted(() => {
+    updateLabelWidth('update')
+  })
+
+  onUpdated(() => {
+    updateLabelWidth('update')
+  })
+
+  onBeforeUnmount(() => {
+    updateLabelWidth('remove')
+  })
+
+  return {
+    labelStyle,
+    labelRef,
+  }
+}
 </script>
