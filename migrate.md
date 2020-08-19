@@ -30,7 +30,7 @@
 |          Color 色彩           |   ❌   |                无                |
 |        Typography 字体        |   ❌   |                无                |
 |          Border 边框          |   ❌   |                无                |
-|           Icon 图标           |   ❌   |                无                |
+|           Icon 图标           |   ✅   |                无                |
 |            Button             |   ✅   | 修改 From 组件时需要处理一些逻辑 |
 |             Link              |   ✅   |                无                |
 |         Radio 单选框          |   ✅   | 修改 From 组件时需要处理一些逻辑 |
