@@ -17,11 +17,15 @@ Dialog 弹出一个对话框，适合需要定制性更大的场景。
   :before-close="handleClose"
   v-model:visible="dialogVisible"
   >
-  <span>这是一段信息</span>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span>
+  <template v-slot:default>
+    <span>这是一段信息</span>
+  </template>
+  <template v-slot:footer>
+    <span class="dialog-footer">
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    </span>
+  </template>
 </el-dialog>
 
 <script>
@@ -33,7 +37,11 @@ Dialog 弹出一个对话框，适合需要定制性更大的场景。
     },
     methods: {
       handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
             done();
+          })
+          .catch(_ => {});
       }
     }
   };
@@ -70,21 +78,25 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
 <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
 
 <el-dialog title="收货地址" :visible.sync="dialogFormVisible"  v-model:visible="dialogFormVisible">
-  <el-form :model="form">
-    <el-form-item label="活动名称" :label-width="formLabelWidth">
-      <el-input v-model="form.name" autocomplete="off"></el-input>
-    </el-form-item>
-    <el-form-item label="活动区域" :label-width="formLabelWidth">
-      <el-select v-model="form.region" placeholder="请选择活动区域">
-        <el-option label="区域一" value="shanghai"></el-option>
-        <el-option label="区域二" value="beijing"></el-option>
-      </el-select>
-    </el-form-item>
-  </el-form>
-  <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-  </div>
+  <template v-slot:default>
+    <el-form :model="form">
+      <el-form-item label="活动名称" :label-width="formLabelWidth">
+        <el-input v-model="form.name" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="活动区域" :label-width="formLabelWidth">
+        <el-select v-model="form.region" placeholder="请选择活动区域">
+          <el-option label="区域一" value="shanghai"></el-option>
+          <el-option label="区域二" value="beijing"></el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
+  </template>
+  <template v-slot:footer>
+    <div class="dialog-footer">
+      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+    </div>
+  </template>
 </el-dialog>
 
 <script>
@@ -135,17 +147,21 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
   <el-button type="text" @click="outerVisible = true">点击打开外层 Dialog</el-button>
   
   <el-dialog title="外层 Dialog" :visible.sync="outerVisible" v-model:visible="outerVisible">
-    <el-dialog
-      width="30%"
-      title="内层 Dialog"
-      :visible.sync="innerVisible"
-      v-model:visible="innerVisible"
-      append-to-body>
-    </el-dialog>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="outerVisible = false">取 消</el-button>
-      <el-button type="primary" @click="innerVisible = true">打开内层 Dialog</el-button>
-    </div>
+  <template v-slot:default>
+      <el-dialog
+        width="30%"
+        title="内层 Dialog"
+        :visible.sync="innerVisible"
+        v-model:visible="innerVisible"
+        append-to-body>
+      </el-dialog>
+    </template>
+    <template v-slot:footer>
+      <div class="dialog-footer">
+        <el-button @click="outerVisible = false">取 消</el-button>
+        <el-button type="primary" @click="innerVisible = true">打开内层 Dialog</el-button>
+      </div>
+    </template>
   </el-dialog>
 
 <script>
@@ -176,11 +192,15 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
    v-model:visible="centerDialogVisible"
   width="30%"
   center>
-  <span>需要注意的是内容是默认不居中的</span>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="centerDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
-  </span>
+  <template v-slot:default>
+    <span>需要注意的是内容是默认不居中的</span>
+  </template>
+  <template v-slot:footer>
+    <span class="dialog-footer">
+      <el-button @click="centerDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+    </span>
+  </template>
 </el-dialog>
 
 <script>

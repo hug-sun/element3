@@ -36,8 +36,6 @@
 </template>
 
 <script>
-import Migrating from "element-ui/src/mixins/migrating";
-import emitter from "element-ui/src/mixins/emitter";
 import { popupProps, usePopup } from "element-ui/src/use/popup";
 import { useEmitter } from "element-ui/src/use/emitter";
 import {
@@ -53,9 +51,6 @@ import {
 
 export default {
   name: "ElDialog",
-
-  // mixins: [Popup, emitter, Migrating],
-
   props: {
     title: {
       type: String,
@@ -86,21 +81,16 @@ export default {
       type: Boolean,
       default: true,
     },
-
     closeOnPressEscape: {
       type: Boolean,
       default: true,
     },
-
     showClose: {
       type: Boolean,
       default: true,
     },
-
     width: String,
-
     fullscreen: Boolean,
-
     customClass: {
       type: String,
       default: "",
@@ -119,8 +109,8 @@ export default {
     ...popupProps,
   },
   emits: ["update:visible", "close", "opened","open","closed"],
-  setup(props, { emit }) {
-    const { visible, rendered, open, close } = usePopup(props);
+  setup(props, { emit, slots }) {
+    const { visible, rendered, open } = usePopup(props);
     const { appendToBody, fullscreen, top, width, closeOnClickModal,destroyOnClose } = toRefs(props);
     const { beforeClose } = props;
     const closed = ref(false);
@@ -130,21 +120,14 @@ export default {
     const { broadcast } = useEmitter();
     const style = computed(() => {
       let style = {};
-      if (fullscreen.value) {
+      if (!(fullscreen&&fullscreen.value)) {
         style.marginTop = top.value;
-        if (width.value) {
+        if (width&&width.value) {
           style.width = width.value;
         }
       }
       return style;
     });
-    const getMigratingConfig = () => {
-      return {
-        props: {
-          size: "size is removed.",
-        },
-      };
-    };
     const handleWrapperClick = () => {
       if (!closeOnClickModal) return;
       handleClose();

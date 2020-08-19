@@ -1,5 +1,4 @@
 import { nextTick, ref, onBeforeMount, getCurrentInstance, onBeforeUnmount, watch, toRefs } from 'vue'
-import merge from 'element-ui/src/utils/merge'
 import PopupManager from 'element-ui/src/utils/popup/popup-manager'
 import getScrollBarWidth from 'element-ui/src/utils/scrollbar-width'
 import { getStyle, addClass, removeClass, hasClass } from 'element-ui/src/utils/dom'
@@ -50,7 +49,8 @@ function usePopup(props) {
     modalClass,
     modalFade,
     lockScroll,
-    zIndex
+    zIndex,
+    closeDelay
   } = toRefs(props);
   const opened = ref(false);
   const bodyPaddingRight = ref(null);
@@ -116,7 +116,6 @@ function usePopup(props) {
     if (getComputedStyle(dom).position === 'static') {
       dom.style.position = 'absolute'
     }
-
     dom.style.zIndex = PopupManager.nextZIndex()
     opened.value = true
     instance.onOpen &&  instance.onOpen();
