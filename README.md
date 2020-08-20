@@ -11,6 +11,74 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
 <img alt="Join Discusion Group" src="https://pic4.zhimg.com/80/v2-73947edcba4cbfe52cd779a3b1b974b5_1440w.png" width="300">
 
 
+### basic
+- [x] layout
+- [x] container
+- [x] color
+- [x] typography
+- [x] border
+- [x] icon
+- [x] button
+- [x] link
+
+### form
+- [x] radio
+- [ ] checkbox
+- [ ] input
+- [ ] inputNumber
+- [ ] select
+- [ ] cascader
+- [ ] switch
+- [ ] slider
+- [ ] timePicker
+- [ ] timePicker
+- [ ] datePicker
+- [ ] dateTimePicker
+- [ ] Upload
+- [x] Rate
+- [ ] ColorPicker
+- [ ] Transfer
+- [ ] Form
+
+### data
+- [ ] Table
+- [ ] Tag
+- [ ] Progress
+- [ ] Tree
+- [ ] Pagination
+- [x] Badge
+- [x] Avatar
+
+### Notice
+- [ ] Alert
+- [ ] Loading
+- [ ] Message
+- [ ] MessageBox
+- [ ] Notification
+
+### Navigation
+- [ ] Navmenu
+- [ ] Tabs
+- [ ] Breadcrumb
+- [ ] dropdown
+- [ ] steps
+
+
+### other
+- [ ] dialog
+- [ ] tooltip
+- [ ] popover
+- [ ] popoconfirm
+- [ ] Card
+- [ ] Carousel
+- [ ] Collapse
+- [ ] Timeline
+- [ ] divider
+- [ ] Calendar
+- [ ] image
+- [ ] backtop
+- [ ] infiniteScroll
+- [ ] drawer
 <p align="center">
   <img src="https://cdn.rawgit.com/ElemeFE/element/dev/element_logo.svg">
 </p>
