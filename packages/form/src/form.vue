@@ -46,7 +46,10 @@ export default {
       default: false,
     },
   },
-  setup(props) {
+
+  emits: ['validate'],
+
+  setup(props, {emit}) {
     const { model, rules, validateOnRuleChange, ...rest } = toRefs(props)
     const {
       autoLabelWidth,
@@ -65,6 +68,8 @@ export default {
     provide('elForm', reactive({
       name: 'ElForm',
       ...rest,
+      model,
+      rules,
       autoLabelWidth,
       registerLabelWidth,
       deregisterLabelWidth,
@@ -72,6 +77,7 @@ export default {
       validateField,
       validate,
       clearValidate,
+      emit,
     }))
 
     return {
@@ -140,10 +146,11 @@ const useFileds = (model) => {
         '[Element Warn][Form]model is required for resetFields to work.'
       )
       return
-      fields.forEach((field) => {
-        field.resetField()
-      })
     }
+
+    fields.forEach((field) => {
+      field.resetField()
+    })
   }
 
   return { fields, resetFields }

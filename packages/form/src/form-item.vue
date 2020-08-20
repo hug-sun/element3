@@ -236,6 +236,7 @@ function useContentStyle(props, elForm, isNested, computedLabelWidth) {
 }
 
 function useFieldValue(props, elForm) {
+  const initialValue = ref()
   const fieldValue = computed(() => {
     const model = elForm.model
     if (!model || !props.prop) {
@@ -250,13 +251,11 @@ function useFieldValue(props, elForm) {
     return getPropByPath(model, path, true).v
   })
 
-  let initialValue
   onMounted(function () {
     if (props.prop) {
-      initialValue = unref(fieldValue)
-
-      if (Array.isArray(initialValue)) {
-        initialValue = initialValue.slice()
+      initialValue.value = unref(fieldValue)
+      if (Array.isArray(initialValue.value)) {
+        initialValue.value = initialValue.value.slice()
       }
     }
   })
@@ -353,7 +352,6 @@ const useRules = (props, elForm) => {
 
   const getFilteredRule = (trigger) => {
     const rules = getRules()
-
     return rules
       .filter((rule) => {
         if (!rule.trigger || trigger === '') return true
@@ -393,12 +391,12 @@ function useValidate(props, elForm, getFilteredRule, getRules) {
   const validate = (trigger, callback = noop) => {
     validateDisabled.value = false
     const rules = getFilteredRule(trigger)
+    validateState.value = 'validating'
     if ((!rules || rules.length === 0) && props.required === undefined) {
       callback()
       return true
     }
 
-    validateState.value = 'validating'
 
     const descriptor = {}
     if (rules && rules.length > 0) {
@@ -410,9 +408,7 @@ function useValidate(props, elForm, getFilteredRule, getRules) {
 
     const validator = new AsyncValidator(descriptor)
     const model = {}
-
     model[props.prop] = unref(fieldValue)
-
     validator.validate(
       model,
       { firstFields: true },
@@ -453,9 +449,9 @@ function useValidate(props, elForm, getFilteredRule, getRules) {
 
     validateDisabled.value = true
     if (Array.isArray(value)) {
-      prop.o[prop.k] = [].concat(initialValue)
+      prop.o[prop.k] = [].concat(initialValue.value)
     } else {
-      prop.o[prop.k] = initialValue
+      prop.o[prop.k] = initialValue.value
     }
 
     // reset validateDisabled after onFieldChange triggered
@@ -463,7 +459,7 @@ function useValidate(props, elForm, getFilteredRule, getRules) {
       validateDisabled.value = false
     })
 
-    broadcast('ElTimeSelect', 'fieldReset', initialValue)
+    broadcast('ElTimeSelect', 'fieldReset', initialValue.value)
   }
 
   return {
