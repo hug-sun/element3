@@ -34,7 +34,7 @@
 |            Button             |   ✅   | 修改 From 组件时需要处理一些逻辑 |
 |             Link              |   ✅   |                无                |
 |         Radio 单选框          |   ✅   | 修改 From 组件时需要处理一些逻辑 |
-|        Checkbox 多选框        |   ❌   |                无                |
+|        Checkbox 多选框        |   ✅   |  修改 From 组件时需要处理一些逻辑 |
 |         Input 输入框          |   ❌   |                无                |
 |      InputNumber 计数器       |   ❌   |                无                |
 |         Select 选择器         |   ❌   |                无                |

@@ -98,13 +98,13 @@
       return {
         checkAll: false,
         checkedCities: ['上海', '北京'],
-        cities: cityOptions,
+        cities: [...cityOptions], // modelValue 与 cities不能为同一个数组
         isIndeterminate: true
       };
     },
     methods: {
       handleCheckAllChange(val) {
-        this.checkedCities = val ? cityOptions : [];
+        this.checkedCities = val ? cityOptions : []; 
         this.isIndeterminate = false;
       },
       handleCheckedCitiesChange(value) {
@@ -240,10 +240,10 @@
 ### Checkbox Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| value / v-model | 绑定值 | string / number / boolean | — | — |
+| modelValue / v-model | 绑定值 | string / number / boolean | — | — |
 | label     | 选中状态的值（只有在`checkbox-group`或者绑定对象类型为`array`时有效）| string / number / boolean  |       —        |     —    |
-| true-label | 选中时的值   | string / number | — |     —    |
-| false-label | 没有选中时的值   | string / number    |      —         |     —    |
+| true-label | 选中时的值   | string / number | — |     true    |
+| false-label | 没有选中时的值   | string / number    |      —         |     false    |
 | disabled  | 是否禁用    | boolean   |  — | false   |
 | border  | 是否显示边框  | boolean   | — | false   |
 | size  | Checkbox 的尺寸，仅在 border 为真时有效  | string  | medium / small / mini | — |
@@ -259,9 +259,10 @@
 ### Checkbox-group Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| value / v-model | 绑定值 | array | — | — |
+| modeValue / v-model | 绑定值 | array | — | — |
 | size     | 多选框组尺寸，仅对按钮形式的 Checkbox 或带有边框的 Checkbox 有效   | string  | medium / small / mini  |    —     |
 | disabled  | 是否禁用    | boolean   | — | false   |
+| border  | 是否显示边框    | boolean   | — | false   |
 | min     | 可被勾选的 checkbox 的最小数量   | number    |       —        |     —    |
 | max     | 可被勾选的 checkbox 的最大数量   | number    |       —        |     —    |
 | text-color  | 按钮形式的 Checkbox 激活时的文本颜色    | string   | — | #ffffff   |
@@ -276,8 +277,9 @@
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
 | label     | 选中状态的值（只有在`checkbox-group`或者绑定对象类型为`array`时有效）| string / number / boolean  |       —        |     —    |
-| true-label | 选中时的值   | string / number | — |     —    |
-| false-label | 没有选中时的值   | string / number    |      —         |     —    |
+| size  | CheckboxButton 的尺寸  | string  | medium / small / mini | — |
+| true-label | 选中时的值   | string / number | — |     true    |
+| false-label | 没有选中时的值   | string / number    |      —         |     false    |
 | disabled  | 是否禁用    | boolean   |  — | false   |
 | name | 原生 name 属性 | string    |      —         |     —    |
-| checked  | 当前是否勾选    | boolean   |  — | false   |
+| checked  | 当前是否勾选    | boolean   |  — | —   |

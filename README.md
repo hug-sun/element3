@@ -16,7 +16,7 @@
 
 ### form
 - [x] radio
-- [ ] checkbox
+- [x] checkbox
 - [ ] input
 - [ ] inputNumber
 - [ ] select
