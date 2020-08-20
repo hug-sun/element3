@@ -152,7 +152,7 @@ describe('Radio Group', () => {
       expect(radio.value).toEqual(3)
       await wrapper.findComponent(Radio).trigger('keydown', {keyCode: 37})
       expect(radio.value).toEqual(3)
-    });
+    })
   })
 })
 

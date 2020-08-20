@@ -1,4 +1,4 @@
-import ElIcon from './src/icon.vue'
+import ElIcon from './Icon'
 
 /* istanbul ignore next */
 ElIcon.install = function(app) {
