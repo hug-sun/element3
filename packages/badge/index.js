@@ -1,4 +1,4 @@
-import Badge from './src/main'
+import Badge from './Badge.vue'
 
 /* istanbul ignore next */
 Badge.install = function(app) {
