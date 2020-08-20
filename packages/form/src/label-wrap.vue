@@ -23,11 +23,11 @@ export default {
       if (props.isAutoWidth) {
         return (
           <div ref={labelRef} class="el-form-item__label-wrap" style={labelStyle}>
-            {slots.default}
+            {slots.default()}
           </div>
         )
       } else {
-        return slots.default[0]
+        return slots.default()
       }
     }
   },
@@ -42,8 +42,8 @@ function useLabelWidth(props, slots) {
   const getLabelWidth = () => {
     const $el = unref(labelRef)
     if ($el && $el.firstElementChild) {
-      const computedWidth = window.getComputedStyle($el.firstElementChild).width
-      return Math.ceil(parseFloat(computedWidth))
+      const { width } = window.getComputedStyle($el.firstElementChild)
+      return Math.ceil(parseFloat(width))
     } else {
       return 0
     }
