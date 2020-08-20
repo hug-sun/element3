@@ -4,6 +4,9 @@ import Input from '../packages/input/index.js';
 import Radio from '../packages/radio/index.js';
 import RadioGroup from '../packages/radio-group/index.js';
 import RadioButton from '../packages/radio-button/index.js';
+import Checkbox from '../packages/checkbox/index.js';
+import CheckboxButton from '../packages/checkbox-button/index.js';
+import CheckboxGroup from '../packages/checkbox-group/index.js';
 import Switch from '../packages/switch/index.js';
 import Button from '../packages/button/index.js';
 import ButtonGroup from '../packages/button-group/index.js';
@@ -17,6 +20,7 @@ import Icon from '../packages/icon/index.js';
 import Row from '../packages/row/index.js';
 import Col from '../packages/col/index.js';
 import Badge from '../packages/badge/index.js';
+import Rate from '../packages/rate/index.js';
 import Carousel from '../packages/carousel/index.js';
 import Scrollbar from '../packages/scrollbar/index.js';
 import Container from '../packages/container/index.js';
@@ -37,6 +41,9 @@ const components = [
   Radio,
   RadioGroup,
   RadioButton,
+  Checkbox,
+  CheckboxButton,
+  CheckboxGroup,
   Switch,
   Button,
   ButtonGroup,
@@ -50,6 +57,7 @@ const components = [
   Row,
   Col,
   Badge,
+  Rate,
   Carousel,
   Scrollbar,
   Container,
@@ -106,6 +114,9 @@ export default {
   Radio,
   RadioGroup,
   RadioButton,
+  Checkbox,
+  CheckboxButton,
+  CheckboxGroup,
   Switch,
   Button,
   ButtonGroup,
@@ -119,6 +130,7 @@ export default {
   Row,
   Col,
   Badge,
+  Rate,
   Carousel,
   Scrollbar,
   Container,

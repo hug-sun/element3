@@ -65,12 +65,8 @@
 </template>
 
 <script>
-import ElCheckbox from "packages/checkbox/Checkbox";
-import ElCheckboxButton from "packages/checkbox-button/CheckboxButton";
-import ElCheckboxGroup from "packages/checkbox-group/CheckboxGroup";
 const cityOptions = ["上海", "北京", "广州", "深圳"];
 export default {
-  components: { ElCheckbox, ElCheckboxGroup, ElCheckboxButton },
   data() {
     return {
       checkList: [],
