@@ -14,7 +14,7 @@ export function useModel() { // core
       // Resolve: `isArray(modelValue) ? [...modelValue] : modelValue`, but doing so will invalidate the `checked` prop.
     },
     set({ label, checked }) {
-      if (label) { // when modelValue or elCheckboxGroup.modeValue is array
+      if (label && isArray(model.value)) { // when modelValue or elCheckboxGroup.modeValue is array
         const modelValue = model.value
         const labelIndex = modelValue.indexOf(label)
         labelIndex === -1 && checked === true && modelValue.push(label)
