@@ -50,6 +50,7 @@
 import {
   computed,
   provide,
+  reactive,
   inject,
   ref,
   unref,
@@ -140,12 +141,12 @@ export default {
       validateDisabled
     )
 
-    provide('elFormItem', {
+    provide('elFormItem', reactive({
       name: 'ElFormItem',
       elFormItemSize,
       updateComputedLabelWidth,
       validateState,
-    })
+    }))
 
     return {
       labelFor,

@@ -62,7 +62,7 @@ export default {
       validateOnRuleChange
     )
 
-    provide('elForm', {
+    provide('elForm', reactive({
       name: 'ElForm',
       ...rest,
       autoLabelWidth,
@@ -72,7 +72,7 @@ export default {
       validateField,
       validate,
       clearValidate,
-    })
+    }))
   },
 }
 
