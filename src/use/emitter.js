@@ -102,6 +102,8 @@ function broadcast() {
       if (children) {
         children.forEach((vnode) => {
           const childComponent = vnode.component
+          if (!childComponent) return
+
           if (childComponent.type.name === componentName) {
             childComponent.emit(eventName, ...params)
           } else {
