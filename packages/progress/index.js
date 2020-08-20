@@ -1,4 +1,4 @@
-import ElProgress from './src/progress'
+import ElProgress from './Progress'
 
 /* istanbul ignore next */
 ElProgress.install = function(app) {
