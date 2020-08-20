@@ -195,13 +195,13 @@ function useLabel(props, elForm) {
 function useFontSize(props, elForm) {
   const _this = getCurrentInstance()
 
-  const elFormItemSize = () => {
-    return props.size || elForm.size
-  }
+  const elFormItemSize = computed(() => {
+    return props.size || unref(elForm.size)
+  })
 
-  const sizeClass = () => {
+  const sizeClass = computed(() => {
     return unref(elFormItemSize) || (_this.$ELEMENT || {}).size
-  }
+  })
 
   return {
     elFormItemSize,
