@@ -73,6 +73,13 @@ export default {
       validate,
       clearValidate,
     }))
+
+    return {
+      validate,
+      validateField,
+      resetFields,
+      clearValidate
+    }
   },
 }
 
