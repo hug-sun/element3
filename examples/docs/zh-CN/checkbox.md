@@ -98,13 +98,13 @@
       return {
         checkAll: false,
         checkedCities: ['上海', '北京'],
-        cities: [...cityOptions], // modelValue 与 cities不能为同一个数组
+        cities: cityOptions, // modelValue 与 cities不能为同一个数组
         isIndeterminate: true
       };
     },
     methods: {
       handleCheckAllChange(val) {
-        this.checkedCities = val ? cityOptions : []; 
+        this.checkedCities = val ? [...cityOptions] : []; 
         this.isIndeterminate = false;
       },
       handleCheckedCitiesChange(value) {
