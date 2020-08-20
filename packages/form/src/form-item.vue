@@ -273,12 +273,12 @@ function useDispatchFiled(props) {
 
   onMounted(() => {
     if (props.prop) {
-      dispatch('ElForm', 'el.form.addField', [ctx])
+      dispatch('ElForm', 'el.form.addField', ctx)
     }
   })
 
   onBeforeUnmount(() => {
-    dispatch('ElForm', 'el.form.removeField', [ctx])
+    dispatch('ElForm', 'el.form.removeField', ctx)
   })
 }
 
