@@ -1,4 +1,4 @@
-import ElAlert from './src/main'
+import ElAlert from './Alert.vue'
 
 /* istanbul ignore next */
 ElAlert.install = function(app) {
