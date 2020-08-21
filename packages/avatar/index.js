@@ -1,4 +1,4 @@
-import Avatar from './src/main'
+import Avatar from './Avatar.vue'
 
 /* istanbul ignore next */
 Avatar.install = function(app) {
