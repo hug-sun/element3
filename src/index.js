@@ -5,7 +5,6 @@ import Radio from '../packages/radio/index.js';
 import RadioGroup from '../packages/radio-group/index.js';
 import RadioButton from '../packages/radio-button/index.js';
 import Switch from '../packages/switch/index.js';
-import Select from '../packages/select/index.js';
 import Button from '../packages/button/index.js';
 import ButtonGroup from '../packages/button-group/index.js';
 import Popover from '../packages/popover/index.js';
@@ -41,7 +40,6 @@ const components = [
   RadioGroup,
   RadioButton,
   Switch,
-  Select,
   Button,
   ButtonGroup,
   Popover,
@@ -113,7 +111,6 @@ export default {
   RadioGroup,
   RadioButton,
   Switch,
-  Select,
   Button,
   ButtonGroup,
   Popover,

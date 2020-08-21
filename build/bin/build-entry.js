@@ -81,6 +81,7 @@ ComponentNames.forEach(name => {
     'carousel',
     'breadcrumb',
     'breadcrumb-item',
+    'dialog',
     'rate',
     'divider',
     'progress'

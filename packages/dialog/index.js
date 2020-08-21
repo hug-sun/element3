@@ -1,4 +1,4 @@
-import ElDialog from './src/component'
+import ElDialog from './Dialog'
 
 /* istanbul ignore next */
 ElDialog.install = function(app) {

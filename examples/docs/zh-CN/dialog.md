@@ -14,12 +14,18 @@ Dialog 弹出一个对话框，适合需要定制性更大的场景。
   title="提示"
   :visible.sync="dialogVisible"
   width="30%"
-  :before-close="handleClose">
-  <span>这是一段信息</span>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span>
+  :before-close="handleClose"
+  v-model:visible="dialogVisible"
+  >
+  <template v-slot:default>
+    <span>这是一段信息</span>
+  </template>
+  <template v-slot:footer>
+    <span class="dialog-footer">
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    </span>
+  </template>
 </el-dialog>
 
 <script>
@@ -56,7 +62,11 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
 <!-- Table -->
 <el-button type="text" @click="dialogTableVisible = true">打开嵌套表格的 Dialog</el-button>
 
-<el-dialog title="收货地址" :visible.sync="dialogTableVisible">
+<el-dialog 
+  title="收货地址" 
+  :visible.sync="dialogTableVisible"
+  v-model:visible="dialogTableVisible"
+>
   <el-table :data="gridData">
     <el-table-column property="date" label="日期" width="150"></el-table-column>
     <el-table-column property="name" label="姓名" width="200"></el-table-column>
@@ -67,22 +77,26 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
 <!-- Form -->
 <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
 
-<el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-  <el-form :model="form">
-    <el-form-item label="活动名称" :label-width="formLabelWidth">
-      <el-input v-model="form.name" autocomplete="off"></el-input>
-    </el-form-item>
-    <el-form-item label="活动区域" :label-width="formLabelWidth">
-      <el-select v-model="form.region" placeholder="请选择活动区域">
-        <el-option label="区域一" value="shanghai"></el-option>
-        <el-option label="区域二" value="beijing"></el-option>
-      </el-select>
-    </el-form-item>
-  </el-form>
-  <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-  </div>
+<el-dialog title="收货地址" :visible.sync="dialogFormVisible"  v-model:visible="dialogFormVisible">
+  <template v-slot:default>
+    <el-form :model="form">
+      <el-form-item label="活动名称" :label-width="formLabelWidth">
+        <el-input v-model="form.name" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="活动区域" :label-width="formLabelWidth">
+        <el-select v-model="form.region" placeholder="请选择活动区域">
+          <el-option label="区域一" value="shanghai"></el-option>
+          <el-option label="区域二" value="beijing"></el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
+  </template>
+  <template v-slot:footer>
+    <div class="dialog-footer">
+      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+    </div>
+  </template>
 </el-dialog>
 
 <script>
@@ -130,22 +144,25 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
 如果需要在一个 Dialog 内部嵌套另一个 Dialog，需要使用 `append-to-body` 属性。
 :::demo 正常情况下，我们不建议使用嵌套的 Dialog，如果需要在页面上同时显示多个 Dialog，可以将它们平级放置。对于确实需要嵌套 Dialog 的场景，我们提供了`append-to-body`属性。将内层 Dialog 的该属性设置为 true，它就会插入至 body 元素上，从而保证内外层 Dialog 和遮罩层级关系的正确。
 ```html
-<template>
   <el-button type="text" @click="outerVisible = true">点击打开外层 Dialog</el-button>
   
-  <el-dialog title="外层 Dialog" :visible.sync="outerVisible">
-    <el-dialog
-      width="30%"
-      title="内层 Dialog"
-      :visible.sync="innerVisible"
-      append-to-body>
-    </el-dialog>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="outerVisible = false">取 消</el-button>
-      <el-button type="primary" @click="innerVisible = true">打开内层 Dialog</el-button>
-    </div>
+  <el-dialog title="外层 Dialog" :visible.sync="outerVisible" v-model:visible="outerVisible">
+  <template v-slot:default>
+      <el-dialog
+        width="30%"
+        title="内层 Dialog"
+        :visible.sync="innerVisible"
+        v-model:visible="innerVisible"
+        append-to-body>
+      </el-dialog>
+    </template>
+    <template v-slot:footer>
+      <div class="dialog-footer">
+        <el-button @click="outerVisible = false">取 消</el-button>
+        <el-button type="primary" @click="innerVisible = true">打开内层 Dialog</el-button>
+      </div>
+    </template>
   </el-dialog>
-</template>
 
 <script>
   export default {
@@ -172,13 +189,18 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
 <el-dialog
   title="提示"
   :visible.sync="centerDialogVisible"
+   v-model:visible="centerDialogVisible"
   width="30%"
   center>
-  <span>需要注意的是内容是默认不居中的</span>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="centerDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
-  </span>
+  <template v-slot:default>
+    <span>需要注意的是内容是默认不居中的</span>
+  </template>
+  <template v-slot:footer>
+    <span class="dialog-footer">
+      <el-button @click="centerDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+    </span>
+  </template>
 </el-dialog>
 
 <script>
