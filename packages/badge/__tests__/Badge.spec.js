@@ -1,4 +1,4 @@
-import Badge from '../../../packages/badge/src/main.vue'
+import Badge from '../Badge.vue'
 import { mount } from '@vue/test-utils'
 import '@testing-library/jest-dom'
 describe('Badge', () => {

@@ -54,7 +54,7 @@
 |        Progress 进度条        |   ❌   |                                  |
 |         Tree 树形控件         |   ❌   |                                  |
 |        Pagination 分页        |   ❌   |                                  |
-|          Badge 标记           |   ❌   |                                  |
+|          Badge 标记           |   ✅   | 无 |
 |          Avatar 头像          |   ❌   |                                  |
 |          Alert 警告           |   ✅   |                                  |
 |         Loading 加载          |   ❌   |                                  |

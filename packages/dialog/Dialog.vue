@@ -52,6 +52,7 @@ import {
 export default {
   name: "ElDialog",
   props: {
+     ...popupProps,
     title: {
       type: String,
       default: "",
@@ -105,8 +106,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    destroyOnClose: Boolean,
-    ...popupProps,
+    destroyOnClose: Boolean
   },
   emits: ["update:visible", "close", "opened","open","closed"],
   setup(props, { emit, slots }) {

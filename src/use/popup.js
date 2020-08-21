@@ -92,11 +92,12 @@ function usePopup(props) {
       PopupManager.zIndex = zIndex.value
     }
     if (modal&&modal.value) {
+      
       if (_closing) {
         PopupManager.closeModal(_popupId)
         _closing = false
       }
-      PopupManager.openModal(_popupId, PopupManager.nextZIndex(), modalAppendToBody.value ? undefined : dom, modalClass.value, modalFade.value)
+      PopupManager.openModal(_popupId, PopupManager.nextZIndex(), (modalAppendToBody.value) ? undefined : dom,  modalClass?modalClass.value:"", modalFade.value)
       if (lockScroll.value) {
         withoutHiddenClass.value = !hasClass(document.body, 'el-popup-parent--hidden')
         if (withoutHiddenClass.value) {
@@ -131,7 +132,7 @@ function usePopup(props) {
       _openTimer = 0;
     }
     clearTimeout(_closeTimer)
-    const delay = Number(closeDelay.value)
+    const delay = Number(closeDelay&&closeDelay.value)
     if (delay > 0) {
       _closeTimer = setTimeout(() => {
         _closeTimer = 0;
