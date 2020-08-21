@@ -111,75 +111,62 @@
 import {
   reactive,
   toRefs,
-  inject,
-  ref,
   getCurrentInstance,
   toRef,
   onMounted,
   onUpdated,
   nextTick,
   watch,
-  unref,
-} from "vue";
-import emitter from "element-ui/src/mixins/emitter";
-import Migrating from "element-ui/src/mixins/migrating";
+  unref
+} from 'vue'
+import emitter from 'element-ui/src/mixins/emitter'
+import { useEmitter } from 'element-ui/src/use/emitter'
 import {
   useValidate,
   useTextarea,
   useInput,
   useInteractive,
-  useStatusIcon,
-} from "./use";
+  useStatusIcon
+} from './use'
 
 export default {
-  name: "ElInput",
+  name: 'ElInput',
 
-  componentName: "ElInput",
+  componentName: 'ElInput',
 
-  mixins: [emitter, Migrating],
+  mixins: [emitter],
 
   inheritAttrs: false,
 
   inject: {
     elForm: {
-      default: "",
+      default: ''
     },
     elFormItem: {
-      default: "",
-    },
+      default: ''
+    }
   },
 
-  emits: ["input", "change", "blur", "clear", "focus", "update:modelValue"],
+  emits: ['input', 'change', 'blur', 'clear', 'focus', 'update:modelValue'],
 
   setup(props, { attrs, emit, slots }) {
+    const { dispatch } = useEmitter()
+
     const state = reactive({
       textareaCalcStyle: {},
       hovering: false,
       focused: false,
       isComposing: false,
-      passwordVisible: false,
-    });
-    const {
-      size,
-      disabled,
-      resize,
-      autosize,
-      type,
-      modelValue,
-      showWordLimit,
-      readonly,
-      showPassword,
-      validateEvent,
-      clearable,
-      suffixIcon,
-    } = toRefs(props);
-    const instance = getCurrentInstance();
-    const { needStatusIcon } = useStatusIcon();
-    const { validateState, validateIcon } = useValidate();
+      passwordVisible: false
+    })
+    const { type, modelValue, validateEvent } = toRefs(props)
+    const instance = getCurrentInstance()
+    const { needStatusIcon } = useStatusIcon()
+    const { validateState, validateIcon } = useValidate()
     const { textarea, textareaStyle, resizeTextarea } = useTextarea(
       toRefs(props),
-      toRef(state, "textareaCalcStyle")
-    );
+      toRef(state, 'textareaCalcStyle')
+    )
     const {
       input,
       inputSize,
@@ -191,7 +178,7 @@ export default {
       inputExceed,
       showClear,
       showPwdVisible,
-      getSuffixVisible,
+      getSuffixVisible
     } = useInput(
       toRefs(props),
       toRefs(state),
@@ -201,7 +188,7 @@ export default {
       validateState,
       needStatusIcon,
       slots
-    );
+    )
 
     const {
       focus,
@@ -217,7 +204,7 @@ export default {
       handleCompositionEnd,
       clear,
       handlePasswordVisible,
-      updateIconOffset,
+      updateIconOffset
     } = useInteractive(
       instance,
       input,
@@ -227,7 +214,7 @@ export default {
       nativeInputValue,
       emit,
       slots
-    );
+    )
 
     // when change between <input> and <textarea>,
     // update DOM dependent value and styles
@@ -236,34 +223,34 @@ export default {
       () => unref(type),
       () => {
         nextTick(() => {
-          setNativeInputValue();
-          resizeTextarea();
-          updateIconOffset();
-        });
+          setNativeInputValue()
+          resizeTextarea()
+          updateIconOffset()
+        })
       }
-    );
+    )
     watch(
       () => unref(modelValue),
       (val) => {
         nextTick(() => {
-          setNativeInputValue();
-          resizeTextarea();
-        });
+          setNativeInputValue()
+          resizeTextarea()
+        })
         if (unref(validateEvent)) {
-          instance.proxy.dispatch("ElFormItem", "el.form.change", [val]);
+          dispatch('ElFormItem', 'el.form.change', val)
         }
       }
-    );
+    )
 
     onMounted(() => {
-      setNativeInputValue();
-      resizeTextarea();
-      updateIconOffset();
-    });
+      setNativeInputValue()
+      resizeTextarea()
+      updateIconOffset()
+    })
 
     onUpdated(() => {
-      nextTick(updateIconOffset);
-    });
+      nextTick(updateIconOffset)
+    })
 
     return {
       ...toRefs(state),
@@ -297,8 +284,8 @@ export default {
       clear,
       handlePasswordVisible,
       updateIconOffset,
-      needStatusIcon,
-    };
+      needStatusIcon
+    }
   },
 
   props: {
@@ -310,49 +297,36 @@ export default {
     readonly: Boolean,
     type: {
       type: String,
-      default: "text",
+      default: 'text'
     },
     autosize: {
       type: [Boolean, Object],
-      default: false,
+      default: false
     },
     autocomplete: {
       type: String,
-      default: "off",
+      default: 'off'
     },
     validateEvent: {
       type: Boolean,
-      default: true,
+      default: true
     },
     suffixIcon: String,
     prefixIcon: String,
     label: String,
     clearable: {
       type: Boolean,
-      default: false,
+      default: false
     },
     showPassword: {
       type: Boolean,
-      default: false,
+      default: false
     },
     showWordLimit: {
       type: Boolean,
-      default: false,
+      default: false
     },
-    tabindex: String,
-  },
-  methods: {
-    getMigratingConfig() {
-      return {
-        props: {
-          icon: "icon is removed, use suffix-icon / prefix-icon instead.",
-          "on-icon-click": "on-icon-click is removed.",
-        },
-        events: {
-          click: "click is removed.",
-        },
-      };
-    },
-  },
-};
+    tabindex: String
+  }
+}
 </script>
