@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Link from '../../../packages/link/src/main.vue'
+import Link from '../Link.vue'
 describe('Link', () => {
   describe('props', () => {
     it('type', () => {

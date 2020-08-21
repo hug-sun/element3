@@ -63,7 +63,7 @@ export default {
     round: Boolean,
     circle: Boolean
   },
-
+  emits: ['click'],
   setup(props, ctx) {
     const { size, disabled } = toRefs(props)
 

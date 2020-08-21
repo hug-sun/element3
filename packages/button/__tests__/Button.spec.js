@@ -99,6 +99,30 @@ describe('Button.vue', () => {
     wrapper.trigger('click')
 
     expect(wrapper.emitted('click')).toBeTruthy()
+    expect(wrapper.emitted('click').length).toBe(1)
+  })
+
+  it('should only will trigger a click event', async() => {
+    let count = 0
+    const Comp = {
+      template: '<div><el-button @click="handleClick"></el-button></div>',
+      setup() {
+        const handleClick = ()=> count++
+        return { handleClick }
+      }
+    }
+
+    const wrapper = mount(Comp, {
+      global: {
+        components: {
+          'el-button': Button
+        }
+      }
+    })
+
+    await wrapper.findComponent({name: 'ElButton'}).trigger('click')
+
+    expect(count).toBe(1)
   })
 
   it("can't captures click events emitted via click when loading ", () => {

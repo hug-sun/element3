@@ -54,7 +54,7 @@
 |        Progress 进度条        |   ❌   |                                  |
 |         Tree 树形控件         |   ❌   |                                  |
 |        Pagination 分页        |   ❌   |                                  |
-|          Badge 标记           |   ❌   |                                  |
+|          Badge 标记           |   ✅   | 无 |
 |          Avatar 头像          |   ❌   |                                  |
 |          Alert 警告           |   ✅   |                                  |
 |         Loading 加载          |   ❌   |                                  |
@@ -75,7 +75,7 @@
 |        Carousel 走马灯        |   ✅   |                                  |
 |       Collapse 折叠面板       |   ❌   |                                  |
 |        Timeline 时间线        |   ❌   |                                  |
-|        Divider 分割线         |   ❌   |                                  |
+|        Divider 分割线         |   ✅   |  功能完成，没写测试
 |         Calendar 日历         |   ❌   |                                  |
 |          Image 图片           |   ❌   |                                  |
 |       Backtop 回到顶部        |   ❌   |                                  |
