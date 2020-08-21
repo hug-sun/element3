@@ -1,7 +1,7 @@
 import {h} from 'vue'
 import { mount } from '@vue/test-utils'
-import Carousel from '../../../packages/carousel/src/main'
-import CarouselItem from '../../../packages/carousel/src/item'
+import Carousel from '../Carousel.vue'
+import CarouselItem from '../../carousel-item/CarouselItem.vue'
 
 describe('Carousel', () => {
 
