@@ -293,7 +293,7 @@ describe('Form', () => {
     const wrapper = mount({
       template: `<el-form :model="form" :rules="rules" ref="form" @validate="onValidate">
         <el-form-item label="活动名称" prop="name">
-          <input @change="onChange" v-model="form.name" />
+          <input v-model="form.name" />
         </el-form-item>
       </el-form>`,
       components,
