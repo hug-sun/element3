@@ -1,9 +1,8 @@
-import Input from '../../../packages/input/src/input.vue'
+import Input from '../Input.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 
 // todo
-// 希望把jest改成kama  jest 做端到端 不大好控制
 // autosize case:  jest jsdom 不会真实计算高度，所以case要调整。但是，已在浏览器测试通过。
 
 const globalOption = {

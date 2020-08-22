@@ -16,7 +16,9 @@ import Alert from '../packages/alert/index.js';
 import Icon from '../packages/icon/index.js';
 import Row from '../packages/row/index.js';
 import Col from '../packages/col/index.js';
+import Progress from '../packages/progress/index.js';
 import Badge from '../packages/badge/index.js';
+import Rate from '../packages/rate/index.js';
 import Carousel from '../packages/carousel/index.js';
 import Scrollbar from '../packages/scrollbar/index.js';
 import Container from '../packages/container/index.js';
@@ -25,6 +27,7 @@ import Aside from '../packages/aside/index.js';
 import Main from '../packages/main/index.js';
 import Footer from '../packages/footer/index.js';
 import Link from '../packages/link/index.js';
+import Divider from '../packages/divider/index.js';
 import Backtop from '../packages/backtop/index.js';
 import Avatar from '../packages/avatar/index.js';
 import locale from 'element-ui/src/locale';
@@ -48,7 +51,9 @@ const components = [
   Icon,
   Row,
   Col,
+  Progress,
   Badge,
+  Rate,
   Carousel,
   Scrollbar,
   Container,
@@ -57,6 +62,7 @@ const components = [
   Main,
   Footer,
   Link,
+  Divider,
   Backtop,
   Avatar,
    CollapseTransition
@@ -116,7 +122,9 @@ export default {
   Icon,
   Row,
   Col,
+  Progress,
   Badge,
+  Rate,
   Carousel,
   Scrollbar,
   Container,
@@ -125,6 +133,7 @@ export default {
   Main,
   Footer,
   Link,
+  Divider,
   Backtop,
   Avatar
 };

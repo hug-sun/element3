@@ -1,4 +1,4 @@
-import Alert from '../../../packages/alert/src/main.vue'
+import Alert from '../Alert.vue'
 import { mount } from '@vue/test-utils'
 describe('Alert.vue', () => {
   describe('props', () => {

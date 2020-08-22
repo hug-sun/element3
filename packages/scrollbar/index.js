@@ -1,4 +1,4 @@
-import Scrollbar from './src/main'
+import Scrollbar from './Scrollbar'
 
 /* istanbul ignore next */
 Scrollbar.install = function(app) {

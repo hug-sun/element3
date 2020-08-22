@@ -1,4 +1,4 @@
-import Tag from '../../../packages/tag/src/tag.vue'
+import Tag from '../Tag.vue'
 import { mount } from '@vue/test-utils'
 
 describe('Tag.vue', () => {

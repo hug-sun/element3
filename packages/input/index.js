@@ -1,4 +1,4 @@
-import ElInput from './src/input'
+import ElInput from './Input.vue'
 
 /* istanbul ignore next */
 ElInput.install = function(app) {

@@ -1,4 +1,4 @@
-import ElTag from './src/tag'
+import ElTag from './Tag.vue'
 
 /* istanbul ignore next */
 ElTag.install = function(app) {
