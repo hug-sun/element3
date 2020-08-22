@@ -6,44 +6,47 @@
 </template>
 
 <script>
+import { useEmitter } from 'element-ui/src/use/emitter'
 import { provide, getCurrentInstance, computed, inject, watch } from 'vue';
-  export default {
-    name: 'ElCheckboxGroup',
+export default {
+  name: 'ElCheckboxGroup',
 
-    props: {
-      modelValue: Array,
-      disabled: Boolean,
-      min: Number,
-      max: Number,
-      size: String,
-      fill: String,
-      textColor: String,
-      border: Boolean
-    },
+  props: {
+    modelValue: Array,
+    disabled: Boolean,
+    min: Number,
+    max: Number,
+    size: String,
+    fill: String,
+    textColor: String,
+    border: Boolean
+  },
 
-    emits:[ 'update:modelValue', 'change' ],
+  emits:[ 'update:modelValue', 'change' ],
 
-    setup(props) {
-      const elForm = inject("elForm", { props:{}, ctx:{} });
-      const elFormItem = inject("elFormItem", { props:{}, ctx:{}, emit:()=>{} });
-      provide('elCheckboxGroup', getCurrentInstance());
+  setup(props) {
+    const elForm = inject("elForm", { props:{}, ctx:{} });
+    const elFormItem = inject("elFormItem", { props:{}, ctx:{}, emit:()=>{} });
+    provide('elCheckboxGroup', getCurrentInstance());
 
-      const checkboxGroupSize = computed(()=>{
-        return props.size || elFormItem.ctx.elFormItemSize;
-      })
+    const { dispatch } = useEmitter();
 
-      const checkboxGroupDisabled = computed(()=>{
-        return props.disabled || elFormItem.props.disabled || elForm.props.disabled;
-      })
+    const checkboxGroupSize = computed(()=>{
+      return props.size || elFormItem.ctx.elFormItemSize;
+    })
 
-      watch(props.modelValue, (v)=>{
-        elFormItem.emit('el.form.change',v)
-      })
+    const checkboxGroupDisabled = computed(()=>{
+      return props.disabled || elFormItem.props.disabled || elForm.props.disabled;
+    })
 
-      return {
-        checkboxGroupSize,
-        checkboxGroupDisabled
-      }
+    watch(props.modelValue, (v)=>{
+      dispatch('ElFormItem', 'el.form.change', v);
+    })
+
+    return {
+      checkboxGroupSize,
+      checkboxGroupDisabled
     }
-  };
+  }
+};
 </script>

@@ -1,10 +1,12 @@
 import { isArray } from '@vue/shared'
 import { computed, ref, onMounted, getCurrentInstance, inject, nextTick } from 'vue'
-import { isAfferentProp } from 'element-ui/src/use/isAfferentProp'
+import { useEmitter } from 'element-ui/src/use/emitter'
+import { usePropUtils } from 'element-ui/src/use/prop-utils'
 
 export function useModel() { // core
   const { emit, props } = getCurrentInstance()
-  const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, emit: () => { } })
+  const elCheckboxGroup = inject('elCheckboxGroup', { props: {} })
+  const { dispatch } = useEmitter()
 
   const model = computed({
     get() {
@@ -20,7 +22,7 @@ export function useModel() { // core
         labelIndex === -1 && checked === true && modelValue.push(label)
         labelIndex !== -1 && checked === false && modelValue.splice(labelIndex, 1)
         emit('update:modelValue', modelValue)
-        elCheckboxGroup.emit('update:modelValue', modelValue)
+        dispatch('ElCheckboxGroup', 'update:modelValue', modelValue)
       } else {
         emit('update:modelValue', checked ? props.trueLabel : props.falseLabel)
       }
@@ -30,7 +32,7 @@ export function useModel() { // core
   async function handleChange() {
     await nextTick()
     emit('change', model.value)
-    elCheckboxGroup.emit('change', model.value)
+    dispatch('ElCheckboxGroup', 'change', model.value)
   }
 
   return { model, handleChange }
@@ -47,6 +49,7 @@ export function useAria() {
 
 export function useCheckSelected({ model }) {
   const { props } = getCurrentInstance()
+  const { isAfferentProp } = usePropUtils()
   const checkbox = ref(null)
 
   onMounted(() => {
