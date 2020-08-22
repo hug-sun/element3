@@ -73,6 +73,7 @@ ComponentNames.forEach(name => {
     'col', 'row',
     'container', 'header', 'footer', 'main', 'aside',
     'radio-group', 'radio-button', 'radio',
+    'checkbox-group', 'checkbox-button', 'checkbox',
     'switch',
     'badge',
     'avatar',

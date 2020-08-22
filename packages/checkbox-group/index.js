@@ -1,4 +1,4 @@
-import ElCheckboxGroup from '../checkbox/src/checkbox-group.vue'
+import ElCheckboxGroup from './CheckboxGroup'
 
 /* istanbul ignore next */
 ElCheckboxGroup.install = function(app) {

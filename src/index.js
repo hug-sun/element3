@@ -4,6 +4,9 @@ import Input from '../packages/input/index.js';
 import Radio from '../packages/radio/index.js';
 import RadioGroup from '../packages/radio-group/index.js';
 import RadioButton from '../packages/radio-button/index.js';
+import Checkbox from '../packages/checkbox/index.js';
+import CheckboxButton from '../packages/checkbox-button/index.js';
+import CheckboxGroup from '../packages/checkbox-group/index.js';
 import Switch from '../packages/switch/index.js';
 import Button from '../packages/button/index.js';
 import ButtonGroup from '../packages/button-group/index.js';
@@ -39,6 +42,9 @@ const components = [
   Radio,
   RadioGroup,
   RadioButton,
+  Checkbox,
+  CheckboxButton,
+  CheckboxGroup,
   Switch,
   Button,
   ButtonGroup,
@@ -110,6 +116,9 @@ export default {
   Radio,
   RadioGroup,
   RadioButton,
+  Checkbox,
+  CheckboxButton,
+  CheckboxGroup,
   Switch,
   Button,
   ButtonGroup,
