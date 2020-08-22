@@ -59,14 +59,13 @@ import {
   onBeforeUnmount,
   nextTick,
   watch,
-  toRefs
 } from 'vue'
 
 import AsyncValidator from 'async-validator'
 import { useEmitter } from 'element-ui/src/use/emitter'
 import objectAssign from 'element-ui/src/utils/merge'
 import { noop, getPropByPath } from 'element-ui/src/utils/util'
-import LabelWrap from './label-wrap'
+import LabelWrap from './LabelWrap.vue'
 export default {
   name: 'ElFormItem',
 
@@ -124,8 +123,6 @@ export default {
     const isRequired = useIsRequired(getRules)
 
     const {
-      fieldValue,
-      initialValue,
       validateState,
       validateMessage,
       validateDisabled,
@@ -386,7 +383,7 @@ function useValidate(props, elForm, getFilteredRule, getRules) {
     { immediate: true }
   )
 
-  watch(() => props.validateStatus, (value) => (validateStatus.value = value))
+  watch(() => props.validateStatus, (value) => (validateState.value = value))
 
   const validate = (trigger, callback = noop) => {
     validateDisabled.value = false
@@ -463,8 +460,6 @@ function useValidate(props, elForm, getFilteredRule, getRules) {
   }
 
   return {
-    fieldValue,
-    initialValue,
     validateState,
     validateMessage,
     validateDisabled,

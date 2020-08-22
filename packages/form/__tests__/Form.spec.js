@@ -1,5 +1,5 @@
-import Form from '../../../packages/form/src/form.vue'
-import FormItem from '../../../packages/form/src/form-item.vue'
+import Form from '../Form.vue'
+import FormItem from '../../form-item/FormItem.vue'
 
 import { mount } from '@vue/test-utils'
 
