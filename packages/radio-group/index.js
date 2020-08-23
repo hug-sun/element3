@@ -1,7 +1,7 @@
 import RadioGroup from './RadioGroup.vue'
 
 /* istanbul ignore next */
-RadioGroup.install = function(app) {
+RadioGroup.install = function (app) {
   app.component(RadioGroup.name, RadioGroup)
 }
 

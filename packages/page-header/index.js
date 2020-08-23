@@ -1,7 +1,7 @@
 import PageHeader from './src/main'
 
 /* istanbul ignore next */
-PageHeader.install = function(app) {
+PageHeader.install = function (app) {
   app.component(PageHeader.name, PageHeader)
 }
 

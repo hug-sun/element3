@@ -2,7 +2,7 @@ import objectAssign from 'element-ui/src/utils/merge'
 import { markNodeData, NODE_KEY } from './util'
 import { arrayFindIndex } from 'element-ui/src/utils/util'
 
-export const getChildState = node => {
+export const getChildState = (node) => {
   let all = true
   let none = true
   let allWithoutDisable = true
@@ -22,10 +22,10 @@ export const getChildState = node => {
   return { all, none, allWithoutDisable, half: !all && !none }
 }
 
-const reInitChecked = function(node) {
+const reInitChecked = function (node) {
   if (node.childNodes.length === 0) return
 
-  const {all, none, half} = getChildState(node.childNodes)
+  const { all, none, half } = getChildState(node.childNodes)
   if (all) {
     node.checked = true
     node.indeterminate = false
@@ -45,7 +45,7 @@ const reInitChecked = function(node) {
   }
 }
 
-const getPropertyFromData = function(node, prop) {
+const getPropertyFromData = function (node, prop) {
   const props = node.store.props
   const data = node.data || {}
   const config = props[prop]
@@ -74,8 +74,8 @@ export default class Node {
     this.visible = true
     this.isCurrent = false
 
-    for (let name in options) {
-      if (options.hasOwnProperty(name)) {
+    for (const name in options) {
+      if (Object.hasOwnProperty.call(options, name)) {
         this[name] = options[name]
       }
     }
@@ -119,11 +119,19 @@ export default class Node {
     if (!this.data) return
     const defaultExpandedKeys = store.defaultExpandedKeys
     const key = store.key
-    if (key && defaultExpandedKeys && defaultExpandedKeys.indexOf(this.key) !== -1) {
+    if (
+      key &&
+      defaultExpandedKeys &&
+      defaultExpandedKeys.indexOf(this.key) !== -1
+    ) {
       this.expand(null, store.autoExpandParent)
     }
 
-    if (key && store.currentNodeKey !== undefined && this.key === store.currentNodeKey) {
+    if (
+      key &&
+      store.currentNodeKey !== undefined &&
+      this.key === store.currentNodeKey
+    ) {
       store.currentNode = this
       store.currentNode.isCurrent = true
     }
@@ -192,7 +200,7 @@ export default class Node {
   }
 
   contains(target, deep = true) {
-    const walk = function(parent) {
+    const walk = function (parent) {
       const children = parent.childNodes || []
       let result = false
       for (let i = 0, j = children.length; i < j; i++) {
@@ -328,7 +336,11 @@ export default class Node {
 
   doCreateChildren(array, defaultProps = {}) {
     array.forEach((item) => {
-      this.insertChild(objectAssign({ data: item }, defaultProps), undefined, true)
+      this.insertChild(
+        objectAssign({ data: item }, defaultProps),
+        undefined,
+        true
+      )
     })
   }
 
@@ -341,12 +353,19 @@ export default class Node {
   }
 
   updateLeafState() {
-    if (this.store.lazy === true && this.loaded !== true && typeof this.isLeafByUser !== 'undefined') {
+    if (
+      this.store.lazy === true &&
+      this.loaded !== true &&
+      typeof this.isLeafByUser !== 'undefined'
+    ) {
       this.isLeaf = this.isLeafByUser
       return
     }
     const childNodes = this.childNodes
-    if (!this.store.lazy || (this.store.lazy === true && this.loaded === true)) {
+    if (
+      !this.store.lazy ||
+      (this.store.lazy === true && this.loaded === true)
+    ) {
       this.isLeaf = !childNodes || childNodes.length === 0
       return
     }
@@ -360,9 +379,9 @@ export default class Node {
     if (this.store.checkStrictly) return
 
     if (!(this.shouldLoadData() && !this.store.checkDescendants)) {
-      let { all, allWithoutDisable } = getChildState(this.childNodes)
+      const { all, allWithoutDisable } = getChildState(this.childNodes)
 
-      if (!this.isLeaf && (!all && allWithoutDisable)) {
+      if (!this.isLeaf && !all && allWithoutDisable) {
         this.checked = false
         value = false
       }
@@ -386,12 +405,15 @@ export default class Node {
 
       if (this.shouldLoadData()) {
         // Only work on lazy load data.
-        this.loadData(() => {
-          handleDescendants()
-          reInitChecked(this)
-        }, {
-          checked: value !== false
-        })
+        this.loadData(
+          () => {
+            handleDescendants()
+            reInitChecked(this)
+          },
+          {
+            checked: value !== false
+          }
+        )
         return
       } else {
         handleDescendants()
@@ -406,7 +428,8 @@ export default class Node {
     }
   }
 
-  getChildren(forceInit = false) { // this is data
+  getChildren(forceInit = false) {
+    // this is data
     if (this.level === 0) return this.data
     const data = this.data
     if (!data) return null
@@ -437,7 +460,8 @@ export default class Node {
 
     newData.forEach((item, index) => {
       const key = item[NODE_KEY]
-      const isNodeExists = !!key && arrayFindIndex(oldData, data => data[NODE_KEY] === key) >= 0
+      const isNodeExists =
+        !!key && arrayFindIndex(oldData, (data) => data[NODE_KEY] === key) >= 0
       if (isNodeExists) {
         newDataMap[key] = { index, data: item }
       } else {
@@ -459,7 +483,12 @@ export default class Node {
   }
 
   loadData(callback, defaultProps = {}) {
-    if (this.store.lazy === true && this.store.load && !this.loaded && (!this.loading || Object.keys(defaultProps).length)) {
+    if (
+      this.store.lazy === true &&
+      this.store.load &&
+      !this.loaded &&
+      (!this.loading || Object.keys(defaultProps).length)
+    ) {
       this.loading = true
 
       const resolve = (children) => {

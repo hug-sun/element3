@@ -1,7 +1,7 @@
 import Header from './src/main'
 
 /* istanbul ignore next */
-Header.install = function(app) {
+Header.install = function (app) {
   app.component(Header.name, Header)
 }
 

@@ -28,16 +28,16 @@ function on() {
 
     if (!instance.vnode.props[eventName]) {
       instance.vnode.props[eventName] = (...params) => {
-        const callbacks = instance.vnode.props[eventName]['__events']
+        const callbacks = instance.vnode.props[eventName].__events
         if (callbacks) {
-          callbacks.forEach(cf => {
+          callbacks.forEach((cf) => {
             cf(...params)
           })
         }
       }
-      instance.vnode.props[eventName]['__events'] = []
+      instance.vnode.props[eventName].__events = []
     }
-    instance.vnode.props[eventName]['__events'].push(callback)
+    instance.vnode.props[eventName].__events.push(callback)
   }
 }
 
@@ -45,13 +45,14 @@ function off() {
   const instance = getCurrentInstance()
 
   return (originalEventName, callback) => {
-    const eventNameList = instance.vnode.props && instance.vnode.props[EVENT_NAME_KEY]
+    const eventNameList =
+      instance.vnode.props && instance.vnode.props[EVENT_NAME_KEY]
     if (!eventNameList || !eventNameList.size) {
       return
     }
 
     if (!originalEventName) {
-      eventNameList.forEach(eventName => {
+      eventNameList.forEach((eventName) => {
         delete instance.vnode.props[eventName]
       })
       eventNameList.clear()
@@ -66,7 +67,9 @@ function off() {
       return
     }
 
-    const handlers = instance.vnode.props[eventName] && instance.vnode.props[eventName]['__events']
+    const handlers =
+      instance.vnode.props[eventName] &&
+      instance.vnode.props[eventName].__events
     if (handlers && handlers.length) {
       const index = handlers.indexOf(callback)
       if (index > -1) {

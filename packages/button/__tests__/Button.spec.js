@@ -102,12 +102,12 @@ describe('Button.vue', () => {
     expect(wrapper.emitted('click').length).toBe(1)
   })
 
-  it('should only will trigger a click event', async() => {
+  it('should only will trigger a click event', async () => {
     let count = 0
     const Comp = {
       template: '<div><el-button @click="handleClick"></el-button></div>',
       setup() {
-        const handleClick = ()=> count++
+        const handleClick = () => count++
         return { handleClick }
       }
     }
@@ -120,7 +120,7 @@ describe('Button.vue', () => {
       }
     })
 
-    await wrapper.findComponent({name: 'ElButton'}).trigger('click')
+    await wrapper.findComponent({ name: 'ElButton' }).trigger('click')
 
     expect(count).toBe(1)
   })

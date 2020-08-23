@@ -35,14 +35,18 @@ export default {
   },
 
   render() {
-    return h(this.tag, {
-      class: [
-        'el-row',
-        this.justify !== 'start' ? `is-justify-${this.justify}` : '',
-        this.align !== 'top' ? `is-align-${this.align}` : '',
-        { 'el-row--flex': this.type === 'flex' }
-      ],
-      style: this.style
-    }, this.$slots.default())
+    return h(
+      this.tag,
+      {
+        class: [
+          'el-row',
+          this.justify !== 'start' ? `is-justify-${this.justify}` : '',
+          this.align !== 'top' ? `is-align-${this.align}` : '',
+          { 'el-row--flex': this.type === 'flex' }
+        ],
+        style: this.style
+      },
+      this.$slots.default()
+    )
   }
 }

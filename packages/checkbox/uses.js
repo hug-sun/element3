@@ -1,9 +1,17 @@
 import { isArray } from '@vue/shared'
-import { computed, ref, onMounted, getCurrentInstance, inject, nextTick } from 'vue'
+import {
+  computed,
+  ref,
+  onMounted,
+  getCurrentInstance,
+  inject,
+  nextTick
+} from 'vue'
 import { useEmitter } from 'element-ui/src/use/emitter'
 import { usePropUtils } from 'element-ui/src/use/prop-utils'
 
-export function useModel() { // core
+export function useModel() {
+  // core
   const { emit, props } = getCurrentInstance()
   const elCheckboxGroup = inject('elCheckboxGroup', { props: {} })
   const { dispatch } = useEmitter()
@@ -16,11 +24,14 @@ export function useModel() { // core
       // Resolve: `isArray(modelValue) ? [...modelValue] : modelValue`, but doing so will invalidate the `checked` prop.
     },
     set({ label, checked }) {
-      if (label && isArray(model.value)) { // when modelValue or elCheckboxGroup.modeValue is array
+      if (label && isArray(model.value)) {
+        // when modelValue or elCheckboxGroup.modeValue is array
         const modelValue = model.value
         const labelIndex = modelValue.indexOf(label)
         labelIndex === -1 && checked === true && modelValue.push(label)
-        labelIndex !== -1 && checked === false && modelValue.splice(labelIndex, 1)
+        labelIndex !== -1 &&
+          checked === false &&
+          modelValue.splice(labelIndex, 1)
         emit('update:modelValue', modelValue)
         dispatch('ElCheckboxGroup', 'update:modelValue', modelValue)
       } else {
@@ -53,7 +64,8 @@ export function useCheckSelected({ model }) {
   const checkbox = ref(null)
 
   onMounted(() => {
-    isAfferentProp('checked') && (model.value = { label: props.label, checked: props.checked })
+    isAfferentProp('checked') &&
+      (model.value = { label: props.label, checked: props.checked })
   })
 
   const isChecked = computed(() => {
@@ -70,7 +82,11 @@ export function useSize() {
   const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, ctx: {} })
   const { props, ctx } = getCurrentInstance()
   const checkboxSize = computed(() => {
-    return props.size || elCheckboxGroup.ctx.checkboxGroupSize || (ctx.$ELEMENT || {}).size
+    return (
+      props.size ||
+      elCheckboxGroup.ctx.checkboxGroupSize ||
+      (ctx.$ELEMENT || {}).size
+    )
   })
   return checkboxSize
 }
@@ -79,12 +95,15 @@ export function useLimit({ model }) {
   const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, ctx: {} })
   const { props } = getCurrentInstance()
   const isLimit = computed(() => {
-    if (elCheckboxGroup.props.modelValue) { // if elCheckboxGroup exist
+    if (elCheckboxGroup.props.modelValue) {
+      // if elCheckboxGroup exist
       const modelValueLength = elCheckboxGroup.props.modelValue.length
       const min = elCheckboxGroup.props.min
       const max = elCheckboxGroup.props.max
-      return (modelValueLength <= min && model.value.indexOf(props.label) !== -1) ||
+      return (
+        (modelValueLength <= min && model.value.indexOf(props.label) !== -1) ||
         (modelValueLength >= max && model.value.indexOf(props.label) === -1)
+      )
     } else {
       return false
     }
@@ -96,7 +115,11 @@ export function useDisabled({ isLimit }) {
   const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, ctx: {} })
   const { props } = getCurrentInstance()
   const isDisabled = computed(() => {
-    return props.disabled || elCheckboxGroup.ctx.checkboxGroupDisabled || isLimit.value
+    return (
+      props.disabled ||
+      elCheckboxGroup.ctx.checkboxGroupDisabled ||
+      isLimit.value
+    )
   })
   return isDisabled
 }

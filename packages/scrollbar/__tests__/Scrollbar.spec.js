@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import {h} from 'vue'
+import { h } from 'vue'
 import Scrollbar from '../Scrollbar'
 
 describe('Scrollbar', () => {
@@ -10,10 +10,12 @@ describe('Scrollbar', () => {
           tag: 'ul'
         },
         slots: {
-          default: [1, 2, 3].map(item => h('li', item))
+          default: [1, 2, 3].map((item) => h('li', item))
         }
       })
-      expect(wrapper.find('.el-scrollbar__view').element instanceof HTMLUListElement).toBeTruthy()
+      expect(
+        wrapper.find('.el-scrollbar__view').element instanceof HTMLUListElement
+      ).toBeTruthy()
     })
     it('wrap-class', () => {
       const wrapper = mount(Scrollbar, {
@@ -21,10 +23,12 @@ describe('Scrollbar', () => {
           wrapClass: 'test-class'
         },
         slots: {
-          default: [1, 2, 3].map(item => h('li', item))
+          default: [1, 2, 3].map((item) => h('li', item))
         }
       })
-      expect(wrapper.find('.test-class.el-scrollbar__wrap').exists()).toBeTruthy()
+      expect(
+        wrapper.find('.test-class.el-scrollbar__wrap').exists()
+      ).toBeTruthy()
     })
   })
 })

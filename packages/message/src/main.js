@@ -2,13 +2,13 @@
 import Main from './main.vue'
 import { PopupManager } from 'element-ui/src/utils/popup'
 import { isVNode } from 'element-ui/src/utils/vdom'
-let MessageConstructor = {extends: Main}
+const MessageConstructor = { extends: Main }
 
 let instance
-let instances = []
+const instances = []
 let seed = 1
 
-const Message = function(options) {
+const Message = function (options) {
   // if (Vue.prototype.$isServer) return
   options = options || {}
   if (typeof options === 'string') {
@@ -16,10 +16,10 @@ const Message = function(options) {
       message: options
     }
   }
-  let userOnClose = options.onClose
-  let id = 'message_' + seed++
+  const userOnClose = options.onClose
+  const id = 'message_' + seed++
 
-  options.onClose = function() {
+  options.onClose = function () {
     Message.close(id, userOnClose)
   }
   instance = new MessageConstructor({
@@ -33,7 +33,7 @@ const Message = function(options) {
   instance.$mount()
   document.body.appendChild(instance.$el)
   let verticalOffset = options.offset || 20
-  instances.forEach(item => {
+  instances.forEach((item) => {
     verticalOffset += item.$el.offsetHeight + 16
   })
   instance.verticalOffset = verticalOffset
@@ -41,10 +41,10 @@ const Message = function(options) {
   instance.$el.style.zIndex = PopupManager.nextZIndex()
   instances.push(instance)
   return instance
-};
+}
 
-['success', 'warning', 'info', 'error'].forEach(type => {
-  Message[type] = options => {
+;['success', 'warning', 'info', 'error'].forEach((type) => {
+  Message[type] = (options) => {
     if (typeof options === 'string') {
       options = {
         message: options
@@ -55,8 +55,8 @@ const Message = function(options) {
   }
 })
 
-Message.close = function(id, userOnClose) {
-  let len = instances.length
+Message.close = function (id, userOnClose) {
+  const len = instances.length
   let index = -1
   let removedHeight
   for (let i = 0; i < len; i++) {
@@ -71,14 +71,13 @@ Message.close = function(id, userOnClose) {
     }
   }
   if (len <= 1 || index === -1 || index > instances.length - 1) return
-  for (let i = index; i < len - 1 ; i++) {
-    let dom = instances[i].$el
-    dom.style['top'] =
-      parseInt(dom.style['top'], 10) - removedHeight - 16 + 'px'
+  for (let i = index; i < len - 1; i++) {
+    const dom = instances[i].$el
+    dom.style.top = parseInt(dom.style.top, 10) - removedHeight - 16 + 'px'
   }
 }
 
-Message.closeAll = function() {
+Message.closeAll = function () {
   for (let i = instances.length - 1; i >= 0; i--) {
     instances[i].close()
   }

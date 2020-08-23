@@ -31,15 +31,15 @@ export default {
     }
   },
   render() {
-    let classList = []
-    let style = {}
+    const classList = []
+    const style = {}
 
     if (this.gutter) {
       style.paddingLeft = this.gutter / 2 + 'px'
       style.paddingRight = style.paddingLeft
     }
 
-    ['span', 'offset', 'pull', 'push'].forEach(prop => {
+    ;['span', 'offset', 'pull', 'push'].forEach((prop) => {
       if (this[prop] || this[prop] === 0) {
         classList.push(
           prop !== 'span'
@@ -47,14 +47,13 @@ export default {
             : `el-col-${this[prop]}`
         )
       }
-    });
-
-    ['xs', 'sm', 'md', 'lg', 'xl'].forEach(size => {
+    })
+    ;['xs', 'sm', 'md', 'lg', 'xl'].forEach((size) => {
       if (typeof this[size] === 'number') {
         classList.push(`el-col-${size}-${this[size]}`)
       } else if (typeof this[size] === 'object') {
-        let props = this[size]
-        Object.keys(props).forEach(prop => {
+        const props = this[size]
+        Object.keys(props).forEach((prop) => {
           classList.push(
             prop !== 'span'
               ? `el-col-${size}-${prop}-${props[prop]}`
@@ -64,9 +63,13 @@ export default {
       }
     })
 
-    return h(this.tag, {
-      class: ['el-col', classList],
-      style
-    }, this.$slots.default())
+    return h(
+      this.tag,
+      {
+        class: ['el-col', classList],
+        style
+      },
+      this.$slots.default()
+    )
   }
 }

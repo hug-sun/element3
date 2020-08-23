@@ -1,7 +1,7 @@
 import ElDropdown from './src/dropdown'
 
 /* istanbul ignore next */
-ElDropdown.install = function(app) {
+ElDropdown.install = function (app) {
   app.component(ElDropdown.name, ElDropdown)
 }
 

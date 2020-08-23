@@ -5,7 +5,7 @@ import directive from './src/directive'
 // Vue.directive('popover', directive)
 
 /* istanbul ignore next */
-Popover.install = function(app) {
+Popover.install = function (app) {
   app.directive('popover', directive)
   app.component(Popover.name, Popover)
 }

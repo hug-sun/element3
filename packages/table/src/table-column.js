@@ -1,4 +1,9 @@
-import { cellStarts, cellForced, defaultRenderCell, treeCellPrefix } from './config'
+import {
+  cellStarts,
+  cellForced,
+  defaultRenderCell,
+  treeCellPrefix
+} from './config'
 import { mergeOptions, parseWidth, parseMinWidth, compose } from './util'
 import ElCheckbox from 'element-ui/packages/checkbox'
 
@@ -54,7 +59,9 @@ export default {
         return ['ascending', 'descending', null]
       },
       validator(val) {
-        return val.every(order => ['ascending', 'descending', null].indexOf(order) > -1)
+        return val.every(
+          (order) => ['ascending', 'descending', null].indexOf(order) > -1
+        )
       }
     }
   },
@@ -126,7 +133,8 @@ export default {
       if (!column.minWidth) {
         column.minWidth = 80
       }
-      column.realWidth = column.width === undefined ? column.minWidth : column.width
+      column.realWidth =
+        column.width === undefined ? column.minWidth : column.width
       return column
     },
 
@@ -134,10 +142,11 @@ export default {
       // 对于特定类型的 column，某些属性不允许设置
       const type = column.type
       const source = cellForced[type] || {}
-      Object.keys(source).forEach(prop => {
-        let value = source[prop]
+      Object.keys(source).forEach((prop) => {
+        const value = source[prop]
         if (value !== undefined) {
-          column[prop] = prop === 'className' ? `${column[prop]} ${value}` : value
+          column[prop] =
+            prop === 'className' ? `${column[prop]} ${value}` : value
         }
       })
       return column
@@ -146,7 +155,9 @@ export default {
     setColumnRenders(column) {
       // renderHeader 属性不推荐使用。
       if (this.renderHeader) {
-        console.warn('[Element Warn][TableColumn]Comparing to render-header, scoped-slot header is easier to use. We recommend users to use scoped-slot header.')
+        console.warn(
+          '[Element Warn][TableColumn]Comparing to render-header, scoped-slot header is easier to use. We recommend users to use scoped-slot header.'
+        )
       } else if (column.type !== 'selection') {
         column.renderHeader = (h, scope) => {
           const renderHeader = this.$scopedSlots.header
@@ -158,9 +169,9 @@ export default {
       // TODO: 这里的实现调整
       if (column.type === 'expand') {
         // 对于展开行，renderCell 不允许配置的。在上一步中已经设置过，这里需要简单封装一下。
-        column.renderCell = (h, data) => (<div class="cell">
-          { originRenderCell(h, data) }
-        </div>)
+        column.renderCell = (h, data) => (
+          <div class="cell">{originRenderCell(h, data)}</div>
+        )
         this.owner.renderExpanded = (h, data) => {
           return this.$scopedSlots.default
             ? this.$scopedSlots.default(data)
@@ -183,19 +194,34 @@ export default {
           }
           if (column.showOverflowTooltip) {
             props.class += ' el-tooltip'
-            props.style = {width: (data.column.realWidth || data.column.width) - 1 + 'px'}
+            props.style = {
+              width: (data.column.realWidth || data.column.width) - 1 + 'px'
+            }
           }
-          return (<div { ...props }>
-            { prefix }
-            { children }
-          </div>)
+          return (
+            <div {...props}>
+              {prefix}
+              {children}
+            </div>
+          )
         }
       }
       return column
     },
 
     registerNormalWatchers() {
-      const props = ['label', 'property', 'filters', 'filterMultiple', 'sortable', 'index', 'formatter', 'className', 'labelClassName', 'showOverflowTooltip']
+      const props = [
+        'label',
+        'property',
+        'filters',
+        'filterMultiple',
+        'sortable',
+        'index',
+        'formatter',
+        'className',
+        'labelClassName',
+        'showOverflowTooltip'
+      ]
       // 一些属性具有别名
       const aliases = {
         prop: 'property',
@@ -208,7 +234,7 @@ export default {
         return prev
       }, aliases)
 
-      Object.keys(allAliases).forEach(key => {
+      Object.keys(allAliases).forEach((key) => {
         const columnKey = aliases[key]
 
         this.$watch(key, (newVal) => {
@@ -228,7 +254,7 @@ export default {
         return prev
       }, aliases)
 
-      Object.keys(allAliases).forEach(key => {
+      Object.keys(allAliases).forEach((key) => {
         const columnKey = aliases[key]
 
         this.$watch(key, (newVal) => {
@@ -254,7 +280,8 @@ export default {
   created() {
     const parent = this.columnOrTableParent
     this.isSubColumn = this.owner !== parent
-    this.columnId = (parent.tableId || parent.columnId) + '_column_' + columnIdSeed++
+    this.columnId =
+      (parent.tableId || parent.columnId) + '_column_' + columnIdSeed++
 
     const type = this.type || 'default'
     const sortable = this.sortable === '' ? true : this.sortable
@@ -265,7 +292,8 @@ export default {
       property: this.prop || this.property,
       align: this.realAlign,
       headerAlign: this.realHeaderAlign,
-      showOverflowTooltip: this.showOverflowTooltip || this.showTooltipWhenOverflow,
+      showOverflowTooltip:
+        this.showOverflowTooltip || this.showTooltipWhenOverflow,
       // filter 相关属性
       filterable: this.filters || this.filterMethod,
       filteredValue: [],
@@ -278,16 +306,42 @@ export default {
       index: this.index
     }
 
-    const basicProps = ['columnKey', 'label', 'className', 'labelClassName', 'type', 'renderHeader', 'formatter', 'fixed', 'resizable']
+    const basicProps = [
+      'columnKey',
+      'label',
+      'className',
+      'labelClassName',
+      'type',
+      'renderHeader',
+      'formatter',
+      'fixed',
+      'resizable'
+    ]
     const sortProps = ['sortMethod', 'sortBy', 'sortOrders']
     const selectProps = ['selectable', 'reserveSelection']
-    const filterProps = ['filterMethod', 'filters', 'filterMultiple', 'filterOpened', 'filteredValue', 'filterPlacement']
+    const filterProps = [
+      'filterMethod',
+      'filters',
+      'filterMultiple',
+      'filterOpened',
+      'filteredValue',
+      'filterPlacement'
+    ]
 
-    let column = this.getPropsData(basicProps, sortProps, selectProps, filterProps)
+    let column = this.getPropsData(
+      basicProps,
+      sortProps,
+      selectProps,
+      filterProps
+    )
     column = mergeOptions(defaults, column)
 
     // 注意 compose 中函数执行的顺序是从右到左
-    const chains = compose(this.setColumnRenders, this.setColumnWidth, this.setColumnForcedProps)
+    const chains = compose(
+      this.setColumnRenders,
+      this.setColumnWidth,
+      this.setColumnForcedProps
+    )
     column = chains(column)
 
     this.columnConfig = column
@@ -300,16 +354,27 @@ export default {
   mounted() {
     const owner = this.owner
     const parent = this.columnOrTableParent
-    const children = this.isSubColumn ? parent.$el.children : parent.$refs.hiddenColumns.children
+    const children = this.isSubColumn
+      ? parent.$el.children
+      : parent.$refs.hiddenColumns.children
     const columnIndex = this.getColumnElIndex(children, this.$el)
 
-    owner.store.commit('insertColumn', this.columnConfig, columnIndex, this.isSubColumn ? parent.columnConfig : null)
+    owner.store.commit(
+      'insertColumn',
+      this.columnConfig,
+      columnIndex,
+      this.isSubColumn ? parent.columnConfig : null
+    )
   },
 
   destroyed() {
     if (!this.$parent) return
     const parent = this.$parent
-    this.owner.store.commit('removeColumn', this.columnConfig, this.isSubColumn ? parent.columnConfig : null)
+    this.owner.store.commit(
+      'removeColumn',
+      this.columnConfig,
+      this.isSubColumn ? parent.columnConfig : null
+    )
   },
 
   render(h) {

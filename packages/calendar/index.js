@@ -1,7 +1,7 @@
 import Calendar from './src/main'
 
 /* istanbul ignore next */
-Calendar.install = function(app) {
+Calendar.install = function (app) {
   app.component(Calendar.name, Calendar)
 }
 

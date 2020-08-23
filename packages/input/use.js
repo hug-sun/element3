@@ -1,4 +1,3 @@
-
 import { computed, inject, ref, unref, nextTick, watch } from 'vue'
 import merge from 'element-ui/src/utils/merge'
 import { isKorean } from 'element-ui/src/utils/shared'
@@ -21,7 +20,11 @@ export const useValidate = () => {
   return { validateState, validateIcon }
 }
 
-export const useTextarea = ({ autosize, type, resize }, textareaCalcStyle, instance) => {
+export const useTextarea = (
+  { autosize, type, resize },
+  textareaCalcStyle,
+  instance
+) => {
   const textarea = ref(null)
 
   const textareaStyle = computed(() => {
@@ -49,7 +52,26 @@ export const useTextarea = ({ autosize, type, resize }, textareaCalcStyle, insta
   return { textarea, textareaStyle, resizeTextarea }
 }
 
-export const useInput = ({ size, type, disabled, modelValue, suffixIcon, readonly, clearable, showPassword, showWordLimit }, { hovering, focused }, instance, textarea, attrs, validateState, needStatusIcon, slots) => {
+export const useInput = (
+  {
+    size,
+    type,
+    disabled,
+    modelValue,
+    suffixIcon,
+    readonly,
+    clearable,
+    showPassword,
+    showWordLimit
+  },
+  { hovering, focused },
+  instance,
+  textarea,
+  attrs,
+  validateState,
+  needStatusIcon,
+  slots
+) => {
   const input = ref(null)
 
   const elFormItem = inject('elFormItem', {})
@@ -59,7 +81,11 @@ export const useInput = ({ size, type, disabled, modelValue, suffixIcon, readonl
     return unref(elFormItem.elFormItemSize)
   })
   const inputSize = computed(() => {
-    return unref(size) || unref(_elFormItemSize) || (instance.proxy.$ELEMENT || {}).size
+    return (
+      unref(size) ||
+      unref(_elFormItemSize) ||
+      (instance.proxy.$ELEMENT || {}).size
+    )
   })
 
   const inputDisabled = computed(() => {
@@ -143,8 +169,16 @@ export const useInput = ({ size, type, disabled, modelValue, suffixIcon, readonl
   }
 }
 
-export const useInteractive = (instance, input, textarea, { type, modelValue, validateEvent }, { focused, isComposing, passwordVisible }, nativeInputValue, emit, slots) => {
-
+export const useInteractive = (
+  instance,
+  input,
+  textarea,
+  { type, modelValue, validateEvent },
+  { focused, isComposing, passwordVisible },
+  nativeInputValue,
+  emit,
+  slots
+) => {
   const getInput = () => {
     return unref(input) || unref(textarea)
   }
@@ -233,7 +267,7 @@ export const useInteractive = (instance, input, textarea, { type, modelValue, va
 
   const calcIconOffset = (place) => {
     const $el = instance.proxy.$el
-    let elList = [].slice.call(
+    const elList = [].slice.call(
       $el.querySelectorAll(`.el-input__${place}`) || []
     )
     if (!elList.length) return

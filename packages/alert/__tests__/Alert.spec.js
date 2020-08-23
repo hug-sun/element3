@@ -8,7 +8,7 @@ describe('Alert.vue', () => {
           title: 'test title'
         }
       })
-      const wrapper_slot = mount(Alert, {
+      const wrapperSlot = mount(Alert, {
         slots: {
           title: () => {
             return 'title slot'
@@ -17,7 +17,7 @@ describe('Alert.vue', () => {
       })
 
       expect(wrapper.find('span').text()).toBe('test title')
-      expect(wrapper_slot.find('span').text()).toBe('title slot')
+      expect(wrapperSlot.find('span').text()).toBe('title slot')
     })
 
     it('description', () => {
@@ -26,7 +26,7 @@ describe('Alert.vue', () => {
           description: 'test description'
         }
       })
-      const wrapper_slot = mount(Alert, {
+      const wrapperSlot = mount(Alert, {
         slots: {
           default: () => {
             return 'description slot'
@@ -34,108 +34,117 @@ describe('Alert.vue', () => {
         }
       })
 
-      expect(wrapper.find('.el-alert__description').text()).toBe('test description')
-      expect(wrapper_slot.find('.el-alert__description').text()).toBe('description slot')
-
+      expect(wrapper.find('.el-alert__description').text()).toBe(
+        'test description'
+      )
+      expect(wrapperSlot.find('.el-alert__description').text()).toBe(
+        'description slot'
+      )
     })
 
     it('type', () => {
-      const wrapper_info = mount(Alert, {
+      const wrapperInfo = mount(Alert, {
         props: {
           type: 'info'
         }
       })
-      const wrapper_success = mount(Alert, {
+      const wrapperSuccess = mount(Alert, {
         props: {
           type: 'success'
         }
       })
-      const wrapper_warning = mount(Alert, {
+      const wrapperWarning = mount(Alert, {
         props: {
           type: 'warning'
         }
       })
-      const wrapper_error = mount(Alert, {
+      const wrapperError = mount(Alert, {
         props: {
           type: 'error'
         }
       })
 
-      expect(wrapper_info.classes()).toContain('el-alert--info')
-      expect(wrapper_success.classes()).toContain('el-alert--success')
-      expect(wrapper_warning.classes()).toContain('el-alert--warning')
-      expect(wrapper_error.classes()).toContain('el-alert--error')
+      expect(wrapperInfo.classes()).toContain('el-alert--info')
+      expect(wrapperSuccess.classes()).toContain('el-alert--success')
+      expect(wrapperWarning.classes()).toContain('el-alert--warning')
+      expect(wrapperError.classes()).toContain('el-alert--error')
     })
 
     it('closable', () => {
-      const wrapper_true = mount(Alert, {
+      const wrapperTrue = mount(Alert, {
         props: {
           closable: true
         }
       })
-      const wrapper_trueWithText = mount(Alert, {
+      const wrapperTrueWithText = mount(Alert, {
         props: {
           closable: true,
           closeText: '知道了'
         }
       })
-      const wrapper_false = mount(Alert, {
+      const wrapperFalse = mount(Alert, {
         props: {
           closable: false
         }
       })
 
-      expect(wrapper_true.find('.el-alert__closebtn').attributes('style')).toBe(undefined)
-      expect(wrapper_trueWithText.find('.el-alert__closebtn').text()).toContain('知道了')
-      expect(wrapper_false.find('.el-alert__closebtn').attributes('style')).toBe('display: none;')
+      expect(wrapperTrue.find('.el-alert__closebtn').attributes('style')).toBe(
+        undefined
+      )
+      expect(wrapperTrueWithText.find('.el-alert__closebtn').text()).toContain(
+        '知道了'
+      )
+      expect(wrapperFalse.find('.el-alert__closebtn').attributes('style')).toBe(
+        'display: none;'
+      )
     })
 
     it('showIcon', () => {
-      const wrapper_true = mount(Alert, {
+      const wrapperTrue = mount(Alert, {
         props: {
           showIcon: true
         }
       })
-      const wrapper_false = mount(Alert, {
+      const wrapperFalse = mount(Alert, {
         props: {
           showIcon: false
         }
       })
 
-      expect(wrapper_true.find('.el-alert__icon').exists()).toBe(true)
-      expect(wrapper_false.find('.el-alert__icon').exists()).toBe(false)
+      expect(wrapperTrue.find('.el-alert__icon').exists()).toBe(true)
+      expect(wrapperFalse.find('.el-alert__icon').exists()).toBe(false)
     })
 
     it('center', () => {
-      const wrapper_true = mount(Alert, {
+      const wrapperTrue = mount(Alert, {
         props: {
           center: true
         }
       })
-      const wrapper_false = mount(Alert, {
+      const wrapperFalse = mount(Alert, {
         props: {
           center: false
         }
       })
 
-      expect(wrapper_true.classes('is-center')).toBe(true)
-      expect(wrapper_false.classes('is-center')).toBe(false)
+      expect(wrapperTrue.classes('is-center')).toBe(true)
+      expect(wrapperFalse.classes('is-center')).toBe(false)
     })
 
     it('effect', () => {
-      const wrapper_light = mount(Alert, {
+      const wrapperLight = mount(Alert, {
         props: {
           effect: 'light'
         }
       })
-      const wrapper_dark = mount(Alert, {
+      const wrapperDark = mount(Alert, {
         props: {
           effect: 'dark'
         }
       })
 
-      expect(wrapper_light.classes('is-light')).toBe(true)
-      expect(wrapper_dark.classes('is-dark')).toBe(true)
+      expect(wrapperLight.classes('is-light')).toBe(true)
+      expect(wrapperDark.classes('is-dark')).toBe(true)
     })
   })
 

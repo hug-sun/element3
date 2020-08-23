@@ -1,7 +1,7 @@
 import Slider from './src/main'
 
 /* istanbul ignore next */
-Slider.install = function(app) {
+Slider.install = function (app) {
   app.component(Slider.name, Slider)
 }
 

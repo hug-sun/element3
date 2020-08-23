@@ -4,8 +4,8 @@ import { ref, nextTick } from 'vue'
 
 describe('Checkbox.vue', () => {
   describe('props', () => {
-    it('vModel modelValue is boolean', async() => {
-      let modelValue = ref(true)
+    it('vModel modelValue is boolean', async () => {
+      const modelValue = ref(true)
       const wrapper = mount(Checkbox, {
         props: {
           modelValue,
@@ -21,8 +21,8 @@ describe('Checkbox.vue', () => {
       expect(modelValue.value).toBe(false)
     })
 
-    it('true-label and false-label', async() => {
-      let modelValue = ref('真')
+    it('true-label and false-label', async () => {
+      const modelValue = ref('真')
       const wrapper = mount(Checkbox, {
         props: {
           modelValue,
@@ -40,8 +40,8 @@ describe('Checkbox.vue', () => {
       expect(modelValue.value).toBe('假')
     })
 
-    it('disabled', async() => {
-      let modelValue = ref(true)
+    it('disabled', async () => {
+      const modelValue = ref(true)
       const wrapper = mount(Checkbox, {
         props: {
           modelValue,
@@ -58,7 +58,7 @@ describe('Checkbox.vue', () => {
       expect(modelValue.value).toBe(true)
     })
 
-    it('border', async() => {
+    it('border', async () => {
       const wrapper = mount(Checkbox, {
         props: {
           border: true
@@ -67,7 +67,7 @@ describe('Checkbox.vue', () => {
       expect(wrapper.classes()).toContain('is-bordered')
     })
 
-    it('indeterminate', async() => {
+    it('indeterminate', async () => {
       const wrapper = mount(Checkbox, {
         props: {
           indeterminate: true
@@ -76,7 +76,7 @@ describe('Checkbox.vue', () => {
       expect(wrapper.findAll('.is-indeterminate')).toHaveLength(1)
     })
 
-    it('size', async() => {
+    it('size', async () => {
       const wrapper = mount(Checkbox, {
         props: {
           border: true
@@ -90,37 +90,43 @@ describe('Checkbox.vue', () => {
       expect(wrapper.classes()).toContain('el-checkbox--medium')
     })
 
-    it('name', async() => {
+    it('name', async () => {
       const wrapper = mount(Checkbox, {
         props: {
           name: 'checkbox1'
         }
       })
-      expect(wrapper.find('input[type=checkbox]').attributes('name')).toBe('checkbox1')
+      expect(wrapper.find('input[type=checkbox]').attributes('name')).toBe(
+        'checkbox1'
+      )
     })
 
-    it('vModel modelValue is array', async() => {
-      let modelValue = ref([])
+    it('vModel modelValue is array', async () => {
+      const modelValue = ref([])
       const wrappers = []
-      wrappers.push(mount(Checkbox, {
-        props: {
-          label: '选项A',
-          modelValue,
-          'onUpdate:modelValue'(v) {
-            modelValue.value = v
+      wrappers.push(
+        mount(Checkbox, {
+          props: {
+            label: '选项A',
+            modelValue,
+            'onUpdate:modelValue'(v) {
+              modelValue.value = v
+            }
           }
-        }
-      }))
+        })
+      )
 
-      wrappers.push(mount(Checkbox, {
-        props: {
-          label: '选项B',
-          modelValue,
-          'onUpdate:modelValue'(v) {
-            modelValue.value = v
+      wrappers.push(
+        mount(Checkbox, {
+          props: {
+            label: '选项B',
+            modelValue,
+            'onUpdate:modelValue'(v) {
+              modelValue.value = v
+            }
           }
-        }
-      }))
+        })
+      )
 
       await nextTick()
       await wrappers[0].trigger('click')
@@ -133,8 +139,8 @@ describe('Checkbox.vue', () => {
       expect(modelValue.value).toContain('选项A')
     })
 
-    it('checked', async() => {
-      let modelValue = ref(true)
+    it('checked', async () => {
+      const modelValue = ref(true)
       const wrapper = mount(Checkbox, {
         props: {
           modelValue,
@@ -148,20 +154,19 @@ describe('Checkbox.vue', () => {
       await nextTick()
       expect(wrapper.props('modelValue')).toBe(false)
     })
-
   })
 
   describe('event', () => {
-    it('change', async() => {
-      let modelValue = ref(true)
-      let changeValue = ref(true)
+    it('change', async () => {
+      const modelValue = ref(true)
+      const changeValue = ref(true)
       const wrapper = mount(Checkbox, {
         props: {
           modelValue,
           'onUpdate:modelValue'(v) {
             modelValue.value = v
           },
-          'onChange'(v) {
+          onChange(v) {
             changeValue.value = v
           }
         }

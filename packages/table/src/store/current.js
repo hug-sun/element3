@@ -29,7 +29,10 @@ export default {
       const { data = [], rowKey } = states
       let currentRow = null
       if (rowKey) {
-        currentRow = arrayFind(data, item => getRowIdentity(item, rowKey) === key)
+        currentRow = arrayFind(
+          data,
+          (item) => getRowIdentity(item, rowKey) === key
+        )
       }
       states.currentRow = currentRow
     },

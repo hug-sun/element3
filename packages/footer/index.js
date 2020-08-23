@@ -1,7 +1,7 @@
 import Footer from './src/main'
 
 /* istanbul ignore next */
-Footer.install = function(app) {
+Footer.install = function (app) {
   app.component(Footer.name, Footer)
 }
 
