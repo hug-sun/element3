@@ -29,7 +29,6 @@ function stripTemplate(content) {
 // }
 
 function genInlineComponentText(template, script) {
-
   // const finalOptions = {
   //   source: `<div>${template}</div>`,
   //   filename: 'inline-component', // TODO：这里有待调整

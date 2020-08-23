@@ -4,7 +4,7 @@ import { h, ref } from 'vue'
 
 describe('prop-utils', () => {
   describe('isAfferentProp', () => {
-    it('Determine whether it is the incoming Prop', async() => {
+    it('Determine whether it is the incoming Prop', async () => {
       const Comp = {
         props: {
           label: String,

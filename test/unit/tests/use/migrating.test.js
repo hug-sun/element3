@@ -21,7 +21,9 @@ describe('migrating', () => {
       }
     })
 
-    expect(console.warn).toBeCalledWith('[Element Migrating][Comp][Attribute]: on-color is renamed to active-color')
+    expect(console.warn).toBeCalledWith(
+      '[Element Migrating][Comp][Attribute]: on-color is renamed to active-color'
+    )
   })
 
   it(' Event', () => {
@@ -37,10 +39,12 @@ describe('migrating', () => {
 
     mount(Comp, {
       props: {
-        onClick: ()=>{}
+        onClick: () => {}
       }
     })
 
-    expect(console.warn).toBeCalledWith('[Element Migrating][Comp][Event]: click is removed')
+    expect(console.warn).toBeCalledWith(
+      '[Element Migrating][Comp][Event]: click is removed'
+    )
   })
 })

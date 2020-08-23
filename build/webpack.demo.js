@@ -1,23 +1,27 @@
-const path = require('path');
-const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const {VueLoaderPlugin} = require('vue-loader');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const path = require('path')
+const webpack = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-const config = require('./config');
+const config = require('./config')
 
-const isProd = process.env.NODE_ENV === 'production';
-const isPlay = !!process.env.PLAY_ENV;
+const isProd = process.env.NODE_ENV === 'production'
+const isPlay = !!process.env.PLAY_ENV
 
 const webpackConfig = {
   mode: process.env.NODE_ENV,
-  entry: isProd ? {
-    docs: './examples/entry.js'
-  } : (isPlay ? './examples/play.js' : './examples/entry.js'),
+  entry: isProd
+    ? {
+        docs: './examples/entry.js'
+      }
+    : isPlay
+    ? './examples/play.js'
+    : './examples/entry.js',
   output: {
     path: path.resolve(process.cwd(), './examples/element-ui/'),
     publicPath: process.env.CI_ENV || '',
@@ -106,9 +110,7 @@ const webpackConfig = {
       filename: './index.html',
       favicon: './examples/favicon.ico'
     }),
-    new CopyWebpackPlugin([
-      { from: 'examples/versions.json' }
-    ]),
+    new CopyWebpackPlugin([{ from: 'examples/versions.json' }]),
     new ProgressBarPlugin(),
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
@@ -126,19 +128,19 @@ const webpackConfig = {
     minimizer: []
   },
   devtool: '#eval-source-map'
-};
+}
 
 if (isProd) {
   webpackConfig.externals = {
     vue: 'Vue',
     'vue-router': 'VueRouter',
     'highlight.js': 'hljs'
-  };
+  }
   webpackConfig.plugins.push(
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash:7].css'
     })
-  );
+  )
   webpackConfig.optimization.minimizer.push(
     new UglifyJsPlugin({
       cache: true,
@@ -146,7 +148,7 @@ if (isProd) {
       sourceMap: false
     }),
     new OptimizeCSSAssetsPlugin({})
-  );
+  )
   // https://webpack.js.org/configuration/optimization/#optimizationsplitchunks
   webpackConfig.optimization.splitChunks = {
     cacheGroups: {
@@ -156,8 +158,8 @@ if (isProd) {
         chunks: 'all'
       }
     }
-  };
-  webpackConfig.devtool = false;
+  }
+  webpackConfig.devtool = false
 }
 
-module.exports = webpackConfig;
+module.exports = webpackConfig

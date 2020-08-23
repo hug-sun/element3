@@ -9,7 +9,7 @@ describe('emitter', () => {
       const Child = {
         name: 'Child',
         template: '<div></div>',
-        setup(props, {emit}) {
+        setup(props, { emit }) {
           const { on } = useEmitter()
 
           on('child', handleChild)
@@ -36,7 +36,6 @@ describe('emitter', () => {
     })
 
     it('child to parent', () => {
-
       const handleFoo1 = jest.fn()
       const handleFoo2 = jest.fn()
 
@@ -239,9 +238,9 @@ describe('emitter', () => {
 
       const wrapper = mount(Parent)
 
-      expect(wrapper.findComponent({ name: 'Child' }).emitted('child')).toEqual(
-        [[1, 2]]
-      )
+      expect(
+        wrapper.findComponent({ name: 'Child' }).emitted('child')
+      ).toEqual([[1, 2]])
     })
 
     it('should can not capture event when can not find target child component', () => {
