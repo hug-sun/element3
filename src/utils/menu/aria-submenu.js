@@ -1,6 +1,6 @@
 import Utils from '../aria-utils'
 
-const SubMenu = function(parent, domNode) {
+const SubMenu = function (parent, domNode) {
   this.domNode = domNode
   this.parent = parent
   this.subMenuItems = []
@@ -8,12 +8,12 @@ const SubMenu = function(parent, domNode) {
   this.init()
 }
 
-SubMenu.prototype.init = function() {
+SubMenu.prototype.init = function () {
   this.subMenuItems = this.domNode.querySelectorAll('li')
   this.addListeners()
 }
 
-SubMenu.prototype.gotoSubIndex = function(idx) {
+SubMenu.prototype.gotoSubIndex = function (idx) {
   if (idx === this.subMenuItems.length) {
     idx = 0
   } else if (idx < 0) {
@@ -23,11 +23,11 @@ SubMenu.prototype.gotoSubIndex = function(idx) {
   this.subIndex = idx
 }
 
-SubMenu.prototype.addListeners = function() {
+SubMenu.prototype.addListeners = function () {
   const keys = Utils.keys
   const parentNode = this.parent.domNode
-  Array.prototype.forEach.call(this.subMenuItems, el => {
-    el.addEventListener('keydown', event => {
+  Array.prototype.forEach.call(this.subMenuItems, (el) => {
+    el.addEventListener('keydown', (event) => {
       let prevDef = false
       switch (event.keyCode) {
         case keys.down:

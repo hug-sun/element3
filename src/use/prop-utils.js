@@ -6,9 +6,10 @@ export function usePropUtils() {
   }
 }
 
-function isAfferentProp() { // Used only for setuping or mounting
+function isAfferentProp() {
+  // Used only for setuping or mounting
   const { vnode } = getCurrentInstance()
-  return (propKey)=>{
+  return (propKey) => {
     if (typeof vnode.props[propKey] === 'undefined') {
       return false
     }
