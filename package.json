@@ -67,7 +67,10 @@
   },
   "lint-staged": {
     "*.js": [
-      "npm run lint"
+      "eslint"
+    ],
+    "*.vue":[
+      "eslint"
     ]
   },
   "dependencies": {
