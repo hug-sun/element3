@@ -59,19 +59,24 @@ function genInlineComponentText(template, script) {
   // todo: 这里采用了硬编码有待改进
   script = script.trim()
   if (script) {
-    script = script.replace(/export\s+default/, 'const democomponentExport =')
+    script = script
+              .replace(/export\s+default/, 'const democomponentExport =')
+              .replace(/import ([,{}\w\s]+) from ['"\w]+/g, function (s0, s1) {
+                return `const ${s1} = Vue`
+              })
+
   } else {
     script = 'const democomponentExport = {}'
   }
   demoComponentContent = `(function() {
     ${demoComponentContent}
+    // --
     ${script}
     return {
       render,
       ...democomponentExport
     }
   })()`
-  // console.log(demoComponentContent)
   return demoComponentContent
 }
 
