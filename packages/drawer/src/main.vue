@@ -2,17 +2,16 @@
   <transition
     name="el-drawer-fade"
     @after-enter="afterEnter"
-    @after-leave="afterLeave">
-    <div
-      class="el-drawer__wrapper"
-      tabindex="-1"
-      v-show="visible">
+    @after-leave="afterLeave"
+  >
+    <div class="el-drawer__wrapper" tabindex="-1" v-show="visible">
       <div
         class="el-drawer__container"
         :class="visible && 'el-drawer__open'"
         @click.self="handleWrapperClick"
         role="document"
-        tabindex="-1">
+        tabindex="-1"
+      >
         <div
           aria-modal="true"
           aria-labelledby="el-drawer__title"
@@ -23,17 +22,24 @@
           ref="drawer"
           role="dialog"
           tabindex="-1"
+        >
+          <header
+            class="el-drawer__header"
+            id="el-drawer__title"
+            v-if="withHeader"
           >
-          <header class="el-drawer__header" id="el-drawer__title" v-if="withHeader">
             <slot name="title">
-              <span role="heading" tabindex="0" :title="title">{{ title }}</span>
+              <span role="heading" tabindex="0" :title="title">{{
+                title
+              }}</span>
             </slot>
             <button
               :aria-label="`close ${title || 'drawer'}`"
               class="el-drawer__close-btn"
               type="button"
               v-if="showClose"
-              @click="closeDrawer">
+              @click="closeDrawer"
+            >
               <i class="el-dialog__close el-icon el-icon-close"></i>
             </button>
           </header>
@@ -47,9 +53,9 @@
 </template>
 
 <script>
-import Popup from 'element-ui/src/utils/popup';
-import emitter from 'element-ui/src/mixins/emitter';
-import Utils from 'element-ui/src/utils/aria-utils';
+import Popup from 'element-ui/src/utils/popup'
+import emitter from 'element-ui/src/mixins/emitter'
+import Utils from 'element-ui/src/utils/aria-utils'
 
 export default {
   name: 'ElDrawer',
@@ -82,7 +88,7 @@ export default {
       type: String,
       default: 'rtl',
       validator(val) {
-        return ['ltr', 'rtl', 'ttb', 'btt'].indexOf(val) !== -1;
+        return ['ltr', 'rtl', 'ttb', 'btt'].indexOf(val) !== -1
       }
     },
     modalAppendToBody: {
@@ -115,84 +121,84 @@ export default {
   },
   computed: {
     isHorizontal() {
-      return this.direction === 'rtl' || this.direction === 'ltr';
+      return this.direction === 'rtl' || this.direction === 'ltr'
     }
   },
   data() {
     return {
       closed: false,
       prevActiveElement: null
-    };
+    }
   },
   watch: {
     visible(val) {
       if (val) {
-        this.closed = false;
-        this.$emit('open');
+        this.closed = false
+        this.$emit('open')
         if (this.appendToBody) {
-          document.body.appendChild(this.$el);
+          document.body.appendChild(this.$el)
         }
-        this.prevActiveElement = document.activeElement;
+        this.prevActiveElement = document.activeElement
         this.$nextTick(() => {
-          Utils.focusFirstDescendant(this.$refs.drawer);
-        });
+          Utils.focusFirstDescendant(this.$refs.drawer)
+        })
       } else {
-        if (!this.closed) this.$emit('close');
+        if (!this.closed) this.$emit('close')
         this.$nextTick(() => {
           if (this.prevActiveElement) {
-            this.prevActiveElement.focus();
+            this.prevActiveElement.focus()
           }
-        });
+        })
       }
     }
   },
   methods: {
     afterEnter() {
-      this.$emit('opened');
+      this.$emit('opened')
     },
     afterLeave() {
-      this.$emit('closed');
+      this.$emit('closed')
     },
     hide(cancel) {
       if (cancel !== false) {
-        this.$emit('update:visible', false);
-        this.$emit('close');
+        this.$emit('update:visible', false)
+        this.$emit('close')
         if (this.destroyOnClose === true) {
-          this.rendered = false;
+          this.rendered = false
         }
-        this.closed = true;
+        this.closed = true
       }
     },
     handleWrapperClick() {
       if (this.wrapperClosable) {
-        this.closeDrawer();
+        this.closeDrawer()
       }
     },
     closeDrawer() {
       if (typeof this.beforeClose === 'function') {
-        this.beforeClose(this.hide);
+        this.beforeClose(this.hide)
       } else {
-        this.hide();
+        this.hide()
       }
     },
     handleClose() {
       // This method here will be called by PopupManger, when the `closeOnPressEscape` was set to true
       // pressing `ESC` will call this method, and also close the drawer.
       // This method also calls `beforeClose` if there was one.
-      this.closeDrawer();
+      this.closeDrawer()
     }
   },
   mounted() {
     if (this.visible) {
-      this.rendered = true;
-      this.open();
+      this.rendered = true
+      this.open()
     }
   },
   destroyed() {
     // if appendToBody is true, remove DOM node after destroy
     if (this.appendToBody && this.$el && this.$el.parentNode) {
-      this.$el.parentNode.removeChild(this.$el);
+      this.$el.parentNode.removeChild(this.$el)
     }
   }
-};
+}
 </script>

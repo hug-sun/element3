@@ -1,5 +1,5 @@
 <script>
-import { h, computed, getCurrentInstance, Transition } from 'vue'
+import { computed, getCurrentInstance, Transition } from 'vue'
 export default {
   name: 'ElTag',
   props: {

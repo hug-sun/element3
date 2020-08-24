@@ -12,14 +12,15 @@
             'is-fixed': $slots.default,
             'is-dot': isDot
           }
-        ]">
+        ]"
+      >
       </sup>
     </transition>
   </div>
 </template>
 
 <script>
-import {computed, toRefs} from 'vue'
+import { computed, toRefs } from 'vue'
 
 export default {
   name: 'ElBadge',
@@ -32,13 +33,15 @@ export default {
     type: {
       type: String,
       validator(val) {
-        return ['primary', 'success', 'warning', 'info', 'danger'].indexOf(val) > -1
+        return (
+          ['primary', 'success', 'warning', 'info', 'danger'].indexOf(val) > -1
+        )
       }
     }
   },
 
   setup(props) {
-    const {isDot, max, value} = toRefs(props)
+    const { isDot, max, value } = toRefs(props)
     const content = useContent(isDot, max, value)
 
     return {
@@ -51,7 +54,11 @@ const useContent = (isDot, max, value) => {
   const content = computed(() => {
     if (isDot.value) return
 
-    if (max && typeof value.value === 'number' && typeof max.value === 'number') {
+    if (
+      max &&
+      typeof value.value === 'number' &&
+      typeof max.value === 'number'
+    ) {
       return max.value < value.value ? `${max.value}+` : value.value
     }
 

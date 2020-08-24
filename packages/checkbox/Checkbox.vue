@@ -39,20 +39,25 @@
         @input="model = { label, checked: $event.target.checked }"
         @focus="focus = true"
         @blur="focus = false"
-      >
+      />
     </span>
-    <span
-      class="el-checkbox__label"
-      v-if="$slots.default || label"
-    >
+    <span class="el-checkbox__label" v-if="$slots.default || label">
       <slot></slot>
-      <template v-if="!$slots.default">{{label}}</template>
+      <template v-if="!$slots.default">{{ label }}</template>
     </span>
   </label>
 </template>
 <script>
-import { reactive, toRefs } from 'vue';
-import { useModel, useAria, useCheckSelected, useSize, useLimit, useDisabled, useBorder } from './uses.js'
+import { reactive, toRefs } from 'vue'
+import {
+  useModel,
+  useAria,
+  useCheckSelected,
+  useSize,
+  useLimit,
+  useDisabled,
+  useBorder
+} from './uses.js'
 export default {
   name: 'ElCheckbox',
 
@@ -65,32 +70,32 @@ export default {
     name: String,
     trueLabel: { type: [String, Number, Boolean], default: true },
     falseLabel: { type: [String, Number, Boolean], default: false },
-    id: String, /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系*/
-    controls: String, /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系*/
+    id: String /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系 */,
+    controls: String /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系 */,
     border: Boolean,
     size: String
   },
 
   emits: ['update:modelValue', 'change'],
 
-  setup (props, ctx) {
+  setup(props, ctx) {
     const state = reactive({
       focus: false
-    });
+    })
 
-    useAria();
+    useAria()
 
-    const { model, handleChange } = useModel();
+    const { model, handleChange } = useModel()
 
-    const isLimit = useLimit({ model });
+    const isLimit = useLimit({ model })
 
-    const { isChecked, checkbox } = useCheckSelected({ model });
+    const { isChecked, checkbox } = useCheckSelected({ model })
 
-    const checkboxSize = useSize();
+    const checkboxSize = useSize()
 
-    const isDisabled = useDisabled({ isLimit });
+    const isDisabled = useDisabled({ isLimit })
 
-    const isBorder = useBorder();
+    const isBorder = useBorder()
 
     return {
       ...toRefs(state),
@@ -103,5 +108,5 @@ export default {
       isBorder
     }
   }
-};
+}
 </script>

@@ -1,4 +1,3 @@
-
 <template>
   <div class="el-checkbox-group" role="group" aria-label="checkbox-group">
     <slot></slot>
@@ -7,7 +6,7 @@
 
 <script>
 import { useEmitter } from 'element-ui/src/use/emitter'
-import { provide, getCurrentInstance, computed, inject, watch } from 'vue';
+import { provide, getCurrentInstance, computed, inject, watch } from 'vue'
 export default {
   name: 'ElCheckboxGroup',
 
@@ -22,25 +21,31 @@ export default {
     border: Boolean
   },
 
-  emits:[ 'update:modelValue', 'change' ],
+  emits: ['update:modelValue', 'change'],
 
   setup(props) {
-    const elForm = inject("elForm", { props:{}, ctx:{} });
-    const elFormItem = inject("elFormItem", { props:{}, ctx:{}, emit:()=>{} });
-    provide('elCheckboxGroup', getCurrentInstance());
+    const elForm = inject('elForm', { props: {}, ctx: {} })
+    const elFormItem = inject('elFormItem', {
+      props: {},
+      ctx: {},
+      emit: () => {}
+    })
+    provide('elCheckboxGroup', getCurrentInstance())
 
-    const { dispatch } = useEmitter();
+    const { dispatch } = useEmitter()
 
-    const checkboxGroupSize = computed(()=>{
-      return props.size || elFormItem.ctx.elFormItemSize;
+    const checkboxGroupSize = computed(() => {
+      return props.size || elFormItem.ctx.elFormItemSize
     })
 
-    const checkboxGroupDisabled = computed(()=>{
-      return props.disabled || elFormItem.props.disabled || elForm.props.disabled;
+    const checkboxGroupDisabled = computed(() => {
+      return (
+        props.disabled || elFormItem.props.disabled || elForm.props.disabled
+      )
     })
 
-    watch(props.modelValue, (v)=>{
-      dispatch('ElFormItem', 'el.form.change', v);
+    watch(props.modelValue, (v) => {
+      dispatch('ElFormItem', 'el.form.change', v)
     })
 
     return {
@@ -48,5 +53,5 @@ export default {
       checkboxGroupDisabled
     }
   }
-};
+}
 </script>

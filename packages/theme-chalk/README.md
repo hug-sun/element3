@@ -29,5 +29,4 @@ Or
 import 'element-theme-chalk/lib/input.css';
 import 'element-theme-chalk/lib/select.css';
 
-// ...
 ```

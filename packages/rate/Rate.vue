@@ -1,43 +1,57 @@
 <template>
   <div
-      class="el-rate"
-      @keydown="handleKey"
-      role="slider"
-      :aria-valuenow="modelValue"
-      :aria-valuetext="text"
-      aria-valuemin="0"
-      :aria-valuemax="max"
-      tabindex="0">
+    class="el-rate"
+    @keydown="handleKey"
+    role="slider"
+    :aria-valuenow="modelValue"
+    :aria-valuetext="text"
+    aria-valuemin="0"
+    :aria-valuemax="max"
+    tabindex="0"
+  >
     <span
-        v-for="(item, key) in max"
-        class="el-rate__item"
-        @mousemove="setCurrentValue(item, $event)"
-        @mouseleave="resetCurrentValue"
-        @click="selectValue(item)"
-        :style="{ cursor: rateDisabled ? 'auto' : 'pointer' }"
-        :key="key"
+      v-for="(item, key) in max"
+      class="el-rate__item"
+      @mousemove="setCurrentValue(item, $event)"
+      @mouseleave="resetCurrentValue"
+      @click="selectValue(item)"
+      :style="{ cursor: rateDisabled ? 'auto' : 'pointer' }"
+      :key="key"
     >
       <i
-          class="el-rate__icon"
-          :class="[classes[item - 1], { 'hover': hoverIndex === item }]"
-          :style="getIconStyle(item)"
+        class="el-rate__icon"
+        :class="[classes[item - 1], { hover: hoverIndex === item }]"
+        :style="getIconStyle(item)"
       >
         <i
-            class="el-rate__decimal"
-            v-if="showDecimalIcon(item)"
-            :class="decimalIconClass"
-            :style="decimalStyle"
+          class="el-rate__decimal"
+          v-if="showDecimalIcon(item)"
+          :class="decimalIconClass"
+          :style="decimalStyle"
         ></i>
       </i>
     </span>
-    <span v-if="showText || showScore" class="el-rate__text" :style="{ color: textColor }">{{ text }}</span>
+    <span
+      v-if="showText || showScore"
+      class="el-rate__text"
+      :style="{ color: textColor }"
+      >{{ text }}</span
+    >
   </div>
 </template>
 
 <script>
-import {inject, toRefs, computed, unref, ref, watch, getCurrentInstance} from 'vue'
-import {hasClass} from 'element-ui/src/utils/dom'
-import {migrating} from 'element-ui/src/use/migrating'
+import {
+  inject,
+  toRefs,
+  computed,
+  unref,
+  ref,
+  watch,
+  getCurrentInstance
+} from 'vue'
+import { hasClass } from 'element-ui/src/utils/dom'
+import { migrating } from 'element-ui/src/use/migrating'
 
 export default {
   name: 'ElRate',
@@ -119,13 +133,9 @@ export default {
     }
   },
 
-  emits: [
-    'update:modelValue',
-    'change'
-  ],
+  emits: ['update:modelValue', 'change'],
 
-  setup(props, {emit}) {
-
+  setup(props, { emit }) {
     const {
       modelValue,
       disabled,
@@ -170,7 +180,7 @@ export default {
       max
     })
 
-    const {classMap, colorMap} = useMaps({
+    const { classMap, colorMap } = useMaps({
       colors,
       iconClasses,
       lowThreshold,
@@ -178,10 +188,7 @@ export default {
       max
     })
 
-    const {
-      classes,
-      decimalIconClass
-    } = useClasses({
+    const { classes, decimalIconClass } = useClasses({
       currentValue,
       modelValue,
       classMap,
@@ -192,10 +199,7 @@ export default {
       voidIconClass
     })
 
-    const {
-      activeColor,
-      getIconStyle
-    } = useColor({
+    const { activeColor, getIconStyle } = useColor({
       currentValue,
       colorMap,
       rateDisabled,
@@ -203,10 +207,7 @@ export default {
       voidColorProp: voidColor
     })
 
-    const {
-      decimalStyle,
-      showDecimalIcon
-    } = useDecimal({
+    const { decimalStyle, showDecimalIcon } = useDecimal({
       currentValue,
       modelValue,
       allowHalf,
@@ -218,9 +219,10 @@ export default {
     const text = computed(() => {
       let result = ''
       if (showScore.value) {
-        result = scoreTemplate.value.replace(/\{\s*value\s*\}/, unref(rateDisabled)
-          ? modelValue.value
-          : currentValue.value)
+        result = scoreTemplate.value.replace(
+          /\{\s*value\s*\}/,
+          unref(rateDisabled) ? modelValue.value : currentValue.value
+        )
       } else if (showText.value) {
         result = texts.value[Math.ceil(currentValue.value) - 1]
       }
@@ -252,46 +254,68 @@ export default {
 const getValueFromMap = (value, map) => {
   map = unref(map)
   const matchedKeys = Object.keys(map)
-    .filter(key => {
+    .filter((key) => {
       const val = map[key]
-      const excluded = (val instanceof Object) ? val.excluded : false
+      const excluded = val instanceof Object ? val.excluded : false
       return excluded ? value < key : value <= key
     })
     .sort((a, b) => a - b)
   const matchedValue = map[matchedKeys[0]]
-  return (matchedValue instanceof Object) ? matchedValue.value : (matchedValue || '')
+  return matchedValue instanceof Object
+    ? matchedValue.value
+    : matchedValue || ''
 }
 
 const useDisabled = (disabled, elForm) => {
   return computed(() => disabled.value || elForm.disabled)
 }
 
-const useMaps = ({colors, iconClasses, lowThreshold, highThreshold, max}) => {
-  const useMap = (mapData, {lowThreshold, highThreshold, max}) => {
-    return computed(() => Array.isArray(mapData)
-      ? {
-        [lowThreshold.value]: mapData[0],
-        [highThreshold.value]: {value: mapData[1], excluded: true},
-        [max.value]: mapData[2]
-      } : mapData
+const useMaps = ({ colors, iconClasses, lowThreshold, highThreshold, max }) => {
+  const useMap = (mapData, { lowThreshold, highThreshold, max }) => {
+    return computed(() =>
+      Array.isArray(mapData)
+        ? {
+            [lowThreshold.value]: mapData[0],
+            [highThreshold.value]: { value: mapData[1], excluded: true },
+            [max.value]: mapData[2]
+          }
+        : mapData
     )
   }
   return {
-    classMap: useMap(unref(iconClasses), {lowThreshold, highThreshold, max}),
-    colorMap: useMap(unref(colors), {lowThreshold, highThreshold, max})
+    classMap: useMap(unref(iconClasses), { lowThreshold, highThreshold, max }),
+    colorMap: useMap(unref(colors), { lowThreshold, highThreshold, max })
   }
 }
 
-const useClasses = ({currentValue, modelValue, classMap, allowHalf, max, rateDisabled, disabledVoidIconClass, voidIconClass}) => {
-  const activeClass = computed(() => getValueFromMap(currentValue.value, unref(classMap)))
-  const voidClass = computed(() => unref(rateDisabled) ? disabledVoidIconClass.value : voidIconClass.value)
-  const decimalIconClass = computed(() => getValueFromMap(modelValue.value, unref(classMap)))
+const useClasses = ({
+  currentValue,
+  modelValue,
+  classMap,
+  allowHalf,
+  max,
+  rateDisabled,
+  disabledVoidIconClass,
+  voidIconClass
+}) => {
+  const activeClass = computed(() =>
+    getValueFromMap(currentValue.value, unref(classMap))
+  )
+  const voidClass = computed(() =>
+    unref(rateDisabled) ? disabledVoidIconClass.value : voidIconClass.value
+  )
+  const decimalIconClass = computed(() =>
+    getValueFromMap(modelValue.value, unref(classMap))
+  )
 
   const classes = computed(() => {
-    let result = []
+    const result = []
     let i = 0
     let threshold = currentValue.value
-    if (allowHalf.value && currentValue.value !== Math.floor(currentValue.value)) {
+    if (
+      allowHalf.value &&
+      currentValue.value !== Math.floor(currentValue.value)
+    ) {
       threshold--
     }
     for (; i < threshold; i++) {
@@ -309,10 +333,20 @@ const useClasses = ({currentValue, modelValue, classMap, allowHalf, max, rateDis
   }
 }
 
-const useColor = ({currentValue, colorMap, rateDisabled, disabledVoidColor, voidColorProp}) => {
-  const activeColor = computed(() => getValueFromMap(currentValue.value, colorMap))
+const useColor = ({
+  currentValue,
+  colorMap,
+  rateDisabled,
+  disabledVoidColor,
+  voidColorProp
+}) => {
+  const activeColor = computed(() =>
+    getValueFromMap(currentValue.value, colorMap)
+  )
   const getIconStyle = (item) => {
-    const voidColor = rateDisabled.value ? disabledVoidColor.value : voidColorProp.value
+    const voidColor = rateDisabled.value
+      ? disabledVoidColor.value
+      : voidColorProp.value
     return {
       color: unref(item <= currentValue.value ? activeColor.value : voidColor)
     }
@@ -323,12 +357,21 @@ const useColor = ({currentValue, colorMap, rateDisabled, disabledVoidColor, void
   }
 }
 
-const useDecimal = ({currentValue, modelValue, allowHalf, rateDisabled, pointerAtLeftHalf, activeColor}) => {
-  const valueDecimal = computed(() => modelValue.value * 100 - Math.floor(modelValue.value) * 100)
+const useDecimal = ({
+  currentValue,
+  modelValue,
+  allowHalf,
+  rateDisabled,
+  pointerAtLeftHalf,
+  activeColor
+}) => {
+  const valueDecimal = computed(
+    () => modelValue.value * 100 - Math.floor(modelValue.value) * 100
+  )
   const decimalStyle = computed(() => {
     let width = ''
     if (unref(rateDisabled)) {
-      width = `${ valueDecimal.value }%`
+      width = `${valueDecimal.value}%`
     } else if (allowHalf.value) {
       width = '50%'
     }
@@ -339,12 +382,17 @@ const useDecimal = ({currentValue, modelValue, allowHalf, rateDisabled, pointerA
   })
 
   const showDecimalIcon = (item) => {
-    let showWhenDisabled = unref(rateDisabled) && valueDecimal.value > 0 && item - 1 < modelValue.value && item > modelValue.value
+    const showWhenDisabled =
+      unref(rateDisabled) &&
+      valueDecimal.value > 0 &&
+      item - 1 < modelValue.value &&
+      item > modelValue.value
     /* istanbul ignore next */
-    let showWhenAllowHalf = allowHalf.value &&
-        pointerAtLeftHalf &&
-        item - 0.5 <= currentValue.value &&
-        item > currentValue.value
+    const showWhenAllowHalf =
+      allowHalf.value &&
+      pointerAtLeftHalf &&
+      item - 0.5 <= currentValue.value &&
+      item > currentValue.value
     return showWhenDisabled || showWhenAllowHalf
   }
 
@@ -354,8 +402,8 @@ const useDecimal = ({currentValue, modelValue, allowHalf, rateDisabled, pointerA
   }
 }
 
-const useCurrentValue = ({modelValue, allowHalf, rateDisabled, max}) => {
-  const {emit} = getCurrentInstance()
+const useCurrentValue = ({ modelValue, allowHalf, rateDisabled, max }) => {
+  const { emit } = getCurrentInstance()
   const currentValue = ref(modelValue.value)
   const pointerAtLeftHalf = ref(false)
   const hoverIndex = ref(-1)
@@ -389,7 +437,8 @@ const useCurrentValue = ({modelValue, allowHalf, rateDisabled, max}) => {
       return
     }
     if (allowHalf.value) {
-      pointerAtLeftHalf.value = modelValue.value !== Math.floor(modelValue.value)
+      pointerAtLeftHalf.value =
+        modelValue.value !== Math.floor(modelValue.value)
     }
     currentValue.value = modelValue.value
     hoverIndex.value = -1
@@ -414,7 +463,8 @@ const useCurrentValue = ({modelValue, allowHalf, rateDisabled, max}) => {
     }
     let value = currentValue.value
     const keyCode = e.keyCode
-    if (keyCode === 38 || keyCode === 39) { // left / down
+    if (keyCode === 38 || keyCode === 39) {
+      // left / down
       if (allowHalf.value) {
         value += 0.5
       } else {
@@ -448,5 +498,4 @@ const useCurrentValue = ({modelValue, allowHalf, rateDisabled, max}) => {
     handleKey
   }
 }
-
 </script>
