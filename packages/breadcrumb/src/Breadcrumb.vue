@@ -1,36 +1,41 @@
 <template>
-  <div ref="root" class="el-breadcrumb" aria-label="Breadcrumb" role="navigation">
+  <div
+    ref="root"
+    class="el-breadcrumb"
+    aria-label="Breadcrumb"
+    role="navigation"
+  >
     <slot></slot>
   </div>
 </template>
 <script>
-import {  ref, onMounted, provide,  toRefs } from "vue";
+import { ref, onMounted, provide, toRefs } from 'vue'
 export default {
-  name: "ElBreadcrumb",
+  name: 'ElBreadcrumb',
   props: {
     separator: {
       type: String,
-      default: "/",
+      default: '/'
     },
     separatorClass: {
       type: String,
-      default: "",
-    },
+      default: ''
+    }
   },
   setup(props) {
-    const {separator,separatorClass} = toRefs(props);
-    const root = ref(null);
-    provide("separator", separator);
-    provide("separatorClass", separatorClass);
+    const { separator, separatorClass } = toRefs(props)
+    const root = ref(null)
+    provide('separator', separator)
+    provide('separatorClass', separatorClass)
     onMounted(() => {
-      const items = root.value.querySelectorAll(".el-breadcrumb__item");
+      const items = root.value.querySelectorAll('.el-breadcrumb__item')
       if (items.length) {
-        items[items.length - 1].setAttribute("aria-current", "page");
+        items[items.length - 1].setAttribute('aria-current', 'page')
       }
-    });
+    })
     return {
       root
-    };
+    }
   }
-};
+}
 </script>

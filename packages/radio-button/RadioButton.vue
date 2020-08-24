@@ -24,19 +24,26 @@
       tabindex="-1"
       @focus="focus = true"
       @blur="focus = false"
-    >
+    />
     <span
       class="el-radio-button__inner"
       :style="value === label ? activeStyle : null"
       @keydown.stop
     >
       <slot></slot>
-      <template v-if="!$slots.default">{{label}}</template>
+      <template v-if="!$slots.default">{{ label }}</template>
     </span>
   </label>
 </template>
 <script>
-import { toRefs, ref, inject, getCurrentInstance, computed, nextTick } from 'vue'
+import {
+  toRefs,
+  ref,
+  inject,
+  getCurrentInstance,
+  computed,
+  nextTick
+} from 'vue'
 
 export default {
   name: 'ElRadioButton',
@@ -60,7 +67,14 @@ export default {
 
     const { value, handleChange } = useModel({ radioGroup, label, radio })
 
-    const { size, isDisabled, tabIndex, activeStyle } = useStyle({ radioGroup, disabled, value, label, elForm, elFormItem })
+    const { size, isDisabled, tabIndex, activeStyle } = useStyle({
+      radioGroup,
+      disabled,
+      value,
+      label,
+      elForm,
+      elFormItem
+    })
 
     return {
       radio,
@@ -85,7 +99,7 @@ function useInject() {
 }
 
 function useCheckGroup() {
-  let {parent} = getCurrentInstance()
+  let { parent } = getCurrentInstance()
   while (parent) {
     if (parent.type.name !== 'ElRadioGroup') {
       parent = parent.parent
@@ -96,7 +110,9 @@ function useCheckGroup() {
       }
     }
   }
-  console.warn('ElementUI Warn: `<radio-button></radio-button>` must be use with <radio-group></radio-group>')
+  console.warn(
+    'ElementUI Warn: `<radio-button></radio-button>` must be use with <radio-group></radio-group>'
+  )
   return {
     isGroup: false,
     radioGroup: null
@@ -134,14 +150,18 @@ function useStyle({ radioGroup, disabled, value, label, elForm, elFormItem }) {
     return radioGroup.props.disabled || disabled.value || elFormDisable
   })
   const tabIndex = computed(() => {
-    return isDisabled.value || (radioGroup && value.value !== label.value) ? -1 : 0
+    return isDisabled.value || (radioGroup && value.value !== label.value)
+      ? -1
+      : 0
   })
 
   const activeStyle = computed(() => {
     return {
       backgroundColor: radioGroup.props.fill || '',
       borderColor: radioGroup.props.fill || '',
-      boxShadow: radioGroup.props.fill ? `-1px 0 0 0 ${radioGroup.props.fill}` : '',
+      boxShadow: radioGroup.props.fill
+        ? `-1px 0 0 0 ${radioGroup.props.fill}`
+        : '',
       color: radioGroup.props.textColor || ''
     }
   })

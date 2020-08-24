@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const ELEMENT_THEME_USER_CONFIG = 'ELEMENT_THEME_USER_CONFIG'
 export const loadFromLocal = (key) => {
   return new window.Promise((resolve) => {

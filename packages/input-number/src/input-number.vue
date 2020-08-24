@@ -14,7 +14,7 @@
       role="button"
       v-if="controls"
       v-repeat-click="decrease"
-      :class="{'is-disabled': minDisabled}"
+      :class="{ 'is-disabled': minDisabled }"
       @keydown.enter="decrease"
     >
       <i :class="`el-icon-${controlsAtRight ? 'arrow-down' : 'minus'}`"></i>
@@ -24,7 +24,7 @@
       role="button"
       v-if="controls"
       v-repeat-click="increase"
-      :class="{'is-disabled': maxDisabled}"
+      :class="{ 'is-disabled': maxDisabled }"
       @keydown.enter="increase"
     >
       <i :class="`el-icon-${controlsAtRight ? 'arrow-up' : 'plus'}`"></i>
@@ -221,7 +221,9 @@ export default {
       return precision
     },
     _increase(val, step) {
-      if (typeof val !== 'number' && val !== undefined) {return this.currentValue}
+      if (typeof val !== 'number' && val !== undefined) {
+        return this.currentValue
+      }
 
       const precisionFactor = Math.pow(10, this.numPrecision)
       // Solve the accuracy problem of JS decimal calculation by converting the value to integer.
@@ -230,7 +232,9 @@ export default {
       )
     },
     _decrease(val, step) {
-      if (typeof val !== 'number' && val !== undefined) {return this.currentValue}
+      if (typeof val !== 'number' && val !== undefined) {
+        return this.currentValue
+      }
 
       const precisionFactor = Math.pow(10, this.numPrecision)
 
@@ -284,7 +288,7 @@ export default {
     }
   },
   mounted() {
-    let innerInput = this.$refs.input.$refs.input
+    const innerInput = this.$refs.input.$refs.input
     innerInput.setAttribute('role', 'spinbutton')
     innerInput.setAttribute('aria-valuemax', this.max)
     innerInput.setAttribute('aria-valuemin', this.min)
