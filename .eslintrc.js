@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
     es2020: true,
@@ -19,6 +20,8 @@ module.exports = {
   },
   plugins: ['vue', 'prettier'],
   rules: {
-    'prettier/prettier': ['error']
+    'prettier/prettier': ['error'],
+    'no-case-declarations': ['off'],
+    'vue/no-use-v-if-with-v-for': ['off']
   }
 }
