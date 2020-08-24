@@ -60,11 +60,10 @@ function genInlineComponentText(template, script) {
   script = script.trim()
   if (script) {
     script = script
-              .replace(/export\s+default/, 'const democomponentExport =')
-              .replace(/import ([,{}\w\s]+) from ['"\w]+/g, function (s0, s1) {
-                return `const ${s1} = Vue`
-              })
-
+      .replace(/export\s+default/, 'const democomponentExport =')
+      .replace(/import ([,{}\w\s]+) from ['"\w]+/g, function (s0, s1) {
+        return `const ${s1} = Vue`
+      })
   } else {
     script = 'const democomponentExport = {}'
   }
