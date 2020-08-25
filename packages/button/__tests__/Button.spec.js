@@ -63,6 +63,22 @@ describe('Button.vue', () => {
       expect(wrapper.classes()).toContain('el-button--medium')
     })
 
+    it('size by $ELEMENT options', () => {
+      const wrapper = mount(Button, {
+        global: {
+          config: {
+            globalProperties: {
+              $ELEMENT: {
+                size: 'heihei'
+              }
+            }
+          }
+        }
+      })
+
+      expect(wrapper.classes()).toContain('el-button--heihei')
+    })
+
     it('plain', () => {
       const wrapper = mount(Button, {
         props: {
