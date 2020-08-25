@@ -16,7 +16,7 @@
     "build:theme": "node build/bin/gen-cssfile && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
     "build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js",
     "build:umd": "node build/bin/build-locale.js",
-    "build:ci":"npm run build:file && cross-env NODE_ENV=development webpack --config build/webpack.demo.js",
+    "build:docs": "npm run build:file && cross-env NODE_ENV=development webpack --config build/webpack.demo.js",
     "clean": "rimraf lib && rimraf packages/*/lib && rimraf test/**/coverage",
     "deploy:build": "npm run build:file && cross-env NODE_ENV=production webpack --config build/webpack.demo.js && echo element.eleme.io>>examples/element-ui/CNAME",
     "deploy:extension": "cross-env NODE_ENV=production webpack --config build/webpack.extension.js",
@@ -70,7 +70,7 @@
     "*.js": [
       "eslint"
     ],
-    "*.vue":[
+    "*.vue": [
       "eslint"
     ]
   },
@@ -88,6 +88,7 @@
   "devDependencies": {
     "@ant-design-vue/babel-plugin-jsx": "^1.0.0-beta.4",
     "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "^7.10.4",
     "@testing-library/jest-dom": "^5.11.2",
     "@types/jest": "^26.0.7",
