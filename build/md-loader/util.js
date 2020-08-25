@@ -69,9 +69,14 @@ function genInlineComponentText(template, script) {
   }
   demoComponentContent = `(function() {
     ${demoComponentContent}
-    // --
     ${script}
     return {
+      mounted(){
+        this.$nextTick(()=>{
+          const blocks = document.querySelectorAll('pre code:not(.hljs)')
+          Array.prototype.forEach.call(blocks, hljs.highlightBlock)
+        })
+      },
       render,
       ...democomponentExport
     }

@@ -43,6 +43,7 @@ module.exports = function (source) {
   let pageScript = ''
   if (componenetsString) {
     pageScript = `<script>
+      import hljs from 'highlight.js'
       import * as Vue from "vue"
       export default {
         name: 'component-doc',

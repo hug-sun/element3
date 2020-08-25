@@ -44,4 +44,4 @@ jobs:
     - name: Install modules
       run: yarn
     - name: Pre Deploy test
-      run: yarn build:ci
+      run: yarn build:docs

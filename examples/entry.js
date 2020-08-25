@@ -1,9 +1,9 @@
-import { createApp, reactive, nextTick } from 'vue'
+import { createApp, reactive } from 'vue'
 import entry from './app'
 
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Element from 'main/index.js'
-import hljs from 'highlight.js'
+// import hljs from 'highlight.js'
 import routes from './route.config'
 import demoBlock from './components/demo-block'
 import MainHeader from './components/header'
@@ -52,14 +52,10 @@ const router = createRouter({
 app.use(router)
 
 router.isReady().then(() => {
-  console.log('>>', document.querySelectorAll('pre code:not(.hljs)'))
-
   router.afterEach(async (route) => {
-    await nextTick()
-
-    const blocks = document.querySelectorAll('pre code:not(.hljs)')
-    console.log(blocks)
-    Array.prototype.forEach.call(blocks, hljs.highlightBlock)
+    // await nextTick()
+    // const blocks = document.querySelectorAll('pre code:not(.hljs)')
+    // Array.prototype.forEach.call(blocks, hljs.highlightBlock)
 
     // https://github.com/highlightjs/highlight.js/issues/909#issuecomment-131686186
 
