@@ -1,7 +1,7 @@
 <template>
   <div
     class="el-switch"
-    :class="{ 'is-checked': isChecked,'is-disabled': disabled}"
+    :class="{ 'is-checked': isChecked, 'is-disabled': disabled }"
     @click.prevent="handleClick"
   >
     <SwitchLabel
@@ -14,12 +14,22 @@
     <span
       class="el-switch__core"
       ref="core"
-      :style="{ 'width': width+'px','background': backgroundColor, 'border-color': backgroundColor }"
+      :style="{
+        width: width + 'px',
+        background: backgroundColor,
+        'border-color': backgroundColor
+      }"
     ></span>
 
-    <SwitchLabel :active="isChecked" type="right" :text="activeText" :iconClass="activeIconClass"></SwitchLabel>
+    <SwitchLabel
+      :active="isChecked"
+      type="right"
+      :text="activeText"
+      :iconClass="activeIconClass"
+    ></SwitchLabel>
   </div>
 </template>
+
 <script>
 import { computed, toRefs, onMounted } from 'vue'
 import SwitchLabel from './SwitchLabel'
@@ -70,15 +80,6 @@ export default {
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
-    // TODO 涉及到关于 elFrom 的逻辑全部被干掉了
-    // 后面处理 elFromItem || elFrom 的时候在添加对应的逻辑
-    // name
-    // validate-event
-    // fout
-    // input 相关逻辑
-    // 后续可以参考之前的逻辑
-    // el-tooltip 现在有问题 等修好了 tooltip 之后再处理 switch 的不同 value 的类型
-
     const {
       activeValue,
       inactiveValue,

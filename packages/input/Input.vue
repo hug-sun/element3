@@ -1,17 +1,18 @@
 <template>
   <div
     :class="[
-    type === 'textarea' ? 'el-textarea' : 'el-input',
-    inputSize ? 'el-input--' + inputSize : '',
-    {
-      'is-disabled': inputDisabled,
-      'is-exceed': inputExceed,
-      'el-input-group': $slots.prepend || $slots.append,
-      'el-input-group--append': $slots.append,
-      'el-input-group--prepend': $slots.prepend,
-      'el-input--prefix': $slots.prefix || prefixIcon,
-      'el-input--suffix': $slots.suffix || suffixIcon || clearable || showPassword
-    }
+      type === 'textarea' ? 'el-textarea' : 'el-input',
+      inputSize ? 'el-input--' + inputSize : '',
+      {
+        'is-disabled': inputDisabled,
+        'is-exceed': inputExceed,
+        'el-input-group': $slots.prepend || $slots.append,
+        'el-input-group--append': $slots.append,
+        'el-input-group--prepend': $slots.prepend,
+        'el-input--prefix': $slots.prefix || prefixIcon,
+        'el-input--suffix':
+          $slots.suffix || suffixIcon || clearable || showPassword
+      }
     ]"
     @mouseenter="hovering = true"
     @mouseleave="hovering = false"
@@ -26,7 +27,7 @@
         v-if="type !== 'textarea'"
         class="el-input__inner"
         v-bind="$attrs"
-        :type="showPassword ? (passwordVisible ? 'text': 'password') : type"
+        :type="showPassword ? (passwordVisible ? 'text' : 'password') : type"
         :disabled="inputDisabled"
         :readonly="readonly"
         :autocomplete="autocomplete"
@@ -64,7 +65,9 @@
             @click="handlePasswordVisible"
           ></i>
           <span v-if="isWordLimitVisible" class="el-input__count">
-            <span class="el-input__count-inner">{{ textLength }}/{{ upperLimit }}</span>
+            <span class="el-input__count-inner"
+              >{{ textLength }}/{{ upperLimit }}</span
+            >
           </span>
         </span>
         <i
@@ -100,7 +103,8 @@
     <span
       v-if="isWordLimitVisible && type === 'textarea'"
       class="el-input__count"
-    >{{ textLength }}/{{ upperLimit }}</span>
+      >{{ textLength }}/{{ upperLimit }}</span
+    >
   </div>
 </template>
 <script>

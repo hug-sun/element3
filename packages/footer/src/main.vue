@@ -5,16 +5,16 @@
 </template>
 
 <script>
-  export default {
-    name: 'ElFooter',
+export default {
+  name: 'ElFooter',
 
-    componentName: 'ElFooter',
+  componentName: 'ElFooter',
 
-    props: {
-      height: {
-        type: String,
-        default: '60px'
-      }
+  props: {
+    height: {
+      type: String,
+      default: '60px'
     }
-  };
+  }
+}
 </script>

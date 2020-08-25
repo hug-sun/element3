@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'ElButtonGroup'
-  }
+export default {
+  name: 'ElButtonGroup'
+}
 </script>

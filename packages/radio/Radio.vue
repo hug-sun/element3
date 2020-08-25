@@ -6,7 +6,7 @@
       { 'is-disabled': isDisabled },
       { 'is-focus': focus },
       { 'is-bordered': border },
-      { 'is-checked': model === label },
+      { 'is-checked': model === label }
     ]"
     role="radio"
     :aria-checked="model === label"
@@ -15,10 +15,10 @@
     @keydown.space.stop.prevent="model = isDisabled ? model : label"
   >
     <span
-      class='el-radio__input'
+      class="el-radio__input"
       :class="{
         'is-disabled': isDisabled,
-        'is-checked': model === label,
+        'is-checked': model === label
       }"
     >
       <span class="el-radio__inner"></span>
@@ -37,17 +37,22 @@
         tabindex="-1"
       />
     </span>
-    <span
-      class="el-radio__label"
-      @keydown.stop
-    >
+    <span class="el-radio__label" @keydown.stop>
       <slot></slot>
       <template v-if="!$slots.default">{{ label }}</template>
     </span>
   </label>
 </template>
 <script>
-import { ref, computed, toRefs, nextTick, getCurrentInstance, inject, unref } from 'vue'
+import {
+  ref,
+  computed,
+  toRefs,
+  nextTick,
+  getCurrentInstance,
+  inject,
+  unref
+} from 'vue'
 
 export default {
   name: 'ElRadio',
@@ -74,9 +79,24 @@ export default {
 
     const { isGroup, radioGroup } = useCheckGroup()
 
-    const { model, handleChange } = useModel({ isGroup, radioGroup, modelValue, label, radio })
+    const { model, handleChange } = useModel({
+      isGroup,
+      radioGroup,
+      modelValue,
+      label,
+      radio
+    })
 
-    const { radioSize, isDisabled, tabIndex } = useStyle({ isGroup, radioGroup, size, disabled, model, label, elForm, elFormItem })
+    const { radioSize, isDisabled, tabIndex } = useStyle({
+      isGroup,
+      radioGroup,
+      size,
+      disabled,
+      model,
+      label,
+      elForm,
+      elFormItem
+    })
     return {
       radio,
       focus,
@@ -99,7 +119,7 @@ function useInject() {
 }
 
 function useCheckGroup() {
-  let {parent} = getCurrentInstance()
+  let { parent } = getCurrentInstance()
   while (parent) {
     if (parent.type.name !== 'ElRadioGroup') {
       parent = parent.parent
@@ -142,16 +162,30 @@ function useModel({ isGroup, radioGroup, modelValue, radio, label }) {
   return { model, handleChange }
 }
 
-function useStyle({ isGroup, radioGroup, size, disabled, model, label, elForm, elFormItem }) {
+function useStyle({
+  isGroup,
+  radioGroup,
+  size,
+  disabled,
+  model,
+  label,
+  elForm,
+  elFormItem
+}) {
   const { ctx } = getCurrentInstance()
   const elFormDisable = (elForm.props || {}).disabled
   const elFormItemSize = (elFormItem.ctx || {}).elFormItemSize
   const radioSize = computed(() => {
-    const temRadioSize = unref(size) || elFormItemSize || (ctx.$ELEMENT || {}).size
-    return isGroup ? radioGroup.ctx.radioGroupSize || temRadioSize : temRadioSize
+    const temRadioSize =
+      unref(size) || elFormItemSize || (ctx.$ELEMENT || {}).size
+    return isGroup
+      ? radioGroup.ctx.radioGroupSize || temRadioSize
+      : temRadioSize
   })
   const isDisabled = computed(() => {
-    return isGroup ? radioGroup.props.disabled || disabled.value || elFormDisable : disabled.value || elFormDisable
+    return isGroup
+      ? radioGroup.props.disabled || disabled.value || elFormDisable
+      : disabled.value || elFormDisable
   })
 
   const tabIndex = computed(() => {
