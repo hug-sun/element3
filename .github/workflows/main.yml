@@ -27,4 +27,4 @@ jobs:
     - name: Run tests
       run: yarn test:unit
     - name: Pre Deploy test
-      run: yarn deploy:build
+      run: yarn build:ci
