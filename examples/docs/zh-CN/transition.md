@@ -6,20 +6,18 @@ Element 内应用在部分组件的过渡动画，你也可以直接使用。在
 
 :::demo 提供 `el-fade-in-linear` 和 `el-fade-in` 两种效果。
 ```html
-<template>
-  <div>
-    <el-button @click="show = !show">Click Me</el-button>
+<div>
+<el-button @click="show = !show">Click Me</el-button>
 
-    <div style="display: flex; margin-top: 20px; height: 100px;">
-      <transition name="el-fade-in-linear">
-        <div v-show="show" class="transition-box">.el-fade-in-linear</div>
-      </transition>
-      <transition name="el-fade-in">
-        <div v-show="show" class="transition-box">.el-fade-in</div>
-      </transition>
-    </div>
-  </div>
-</template>
+<div style="display: flex; margin-top: 20px; height: 100px;">
+  <transition name="el-fade-in-linear">
+    <div v-show="show" class="transition-box">.el-fade-in-linear</div>
+  </transition>
+  <transition name="el-fade-in">
+    <div v-show="show" class="transition-box">.el-fade-in</div>
+  </transition>
+</div>
+</div>
 
 <script>
     export default {
@@ -50,8 +48,7 @@ Element 内应用在部分组件的过渡动画，你也可以直接使用。在
 
 :::demo 提供 `el-zoom-in-center`，`el-zoom-in-top` 和 `el-zoom-in-bottom` 三种效果。
 ```html
-<template>
-  <div>
+<div>
     <el-button @click="show2 = !show2">Click Me</el-button>
 
     <div style="display: flex; margin-top: 20px; height: 100px;">
@@ -68,7 +65,6 @@ Element 内应用在部分组件的过渡动画，你也可以直接使用。在
       </transition>
     </div>
   </div>
-</template>
 
 <script>
     export default {
@@ -102,8 +98,7 @@ Element 内应用在部分组件的过渡动画，你也可以直接使用。在
 
 :::demo
 ```html
-<template>
-  <div>
+<div>
     <el-button @click="show3 = !show3">Click Me</el-button>
 
     <div style="margin-top: 20px; height: 200px;">
@@ -115,7 +110,6 @@ Element 内应用在部分组件的过渡动画，你也可以直接使用。在
       </el-collapse-transition>
     </div>
   </div>
-</template>
 
 <script>
     export default {
