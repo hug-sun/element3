@@ -13,7 +13,7 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
 
 ## Contribution
 
-[See Contributing Guide.](https://juejin.im/post/6864462363039531022/#heading-5)
+[See Contributing Guide.](https://juejin.im/post/6864462363039531022)
 
 ### basic
 
