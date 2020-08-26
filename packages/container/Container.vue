@@ -8,9 +8,6 @@
 import { computed, toRefs } from 'vue'
 export default {
   name: 'ElContainer',
-
-  componentName: 'ElContainer',
-
   props: {
     direction: String
   },
@@ -23,7 +20,6 @@ export default {
       } else if (direction === 'horizontal') {
         return false
       }
-      // instance.$slots.default = [instance.message]
       if (slots && slots.default) {
         return slots.default().some((vNode) => {
           const tag = vNode.type && vNode.type.name
