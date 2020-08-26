@@ -1,4 +1,4 @@
-import { h, inject, computed } from 'vue'
+import { h, inject } from 'vue'
 export default {
   name: 'ElCol',
   props: {
@@ -19,7 +19,7 @@ export default {
     lg: [Number, Object],
     xl: [Number, Object]
   },
-  setup(){
+  setup() {
     const elRow = inject('el-row')
     return { elRow }
   },
