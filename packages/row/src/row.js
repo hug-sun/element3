@@ -1,8 +1,8 @@
-import { h, provide, computed,getCurrentInstance } from 'vue'
+import { h, provide, computed, getCurrentInstance } from 'vue'
 export default {
   name: 'ElRow',
-  setup(props){
-    const style = computed(()=>{
+  setup(props) {
+    const style = computed(() => {
       const ret = {}
       if (props.gutter) {
         ret.marginLeft = `-${props.gutter / 2}px`
@@ -11,7 +11,7 @@ export default {
       return ret
     })
     provide('el-row', getCurrentInstance())
-    return {style}
+    return { style }
   },
   props: {
     tag: {
@@ -20,7 +20,7 @@ export default {
     },
     gutter: {
       type: Number,
-      default:0
+      default: 0
     },
     type: String,
     justify: {
