@@ -20,8 +20,8 @@ function stripTemplate(content) {
   }
   content = content.replace(/<(script|style)[\s\S]+<\/\1>/g, '').trim()
   // 过滤<template>
-  const result = content.match(/<(template)\s*>([\s\S]+)<\/\1>/)
-  return result ? result[2].trim() : content
+  const ret = content.match(/<(template)\s*>([\s\S]+)<\/\1>/)
+  return ret ? ret[2].trim() : content
 }
 
 // function pad(source) {
