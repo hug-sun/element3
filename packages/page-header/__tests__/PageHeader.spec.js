@@ -1,4 +1,4 @@
-import PageHeader from '../src/main'
+import PageHeader from '../PageHeader'
 import { mount } from '@vue/test-utils'
 import { ref, nextTick } from 'vue'
 
