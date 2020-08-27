@@ -1,15 +1,13 @@
 import { mount } from '@vue/test-utils'
 import Backtop from '../src/main.vue'
-describe('Backtop.vue',()=>{
-    const containerDeaultSlot = 
-        `<div class="target" style="width:100px;height:100px;overflow-y:scroll">
+describe('Backtop.vue', () => {
+  const containerDeaultSlot = `<div class="target" style="width:100px;height:100px;overflow-y:scroll">
             <div style="height:4000px;width:100%">
             <el-backtop target=".target" :visibilityHeight="2000" :right="20" :bottom="20">
             </el-backtop>
             </div>
         </div>`
-        const containerSlot= 
-        `<div class="target" style="width:100px;height:100px;overflow-y:scroll">
+  const containerSlot = `<div class="target" style="width:100px;height:100px;overflow-y:scroll">
             <div style="height:4000px;width:100%">
             <el-backtop target=".target" :visibilityHeight="2000" :right="20" :bottom="20">
                 <div id="slot">
@@ -18,44 +16,44 @@ describe('Backtop.vue',()=>{
             </el-backtop>
             </div>
         </div>`
-    const _mount= (temp)=>{
-       return mount({
-            components:{
-                'el-backtop':Backtop
-            },
-            template:temp
-        }, {
-            attachTo: document.body,
-        })
-    }
-    describe('props',()=>{
-        const defaultWrapper = _mount(containerDeaultSlot)
-        const slotWrapper = _mount(containerSlot)
-        it('defaultSlot',async ()=>{
-            expect(defaultWrapper.find('.el-backtop').exists()).toBe(false)
-            defaultWrapper.element.scrollTop = 2000
-            await defaultWrapper.trigger('scroll')
-            expect(defaultWrapper.find('.el-backtop').exists()).toBe(true)
-            expect(defaultWrapper.find('.el-backtop').attributes('style')).toBe('right: 20px; bottom: 20px;')
-            expect(defaultWrapper.find('.el-icon-caret-top').exists()).toBe(true)
-        })
-        it('slot',async ()=>{
-            slotWrapper.element.scrollTop = 2000
-            await slotWrapper.trigger('scroll')
-            expect(slotWrapper.find('.el-icon-caret-top').exists()).toBe(false)
-            expect(slotWrapper.find('#slot').exists()).toBe(true)
-            expect(slotWrapper.find('#slot').text()).toBe('向上')
-        })
+  const _mount = (temp) => {
+    return mount(
+      {
+        components: {
+          'el-backtop': Backtop
+        },
+        template: temp
+      },
+      {
+        attachTo: document.body
+      }
+    )
+  }
+  const defaultWrapper = _mount(containerDeaultSlot)
+  const slotWrapper = _mount(containerSlot)
+  describe('props', () => {
+    it('defaultSlot', async () => {
+      expect(defaultWrapper.find('.el-backtop').exists()).toBe(false)
+      defaultWrapper.element.scrollTop = 2000
+      await defaultWrapper.trigger('scroll')
+      expect(defaultWrapper.find('.el-backtop').exists()).toBe(true)
+      expect(defaultWrapper.find('.el-backtop').attributes('style')).toBe(
+        'right: 20px; bottom: 20px;'
+      )
+      expect(defaultWrapper.find('.el-icon-caret-top').exists()).toBe(true)
     })
-    describe('event',()=>{
-        const defaultWrapper = _mount(containerDeaultSlot)
-        it('click',async ()=>{
-            defaultWrapper.element.scrollTop = 2000
-            await defaultWrapper.trigger('scroll')
-            setTimeout(()=>{
-                defaultWrapper.find('.el-backtop').trigger('click')
-                expect(defaultWrapper.element.scrollTop).toBe(0)
-            },5*1000)
-        })
+    it('slot', async () => {
+      slotWrapper.element.scrollTop = 2000
+      await slotWrapper.trigger('scroll')
+      expect(slotWrapper.find('.el-icon-caret-top').exists()).toBe(false)
+      expect(slotWrapper.find('#slot').exists()).toBe(true)
+      expect(slotWrapper.find('#slot').text()).toBe('向上')
     })
+  })
+  describe('event', () => {
+    it('click', async () => {
+      await defaultWrapper.find('.el-backtop').trigger('click')
+      expect(defaultWrapper.find('.el-backtop').exists()).toBe(true)
+    })
+  })
 })
