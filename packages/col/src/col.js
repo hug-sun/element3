@@ -1,7 +1,6 @@
-import { h } from 'vue'
+import { h, inject } from 'vue'
 export default {
   name: 'ElCol',
-
   props: {
     span: {
       type: Number,
@@ -20,22 +19,25 @@ export default {
     lg: [Number, Object],
     xl: [Number, Object]
   },
-
-  computed: {
-    gutter() {
-      let parent = this.$parent
-      while (parent && parent.$options.componentName !== 'ElRow') {
-        parent = parent.$parent
-      }
-      return parent ? parent.gutter : 0
-    }
+  setup() {
+    const elRow = inject('el-row')
+    return { elRow }
   },
+  // computed: {
+  //   gutter() {
+  //     let parent = this.$parent
+  //     while (parent && parent.$options.componentName !== 'ElRow') {
+  //       parent = parent.$parent
+  //     }
+  //     return parent ? parent.gutter : 0
+  //   }
+  // },
   render() {
     const classList = []
     const style = {}
-
-    if (this.gutter) {
-      style.paddingLeft = this.gutter / 2 + 'px'
+    const { gutter } = this.elRow.props
+    if (gutter) {
+      style.paddingLeft = gutter / 2 + 'px'
       style.paddingRight = style.paddingLeft
     }
 
@@ -62,7 +64,6 @@ export default {
         })
       }
     })
-
     return h(
       this.tag,
       {
