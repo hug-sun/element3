@@ -1,4 +1,4 @@
-import Container from './src/main'
+import Container from './Container'
 
 /* istanbul ignore next */
 Container.install = function (app) {
