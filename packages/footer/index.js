@@ -1,4 +1,4 @@
-import Footer from './src/main'
+import Footer from './Footer'
 
 /* istanbul ignore next */
 Footer.install = function (app) {
