@@ -11,6 +11,8 @@
 </template>
 <script>
 import objectAssign from 'element-ui/src/utils/merge'
+import { reactive, computed, watch, toRefs, onBeforeMount } from 'vue'
+import { useEmitter } from 'element-ui/src/use/emitter'
 
 export default {
   name: 'ElForm',
@@ -50,69 +52,52 @@ export default {
       default: false
     }
   },
-  watch: {
-    rules() {
-      // remove then add event listeners on form-item after form rules change
-      this.fields.forEach((field) => {
-        field.removeValidateEvents()
-        field.addValidateEvents()
-      })
+  setup(props) {
+    const { on } = useEmitter()
 
-      if (this.validateOnRuleChange) {
-        this.validate(() => {})
-      }
-    }
-  },
-  computed: {
-    autoLabelWidth() {
-      if (!this.potentialLabelWidthArr.length) return 0
-      const max = Math.max(...this.potentialLabelWidthArr)
-      return max ? `${max}px` : ''
-    }
-  },
-  data() {
-    return {
+    const data = reactive({
       fields: [],
-      potentialLabelWidthArr: [] // use this array to calculate auto width
-    }
-  },
-  created() {
-    // this.$on('el.form.addField', (field) => {
-    //   if (field) {
-    //     this.fields.push(field)
-    //   }
-    // })
-    // /* istanbul ignore next */
-    // this.$on('el.form.removeField', (field) => {
-    //   if (field.prop) {
-    //     this.fields.splice(this.fields.indexOf(field), 1)
-    //   }
-    // })
-  },
-  methods: {
-    resetFields() {
-      if (!this.model) {
-        console.warn(
-          '[Element Warn][Form]model is required for resetFields to work.'
-        )
-        return
+      potentialLabelWidthArr: [], // use this array to calculate auto width
+      autoLabelWidth: computed(() => {
+        if (!data.potentialLabelWidthArr.length) return 0
+        const max = Math.max(...data.potentialLabelWidthArr)
+        return max ? `${max}px` : ''
+      })
+    })
+
+    onBeforeMount(() => {
+      on('el.form.addField', (field) => {
+        if (field) {
+          data.fields.push(field)
+        }
+      })
+      /* istanbul ignore next */
+      on('el.form.removeField', (field) => {
+        if (field.prop) {
+          data.fields.splice(data.fields.indexOf(field), 1)
+        }
+      })
+    })
+
+    // 监听校验规则，若变化重新执行校验
+    watch(
+      () => props.rules,
+      () => {
+        // remove then add event listeners on form-item after form rules change
+        data.fields.forEach((field) => {
+          field.removeValidateEvents()
+          field.addValidateEvents()
+        })
+
+        if (props.validateOnRuleChange) {
+          validate(() => {})
+        }
       }
-      this.fields.forEach((field) => {
-        field.resetField()
-      })
-    },
-    clearValidate(props = []) {
-      const fields = props.length
-        ? typeof props === 'string'
-          ? this.fields.filter((field) => props === field.prop)
-          : this.fields.filter((field) => props.indexOf(field.prop) > -1)
-        : this.fields
-      fields.forEach((field) => {
-        field.clearValidate()
-      })
-    },
-    validate(callback) {
-      if (!this.model) {
+    )
+
+    // 表单全局校验
+    function validate(callback) {
+      if (!props.model) {
         console.warn(
           '[Element Warn][Form]model is required for validate to work!'
         )
@@ -132,12 +117,12 @@ export default {
       let valid = true
       let count = 0
       // 如果需要验证的fields为空，调用验证时立刻返回callback
-      if (this.fields.length === 0 && callback) {
+      if (data.fields.length === 0 && callback) {
         // eslint-disable-next-line standard/no-callback-literal
         callback(true)
       }
       let invalidFields = {}
-      this.fields.forEach((field) => {
+      data.fields.forEach((field) => {
         field.validate('', (message, field) => {
           if (message) {
             valid = false
@@ -145,7 +130,7 @@ export default {
           invalidFields = objectAssign({}, invalidFields, field)
           if (
             typeof callback === 'function' &&
-            ++count === this.fields.length
+            ++count === data.fields.length
           ) {
             callback(valid, invalidFields)
           }
@@ -155,10 +140,40 @@ export default {
       if (promise) {
         return promise
       }
-    },
-    validateField(props, cb) {
+    }
+    function resetFields() {
+      // 字段重置
+      if (!props.model) {
+        console.warn(
+          '[Element Warn][Form]model is required for resetFields to work.'
+        )
+        return
+      }
+      data.fields.forEach((field) => {
+        field.resetField()
+      })
+    }
+    function getLabelWidthIndex(width) {
+      const index = data.potentialLabelWidthArr.indexOf(width)
+      // it's impossible
+      if (index === -1) {
+        throw new Error('[ElementForm]unpected width ', width)
+      }
+      return index
+    }
+    function clearValidate(props = []) {
+      const fields = props.length
+        ? typeof props === 'string'
+          ? data.fields.filter((field) => props === field.prop)
+          : data.fields.filter((field) => props.indexOf(field.prop) > -1)
+        : data.fields
+      fields.forEach((field) => {
+        field.clearValidate()
+      })
+    }
+    function validateField(props, cb) {
       props = [].concat(props)
-      const fields = this.fields.filter(
+      const fields = data.fields.filter(
         (field) => props.indexOf(field.prop) !== -1
       )
       if (!fields.length) {
@@ -169,26 +184,29 @@ export default {
       fields.forEach((field) => {
         field.validate('', cb)
       })
-    },
-    getLabelWidthIndex(width) {
-      const index = this.potentialLabelWidthArr.indexOf(width)
-      // it's impossible
-      if (index === -1) {
-        throw new Error('[ElementForm]unpected width ', width)
-      }
-      return index
-    },
-    registerLabelWidth(val, oldVal) {
+    }
+    function registerLabelWidth(val, oldVal) {
       if (val && oldVal) {
-        const index = this.getLabelWidthIndex(oldVal)
-        this.potentialLabelWidthArr.splice(index, 1, val)
+        const index = getLabelWidthIndex(oldVal)
+        data.potentialLabelWidthArr.splice(index, 1, val)
       } else if (val) {
-        this.potentialLabelWidthArr.push(val)
+        data.potentialLabelWidthArr.push(val)
       }
-    },
-    deregisterLabelWidth(val) {
-      const index = this.getLabelWidthIndex(val)
-      this.potentialLabelWidthArr.splice(index, 1)
+    }
+    function deregisterLabelWidth(val) {
+      const index = getLabelWidthIndex(val)
+      data.potentialLabelWidthArr.splice(index, 1)
+    }
+
+    return {
+      ...toRefs(data),
+      resetFields,
+      clearValidate,
+      validate,
+      validateField,
+      getLabelWidthIndex,
+      registerLabelWidth,
+      deregisterLabelWidth
     }
   }
 }

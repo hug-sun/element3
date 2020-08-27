@@ -1,59 +1,60 @@
+import Input from 'element-ui/packages/input/Input.vue'
+import Form from 'element-ui/packages/form/Form.vue'
 import FormItem from '../FormItem.vue'
 import { mount } from '@vue/test-utils'
 
 describe('FormItem', () => {
-  it('label', () => {
-    const vm = mount({
-      template: `
+  it('label width', () => {
+    const vm = mount(
+      {
+        components: {
+          'el-form-item': FormItem,
+          'el-form': Form,
+          'el-input': Input
+        },
+        template: `
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="活动名称">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
         </el-form>
       `,
-      data() {
-        return {
-          form: {
-            name: ''
+        data() {
+          return {
+            form: {
+              name: ''
+            }
+          }
+        }
+      },
+      {
+        global: {
+          config: {
+            globalProperties: {
+              $ELEMENT: {}
+            }
           }
         }
       }
-    })
+    )
 
-    const label = vm.find('label')
+    const label = vm.find('.el-form-item__label')
     const content = vm.find('.el-form-item__content')
-    console.log(label);
-    
-    expect(label).toBeDefined()
+
+    expect(label.exists()).toBe(true)
     expect(label.text()).toBe('活动名称')
-    expect(label.style.width).toBe('80px')
-    expect(content.style.marginLeft).toBe('80px')
+
+    expect(label.attributes().style).toContain('width: 80px')
+    expect(content.attributes().style).toContain('margin-left: 80px')
   })
 
-  // it('label width', done => {
-  //   mount(FormItem)
-  //   vm = createVue({
-  //     template: `
-  //       <el-form ref="form" :model="form" label-width="80px">
-  //         <el-form-item label="活动名称">
-  //           <el-input v-model="form.name"></el-input>
-  //         </el-form-item>
-  //       </el-form>
-  //     `,
-  //     data() {
-  //       return {
-  //         form: {
-  //           name: ''
-  //         }
-  //       }
-  //     }
-  //   }, true)
-  //   expect(vm.$el.querySelector('.el-form-item__label').style.width).to.equal('80px')
-  //   expect(vm.$el.querySelector('.el-form-item__content').style.marginLeft).to.equal('80px')
-  //   done()
-  // })
-  // it('auto label width', async() => {
-  //   vm = createVue({
+  // it('auto label width', async () => {
+  //   const wrapper = mount({
+  //     components: {
+  //       'el-form-item': FormItem,
+  //       'el-form': Form,
+  //       'el-input': Input
+  //     },
   //     template: `
   //       <el-form ref="form" :model="form" label-width="auto">
   //         <el-form-item label="活动名称">
@@ -73,21 +74,35 @@ describe('FormItem', () => {
   //         }
   //       }
   //     }
-  //   }, true)
+  //   }, {
+  //     global: {
+  //       config: {
+  //         globalProperties: {
+  //           $ELEMENT: {}
+  //         }
+  //       }
+  //     }
+  //   })
 
-  //   await waitImmediate()
+  //   // 获取一下表单autoLabelWidth，验证是否计算正确
 
-  //   const formItems = vm.$el.querySelectorAll('.el-form-item__content')
-  //   const marginLeft = parseInt(formItems[0].style.marginLeft, 10)
-  //   const marginLeft1 = parseInt(formItems[1].style.marginLeft, 10)
-  //   expect(marginLeft === marginLeft1).to.be.true
+  //   const formItems = wrapper.findAll('.el-form-item__content')
+  //   const marginLeft1 = parseInt(formItems[0].element.style.marginLeft, 10)
+  //   const marginLeft2 = parseInt(formItems[1].element.style.marginLeft, 10)
+  //   // await nextTick()
 
-  //   vm.display = false
-  //   await waitImmediate()
+  //   console.log();
 
-  //   const formItem = vm.$el.querySelector('.el-form-item__content')
-  //   const newMarginLeft = parseInt(formItem.style.marginLeft, 10)
-  //   expect(newMarginLeft < marginLeft).to.be.true
+  //   expect(marginLeft1 === marginLeft2).toBe(true)
+
+  //   // wrapper.vm.display = false
+  //   // await nextTick()
+
+  //   // const formItem = wrapper.find('.el-form-item__content')
+  //   // const newMarginLeft = parseInt(formItem.element.style.marginLeft, 10)
+  //   // console.log(formItem.attributes());
+  //   // expect(newMarginLeft < marginLeft1).toBe(true)
+
   // })
 
   // it('label position', done => {
@@ -224,5 +239,4 @@ describe('FormItem', () => {
   //     done()
   //   })
   // })
-
 })

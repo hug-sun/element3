@@ -21,7 +21,7 @@ export default {
       }
       return (
         <div class="el-form-item__label-wrap" style={style}>
-          {slots}
+          {slots()}
         </div>
       )
     } else {

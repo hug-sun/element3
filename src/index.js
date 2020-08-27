@@ -88,7 +88,6 @@ const install = function(app, opts = {}) {
 
   // app.use(InfiniteScroll);
   // app.use(Loading.directive);
-
   app.config.globalProperties.$ELEMENT = {
     size: opts.size || '',
     zIndex: opts.zIndex || 2000

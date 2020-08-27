@@ -52,16 +52,84 @@
 </template>
 <script>
 import AsyncValidator from 'async-validator'
-import emitter from 'element-ui/src/mixins/emitter'
 import objectAssign from 'element-ui/src/utils/merge'
 import { noop, getPropByPath } from 'element-ui/src/utils/util'
 import LabelWrap from './label-wrap'
+import { useEmitter } from 'element-ui/src/use/emitter'
+import {
+  onMounted,
+  onUnmounted,
+  getCurrentInstance,
+  inject,
+  computed
+} from 'vue'
+
 export default {
   name: 'ElFormItem',
 
   componentName: 'ElFormItem',
 
-  mixins: [emitter],
+  setup(props) {
+    // 组件实例
+    const vm = getCurrentInstance()
+    // 组件上下文
+    const ctx = vm.ctx
+
+    // 事件派发、监听方法
+    const { dispatch, on, broadcast } = useEmitter()
+
+    // 注入form
+    const form = inject('elForm')
+
+    // 获取formitem对应字段值
+    const fieldValue = computed(() => {
+      const model = form.model
+      if (!model || !props.prop) {
+        return
+      }
+
+      let path = props.prop
+      if (path.indexOf(':') !== -1) {
+        path = path.replace(/:/, '.')
+      }
+
+      return getPropByPath(model, path, true).v
+    })
+
+    onMounted(function () {
+      if (props.prop) {
+        // 通知form添加自己
+        dispatch('ElForm', 'el.form.addField', ctx)
+
+        // 给formitem添加一个initialValue
+        let initialValue = fieldValue
+        if (Array.isArray(initialValue)) {
+          initialValue = [].concat(initialValue)
+        }
+        Object.defineProperty(ctx, 'initialValue', {
+          value: initialValue.value
+        })
+
+        // 监听blur和change两个事件，触发校验
+        const rules = ctx.getRules()
+
+        if (rules.length || ctx.required !== undefined) {
+          on('el.form.blur', ctx.onFieldBlur)
+          on('el.form.change', ctx.onFieldChange)
+        }
+      }
+    })
+
+    onUnmounted(function () {
+      // 通知form移除自己
+      dispatch('ElForm', 'el.form.removeField', ctx)
+    })
+
+    return {
+      fieldValue,
+      broadcast
+    }
+  },
 
   provide() {
     return {
@@ -152,19 +220,6 @@ export default {
         parentName = parent.$options.componentName
       }
       return parent
-    },
-    fieldValue() {
-      const model = this.form.model
-      if (!model || !this.prop) {
-        return
-      }
-
-      let path = this.prop
-      if (path.indexOf(':') !== -1) {
-        path = path.replace(/:/, '.')
-      }
-
-      return getPropByPath(model, path, true).v
     },
     isRequired() {
       const rules = this.getRules()
@@ -314,35 +369,10 @@ export default {
     updateComputedLabelWidth(width) {
       this.computedLabelWidth = width ? `${width}px` : ''
     },
-    addValidateEvents() {
-      const rules = this.getRules()
 
-      if (rules.length || this.required !== undefined) {
-        this.$on('el.form.blur', this.onFieldBlur)
-        this.$on('el.form.change', this.onFieldChange)
-      }
-    },
     removeValidateEvents() {
       this.$off()
     }
-  },
-  mounted() {
-    if (this.prop) {
-      this.dispatch('ElForm', 'el.form.addField', [this])
-
-      let initialValue = this.fieldValue
-      if (Array.isArray(initialValue)) {
-        initialValue = [].concat(initialValue)
-      }
-      Object.defineProperty(this, 'initialValue', {
-        value: initialValue
-      })
-
-      this.addValidateEvents()
-    }
-  },
-  beforeDestroy() {
-    this.dispatch('ElForm', 'el.form.removeField', [this])
   }
 }
 </script>
