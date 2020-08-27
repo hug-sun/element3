@@ -6,7 +6,14 @@
 
 <script>
 import { useEmitter } from 'element-ui/src/use/emitter'
-import { provide, getCurrentInstance, computed, inject, watch } from 'vue'
+import {
+  provide,
+  getCurrentInstance,
+  computed,
+  inject,
+  watch,
+  unref
+} from 'vue'
 export default {
   name: 'ElCheckboxGroup',
 
@@ -39,9 +46,8 @@ export default {
     })
 
     const checkboxGroupDisabled = computed(() => {
-      return (
-        props.disabled || elFormItem.disabled || elForm.disabled
-      )
+      const disabled = props.disabled || elFormItem.disabled || elForm.disabled
+      return unref(disabled)
     })
 
     watch(props.modelValue, (v) => {

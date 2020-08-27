@@ -68,10 +68,10 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix"
+      "eslint"
     ],
     "*.vue": [
-      "eslint --fix"
+      "eslint"
     ]
   },
   "dependencies": {
