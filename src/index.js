@@ -32,6 +32,7 @@ import Footer from '../packages/footer/index.js';
 import Link from '../packages/link/index.js';
 import Divider from '../packages/divider/index.js';
 import Backtop from '../packages/backtop/index.js';
+import PageHeader from '../packages/page-header/index.js';
 import Avatar from '../packages/avatar/index.js';
 import locale from 'element-ui/src/locale';
  import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
@@ -70,6 +71,7 @@ const components = [
   Link,
   Divider,
   Backtop,
+  PageHeader,
   Avatar,
    CollapseTransition
 ];
@@ -144,5 +146,6 @@ export default {
   Link,
   Divider,
   Backtop,
+  PageHeader,
   Avatar
 };
