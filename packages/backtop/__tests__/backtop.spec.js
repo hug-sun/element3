@@ -48,12 +48,15 @@ describe('Backtop.vue', () => {
       expect(slotWrapper.find('.el-icon-caret-top').exists()).toBe(false)
       expect(slotWrapper.find('#slot').exists()).toBe(true)
       expect(slotWrapper.find('#slot').text()).toBe('向上')
+      slotWrapper.unmount()
     })
   })
   describe('event', () => {
     it('click', async () => {
       await defaultWrapper.find('.el-backtop').trigger('click')
-      expect(defaultWrapper.find('.el-backtop').exists()).toBe(true)
+      setTimeout(() => {
+        expect(defaultWrapper.element.scrollTop).toBe(false)
+      }, 0)
     })
   })
 })

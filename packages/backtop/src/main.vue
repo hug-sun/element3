@@ -26,7 +26,7 @@ const easeInOutCubic = (value) =>
 
 export default {
   name: 'ElBacktop',
-  components:{
+  components: {
     ElIcon
   },
   props: {
