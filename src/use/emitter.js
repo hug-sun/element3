@@ -7,6 +7,7 @@ export function useEmitter() {
     dispatch: dispatch(),
     broadcast: broadcast(),
     on: on(),
+    once: once(),
     off: off()
   }
 }
@@ -38,6 +39,18 @@ function on() {
       instance.vnode.props[eventName].__events = []
     }
     instance.vnode.props[eventName].__events.push(callback)
+  }
+}
+function once() {
+  const instance = getCurrentInstance()
+  const $off = off()
+  const $on = on()
+  return (originalEventName, callback) => {
+    function _on() {
+      $off(originalEventName, _on)
+      callback.apply(instance, arguments)
+    }
+    $on(originalEventName, _on)
   }
 }
 
