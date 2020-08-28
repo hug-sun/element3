@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const config = require('./config')
 
@@ -142,7 +142,7 @@ if (isProd) {
     })
   )
   webpackConfig.optimization.minimizer.push(
-    new UglifyJsPlugin({
+    new TerserPlugin({
       cache: true,
       parallel: true,
       sourceMap: false
