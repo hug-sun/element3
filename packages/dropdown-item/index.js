@@ -1,4 +1,4 @@
-import ElDropdownItem from '../dropdown/src/dropdown-item'
+import ElDropdownItem from './DropdownItem.vue'
 
 /* istanbul ignore next */
 ElDropdownItem.install = function (app) {
