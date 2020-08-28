@@ -1,8 +1,8 @@
-import Backtop from './Backtop'
+import ElBacktop from './Backtop'
 
 /* istanbul ignore next */
-Backtop.install = function (app) {
-  app.component(Backtop.name, Backtop)
+ElBacktop.install = function (app) {
+  app.component(ElBacktop.name, ElBacktop)
 }
 
-export default Backtop
+export default ElBacktop

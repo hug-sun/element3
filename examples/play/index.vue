@@ -1,4 +1,21 @@
 <template>
+  <div class="wrapper" style="height:1400px">
+  <el-backtop target=".wrapper" :bottom="100">
+    <div
+      style="{
+        height: 100%;
+        width: 100%;
+        background-color: #f2f5f6;
+        box-shadow: 0 0 6px rgba(0,0,0, .12);
+        text-align: center;
+        line-height: 40px;
+        color: #1989fa;
+      }"
+    >
+      UP
+    </div>
+  </el-backtop>
+  </div>
   <el-checkbox-group
     v-model="checkList"
     @change="onChange"
