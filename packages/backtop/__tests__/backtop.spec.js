@@ -55,8 +55,8 @@ describe('Backtop.vue', () => {
     it('click', async () => {
       await defaultWrapper.find('.el-backtop').trigger('click')
       setTimeout(() => {
-        expect(defaultWrapper.element.scrollTop).toBe(false)
-      }, 0)
+        expect(defaultWrapper.find('.el-icon-caret-top').exists()).toBe(false)
+      })
     })
   })
 })
