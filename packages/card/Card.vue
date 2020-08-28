@@ -13,13 +13,30 @@
 </template>
 
 <script>
+import { toRefs } from 'vue'
+
 export default {
   name: 'ElCard',
+  componentName: 'ElCard',
   props: {
-    header: {},
-    bodyStyle: {},
-    shadow: {
+    header: {
       type: String
+    },
+    bodyStyle: {
+      type: Object
+    },
+    shadow: {
+      type: String,
+      default: 'always'
+    }
+  },
+  setUp(props, { slots }) {
+    const { header, bodyStyle, shadow } = toRefs(props)
+
+    return {
+      header,
+      shadow,
+      bodyStyle
     }
   }
 }
