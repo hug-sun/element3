@@ -44,10 +44,12 @@ function on() {
 function once() {
   const $off = off()
   const $on = on()
-  return (originalEventName, callback) => {
-    function _on(...args) {
+  return (originalEventName, handle) => {
+    //handle使用参数名为callback时候，用...args解构eslint不通过
+    //https://github.com/standard/standard/issues/623
+    const _on = (...params) => {
       $off(originalEventName, _on)
-      callback(...args)
+      handle(...params)
     }
     $on(originalEventName, _on)
   }
