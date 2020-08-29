@@ -60,7 +60,7 @@
 |         Loading 加载          |   ❌   |                                  |
 |       Message 消息提示        |   ❌   |                                  |
 |        MessageBox 弹框        |   ❌   |                                  |
-|       Notification 通知       |   ❌   |                                  |
+|       Notification 通知       |   ✅   |          功能完成，没写测试           |
 |       NavMenu 导航菜单        |   ❌   |                                  |
 |          Tabs 标签页          |   ❌   |                                  |
 |       Breadcrumb 面包屑       |   ❌   |                                  |

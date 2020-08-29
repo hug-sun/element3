@@ -16,6 +16,7 @@ import Breadcrumb from '../packages/breadcrumb/index.js';
 import BreadcrumbItem from '../packages/breadcrumb-item/index.js';
 import Tag from '../packages/tag/index.js';
 import Alert from '../packages/alert/index.js';
+import Notification from '../packages/notification/index.js';
 import Icon from '../packages/icon/index.js';
 import Row from '../packages/row/index.js';
 import Col from '../packages/col/index.js';
@@ -95,7 +96,7 @@ const install = function(app, opts = {}) {
   // app.config.globalProperties.$alert = MessageBox.alert;
   // app.config.globalProperties.$confirm = MessageBox.confirm;
   // app.config.globalProperties.$prompt = MessageBox.prompt;
-  // app.config.globalProperties.$notify = Notification;
+   app.config.globalProperties.$notify = Notification;
   // app.config.globalProperties.$message = Message;
 };
 
@@ -128,6 +129,7 @@ export default {
   BreadcrumbItem,
   Tag,
   Alert,
+  Notification,
   Icon,
   Row,
   Col,

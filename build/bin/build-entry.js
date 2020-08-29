@@ -39,7 +39,7 @@ const install = function(app, opts = {}) {
   // app.config.globalProperties.$alert = MessageBox.alert;
   // app.config.globalProperties.$confirm = MessageBox.confirm;
   // app.config.globalProperties.$prompt = MessageBox.prompt;
-  // app.config.globalProperties.$notify = Notification;
+   app.config.globalProperties.$notify = Notification;
   // app.config.globalProperties.$message = Message;
 };
 
@@ -106,7 +106,8 @@ ComponentNames.forEach((name) => {
       'dialog',
       'rate',
       'divider',
-      'progress'
+      'progress',
+      'notification'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
