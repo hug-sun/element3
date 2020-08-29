@@ -42,13 +42,12 @@ function on() {
   }
 }
 function once() {
-  const instance = getCurrentInstance()
   const $off = off()
   const $on = on()
   return (originalEventName, callback) => {
-    function _on() {
+    function _on(...args) {
       $off(originalEventName, _on)
-      callback.apply(instance, arguments)
+      callback(...args)
     }
     $on(originalEventName, _on)
   }

@@ -69,36 +69,50 @@ describe('emitter', () => {
 
   describe('once', () => {
     it('parent to child', () => {
-      const handleChild = jest.fn()
-
-      const Child = {
-        name: 'Child',
+      const handleChildOn = jest.fn()
+      const handleChildOnce = jest.fn()
+      let broadcastFn
+      const ChildOn = {
+        name: 'ChildOn',
+        template: '<div></div>',
+        setup(props, { emit }) {
+          const { on } = useEmitter()
+          on('child', handleChildOn)
+        }
+      }
+      const ChildOnce = {
+        name: 'ChildOnce',
         template: '<div></div>',
         setup(props, { emit }) {
           const { once } = useEmitter()
-          once('child', handleChild)
+          once('child', handleChildOnce)
         }
       }
 
       const Parent = {
         components: {
-          Child
+          ChildOn,
+          ChildOnce
         },
 
-        template: '<div><child></child></div>',
+        template: '<div><childOn></childOn><childOnce></childOnce></div>',
         setup() {
           const { broadcast } = useEmitter()
           onMounted(() => {
-            broadcast('Child', 'child', 1, 2)
-            broadcast('Child', 'child', 1, 2)
+            broadcast('ChildOn', 'child', 1, 2)
+            broadcast('ChildOn', 'child', 2, 3)
+            broadcast('ChildOnce', 'child', 1, 2)
+            broadcast('ChildOnce', 'child', 2, 3)
           })
         }
       }
 
       mount(Parent)
 
-      expect(handleChild).toBeCalledWith(1, 2)
-      expect(handleChild).toBeCalledTimes(1)
+      expect(handleChildOn).toBeCalledWith(2, 3)
+      expect(handleChildOn).toBeCalledTimes(2)
+      expect(handleChildOnce).toBeCalledWith(1, 2)
+      expect(handleChildOnce).toBeCalledTimes(1)
     })
 
     it('child to parent', () => {
