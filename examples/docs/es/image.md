@@ -31,7 +31,7 @@ Además de las características nativas de img, soporte de carga perezosa, marca
 
 ### Placeholder
 
-:::demo Personalice el placeholder del contenido mientras la imagen aun no ha sido cargada vía `slot = placeholder`
+:::demo Personalice el placeholder del contenido mientras la imagen aun no ha sido cargada vía `v-slot:placeholder`
 ```html
 <div class="demo-image__placeholder">
   <div class="block">
@@ -41,9 +41,11 @@ Además de las características nativas de img, soporte de carga perezosa, marca
   <div class="block">
     <span class="demonstration">Custom</span>
     <el-image :src="src">
-      <div slot="placeholder" class="image-slot">
-        Loading<span class="dot">...</span>
-      </div>
+      <template #placeholder>
+        <div class="image-slot">
+          Loading<span class="dot">...</span>
+        </div>
+      </template>
     </el-image>
   </div>
 </div>
@@ -62,7 +64,7 @@ Además de las características nativas de img, soporte de carga perezosa, marca
 
 ### Fallo de carga
 
-:::demo Personalice el contenido cuando ocurra algún error al cargar la imagen vía `slot = error`
+:::demo Personalice el contenido cuando ocurra algún error al cargar la imagen vía `v-slot:error`
 ```html
 <div class="demo-image__error">
   <div class="block">
@@ -72,9 +74,11 @@ Además de las características nativas de img, soporte de carga perezosa, marca
   <div class="block">
     <span class="demonstration">Custom</span>
     <el-image>
-      <div slot="error" class="image-slot">
-        <i class="el-icon-picture-outline"></i>
-      </div>
+      <template #error>
+        <div class="image-slot">
+          <i class="el-icon-picture-outline"></i>
+        </div>
+      </template>
     </el-image>
   </div>
 </div>
