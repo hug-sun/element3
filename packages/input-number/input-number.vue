@@ -54,15 +54,13 @@ import Focus from 'element-ui/src/mixins/focus'
 import RepeatClick from 'element-ui/src/directives/repeatClick'
 import {
   ref,
-  inject,
-  unref,
   toRefs,
   onMounted,
   onUpdated,
   getCurrentInstance,
   watch
 } from 'vue'
-import { useSize } from './use'
+import { useInputNumber } from './use'
 
 export default {
   name: 'ElInputNumber',
@@ -70,9 +68,8 @@ export default {
   directives: {
     repeatClick: RepeatClick
   },
-  components: {
-    ElInput
-  },
+  components: { ElInput },
+  emits: ['input', 'change', 'blur', 'clear', 'focus', 'update:modelValue'],
   props: {
     step: {
       type: Number,
@@ -130,48 +127,36 @@ export default {
     let currentValue = ref(0)
     let userInput = ref(null)
 
-    const handleInput = (value) => {
-      userInput = value
-    }
+    const {
+      useSize,
+      inputNumberDisabled,
+      controlsAtRight,
+      numPrecision,
+      minDisabled,
+      maxDisabled,
+      _increase,
+      _decrease,
+      toPrecision
+    } = useInputNumber({
+      min,
+      max,
+      size,
+      step,
+      value,
+      disabled,
+      controls,
+      precision,
+      currentValue,
+      controlsPosition
+    })
 
-    const handleBlur = (event) => {
-      emit('blur', event)
-    }
-    const handleFocus = (event) => {
-      emit('focus', event)
-    }
-
-    const inputNumberSize = useSize(size)
-
-    const elForm = inject('elForm', {})
-
-    const inputNumberDisabled = () => {
-      return unref(disabled) || !!unref(elForm.disabled)
-    }
-
-    const controlsAtRight = () => {
-      return controls && controlsPosition === 'right'
-    }
+    const inputNumberSize = useSize()
 
     const getPrecision = (value) => {
       if (value === undefined) return 0
       const valueString = value.toString()
       const dotPosition = valueString.indexOf('.')
       return dotPosition !== -1 ? valueString.length - dotPosition - 1 : 0
-    }
-
-    const numPrecision = () => {
-      const stepPrecision = getPrecision(step)
-      if (precision !== undefined) {
-        if (stepPrecision > precision) {
-          console.warn(
-            '[Element Warn][InputNumber]precision should not be less than the decimal places of step'
-          )
-        }
-        return precision
-      } else {
-        return Math.max(getPrecision(value), stepPrecision)
-      }
     }
 
     const displayValue = () => {
@@ -192,45 +177,6 @@ export default {
         }
       }
       return currentValue
-    }
-
-    const toPrecision = (num, precision) => {
-      if (precision === undefined) precision = numPrecision
-      return parseFloat(
-        Math.round(num * Math.pow(10, precision)) / Math.pow(10, precision)
-      )
-    }
-
-    const _increase = (val, step) => {
-      if (typeof val !== 'number' && val !== undefined) {
-        return currentValue
-      }
-
-      const precisionFactor = Math.pow(10, numPrecision)
-      // Solve the accuracy problem of JS decimal calculation by converting the value to integer.
-      return toPrecision(
-        (precisionFactor * val + precisionFactor * step) / precisionFactor
-      )
-    }
-
-    const _decrease = (val, step) => {
-      if (typeof val !== 'number' && val !== undefined) {
-        return currentValue
-      }
-
-      const precisionFactor = Math.pow(10, numPrecision)
-
-      return toPrecision(
-        (precisionFactor * val - precisionFactor * step) / precisionFactor
-      )
-    }
-
-    const minDisabled = () => {
-      return _decrease(value, step) < min
-    }
-
-    const maxDisabled = () => {
-      return _increase(value, step) > max
     }
 
     const setCurrentValue = (newVal) => {
@@ -256,6 +202,17 @@ export default {
       if (inputNumberDisabled || minDisabled) return
       const newVal = _decrease(value || 0, step)
       setCurrentValue(newVal)
+    }
+
+    const handleInput = (value) => {
+      userInput = value
+    }
+
+    const handleBlur = (event) => {
+      emit('blur', event)
+    }
+    const handleFocus = (event) => {
+      emit('focus', event)
     }
 
     const handleInputChange = (value) => {
