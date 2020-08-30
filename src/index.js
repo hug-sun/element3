@@ -34,6 +34,7 @@ import Link from '../packages/link/index.js';
 import Divider from '../packages/divider/index.js';
 import Backtop from '../packages/backtop/index.js';
 import Avatar from '../packages/avatar/index.js';
+import Message from '../packages/message/index.js';
 import locale from 'element-ui/src/locale';
  import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
@@ -98,7 +99,7 @@ const install = function(app, opts = {}) {
   // app.config.globalProperties.$confirm = MessageBox.confirm;
   // app.config.globalProperties.$prompt = MessageBox.prompt;
   // app.config.globalProperties.$notify = Notification;
-  // app.config.globalProperties.$message = Message;
+  app.config.globalProperties.$message = Message;
 };
 
 /* istanbul ignore if */
@@ -147,5 +148,6 @@ export default {
   Link,
   Divider,
   Backtop,
-  Avatar
+  Avatar,
+  Message
 };
