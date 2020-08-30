@@ -27,6 +27,7 @@
 import ElPopover from 'element-ui/packages/popover'
 import ElButton from 'element-ui/packages/button'
 import { t } from 'element-ui/src/locale'
+import { reactive } from 'vue'
 
 export default {
   name: 'ElPopconfirm',
@@ -72,14 +73,24 @@ export default {
       visible: false
     }
   },
-  methods: {
-    confirm() {
-      this.visible = false
-      this.$emit('onConfirm')
-    },
-    cancel() {
-      this.visible = false
-      this.$emit('onCancel')
+  setup(props, ctx) {
+    const state = reactive({
+      visible: false
+    })
+
+    function confirm() {
+      state.visible = false
+      ctx.emit('onConfirm')
+    }
+
+    function cancel() {
+      state.visible = false
+      ctx.emit('onCancel')
+    }
+    return {
+      ...state,
+      confirm,
+      cancel
     }
   }
 }
