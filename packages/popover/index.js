@@ -1,8 +1,5 @@
-import Popover from './src/main'
-import directive from './src/directive'
-// import Vue from 'vue'
-
-// Vue.directive('popover', directive)
+import Popover from './Popover'
+import directive from './directive'
 
 /* istanbul ignore next */
 Popover.install = function (app) {
