@@ -5,7 +5,8 @@
     "utils": {
       "presets": [
         [
-          "env",
+
+          "@babel/preset-env",
           {
             "loose": true,
             "modules": "commonjs",
