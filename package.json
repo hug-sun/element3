@@ -67,12 +67,7 @@
     "pre-push": "npm run test:unit"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint"
-    ],
-    "*.vue": [
-      "eslint"
-    ]
+    "*.{js,vue}": "eslint"
   },
   "dependencies": {
     "async-validator": "~1.8.1",
