@@ -101,6 +101,7 @@ export default {
   },
   setup(props) {
     const instance = getCurrentInstance()
+
     const state = reactive({
       visible: true,
       closed: false,
