@@ -29,7 +29,7 @@ export default {
   setup(props, ctx) {
     const { title, content } = toRefs(props)
     const handleClick = (evt) => {
-      ctx.emit('click', evt)
+      ctx.emit('back', evt)
     }
     return {
       handleClick,
