@@ -14,11 +14,11 @@
   <el-radio v-model="radio" label="2">备选项</el-radio>
 
   <script>
+    import { ref } from 'vue'
     export default {
-      data () {
-        return {
-          radio: '1'
-        };
+      setup(){
+        const radio = ref('2')
+        return { radio }
       }
     }
   </script>
@@ -36,11 +36,11 @@
   <el-radio disabled v-model="radio" label="选中且禁用">备选项</el-radio>
 
   <script>
+    import { ref } from 'vue'
     export default {
-      data () {
-        return {
-          radio: '选中且禁用'
-        };
+      setup(){
+        const radio = ref('1')
+        return { radio }
       }
     }
   </script>
@@ -63,11 +63,11 @@
 
 
   <script>
+    import { ref } from 'vue'
     export default {
-      data () {
-        return {
-          radio: 3
-        };
+      setup(){
+        const radio = ref(6)
+        return { radio }
       }
     }
   </script>
@@ -117,14 +117,16 @@
 
 
   <script>
+    import { reactive, toRefs } from 'vue'
     export default {
-      data () {
-        return {
+      setup(){
+        let state = reactive({
           radio1: '上海',
           radio2: '上海',
           radio3: '上海',
           radio4: '上海'
-        };
+        })
+        return {...toRefs(state)}
       }
     }
   </script>
@@ -160,14 +162,16 @@
 
 
   <script>
+    import { reactive, toRefs } from 'vue'
     export default {
-      data () {
-        return {
+      setup(){
+        let state = reactive({
           radio1: '1',
           radio2: '1',
           radio3: '1',
           radio4: '1'
-        };
+        })
+        return {...toRefs(state)}
       }
     }
   </script>

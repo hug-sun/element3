@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import mousewheel from '../../../../src/directives/mousewheel'
 
 describe('directives: mousewheel', () => {
-  test('should called mousewheel callback when emitted mousewheel event', async() => {
+  test('should called mousewheel callback when emitted mousewheel event', async () => {
     const handleMousewheel = jest.fn()
     const Comp = {
       template: '<div v-mousewheel=handleMousewheel></div>',

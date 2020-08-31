@@ -34,7 +34,7 @@ describe('Badge', () => {
       expect(wrapper.find('.el-badge__content').classes()).toContain('is-dot')
     })
 
-    it('hidden', ()=>{
+    it('hidden', () => {
       const wrapper = mount(Badge, {
         props: {
           hidden: true,
@@ -45,7 +45,7 @@ describe('Badge', () => {
       expect(wrapper.find('.el-badge__content').element).not.toBeVisible()
     })
 
-    it('type', ()=>{
+    it('type', () => {
       const wrapper = mount(Badge, {
         props: {
           value: 12,
@@ -53,7 +53,9 @@ describe('Badge', () => {
         }
       })
 
-      expect(wrapper.find('.el-badge__content').classes()).toContain('el-badge__content--success')
+      expect(wrapper.find('.el-badge__content').classes()).toContain(
+        'el-badge__content--success'
+      )
     })
   })
 })

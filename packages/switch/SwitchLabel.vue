@@ -1,9 +1,11 @@
 <template>
   <span
     v-if="iconClass || text"
-    :class="{'el-switch__label':true,
-    'is-active':active,
-    [`el-switch__label--${type}`]:true}"
+    :class="{
+      'el-switch__label': true,
+      'is-active': active,
+      [`el-switch__label--${type}`]: true
+    }"
   >
     <i :class="[iconClass]"></i>
 
@@ -38,5 +40,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

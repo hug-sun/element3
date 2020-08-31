@@ -1,4 +1,4 @@
-export default function(ref) {
+export default function (ref) {
   return {
     methods: {
       focus() {
@@ -6,4 +6,4 @@ export default function(ref) {
       }
     }
   }
-};
+}

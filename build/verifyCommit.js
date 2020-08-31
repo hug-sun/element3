@@ -12,12 +12,13 @@ if (!releaseRE.test(msg) && !commitRE.test(msg)) {
     `  ${chalk.bgRed.white(' ERROR ')} ${chalk.red(
       'invalid commit message format.'
     )}\n\n` +
-        ` rule is ${chalk.green('/^(revert: )?(migrate|feat|fix|docs|dx|refactor|perf|test|workflow|build|ci|chore|types|wip|release): .{1,50}/')} \n` +
-
+      ` rule is ${chalk.green(
+        '/^(revert: )?(migrate|feat|fix|docs|dx|refactor|perf|test|workflow|build|ci|chore|types|wip|release): .{1,50}/'
+      )} \n` +
       chalk.red(
         '  Proper commit message format is required for automated changelog generation. Examples:\n\n'
       ) +
-      `    ${chalk.green('feat: add \'comments\' option')}\n` +
+      `    ${chalk.green("feat: add 'comments' option")}\n` +
       `    ${chalk.green('fix: handle events on blur (close #28)')}\n\n` +
       chalk.red('  See .github/commit-convention.md for more details.\n')
   )

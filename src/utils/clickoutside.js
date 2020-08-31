@@ -7,16 +7,17 @@ let startClick
 let seed = 0
 
 // !Vue.prototype.$isServer && on(document, 'mousedown', e => (startClick = e))
-on(document, 'mousedown', e => (startClick = e))
+on(document, 'mousedown', (e) => (startClick = e))
 
-on(document, 'mouseup', e => {
+on(document, 'mouseup', (e) => {
   // !Vue.prototype.$isServer && on(document, 'mouseup', e => {
-  nodeList.forEach(node => node[ctx].documentHandler(e, startClick))
+  nodeList.forEach((node) => node[ctx].documentHandler(e, startClick))
 })
 
 function createDocumentHandler(el, binding, vnode) {
-  return function(mouseup = {}, mousedown = {}) {
-    if (!vnode ||
+  return function (mouseup = {}, mousedown = {}) {
+    if (
+      !vnode ||
       !vnode.context ||
       !mouseup.target ||
       !mousedown.target ||
@@ -24,12 +25,16 @@ function createDocumentHandler(el, binding, vnode) {
       el.contains(mousedown.target) ||
       el === mouseup.target ||
       (vnode.context.popperElm &&
-      (vnode.context.popperElm.contains(mouseup.target) ||
-      vnode.context.popperElm.contains(mousedown.target)))) return
+        (vnode.context.popperElm.contains(mouseup.target) ||
+          vnode.context.popperElm.contains(mousedown.target)))
+    )
+      return
 
-    if (binding.expression &&
+    if (
+      binding.expression &&
       el[ctx].methodName &&
-      vnode.context[el[ctx].methodName]) {
+      vnode.context[el[ctx].methodName]
+    ) {
       vnode.context[el[ctx].methodName]()
     } else {
       el[ctx].bindingFn && el[ctx].bindingFn()
@@ -64,7 +69,7 @@ export default {
   },
 
   unbind(el) {
-    let len = nodeList.length
+    const len = nodeList.length
 
     for (let i = 0; i < len; i++) {
       if (nodeList[i][ctx].id === el[ctx].id) {

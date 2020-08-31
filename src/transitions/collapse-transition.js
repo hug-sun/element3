@@ -1,9 +1,10 @@
 import { addClass, removeClass } from 'element-ui/src/utils/dom'
+import { h, Transition } from 'vue'
 
-class Transition {
+class TransitionFn {
   beforeEnter(el) {
     addClass(el, 'collapse-transition')
-    if (!el.dataset) el.dataset = {}
+    !el.dataset && (el.dataset = {})
 
     el.dataset.oldPaddingTop = el.style.paddingTop
     el.dataset.oldPaddingBottom = el.style.paddingBottom
@@ -64,14 +65,17 @@ class Transition {
   }
 }
 
-export default {
-  name: 'ElCollapseTransition',
-  functional: true,
-  render(h, { children }) {
-    const data = {
-      on: new Transition()
-    }
-
-    return h('transition', data, children)
+const ElCollapseTransition = (props, { slots }) => {
+  const transitions = new TransitionFn()
+  const data = {
+    onBeforeEnter: transitions.beforeEnter,
+    onEnter: transitions.enter,
+    onAfterEnter: transitions.afterEnter,
+    onBeforeLeave: transitions.beforeLeave,
+    onLeave: transitions.leave,
+    onAfterLeave: transitions.afterLeave
   }
+  return h(Transition, data, slots)
 }
+
+export default ElCollapseTransition

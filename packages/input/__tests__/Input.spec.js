@@ -17,11 +17,11 @@ const globalOption = {
 }
 
 describe('Input.vue', () => {
-
   describe('props', () => {
-    it('create', async() => {
-      const wrapper = mount({
-        template: `
+    it('create', async () => {
+      const wrapper = mount(
+        {
+          template: `
                     <el-input
                         :minlength="3"
                         :maxlength="5"
@@ -30,24 +30,26 @@ describe('Input.vue', () => {
                         :modelValue="input">
                     </el-input>
                 `,
-        data() {
-          return {
-            input: 'input',
-            inputFocus: false
+          data() {
+            return {
+              input: 'input',
+              inputFocus: false
+            }
+          },
+          methods: {
+            handleFocus() {
+              this.inputFocus = true
+            }
+          },
+          components: {
+            [Input.name]: Input
           }
         },
-        methods: {
-          handleFocus() {
-            this.inputFocus = true
-          }
-        },
-        components: {
-          [Input.name]: Input
+        {
+          global: globalOption
         }
-      }, {
-        global: globalOption
-      })
-      let inputElm = wrapper.find('input')
+      )
+      const inputElm = wrapper.find('input')
       inputElm.trigger('focus')
       expect(wrapper.vm.inputFocus).toBeTruthy()
       expect(inputElm.attributes('placeholder')).toEqual('请输入内容')
@@ -63,7 +65,7 @@ describe('Input.vue', () => {
       const wrapper = mount(Input, {
         global: globalOption
       })
-      let inputElm = wrapper.find('input')
+      const inputElm = wrapper.find('input')
       expect(inputElm.element.value).toEqual('')
     })
 
@@ -75,7 +77,7 @@ describe('Input.vue', () => {
         global: globalOption
       })
 
-      let inputElm = wrapper.find('input')
+      const inputElm = wrapper.find('input')
       expect(inputElm.attributes('disabled')).toEqual('')
     })
 
@@ -83,18 +85,19 @@ describe('Input.vue', () => {
       const wrapper = mount(Input, {
         props: {
           suffixIcon: 'time'
-        }, global: globalOption
+        },
+        global: globalOption
       })
       const icon = wrapper.find('.el-input__icon')
       expect(icon.exists()).toBeTruthy()
     })
 
     it('prefixIcon', () => {
-
       const wrapper = mount(Input, {
         props: {
           prefixIcon: 'time'
-        }, global: globalOption
+        },
+        global: globalOption
       })
       const icon = wrapper.find('.el-input__icon')
       expect(icon.exists()).toBeTruthy()
@@ -104,7 +107,8 @@ describe('Input.vue', () => {
       const wrapper = mount(Input, {
         props: {
           size: 'large'
-        }, global: globalOption
+        },
+        global: globalOption
       })
       expect(wrapper.classes()).toContain('el-input--large')
     })
@@ -113,7 +117,8 @@ describe('Input.vue', () => {
       const wrapper = mount(Input, {
         props: {
           type: 'textarea'
-        }, global: globalOption
+        },
+        global: globalOption
       })
       expect(wrapper.classes()).toContain('el-textarea')
     })
@@ -123,37 +128,47 @@ describe('Input.vue', () => {
         props: {
           type: 'textarea',
           rows: 3
-        }, global: globalOption
+        },
+        global: globalOption
       })
-      expect(wrapper.find('.el-textarea__inner').attributes('rows')).toEqual('3')
+      expect(wrapper.find('.el-textarea__inner').attributes('rows')).toEqual(
+        '3'
+      )
     })
 
     // Github issue #2836
-    it('resize', async() => {
-      const wrapper = mount({
-        template: `
+    it('resize', async () => {
+      const wrapper = mount(
+        {
+          template: `
                 <div>
                       <el-input type="textarea" :resize="resize"></el-input>
                     </div>
                 `,
-        data() {
-          return {
-            resize: 'none'
+          data() {
+            return {
+              resize: 'none'
+            }
+          },
+          components: {
+            [Input.name]: Input
           }
         },
-        components: {
-          [Input.name]: Input
+        {
+          global: globalOption
         }
-      }, {
-        global: globalOption
-      })
+      )
 
       await nextTick()
-      let textarea = wrapper.find('.el-textarea__inner')
-      expect(textarea.attributes('style')).toContain(`resize: ${wrapper.vm.resize}`)
+      const textarea = wrapper.find('.el-textarea__inner')
+      expect(textarea.attributes('style')).toContain(
+        `resize: ${wrapper.vm.resize}`
+      )
       wrapper.vm.resize = 'horizontal'
       await nextTick()
-      expect(textarea.attributes('style')).toContain(`resize: ${wrapper.vm.resize}`)
+      expect(textarea.attributes('style')).toContain(
+        `resize: ${wrapper.vm.resize}`
+      )
     })
 
     // it('autosize', async () => {
@@ -209,7 +224,6 @@ describe('Input.vue', () => {
     //     expect(limitSizeInput.textareaStyle.height).to.be.equal('75px')
     //     expect(limitlessSizeInput.textareaStyle.height).to.be.equal('33px')
     // })
-
   })
 
   describe('events', () => {
@@ -221,7 +235,6 @@ describe('Input.vue', () => {
     //     await nextTick()
     //     expect(wrapper.vm.focused).toBeTruthy()
     // })
-
     // it('Input contains Select and append slot', async () => {
     //     const wrapper = mount({
     //         template: `
@@ -247,13 +260,11 @@ describe('Input.vue', () => {
     //         global: globalOption
     //     })
     //     wrapper.componentVM.$refs.input.hovering = true
-
     //     await nextTick()
     //     const suffixEl = document.querySelector('.input-with-select > .el-input__suffix')
     //     expect(suffixEl).toBeNull()
     //     expect(suffixEl.style.transform).to.not.be.empty
     // })
-
     // it('limit input and show word count', async () => {
     //     const wrapper = mount({
     //         template: `
@@ -303,27 +314,21 @@ describe('Input.vue', () => {
     //     }, {
     //         global: globalOption
     //     })
-
     //     const inputElm1 = wrapper.find('.test-text')
     //     const inputElm2 = wrapper.find('.test-textarea')
     //     const inputElm3 = wrapper.find('.test-password')
     //     const inputElm4 = wrapper.find('.test-initial-exceed')
-
     //     await nextTick()
     //     expect(inputElm1.findAll('.el-input__count').length).toEqual(0)
     //     // expect(inputElm2.findAll('.el-input__count').length).toEqual(1)
     //     expect(inputElm3.findAll('.el-input__count').length).toEqual(0)
     //     expect(inputElm4.classes()).toContain('is-exceed')
-
     //     vm.show = true
     //     await nextTick()
     //     expect(inputElm1.findAll('.el-input__count').length).toEqual(0)
-
     //     vm.input4 = '1'
     //     await nextTick()
     //     expect(inputElm4.classes()).toContain('is-exceed')
     // })
-
   })
-
 })

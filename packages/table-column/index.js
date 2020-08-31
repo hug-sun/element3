@@ -1,7 +1,7 @@
 import ElTableColumn from '../table/src/table-column'
 
 /* istanbul ignore next */
-ElTableColumn.install = function(app) {
+ElTableColumn.install = function (app) {
   app.component(ElTableColumn.name, ElTableColumn)
 }
 

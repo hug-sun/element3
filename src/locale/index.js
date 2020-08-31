@@ -5,7 +5,7 @@ import Format from './format'
 const format = Format()
 let lang = defaultLang
 // let merged = false
-let i18nHandler = function() {
+let i18nHandler = function () {
   // #todo
   // const vuei18n = Object.getPrototypeOf(this || Vue).$t
   // if (typeof vuei18n === 'function' && !!Vue.locale) {
@@ -20,7 +20,7 @@ let i18nHandler = function() {
   // }
 }
 
-export const t = function(path, options) {
+export const t = function (path, options) {
   let value = i18nHandler.apply(this, arguments)
   if (value !== null && value !== undefined) return value
 
@@ -37,11 +37,11 @@ export const t = function(path, options) {
   return ''
 }
 
-export const use = function(l) {
+export const use = function (l) {
   lang = l || lang
 }
 
-export const i18n = function(fn) {
+export const i18n = function (fn) {
   i18nHandler = fn || i18nHandler
 }
 

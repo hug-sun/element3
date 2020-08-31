@@ -21,50 +21,50 @@ describe('Avatar.vue', () => {
       })
 
       it('size is string', () => {
-        const wrapper_large = mount(Avatar, {
+        const wrapperLarge = mount(Avatar, {
           props: {
             size: 'large'
           }
         })
-        const wrapper_medium = mount(Avatar, {
+        const wrapperMedium = mount(Avatar, {
           props: {
             size: 'medium'
           }
         })
-        const wrapper_small = mount(Avatar, {
+        const wrapperSmall = mount(Avatar, {
           props: {
             size: 'small'
           }
         })
 
-        expect(wrapper_large.find('span').classes()).toContain(
+        expect(wrapperLarge.find('span').classes()).toContain(
           'el-avatar--large'
         )
-        expect(wrapper_medium.find('span').classes()).toContain(
+        expect(wrapperMedium.find('span').classes()).toContain(
           'el-avatar--medium'
         )
-        expect(wrapper_small.find('span').classes()).toContain(
+        expect(wrapperSmall.find('span').classes()).toContain(
           'el-avatar--small'
         )
       })
     })
 
     it('shape', () => {
-      const wrapper_circle = mount(Avatar, {
+      const wrapperCircle = mount(Avatar, {
         props: {
           shape: 'circle'
         }
       })
-      const wrapper_square = mount(Avatar, {
+      const wrapperSquare = mount(Avatar, {
         props: {
           shape: 'square'
         }
       })
 
-      expect(wrapper_circle.find('span').classes()).toContain(
+      expect(wrapperCircle.find('span').classes()).toContain(
         'el-avatar--circle'
       )
-      expect(wrapper_square.find('span').classes()).toContain(
+      expect(wrapperSquare.find('span').classes()).toContain(
         'el-avatar--square'
       )
     })
@@ -90,7 +90,7 @@ describe('Avatar.vue', () => {
       expect(wrapper.find('img').attributes('src')).toBe(IMAGE_SUCCESS)
     })
 
-    it('error', async() => {
+    it('error', async () => {
       const wrapper = mount(Avatar, {
         props: {
           src: IMAGE_FAIL,
@@ -119,44 +119,42 @@ describe('Avatar.vue', () => {
     })
 
     it('fit', () => {
-      const wrapper_fill = mount(Avatar, {
+      const wrapperFill = mount(Avatar, {
         props: {
           src: IMAGE_SUCCESS,
           fit: 'fill'
         }
       })
-      const wrapper_contain = mount(Avatar, {
+      const wrapperContain = mount(Avatar, {
         props: {
           src: IMAGE_SUCCESS,
           fit: 'contain'
         }
       })
-      const wrapper_cover = mount(Avatar, {
+      const wrapperCover = mount(Avatar, {
         props: {
           src: IMAGE_SUCCESS,
           fit: 'cover'
         }
       })
-      const wrapper_none = mount(Avatar, {
+      const wrapperNone = mount(Avatar, {
         props: {
           src: IMAGE_SUCCESS,
           fit: 'none'
         }
       })
-      const wrapper_scale_down = mount(Avatar, {
+      const wrapperScaleDown = mount(Avatar, {
         props: {
           src: IMAGE_SUCCESS,
           fit: 'scale-down'
         }
       })
 
-      expect(wrapper_fill.find('img').element.style.objectFit).toBe('fill')
-      expect(wrapper_contain.find('img').element.style.objectFit).toBe(
-        'contain'
-      )
-      expect(wrapper_cover.find('img').element.style.objectFit).toBe('cover')
-      expect(wrapper_none.find('img').element.style.objectFit).toBe('none')
-      expect(wrapper_scale_down.find('img').element.style.objectFit).toBe(
+      expect(wrapperFill.find('img').element.style.objectFit).toBe('fill')
+      expect(wrapperContain.find('img').element.style.objectFit).toBe('contain')
+      expect(wrapperCover.find('img').element.style.objectFit).toBe('cover')
+      expect(wrapperNone.find('img').element.style.objectFit).toBe('none')
+      expect(wrapperScaleDown.find('img').element.style.objectFit).toBe(
         'scale-down'
       )
     })

@@ -1,4 +1,4 @@
-import {nextTick} from 'vue'
+import { nextTick } from 'vue'
 import merge from 'element-ui/src/utils/merge'
 import PopupManager from 'element-ui/src/utils/popup/popup-manager'
 import getScrollBarWidth from '../scrollbar-width'
@@ -130,18 +130,36 @@ export default {
           PopupManager.closeModal(this._popupId)
           this._closing = false
         }
-        PopupManager.openModal(this._popupId, PopupManager.nextZIndex(), this.modalAppendToBody ? undefined : dom, props.modalClass, props.modalFade)
+        PopupManager.openModal(
+          this._popupId,
+          PopupManager.nextZIndex(),
+          this.modalAppendToBody ? undefined : dom,
+          props.modalClass,
+          props.modalFade
+        )
         if (props.lockScroll) {
-          this.withoutHiddenClass = !hasClass(document.body, 'el-popup-parent--hidden')
+          this.withoutHiddenClass = !hasClass(
+            document.body,
+            'el-popup-parent--hidden'
+          )
           if (this.withoutHiddenClass) {
             this.bodyPaddingRight = document.body.style.paddingRight
-            this.computedBodyPaddingRight = parseInt(getStyle(document.body, 'paddingRight'), 10)
+            this.computedBodyPaddingRight = parseInt(
+              getStyle(document.body, 'paddingRight'),
+              10
+            )
           }
           scrollBarWidth = getScrollBarWidth()
-          let bodyHasOverflow = document.documentElement.clientHeight < document.body.scrollHeight
-          let bodyOverflowY = getStyle(document.body, 'overflowY')
-          if (scrollBarWidth > 0 && (bodyHasOverflow || bodyOverflowY === 'scroll') && this.withoutHiddenClass) {
-            document.body.style.paddingRight = this.computedBodyPaddingRight + scrollBarWidth + 'px'
+          const bodyHasOverflow =
+            document.documentElement.clientHeight < document.body.scrollHeight
+          const bodyOverflowY = getStyle(document.body, 'overflowY')
+          if (
+            scrollBarWidth > 0 &&
+            (bodyHasOverflow || bodyOverflowY === 'scroll') &&
+            this.withoutHiddenClass
+          ) {
+            document.body.style.paddingRight =
+              this.computedBodyPaddingRight + scrollBarWidth + 'px'
           }
           addClass(document.body, 'el-popup-parent--hidden')
         }
@@ -213,6 +231,4 @@ export default {
   }
 }
 
-export {
-  PopupManager
-}
+export { PopupManager }

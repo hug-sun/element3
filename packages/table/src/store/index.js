@@ -70,7 +70,10 @@ Watcher.prototype.mutations = {
   sort(states, options) {
     const { prop, order, init } = options
     if (prop) {
-      const column = arrayFind(states.columns, column => column.property === prop)
+      const column = arrayFind(
+        states.columns,
+        (column) => column.property === prop
+      )
       if (column) {
         column.order = order
         this.updateSort(column, prop, order)
@@ -101,7 +104,7 @@ Watcher.prototype.mutations = {
   },
 
   filterChange(states, options) {
-    let { column, values, silent } = options
+    const { column, values, silent } = options
     const newFilters = this.updateFilters(column, values)
 
     this.execQuery()
@@ -131,7 +134,7 @@ Watcher.prototype.mutations = {
   }
 }
 
-Watcher.prototype.commit = function(name, ...args) {
+Watcher.prototype.commit = function (name, ...args) {
   const mutations = this.mutations
   if (mutations[name]) {
     mutations[name].apply(this, [this.states].concat(args))
@@ -140,7 +143,7 @@ Watcher.prototype.commit = function(name, ...args) {
   }
 }
 
-Watcher.prototype.updateTableScrollY = function() {
+Watcher.prototype.updateTableScrollY = function () {
   nextTick(this.table.updateScrollY)
 }
 

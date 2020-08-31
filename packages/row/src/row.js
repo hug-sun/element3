@@ -1,15 +1,27 @@
-import { h } from 'vue'
+import { h, provide, computed, getCurrentInstance } from 'vue'
 export default {
   name: 'ElRow',
-
-  componentName: 'ElRow',
-
+  setup(props) {
+    const style = computed(() => {
+      const ret = {}
+      if (props.gutter) {
+        ret.marginLeft = `-${props.gutter / 2}px`
+        ret.marginRight = ret.marginLeft
+      }
+      return ret
+    })
+    provide('el-row', getCurrentInstance())
+    return { style }
+  },
   props: {
     tag: {
       type: String,
       default: 'div'
     },
-    gutter: Number,
+    gutter: {
+      type: Number,
+      default: 0
+    },
     type: String,
     justify: {
       type: String,
@@ -21,28 +33,19 @@ export default {
     }
   },
 
-  computed: {
-    style() {
-      const ret = {}
-
-      if (this.gutter) {
-        ret.marginLeft = `-${this.gutter / 2}px`
-        ret.marginRight = ret.marginLeft
-      }
-
-      return ret
-    }
-  },
-
   render() {
-    return h(this.tag, {
-      class: [
-        'el-row',
-        this.justify !== 'start' ? `is-justify-${this.justify}` : '',
-        this.align !== 'top' ? `is-align-${this.align}` : '',
-        { 'el-row--flex': this.type === 'flex' }
-      ],
-      style: this.style
-    }, this.$slots.default())
+    return h(
+      this.tag,
+      {
+        class: [
+          'el-row',
+          this.justify !== 'start' ? `is-justify-${this.justify}` : '',
+          this.align !== 'top' ? `is-align-${this.align}` : '',
+          { 'el-row--flex': this.type === 'flex' }
+        ],
+        style: this.style
+      },
+      this.$slots.default()
+    )
   }
 }

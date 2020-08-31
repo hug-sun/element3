@@ -1,7 +1,7 @@
 import Backtop from './src/main'
 
 /* istanbul ignore next */
-Backtop.install = function(app) {
+Backtop.install = function (app) {
   app.component(Backtop.name, Backtop)
 }
 

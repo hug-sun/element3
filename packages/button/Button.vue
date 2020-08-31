@@ -1,4 +1,3 @@
-
 <template>
   <button
     class="el-button"
@@ -26,14 +25,6 @@
   </button>
 </template>
 <script>
-// 问题
-// button 和 from 表单有个强耦合关系
-// 现在的逻辑是，如果当前 button 没有设置值的话，就通过 inject 内的 elFrom 或者 elFormItem 来获取值（ 大小和是否显示 ）
-// 更好的做法应该是不在强耦合 from ，只要 inject 上获取到 大小和是否显示 值的话，就直接处理即可
-
-// @TODO 暂时先把 inject 改成 vue3 获取 inject 的形式
-// 后续更改 From 的时候需要测试这个点
-
 import { computed, inject, toRefs, unref, getCurrentInstance } from 'vue'
 
 export default {

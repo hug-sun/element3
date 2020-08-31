@@ -21,6 +21,7 @@ import Row from '../packages/row/index.js';
 import Col from '../packages/col/index.js';
 import Progress from '../packages/progress/index.js';
 import Badge from '../packages/badge/index.js';
+import Card from '../packages/card/index.js';
 import Rate from '../packages/rate/index.js';
 import Carousel from '../packages/carousel/index.js';
 import Scrollbar from '../packages/scrollbar/index.js';
@@ -59,6 +60,7 @@ const components = [
   Col,
   Progress,
   Badge,
+  Card,
   Rate,
   Carousel,
   Scrollbar,
@@ -133,6 +135,7 @@ export default {
   Col,
   Progress,
   Badge,
+  Card,
   Rate,
   Carousel,
   Scrollbar,

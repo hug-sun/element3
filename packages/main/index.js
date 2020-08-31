@@ -1,7 +1,7 @@
-import Main from './src/main'
+import Main from './Main'
 
 /* istanbul ignore next */
-Main.install = function(app) {
+Main.install = function (app) {
   app.component(Main.name, Main)
 }
 

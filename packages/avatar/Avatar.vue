@@ -6,7 +6,7 @@
       @error="handleError"
       :alt="alt"
       :srcSet="srcSet"
-      :style="{'object-fit': fit}"
+      :style="{ 'object-fit': fit }"
     />
     <i v-else-if="icon" :class="icon" />
     <slot v-else></slot>
@@ -42,7 +42,7 @@ export default {
     error: Function,
     fit: {
       type: String,
-      default: 'cover',
+      default: 'cover'
     }
   },
 
@@ -71,7 +71,7 @@ const useSizeStyle = (size) => {
       ? {
           height: `${size.value}px`,
           width: `${size.value}px`,
-          lineHeight: `${size.value}px`,
+          lineHeight: `${size.value}px`
         }
       : {}
   })
@@ -79,7 +79,7 @@ const useSizeStyle = (size) => {
 
 const useAvatarClass = (size, icon, shape) => {
   return computed(() => {
-    let classList = ['el-avatar']
+    const classList = ['el-avatar']
 
     if (size && typeof size.value === 'string') {
       classList.push(`el-avatar--${size.value}`)

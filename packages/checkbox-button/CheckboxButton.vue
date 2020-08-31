@@ -3,11 +3,11 @@
     class="el-checkbox-button"
     role="checkbox"
     :class="[
-        checkboxSize ? 'el-checkbox-button--' + checkboxSize : '',
-        { 'is-disabled': isDisabled },
-        { 'is-checked': isChecked },
-        { 'is-focus': focus },
-      ]"
+      checkboxSize ? 'el-checkbox-button--' + checkboxSize : '',
+      { 'is-disabled': isDisabled },
+      { 'is-checked': isChecked },
+      { 'is-focus': focus }
+    ]"
     :id="id"
     :aria-checked="isChecked"
     :aria-disabled="isDisabled"
@@ -27,21 +27,28 @@
       @input="model = { label, checked: $event.target.checked }"
       @focus="focus = true"
       @blur="focus = false"
-    >
+    />
 
     <span
       class="el-checkbox-button__inner"
       v-if="$slots.default || label"
       :style="isChecked ? activeStyle : null"
     >
-      <slot>{{label}}</slot>
+      <slot>{{ label }}</slot>
     </span>
-
   </label>
 </template>
 <script>
-import { reactive, toRefs } from 'vue';
-import { useModel, useAria, useCheckSelected, useSize, useLimit, useDisabled, useActiveStyle } from '../checkbox/uses'
+import { reactive, toRefs } from 'vue'
+import {
+  useModel,
+  useAria,
+  useCheckSelected,
+  useSize,
+  useLimit,
+  useDisabled,
+  useActiveStyle
+} from '../checkbox/uses'
 export default {
   name: 'ElCheckboxButton',
 
@@ -54,8 +61,8 @@ export default {
     name: String,
     trueLabel: { type: [String, Number, Boolean], default: true },
     falseLabel: { type: [String, Number, Boolean], default: false },
-    id: String, /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系*/
-    controls: String, /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系*/
+    id: String /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系 */,
+    controls: String /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系 */,
     border: Boolean,
     size: String
   },
@@ -65,21 +72,21 @@ export default {
   setup(props) {
     const state = reactive({
       focus: false
-    });
+    })
 
-    useAria();
+    useAria()
 
-    const { model, handleChange } = useModel();
+    const { model, handleChange } = useModel()
 
-    const isLimit = useLimit({ model });
+    const isLimit = useLimit({ model })
 
-    const { isChecked, checkbox } = useCheckSelected({ model });
+    const { isChecked, checkbox } = useCheckSelected({ model })
 
-    const checkboxSize = useSize();
+    const checkboxSize = useSize()
 
-    const isDisabled = useDisabled({ isLimit });
+    const isDisabled = useDisabled({ isLimit })
 
-    const activeStyle = useActiveStyle();
+    const activeStyle = useActiveStyle()
 
     return {
       ...toRefs(state),
@@ -92,5 +99,5 @@ export default {
       activeStyle
     }
   }
-};
+}
 </script>

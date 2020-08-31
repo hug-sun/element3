@@ -4,7 +4,6 @@ import { isDef } from 'element-ui/src/utils/shared'
 let uid = 0
 
 export default class Node {
-
   constructor(data, config, parentNode) {
     this.data = data
     this.config = config
@@ -22,8 +21,8 @@ export default class Node {
     this.value = this.data[valueKey]
     this.label = this.data[labelKey]
     this.pathNodes = this.calculatePathNodes()
-    this.path = this.pathNodes.map(node => node.value)
-    this.pathLabels = this.pathNodes.map(node => node.label)
+    this.path = this.pathNodes.map((node) => node.value)
+    this.pathLabels = this.pathNodes.map((node) => node.label)
 
     // lazy load
     this.loading = false
@@ -35,15 +34,16 @@ export default class Node {
     const childrenKey = config.children
     const childrenData = this.data[childrenKey]
     this.hasChildren = Array.isArray(childrenData)
-    this.children = (childrenData || []).map(child => new Node(child, config, this))
+    this.children = (childrenData || []).map(
+      (child) => new Node(child, config, this)
+    )
   }
 
   get isDisabled() {
     const { data, parent, config } = this
     const disabledKey = config.disabled
     const { checkStrictly } = config
-    return data[disabledKey] ||
-      !checkStrictly && parent && parent.isDisabled
+    return data[disabledKey] || (!checkStrictly && parent && parent.isDisabled)
   }
 
   get isLeaf() {
@@ -52,7 +52,9 @@ export default class Node {
     if (lazy) {
       const isLeaf = isDef(data[leafKey])
         ? data[leafKey]
-        : (loaded ? !children.length : false)
+        : loaded
+        ? !children.length
+        : false
       this.hasChildren = !isLeaf
       return isLeaf
     }
@@ -80,9 +82,7 @@ export default class Node {
   }
 
   getValueByOption() {
-    return this.config.emitPath
-      ? this.getPath()
-      : this.getValue()
+    return this.config.emitPath ? this.getPath() : this.getValue()
   }
 
   getText(allLevels, separator) {
@@ -92,14 +92,14 @@ export default class Node {
   isSameNode(checkedValue) {
     const value = this.getValueByOption()
     return this.config.multiple && Array.isArray(checkedValue)
-      ? checkedValue.some(val => isEqual(val, value))
+      ? checkedValue.some((val) => isEqual(val, value))
       : isEqual(checkedValue, value)
   }
 
   broadcast(event, ...args) {
     const handlerName = `onParent${capitalize(event)}`
 
-    this.children.forEach(child => {
+    this.children.forEach((child) => {
       if (child) {
         // bottom up
         child.broadcast(event, ...args)
@@ -125,9 +125,9 @@ export default class Node {
 
   onChildCheck() {
     const { children } = this
-    const validChildren = children.filter(child => !child.isDisabled)
+    const validChildren = children.filter((child) => !child.isDisabled)
     const checked = validChildren.length
-      ? validChildren.every(child => child.checked)
+      ? validChildren.every((child) => child.checked)
       : false
 
     this.setCheckState(checked)
@@ -136,7 +136,7 @@ export default class Node {
   setCheckState(checked) {
     const totalNum = this.children.length
     const checkedNum = this.children.reduce((c, p) => {
-      const num = p.checked ? 1 : (p.indeterminate ? 0.5 : 0)
+      const num = p.checked ? 1 : p.indeterminate ? 0.5 : 0
       return c + num
     }, 0)
 

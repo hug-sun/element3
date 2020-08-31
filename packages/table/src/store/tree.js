@@ -34,10 +34,10 @@ export default {
       const keys = Object.keys(lazyTreeNodeMap)
       const res = {}
       if (!keys.length) return res
-      keys.forEach(key => {
+      keys.forEach((key) => {
         if (lazyTreeNodeMap[key].length) {
           const item = { children: [] }
-          lazyTreeNodeMap[key].forEach(row => {
+          lazyTreeNodeMap[key].forEach((row) => {
             const currentRowKey = getRowIdentity(row, rowKey)
             item.children.push(currentRowKey)
             if (row[lazyColumnIdentifier] && !res[currentRowKey]) {
@@ -71,7 +71,7 @@ export default {
           const parentId = getRowIdentity(parent, rowKey)
           if (Array.isArray(children)) {
             res[parentId] = {
-              children: children.map(row => getRowIdentity(row, rowKey)),
+              children: children.map((row) => getRowIdentity(row, rowKey)),
               level
             }
           } else if (lazy) {
@@ -109,7 +109,7 @@ export default {
           return !!((oldValue && oldValue.expanded) || included)
         }
         // 合并 expanded 与 display，确保数据刷新后，状态不变
-        keys.forEach(key => {
+        keys.forEach((key) => {
           const oldValue = oldTreeData[key]
           const newValue = { ...nested[key] }
           newValue.expanded = getExpanded(oldValue, key)
@@ -124,7 +124,7 @@ export default {
         // 根据懒加载数据更新 treeData
         const lazyKeys = Object.keys(normalizedLazyNode)
         if (lazy && lazyKeys.length && rootLazyRowKeys.length) {
-          lazyKeys.forEach(key => {
+          lazyKeys.forEach((key) => {
             const oldValue = oldTreeData[key]
             const lazyNodeChildren = normalizedLazyNode[key].children
             if (rootLazyRowKeys.indexOf(key) !== -1) {
@@ -162,7 +162,7 @@ export default {
       const { rowKey, treeData } = this.states
       const id = getRowIdentity(row, rowKey)
       const data = id && treeData[id]
-      if (id && data && ('expanded' in data)) {
+      if (id && data && 'expanded' in data) {
         const oldExpanded = data.expanded
         expanded = typeof expanded === 'undefined' ? !data.expanded : expanded
         treeData[id].expanded = expanded
@@ -190,7 +190,7 @@ export default {
       const { lazyTreeNodeMap, treeData } = this.states
       if (load && !treeData[key].loaded) {
         treeData[key].loading = true
-        load(row, treeNode, data => {
+        load(row, treeNode, (data) => {
           if (!Array.isArray(data)) {
             throw new Error('[ElTable] data must be an array')
           }

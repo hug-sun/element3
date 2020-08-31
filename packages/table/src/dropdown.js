@@ -1,8 +1,8 @@
 var dropdowns = []
 
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
   // !Vue.prototype.$isServer && document.addEventListener('click', function(event) {
-  dropdowns.forEach(function(dropdown) {
+  dropdowns.forEach(function (dropdown) {
     var target = event.target
     if (!dropdown || !dropdown.$el) return
     if (target === dropdown.$el || dropdown.$el.contains(target)) {

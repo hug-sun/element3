@@ -1,7 +1,7 @@
 import ElCheckboxButton from './CheckboxButton'
 
 /* istanbul ignore next */
-ElCheckboxButton.install = function(app) {
+ElCheckboxButton.install = function (app) {
   app.component(ElCheckboxButton.name, ElCheckboxButton)
 }
 

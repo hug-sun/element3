@@ -1,18 +1,18 @@
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const demoConfig = require('./webpack.demo');
-const webpack = require('webpack');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const {VueLoaderPlugin} = require('vue-loader');
+const path = require('path')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const demoConfig = require('./webpack.demo')
+const webpack = require('webpack')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 demoConfig.entry = {
   background: path.join(process.cwd(), './examples/extension/src/background'),
   entry: path.join(process.cwd(), './examples/extension/src/entry')
-};
+}
 demoConfig.output = {
   path: path.join(process.cwd(), './examples/extension/dist'),
   filename: '[name].js'
-};
+}
 demoConfig.plugins = [
   new CopyWebpackPlugin([
     { from: 'examples/extension/src/manifest.json' },
@@ -28,6 +28,6 @@ demoConfig.plugins = [
     }
   }),
   new webpack.HotModuleReplacementPlugin()
-];
-demoConfig.module.rules.find(a => a.loader === 'url-loader').query = {};
-module.exports = demoConfig;
+]
+demoConfig.module.rules.find((a) => a.loader === 'url-loader').query = {}
+module.exports = demoConfig

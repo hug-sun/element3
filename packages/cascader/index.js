@@ -1,7 +1,7 @@
 import Cascader from './src/cascader'
 
 /* istanbul ignore next */
-Cascader.install = function(app) {
+Cascader.install = function (app) {
   app.component(Cascader.name, Cascader)
 }
 
