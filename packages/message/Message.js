@@ -31,11 +31,12 @@ const Message = function (options) {
     verticalOffset += item.el.offsetHeight + 16
   })
 
+  const nextZIndex = PopupManager.nextZIndex()
   options = merge(
     {
       id,
       verticalOffset,
-      zIndex: PopupManager.nextZIndex()
+      zIndex: nextZIndex
     },
     options
   )
@@ -51,6 +52,7 @@ const Message = function (options) {
 
   const container = document.createElement('div')
   render(instance, container)
+  instance.el.style.zIndex = nextZIndex
   document.body.appendChild(instance.el)
   instances.push(instance)
   return instance

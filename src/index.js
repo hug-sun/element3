@@ -20,6 +20,7 @@ import Icon from '../packages/icon/index.js';
 import Row from '../packages/row/index.js';
 import Col from '../packages/col/index.js';
 import Progress from '../packages/progress/index.js';
+import Message from '../packages/message/index.js';
 import Badge from '../packages/badge/index.js';
 import Card from '../packages/card/index.js';
 import Rate from '../packages/rate/index.js';
@@ -34,7 +35,6 @@ import Link from '../packages/link/index.js';
 import Divider from '../packages/divider/index.js';
 import Backtop from '../packages/backtop/index.js';
 import Avatar from '../packages/avatar/index.js';
-import Message from '../packages/message/index.js';
 import locale from 'element-ui/src/locale';
  import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
@@ -135,6 +135,7 @@ export default {
   Row,
   Col,
   Progress,
+  Message,
   Badge,
   Card,
   Rate,
@@ -148,6 +149,5 @@ export default {
   Link,
   Divider,
   Backtop,
-  Avatar,
-  Message
+  Avatar
 };

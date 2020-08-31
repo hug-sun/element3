@@ -1,5 +1,5 @@
 <template>
-  <transition name="el-message-fade" @after-leave="handleAfterLeave">
+  <transition name="el-message-fade" @after-leave="handleAfterLeave" appear>
     <div
       :class="[
         'el-message',
@@ -32,15 +32,7 @@
 </template>
 
 <script type="text/babel">
-import {
-  computed,
-  reactive,
-  watch,
-  onMounted,
-  onUnmounted,
-  toRefs,
-  getCurrentInstance
-} from 'vue'
+import { computed, reactive, watch, onMounted, onUnmounted, toRefs } from 'vue'
 
 const typeMap = {
   success: 'success',
@@ -100,8 +92,6 @@ export default {
     }
   },
   setup(props) {
-    const instance = getCurrentInstance()
-
     const state = reactive({
       visible: true,
       closed: false,
@@ -145,8 +135,8 @@ export default {
       }
     }
 
-    const handleAfterLeave = (e) => {
-      instance.proxy.$el.parentNode.removeChild(instance.proxy.$el)
+    const handleAfterLeave = (currentElement) => {
+      currentElement.parentNode.removeChild(currentElement)
     }
 
     watch(
@@ -162,6 +152,7 @@ export default {
       startTimer()
       document.addEventListener('keydown', keydown)
     })
+
     onUnmounted(() => {
       document.removeEventListener('keydown', keydown)
     })
