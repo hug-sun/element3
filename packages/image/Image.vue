@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import ImageViewer from './image-viewer'
+import ImageViewer from './ImageViewer'
 import { t } from 'element-ui/src/locale'
 import throttle from 'throttle-debounce/throttle'
 import { isString, isHtmlElement } from 'element-ui/src/utils/types'
