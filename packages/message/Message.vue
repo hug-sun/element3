@@ -103,6 +103,7 @@ export default {
         ? `el-message__icon el-icon-${typeMap[props.type]}`
         : ''
     })
+
     const positionStyle = computed(() => ({ top: `${props.verticalOffset}px` }))
 
     const close = () => {
@@ -136,7 +137,9 @@ export default {
     }
 
     const handleAfterLeave = (currentElement) => {
-      currentElement.parentNode.removeChild(currentElement)
+      if (currentElement && currentElement.parentNode) {
+        currentElement.parentNode.removeChild(currentElement)
+      }
     }
 
     watch(
