@@ -1,5 +1,5 @@
 <template>
-  <transition name="el-message-fade">
+  <transition name="el-message-fade" @after-leave="handleAfterLeave" appear>
     <div
       :class="[
         'el-message',
@@ -32,7 +32,7 @@
 </template>
 
 <script type="text/babel">
-import { computed, reactive, watch, onMounted, onUnmounted } from 'vue'
+import { computed, reactive, watch, onMounted, onUnmounted, toRefs } from 'vue'
 
 const typeMap = {
   success: 'success',
@@ -43,9 +43,9 @@ const typeMap = {
 
 export default {
   props: {
-    visible: {
-      type: Boolean,
-      default: false
+    id: {
+      type: String,
+      default: ''
     },
     message: {
       type: String,
@@ -74,10 +74,6 @@ export default {
       type: Boolean,
       default: false
     },
-    closed: {
-      type: Boolean,
-      default: false
-    },
     verticalOffset: {
       type: Number,
       default: 20
@@ -89,56 +85,44 @@ export default {
     center: {
       type: Boolean,
       default: false
+    },
+    onClose: {
+      type: Function,
+      required: true
     }
   },
-  setup() {
+  setup(props) {
     const state = reactive({
       visible: true,
-      message: '',
-      duration: 3000,
-      type: 'info',
-      iconClass: '',
-      customClass: '',
-      onClose: null,
-      showClose: false,
       closed: false,
-      verticalOffset: 20,
-      timer: null,
-      dangerouslyUseHTMLString: false,
-      center: false
+      timer: null
     })
 
     const typeClass = computed(() => {
-      return state.type && !state.iconClass
-        ? `el-message__icon el-icon-${typeMap[state.type]}`
+      return props.type && !props.iconClass
+        ? `el-message__icon el-icon-${typeMap[props.type]}`
         : ''
     })
-    const positionStyle = computed(() => {
-      return {
-        top: `${state.verticalOffset}px`
-      }
-    })
+    const positionStyle = computed(() => ({ top: `${props.verticalOffset}px` }))
 
-    // eslint-disable-next-line no-unused-vars
     const close = () => {
       state.closed = true
-      if (typeof state.onClose === 'function') {
-        state.onClose(this)
+      if (typeof props.onClose === 'function') {
+        props.onClose(this)
       }
     }
 
-    // eslint-disable-next-line no-unused-vars
     const clearTimer = () => {
       clearTimeout(state.timer)
     }
 
     const startTimer = () => {
-      if (state.duration > 0) {
+      if (props.duration > 0) {
         state.timer = setTimeout(() => {
           if (!state.closed) {
-            state.close()
+            close()
           }
-        }, state.duration)
+        }, props.duration)
       }
     }
 
@@ -146,21 +130,29 @@ export default {
       if (e.keyCode === 27) {
         // esc关闭消息
         if (!state.closed) {
-          state.close()
+          props.onClose(this)
         }
       }
     }
 
-    watch(state.closed, (newVal) => {
-      if (newVal) {
-        state.visible = false
+    const handleAfterLeave = (currentElement) => {
+      currentElement.parentNode.removeChild(currentElement)
+    }
+
+    watch(
+      () => state.closed,
+      (newVal) => {
+        if (newVal) {
+          state.visible = false
+        }
       }
-    })
+    )
 
     onMounted(() => {
       startTimer()
       document.addEventListener('keydown', keydown)
     })
+
     onUnmounted(() => {
       document.removeEventListener('keydown', keydown)
     })
@@ -168,7 +160,11 @@ export default {
     return {
       typeClass,
       positionStyle,
-      keydown
+      close,
+      clearTimer,
+      startTimer,
+      handleAfterLeave,
+      ...toRefs(state)
     }
   }
 }

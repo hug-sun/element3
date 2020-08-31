@@ -20,6 +20,7 @@ import Icon from '../packages/icon/index.js';
 import Row from '../packages/row/index.js';
 import Col from '../packages/col/index.js';
 import Progress from '../packages/progress/index.js';
+import Message from '../packages/message/index.js';
 import Badge from '../packages/badge/index.js';
 import Card from '../packages/card/index.js';
 import Rate from '../packages/rate/index.js';
@@ -100,7 +101,7 @@ const install = function(app, opts = {}) {
   // app.config.globalProperties.$confirm = MessageBox.confirm;
   // app.config.globalProperties.$prompt = MessageBox.prompt;
   // app.config.globalProperties.$notify = Notification;
-  // app.config.globalProperties.$message = Message;
+  app.config.globalProperties.$message = Message;
 };
 
 /* istanbul ignore if */
@@ -136,6 +137,7 @@ export default {
   Row,
   Col,
   Progress,
+  Message,
   Badge,
   Card,
   Rate,
