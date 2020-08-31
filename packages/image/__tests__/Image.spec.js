@@ -1,10 +1,14 @@
 import Image from '../Image.vue'
-import { mount as _mount } from '@vue/test-utils'
+import { mount as $mount } from '@vue/test-utils'
 
-const mount = async (Component, options) => {
-  const wrapper = _mount(Component, options)
+const mount = async (Component, options, onInit) => {
+  const wrapper = $mount(Component, options)
   wrapper.componentVM.$isServer = false
-  wrapper.componentVM.loading = false
+  if (onInit) {
+    onInit(wrapper)
+  } else {
+    wrapper.componentVM.loading = false
+  }
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(wrapper)
@@ -80,14 +84,39 @@ describe('Image.vue', () => {
   })
 
   describe('Slots', () => {
-    // Slots
-
     it('placeholder', async () => {
-      // TODO
+      await mount(
+        Image,
+        {
+          slots: {
+            placeholder: () => {
+              return 'loading...'
+            }
+          }
+        },
+        (wrapper) => {
+          expect(wrapper.find('.el-image').text()).toBe('loading...')
+        }
+      )
     })
 
     it('error', async () => {
-      // TODO
+      const wrapper = await mount(
+        Image,
+        {
+          src: 'test.jpg',
+          slots: {
+            error: () => {
+              return 'bad image'
+            }
+          }
+        },
+        (wrapper) => {
+          wrapper.componentVM.loading = false
+          wrapper.componentVM.error = true
+        }
+      )
+      expect(wrapper.find('.el-image').text()).toBe('bad image')
     })
   })
 })
