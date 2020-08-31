@@ -39,7 +39,7 @@ import {
   onMounted,
   onUnmounted,
   toRefs,
-  getCurrentInstance,
+  getCurrentInstance
 } from 'vue'
 
 const typeMap = {
@@ -53,50 +53,50 @@ export default {
   props: {
     id: {
       type: String,
-      default: '',
+      default: ''
     },
     message: {
       type: String,
-      default: '',
+      default: ''
     },
     duration: {
       type: Number,
-      default: 3000,
+      default: 3000
     },
     type: {
       type: String,
       default: 'info',
       validator(val) {
         return ['success', 'warning', 'info', 'error'].indexOf(val) > -1
-      },
+      }
     },
     iconClass: {
       type: String,
-      default: '',
+      default: ''
     },
     customClass: {
       type: String,
-      default: '',
+      default: ''
     },
     showClose: {
       type: Boolean,
-      default: false,
+      default: false
     },
     verticalOffset: {
       type: Number,
-      default: 20,
+      default: 20
     },
     dangerouslyUseHTMLString: {
       type: Boolean,
-      default: false,
+      default: false
     },
     center: {
       type: Boolean,
-      default: false,
+      default: false
     },
     onClose: {
       type: Function,
-      required: true,
+      required: true
     }
   },
   setup(props) {
@@ -105,7 +105,7 @@ export default {
     const state = reactive({
       visible: true,
       closed: false,
-      timer: null,
+      timer: null
     })
 
     const typeClass = computed(() => {

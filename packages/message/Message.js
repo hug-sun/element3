@@ -17,7 +17,7 @@ const Message = function (options) {
   options = options || {}
   if (typeof options === 'string' || isVNode(options)) {
     options = {
-      message: options,
+      message: options
     }
   }
   const userOnClose = options.onClose
@@ -35,7 +35,7 @@ const Message = function (options) {
     {
       id,
       verticalOffset,
-      zIndex: PopupManager.nextZIndex(),
+      zIndex: PopupManager.nextZIndex()
     },
     options
   )
@@ -44,9 +44,9 @@ const Message = function (options) {
     options,
     isVNode(options.message)
       ? {
-          default: () => options.message,
+          default: () => options.message
         }
-      : null,
+      : null
   )
 
   const container = document.createElement('div')
@@ -60,7 +60,7 @@ const Message = function (options) {
   Message[type] = (options) => {
     if (typeof options === 'string' || isVNode(options)) {
       options = {
-        message: options,
+        message: options
       }
     }
     options.type = type
