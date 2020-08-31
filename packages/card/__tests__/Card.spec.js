@@ -15,11 +15,11 @@ describe('Card.vue', () => {
     it('slot', () => {
       const wrapper = mount(Card, {
         slots: {
-          header: 'SoltHeader'
+          header: 'SlotHeader'
         }
       })
 
-      expect(wrapper.find('.el-card__header').text()).toBe('SoltHeader')
+      expect(wrapper.find('.el-card__header').text()).toBe('SlotHeader')
     })
   })
 
@@ -35,7 +35,7 @@ describe('Card.vue', () => {
   })
 
   describe('shadow', () => {
-    it('alwarys', () => {
+    it('always', () => {
       const wrapper = mount(Card, {
         props: {
           shadow: 'always'

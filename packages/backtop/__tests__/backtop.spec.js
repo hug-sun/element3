@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
-import Backtop from '../src/main.vue'
-describe('Backtop.vue', () => {
-  const containerDeaultSlot = `<div class="target" style="width:100px;height:100px;overflow-y:scroll">
+import BackTop from '../BackTop.vue'
+describe('BackTop.vue', () => {
+  const containerDefaultSlot = `<div class="target" style="width:100px;height:100px;overflow-y:scroll">
             <div style="height:4000px;width:100%">
             <el-backtop target=".target" :visibilityHeight="2000" :right="20" :bottom="20">
             </el-backtop>
@@ -20,7 +20,7 @@ describe('Backtop.vue', () => {
     return mount(
       {
         components: {
-          'el-backtop': Backtop
+          'el-backtop': BackTop
         },
         template: temp
       },
@@ -29,7 +29,7 @@ describe('Backtop.vue', () => {
       }
     )
   }
-  const defaultWrapper = _mount(containerDeaultSlot)
+  const defaultWrapper = _mount(containerDefaultSlot)
   const slotWrapper = _mount(containerSlot)
   describe('props', () => {
     it('defaultSlot', async () => {
