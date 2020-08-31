@@ -23,7 +23,8 @@
         @focus="handleFocus"
         @blur="focusing = false"
       >
-        <slot name="title">{{ title }}</slot>
+        {{ title }}
+        <slot name="title"></slot>
         <i
           class="el-collapse-item__arrow el-icon-arrow-right"
           :class="{ 'is-active': isActive }"
@@ -49,68 +50,66 @@
 </template>
 <script>
 import ElCollapseTransition from 'element-ui/src/transitions/collapse-transition'
-import Emitter from 'element-ui/src/mixins/emitter'
 import { generateId } from 'element-ui/src/utils/util'
+import { useEmitter } from 'element-ui/src/use/emitter'
+import { reactive, inject, toRefs, computed } from 'vue'
 
 export default {
   name: 'ElCollapseItem',
-
   componentName: 'ElCollapseItem',
-
-  mixins: [Emitter],
-
   components: { ElCollapseTransition },
-
-  data() {
-    return {
-      contentWrapStyle: {
-        height: 'auto',
-        display: 'block'
-      },
-      contentHeight: 0,
-      focusing: false,
-      isClick: false,
-      id: generateId()
-    }
-  },
-
-  inject: ['collapse'],
-
   props: {
     title: String,
     name: {
       type: [String, Number],
       default() {
-        return this._uid
+        return generateId()
       }
     },
     disabled: Boolean
   },
+  setup(props) {
+    const id = generateId()
+    const { dispatch } = useEmitter()
 
-  computed: {
-    isActive() {
-      return this.collapse.activeNames.indexOf(this.name) > -1
-    }
-  },
+    const state = reactive({
+      contentHeight: 0,
+      focusing: false,
+      isClick: false
+    })
+    const activeNames = inject('activeNames')
+    const isActive = computed(() => {
+      return activeNames.value.indexOf(props.name) > -1
+    })
 
-  methods: {
-    handleFocus() {
+    const handleFocus = () => {
       setTimeout(() => {
-        if (!this.isClick) {
-          this.focusing = true
+        if (!state.isClick) {
+          state.focusing = true
         } else {
-          this.isClick = false
+          state.isClick = false
         }
       }, 50)
-    },
-    handleHeaderClick() {
-      if (this.disabled) return
-      this.dispatch('ElCollapse', 'item-click', this)
-      this.focusing = false
-      this.isClick = true
-    },
-    handleEnterClick() {
-      this.dispatch('ElCollapse', 'item-click', this)
+    }
+
+    const handleHeaderClick = () => {
+      if (props.disabled) return
+      dispatch('ElCollapse', 'collapse-item-click', props.name)
+      state.focusing = false
+      state.isClick = true
+    }
+
+    const handleEnterClick = () => {
+      dispatch('ElCollapse', 'collapse-item-click', props.name)
+    }
+
+    return {
+      id,
+      ...toRefs(state),
+      isActive,
+      handleFocus,
+      handleHeaderClick,
+      handleEnterClick
     }
   }
 }

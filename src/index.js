@@ -25,6 +25,8 @@ import Card from '../packages/card/index.js';
 import Rate from '../packages/rate/index.js';
 import Carousel from '../packages/carousel/index.js';
 import Scrollbar from '../packages/scrollbar/index.js';
+import Collapse from '../packages/collapse/index.js';
+import CollapseItem from '../packages/collapse-item/index.js';
 import Container from '../packages/container/index.js';
 import Header from '../packages/header/index.js';
 import Aside from '../packages/aside/index.js';
@@ -65,6 +67,8 @@ const components = [
   Rate,
   Carousel,
   Scrollbar,
+  Collapse,
+  CollapseItem,
   Container,
   Header,
   Aside,
@@ -141,6 +145,8 @@ export default {
   Rate,
   Carousel,
   Scrollbar,
+  Collapse,
+  CollapseItem,
   Container,
   Header,
   Aside,

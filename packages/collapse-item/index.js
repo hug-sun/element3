@@ -1,4 +1,4 @@
-import ElCollapseItem from '../collapse/src/collapse-item.vue'
+import ElCollapseItem from './CollapseItem'
 
 /* istanbul ignore next */
 ElCollapseItem.install = function (app) {
