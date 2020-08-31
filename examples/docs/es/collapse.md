@@ -8,7 +8,7 @@ Puede expandir varios paneles
 
 :::demo
 ```html
-<el-collapse v-model="activeNames" @change="handleChange">
+<el-collapse :modelValue="activeNames" @update:modelValue="activeNames.value = $event">
   <el-collapse-item title="Consistency" name="1">
     <div>Consistent with real life: in line with the process and logic of real life, and comply with languages and habits that the users are used to;</div>
     <div>Consistent within interface: all elements should be consistent, such as: design style, icons and texts, position of elements, etc.</div>
@@ -28,18 +28,13 @@ Puede expandir varios paneles
   </el-collapse-item>
 </el-collapse>
 <script>
-  export default {
-    data() {
-      return {
-        activeNames: ['1']
-      };
-    },
-    methods: {
-      handleChange(val) {
-        console.log(val);
-      }
-    }
+import { ref } from 'vue';
+export default {
+  setup() {
+    const activeNames = ref(['1'])
+    return { activeNames }
   }
+}
 </script>
 ```
 :::
@@ -50,7 +45,7 @@ En modo acordeón sólo un panel puede ser expandido a la vez
 
 :::demo Activa el modo acordeón usado el atributo `accordion`.
 ```html
-<el-collapse v-model="activeName" accordion>
+<el-collapse accordion>
   <el-collapse-item title="Consistency" name="1">
     <div>Consistent with real life: in line with the process and logic of real life, and comply with languages and habits that the users are used to;</div>
     <div>Consistent within interface: all elements should be consistent, such as: design style, icons and texts, position of elements, etc.</div>
@@ -69,15 +64,6 @@ En modo acordeón sólo un panel puede ser expandido a la vez
     <div>Controlled consequences: users should be granted the freedom to operate, including canceling, aborting or terminating current operation.</div>
   </el-collapse-item>
 </el-collapse>
-<script>
-  export default {
-    data() {
-      return {
-        activeName: '1'
-      };
-    }
-  }
-</script>
 ```
 :::
 
@@ -89,7 +75,7 @@ Además de usar el atributo `title`, se puede personalizar el título del panel 
 ```html
 <el-collapse accordion>
   <el-collapse-item name="1">
-    <template slot="title">
+    <template v-slot:title>
       Consistency<i class="header-icon el-icon-information"></i>
     </template>
     <div>Consistent with real life: in line with the process and logic of real life, and comply with languages and habits that the users are used to;</div>
@@ -130,4 +116,3 @@ Además de usar el atributo `title`, se puede personalizar el título del panel 
 | name     | identificador único del panel | string/number | —                 | —           |
 | title    | título del panel              | string        | —                 | —           |
 | disabled | deshabilita el collapse ítem  | boolean       | —                 | —           |
-

@@ -8,7 +8,7 @@ Vous pouvez agrandir plusieurs panneaux.
 
 :::demo
 ```html
-<el-collapse v-model="activeNames" @change="handleChange">
+<el-collapse :modelValue="activeNames" @update:modelValue="activeNames.value = $event">
   <el-collapse-item title="Cohérence" name="1">
     <div>Cohérence avec la vraie vie: en accord avec les processus habituels de la vie réelle, conforme aux langages et habitudes des utilisateurs;</div>
     <div>Cohérence au sein de l'interface: tout les éléments doivent être cohérents entre eux et suivre les mêmes règles, par exemple: le style global, les icônes, la position des éléments, etc.</div>
@@ -28,18 +28,13 @@ Vous pouvez agrandir plusieurs panneaux.
   </el-collapse-item>
 </el-collapse>
 <script>
-  export default {
-    data() {
-      return {
-        activeNames: ['1']
-      };
-    },
-    methods: {
-      handleChange(val) {
-        console.log(val);
-      }
-    }
+import { ref } from 'vue';
+export default {
+  setup() {
+    const activeNames = ref(['1'])
+    return { activeNames }
   }
+}
 </script>
 ```
 :::
@@ -50,7 +45,7 @@ En mode accordéon, un seul panneau peut être ouvert à la fois.
 
 :::demo Utilisez l'attribut `accordion` pour activer le mode accordéon.
 ```html
-<el-collapse v-model="activeName" accordion>
+<el-collapse accordion>
     <el-collapse-item title="Cohérence" name="1">
       <div>Cohérence avec la vraie vie: en accord avec les processus habituels de la vie réelle, conforme aux langages et habitudes des utilisateurs;</div>
       <div>Cohérence au sein de l'interface: tout les éléments doivent être cohérents entre eux et suivre les mêmes règles, par exemple: le style global, les icônes, la position des éléments, etc.</div>
@@ -69,15 +64,6 @@ En mode accordéon, un seul panneau peut être ouvert à la fois.
       <div>Contrôle des conséquences: les utilisateurs devraient pouvoir contrôler l'exécution de leurs opérations, y compris l'annulation et la suppression des opérations courantes.</div>
     </el-collapse-item>
 </el-collapse>
-<script>
-  export default {
-    data() {
-      return {
-        activeName: '1'
-      };
-    }
-  }
-</script>
 ```
 :::
 
@@ -89,7 +75,7 @@ En plus de l'utilisation de l'attribut `title`, vous pouvez configurer les titre
 ```html
 <el-collapse accordion>
   <el-collapse-item name="1">
-    <template slot="title">
+    <template v-slot:title>
       Cohérence<i class="header-icon el-icon-info"></i>
     </template>
     <div>Cohérence avec la vraie vie: en accord avec les processus habituels de la vie réelle, conforme aux langages et habitudes des utilisateurs;</div>

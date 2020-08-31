@@ -8,7 +8,7 @@ You can expand multiple panels
 
 :::demo
 ```html
-<el-collapse v-model="activeNames" @change="handleChange">
+<el-collapse :modelValue="activeNames" @update:modelValue="activeNames.value = $event">
   <el-collapse-item title="Consistency" name="1">
     <div>Consistent with real life: in line with the process and logic of real life, and comply with languages and habits that the users are used to;</div>
     <div>Consistent within interface: all elements should be consistent, such as: design style, icons and texts, position of elements, etc.</div>
@@ -28,18 +28,13 @@ You can expand multiple panels
   </el-collapse-item>
 </el-collapse>
 <script>
-  export default {
-    data() {
-      return {
-        activeNames: ['1']
-      };
-    },
-    methods: {
-      handleChange(val) {
-        console.log(val);
-      }
-    }
+import { ref } from 'vue';
+export default {
+  setup() {
+    const activeNames = ref(['1'])
+    return { activeNames }
   }
+}
 </script>
 ```
 :::
@@ -50,7 +45,7 @@ In accordion mode, only one panel can be expanded at once
 
 :::demo Activate accordion mode using the `accordion` attribute.
 ```html
-<el-collapse v-model="activeName" accordion>
+<el-collapse accordion>
   <el-collapse-item title="Consistency" name="1">
     <div>Consistent with real life: in line with the process and logic of real life, and comply with languages and habits that the users are used to;</div>
     <div>Consistent within interface: all elements should be consistent, such as: design style, icons and texts, position of elements, etc.</div>
@@ -69,15 +64,6 @@ In accordion mode, only one panel can be expanded at once
     <div>Controlled consequences: users should be granted the freedom to operate, including canceling, aborting or terminating current operation.</div>
   </el-collapse-item>
 </el-collapse>
-<script>
-  export default {
-    data() {
-      return {
-        activeName: '1'
-      };
-    }
-  }
-</script>
 ```
 :::
 
@@ -89,7 +75,7 @@ Besides using the `title` attribute, you can customize panel title with named sl
 ```html
 <el-collapse accordion>
   <el-collapse-item name="1">
-    <template slot="title">
+    <template v-slot:title>
       Consistency<i class="header-icon el-icon-info"></i>
     </template>
     <div>Consistent with real life: in line with the process and logic of real life, and comply with languages and habits that the users are used to;</div>
