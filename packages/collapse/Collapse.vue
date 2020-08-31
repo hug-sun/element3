@@ -12,7 +12,7 @@ export default {
   props: {
     accordion: Boolean,
     modelValue: {
-      type: [Array, String, Number],
+      type: [Array, String],
       default() {
         return []
       }
@@ -41,8 +41,8 @@ export default {
         const currentName =
           (activeNames.value[0] || activeNames.value[0] === 0) &&
           activeNames.value[0] === name
-            ? []
-            : [name]
+            ? ''
+            : name
         setActiveNames(currentName)
       } else {
         const currentName = activeNames.value.slice(0)

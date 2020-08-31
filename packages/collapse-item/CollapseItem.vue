@@ -60,9 +60,9 @@ export default {
   props: {
     title: String,
     name: {
-      type: [String, Number],
+      type: String,
       default() {
-        return generateId()
+        return generateId().toString()
       }
     },
     disabled: Boolean
