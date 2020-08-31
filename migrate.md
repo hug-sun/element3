@@ -58,7 +58,7 @@
 |          Avatar 头像          |   ❌   |                                  |
 |          Alert 警告           |   ✅   |                                  |
 |         Loading 加载          |   ❌   |                                  |
-|       Message 消息提示        |   ✅   |       功能完成，没写测试          |
+|       Message 消息提示        |   ✅   |              功能完成             |
 |        MessageBox 弹框        |   ❌   |                                  |
 |       Notification 通知       |   ❌   |                                  |
 |       NavMenu 导航菜单        |   ❌   |                                  |
