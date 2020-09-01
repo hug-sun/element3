@@ -1,4 +1,4 @@
-import Slider from './src/main'
+import Slider from './src/Slider'
 
 /* istanbul ignore next */
 Slider.install = function (app) {

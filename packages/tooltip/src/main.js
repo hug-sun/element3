@@ -9,7 +9,7 @@ export default {
   name: 'ElTooltip',
 
   mixins: [Popper],
-
+  emits: ['input', 'update:modelValue'],
   props: {
     openDelay: {
       type: Number,

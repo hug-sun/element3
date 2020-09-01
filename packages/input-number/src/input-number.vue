@@ -56,6 +56,7 @@ import RepeatClick from 'element-ui/src/directives/repeatClick'
 export default {
   name: 'ElInputNumber',
   mixins: [Focus('input')],
+  emits: ['input', 'change', 'update:modelValue'],
   inject: {
     elForm: {
       default: ''
@@ -270,6 +271,7 @@ export default {
       if (oldVal === newVal) return
       this.userInput = null
       this.$emit('input', newVal)
+      this.$emit('update:modelValue', newVal)
       this.$emit('change', newVal, oldVal)
       this.currentValue = newVal
     },
