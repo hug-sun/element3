@@ -41,12 +41,23 @@ npm run dev
 # open http://localhost:8085
 ```
 
-> **提示**：可以运行 `npm run dev:play`，修改 `examples/play/index.vue` 文件，调用你修改后的组件，仍然访问 [http://localhost:8085](http://localhost:8085)，查看修改效果，更快更方便。
-
-打包代码：
-
+> **提示**  
+> 1. 可以运行 `npm run dev:play`，修改 `examples/play/index.vue` 文件，调用你修改后的组件，仍然访问 [http://localhost:8085](http://localhost:8085)，查看修改效果，更快更方便。
 ```shell
 npm run dist
+```
+> 2. 本地安装依赖时可设置淘宝镜像源,屏蔽项目根目录.npmrc文件中的原npm源,设置为淘宝的镜像源
+```markdown
+# NPM原地址,发布代码时使用,在开发时可使用下面的taobao镜像源(registry.npm.taobao.org)
+# The original address of NPM is used when publishing code. The following Taobao image source can be used during development(registry.npm.taobao .org)
+#registry=http://registry.npmjs.org
+
+# 国内用户安装依赖时可使用淘宝镜像源
+# Domestic users can use Taobao image source when installing dependency
+registry=https://registry.npm.taobao.org
+sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
+phantomjs_cdnurl=https://npm.taobao.org/mirrors/phantomjs/
+electron_mirror=https://npm.taobao.org/mirrors/electron/
 ```
 
 ## 组件开发规范
