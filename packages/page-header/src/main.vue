@@ -1,6 +1,6 @@
 <template>
   <div class="el-page-header">
-    <div class="el-page-header__left" @click="$emit('back')">
+    <div class="el-page-header__left" @click="handleClick">
       <i class="el-icon-back"></i>
       <div class="el-page-header__title">
         <slot name="title">{{ title }}</slot>
@@ -14,9 +14,9 @@
 
 <script>
 import { t } from 'element-ui/src/locale'
+import { toRefs } from 'vue'
 export default {
   name: 'ElPageHeader',
-
   props: {
     title: {
       type: String,
@@ -25,6 +25,17 @@ export default {
       }
     },
     content: String
+  },
+  setup(props, ctx) {
+    const { title, content } = toRefs(props)
+    const handleClick = (evt) => {
+      ctx.emit('back', evt)
+    }
+    return {
+      handleClick,
+      title,
+      content
+    }
   }
 }
 </script>
