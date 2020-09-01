@@ -1,20 +1,6 @@
+import { mount } from '@vue/test-utils'
 import Image from '../Image.vue'
-import { mount as $mount } from '@vue/test-utils'
-
-const mount = async (Component, options, onInit) => {
-  const wrapper = $mount(Component, options)
-  wrapper.componentVM.$isServer = false
-  if (onInit) {
-    onInit(wrapper)
-  } else {
-    wrapper.componentVM.loading = false
-  }
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(wrapper)
-    }, 0)
-  })
-}
+import { IMAGE_FAIL, IMAGE_SUCCESS as src } from './image'
 
 Image.$isServer = false
 
@@ -23,34 +9,40 @@ describe('Image.vue', () => {
     it('src', async () => {
       const wrapper = await mount(Image, {
         props: {
-          src: 'test.jpg'
+          src
         }
       })
-      expect(wrapper.find('.el-image__inner').attributes('src')).toBe(
-        'test.jpg'
-      )
+      setTimeout(() => {
+        expect(wrapper.find('.el-image__inner').attributes('src')).toBe(src)
+      }, 100)
     })
 
     it('fit', async () => {
       const wrapper = await mount(Image, {
         props: {
-          fit: 'fill'
+          src,
+          fit: 'fill',
+          load() {
+            expect(
+              wrapper.find('.el-image__inner').attributes('style')
+            ).toContain('object-fit: fill;')
+          }
         }
       })
-      expect(wrapper.find('.el-image__inner').attributes('style')).toContain(
-        'object-fit: fill;'
-      )
     })
 
     it('alt', async () => {
       const wrapper = await mount(Image, {
         props: {
-          alt: 'hello world!'
+          src,
+          alt: 'hello world!',
+          load() {
+            expect(wrapper.find('.el-image__inner').attributes('alt')).toBe(
+              'hello world!2'
+            )
+          }
         }
       })
-      expect(wrapper.find('.el-image__inner').attributes('alt')).toBe(
-        'hello world!'
-      )
     })
 
     it('referrer-policy', async () => {
@@ -75,48 +67,57 @@ describe('Image.vue', () => {
   })
   describe('Events', () => {
     it('load', async () => {
-      // TODO
+      const wrapper = await mount(Image, {
+        props: {
+          src,
+          load() {
+            expect(wrapper.find('.el-image__inner').attributes('src')).toBe(
+              'test.jpg'
+            )
+          }
+        }
+      })
     })
-
     it('error', async () => {
-      // TODO
+      const wrapper = await mount(Image, {
+        src: IMAGE_FAIL,
+        slots: {
+          error: () => {
+            return 'bad image'
+          }
+        },
+        error() {
+          expect(wrapper.find('.el-image').text()).toBe('bad image')
+        }
+      })
     })
   })
 
   describe('Slots', () => {
     it('placeholder', async () => {
-      await mount(
-        Image,
-        {
-          slots: {
-            placeholder: () => {
-              return 'loading...'
-            }
+      const wrapper = await mount(Image, {
+        src,
+        slots: {
+          placeholder: () => {
+            return 'loading...'
           }
-        },
-        (wrapper) => {
-          expect(wrapper.find('.el-image').text()).toBe('loading...')
         }
-      )
+      })
+      expect(wrapper.find('.el-image').text()).toBe('loading...')
     })
 
     it('error', async () => {
-      const wrapper = await mount(
-        Image,
-        {
-          src: 'test.jpg',
-          slots: {
-            error: () => {
-              return 'bad image'
-            }
+      const wrapper = await mount(Image, {
+        src: IMAGE_FAIL,
+        slots: {
+          error: () => {
+            return 'bad image'
           }
         },
-        (wrapper) => {
-          wrapper.componentVM.loading = false
-          wrapper.componentVM.error = true
+        load() {
+          expect(wrapper.find('.el-image').text()).toBe('bad image')
         }
-      )
-      expect(wrapper.find('.el-image').text()).toBe('bad image')
+      })
     })
   })
 })
