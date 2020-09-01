@@ -177,9 +177,9 @@ describe('Popover.vue', () => {
         }
       })
       await wrapper.find('button').trigger('mouseenter')
-      await nextTick(() => {
+      setTimeout(() => {
         expect(show.value).toBe(true)
-      })
+      }, 100)
       await wrapper.find('button').trigger('mouseleave')
       setTimeout(() => {
         expect(show.value).toBe(false)
