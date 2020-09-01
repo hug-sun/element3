@@ -34,13 +34,13 @@
       :value="displayValue"
       :placeholder="placeholder"
       :disabled="inputNumberDisabled"
-      :size="inputNumberSize"
+      :size="inputNumberSize.value"
       :max="max"
       :min="min"
       :name="name"
       :label="label"
-      @keydown.up.native.prevent="increase"
-      @keydown.down.native.prevent="decrease"
+      @keydown.up.prevent="increase"
+      @keydown.down.prevent="decrease"
       @blur="handleBlur"
       @focus="handleFocus"
       @input="handleInput"
@@ -51,25 +51,28 @@
 <script>
 import ElInput from 'element-ui/packages/input'
 import Focus from 'element-ui/src/mixins/focus'
+// import useFocus from 'element-ui/src/use/focus'
 import RepeatClick from 'element-ui/src/directives/repeatClick'
-import {
-  ref,
-  toRefs,
-  onMounted,
-  onUpdated,
-  getCurrentInstance,
-  watch
-} from 'vue'
-import { useInputNumber } from './use'
-
+import { ref } from 'vue'
+import { useInputNumber, useInputNumberInteractive } from './use'
 export default {
   name: 'ElInputNumber',
   mixins: [Focus('input')],
+  inject: {
+    elForm: {
+      default: ''
+    },
+    elFormItem: {
+      default: ''
+    }
+  },
+  emits: ['input', 'change', 'blur', 'clear', 'focus', 'update:modelValue'],
   directives: {
     repeatClick: RepeatClick
   },
-  components: { ElInput },
-  emits: ['input', 'change', 'blur', 'clear', 'focus', 'update:modelValue'],
+  components: {
+    ElInput
+  },
   props: {
     step: {
       type: Number,
@@ -89,10 +92,7 @@ export default {
     },
     value: {},
     disabled: Boolean,
-    size: {
-      type: String,
-      default: ''
-    },
+    size: String,
     controls: {
       type: Boolean,
       default: true
@@ -111,183 +111,104 @@ export default {
       }
     }
   },
+  methods: {
+    select() {
+      this.$refs.input.select()
+    }
+  },
+  mounted() {
+    const innerInput = this.$refs.input.$refs.input
+    innerInput.setAttribute('role', 'spinbutton')
+    innerInput.setAttribute('aria-valuemax', this.max)
+    innerInput.setAttribute('aria-valuemin', this.min)
+    innerInput.setAttribute('aria-valuenow', this.currentValue)
+    innerInput.setAttribute('aria-disabled', this.inputNumberDisabled)
+  },
+  updated() {
+    if (!this.$refs || !this.$refs.input) return
+    const innerInput = this.$refs.input.$refs.input
+    innerInput.setAttribute('aria-valuenow', this.currentValue)
+  },
+
   setup(props, { emit }) {
     const {
       min,
       max,
       size,
+      step,
+      value,
       disabled,
       controls,
-      controlsPosition,
-      value,
-      step,
       precision,
-      stepStrictly
-    } = toRefs(props)
-    let currentValue = ref(0)
-    let userInput = ref(null)
-
+      stepStrictly,
+      controlsPosition
+    } = props
+    const userInput = ref(null)
+    const currentValue = ref(0)
     const {
-      useSize,
+      inputNumberSize,
       inputNumberDisabled,
       controlsAtRight,
       numPrecision,
       minDisabled,
       maxDisabled,
+      toPrecision,
+      displayValue,
       _increase,
-      _decrease,
-      toPrecision
+      _decrease
     } = useInputNumber({
       min,
       max,
       size,
       step,
       value,
+      userInput,
       disabled,
       controls,
       precision,
       currentValue,
       controlsPosition
     })
-
-    const inputNumberSize = useSize()
-
-    const getPrecision = (value) => {
-      if (value === undefined) return 0
-      const valueString = value.toString()
-      const dotPosition = valueString.indexOf('.')
-      return dotPosition !== -1 ? valueString.length - dotPosition - 1 : 0
-    }
-
-    const displayValue = () => {
-      if (userInput !== null) {
-        return userInput
-      }
-      if (typeof currentValue === 'number') {
-        if (stepStrictly) {
-          const stepPrecision = getPrecision(step)
-          const precisionFactor = Math.pow(10, stepPrecision)
-          currentValue =
-            (Math.round(currentValue / step) * precisionFactor * step) /
-            precisionFactor
-        }
-
-        if (precision !== undefined) {
-          currentValue = currentValue.toFixed(precision)
-        }
-      }
-      return currentValue
-    }
-
-    const setCurrentValue = (newVal) => {
-      const oldVal = currentValue
-      if (typeof newVal === 'number' && precision !== undefined) {
-        newVal = toPrecision(newVal, precision)
-      }
-      if (newVal >= max) newVal = max
-      if (newVal <= min) newVal = min
-      if (oldVal === newVal) return
-      userInput = null
-      emit('input', newVal)
-      emit('change', newVal, oldVal)
-      currentValue = newVal
-    }
-
-    const increase = () => {
-      if (inputNumberDisabled || maxDisabled) return
-      const newVal = _increase(value || 0, step)
-      setCurrentValue(newVal)
-    }
-    const decrease = () => {
-      if (inputNumberDisabled || minDisabled) return
-      const newVal = _decrease(value || 0, step)
-      setCurrentValue(newVal)
-    }
-
-    const handleInput = (value) => {
-      userInput = value
-    }
-
-    const handleBlur = (event) => {
-      emit('blur', event)
-    }
-    const handleFocus = (event) => {
-      emit('focus', event)
-    }
-
-    const handleInputChange = (value) => {
-      const newVal = value === '' ? undefined : Number(value)
-      if (!isNaN(newVal) || value === '') {
-        setCurrentValue(newVal)
-      }
-      userInput = null
-    }
-    const select = () => {
-      getCurrentInstance()
-      this.$refs.input.select()
-    }
-
-    onMounted(() => {
-      console.log(getCurrentInstance().ctx.$refs.input.$refs.input)
-      const innerInput = getCurrentInstance().ctx.$refs.input.$refs.input
-      innerInput.setAttribute('role', 'spinbutton')
-      innerInput.setAttribute('aria-valuemax', max)
-      innerInput.setAttribute('aria-valuemin', min)
-      innerInput.setAttribute('aria-valuenow', currentValue)
-      innerInput.setAttribute('aria-disabled', inputNumberDisabled)
-    })
-
-    onUpdated(() => {
-      const refs = getCurrentInstance().ctx.$refs
-      if (!refs || !refs.input) return
-      const innerInput = refs.input.$refs.input
-      innerInput.setAttribute('aria-valuenow', this.currentValue)
-    })
-
-    watch('value', (value) => {
-      let newVal = value === undefined ? value : Number(value)
-      if (newVal !== undefined) {
-        if (isNaN(newVal)) return
-        if (stepStrictly) {
-          const stepPrecision = getPrecision(step)
-          const precisionFactor = Math.pow(10, stepPrecision)
-          newVal =
-            (Math.round(newVal / step) * precisionFactor * step) /
-            precisionFactor
-        }
-        if (precision !== undefined) {
-          newVal = toPrecision(newVal, precision)
-        }
-      }
-      if (newVal >= max) newVal = max
-      if (newVal <= min) newVal = min
-      currentValue = newVal
-      userInput = null
-      emit('input', newVal)
-    })
-
-    return {
-      currentValue,
-      userInput,
-      handleInput,
+    const {
+      increase,
+      decrease,
       handleBlur,
       handleFocus,
+      handleInput,
+      setCurrentValue,
+      handleInputChange
+    } = useInputNumberInteractive({
+      max,
+      min,
+      emit,
+      step,
+      value,
+      userInput,
+      precision,
+      _increase,
+      _decrease,
+      toPrecision,
+      maxDisabled,
+      minDisabled,
+      currentValue,
+      stepStrictly,
+      inputNumberDisabled
+    })
+    return {
+      increase,
+      decrease,
       inputNumberSize,
       inputNumberDisabled,
       controlsAtRight,
-      getPrecision,
       numPrecision,
-      displayValue,
-      toPrecision,
       minDisabled,
       maxDisabled,
+      displayValue,
+      handleBlur,
+      handleFocus,
+      handleInput,
       setCurrentValue,
-      _increase,
-      _decrease,
-      increase,
-      decrease,
-      handleInputChange,
-      select
+      handleInputChange
     }
   }
 }
