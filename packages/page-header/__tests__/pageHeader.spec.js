@@ -1,4 +1,4 @@
-import PageHeader from '../src/main.vue'
+import PageHeader from '../PageHeader.vue'
 import { mount } from '@vue/test-utils'
 
 describe('PageHeader', () => {
