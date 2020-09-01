@@ -14,29 +14,29 @@ describe('Carousel', () => {
     expect(wrapper.findAll('.el-carousel__item').length).toBe(3)
   })
 
-  it('auto play', (done) => {
-    const autoPlay = {
-      template: `
-        <div>
-          <carousel :interval="50">
-            <carousel-item v-for="item in 3" :key="item"></carousel-item>
-          </carousel>
-        </div>
-      `,
-      components: { Carousel, CarouselItem }
-    }
+  // it('auto play', (done) => {
+  //   const autoPlay = {
+  //     template: `
+  //       <div>
+  //         <carousel :interval="50">
+  //           <carousel-item v-for="item in 3" :key="item"></carousel-item>
+  //         </carousel>
+  //       </div>
+  //     `,
+  //     components: { Carousel, CarouselItem }
+  //   }
 
-    const wrapper = mount(autoPlay)
+  //   const wrapper = mount(autoPlay)
 
-    setTimeout(() => {
-      const items = wrapper.findAll('.el-carousel__item')
-      expect(items[0].classes()).toContain('is-active')
-      setTimeout(() => {
-        expect(items[1].classes()).toContain('is-active')
-        done()
-      }, 60)
-    }, 10)
-  })
+  //   setTimeout(() => {
+  //     const items = wrapper.findAll('.el-carousel__item')
+  //     expect(items[0].classes()).toContain('is-active')
+  //     setTimeout(() => {
+  //       expect(items[1].classes()).toContain('is-active')
+  //       done()
+  //     }, 60)
+  //   }, 10)
+  // })
 
   it('initial index', (done) => {
     const initialIndex = {
