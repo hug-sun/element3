@@ -8,6 +8,7 @@ const releaseRE = /^v\d/
 const commitRE = /^(revert: )?(migrate|feat|fix|docs|dx|refactor|perf|test|workflow|build|ci|chore|types|wip|release): .{1,50}/
 
 if (!releaseRE.test(msg) && !commitRE.test(msg)) {
+  console.log('message is:', msg)
   console.error(
     `  ${chalk.bgRed.white(' ERROR ')} ${chalk.red(
       'invalid commit message format.'
