@@ -1,15 +1,16 @@
-import ImageViewer from '../ImageViewer.vue'
 import { mount } from '@vue/test-utils'
+import ImageViewer from '../ImageViewer.vue'
+import { IMAGE_FAIL, IMAGE_SUCCESS } from './image'
 describe('ImageViewer.vue', () => {
   describe('single', () => {
     it('urlList', () => {
       const wrapper = mount(ImageViewer, {
         props: {
-          urlList: ['test.jpg']
+          urlList: [IMAGE_SUCCESS]
         }
       })
       expect(wrapper.find('.el-image-viewer__img').attributes('src')).toBe(
-        'test.jpg'
+        IMAGE_SUCCESS
       )
     })
   })
@@ -17,48 +18,47 @@ describe('ImageViewer.vue', () => {
   describe('list', () => {
     const wrapper = mount(ImageViewer, {
       props: {
-        urlList: ['test.jpg', 'test2.jpg']
+        urlList: [IMAGE_SUCCESS, IMAGE_FAIL]
       }
     })
-    const { componentVM } = wrapper
 
     it('init', () => {
       expect(wrapper.find('.el-image-viewer__img').attributes('src')).toBe(
-        'test.jpg'
+        IMAGE_SUCCESS
       )
-      componentVM.next()
-    }, 0.01)
+    })
 
-    it('next', () => {
+    it('next', async () => {
+      await wrapper.find('.el-image-viewer__next').trigger('click')
       expect(wrapper.find('.el-image-viewer__img').attributes('src')).toBe(
-        'test2.jpg'
+        IMAGE_FAIL
       )
-      componentVM.prev()
-    }, 0.02)
+    })
 
-    it('prev', () => {
+    it('prev', async () => {
+      await wrapper.find('.el-image-viewer__prev').trigger('click')
       expect(wrapper.find('.el-image-viewer__img').attributes('src')).toBe(
-        'test.jpg'
+        IMAGE_SUCCESS
       )
-    }, 0.03)
+    })
   })
 
   it('initialIndex', () => {
     const wrapper = mount(ImageViewer, {
       props: {
-        urlList: ['test.jpg', 'test2.jpg'],
+        urlList: [IMAGE_SUCCESS, IMAGE_FAIL],
         initialIndex: 1
       }
     })
     expect(wrapper.find('.el-image-viewer__img').attributes('src')).toBe(
-      'test2.jpg'
+      IMAGE_FAIL
     )
   })
 
   it('zIndex', () => {
     const wrapper = mount(ImageViewer, {
       props: {
-        urlList: ['test.jpg'],
+        urlList: [IMAGE_SUCCESS],
         zIndex: 2020
       }
     })
@@ -67,27 +67,31 @@ describe('ImageViewer.vue', () => {
     ).toContain('z-index: 2020')
   })
 
-  it('onSwitch', () => {
+  it('onSwitch', async () => {
+    let caller = false
     const wrapper = mount(ImageViewer, {
       props: {
-        urlList: ['test.jpg', 'test2.jpg'],
+        urlList: [IMAGE_SUCCESS, IMAGE_FAIL],
         onSwitch(newIndex) {
-          expect(`switch to ${newIndex}`).toBe('switch to 1')
+          caller = true
         }
       }
     })
-    wrapper.componentVM.next()
+    await wrapper.componentVM.next()
+    expect(caller).toBe(true)
   })
 
-  it('onClose', () => {
+  it('onClose', async () => {
+    let caller = false
     const wrapper = mount(ImageViewer, {
       props: {
-        urlList: ['test.jpg', 'test2.jpg'],
+        urlList: [IMAGE_SUCCESS, IMAGE_SUCCESS],
         onClose() {
-          expect('onClose').toBe('onClose')
+          caller = true
         }
       }
     })
-    wrapper.componentVM.hide()
+    await wrapper.componentVM.hide()
+    expect(caller).toBe(true)
   })
 })
