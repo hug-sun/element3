@@ -199,7 +199,7 @@ Vous pouvez sélectionner des intervalles de valeurs au lieu d'une valeur unique
             style: {
               color: '#1989FA'
             },
-            label: this.$createElement('strong', '50%')
+            label: <strong>50%</strong>
           }
         }
       }

@@ -201,7 +201,7 @@ Selecting a range of values is supported.
             style: {
               color: '#1989FA'
             },
-            label: this.$createElement('strong', '50%')
+            label: <strong>50%</strong>
           }
         }
       }
