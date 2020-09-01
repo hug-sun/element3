@@ -112,6 +112,7 @@ ComponentNames.forEach((name) => {
       'divider',
       'progress',
       'notification',
+      'page-header',
       'message'
     ].indexOf(name) > -1
   ) {
