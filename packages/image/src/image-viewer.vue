@@ -49,11 +49,8 @@
       <!-- CANVAS -->
       <div class="el-image-viewer__canvas">
         <img
-          v-if="i === index"
-          v-for="(url, i) in urlList"
           ref="img"
           class="el-image-viewer__img"
-          :key="url"
           :src="currentImg"
           :style="imgStyle"
           @load="handleImgLoad"
@@ -145,7 +142,7 @@ export default {
         'margin-left': `${offsetX}px`,
         'margin-top': `${offsetY}px`
       }
-      if (this.mode === Mode.CONTAIN) {
+      if (this.mode.name === Mode.CONTAIN.name) {
         style.maxWidth = style.maxHeight = '100%'
       }
       return style
@@ -160,7 +157,7 @@ export default {
     },
     currentImg(val) {
       this.$nextTick((_) => {
-        const $img = this.$refs.img[0]
+        const $img = this.$refs.img
         if (!$img.complete) {
           this.loading = true
         }
@@ -263,7 +260,7 @@ export default {
 
       const modeNames = Object.keys(Mode)
       const modeValues = Object.values(Mode)
-      const index = modeValues.indexOf(this.mode)
+      const index = modeValues.findIndex((mode) => mode.name === this.mode.name)
       const nextIndex = (index + 1) % modeNames.length
       this.mode = Mode[modeNames[nextIndex]]
       this.reset()
