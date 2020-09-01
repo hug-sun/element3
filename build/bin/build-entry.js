@@ -39,8 +39,10 @@ const install = function(app, opts = {}) {
   // app.config.globalProperties.$alert = MessageBox.alert;
   // app.config.globalProperties.$confirm = MessageBox.confirm;
   // app.config.globalProperties.$prompt = MessageBox.prompt;
-  // app.config.globalProperties.$notify = Notification;
-  app.config.globalProperties.$message = Message;
+
+   app.config.globalProperties.$notify = Notification;
+   app.config.globalProperties.$message = Message;
+
 };
 
 /* istanbul ignore if */
@@ -109,6 +111,7 @@ ComponentNames.forEach((name) => {
       'rate',
       'divider',
       'progress',
+      'notification',
       'message'
     ].indexOf(name) > -1
   ) {
