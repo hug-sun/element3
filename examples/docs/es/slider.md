@@ -203,7 +203,7 @@ Se soporta la selección de un rango de valores.
             style: {
               color: '#1989FA'
             },
-            label: this.$createElement('strong', '50%')
+            label: <strong>50%</strong>
           }
         }
       }
