@@ -1,8 +1,9 @@
-// import { nextTick } from 'vue'
-import Main from './main.vue'
+import { defineComponent, createVNode, render, isVNode } from 'vue'
+import Main from './Message.vue'
 import { PopupManager } from 'element-ui/src/utils/popup'
-import { isVNode } from 'element-ui/src/utils/vdom'
-const MessageConstructor = { extends: Main }
+import merge from 'element-ui/src/utils/merge'
+
+const MessageConstructor = defineComponent(Main)
 
 let instance
 const instances = []
@@ -10,8 +11,11 @@ let seed = 1
 
 const Message = function (options) {
   // if (Vue.prototype.$isServer) return
+  // check ssr
+  if (window === undefined) return
+
   options = options || {}
-  if (typeof options === 'string') {
+  if (typeof options === 'string' || isVNode(options)) {
     options = {
       message: options
     }
@@ -22,30 +26,41 @@ const Message = function (options) {
   options.onClose = function () {
     Message.close(id, userOnClose)
   }
-  instance = new MessageConstructor({
-    data: options
-  })
-  instance.id = id
-  if (isVNode(instance.message)) {
-    instance.$slots.default = [instance.message]
-    instance.message = null
-  }
-  instance.$mount()
-  document.body.appendChild(instance.$el)
   let verticalOffset = options.offset || 20
   instances.forEach((item) => {
-    verticalOffset += item.$el.offsetHeight + 16
+    verticalOffset += item.el.offsetHeight + 16
   })
-  instance.verticalOffset = verticalOffset
-  instance.visible = true
-  instance.$el.style.zIndex = PopupManager.nextZIndex()
+
+  const nextZIndex = PopupManager.nextZIndex()
+  options = merge(
+    {
+      id,
+      verticalOffset,
+      zIndex: nextZIndex
+    },
+    options
+  )
+  instance = createVNode(
+    MessageConstructor,
+    options,
+    isVNode(options.message)
+      ? {
+          default: () => options.message
+        }
+      : null
+  )
+
+  const container = document.createElement('div')
+  render(instance, container)
+  instance.el.style.zIndex = nextZIndex
+  document.body.appendChild(instance.el)
   instances.push(instance)
   return instance
 }
 
 ;['success', 'warning', 'info', 'error'].forEach((type) => {
   Message[type] = (options) => {
-    if (typeof options === 'string') {
+    if (typeof options === 'string' || isVNode(options)) {
       options = {
         message: options
       }
@@ -60,8 +75,8 @@ Message.close = function (id, userOnClose) {
   let index = -1
   let removedHeight
   for (let i = 0; i < len; i++) {
-    if (id === instances[i].id) {
-      removedHeight = instances[i].$el.offsetHeight
+    if (id === instances[i].component.props.id) {
+      removedHeight = instances[i].el.offsetHeight
       index = i
       if (typeof userOnClose === 'function') {
         userOnClose(instances[i])
@@ -72,14 +87,14 @@ Message.close = function (id, userOnClose) {
   }
   if (len <= 1 || index === -1 || index > instances.length - 1) return
   for (let i = index; i < len - 1; i++) {
-    const dom = instances[i].$el
+    const dom = instances[i].el
     dom.style.top = parseInt(dom.style.top, 10) - removedHeight - 16 + 'px'
   }
 }
 
 Message.closeAll = function () {
   for (let i = instances.length - 1; i >= 0; i--) {
-    instances[i].close()
+    instances[i].component.ctx.close()
   }
 }
 
