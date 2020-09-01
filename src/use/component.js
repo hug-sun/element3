@@ -1,26 +1,16 @@
-import { createApp, h } from 'vue'
+import { h, render } from 'vue'
 
-const MOUNT_PARENT_NAME = 'el_service_component_root'
 const MOUNT_COMPONENT_REF = 'el_component'
 
 /**
  * 创建组件实例对象
- * 注意返回的是组件代理对象
+ * 返回的实例和调用 getCurrentComponent() 返回的一致
  * @param {*} Component
  */
-export function createComponent(Component) {
-  const Parent = {
-    name: MOUNT_PARENT_NAME,
-    render() {
-      return h(Component, {
-        ref: MOUNT_COMPONENT_REF
-      })
-    }
-  }
+export function createComponent(Component, props, children) {
+  const vnode = h(Component, { ...props, ref: MOUNT_COMPONENT_REF }, children)
+  const container = document.createElement('div')
 
-  const app = createApp(Parent)
-  const el = document.createElement('div')
-  const vm = app.mount(el)
-
-  return vm.$refs[MOUNT_COMPONENT_REF]
+  render(vnode, container)
+  return vnode.component
 }

@@ -5,6 +5,7 @@ describe('component', () => {
     it('should get component instance', () => {
       const $cf = jest.fn()
       const Comp = {
+        template: '<div>foo</div>',
         setup() {
           return {
             $cf
@@ -13,9 +14,10 @@ describe('component', () => {
       }
 
       const instance = createComponent(Comp)
-      instance.$cf()
+      instance.ctx.$cf()
 
       expect($cf).toBeCalled()
+      expect(instance.ctx.$el.innerHTML).toBe('foo')
     })
   })
 })
