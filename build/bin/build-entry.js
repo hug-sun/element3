@@ -114,7 +114,10 @@ ComponentNames.forEach((name) => {
       'collapse',
       'collapse-item',
       'notification',
-      'message'
+      'page-header',
+      'message',
+      'step',
+      'steps'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换

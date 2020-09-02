@@ -12,9 +12,9 @@
       class="el-breadcrumb__separator"
       :class="separatorClass"
     ></i>
-    <span v-else class="el-breadcrumb__separator" role="presentation">{{
-      separator
-    }}</span>
+    <span v-else class="el-breadcrumb__separator" role="presentation">
+      {{ separator }}
+    </span>
   </span>
 </template>
 <script>
