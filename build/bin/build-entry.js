@@ -113,7 +113,9 @@ ComponentNames.forEach((name) => {
       'progress',
       'notification',
       'page-header',
-      'message'
+      'message',
+      'timeline',
+      'timeline-item'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换

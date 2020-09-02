@@ -1,4 +1,4 @@
-import ElTimelineItem from '../timeline/src/item'
+import ElTimelineItem from '../timeline/TimelineItem'
 
 /* istanbul ignore next */
 ElTimelineItem.install = function (app) {
