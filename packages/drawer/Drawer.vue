@@ -81,9 +81,17 @@ export default {
       type: String,
       default: ''
     },
+    closeOnPressEscape: {
+      type: Boolean,
+      default: true
+    },
     destroyOnClose: {
       type: Boolean,
       default: false
+    },
+    modal: {
+      type: Boolean,
+      default: true
     },
     direction: {
       type: String,
@@ -91,6 +99,10 @@ export default {
       validator(val) {
         return ['ltr', 'rtl', 'ttb', 'btt'].indexOf(val) !== -1
       }
+    },
+    modalAppendToBody: {
+      type: Boolean,
+      default: true
     },
     showClose: {
       type: Boolean,
@@ -116,8 +128,9 @@ export default {
       default: true
     }
   },
+  emits: ['update:visible', 'close', 'opened', 'open', 'closed'],
   setup(props, { emit }) {
-    const { rendered, open } = usePopup(props)
+    const { visible, rendered, open } = usePopup(props)
     const {
       appendToBody,
       beforeClose,
@@ -127,11 +140,9 @@ export default {
       showClose,
       size,
       title,
-      visible,
       wrapperClosable,
       withHeader
     } = toRefs(props)
-
     const closed = ref(false)
     const prevActiveElement = ref(null)
     const drawer = ref(null)
@@ -175,6 +186,7 @@ export default {
       if (cancel !== false) {
         emit('update:visible', false)
         emit('close')
+
         if (destroyOnClose.value === true) {
           rendered.value = false
         }
@@ -196,6 +208,13 @@ export default {
       }
     }
 
+    const handleClose = () => {
+      // This method here will be called by PopupManger, when the `closeOnPressEscape` was set to true
+      // pressing `ESC` will call this method, and also close the drawer.
+      // This method also calls `beforeClose` if there was one.
+      closeDrawer()
+    }
+
     onMounted(() => {
       if (visible.value) {
         rendered.value = true
@@ -211,20 +230,20 @@ export default {
     })
 
     return {
+      drawer,
       customClass,
       direction,
       showClose,
       size,
       title,
-      visible,
       withHeader,
       isHorizontal,
-      drawer,
       rendered,
+      handleWrapperClick,
       afterEnter,
       afterLeave,
-      handleWrapperClick,
-      closeDrawer
+      closeDrawer,
+      handleClose
     }
   }
 }
