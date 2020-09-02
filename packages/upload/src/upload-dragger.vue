@@ -12,36 +12,29 @@
   </div>
 </template>
 <script>
+import { ref, inject } from 'vue'
 export default {
   name: 'ElUploadDrag',
   props: {
     disabled: Boolean
   },
-  inject: {
-    uploader: {
-      default: ''
-    }
-  },
-  data() {
-    return {
-      dragover: false
-    }
-  },
-  methods: {
-    onDragover() {
-      if (!this.disabled) {
-        this.dragover = true
+  setup(props, ctx) {
+    const dragover = ref(false)
+    const uploader = inject('uploader')
+    const onDragover = () => {
+      if (!props.disabled) {
+        dragover.value = true
       }
-    },
-    onDrop(e) {
-      if (this.disabled || !this.uploader) return
-      const accept = this.uploader.accept
-      this.dragover = false
+    }
+    const onDrop = (e) => {
+      if (props.disabled || !uploader) return
+      const accept = uploader.accept
+      dragover.value = false
       if (!accept) {
-        this.$emit('file', e.dataTransfer.files)
+        ctx.emit('file', e.dataTransfer.files)
         return
       }
-      this.$emit(
+      ctx.emit(
         'file',
         [].slice.call(e.dataTransfer.files).filter((file) => {
           const { type, name } = file
@@ -67,6 +60,11 @@ export default {
             })
         })
       )
+    }
+    return {
+      dragover,
+      onDragover,
+      onDrop
     }
   }
 }

@@ -1,4 +1,13 @@
 <script>
+import {
+  computed,
+  inject,
+  watch,
+  reactive,
+  toRefs,
+  onBeforeUnmount,
+  ref
+} from 'vue'
 import UploadList from './upload-list'
 import Upload from './upload'
 import ElProgress from 'element-ui/packages/progress'
@@ -15,18 +24,6 @@ export default {
     ElProgress,
     UploadList,
     Upload
-  },
-
-  provide() {
-    return {
-      uploader: this
-    }
-  },
-
-  inject: {
-    elForm: {
-      default: ''
-    }
   },
 
   props: {
@@ -106,25 +103,49 @@ export default {
     }
   },
 
-  data() {
+  provide() {
     return {
+      uploader: this
+    }
+  },
+
+  inject: {
+    elForm: {
+      default: ''
+    }
+  },
+
+  setup(props, ctx) {
+    // props
+    const { listType, disabled, fileList } = toRefs(props)
+
+    // computed
+    const uploadDisabled = userUploadDisabled(disabled)
+
+    // data (also can be called 'state')
+    const state = reactive({
       uploadFiles: [],
       dragOver: false,
       draging: false,
       tempIndex: 1
-    }
-  },
+    })
 
-  computed: {
-    uploadDisabled() {
-      return this.disabled || (this.elForm || {}).disabled
-    }
-  },
+    // sub Component reference
+    const uploadInner = ref(null) // ref --> Upload
 
-  watch: {
-    listType(type) {
+    // lifecycle --> beforeDestory
+    onBeforeUnmount(() => {
+      state.uploadFiles.forEach((file) => {
+        if (file.url && file.url.indexOf('blob:') === 0) {
+          URL.revokeObjectURL(file.url)
+        }
+      })
+    })
+
+    // "listType watch handler
+    const handleListTypeChange = (type) => {
       if (type === 'picture-card' || type === 'picture') {
-        this.uploadFiles = this.uploadFiles.map((file) => {
+        state.uploadFiles = state.uploadFiles.map((file) => {
           if (!file.url && file.raw) {
             try {
               file.url = URL.createObjectURL(file.raw)
@@ -135,22 +156,24 @@ export default {
           return file
         })
       }
-    },
-    fileList: {
-      immediate: true,
-      handler(fileList) {
-        this.uploadFiles = fileList.map((item) => {
-          item.uid = item.uid || Date.now() + this.tempIndex++
-          item.status = item.status || 'success'
-          return item
-        })
-      }
     }
-  },
 
-  methods: {
-    handleStart(rawFile) {
-      rawFile.uid = Date.now() + this.tempIndex++
+    // "fileList" watch handler
+    const handleFileListChange = () => {
+      state.uploadFiles = fileList.value.map((item) => {
+        item.uid = item.uid || Date.now() + state.tempIndex++
+        item.status = item.status || 'success'
+        return item
+      })
+    }
+
+    // watch
+    watch(listType, handleListTypeChange)
+    watch(fileList, handleFileListChange, { immediate: true })
+
+    // 上传之前的钩子
+    const handleStart = (rawFile) => {
+      rawFile.uid = Date.now() + state.tempIndex++
       const file = {
         status: 'ready',
         name: rawFile.name,
@@ -159,8 +182,7 @@ export default {
         uid: rawFile.uid,
         raw: rawFile
       }
-
-      if (this.listType === 'picture-card' || this.listType === 'picture') {
+      if (props.listType === 'picture-card' || props.listType === 'picture') {
         try {
           file.url = URL.createObjectURL(rawFile)
         } catch (err) {
@@ -168,53 +190,50 @@ export default {
           return
         }
       }
-
-      this.uploadFiles.push(file)
-      this.onChange(file, this.uploadFiles)
-    },
-    handleProgress(ev, rawFile) {
-      const file = this.getFile(rawFile)
-      this.onProgress(ev, file, this.uploadFiles)
+      state.uploadFiles.push(file)
+      props.onChange(file, state.uploadFiles)
+    }
+    // 上传中的钩子
+    const handleProgress = (ev, rawFile) => {
+      const file = getFile(rawFile)
+      props.onProgress(ev, file, state.uploadFiles)
       file.status = 'uploading'
       file.percentage = ev.percent || 0
-    },
-    handleSuccess(res, rawFile) {
+    }
+    // 处理操作成功的钩子函数
+    const handleSuccess = (res, rawFile) => {
       const file = this.getFile(rawFile)
-
       if (file) {
         file.status = 'success'
         file.response = res
-
-        this.onSuccess(res, file, this.uploadFiles)
-        this.onChange(file, this.uploadFiles)
+        props.onSuccess(res, file, this.uploadFiles)
+        props.onChange(file, this.uploadFiles)
       }
-    },
-    handleError(err, rawFile) {
-      const file = this.getFile(rawFile)
-      const fileList = this.uploadFiles
-
+    }
+    // 处理异常错误的钩子函数
+    const handleError = (err, rawFile) => {
+      const file = getFile(rawFile)
+      const fileList = state.uploadFiles
       file.status = 'fail'
-
       fileList.splice(fileList.indexOf(file), 1)
-
-      this.onError(err, file, this.uploadFiles)
-      this.onChange(file, this.uploadFiles)
-    },
-    handleRemove(file, raw) {
+      props.onError(err, file, state.uploadFiles)
+      props.onChange(file, state.uploadFiles)
+    }
+    // 处理移除文件的钩子函数
+    const handleRemove = (file, raw) => {
       if (raw) {
-        file = this.getFile(raw)
+        file = getFile(raw)
       }
       const doRemove = () => {
-        this.abort(file)
-        const fileList = this.uploadFiles
+        abort(file)
+        const fileList = state.uploadFiles
         fileList.splice(fileList.indexOf(file), 1)
-        this.onRemove(file, fileList)
+        props.onRemove(file, fileList)
       }
-
-      if (!this.beforeRemove) {
+      if (!props.beforeRemove) {
         doRemove()
-      } else if (typeof this.beforeRemove === 'function') {
-        const before = this.beforeRemove(file, this.uploadFiles)
+      } else if (typeof props.beforeRemove === 'function') {
+        const before = props.beforeRemove(file, state.uploadFiles)
         if (before && before.then) {
           before.then(() => {
             doRemove()
@@ -223,69 +242,86 @@ export default {
           doRemove()
         }
       }
-    },
-    getFile(rawFile) {
-      const fileList = this.uploadFiles
+    }
+    // 清空上传文件
+    const clearFiles = () => {
+      state.uploadFiles = []
+    }
+    // 提交
+    const submit = function () {
+      state.uploadFiles
+        .filter((file) => file.status === 'ready')
+        .forEach((file) => {
+          uploadInner.value.upload(file.raw)
+        })
+    }
+    // 文件格式化
+    const getFile = function (rawFile) {
+      const fileList = state.uploadFiles
       let target
       fileList.every((item) => {
         target = rawFile.uid === item.uid ? item : null
         return !target
       })
       return target
-    },
-    abort(file) {
-      this.$refs['upload-inner'].abort(file)
-    },
-    clearFiles() {
-      this.uploadFiles = []
-    },
-    submit() {
-      this.uploadFiles
-        .filter((file) => file.status === 'ready')
-        .forEach((file) => {
-          this.$refs['upload-inner'].upload(file.raw)
-        })
-    },
-    getMigratingConfig() {
-      return {
-        props: {
-          'default-file-list': 'default-file-list is renamed to file-list.',
-          'show-upload-list': 'show-upload-list is renamed to show-file-list.',
-          'thumbnail-mode':
-            'thumbnail-mode has been deprecated, you can implement the same effect according to this case: http://element.eleme.io/#/zh-CN/component/upload#yong-hu-tou-xiang-shang-chuan'
-        }
-      }
+    }
+    // 中断
+    const abort = (file) => {
+      uploadInner.value.abort(file)
+    }
+
+    return {
+      // refs
+      uploadInner,
+      // data
+      uploadFiles: state.uploadFiles,
+      dragOver: state.dragOver,
+      draging: state.draging,
+      tempIndex: state.tempIndex,
+      // computed
+      uploadDisabled,
+      // methods
+      handleStart,
+      handleProgress,
+      handleSuccess,
+      handleError,
+      handleRemove,
+      getFile,
+      abort,
+      submit,
+      clearFiles,
+      getMigratingConfig
     }
   },
 
-  beforeDestroy() {
-    this.uploadFiles.forEach((file) => {
-      if (file.url && file.url.indexOf('blob:') === 0) {
-        URL.revokeObjectURL(file.url)
-      }
-    })
-  },
-
-  render(h) {
+  render() {
     let uploadList
 
+    // {(props) => {
+    //         if (this.$slots.file) {
+    //           return this.$scopedSlots.file({
+    //             file: props.file
+    //           })
+    //         }
+    // }}
+
+    console.log('file slot', this.$slots.file)
+
+    const slots = {
+      file: this.$slots.file
+    }
+
+    // more detail please to see: https://github.com/vuejs/jsx-next
     if (this.showFileList) {
       uploadList = (
         <UploadList
           disabled={this.uploadDisabled}
           listType={this.listType}
           files={this.uploadFiles}
-          on-remove={this.handleRemove}
+          onRemove={this.handleRemove}
           handlePreview={this.onPreview}
-        >
-          {(props) => {
-            if (this.$scopedSlots.file) {
-              return this.$scopedSlots.file({
-                file: props.file
-              })
-            }
-          }}
-        </UploadList>
+          v-slots={slots}
+        ></UploadList>
       )
     }
 
@@ -318,19 +354,43 @@ export default {
       ref: 'upload-inner'
     }
 
+    // 发现{...uploadData} 只能浅解构
     const trigger = this.$slots.trigger || this.$slots.default
-    const uploadComponent = <upload {...uploadData}>{trigger}</upload>
+    const uploadComponent = (
+      <Upload {...uploadData.props} ref="uploadInner">
+        {trigger()}
+      </Upload>
+    )
 
     return (
       <div>
         {this.listType === 'picture-card' ? uploadList : ''}
         {this.$slots.trigger
-          ? [uploadComponent, this.$slots.default]
+          ? [uploadComponent, this.$slots.default()]
           : uploadComponent}
-        {this.$slots.tip}
+        {this.$slots.tip ? this.$slots.tip() : ''}
         {this.listType !== 'picture-card' ? uploadList : ''}
       </div>
     )
+  }
+}
+// compute property uploadDisabled
+const userUploadDisabled = (disabled) => {
+  // inject
+  const elForm = inject('elForm', { default: '' })
+  const uploadDisabled = computed(() => {
+    return disabled || (elForm || {}).disabled
+  })
+  return uploadDisabled.value
+}
+const getMigratingConfig = function () {
+  return {
+    props: {
+      'default-file-list': 'default-file-list is renamed to file-list.',
+      'show-upload-list': 'show-upload-list is renamed to show-file-list.',
+      'thumbnail-mode':
+        'thumbnail-mode has been deprecated, you can implement the same effect according to this case: http://element.eleme.io/#/zh-CN/component/upload#yong-hu-tou-xiang-shang-chuan'
+    }
   }
 }
 </script>

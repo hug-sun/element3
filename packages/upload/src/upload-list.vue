@@ -22,7 +22,7 @@
       @blur="focusing = false"
       @click="focusing = false"
     >
-      <slot :file="file">
+      <slot :file="file" name="file">
         <img
           class="el-upload-list__item-thumbnail"
           v-if="
@@ -85,21 +85,13 @@
   </transition-group>
 </template>
 <script>
+import { ref, toRefs } from 'vue'
+
 import Locale from 'element-ui/src/mixins/locale'
 import ElProgress from 'element-ui/packages/progress'
 
 export default {
   name: 'ElUploadList',
-
-  mixins: [Locale],
-
-  data() {
-    return {
-      focusing: false
-    }
-  },
-  components: { ElProgress },
-
   props: {
     files: {
       type: Array,
@@ -114,12 +106,20 @@ export default {
     handlePreview: Function,
     listType: String
   },
-  methods: {
-    parsePercentage(val) {
-      return parseInt(val, 10)
-    },
-    handleClick(file) {
-      this.handlePreview && this.handlePreview(file)
+  components: { ElProgress },
+  mixins: [Locale],
+  setup(props) {
+    const { handlePreview } = toRefs(props)
+
+    const focusing = ref(false)
+    const parsePercentage = (val) => parseInt(val, 10)
+    const handleClick = (file) =>
+      handlePreview.value && handlePreview.value(file)
+
+    return {
+      parsePercentage,
+      handleClick,
+      focusing
     }
   }
 }
