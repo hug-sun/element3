@@ -1,5 +1,5 @@
 <template>
-  <transition name="el-notification-fade">
+  <transition name="el-notification-fade" appear>
     <div
       :class="['el-notification', customClass, horizontalClass]"
       v-show="visible"
