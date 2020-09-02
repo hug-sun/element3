@@ -16,7 +16,7 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
 [See Contributing Guide.](https://juejin.im/post/6864462363039531022)
 
 <p align="center">
-  <img src="./element_logo.svg">
+  <img src="https://gitee.com/pandafe/element3/raw/master/element_logo.svg">
 </p>
 
 <p align="center">
