@@ -128,11 +128,11 @@
 </style>
 
 <script>
+import { ref } from 'vue'
 export default {
-  data() {
-    return {
-      currentDate: new Date()
-    };
+  setup(){
+    let currentDate = ref(new Date())
+    return { currentDate }
   }
 }
 </script>
