@@ -12,11 +12,7 @@ const mount = async (Component, _options) => {
       }
     }
   const wrapper = await $mount(Component, options)
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(wrapper)
-    }, 1)
-  })
+  return wrapper
 }
 
 describe('Image.vue', () => {
@@ -67,13 +63,37 @@ describe('Image.vue', () => {
     })
 
     it('preview-src-list', async () => {
-      // TODO
+      const wrapper = await mount(Image, {
+        props: {
+          previewSrcList: [src, IMAGE_FAIL]
+        },
+        data() {
+          return {
+            showViewer: true
+          }
+        }
+      })
+      expect(wrapper.find('.el-image-viewer__img').attributes('src')).toBe(src)
     })
 
     it('z-index', async () => {
-      // TODO
+      const wrapper = await mount(Image, {
+        props: {
+          previewSrcList: [src, IMAGE_FAIL],
+          zIndex: 2020
+        },
+        data() {
+          return {
+            showViewer: true
+          }
+        }
+      })
+      expect(
+        wrapper.find('.el-image-viewer__wrapper').attributes('style')
+      ).toContain('z-index: 2020')
     })
   })
+
   describe('Events', () => {
     it('load', async () => {
       // TODO
