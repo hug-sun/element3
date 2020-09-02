@@ -1,6 +1,6 @@
 import { mount as $mount } from '@vue/test-utils'
 import Image from '../Image.vue'
-import { IMAGE_SUCCESS as src } from './image'
+import { IMAGE_FAIL, IMAGE_SUCCESS as src } from './image'
 
 const mount = async (Component, _options) => {
   const options = _options || {}
@@ -12,7 +12,11 @@ const mount = async (Component, _options) => {
       }
     }
   const wrapper = await $mount(Component, options)
-  return wrapper
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(wrapper)
+    }, 1)
+  })
 }
 
 describe('Image.vue', () => {
@@ -63,11 +67,28 @@ describe('Image.vue', () => {
     })
 
     it('preview-src-list', async () => {
-      // TODO
+      const wrapper = await mount(Image, {
+        props: {
+          src: IMAGE_FAIL,
+          previewSrcList: [src, IMAGE_FAIL]
+        }
+      })
+
+      await wrapper.trigger('click')
+
+      console.log('TODO previewSrcList')
     })
 
     it('z-index', async () => {
-      // TODO
+      const wrapper = await mount(Image, {
+        props: {
+          src,
+          previewSrcList: [src, IMAGE_FAIL],
+          zIndex: 2020
+        }
+      })
+      await wrapper.find('.el-image__inner').trigger('click')
+      console.log('TODO zIndex')
     })
   })
   describe('Events', () => {
@@ -93,7 +114,21 @@ describe('Image.vue', () => {
     })
 
     it('error', async () => {
-      // TODO
+      const wrapper = await $mount(Image, {
+        src,
+        slots: {
+          error: () => {
+            return 'error!'
+          }
+        },
+        data() {
+          return {
+            loading: false,
+            error: true
+          }
+        }
+      })
+      expect(wrapper.find('.el-image').text()).toBe('error!')
     })
   })
 })
