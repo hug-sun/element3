@@ -5,4 +5,12 @@ describe('Main.vue', () => {
     const wrapper = mount(Main)
     expect(wrapper.classes()).toContain('el-main')
   })
+  it('slot', () => {
+    const wrapper = mount(Main, {
+      slots: {
+        default: () => 'abc'
+      }
+    })
+    expect(wrapper.text()).toBe('abc')
+  })
 })
