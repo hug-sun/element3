@@ -1,4 +1,4 @@
-import Header from './src/main'
+import Header from './Header'
 
 /* istanbul ignore next */
 Header.install = function (app) {

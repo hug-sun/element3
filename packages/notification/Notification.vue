@@ -1,5 +1,5 @@
 <template>
-  <transition name="el-notification-fade">
+  <transition name="el-notification-fade" appear>
     <div
       :class="['el-notification', customClass, horizontalClass]"
       v-show="visible"
@@ -36,7 +36,9 @@
   </transition>
 </template>
 
-<script type="text/babel">
+<script>
+import { computed, ref } from 'vue'
+
 const typeMap = {
   success: 'success',
   info: 'info',
@@ -45,48 +47,25 @@ const typeMap = {
 }
 
 export default {
-  data() {
-    return {
-      visible: false,
-      title: '',
-      message: '',
-      duration: 4500,
-      type: '',
-      showClose: true,
-      customClass: '',
-      iconClass: '',
-      onClose: null,
-      onClick: null,
-      closed: false,
-      verticalOffset: 0,
-      timer: null,
-      dangerouslyUseHTMLString: false,
-      position: 'top-right'
-    }
+  name: 'ElNotification',
+  props: {
+    customClass: { type: String, default: '' },
+    dangerouslyUseHTMLString: { type: Boolean, default: false },
+    duration: { type: Number, default: 4500 },
+    iconClass: { type: String, default: '' },
+    id: { type: String, default: '' },
+    verticalOffset: { type: Number, default: 0 },
+    message: { type: String, default: '' },
+    position: {
+      type: String,
+      default: 'top-right'
+    },
+    onClose: null,
+    onClick: null,
+    showClose: { type: Boolean, default: true },
+    title: { type: String, default: '' },
+    type: { type: String, default: '' }
   },
-
-  computed: {
-    typeClass() {
-      return this.type && typeMap[this.type]
-        ? `el-icon-${typeMap[this.type]}`
-        : ''
-    },
-
-    horizontalClass() {
-      return this.position.indexOf('right') > -1 ? 'right' : 'left'
-    },
-
-    verticalProperty() {
-      return /^top-/.test(this.position) ? 'top' : 'bottom'
-    },
-
-    positionStyle() {
-      return {
-        [this.verticalProperty]: `${this.verticalOffset}px`
-      }
-    }
-  },
-
   watch: {
     closed(newVal) {
       if (newVal) {
@@ -95,11 +74,43 @@ export default {
       }
     }
   },
+  setup(props) {
+    const typeClass = computed(() => {
+      return props.type && typeMap[props.type]
+        ? `el-icon-${typeMap[props.type]}`
+        : ''
+    })
 
+    const horizontalClass = computed(() => {
+      return props.position.indexOf('right') > -1 ? 'right' : 'left'
+    })
+
+    const verticalProperty = computed(() => {
+      return props.position.startsWith('top') ? 'top' : 'bottom'
+    })
+
+    const positionStyle = computed(() => {
+      return {
+        [verticalProperty.value]: `${props.verticalOffset}px`
+        // zIndex,
+      }
+    })
+    const visible = ref(true)
+    const closed = ref(false)
+    const timer = ref(null)
+
+    return {
+      typeClass,
+      horizontalClass,
+      verticalProperty,
+      positionStyle,
+      visible,
+      closed,
+      timer
+    }
+  },
   methods: {
     destroyElement() {
-      this.$el.removeEventListener('transitionend', this.destroyElement)
-      this.$destroy(true)
       this.$el.parentNode.removeChild(this.$el)
     },
 
@@ -150,6 +161,7 @@ export default {
         }
       }, this.duration)
     }
+    this.visible = true
     document.addEventListener('keydown', this.keydown)
   },
   beforeDestroy() {

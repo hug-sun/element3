@@ -10,7 +10,12 @@ module.exports = {
     ga: true,
     chrome: true
   },
-  extends: ['plugin:vue/essential', 'standard', 'prettier'],
+  extends: [
+    'plugin:vue/essential',
+    'standard',
+    'prettier',
+    'plugin:json/recommended'
+  ],
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module',

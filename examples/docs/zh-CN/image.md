@@ -30,7 +30,7 @@
 
 ### 占位内容
 
-:::demo 可通过`slot = placeholder`可自定义占位内容
+:::demo 可通过`v-slot:placeholder`可自定义占位内容
 ```html
 <div class="demo-image__placeholder">
   <div class="block">
@@ -40,9 +40,11 @@
   <div class="block">
     <span class="demonstration">自定义</span>
     <el-image :src="src">
-      <div slot="placeholder" class="image-slot">
-        加载中<span class="dot">...</span>
-      </div>
+      <template #placeholder>
+        <div class="image-slot">
+          加载中<span class="dot">...</span>
+        </div>
+      </template>
     </el-image>
   </div>
 </div>
@@ -61,7 +63,7 @@
 
 ### 加载失败
 
-:::demo 可通过`slot = error`可自定义加载失败内容
+:::demo 可通过`v-slot:error`可自定义加载失败内容
 ```html
 <div class="demo-image__error">
   <div class="block">
@@ -71,9 +73,11 @@
   <div class="block">
     <span class="demonstration">自定义</span>
     <el-image>
-      <div slot="error" class="image-slot">
-        <i class="el-icon-picture-outline"></i>
-      </div>
+      <template #error>
+        <div class="image-slot">
+          <i class="el-icon-picture-outline"></i>
+        </div>
+      </template>
     </el-image>
   </div>
 </div>
