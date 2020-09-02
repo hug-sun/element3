@@ -3,7 +3,6 @@ import { toRefs, unref, h, computed, getCurrentInstance } from 'vue'
 
 export default {
   name: 'ElCol',
-
   props: {
     span: {
       type: Number,
