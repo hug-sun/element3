@@ -1,3 +1,11 @@
+<!--
+ * @Author: Mr Chang
+ * @Date: 2020-08-28 17:50:21
+ * @LastEditTime: 2020-08-31 01:54:48
+ * @LastEditors: Mr Chang
+ * @Description: 
+ * @FilePath: \element3\packages\steps\src\steps.vue
+-->
 <template>
   <div
     class="el-steps"
@@ -8,12 +16,15 @@
 </template>
 
 <script>
-import Migrating from 'element-ui/src/mixins/migrating'
+import { provide, reactive, toRefs, watch, onMounted } from 'vue'
+
+// import Migrating from 'element-ui/src/mixins/migrating'
+import { stateSymbol, propsSymbol } from './constants'
 
 export default {
   name: 'ElSteps',
 
-  mixins: [Migrating],
+  // mixins: [Migrating],
 
   props: {
     space: [Number, String],
@@ -33,34 +44,44 @@ export default {
       default: 'process'
     }
   },
-
-  data() {
-    return {
+  events: ['change'],
+  setup(props, context) {
+    const state = reactive({
       steps: [],
       stepOffset: 0
-    }
-  },
+    })
 
-  methods: {
-    getMigratingConfig() {
+    provide(stateSymbol, state)
+    provide(propsSymbol, props)
+
+    watch(
+      () => props.active,
+      (newVal, oldVal) => context.emit('change', newVal, oldVal)
+    )
+    watch(
+      () => state.steps,
+      (steps) => {
+        state.steps.forEach((child, index) => {
+          child.state.index = index
+        })
+      },
+      {
+        deep: true
+      }
+    )
+
+    function getMigratingConfig() {
       return {
         props: {
           center: 'center is removed.'
         }
       }
     }
-  },
 
-  watch: {
-    active(newVal, oldVal) {
-      this.$emit('change', newVal, oldVal)
-    },
-
-    steps(steps) {
-      steps.forEach((child, index) => {
-        child.index = index
-      })
-    }
+    onMounted(() => {
+      // console.log(state.steps)
+    })
+    return { ...toRefs(state), getMigratingConfig }
   }
 }
 </script>
