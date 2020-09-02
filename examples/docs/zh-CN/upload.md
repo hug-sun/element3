@@ -2,6 +2,7 @@
 
 通过点击或者拖拽上传文件
 
+
 ### 点击上传
 
 :::demo 通过 slot 你可以传入自定义的上传按钮类型和文字提示。可通过设置`limit`和`on-exceed`来限制上传文件的个数和定义超出限制时的行为。可通过设置`before-remove`来阻止文件移除操作。
@@ -17,30 +18,47 @@
   :on-exceed="handleExceed"
   :file-list="fileList">
   <el-button size="small" type="primary">点击上传</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  <template v-slot:tip>
+    <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  </template>
 </el-upload>
 <script>
-  export default {
-    data() {
-      return {
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-      };
-    },
-    methods: {
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
-      beforeRemove(file, fileList) {
-        return this.$confirm(`确定移除 ${ file.name }？`);
-      }
+import { reactive } from 'vue'
+export default {
+  setup(props,ctx){
+    const fileList = reactive(
+      [
+        {
+          name: 'food.jpeg', 
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }, 
+        {
+          name: 'food2.jpeg', 
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }
+      ]
+    ) 
+    return {
+      fileList,
+      handleRemove,
+      handlePreview,
+      handleExceed,
+      beforeRemove
     }
   }
+}
+const handleRemove = (file, fileList)=> {
+  console.log(file, fileList);
+}
+const handlePreview = (file)=>{
+  console.log(file);
+}
+const handleExceed =(files, fileList)=>{
+  console.log('handleExceed')
+}
+const beforeRemove = (file, fileList)=>{
+  console.log(`确定移除 ${ file.name }？`)
+}
 </script>
 ```
 :::
@@ -61,58 +79,71 @@
   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 </el-upload>
 
-<style>
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-</style>
-
 <script>
-  export default {
-    data() {
-      return {
-        imageUrl: ''
-      };
-    },
-    methods: {
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+import { ref } from 'vue'
+export default {
+  data() {
+    return {
+      imageUrl: ''
+    };
+  },
+  setup(){
+    const imageUrl = ref('')
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
+    const handleAvatarSuccess = (res, file) =>{
+      imageUrl = URL.createObjectURL(file.raw);
+    }
+
+    const beforeAvatarUpload = (file)=>{
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        // this.$message.error('上传头像图片只能是 JPG 格式!');
+        console.log('上传头像图片只能是 JPG 格式!')
       }
+      if (!isLt2M) {
+        // this.$message.error('上传头像图片大小不能超过 2MB!');
+        console.log('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M;
+    }
+
+    return {
+      imageUrl,
+      handleAvatarSuccess,
+      beforeAvatarUpload  
     }
   }
+}
 </script>
+
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>
+
 ```
 :::
 
@@ -133,27 +164,36 @@
   <img width="100%" :src="dialogImageUrl" alt="">
 </el-dialog>
 <script>
-  export default {
-    data() {
-      return {
-        dialogImageUrl: '',
-        dialogVisible: false
-      };
-    },
-    methods: {
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
-      }
+import { ref } from 'vue'
+export default {
+  setup(){
+
+    const dialogImageUrl = ref('')
+    const dialogVisible = ref(false)
+
+    const handleRemove = (file, fileList)=>{
+      console.log(file, fileList);
     }
+
+    const handlePictureCardPreview = (file)=>{
+      dialogImageUrl.value = file.url;
+      dialogVisible.value = true;
+    }
+
+    return {
+      dialogImageUrl,
+      dialogVisible,
+      handleRemove,
+      handlePictureCardPreview
+    }
+
   }
+}
 </script>
 ```
 :::
 
+<!-- todo 设置缩略图模版失效 v-slot设置模板失效 -->
 ### 文件缩略图
 
 使用 `scoped-slot` 去设置缩略图模版。
@@ -164,61 +204,73 @@
   action="#"
   list-type="picture-card"
   :auto-upload="false">
-    <i slot="default" class="el-icon-plus"></i>
-    <div slot="file" slot-scope="{file}">
-      <img
-        class="el-upload-list__item-thumbnail"
-        :src="file.url" alt=""
+  <i class="el-icon-plus"></i>
+  <template v-slot:file="{file}">
+    <img
+      class="el-upload-list__item-thumbnail"
+      :src="file.url" alt=""
+    >
+    <span class="el-upload-list__item-actions">
+      <span
+        class="el-upload-list__item-preview"
+        @click="handlePictureCardPreview(file)"
       >
-      <span class="el-upload-list__item-actions">
-        <span
-          class="el-upload-list__item-preview"
-          @click="handlePictureCardPreview(file)"
-        >
-          <i class="el-icon-zoom-in"></i>
-        </span>
-        <span
-          v-if="!disabled"
-          class="el-upload-list__item-delete"
-          @click="handleDownload(file)"
-        >
-          <i class="el-icon-download"></i>
-        </span>
-        <span
-          v-if="!disabled"
-          class="el-upload-list__item-delete"
-          @click="handleRemove(file)"
-        >
-          <i class="el-icon-delete"></i>
-        </span>
+        <i class="el-icon-zoom-in"></i>
       </span>
-    </div>
+      <span
+        v-if="!disabled"
+        class="el-upload-list__item-delete"
+        @click="handleDownload(file)"
+      >
+        <i class="el-icon-download"></i>
+      </span>
+      <span
+        v-if="!disabled"
+        class="el-upload-list__item-delete"
+        @click="handleRemove(file)"
+      >
+        <i class="el-icon-delete"></i>
+      </span>
+    </span>
+  </template>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
   <img width="100%" :src="dialogImageUrl" alt="">
 </el-dialog>
 <script>
-  export default {
-    data() {
-      return {
-        dialogImageUrl: '',
-        dialogVisible: false,
-        disabled: false
-      };
-    },
-    methods: {
-      handleRemove(file) {
-        console.log(file);
-      },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
-      },
-      handleDownload(file) {
-        console.log(file);
-      }
+import { ref } from 'vue'
+
+export default {
+  setup(){
+
+    const dialogImageUrl = ref('')
+    const dialogVisible = ref(false)
+    const disabled = ref(false)
+
+    const handleRemove = (file)=>{
+      console.log(file)
     }
+
+    const handlePictureCardPreview = (file)=>{
+      dialogImageUrl.value = file.url;
+      dialogVisible.value = true;
+    }
+
+    const handleDownload = ()=>{
+      console.log(file);
+    }
+
+    return {
+      dialogImageUrl,
+      dialogVisible,
+      disabled,
+      handleRemove,
+      handlePictureCardPreview,
+      handleDownload
+    }
+
   }
+}
 </script>
 ```
 :::
@@ -235,22 +287,39 @@
   :file-list="fileList"
   list-type="picture">
   <el-button size="small" type="primary">点击上传</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  <template v-slot:tip>
+    <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  </template>
 </el-upload>
 <script>
+  import { reactive } from 'vue'
   export default {
-    data() {
-      return {
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-      };
-    },
-    methods: {
-      handleRemove(file, fileList) {
+    setup(){
+      const fileList = reactive([
+        {
+          name: 'food.jpeg', 
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        },
+        {
+          name: 'food2.jpeg', 
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }
+      ])
+
+      const handleRemove = (file, fileList)=>{
         console.log(file, fileList);
-      },
-      handlePreview(file) {
+      }
+
+      const handlePreview = (file)=>{
         console.log(file);
       }
+
+      return {
+        fileList,
+        handleRemove,
+        handlePreview
+      }
+
     }
   }
 </script>
@@ -269,30 +338,39 @@
   :on-change="handleChange"
   :file-list="fileList">
   <el-button size="small" type="primary">点击上传</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  <template v-slot:tip>
+    <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  </template>
 </el-upload>
 <script>
+  import { reactive } from 'vue'
   export default {
-    data() {
-      return {
-        fileList: [{
+    setup(){
+      const fileList = reactive([
+        {
           name: 'food.jpeg',
           url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        }, {
+        },
+        {
           name: 'food2.jpeg',
           url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        }]
-      };
-    },
-    methods: {
-      handleChange(file, fileList) {
-        this.fileList = fileList.slice(-3);
+        }
+      ])
+
+      const handleChange = (file, fileList)=>{
+        fileList = fileList.slice(-3);
+      }
+
+      return {
+        fileList,
+        handleChange
       }
     }
   }
 </script>
 ```
 :::
+
 
 ### 拖拽上传
 
@@ -305,7 +383,9 @@
   multiple>
   <i class="el-icon-upload"></i>
   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-  <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+  <template v-slot:tip>
+    <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  </template>
 </el-upload>
 ```
 :::
@@ -322,27 +402,51 @@
   :on-remove="handleRemove"
   :file-list="fileList"
   :auto-upload="false">
-  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+  <template v-slot:trigger>
+    <el-button size="small" type="primary">选取文件</el-button>
+  </template>
   <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  <template v-slot:tip>
+    <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  </template>
 </el-upload>
 <script>
+  import { ref,reactive } from 'vue'
   export default {
-    data() {
-      return {
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-      };
-    },
-    methods: {
-      submitUpload() {
-        this.$refs.upload.submit();
-      },
-      handleRemove(file, fileList) {
+    setup(){
+      const upload = ref(null)
+      const fileList = reactive(
+        [
+          {
+            name: 'food.jpeg', 
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }, 
+          {
+            name: 'food2.jpeg', 
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }
+        ]
+      )
+
+      const submitUpload = ()=>{
+        upload.value.submit();
+      }
+      const handleRemove = (file, fileList)=>{
         console.log(file, fileList);
-      },
-      handlePreview(file) {
+      }
+      const handlePreview = (file)=>{
         console.log(file);
       }
+
+      return {
+        upload,
+        fileList,
+        submitUpload,
+        handleRemove,
+        handlePreview,
+        submitUpload
+      }
+
     }
   }
 </script>
@@ -388,4 +492,4 @@
 |----------- |-------------- | -- |
 | clearFiles | 清空已上传的文件列表（该方法不支持在 before-upload 中调用） | — |
 | abort      | 取消上传请求    | （ file: fileList 中的 file 对象 ） |
-| submit     | 手动上传文件列表 |  —                                |
+| submit     | 手动上传文件列表 |  —                                | -->
