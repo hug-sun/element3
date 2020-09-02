@@ -167,18 +167,6 @@ export default {
   emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
     const { ctx } = getCurrentInstance()
-    const {
-      max,
-      min,
-      step,
-      modelValue,
-      range,
-      vertical,
-      height,
-      disabled,
-      showStops,
-      marks
-    } = toRefs(props)
     // data
     const state = reactive({
       firstValue: null,
@@ -187,13 +175,16 @@ export default {
       dragging: false,
       sliderSize: 1
     })
+    const { resetSize } = useCommon(props, state, ctx)
+
+    useLifeCycle(props, state, ctx, resetSize)
+
     const { minValue, maxValue, valueChanged, setValues } = useModel(
-      max,
-      min,
-      modelValue,
-      range,
-      state
+      props,
+      state,
+      emit
     )
+
     const {
       stops,
       markList,
@@ -202,49 +193,20 @@ export default {
       precision,
       runwayStyle,
       barStyle,
-      sliderDisabled
-    } = useStyle(
-      disabled,
-      height,
-      showStops,
-      min,
-      max,
-      step,
-      range,
-      marks,
-      vertical,
-      minValue,
-      maxValue,
-      state
-    )
+      sliderDisabled,
+      getStopStyle
+    } = useStyle(props, state, minValue, maxValue)
+
     const { onSliderClick, emitChange, setPosition } = useEvent(
-      modelValue,
-      range,
-      vertical,
-      min,
-      max,
+      props,
       state,
+      ctx,
+      emit,
       minValue,
       maxValue,
       sliderDisabled,
       resetSize
     )
-
-    function resetSize() {
-      const slider = ctx.$refs.slider
-      if (slider) {
-        state.sliderSize =
-          slider[`client${unref(vertical) ? 'Height' : 'Width'}`]
-      }
-    }
-
-    function getStopStyle(position) {
-      return unref(vertical)
-        ? { bottom: position + '%' }
-        : { left: position + '%' }
-    }
-
-    useLifeCycle(state, resetSize)
 
     return {
       // data
@@ -272,8 +234,20 @@ export default {
   }
 }
 
-function useLifeCycle(state, resetSize) {
-  const { props, ctx } = getCurrentInstance()
+function useCommon(props, state, ctx) {
+  const { vertical } = toRefs(props)
+  function resetSize() {
+    const slider = ctx.$refs.slider
+    if (slider) {
+      state.sliderSize = slider[`client${unref(vertical) ? 'Height' : 'Width'}`]
+    }
+  }
+  return {
+    resetSize
+  }
+}
+
+function useLifeCycle(props, state, ctx, resetSize) {
   const { max, min, modelValue, range, label } = props
   onMounted(() => {
     let valuetext
@@ -311,9 +285,9 @@ function useLifeCycle(state, resetSize) {
   onBeforeUnmount(() => window.removeEventListener('resize', resetSize))
 }
 
-function useModel(max, min, modelValue, range, state) {
+function useModel(props, state, emit) {
   const { dispatch } = useEmitter()
-  const { emit } = getCurrentInstance()
+  const { max, min, modelValue, range } = toRefs(props)
 
   const minValue = computed(() => Math.min(state.firstValue, state.secondValue))
   const maxValue = computed(() => Math.max(state.firstValue, state.secondValue))
@@ -413,18 +387,18 @@ function useModel(max, min, modelValue, range, state) {
 }
 
 function useEvent(
-  modelValue,
-  range,
-  vertical,
-  min,
-  max,
+  props,
   state,
+  ctx,
+  emit,
   minValue,
   maxValue,
   sliderDisabled,
   resetSize
 ) {
-  const { emit, ctx } = getCurrentInstance()
+  // const { emit, ctx, props } = getCurrentInstance()
+  const { modelValue, range, vertical, min, max } = toRefs(props)
+
   function onSliderClick(event) {
     if (unref(sliderDisabled) || state.dragging) return
     resetSize()
@@ -475,21 +449,19 @@ function useEvent(
   }
 }
 
-function useStyle(
-  disabled,
-  height,
-  showStops,
-  min,
-  max,
-  step,
-  range,
-  marks,
-  vertical,
-  minValue,
-  maxValue,
-  state
-) {
+function useStyle(props, state, minValue, maxValue) {
   const elForm = inject('elFrom', { default: '' })
+  const {
+    disabled,
+    height,
+    showStops,
+    min,
+    max,
+    step,
+    range,
+    marks,
+    vertical
+  } = toRefs(props)
   const stops = computed(() => {
     if (!unref(showStops) || unref(min) > unref(max)) return []
     if (unref(step) === 0) {
@@ -584,6 +556,12 @@ function useStyle(
   const sliderDisabled = computed(() => {
     return unref(disabled) || (elForm.props || {}).disabled
   })
+
+  function getStopStyle(position) {
+    return unref(vertical)
+      ? { bottom: position + '%' }
+      : { left: position + '%' }
+  }
   return {
     stops,
     markList,
@@ -592,7 +570,8 @@ function useStyle(
     precision,
     runwayStyle,
     barStyle,
-    sliderDisabled
+    sliderDisabled,
+    getStopStyle
   }
 }
 </script>

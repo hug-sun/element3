@@ -34,7 +34,6 @@
 <script>
 import ElTooltip from 'element-ui/packages/tooltip'
 import {
-  reactive,
   computed,
   ref,
   unref,
@@ -65,42 +64,29 @@ export default {
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const { parent, ctx } = getCurrentInstance()
-    const { modelValue, vertical } = toRefs(props)
-    const state = reactive({
-      oldValue: unref(modelValue)
-    })
 
-    // computed
-    const disabled = computed(() => parent.ctx.sliderDisabled)
-    const max = computed(() => parent.ctx.max)
-    const min = computed(() => parent.ctx.min)
-    const step = computed(() => parent.ctx.step)
-    const showTooltip = computed(() => parent.ctx.showTooltip)
-    const precision = computed(() => parent.ctx.precision)
-    const currentPosition = computed(
-      () =>
-        `${
-          ((unref(modelValue) - unref(min)) / (unref(max) - unref(min))) * 100
-        }%`
-    )
-    const enableFormat = computed(
-      () => parent.ctx.formatTooltip instanceof Function
-    )
-    const formatValue = computed(
-      () =>
-        (unref(enableFormat) && parent.ctx.formatTooltip(unref(modelValue))) ||
-        unref(modelValue)
-    )
-    const wrapperStyle = computed(() =>
-      unref(vertical)
-        ? { bottom: unref(currentPosition) }
-        : { left: unref(currentPosition) }
-    )
+    const { modelValue, vertical } = toRefs(props)
+
+    const { displayTooltip, hideTooltip } = useToolTip(ctx)
 
     const { hovering, handleMouseEnter, handleMouseLeave } = useMouseHover(
       displayTooltip,
       hideTooltip
     )
+
+    // computed
+    const {
+      disabled,
+      max,
+      min,
+      step,
+      showTooltip,
+      precision,
+      currentPosition,
+      enableFormat,
+      formatValue,
+      wrapperStyle
+    } = useComputed(modelValue, vertical)
 
     const {
       // data
@@ -112,58 +98,30 @@ export default {
       currentY,
       startPosition,
       newPosition,
+      oldValue,
       // methods
       onButtonDown,
       onDragStart,
       onDragging,
       onDragEnd,
       onLeftKeyDown,
-      onRightKeyDown
+      onRightKeyDown,
+      setPosition
     } = useDragAndKeyDown(
+      parent,
+      ctx,
+      emit,
+      modelValue,
       vertical,
       disabled,
       step,
       max,
       min,
+      precision,
       currentPosition,
       displayTooltip,
-      hideTooltip,
-      setPosition
+      hideTooltip
     )
-
-    // watch
-    watch(dragging, (val) => (parent.ctx.dragging = val))
-
-    // methods
-    function displayTooltip() {
-      ctx.$refs.tooltip && (ctx.$refs.tooltip.showPopper = true)
-    }
-
-    function hideTooltip() {
-      ctx.$refs.tooltip && (ctx.$refs.tooltip.showPopper = false)
-    }
-
-    function setPosition(newPosition) {
-      if (newPosition === null || isNaN(newPosition)) return
-      if (newPosition < 0) {
-        newPosition = 0
-      } else if (newPosition > 100) {
-        newPosition = 100
-      }
-      const lengthPerStep = 100 / ((max.value - min.value) / step.value)
-      const steps = Math.round(newPosition / lengthPerStep)
-      let value =
-        steps * lengthPerStep * (max.value - min.value) * 0.01 + min.value
-      value = parseFloat(value.toFixed(precision.value))
-      emit('update:modelValue', value)
-      nextTick(() => {
-        displayTooltip()
-        ctx.$refs.tooltip && ctx.$refs.tooltip.updatePopper()
-      })
-      if (!unref(dragging) && unref(modelValue) !== state.oldValue) {
-        state.oldValue = value
-      }
-    }
 
     return {
       // data
@@ -176,7 +134,7 @@ export default {
       currentY,
       startPosition,
       newPosition,
-      ...toRefs(state),
+      oldValue,
       // computed
       disabled,
       max,
@@ -202,6 +160,20 @@ export default {
   }
 }
 
+function useToolTip(ctx) {
+  function displayTooltip() {
+    ctx.$refs.tooltip && (ctx.$refs.tooltip.showPopper = true)
+  }
+
+  function hideTooltip() {
+    ctx.$refs.tooltip && (ctx.$refs.tooltip.showPopper = false)
+  }
+  return {
+    displayTooltip,
+    hideTooltip
+  }
+}
+
 function useMouseHover(displayTooltip, hideTooltip) {
   const hovering = ref(false)
   function handleMouseEnter() {
@@ -217,17 +189,20 @@ function useMouseHover(displayTooltip, hideTooltip) {
 }
 
 function useDragAndKeyDown(
+  parent,
+  ctx,
+  emit,
+  modelValue,
   vertical,
   disabled,
   step,
   max,
   min,
+  precision,
   currentPosition,
   displayTooltip,
-  hideTooltip,
-  setPosition
+  hideTooltip
 ) {
-  const { parent } = getCurrentInstance()
   const { resetSize, emitChange } = parent.ctx
 
   const dragging = ref(false)
@@ -238,6 +213,12 @@ function useDragAndKeyDown(
   const currentY = ref(0)
   const startPosition = ref(0)
   const newPosition = ref(null)
+  const oldValue = ref(unref(modelValue))
+  // watch
+  watch(dragging, (val) => (parent.ctx.dragging = val))
+
+  // eslint-disable-next-line
+//#region drag methods: onButtonDown, onDragStart, onDragging, onDragEnd
 
   function onButtonDown(event) {
     if (unref(disabled)) return
@@ -249,6 +230,7 @@ function useDragAndKeyDown(
     window.addEventListener('touchend', onDragEnd)
     window.addEventListener('contextmenu', onDragEnd)
   }
+
   function onDragStart(event) {
     dragging.value = true
     isClick.value = true
@@ -308,6 +290,11 @@ function useDragAndKeyDown(
       window.removeEventListener('contextmenu', onDragEnd)
     }
   }
+  // eslint-disable-next-line
+//#endregion 
+
+  // eslint-disable-next-line
+//#region KeyDown methods: onLeftKeyDown, onRightKeyDown
 
   function onLeftKeyDown() {
     if (unref(disabled)) return
@@ -325,6 +312,32 @@ function useDragAndKeyDown(
     setPosition(unref(newPosition))
     emitChange()
   }
+
+  // eslint-disable-next-line
+//#endregion
+
+  function setPosition(newPosition) {
+    if (newPosition === null || isNaN(newPosition)) return
+    if (newPosition < 0) {
+      newPosition = 0
+    } else if (newPosition > 100) {
+      newPosition = 100
+    }
+    const lengthPerStep = 100 / ((max.value - min.value) / step.value)
+    const steps = Math.round(newPosition / lengthPerStep)
+    let value =
+      steps * lengthPerStep * (max.value - min.value) * 0.01 + min.value
+    value = parseFloat(value.toFixed(precision.value))
+    emit('update:modelValue', value)
+    nextTick(() => {
+      displayTooltip()
+      ctx.$refs.tooltip && ctx.$refs.tooltip.updatePopper()
+    })
+    if (!unref(dragging) && unref(modelValue) !== unref(oldValue)) {
+      oldValue.oldValue = value
+    }
+  }
+
   return {
     dragging,
     isClick,
@@ -334,14 +347,55 @@ function useDragAndKeyDown(
     currentY,
     startPosition,
     newPosition,
-
+    oldValue,
     // methods
+    setPosition,
     onButtonDown,
     onDragStart,
     onDragging,
     onDragEnd,
     onLeftKeyDown,
     onRightKeyDown
+  }
+}
+
+function useComputed(modelValue, vertical) {
+  const { parent } = getCurrentInstance()
+
+  const disabled = computed(() => parent.ctx.sliderDisabled)
+  const max = computed(() => parent.ctx.max)
+  const min = computed(() => parent.ctx.min)
+  const step = computed(() => parent.ctx.step)
+  const showTooltip = computed(() => parent.ctx.showTooltip)
+  const precision = computed(() => parent.ctx.precision)
+  const currentPosition = computed(
+    () =>
+      `${((unref(modelValue) - unref(min)) / (unref(max) - unref(min))) * 100}%`
+  )
+  const enableFormat = computed(
+    () => parent.ctx.formatTooltip instanceof Function
+  )
+  const formatValue = computed(
+    () =>
+      (unref(enableFormat) && parent.ctx.formatTooltip(unref(modelValue))) ||
+      unref(modelValue)
+  )
+  const wrapperStyle = computed(() =>
+    unref(vertical)
+      ? { bottom: unref(currentPosition) }
+      : { left: unref(currentPosition) }
+  )
+  return {
+    disabled,
+    max,
+    min,
+    step,
+    showTooltip,
+    precision,
+    currentPosition,
+    enableFormat,
+    formatValue,
+    wrapperStyle
   }
 }
 </script>
