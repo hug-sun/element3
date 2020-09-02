@@ -13,8 +13,7 @@
         class="el-notification__icon"
         :class="[typeClass, iconClass]"
         v-if="type || iconClass"
-      >
-      </i>
+      ></i>
       <div
         class="el-notification__group"
         :class="{ 'is-with-icon': typeClass || iconClass }"
@@ -37,7 +36,14 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import {
+  computed,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  watch,
+  getCurrentInstance
+} from 'vue'
 
 const typeMap = {
   success: 'success',
@@ -66,14 +72,7 @@ export default {
     title: { type: String, default: '' },
     type: { type: String, default: '' }
   },
-  watch: {
-    closed(newVal) {
-      if (newVal) {
-        this.visible = false
-        this.$el.addEventListener('transitionend', this.destroyElement)
-      }
-    }
-  },
+
   setup(props) {
     const typeClass = computed(() => {
       return props.type && typeMap[props.type]
@@ -95,9 +94,71 @@ export default {
         // zIndex,
       }
     })
+
     const visible = ref(true)
     const closed = ref(false)
-    const timer = ref(null)
+    let timer = ref(null)
+
+    const close = () => {
+      closed.value = true
+      if (typeof props.onClose === 'function') {
+        props.onClose()
+      }
+    }
+    const clearTimer = () => {
+      clearTimeout(timer)
+    }
+    const keydown = (e) => {
+      if (e.keyCode === 46 || e.keyCode === 8) {
+        clearTimer() // detele 取消倒计时
+      } else if (e.keyCode === 27) {
+        // esc关闭消息
+        if (!closed.value) {
+          close()
+        }
+      } else {
+        startTimer() // 恢复倒计时
+      }
+    }
+    const startTimer = () => {
+      if (props.duration > 0) {
+        timer = setTimeout(() => {
+          if (!closed.value) {
+            close()
+          }
+        }, props.duration)
+      }
+    }
+
+    onMounted(() => {
+      startTimer()
+      visible.value = true
+      document.addEventListener('keydown', keydown)
+    })
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('keydown', keydown)
+    })
+
+    const click = () => {
+      if (typeof props.onClick === 'function') {
+        props.onClick()
+      }
+    }
+
+    const _this = getCurrentInstance().ctx
+    const destroyElement = () => {
+      _this.$el.parentNode.removeChild(_this.$el)
+    }
+    watch(
+      () => closed.value,
+      (newVal) => {
+        if (newVal) {
+          visible.value = false
+          _this.$el.addEventListener('transitionend', destroyElement)
+        }
+      }
+    )
 
     return {
       typeClass,
@@ -106,66 +167,13 @@ export default {
       positionStyle,
       visible,
       closed,
-      timer
+      timer,
+      close,
+      clearTimer,
+      startTimer,
+      click
     }
   },
-  methods: {
-    destroyElement() {
-      this.$el.parentNode.removeChild(this.$el)
-    },
-
-    click() {
-      if (typeof this.onClick === 'function') {
-        this.onClick()
-      }
-    },
-
-    close() {
-      this.closed = true
-      if (typeof this.onClose === 'function') {
-        this.onClose()
-      }
-    },
-
-    clearTimer() {
-      clearTimeout(this.timer)
-    },
-
-    startTimer() {
-      if (this.duration > 0) {
-        this.timer = setTimeout(() => {
-          if (!this.closed) {
-            this.close()
-          }
-        }, this.duration)
-      }
-    },
-    keydown(e) {
-      if (e.keyCode === 46 || e.keyCode === 8) {
-        this.clearTimer() // detele 取消倒计时
-      } else if (e.keyCode === 27) {
-        // esc关闭消息
-        if (!this.closed) {
-          this.close()
-        }
-      } else {
-        this.startTimer() // 恢复倒计时
-      }
-    }
-  },
-  mounted() {
-    if (this.duration > 0) {
-      this.timer = setTimeout(() => {
-        if (!this.closed) {
-          this.close()
-        }
-      }, this.duration)
-    }
-    this.visible = true
-    document.addEventListener('keydown', this.keydown)
-  },
-  beforeDestroy() {
-    document.removeEventListener('keydown', this.keydown)
-  }
+  methods: {}
 }
 </script>
