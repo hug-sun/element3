@@ -1,6 +1,4 @@
-import { VNodeDirective } from 'vue'
-
-export interface ElInfiniteScroll extends VNodeDirective {
+export interface ElInfiniteScroll {
   name: 'infinite-scroll',
   value: Function
 }
