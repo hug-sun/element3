@@ -47,6 +47,34 @@
 ```
 :::
 
+### 设置当前步骤的状态
+自定义当前步骤的状态
+
+:::demo 设置当前步骤的状态，可选值wait / process / finish / error / success， 默认为process
+```html
+<el-steps :active="2" :process-status="processStatus" finish-status="success">
+  <el-step title="step1"></el-step>
+  <el-step title="step2"></el-step>
+  <el-step title="step3"></el-step>
+</el-steps>
+
+<el-button style="margin-top: 12px;" @click="chageStatus">点我试试</el-button>
+
+<script>
+  export default {
+    data () {
+      return { processStatus: 'error' }
+    },
+
+    methods: {
+      chageStatus () {
+        this.processStatus = 'process'
+      }
+    }
+  }
+</script>
+```
+
 ### 有描述的步骤条
 
 每个步骤有其对应的步骤状态描述。

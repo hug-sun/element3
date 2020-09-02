@@ -95,7 +95,7 @@ export default {
 
     const prevStatus = computed(() => {
       const prevStep = steps[state.index - 1]
-      return prevStep ? prevStep.state.currentStatus : 'wait'
+      return prevStep ? prevStep.currentStatus : 'wait'
     })
 
     const isVertical = computed(() => {
@@ -199,6 +199,7 @@ export default {
     )
     const instance = {
       state,
+      currentStatus,
       calcProgress,
       updateStatus
     }
