@@ -67,28 +67,11 @@ describe('Image.vue', () => {
     })
 
     it('preview-src-list', async () => {
-      const wrapper = await mount(Image, {
-        props: {
-          src: IMAGE_FAIL,
-          previewSrcList: [src, IMAGE_FAIL]
-        }
-      })
-
-      await wrapper.trigger('click')
-
-      console.log('TODO previewSrcList')
+      // TODO
     })
 
     it('z-index', async () => {
-      const wrapper = await mount(Image, {
-        props: {
-          src,
-          previewSrcList: [src, IMAGE_FAIL],
-          zIndex: 2020
-        }
-      })
-      await wrapper.find('.el-image__inner').trigger('click')
-      console.log('TODO zIndex')
+      // TODO
     })
   })
   describe('Events', () => {
@@ -115,7 +98,7 @@ describe('Image.vue', () => {
 
     it('error', async () => {
       const wrapper = await $mount(Image, {
-        src,
+        src: IMAGE_FAIL,
         slots: {
           error: () => {
             return 'error!'
