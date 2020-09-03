@@ -61,7 +61,8 @@ import {
   onUnmounted,
   getCurrentInstance,
   inject,
-  computed
+  computed,
+  provide
 } from 'vue'
 
 export default {
@@ -79,11 +80,14 @@ export default {
     const { dispatch, on, broadcast, off } = useEmitter()
 
     // 注入form
-    const form = inject('elForm')
+    const elForm = inject('elForm')
+
+    // provide当前组件实例
+    provide('elFormItem', ctx)
 
     // 获取formitem对应字段值
     const fieldValue = computed(() => {
-      const model = form.model
+      const model = elForm.model
       if (!model || !props.prop) {
         return
       }
@@ -128,17 +132,10 @@ export default {
     return {
       fieldValue,
       broadcast,
-      off
+      off,
+      elForm
     }
   },
-
-  provide() {
-    return {
-      elFormItem: this
-    }
-  },
-
-  inject: ['elForm'],
 
   props: {
     label: String,
