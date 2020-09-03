@@ -1,4 +1,4 @@
-import Row from '../index.js'
+import Row from '../Row.js'
 import { mount } from '@vue/test-utils'
 describe('Row.vue', () => {
   it('create', () => {

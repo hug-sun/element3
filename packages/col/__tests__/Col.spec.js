@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import Col from '../Col'
-import Row from '../../row/src/row'
+import Row from '../../row/Row'
 
 describe('Col', () => {
   describe('props', () => {
