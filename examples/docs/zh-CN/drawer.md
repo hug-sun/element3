@@ -62,7 +62,10 @@
   点我打开
 </el-button>
 
-<el-drawer title="我是标题" v-model:visible="drawer" :with-header="false">
+<el-drawer
+  title="我是标题"
+  v-model:visible="drawer"
+  :with-header="false">
   <span>我来啦!</span>
 </el-drawer>
 
@@ -218,17 +221,19 @@
   点我打开
 </el-button>
 
-<el-drawer title="我是外面的 Drawer" v-model:visible="drawer" size="50%">
+<el-drawer
+  title="我是外面的 Drawer"
+  v-model:visible="drawer"
+  size="50%">
   <div>
-    <el-button @click="innerDrawer = true">打开里面的!</el-button>
-    <el-drawer
-      title="我是里面的"
-      :append-to-body="true"
-      :before-close="handleClose"
-      v-model:visible="innerDrawer"
-    >
-      <p>_(:зゝ∠)_</p>
-    </el-drawer>
+   <el-button @click="innerDrawer = true">打开里面的!</el-button>
+   <el-drawer
+     title="我是里面的"
+     :append-to-body="true"
+     :before-close="handleClose"
+     v-model:visible="innerDrawer">
+     <p>_(:зゝ∠)_</p>
+   </el-drawer>
   </div>
 </el-drawer>
 

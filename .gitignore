@@ -25,3 +25,5 @@ build/bin/algolia-key.js
 package-lock.json
 yarn.lock 
 src/index.js
+dist
+
