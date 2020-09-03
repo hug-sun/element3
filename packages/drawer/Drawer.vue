@@ -202,7 +202,8 @@ export default {
         closed.value = true
       }
     }
-
+    
+    // todo: ESC 退出模态框,暂时无调用，lint过不去先在return调用
     const handleClose = () => {
       // This method here will be called by PopupManger, when the `closeOnPressEscape` was set to true
       // pressing `ESC` will call this method, and also close the drawer.
@@ -237,7 +238,8 @@ export default {
       afterEnter,
       afterLeave,
       handleWrapperClick,
-      closeDrawer
+      closeDrawer,
+      handleClose
     }
   }
 }
