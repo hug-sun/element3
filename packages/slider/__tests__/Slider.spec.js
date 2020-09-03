@@ -266,7 +266,7 @@ describe('Slider', () => {
     })
   })
 
-  it('show input', (done) => {
+  it('show input', async () => {
     const slider = ref(0)
     const wrapper = mount(Slider, {
       props: {
@@ -278,11 +278,12 @@ describe('Slider', () => {
       }
     })
     const inputNumber = wrapper.findComponent(ElInputNumber)
-    inputNumber.vm.setCurrentValue(40)
-    nextTick(() => {
-      expect(slider.value).toEqual(40)
-      done()
-    })
+    await inputNumber.vm.setCurrentValue(40)
+    expect(slider.value).toEqual(40)
+    await inputNumber.vm.increase()
+    expect(slider.value).toEqual(41)
+    await inputNumber.vm.decrease()
+    expect(slider.value).toEqual(40)
   })
 
   it('show stops', () => {
