@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import ImageViewer from './image-viewer'
+import ImageViewer from './ImageViewer'
 import { t } from 'element-ui/src/locale'
 import throttle from 'throttle-debounce/throttle'
 import { isString, isHtmlElement } from 'element-ui/src/utils/types'
@@ -97,7 +97,10 @@ export default {
   computed: {
     imageStyle() {
       const { fit } = this
-      if (!this.$isServer && fit) {
+      if (
+        //! this.$isServer &&
+        fit
+      ) {
         return isSupportObjectFit()
           ? { 'object-fit': fit }
           : this.getImageStyle(fit)
@@ -106,7 +109,8 @@ export default {
     },
     alignCenter() {
       return (
-        !this.$isServer && !isSupportObjectFit() && this.fit !== ObjectFit.FILL
+        // !this.$isServer &&
+        !isSupportObjectFit() && this.fit !== ObjectFit.FILL
       )
     },
     preview() {
@@ -146,7 +150,7 @@ export default {
 
   methods: {
     loadImage() {
-      if (this.$isServer) return
+      // if (this.$isServer) return
 
       // reset status
       this.loading = true
@@ -182,7 +186,7 @@ export default {
       }
     },
     addLazyLoadListener() {
-      if (this.$isServer) return
+      // if (this.$isServer) return
 
       const { scrollContainer } = this
       let _scrollContainer = null
@@ -205,7 +209,12 @@ export default {
     removeLazyLoadListener() {
       const { _scrollContainer, _lazyLoadHandler } = this
 
-      if (this.$isServer || !_scrollContainer || !_lazyLoadHandler) return
+      if (
+        // this.$isServer ||
+        !_scrollContainer ||
+        !_lazyLoadHandler
+      )
+        return
 
       off(_scrollContainer, 'scroll', _lazyLoadHandler)
       this._scrollContainer = null
