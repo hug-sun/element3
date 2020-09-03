@@ -115,7 +115,8 @@ ComponentNames.forEach((name) => {
       'page-header',
       'message',
       'step',
-      'steps'
+      'steps',
+      'popconfirm'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
