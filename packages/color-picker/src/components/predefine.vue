@@ -16,22 +16,17 @@
 
 <script>
 import Color from '../color'
+import { reactive, toRefs, watch, getCurrentInstance } from 'vue'
 
 export default {
   props: {
     colors: { type: Array, required: true },
     color: { required: true }
   },
-  data() {
-    return {
-      rgbaColors: this.parseColors(this.colors, this.color)
-    }
-  },
-  methods: {
-    handleSelect(index) {
-      this.color.fromString(this.colors[index])
-    },
-    parseColors(colors, color) {
+  setup(props) {
+    const { color, colors } = toRefs(props)
+
+    const parseColors = (colors, color) => {
       return colors.map((value) => {
         const c = new Color()
         c.enableAlpha = true
@@ -41,21 +36,50 @@ export default {
         return c
       })
     }
-  },
-  watch: {
-    '$parent.currentColor'(val) {
-      const color = new Color()
-      color.fromString(val)
 
-      this.rgbaColors.forEach((item) => {
-        item.selected = color.compare(item)
-      })
-    },
-    colors(newVal) {
-      this.rgbaColors = this.parseColors(newVal, this.color)
-    },
-    color(newVal) {
-      this.rgbaColors = this.parseColors(this.colors, newVal)
+    const state = reactive({
+      rgbaColors: parseColors(colors.value, color.value)
+    })
+
+    const handleSelect = (index) => {
+      color.value.fromString(colors.value[index])
+    }
+
+    watch(
+      () => {
+        const {
+          proxy: { $parent }
+        } = getCurrentInstance()
+        return $parent.currentColor
+      },
+      (val) => {
+        const color = new Color()
+        color.fromString(val)
+
+        state.rgbaColors.forEach((item) => {
+          item.selected = color.compare(item)
+        })
+      }
+    )
+
+    watch(
+      () => colors,
+      (newVal) => {
+        state.rgbaColors = parseColors(newVal, color.value)
+      }
+    )
+
+    watch(
+      () => color,
+      (newVal) => {
+        state.rgbaColors = parseColors(colors.value, newVal)
+      }
+    )
+
+    return {
+      ...toRefs(state),
+      colors,
+      handleSelect
     }
   }
 }

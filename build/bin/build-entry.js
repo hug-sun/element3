@@ -115,6 +115,7 @@ ComponentNames.forEach((name) => {
       'page-header',
       'message',
       'input-number',
+      'color-picker',
       'step',
       'steps',
       'drawer'

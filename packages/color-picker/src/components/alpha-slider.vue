@@ -1,5 +1,9 @@
 <template>
-  <div class="el-color-alpha-slider" :class="{ 'is-vertical': vertical }">
+  <div
+    class="el-color-alpha-slider"
+    :class="{ 'is-vertical': vertical }"
+    ref="el"
+  >
     <div
       class="el-color-alpha-slider__bar"
       @click="handleClick"
@@ -21,6 +25,7 @@
 
 <script>
 import draggable from '../draggable'
+import { watch, toRefs, ref, reactive, onMounted } from 'vue'
 
 export default {
   name: 'el-color-alpha-slider',
@@ -32,121 +37,131 @@ export default {
     vertical: Boolean
   },
 
-  watch: {
-    'color._alpha'() {
-      this.update()
-    },
+  setup(props) {
+    const { color, vertical } = toRefs(props)
 
-    'color.value'() {
-      this.update()
-    }
-  },
+    const state = reactive({
+      thumbLeft: 0,
+      thumbTop: 0,
+      background: null
+    })
 
-  methods: {
-    handleClick(event) {
-      const thumb = this.$refs.thumb
-      const target = event.target
+    const el = ref(null)
+    const bar = ref(null)
+    const thumb = ref(null)
 
-      if (target !== thumb) {
-        this.handleDrag(event)
-      }
-    },
+    const handleDrag = (event) => {
+      const rect = el.value.getBoundingClientRect()
 
-    handleDrag(event) {
-      const rect = this.$el.getBoundingClientRect()
-      const { thumb } = this.$refs
-
-      if (!this.vertical) {
+      if (!vertical.value) {
         let left = event.clientX - rect.left
-        left = Math.max(thumb.offsetWidth / 2, left)
-        left = Math.min(left, rect.width - thumb.offsetWidth / 2)
+        left = Math.max(thumb.value.offsetWidth / 2, left)
+        left = Math.min(left, rect.width - thumb.value.offsetWidth / 2)
 
-        this.color.set(
+        color.value.set(
           'alpha',
           Math.round(
-            ((left - thumb.offsetWidth / 2) /
-              (rect.width - thumb.offsetWidth)) *
+            ((left - thumb.value.offsetWidth / 2) /
+              (rect.width - thumb.value.offsetWidth)) *
               100
           )
         )
       } else {
         let top = event.clientY - rect.top
-        top = Math.max(thumb.offsetHeight / 2, top)
-        top = Math.min(top, rect.height - thumb.offsetHeight / 2)
+        top = Math.max(thumb.value.offsetHeight / 2, top)
+        top = Math.min(top, rect.height - thumb.value.offsetHeight / 2)
 
-        this.color.set(
+        color.value.set(
           'alpha',
           Math.round(
-            ((top - thumb.offsetHeight / 2) /
-              (rect.height - thumb.offsetHeight)) *
+            ((top - thumb.value.offsetHeight / 2) /
+              (rect.height - thumb.value.offsetHeight)) *
               100
           )
         )
       }
-    },
+    }
 
-    getThumbLeft() {
-      if (this.vertical) return 0
-      const el = this.$el
-      const alpha = this.color._alpha
+    const handleClick = (event) => {
+      const target = event.target
 
-      if (!el) return 0
-      const thumb = this.$refs.thumb
+      if (target !== thumb.value) {
+        handleDrag(event)
+      }
+    }
+
+    const getThumbLeft = () => {
+      if (vertical.value) return 0
+      const alpha = color.value._alpha
+
+      if (!el.value) return 0
       return Math.round(
-        (alpha * (el.offsetWidth - thumb.offsetWidth / 2)) / 100
+        (alpha * (el.value.offsetWidth - thumb.value.offsetWidth / 2)) / 100
       )
-    },
+    }
 
-    getThumbTop() {
-      if (!this.vertical) return 0
-      const el = this.$el
-      const alpha = this.color._alpha
+    const getThumbTop = () => {
+      if (!vertical.value) return 0
+      const alpha = color.value._alpha
 
-      if (!el) return 0
-      const thumb = this.$refs.thumb
+      if (!el.value) return 0
       return Math.round(
-        (alpha * (el.offsetHeight - thumb.offsetHeight / 2)) / 100
+        (alpha * (el.value.offsetHeight - thumb.value.offsetHeight / 2)) / 100
       )
-    },
+    }
 
-    getBackground() {
-      if (this.color && this.color.value) {
-        const { r, g, b } = this.color.toRgb()
+    const getBackground = () => {
+      if (color.value && color.value.value) {
+        const { r, g, b } = color.value.toRgb()
         return `linear-gradient(to right, rgba(${r}, ${g}, ${b}, 0) 0%, rgba(${r}, ${g}, ${b}, 1) 100%)`
       }
       return null
-    },
-
-    update() {
-      this.thumbLeft = this.getThumbLeft()
-      this.thumbTop = this.getThumbTop()
-      this.background = this.getBackground()
     }
-  },
 
-  data() {
-    return {
-      thumbLeft: 0,
-      thumbTop: 0,
-      background: null
+    const update = () => {
+      state.thumbLeft = getThumbLeft()
+      state.thumbTop = getThumbTop()
+      state.background = getBackground()
     }
-  },
 
-  mounted() {
-    const { bar, thumb } = this.$refs
-
-    const dragConfig = {
-      drag: (event) => {
-        this.handleDrag(event)
-      },
-      end: (event) => {
-        this.handleDrag(event)
+    watch(
+      () => color.value._alpha,
+      () => {
+        update()
       }
-    }
+    )
 
-    draggable(bar, dragConfig)
-    draggable(thumb, dragConfig)
-    this.update()
+    watch(
+      () => color.value.value,
+      () => {
+        update()
+      }
+    )
+
+    onMounted(() => {
+      const dragConfig = {
+        drag: (event) => {
+          handleDrag(event)
+        },
+        end: (event) => {
+          handleDrag(event)
+        }
+      }
+
+      draggable(bar.value, dragConfig)
+      draggable(thumb.value, dragConfig)
+      update()
+    })
+
+    return {
+      ...toRefs(state),
+      vertical,
+      el,
+      bar,
+      thumb,
+
+      handleClick
+    }
   }
 }
 </script>

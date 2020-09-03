@@ -1,6 +1,6 @@
 <template>
-  <transition name="el-zoom-in-top" @after-leave="doDestroy">
-    <div class="el-color-dropdown" v-show="showPopper">
+  <transition name="el-zoom-in-top">
+    <div class="el-color-dropdown" v-show="modelValue">
       <div class="el-color-dropdown__main-wrapper">
         <hue-slider
           ref="hue"
@@ -20,29 +20,26 @@
         <span class="el-color-dropdown__value">
           <el-input
             v-model="customInput"
-            @keyup.native.enter="handleConfirm"
+            @keyup.enter="handleConfirm"
             @blur="handleConfirm"
             :validate-event="false"
             size="mini"
-          >
-          </el-input>
+          ></el-input>
         </span>
         <el-button
           size="mini"
           type="text"
           class="el-color-dropdown__link-btn"
           @click="$emit('clear')"
+          >{{ t('el.colorpicker.clear') }}</el-button
         >
-          {{ t('el.colorpicker.clear') }}
-        </el-button>
         <el-button
           plain
           size="mini"
           class="el-color-dropdown__btn"
-          @click="confirmValue"
+          @click="$emit('pick')"
+          >{{ t('el.colorpicker.confirm') }}</el-button
         >
-          {{ t('el.colorpicker.confirm') }}
-        </el-button>
       </div>
     </div>
   </transition>
@@ -53,15 +50,25 @@ import SvPanel from './sv-panel'
 import HueSlider from './hue-slider'
 import AlphaSlider from './alpha-slider'
 import Predefine from './predefine'
-import Popper from 'element-ui/src/utils/vue-popper'
-import Locale from 'element-ui/src/mixins/locale'
+
+import { t as _t } from 'element-ui/src/locale'
+
 import ElInput from 'element-ui/packages/input'
 import ElButton from 'element-ui/packages/button'
 
+import {
+  reactive,
+  toRefs,
+  computed,
+  watch,
+  onMounted,
+  nextTick,
+  ref,
+  getCurrentInstance
+} from 'vue'
+
 export default {
   name: 'el-color-picker-dropdown',
-
-  mixins: [Popper, Locale],
 
   components: {
     SvPanel,
@@ -76,55 +83,77 @@ export default {
     color: {
       required: true
     },
+    modelValue: Boolean,
     showAlpha: Boolean,
     predefine: Array
   },
 
-  data() {
-    return {
+  setup(props) {
+    const { color, predefine, showAlpha, modelValue } = toRefs(props)
+
+    const sl = ref(null)
+    const hue = ref(null)
+    const alpha = ref(null)
+
+    const state = reactive({
       customInput: ''
-    }
-  },
+    })
 
-  computed: {
-    currentColor() {
-      const parent = this.$parent
-      return !parent.value && !parent.showPanelColor ? '' : parent.color.value
-    }
-  },
+    const currentColor = computed(() => {
+      const {
+        proxy: { $parent }
+      } = getCurrentInstance()
+      return !$parent && !$parent.showPanelColor ? '' : $parent.color.value
+    })
 
-  methods: {
-    confirmValue() {
-      this.$emit('pick')
-    },
+    const handleConfirm = () => color.value.fromString(state.customInput)
 
-    handleConfirm() {
-      this.color.fromString(this.customInput)
-    }
-  },
+    const t = (...args) => _t.apply(this, args)
 
-  mounted() {
-    this.$parent.popperElm = this.popperElm = this.$el
-    this.referenceElm = this.$parent.$el
-  },
+    onMounted(() => {
+      const { proxy } = getCurrentInstance()
+      const parent = proxy.$parent
+      parent.popperElm = proxy.popperElm = proxy.$el
+      proxy.referenceElm = parent.$el
+    })
 
-  watch: {
-    showPopper(val) {
-      if (val === true) {
-        this.$nextTick(() => {
-          const { sl, hue, alpha } = this.$refs
-          sl && sl.update()
-          hue && hue.update()
-          alpha && alpha.update()
-        })
+    watch(
+      () => currentColor,
+      (val) => {
+        state.customInput = val
+      },
+      {
+        immediate: true
       }
-    },
+    )
 
-    currentColor: {
-      immediate: true,
-      handler(val) {
-        this.customInput = val
+    watch(
+      () => modelValue,
+      (val) => {
+        if (val === true) {
+          nextTick(() => {
+            sl && sl.value.update()
+            hue && hue.value.update()
+            alpha && alpha.value.update()
+          })
+        }
       }
+    )
+
+    return {
+      ...toRefs(state),
+      color,
+      currentColor,
+      showAlpha,
+      predefine,
+      modelValue,
+
+      sl,
+      hue,
+      alpha,
+
+      handleConfirm,
+      t
     }
   }
 }

@@ -1,4 +1,4 @@
-import ColorPicker from './src/main'
+import ColorPicker from './src/ColorPicker'
 
 /* istanbul ignore next */
 ColorPicker.install = function (app) {

@@ -1,6 +1,7 @@
 <template>
   <div
     class="el-color-svpanel"
+    ref="el"
     :style="{
       backgroundColor: background
     }"
@@ -21,6 +22,7 @@
 
 <script>
 import draggable from '../draggable'
+import { toRefs, reactive, ref, onMounted, watch } from 'vue'
 
 export default {
   name: 'el-sl-panel',
@@ -31,37 +33,31 @@ export default {
     }
   },
 
-  computed: {
-    colorValue() {
-      const hue = this.color.get('hue')
-      const value = this.color.get('value')
-      return { hue, value }
+  setup(props) {
+    const { color } = toRefs(props)
+
+    const el = ref(null)
+
+    const state = reactive({
+      cursorTop: 0,
+      cursorLeft: 0,
+      background: 'hsl(0, 100%, 50%)'
+    })
+
+    const update = () => {
+      const saturation = color.value.get('saturation')
+      const value = color.value.get('value')
+
+      const { clientWidth: width, clientHeight: height } = el.value
+
+      state.cursorLeft = (saturation * width) / 100
+      state.cursorTop = ((100 - value) * height) / 100
+
+      state.background = 'hsl(' + color.value.get('hue') + ', 100%, 50%)'
     }
-  },
 
-  watch: {
-    colorValue() {
-      this.update()
-    }
-  },
-
-  methods: {
-    update() {
-      const saturation = this.color.get('saturation')
-      const value = this.color.get('value')
-
-      const el = this.$el
-      const { clientWidth: width, clientHeight: height } = el
-
-      this.cursorLeft = (saturation * width) / 100
-      this.cursorTop = ((100 - value) * height) / 100
-
-      this.background = 'hsl(' + this.color.get('hue') + ', 100%, 50%)'
-    },
-
-    handleDrag(event) {
-      const el = this.$el
-      const rect = el.getBoundingClientRect()
+    const handleDrag = (event) => {
+      const rect = el.value.getBoundingClientRect()
 
       let left = event.clientX - rect.left
       let top = event.clientY - rect.top
@@ -71,33 +67,41 @@ export default {
       top = Math.max(0, top)
       top = Math.min(top, rect.height)
 
-      this.cursorLeft = left
-      this.cursorTop = top
-      this.color.set({
+      state.cursorLeft = left
+      state.cursorTop = top
+      color.value.set({
         saturation: (left / rect.width) * 100,
         value: 100 - (top / rect.height) * 100
       })
     }
-  },
 
-  mounted() {
-    draggable(this.$el, {
-      drag: (event) => {
-        this.handleDrag(event)
-      },
-      end: (event) => {
-        this.handleDrag(event)
-      }
+    onMounted(() => {
+      draggable(el.value, {
+        drag: (event) => {
+          handleDrag(event)
+        },
+        end: (event) => {
+          handleDrag(event)
+        }
+      })
+
+      update()
     })
 
-    this.update()
-  },
+    watch(
+      () => {
+        const hue = color.value.get('hue')
+        const value = color.value.get('value')
+        return { hue, value }
+      },
+      () => {
+        update()
+      }
+    )
 
-  data() {
     return {
-      cursorTop: 0,
-      cursorLeft: 0,
-      background: 'hsl(0, 100%, 50%)'
+      ...toRefs(state),
+      el
     }
   }
 }
