@@ -70,7 +70,7 @@ import ElCheckbox from 'element-ui/packages/checkbox'
 import ElInput from 'element-ui/packages/input'
 import OptionContent from './OptionContent.vue'
 import { useLocale } from 'element-ui/src/use/locale'
-import { reactive, toRefs, computed, watch, h } from 'vue'
+import { reactive, toRefs, computed, watch } from 'vue'
 
 export default {
   name: 'ElTransferPanel',
@@ -123,8 +123,7 @@ export default {
       isIndeterminate,
       hasNoMatch,
       disabledProp,
-      hasFooter,
-      updateAllChecked
+      hasFooter
     } = useTransferPanelData(props, state, slots, emit)
 
     const handleAllCheckedChange = (value) => {

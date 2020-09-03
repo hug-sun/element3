@@ -53,7 +53,7 @@
 import TransferPanel from './TransferPanel.vue'
 import ElButton from 'element-ui/packages/button'
 import { useLocale } from 'element-ui/src/use/locale'
-import { ref, computed, toRefs, watch, provide } from 'vue'
+import { ref, computed, watch, provide } from 'vue'
 
 export default {
   name: 'ElTransfer',
@@ -158,7 +158,6 @@ export default {
       leftTransferPanelTitle,
       rightTransferPanelTitle,
       panelFilterPlaceholder,
-      dataObj,
       sourceData,
       targetData
     } = useTransferData(props, t)
