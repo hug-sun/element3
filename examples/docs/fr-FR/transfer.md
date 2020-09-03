@@ -6,32 +6,34 @@ Permet de transférer des options d'une liste à une autre de manière ergonomiq
 :::demo Les données sont passée via l'attribut `data`. Ce doit être un tableau d'objets, chaque objet ayant les propriétés suivantes: `key` étant l'identifiant de l'objet, `label` étant le texte à afficher et `disabled` indiquant si l'objet est désactivé. Ces objets sont synchronisés avec `v-model`, sa valeur étant un tableau d'identifiants des objets. Si vous ne souhaitez pas avoir une liste vide par défaut, vous pouvez donc initialiser `v-model` avec un tableau.
 ```html
 <template>
-  <el-transfer
-    v-model="value"
-    :data="data">
-  </el-transfer>
+  <el-transfer v-model="value" :data="data"></el-transfer>
 </template>
 
 <script>
-  export default {
-    data() {
-      const generateData = _ => {
-        const data = [];
-        for (let i = 1; i <= 15; i++) {
-          data.push({
-            key: i,
-            label: `Option ${ i }`,
-            disabled: i % 4 === 0
-          });
-        }
-        return data;
-      };
-      return {
-        data: generateData(),
-        value: [1, 4]
-      };
-    }
-  };
+import { reactive, toRefs } from 'vue'
+
+export default {
+  setup() {
+    const state = reactive({
+      data: generateData(),
+      value: [1, 4]
+    })
+
+    return toRefs(state)
+  }
+}
+
+const generateData = _ => {
+  const data = []
+  for (let i = 1; i <= 15; i++) {
+    data.push({
+      key: i,
+      label: `Option ${ i }`,
+      disabled: i % 4 === 0
+    })
+  }
+  return data
+}
 </script>
 ```
 :::
@@ -56,27 +58,27 @@ Vous pouvez filtrer les options.
   export default {
     data() {
       const generateData = _ => {
-        const data = [];
-        const states = ['California', 'Illinois', 'Maryland', 'Texas', 'Florida', 'Colorado', 'Connecticut '];
-        const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
+        const data = []
+        const states = ['California', 'Illinois', 'Maryland', 'Texas', 'Florida', 'Colorado', 'Connecticut ']
+        const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT']
         states.forEach((city, index) => {
           data.push({
             label: city,
-            key: index,
+            key: initials[index],
             initial: initials[index]
-          });
-        });
-        return data;
-      };
+          })
+        })
+        return data
+      }
       return {
         data: generateData(),
         value: [],
         filterMethod(query, item) {
-          return item.initial.toLowerCase().indexOf(query.toLowerCase()) > -1;
+          return item.initial.toLowerCase().indexOf(query.toLowerCase()) > -1
         }
-      };
+      }
     }
-  };
+  }
 </script>
 ```
 :::
@@ -88,7 +90,7 @@ Vous pouvez personnaliser les titres, les textes des boutons, les fonctions de r
 :::demo Utilisez `titles`, `button-texts`, `render-content` et `format` pour personnaliser respectivement les titres des listes, les textes des boutons, les fonctions de rendus des objets et le texte des statuts du header. Vous pouvez aussi utiliser des slots pour les objets. Pour le contenu du footer, deux slots sont fournis: `left-footer` et `right-footer`. Si vous souhaitez que certains items soient sélectionnés par défaut, utilisez `left-default-checked` et `right-default-checked`. Enfin, cet exemple utilise aussi l'évènement `change`. Notez que cet exemple ne fonctionne pas dans jsfiddle car il ne supporte pas JSX. Dans un vrai projet, `render-content` fonctionnera si les dépendances sont satisfaites.
 ```html
 <template>
-  <p style="text-align: center; margin: 0 0 20px">Utilise render-content</p>
+  <p style="text-align: center; margin: 0 0 20px">Customize data items using render-content</p>
   <div style="text-align: center">
     <el-transfer
       style="text-align: left; display: inline-block"
@@ -104,71 +106,88 @@ Vous pouvez personnaliser les titres, les textes des boutons, les fonctions de r
         hasChecked: '${checked}/${total}'
       }"
       @change="handleChange"
-      :data="data">
-      <el-button class="transfer-footer" slot="left-footer" size="small">Opération</el-button>
-      <el-button class="transfer-footer" slot="right-footer" size="small">Opération</el-button>
+      :data="data"
+    >
+      <template #left-footer>
+        <el-button class="transfer-footer" size="small">Operation</el-button>
+      </template>
+      <template #right-footer>
+        <el-button class="transfer-footer" size="small">Operation</el-button>
+      </template>
     </el-transfer>
-    <p style="text-align: center; margin: 50px 0 20px">Utilise des slots</p>
-    <div style="text-align: center">
-      <el-transfer
-        style="text-align: left; display: inline-block"
-        v-model="value4"
-        filterable
-        :left-default-checked="[2, 3]"
-        :right-default-checked="[1]"
-        :titles="['Source', 'Target']"
-        :button-texts="['To left', 'To right']"
-        :format="{
-          noChecked: '${total}',
-          hasChecked: '${checked}/${total}'
-        }"
-        @change="handleChange"
-        :data="data">
-        <span slot-scope="{ option }">{{ option.key }} - {{ option.label }}</span>
-        <el-button class="transfer-footer" slot="left-footer" size="small">Opération</el-button>
-        <el-button class="transfer-footer" slot="right-footer" size="small">Opération</el-button>
-      </el-transfer>
-    </div>
+  </div>
+  <p style="text-align: center; margin: 50px 0 20px">Customize data items using scoped slot</p>
+  <div style="text-align: center">
+    <el-transfer
+      style="text-align: left; display: inline-block"
+      v-model="value4"
+      filterable
+      :left-default-checked="[2, 3]"
+      :right-default-checked="[1]"
+      :titles="['Source', 'Target']"
+      :button-texts="['To left', 'To right']"
+      :format="{
+        noChecked: '${total}',
+        hasChecked: '${checked}/${total}'
+      }"
+      @change="handleChange"
+      :data="data"
+    >
+      <template #default="{ option }">
+        <span>{{ option.key }} - {{ option.label }}</span>
+      </template>
+      
+      <template #left-footer>
+        <el-button class="transfer-footer" size="small">Operation</el-button>
+      </template>
+      <template #right-footer>
+        <el-button class="transfer-footer" size="small">Operation</el-button>
+      </template>
+    </el-transfer>
   </div>
 </template>
 
-<style>
+<style scoped>
   .transfer-footer {
-    margin-left: 20px;
+    margin-left: 15px;
     padding: 6px 5px;
   }
 </style>
 
 <script>
-  export default {
-    data() {
-      const generateData = _ => {
-        const data = [];
-        for (let i = 1; i <= 15; i++) {
-          data.push({
-            key: i,
-            label: `Option ${ i }`,
-            disabled: i % 4 === 0
-          });
-        }
-        return data;
-      };
-      return {
-        data: generateData(),
-        value: [1],
-        value4: [1],
-        renderFunc(h, option) {
-          return <span>{ option.key } - { option.label }</span>;
-        }
-      };
-    },
+import { reactive, toRefs } from 'vue'
 
-    methods: {
-      handleChange(value, direction, movedKeys) {
-        console.log(value, direction, movedKeys);
-      }
+export default {
+  setup() {
+    const state = reactive({
+      data: generateData(),
+      value: [1],
+      value4: [1]
+    })
+
+    const renderFunc = (h, option) => <span>{ option.key } - { option.label }</span>
+
+    const handleChange = (value, direction, movedKeys) => console.log(value, direction, movedKeys)
+    
+    return {
+      ...toRefs(state),
+      renderFunc,
+      handleChange
     }
-  };
+  }
+}
+
+const generateData = _ => {
+  const data = []
+  for (let i = 1; i <= 15; i++) {
+    data.push({
+      key: i,
+      label: `Option ${ i }`,
+      disabled: i % 4 === 0
+    })
+  }
+  return data
+}
 </script>
 ```
 :::
@@ -186,30 +205,36 @@ Par défaut, Transfer utilise `key`, `label` et `disabled` de vos objets. Si vos
       key: 'value',
       label: 'desc'
     }"
-    :data="data">
+    :data="data"
+  >
   </el-transfer>
 </template>
 
 <script>
-  export default {
-    data() {
-      const generateData = _ => {
-        const data = [];
-        for (let i = 1; i <= 15; i++) {
-          data.push({
-            value: i,
-            desc: `Option ${ i }`,
-            disabled: i % 4 === 0
-          });
-        }
-        return data;
-      };
-      return {
-        data: generateData(),
-        value: []
-      };
-    }
-  };
+import { reactive, toRefs } from 'vue'
+
+export default {
+  setup() {
+    const state = reactive({
+      value: [],
+      data: generateData()
+    })
+
+    return toRefs(state)
+  }
+}
+
+const generateData = _ => {
+  const data = []
+  for (let i = 1; i <= 15; i++) {
+    data.push({
+      value: i,
+      desc: `Option ${ i }`,
+      disabled: i % 4 === 0
+    })
+  }
+  return data
+}
 </script>
 ```
 :::

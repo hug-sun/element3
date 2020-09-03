@@ -117,7 +117,8 @@ ComponentNames.forEach((name) => {
       'input-number',
       'step',
       'steps',
-      'drawer'
+      'drawer',
+      'transfer'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
