@@ -14,31 +14,20 @@ on(document, 'mouseup', (e) => {
   nodeList.forEach((node) => node[ctx].documentHandler(e, startClick))
 })
 
-function createDocumentHandler(el, binding, vnode) {
+function createDocumentHandler(el) {
   return function (mouseup = {}, mousedown = {}) {
     if (
-      !vnode ||
-      !vnode.context ||
       !mouseup.target ||
       !mousedown.target ||
       el.contains(mouseup.target) ||
       el.contains(mousedown.target) ||
-      el === mouseup.target ||
-      (vnode.context.popperElm &&
-        (vnode.context.popperElm.contains(mouseup.target) ||
-          vnode.context.popperElm.contains(mousedown.target)))
+      el === mouseup.target
     )
       return
 
-    if (
-      binding.expression &&
-      el[ctx].methodName &&
-      vnode.context[el[ctx].methodName]
-    ) {
-      vnode.context[el[ctx].methodName]()
-    } else {
-      el[ctx].bindingFn && el[ctx].bindingFn()
-    }
+    el[ctx].bindingFn &&
+      typeof el[ctx].bindingFn === 'function' &&
+      el[ctx].bindingFn()
   }
 }
 
@@ -51,24 +40,22 @@ function createDocumentHandler(el, binding, vnode) {
  * ```
  */
 export default {
-  bind(el, binding, vnode) {
+  beforeMount(el, binding) {
     nodeList.push(el)
     const id = seed++
     el[ctx] = {
       id,
-      documentHandler: createDocumentHandler(el, binding, vnode),
+      documentHandler: createDocumentHandler(el),
       methodName: binding.expression,
       bindingFn: binding.value
     }
   },
-
-  update(el, binding, vnode) {
-    el[ctx].documentHandler = createDocumentHandler(el, binding, vnode)
+  updated(el, binding) {
+    el[ctx].documentHandler = createDocumentHandler(el)
     el[ctx].methodName = binding.expression
     el[ctx].bindingFn = binding.value
   },
-
-  unbind(el) {
+  unmounted(el) {
     const len = nodeList.length
 
     for (let i = 0; i < len; i++) {
