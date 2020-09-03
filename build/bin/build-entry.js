@@ -39,8 +39,10 @@ const install = function(app, opts = {}) {
   // app.config.globalProperties.$alert = MessageBox.alert;
   // app.config.globalProperties.$confirm = MessageBox.confirm;
   // app.config.globalProperties.$prompt = MessageBox.prompt;
-  // app.config.globalProperties.$notify = Notification;
-  // app.config.globalProperties.$message = Message;
+
+   app.config.globalProperties.$notify = Notification;
+   app.config.globalProperties.$message = Message;
+
 };
 
 /* istanbul ignore if */
@@ -70,6 +72,8 @@ var listTemplate = []
 ComponentNames.forEach((name) => {
   if (
     [
+      'image',
+      'card',
       'alert',
       'scrollbar',
       'backtop',
@@ -108,7 +112,14 @@ ComponentNames.forEach((name) => {
       'divider',
       'progress',
       'form',
-      'form-item'
+      'form-item',
+      'notification',
+      'page-header',
+      'message',
+      'input-number',
+      'step',
+      'steps',
+      'drawer'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换

@@ -15,7 +15,7 @@
   >
     <label-wrap
       :is-auto-width="labelStyle && labelStyle.width === 'auto'"
-      :update-all="form.labelWidth === 'auto'"
+      :update-all="elForm.labelWidth === 'auto'"
     >
       <label
         :for="labelFor"
@@ -23,14 +23,14 @@
         :style="labelStyle"
         v-if="label || $slots.label"
       >
-        <slot name="label">{{ label + form.labelSuffix }}</slot>
+        <slot name="label">{{ label + elForm.labelSuffix }}</slot>
       </label>
     </label-wrap>
     <div class="el-form-item__content" :style="contentStyle">
       <slot></slot>
       <transition name="el-zoom-in-top">
         <slot
-          v-if="validateState === 'error' && showMessage && form.showMessage"
+          v-if="validateState === 'error' && showMessage && elForm.showMessage"
           name="error"
           :error="validateMessage"
         >
@@ -76,7 +76,7 @@ export default {
     const ctx = vm.ctx
 
     // 事件派发、监听方法
-    const { dispatch, on, broadcast } = useEmitter()
+    const { dispatch, on, broadcast, off } = useEmitter()
 
     // 注入form
     const form = inject('elForm')
@@ -127,7 +127,8 @@ export default {
 
     return {
       fieldValue,
-      broadcast
+      broadcast,
+      off
     }
   },
 
@@ -184,8 +185,8 @@ export default {
     },
     labelStyle() {
       const ret = {}
-      if (this.form.labelPosition === 'top') return ret
-      const labelWidth = this.labelWidth || this.form.labelWidth
+      if (this.elForm.labelPosition === 'top') return ret
+      const labelWidth = this.labelWidth || this.elForm.labelWidth
       if (labelWidth) {
         ret.width = labelWidth
       }
@@ -194,13 +195,13 @@ export default {
     contentStyle() {
       const ret = {}
       const label = this.label
-      if (this.form.labelPosition === 'top' || this.form.inline) return ret
+      if (this.elForm.labelPosition === 'top' || this.elForm.inline) return ret
       if (!label && !this.labelWidth && this.isNested) return ret
-      const labelWidth = this.labelWidth || this.form.labelWidth
+      const labelWidth = this.labelWidth || this.elForm.labelWidth
       if (labelWidth === 'auto') {
         if (this.labelWidth === 'auto') {
           ret.marginLeft = this.computedLabelWidth
-        } else if (this.form.labelWidth === 'auto') {
+        } else if (this.elForm.labelWidth === 'auto') {
           ret.marginLeft = this.elForm.autoLabelWidth
         }
       } else {
@@ -307,7 +308,7 @@ export default {
       this.validateState = ''
       this.validateMessage = ''
 
-      const model = this.form.model
+      const model = this.elForm.model
       const value = this.fieldValue
       let path = this.prop
       if (path.indexOf(':') !== -1) {
@@ -331,14 +332,19 @@ export default {
       this.broadcast('ElTimeSelect', 'fieldReset', this.initialValue)
     },
     getRules() {
-      let formRules = this.form.rules
+      // 表单中设置的rules
+      let formRules = this.elForm.rules
+      // 表单项设置的rules
       const selfRules = this.rules
+      // required属性转换为必填规则
       const requiredRule =
         this.required !== undefined ? { required: !!this.required } : []
-
+      // 获取prop对应规则属性
       const prop = getPropByPath(formRules, this.prop || '')
+      // 先从formRules中直接获取prop对应规则
+      // 如果没有则以点语法解析对应规则
       formRules = formRules ? prop.o[this.prop || ''] || prop.v : []
-
+      // 最终返回校验规则首选表单项定义的规则，次选表单上定义的规则
       return [].concat(selfRules || formRules || []).concat(requiredRule)
     },
     getFilteredRule(trigger) {
@@ -371,7 +377,7 @@ export default {
     },
 
     removeValidateEvents() {
-      this.$off()
+      this.off()
     }
   }
 }

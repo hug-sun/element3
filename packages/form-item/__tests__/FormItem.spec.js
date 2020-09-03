@@ -1,242 +1,268 @@
-import Input from 'element-ui/packages/input/Input.vue'
-import Form from 'element-ui/packages/form/Form.vue'
 import FormItem from '../FormItem.vue'
 import { mount } from '@vue/test-utils'
+import { nextTick, h, reactive } from 'vue'
 
 describe('FormItem', () => {
-  it('label width', () => {
-    const vm = mount(
-      {
-        components: {
-          'el-form-item': FormItem,
-          'el-form': Form,
-          'el-input': Input
-        },
-        template: `
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="活动名称">
-            <el-input v-model="form.name"></el-input>
-          </el-form-item>
-        </el-form>
-      `,
-        data() {
-          return {
-            form: {
-              name: ''
-            }
-          }
-        }
+  test('label', () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '用户名'
       },
-      {
-        global: {
-          config: {
-            globalProperties: {
-              $ELEMENT: {}
-            }
+      global: {
+        provide: {
+          elForm: {
+            rules: {},
+            labelSuffix: ''
           }
         }
       }
-    )
+    })
 
-    const label = vm.find('.el-form-item__label')
-    const content = vm.find('.el-form-item__content')
-
+    const label = wrapper.find('.el-form-item__label')
     expect(label.exists()).toBe(true)
-    expect(label.text()).toBe('活动名称')
-
-    expect(label.attributes().style).toContain('width: 80px')
-    expect(content.attributes().style).toContain('margin-left: 80px')
+    expect(label.text()).toBe('用户名')
   })
 
-  // it('auto label width', async () => {
-  //   const wrapper = mount({
-  //     components: {
-  //       'el-form-item': FormItem,
-  //       'el-form': Form,
-  //       'el-input': Input
-  //     },
-  //     template: `
-  //       <el-form ref="form" :model="form" label-width="auto">
-  //         <el-form-item label="活动名称">
-  //           <el-input v-model="form.name"></el-input>
-  //         </el-form-item>
-  //         <el-form-item label="活动备注信息" v-if="display">
-  //           <el-input v-model="form.name"></el-input>
-  //         </el-form-item>
-  //       </el-form>
-  //     `,
-  //     data() {
-  //       return {
-  //         display: true,
-  //         form: {
-  //           name: '',
-  //           intro: ''
-  //         }
-  //       }
-  //     }
-  //   }, {
-  //     global: {
-  //       config: {
-  //         globalProperties: {
-  //           $ELEMENT: {}
-  //         }
-  //       }
-  //     }
-  //   })
+  test('label slot', () => {
+    const wrapper = mount(FormItem, {
+      slots: {
+        label() {
+          return '用户名：'
+        }
+      },
+      global: {
+        provide: {
+          elForm: {
+            rules: {}
+          }
+        }
+      }
+    })
 
-  //   // 获取一下表单autoLabelWidth，验证是否计算正确
+    const label = wrapper.find('.el-form-item__label')
+    expect(label.exists()).toBe(true)
+    expect(label.text()).toBe('用户名：')
+  })
 
-  //   const formItems = wrapper.findAll('.el-form-item__content')
-  //   const marginLeft1 = parseInt(formItems[0].element.style.marginLeft, 10)
-  //   const marginLeft2 = parseInt(formItems[1].element.style.marginLeft, 10)
-  //   // await nextTick()
+  test('fixed label width', () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '用户名',
+        labelWidth: '80px'
+      },
+      global: {
+        provide: {
+          elForm: {
+            rules: {}
+          }
+        }
+      }
+    })
 
-  //   console.log();
+    const label = wrapper.find('.el-form-item__label')
+    expect(label.attributes().style).toContain('width: 80px')
+  })
 
-  //   expect(marginLeft1 === marginLeft2).toBe(true)
+  test('auto label width', () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '用户名',
+        labelWidth: 'auto'
+      },
+      global: {
+        provide: {
+          elForm: {
+            rules: {}
+          }
+        }
+      }
+    })
 
-  //   // wrapper.vm.display = false
-  //   // await nextTick()
+    const label = wrapper.find('.el-form-item__label')
+    expect(label.attributes().style).toContain('width: auto')
+  })
 
-  //   // const formItem = wrapper.find('.el-form-item__content')
-  //   // const newMarginLeft = parseInt(formItem.element.style.marginLeft, 10)
-  //   // console.log(formItem.attributes());
-  //   // expect(newMarginLeft < marginLeft1).toBe(true)
+  test('should contain a is-required class when set property required', () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '用户名',
+        required: true
+      },
+      global: {
+        provide: {
+          elForm: {
+            rules: {}
+          }
+        }
+      }
+    })
 
-  // })
+    const item = wrapper.find('.el-form-item')
+    expect(item.classes()).toContain('is-required')
+  })
 
-  // it('label position', done => {
-  //   vm = createVue({
-  //     template: `
-  //       <div>
-  //         <el-form :model="form" label-position="top" ref="labelTop">
-  //           <el-form-item>
-  //             <el-input v-model="form.name"></el-input>
-  //           </el-form-item>
-  //           <el-form-item>
-  //             <el-input v-model="form.address"></el-input>
-  //           </el-form-item>
-  //         </el-form>
-  //         <el-form :model="form" label-position="left" ref="labelLeft">
-  //           <el-form-item>
-  //             <el-input v-model="form.name"></el-input>
-  //           </el-form-item>
-  //           <el-form-item>
-  //             <el-input v-model="form.address"></el-input>
-  //           </el-form-item>
-  //         </el-form>
-  //       </div>
-  //     `,
-  //     data() {
-  //       return {
-  //         form: {
-  //           name: '',
-  //           address: ''
-  //         }
-  //       }
-  //     }
-  //   }, true)
-  //   expect(vm.$refs.labelTop.$el.classList.contains('el-form--label-top')).to.be.true
-  //   expect(vm.$refs.labelLeft.$el.classList.contains('el-form--label-left')).to.be.true
-  //   done()
-  // })
-  // it('label size', () => {
-  //   vm = createVue({
-  //     template: `
-  //       <div>
-  //         <el-form :model="form" size="mini" ref="labelMini">
-  //           <el-form-item>
-  //             <el-input v-model="form.name"></el-input>
-  //           </el-form-item>
-  //         </el-form>
-  //       </div>
-  //     `,
-  //     data() {
-  //       return {
-  //         form: {
-  //           name: ''
-  //         }
-  //       }
-  //     }
-  //   }, true)
-  //   expect(vm.$refs.labelMini.$el.children[0].classList.contains('el-form-item--mini')).to.be.true
-  // })
-  // it('show message', done => {
-  //   vm = createVue({
-  //     template: `
-  //       <el-form :model="form" ref="form">
-  //         <el-form-item label="活动名称" prop="name" :show-message="false"
-  //           :rules="{
-  //             required: true,
-  //             message: '请输入活动名称',
-  //             trigger: 'change',
-  //             min: 3,
-  //             max: 6
-  //           }"
-  //         >
-  //           <el-input v-model="form.name"></el-input>
-  //         </el-form-item>
-  //       </el-form>
-  //     `,
-  //     data() {
-  //       return {
-  //         form: {
-  //           name: ''
-  //         }
-  //       }
-  //     }
-  //   }, true)
-  //   vm.$refs.form.validate(valid => {
-  //     expect(valid).to.not.true
-  //     vm.$refs.form.$nextTick(_ => {
-  //       expect(vm.$el.querySelector('.el-form-item__error')).to.not.exist
-  //       done()
-  //     })
-  //   })
-  // })
+  test('should contain a is-error class when validation is invalid', async () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '用户名',
+        prop: 'username',
+        rules: [{ required: true, message: '请输入用户名' }]
+      },
+      global: {
+        provide: {
+          elForm: {
+            rules: {
+              username: [{ required: true, message: '用户名为必填项' }]
+            },
+            model: {
+              username: ''
+            },
+            $emit() {}
+          }
+        }
+      }
+    })
 
-  // it('form item nest', done => {
-  //   vm = createVue({
-  //     template: `
-  //       <el-form ref="form" :model="form" :rules="rules">
-  //         <el-form-item label="活动时间" required>
-  //           <el-col :span="11">
-  //             <el-form-item prop="date1">
-  //               <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
-  //             </el-form-item>
-  //           </el-col>
-  //           <el-col class="line" :span="2">-</el-col>
-  //           <el-col :span="11">
-  //             <el-form-item prop="date2">
-  //               <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-  //             </el-form-item>
-  //           </el-col>
-  //         </el-form-item>
-  //       </el-form>
-  //     `,
-  //     data() {
-  //       return {
-  //         form: {
-  //           date1: '',
-  //           date2: ''
-  //         },
-  //         rules: {
-  //           date1: [
-  //             { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-  //           ]
-  //         }
-  //       }
-  //     },
-  //     methods: {
-  //       setValue() {
-  //         this.name = 'jack'
-  //         this.address = 'aaaa'
-  //       }
-  //     }
-  //   }, true)
-  //   vm.$refs.form.validate(valid => {
-  //     expect(valid).to.not.true
-  //     done()
-  //   })
-  // })
+    const item = wrapper.find('.el-form-item')
+    const rules = wrapper.vm.getRules()
+    expect(item.classes()).toContain('is-required')
+    expect(rules).toEqual([{ required: true, message: '请输入用户名' }])
+
+    wrapper.vm.validate()
+    expect(wrapper.vm.validateState).toBe('error')
+    expect(wrapper.vm.validateMessage).toBe('请输入用户名')
+    await nextTick()
+    expect(item.classes()).toContain('is-error')
+
+    const error = wrapper.find('.el-form-item__error')
+    setTimeout(() => {
+      expect(error.exists()).toBe(true)
+    }, 300)
+  })
+
+  test('should show a error message when set property error', async () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '用户名',
+        error: 'some error'
+      },
+      global: {
+        provide: {
+          elForm: {}
+        }
+      }
+    })
+
+    const item = wrapper.find('.el-form-item')
+    const error = wrapper.find('.el-form-item__error')
+    expect(item.classes()).toContain('is-error')
+    expect(wrapper.vm.validateState).toBe('error')
+    setTimeout(() => {
+      expect(error.exists()).toBe(true)
+    }, 300)
+  })
+
+  test('small size', async () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '用户名'
+      },
+      global: {
+        provide: {
+          elForm: {}
+        }
+      }
+    })
+
+    const item = wrapper.find('.el-form-item')
+    expect(item.classes()).not.toContain('el-form-item--small')
+    await wrapper.setProps({ size: 'small' })
+    expect(item.classes()).toContain('el-form-item--small')
+  })
+
+  it('scoped slot error', () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '用户名',
+        error: '请输入用户名'
+      },
+      slots: {
+        error: ({ error }) => h('div', { class: 'error-message' }, error)
+      },
+      global: {
+        provide: {
+          elForm: {}
+        }
+      }
+    })
+
+    const error = wrapper.find('.error-message')
+    setTimeout(() => {
+      expect(error.exists()).toBe(true)
+    }, 300)
+  })
+
+  it('clear validate result', () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '用户名',
+        error: '请输入用户名'
+      },
+      global: {
+        provide: {
+          elForm: {}
+        }
+      }
+    })
+
+    // 错误class和errorMessage一开始有
+    const item = wrapper.find('.el-form-item')
+    const error = wrapper.find('.el-form-item__error')
+    expect(item.classes()).toContain('is-error')
+
+    // 清除校验内容之后，希望清除掉error class和errorMessage
+    wrapper.vm.clearValidate()
+
+    setTimeout(() => {
+      expect(item.classes()).not.toContain('is-error')
+      expect(error.exists()).toBe(false)
+    }, 300)
+  })
+
+  it('reset field', async () => {
+    const model = reactive({
+      username: 'young cunzhang'
+    })
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '用户名',
+        prop: 'username',
+        rules: [{ required: true, message: '请输入用户名' }]
+      },
+      global: {
+        provide: {
+          elForm: { model, $emit() {} }
+        }
+      }
+    })
+
+    // 一开始username有值，验证一下initialValue
+    const vm = wrapper.vm
+    expect(vm.initialValue).toBe('young cunzhang')
+    // 把初始值置空，然后执行校验
+    model.username = ''
+    vm.validate()
+    await nextTick()
+
+    // 此时会添加error class
+    const item = wrapper.find('.el-form-item')
+    expect(item.classes()).toContain('is-error')
+
+    // 重置字段
+    vm.resetField()
+    await nextTick()
+
+    // 此时error class应该移除
+    expect(item.classes()).not.toContain('is-error')
+  })
 })

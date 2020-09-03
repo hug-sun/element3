@@ -1,6 +1,7 @@
 import { h, provide, computed, getCurrentInstance } from 'vue'
 export default {
   name: 'ElRow',
+  componentName: 'ElRow',
   setup(props) {
     const style = computed(() => {
       const ret = {}
@@ -45,7 +46,7 @@ export default {
         ],
         style: this.style
       },
-      this.$slots.default()
+      this.$slots.default && this.$slots.default()
     )
   }
 }
