@@ -88,6 +88,7 @@ import {
   watch,
   getCurrentInstance,
   nextTick,
+  onBeforeMount,
   onMounted,
   onBeforeUnmount,
   unref
@@ -249,8 +250,8 @@ function useCommon(props, state, ctx) {
 
 function useLifeCycle(props, state, ctx, resetSize) {
   const { max, min, modelValue, range, label } = props
-  onMounted(() => {
-    let valuetext
+  let valuetext
+  onBeforeMount(() => {
     if (range) {
       if (Array.isArray(modelValue)) {
         state.firstValue = Math.max(min, modelValue[0])
@@ -270,6 +271,8 @@ function useLifeCycle(props, state, ctx, resetSize) {
       state.oldValue = state.firstValue
       valuetext = state.firstValue
     }
+  })
+  onMounted(() => {
     ctx.$el.setAttribute('aria-valuetext', valuetext)
 
     // label screen reader
@@ -278,7 +281,6 @@ function useLifeCycle(props, state, ctx, resetSize) {
       // eslint-disable-next-line
       label ? label : `slider between ${min} and ${max}`
     )
-
     resetSize()
     window.addEventListener('resize', resetSize)
   })
