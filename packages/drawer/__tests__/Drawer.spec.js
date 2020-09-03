@@ -25,7 +25,6 @@ describe('Drawer.vue', () => {
         visible: true,
       },
     })
-    const drawer = wrapper.findAllComponents({ name: 'ElDrawer' })[0]
     expect(wrapper.find('.el-drawer__header').text()).toBe('title')
     expect(wrapper.find('.el-drawer').attributes().style).not.toBe('none')
   })
@@ -143,7 +142,7 @@ describe('Drawer.vue', () => {
     const wrapper = mount(Comp)
     const drawer = wrapper.findComponent({ name: 'ElDrawer' })
     await drawer.componentVM.closeDrawer()
-    expect(beforeClose).toHaveBeenCalled
+    expect(beforeClose).toHaveBeenCalled()
   })
 
   it('should not show close button when show-close flag is false', async () => {
@@ -209,7 +208,6 @@ describe('Drawer.vue', () => {
       props: {
         visible: true,
         title,
-        visible: true,
         direction: 'ltr',
       },
     })
@@ -239,7 +237,6 @@ describe('Drawer.vue', () => {
       props: {
         visible: true,
         title,
-        visible: true,
         direction: 'ltr',
         size: '50%',
       },
