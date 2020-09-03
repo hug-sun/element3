@@ -8,10 +8,10 @@ const globalOption = {
     globalProperties: {
       $ELEMENT: {
         size: '',
-        zIndex: 2000,
-      },
-    },
-  },
+        zIndex: 2000
+      }
+    }
+  }
 }
 
 const title = '我是测试 title'
@@ -22,8 +22,8 @@ describe('Drawer.vue', () => {
     const wrapper = mount(Drawer, {
       props: {
         title: 'title',
-        visible: true,
-      },
+        visible: true
+      }
     })
     expect(wrapper.find('.el-drawer__header').text()).toBe('title')
     expect(wrapper.find('.el-drawer').attributes().style).not.toBe('none')
@@ -41,10 +41,10 @@ describe('Drawer.vue', () => {
       data() {
         return {
           title: 'drawer test',
-          visible: true,
+          visible: true
         }
       },
-      components: { Drawer, Button },
+      components: { Drawer, Button }
     }
 
     const wrapper = mount(Comp, { global: globalOption })
@@ -59,8 +59,8 @@ describe('Drawer.vue', () => {
     const wrapper = mount(Drawer, {
       props: {
         title,
-        visible: false,
-      },
+        visible: false
+      }
     })
 
     expect(wrapper.attributes().style).toBe('display: none;')
@@ -76,10 +76,10 @@ describe('Drawer.vue', () => {
       data() {
         return {
           title,
-          visible: true,
+          visible: true
         }
       },
-      components: { Drawer },
+      components: { Drawer }
     }
 
     const wrapper = mount(Comp)
@@ -101,10 +101,10 @@ describe('Drawer.vue', () => {
       data() {
         return {
           title,
-          visible: true,
+          visible: true
         }
       },
-      components: { Drawer },
+      components: { Drawer }
     }
 
     const wrapper = mount(Comp)
@@ -133,10 +133,10 @@ describe('Drawer.vue', () => {
         return {
           title,
           visible: true,
-          beforeClose,
+          beforeClose
         }
       },
-      components: { Drawer },
+      components: { Drawer }
     }
 
     const wrapper = mount(Comp)
@@ -155,10 +155,10 @@ describe('Drawer.vue', () => {
       data() {
         return {
           title,
-          visible: false,
+          visible: false
         }
       },
-      components: { Drawer },
+      components: { Drawer }
     }
     const wrapper = mount(Comp)
     expect(wrapper.find('.el-drawer__close-btn').exists()).toBe(false)
@@ -175,10 +175,10 @@ describe('Drawer.vue', () => {
       data() {
         return {
           title,
-          visible: false,
+          visible: false
         }
       },
-      components: { Drawer },
+      components: { Drawer }
     }
     const wrapper = mount(Comp)
     expect(wrapper.find(`.${classes}`).exists()).toBe(true)
@@ -194,10 +194,10 @@ describe('Drawer.vue', () => {
       data() {
         return {
           title,
-          visible: true,
+          visible: true
         }
       },
-      components: { Drawer },
+      components: { Drawer }
     }
     const wrapper = mount(Comp)
     expect(wrapper.find('.el-drawer__header').exists()).toBe(false)
@@ -208,8 +208,8 @@ describe('Drawer.vue', () => {
       props: {
         visible: true,
         title,
-        direction: 'ltr',
-      },
+        direction: 'ltr'
+      }
     })
     it('should render from left to right', async () => {
       await nextTick()
@@ -238,8 +238,8 @@ describe('Drawer.vue', () => {
         visible: true,
         title,
         direction: 'ltr',
-        size: '50%',
-      },
+        size: '50%'
+      }
     })
 
     it('should effect height when drawer is vertical', async () => {

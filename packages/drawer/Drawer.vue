@@ -1,5 +1,9 @@
 <template>
-  <transition name="el-drawer-fade" @after-enter="afterEnter" @after-leave="afterLeave">
+  <transition
+    name="el-drawer-fade"
+    @after-enter="afterEnter"
+    @after-leave="afterLeave"
+  >
     <div class="el-drawer__wrapper" tabindex="-1" v-show="visible">
       <div
         class="el-drawer__container"
@@ -19,12 +23,14 @@
           role="dialog"
           tabindex="-1"
         >
-          <header class="el-drawer__header" id="el-drawer__title" v-if="withHeader">
+          <header
+            class="el-drawer__header"
+            id="el-drawer__title"
+            v-if="withHeader"
+          >
             <slot name="title">
               <span role="heading" tabindex="0" :title="title">
-                {{
-                title
-                }}
+                {{ title }}
               </span>
             </slot>
             <button
@@ -148,7 +154,7 @@ export default {
       return direction.value === 'rtl' || direction.value === 'ltr'
     })
 
-    watch(visible, val => {
+    watch(visible, (val) => {
       const el = self.$el
       if (val) {
         closed.value = false
@@ -192,7 +198,7 @@ export default {
       }
     }
 
-    const hide = cancel => {
+    const hide = (cancel) => {
       if (cancel !== false) {
         emit('update:visible', false)
         emit('close')
@@ -202,7 +208,7 @@ export default {
         closed.value = true
       }
     }
-    
+
     // todo: ESC 退出模态框,暂时无调用，lint过不去先在return调用
     const handleClose = () => {
       // This method here will be called by PopupManger, when the `closeOnPressEscape` was set to true
