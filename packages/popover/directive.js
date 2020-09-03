@@ -10,11 +10,13 @@ const getReference = (el, binding, vnode) => {
   }
 }
 
+/* directive 暂时测试不通过，待修复，目前调试看起来是directive没有正确的执行挂载导致的 */
 export default {
-  bind(el, binding, vnode) {
+  beforeMount(el, binding, vnode) {
+    console.log(el, binding)
     getReference(el, binding, vnode)
   },
-  inserted(el, binding, vnode) {
+  mounted(el, binding, vnode) {
     getReference(el, binding, vnode)
   }
 }
