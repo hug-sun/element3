@@ -1,4 +1,3 @@
-import { h } from 'vue'
 import { mount } from '@vue/test-utils'
 import Notification from '../Notification.vue'
 
