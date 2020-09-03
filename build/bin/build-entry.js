@@ -114,6 +114,7 @@ ComponentNames.forEach((name) => {
       'notification',
       'page-header',
       'message',
+      'input-number',
       'step',
       'steps'
     ].indexOf(name) > -1

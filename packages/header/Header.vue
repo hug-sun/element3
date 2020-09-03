@@ -9,7 +9,7 @@ import { toRefs } from 'vue'
 
 export default {
   name: 'ElHeader',
-  
+
   props: {
     height: {
       type: String,
