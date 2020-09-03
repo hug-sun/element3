@@ -2,7 +2,7 @@
   <transition name="viewer-fade">
     <div
       tabindex="-1"
-      ref="el-image-viewer__wrapper"
+      ref="imageWrapper"
       class="el-image-viewer__wrapper"
       :style="{ 'z-index': zIndex }"
     >
@@ -34,7 +34,7 @@
           <i class="el-icon-zoom-out" @click="handleActions('zoomOut')"></i>
           <i class="el-icon-zoom-in" @click="handleActions('zoomIn')"></i>
           <i class="el-image-viewer__actions__divider"></i>
-          <i :class="mode.icon" @click="toggleMode"></i>
+          <i :class="state.mode.icon" @click="toggleMode"></i>
           <i class="el-image-viewer__actions__divider"></i>
           <i
             class="el-icon-refresh-left"
@@ -65,7 +65,7 @@
 <script>
 import { on, off } from 'element-ui/src/utils/dom'
 import { rafThrottle, isFirefox } from 'element-ui/src/utils/util'
-
+import { reactive, computed, ref, watch, nextTick, onMounted } from 'vue'
 const Mode = {
   CONTAIN: {
     name: 'contain',
@@ -104,13 +104,11 @@ export default {
       default: 0
     }
   },
-
-  data() {
-    return {
-      index: this.initialIndex,
-      isShow: false,
-      infinite: true,
-      loading: false,
+  setup(props, ctx) {
+    const img = ref(null)
+    const imageWrapper = ref(null)
+    // data
+    const state = reactive({
       mode: Mode.CONTAIN,
       transform: {
         scale: 1,
@@ -119,197 +117,222 @@ export default {
         offsetY: 0,
         enableTransition: false
       }
-    }
-  },
-  computed: {
-    isSingle() {
-      return this.urlList.length <= 1
-    },
-    isFirst() {
-      return this.index === 0
-    },
-    isLast() {
-      return this.index === this.urlList.length - 1
-    },
-    currentImg() {
-      return this.urlList[this.index]
-    },
-    imgStyle() {
-      const { scale, deg, offsetX, offsetY, enableTransition } = this.transform
+    })
+    const index = ref(props.initialIndex)
+    let loading = ref(false)
+    const infinite = ref(true)
+    const isShow = ref(true)
+    // computed
+    const isSingle = computed(() => props.urlList.length <= 1)
+    const isFirst = computed(() => props.index === 0)
+    const isLast = computed(() => props.index === props.urlList.length - 1)
+    const currentImg = computed(() => props.urlList[index.value])
+    const imgStyle = computed(() => {
+      const { scale, deg, offsetX, offsetY, enableTransition } = state.transform
       const style = {
         transform: `scale(${scale}) rotate(${deg}deg)`,
         transition: enableTransition ? 'transform .3s' : '',
         'margin-left': `${offsetX}px`,
         'margin-top': `${offsetY}px`
       }
-      if (this.mode.name === Mode.CONTAIN.name) {
+      if (state.mode.name === Mode.CONTAIN.name) {
         style.maxWidth = style.maxHeight = '100%'
       }
       return style
-    }
-  },
-  watch: {
-    index: {
-      handler: function (val) {
-        this.reset()
-        this.onSwitch(val)
-      }
-    },
-    currentImg(val) {
-      this.$nextTick((_) => {
-        const $img = this.$refs.img
-        if (!$img.complete) {
-          this.loading = true
+    })
+    // lifeC
+    onMounted(() => {
+      deviceSupportInstall()
+      // add tabindex then wrapper can be focusable via Javascript
+      // focus wrapper so arrow key can't cause inner scroll behavior underneath
+      imageWrapper.value.focus()
+    })
+
+    // watch
+    watch(index, (val) => {
+      reset()
+      props.onSwitch(val)
+    })
+    watch(currentImg, (val) => {
+      nextTick(() => {
+        if (img.value.complete) {
+          loading = true
         }
       })
-    }
-  },
-  methods: {
-    hide() {
-      this.deviceSupportUninstall()
-      this.onClose()
-    },
-    deviceSupportInstall() {
-      this._keyDownHandler = rafThrottle((e) => {
-        const keyCode = e.keyCode
-        switch (keyCode) {
-          // ESC
-          case 27:
-            this.hide()
-            break
-          // SPACE
-          case 32:
-            this.toggleMode()
-            break
-          // LEFT_ARROW
-          case 37:
-            this.prev()
-            break
-          // UP_ARROW
-          case 38:
-            this.handleActions('zoomIn')
-            break
-          // RIGHT_ARROW
-          case 39:
-            this.next()
-            break
-          // DOWN_ARROW
-          case 40:
-            this.handleActions('zoomOut')
-            break
-        }
-      })
-      this._mouseWheelHandler = rafThrottle((e) => {
-        const delta = e.wheelDelta ? e.wheelDelta : -e.detail
-        if (delta > 0) {
-          this.handleActions('zoomIn', {
-            zoomRate: 0.015,
-            enableTransition: false
-          })
-        } else {
-          this.handleActions('zoomOut', {
-            zoomRate: 0.015,
-            enableTransition: false
-          })
-        }
-      })
-      on(document, 'keydown', this._keyDownHandler)
-      on(document, mousewheelEventName, this._mouseWheelHandler)
-    },
-    deviceSupportUninstall() {
-      off(document, 'keydown', this._keyDownHandler)
-      off(document, mousewheelEventName, this._mouseWheelHandler)
-      this._keyDownHandler = null
-      this._mouseWheelHandler = null
-    },
-    handleImgLoad(e) {
-      this.loading = false
-    },
-    handleImgError(e) {
-      this.loading = false
-      e.target.alt = '加载失败'
-    },
-    handleMouseDown(e) {
-      if (this.loading || e.button !== 0) return
-
-      const { offsetX, offsetY } = this.transform
-      const startX = e.pageX
-      const startY = e.pageY
-      this._dragHandler = rafThrottle((ev) => {
-        this.transform.offsetX = offsetX + ev.pageX - startX
-        this.transform.offsetY = offsetY + ev.pageY - startY
-      })
-      on(document, 'mousemove', this._dragHandler)
-      on(document, 'mouseup', (ev) => {
-        off(document, 'mousemove', this._dragHandler)
-      })
-
-      e.preventDefault()
-    },
-    reset() {
-      this.transform = {
-        scale: 1,
-        deg: 0,
-        offsetX: 0,
-        offsetY: 0,
-        enableTransition: false
-      }
-    },
-    toggleMode() {
-      if (this.loading) return
-
-      const modeNames = Object.keys(Mode)
-      const modeValues = Object.values(Mode)
-      const index = modeValues.findIndex((mode) => mode.name === this.mode.name)
-      const nextIndex = (index + 1) % modeNames.length
-      this.mode = Mode[modeNames[nextIndex]]
-      this.reset()
-    },
-    prev() {
-      if (this.isFirst && !this.infinite) return
-      const len = this.urlList.length
-      this.index = (this.index - 1 + len) % len
-    },
-    next() {
-      if (this.isLast && !this.infinite) return
-      const len = this.urlList.length
-      this.index = (this.index + 1) % len
-    },
-    handleActions(action, options = {}) {
-      if (this.loading) return
+    })
+    // methods
+    const handleActions = (action, options = {}) => {
+      if (loading.value) return
       const { zoomRate, rotateDeg, enableTransition } = {
         zoomRate: 0.2,
         rotateDeg: 90,
         enableTransition: true,
         ...options
       }
-      const { transform } = this
       switch (action) {
         case 'zoomOut':
-          if (transform.scale > 0.2) {
-            transform.scale = parseFloat(
-              (transform.scale - zoomRate).toFixed(3)
+          if (state.transform.scale > 0.2) {
+            state.transform.scale = parseFloat(
+              (state.transform.scale - zoomRate).toFixed(3)
             )
           }
           break
         case 'zoomIn':
-          transform.scale = parseFloat((transform.scale + zoomRate).toFixed(3))
+          state.transform.scale = parseFloat(
+            (state.transform.scale + zoomRate).toFixed(3)
+          )
           break
         case 'clocelise':
-          transform.deg += rotateDeg
+          state.transform.deg += rotateDeg
           break
         case 'anticlocelise':
-          transform.deg -= rotateDeg
+          state.transform.deg -= rotateDeg
           break
       }
-      transform.enableTransition = enableTransition
+      state.transform.enableTransition = enableTransition
     }
-  },
-  mounted() {
-    this.deviceSupportInstall()
-    // add tabindex then wrapper can be focusable via Javascript
-    // focus wrapper so arrow key can't cause inner scroll behavior underneath
-    this.$refs['el-image-viewer__wrapper'].focus()
+    const reset = () => {
+      state.transform = {
+        scale: 1,
+        deg: 0,
+        offsetX: 0,
+        offsetY: 0,
+        enableTransition: false
+      }
+    }
+
+    const toggleMode = () => {
+      if (loading) return
+      const modeNames = Object.keys(Mode)
+      const modeValues = Object.values(Mode)
+
+      const index = modeValues.findIndex(
+        (index) => index.name === state.mode.name
+      )
+
+      const nextIndex = (index + 1) % modeNames.length
+      state.mode = Mode[modeNames[nextIndex]]
+      reset()
+    }
+    const prev = () => {
+      if (isFirst && !infinite.value) return
+      const len = props.urlList.length
+      index.value = (index.value - 1 + len) % len
+    }
+    const next = () => {
+      if (isLast && !infinite.value) return
+      const len = props.urlList.length
+      index.value = (index.value + 1) % len
+    }
+    let _keyDownHandler = rafThrottle((e) => {
+      const keyCode = e.keyCode
+      switch (keyCode) {
+        // ESC
+        case 27:
+          hide()
+          break
+        // SPACE
+        case 32:
+          toggleMode()
+          break
+        // LEFT_ARROW
+        case 37:
+          prev()
+          break
+        // UP_ARROW
+        case 38:
+          handleActions('zoomIn')
+          break
+        // RIGHT_ARROW
+        case 39:
+          next()
+          break
+        // DOWN_ARROW
+        case 40:
+          handleActions('zoomOut')
+          break
+      }
+    })
+    let _mouseWheelHandler = rafThrottle((e) => {
+      const delta = e.wheelDelta ? e.wheelDelta : -e.detail
+      if (delta > 0) {
+        handleActions('zoomIn', {
+          zoomRate: 0.015,
+          enableTransition: false
+        })
+      } else {
+        handleActions('zoomOut', {
+          zoomRate: 0.015,
+          enableTransition: false
+        })
+      }
+    })
+    const deviceSupportInstall = () => {
+      on(document, 'keydown', _keyDownHandler)
+      on(document, mousewheelEventName, _mouseWheelHandler)
+    }
+    const deviceSupportUninstall = () => {
+      off(document, 'keydown', _keyDownHandler)
+      off(document, mousewheelEventName, _mouseWheelHandler)
+      _keyDownHandler = null
+      _mouseWheelHandler = null
+    }
+    const hide = () => {
+      deviceSupportUninstall()
+      props.onClose()
+    }
+    const handleImgLoad = (e) => {
+      loading = false
+    }
+    const handleImgError = (e) => {
+      loading = false
+      e.target.alt = '加载失败'
+    }
+    const handleMouseDown = (e) => {
+      if (loading || e.button !== 0) return
+
+      const { offsetX, offsetY } = state.transform
+      const startX = e.pageX
+      const startY = e.pageY
+      const _dragHandler = rafThrottle((ev) => {
+        state.transform.offsetX = offsetX + ev.pageX - startX
+        state.transform.offsetY = offsetY + ev.pageY - startY
+      })
+      on(document, 'mousemove', _dragHandler)
+      on(document, 'mouseup', (ev) => {
+        off(document, 'mousemove', _dragHandler)
+      })
+
+      e.preventDefault()
+    }
+
+    return {
+      img,
+      imageWrapper,
+      loading,
+      isShow,
+      state,
+      infinite,
+      index,
+      isSingle,
+      isFirst,
+      isLast,
+      currentImg,
+      imgStyle,
+      reset,
+      next,
+      prev,
+      toggleMode,
+      handleActions,
+      hide,
+      _keyDownHandler,
+      _mouseWheelHandler,
+      deviceSupportInstall,
+      deviceSupportUninstall,
+      handleImgLoad,
+      handleImgError,
+      handleMouseDown
+    }
   }
 }
 </script>
