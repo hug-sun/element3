@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Backtop from '../src/main.vue'
+import Backtop from '../Backtop.vue'
 describe('Backtop.vue', () => {
   const containerDeaultSlot = `<div class="target" style="width:100px;height:100px;overflow-y:scroll">
             <div style="height:4000px;width:100%">
