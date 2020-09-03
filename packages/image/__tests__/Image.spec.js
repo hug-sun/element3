@@ -49,18 +49,9 @@ describe('Image.vue', () => {
         'hello world!'
       )
     })
-
-    it('referrer-policy', async () => {
-      // TODO
-    })
-
-    it('lazy', async () => {
-      // TODO
-    })
-
-    it('scroll-container', async () => {
-      // TODO
-    })
+    test.todo('referrer-policy')
+    test.todo('lazy')
+    test.todo('scroll-container')
 
     it('preview-src-list', async () => {
       const wrapper = await mount(Image, {
@@ -95,12 +86,8 @@ describe('Image.vue', () => {
   })
 
   describe('Events', () => {
-    it('load', async () => {
-      // TODO
-    })
-    it('error', async () => {
-      // TODO
-    })
+    test.todo('load')
+    test.todo('error')
   })
 
   describe('Slots', () => {
