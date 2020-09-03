@@ -15,6 +15,7 @@
         v-if="predefine"
         :color="color"
         :colors="predefine"
+        :currentColor="currentColor"
       ></predefine>
       <div class="el-color-dropdown__btns">
         <span class="el-color-dropdown__value">

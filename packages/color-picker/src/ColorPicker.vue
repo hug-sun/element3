@@ -164,7 +164,6 @@ export default {
 
     const hide = () => {
       state.showPicker = false
-      resetColor()
     }
 
     const resetColor = () => {

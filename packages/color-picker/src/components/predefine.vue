@@ -16,15 +16,16 @@
 
 <script>
 import Color from '../color'
-import { reactive, toRefs, watch, getCurrentInstance } from 'vue'
+import { reactive, toRefs, watch } from 'vue'
 
 export default {
   props: {
+    currentColor: String,
     colors: { type: Array, required: true },
     color: { required: true }
   },
   setup(props) {
-    const { color, colors } = toRefs(props)
+    const { color, colors, currentColor } = toRefs(props)
 
     const parseColors = (colors, color) => {
       return colors.map((value) => {
@@ -46,12 +47,7 @@ export default {
     }
 
     watch(
-      () => {
-        const {
-          proxy: { $parent }
-        } = getCurrentInstance()
-        return $parent.currentColor
-      },
+      () => currentColor.value,
       (val) => {
         const color = new Color()
         color.fromString(val)

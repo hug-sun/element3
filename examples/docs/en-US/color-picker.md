@@ -12,7 +12,7 @@ ColorPicker is a color selector supporting multiple color formats.
 </div>
 <div class="block">
   <span class="demonstration">With no default value</span>
-  <el-color-picker v-model="color2"></el-color-picker>
+  <el-color-picker v-model="color2" @change="val => color2 = val"></el-color-picker>
 </div>
 
 <script>
