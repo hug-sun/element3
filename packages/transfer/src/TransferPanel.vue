@@ -104,7 +104,6 @@ export default {
   },
 
   setup(props, { emit, slots }) {
-
     const t = useLocale()
 
     const state = reactive({
@@ -113,7 +112,7 @@ export default {
       query: '',
       checkChangeByUser: true
     })
-    
+
     const {
       filteredData,
       labelProp,
@@ -149,7 +148,6 @@ export default {
 }
 
 const useTransferPanelData = (props, state, slots, emit) => {
-
   const filteredData = computed(() => {
     const { data, filterMethod } = props
     return data.filter((item) => {
@@ -172,7 +170,9 @@ const useTransferPanelData = (props, state, slots, emit) => {
     return p.key || 'key'
   })
 
-  const checkableData = computed(() => filteredData.value.filter((item) => !item[disabledProp.value]))
+  const checkableData = computed(() =>
+    filteredData.value.filter((item) => !item[disabledProp.value])
+  )
 
   const checkedSummary = computed(() => {
     const { data, format } = props
@@ -195,7 +195,9 @@ const useTransferPanelData = (props, state, slots, emit) => {
     return checkedLength > 0 && checkedLength < checkableData.value.length
   })
 
-  const hasNoMatch = computed(() => state.query.length > 0 && filteredData.value.length === 0)
+  const hasNoMatch = computed(
+    () => state.query.length > 0 && filteredData.value.length === 0
+  )
 
   const disabledProp = computed(() => props.props.disabled || 'disabled')
 
@@ -210,21 +212,27 @@ const useTransferPanelData = (props, state, slots, emit) => {
       checkableDataKeys.every((item) => state.checked.indexOf(item) > -1)
   }
 
-  watch(() => checkableData.value, (val, oldVal) => updateAllChecked())
+  watch(
+    () => checkableData.value,
+    (val, oldVal) => updateAllChecked()
+  )
 
-  watch(() => props.data, (val, oldVal) => {
-    const checked = []
-    const filteredDataKeys = filteredData.value.map(
-      (item) => item[keyProp.value]
-    )
-    state.checked.forEach((item) => {
-      if (filteredDataKeys.indexOf(item) > -1) {
-        checked.push(item)
-      }
-    })
-    state.checkChangeByUser = false
-    state.checked = checked
-  })
+  watch(
+    () => props.data,
+    (val, oldVal) => {
+      const checked = []
+      const filteredDataKeys = filteredData.value.map(
+        (item) => item[keyProp.value]
+      )
+      state.checked.forEach((item) => {
+        if (filteredDataKeys.indexOf(item) > -1) {
+          checked.push(item)
+        }
+      })
+      state.checkChangeByUser = false
+      state.checked = checked
+    }
+  )
 
   watch(
     () => state.checked,
@@ -252,7 +260,8 @@ const useTransferPanelData = (props, state, slots, emit) => {
         oldVal &&
         val.length === oldVal.length &&
         val.every((item) => oldVal.indexOf(item) > -1)
-      ) return
+      )
+        return
       const checked = []
       const checkableDataKeys = checkableData.value.map(
         (item) => item[keyProp.value]
@@ -269,7 +278,7 @@ const useTransferPanelData = (props, state, slots, emit) => {
       immediate: true
     }
   )
-  
+
   return {
     filteredData,
     labelProp,

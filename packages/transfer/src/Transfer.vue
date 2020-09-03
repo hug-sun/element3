@@ -58,7 +58,12 @@ import { ref, computed, watch, provide } from 'vue'
 export default {
   name: 'ElTransfer',
 
-  emits: ['update:modelValue', 'change', 'left-check-change', 'right-check-change'],
+  emits: [
+    'update:modelValue',
+    'change',
+    'left-check-change',
+    'right-check-change'
+  ],
 
   components: {
     TransferPanel,
@@ -132,7 +137,7 @@ export default {
   },
   setup(props, { emit, slots }) {
     const t = useLocale()
-    
+
     const leftChecked = ref([])
     const rightChecked = ref([])
 
@@ -151,8 +156,11 @@ export default {
     }
 
     watch(props.modelValue, (val, oldVal) => emit('update:modelValue', val))
-    
-    provide('defaultScopedSlots', computed(() => slots.default))
+
+    provide(
+      'defaultScopedSlots',
+      computed(() => slots.default)
+    )
 
     const {
       leftTransferPanelTitle,
@@ -188,11 +196,17 @@ export default {
 }
 
 const useTransferData = (props, t) => {
-  const leftTransferPanelTitle = computed(() => props.titles[0] || t('el.transfer.titles.0'))
+  const leftTransferPanelTitle = computed(
+    () => props.titles[0] || t('el.transfer.titles.0')
+  )
 
-  const rightTransferPanelTitle = computed(() => props.titles[1] || t('el.transfer.titles.1'))
+  const rightTransferPanelTitle = computed(
+    () => props.titles[1] || t('el.transfer.titles.1')
+  )
 
-  const panelFilterPlaceholder = computed(() => props.filterPlaceholder || t('el.transfer.filterPlaceholder'))
+  const panelFilterPlaceholder = computed(
+    () => props.filterPlaceholder || t('el.transfer.filterPlaceholder')
+  )
 
   const dataObj = computed(() => {
     const { props: p, data } = props
@@ -202,17 +216,13 @@ const useTransferData = (props, t) => {
 
   const sourceData = computed(() => {
     const { data, modelValue, props: p } = props
-    return data.filter(
-      (item) => modelValue.indexOf(item[p.key]) === -1
-    )
+    return data.filter((item) => modelValue.indexOf(item[p.key]) === -1)
   })
 
   const targetData = computed(() => {
     const { data, modelValue, props: p, targetOrder } = props
     if (targetOrder === 'original') {
-      return data.filter(
-        (item) => modelValue.indexOf(item[p.key]) > -1
-      )
+      return data.filter((item) => modelValue.indexOf(item[p.key]) > -1)
     } else {
       return modelValue.reduce((arr, cur) => {
         const val = dataObj.value[cur]
