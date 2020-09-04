@@ -1,11 +1,11 @@
-import { nextTick } from 'vue'
-import Loading from './loading.vue'
-import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom'
-import { PopupManager } from 'element-ui/src/utils/popup'
+import ElLoading from './loading.vue'
+import { nextTick, createApp } from 'vue'
 import afterLeave from 'element-ui/src/utils/after-leave'
-const Mask = { extends: Loading }
+import { PopupManager } from 'element-ui/src/utils/popup'
+import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom'
 
 const loadingDirective = {}
+
 loadingDirective.install = (app) => {
   // if (Vue.prototype.$isServer) return
   const toggleLoading = (el, binding) => {
@@ -65,6 +65,7 @@ loadingDirective.install = (app) => {
       el.instance.hiding = true
     }
   }
+
   const insertDom = (parent, el, binding) => {
     if (
       !el.domVisible &&
@@ -100,23 +101,23 @@ loadingDirective.install = (app) => {
       el.instance.hiding = false
     }
   }
+
   app.directive('loading', {
-    bind: function (el, binding, vnode) {
+    mounted: function (el, binding, vnode) {
       const textExr = el.getAttribute('element-loading-text')
       const spinnerExr = el.getAttribute('element-loading-spinner')
       const backgroundExr = el.getAttribute('element-loading-background')
       const customClassExr = el.getAttribute('element-loading-custom-class')
-      const vm = vnode.context
-      const mask = new Mask({
-        el: document.createElement('div'),
-        data: {
-          text: (vm && vm[textExr]) || textExr,
-          spinner: (vm && vm[spinnerExr]) || spinnerExr,
-          background: (vm && vm[backgroundExr]) || backgroundExr,
-          customClass: (vm && vm[customClassExr]) || customClassExr,
-          fullscreen: !!binding.modifiers.fullscreen
-        }
-      })
+
+      const props = vnode.props || {}
+      const mask = createApp(ElLoading).mount(document.createElement('div'))
+
+      mask.text = props[textExr] || textExr
+      mask.spinner = props[spinnerExr] || spinnerExr
+      mask.background = props[backgroundExr] || backgroundExr
+      mask.customClass = props[customClassExr] || customClassExr
+      mask.fullscreen = !!binding.modifiers.fullscreen
+
       el.instance = mask
       el.mask = mask.$el
       el.maskStyle = {}
@@ -124,14 +125,14 @@ loadingDirective.install = (app) => {
       binding.value && toggleLoading(el, binding)
     },
 
-    update: function (el, binding) {
+    updated: function (el, binding) {
       el.instance.setText(el.getAttribute('element-loading-text'))
       if (binding.oldValue !== binding.value) {
         toggleLoading(el, binding)
       }
     },
 
-    unbind: function (el, binding) {
+    unmounted: function (el, binding) {
       if (el.domInserted) {
         el.mask && el.mask.parentNode && el.mask.parentNode.removeChild(el.mask)
         toggleLoading(el, { value: false, modifiers: binding.modifiers })
