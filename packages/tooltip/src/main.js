@@ -9,6 +9,7 @@ export default {
   name: 'ElTooltip',
 
   mixins: [Popper],
+  emits: ['input'],
 
   props: {
     openDelay: {
@@ -79,7 +80,7 @@ export default {
   render(h) {
     if (this.popperVM) {
       this.popperVM.node = (
-        <transition name={this.transition} onAfterLeave={this.doDestroy}>
+        // <transition name={this.transition} onAfterLeave={this.doDestroy}>
           <div
             onMouseleave={() => {
               this.setExpectedState(false)
@@ -101,7 +102,7 @@ export default {
           >
             {this.$slots.content || this.content}
           </div>
-        </transition>
+        // </transition>
       )
     }
 
@@ -220,13 +221,13 @@ export default {
     },
 
     getFirstElement() {
-      const slots = this.$slots.default
+      const slots = this.$slots.default()
       if (!Array.isArray(slots)) return null
       let element = null
       for (let index = 0; index < slots.length; index++) {
-        if (slots[index] && slots[index].tag) {
+        // if (slots[index] && slots[index].tag) {
           element = slots[index]
-        }
+        // }
       }
       return element
     }
