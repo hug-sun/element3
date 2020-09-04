@@ -17,3 +17,98 @@ describe('TimelineItem.vue', () => {
     expect(wrapper.find('.el-timeline-item__content').text()).toBe('吃饭饭')
   })
 })
+
+describe('TimelineItem.vue', () => {
+  it('should timeline works', () => {
+    const wrapper = mount(TimelineItem, {
+      props: {
+        hideTimestamp: true
+      },
+      slots: {
+        default: 'aaa'
+      }
+    })
+
+    // expect(wrapper.find('.hideTimestamp').text()).toBe(
+    //   ''
+    // )
+    expect(wrapper.exists()).toBe(true)
+    expect(wrapper.find('.el-timeline-item__content').text()).toBe('aaa')
+  })
+})
+
+describe('TimelineItem.vue', () => {
+  it('should timeline works', () => {
+    const wrapper = mount(TimelineItem, {
+      props: {
+        placement: 'top'
+      }
+      // slots: {
+      //   default: 'bbb'
+      // }
+    })
+    expect(wrapper.find('.el-timeline-item__timestamp').classes()).toContain(
+      'is-top'
+    )
+
+    // expect(wrapper.find('.el-timeline-item__content').text()).toBe('bbb')
+  })
+})
+
+describe('TimelineItem.vue', () => {
+  it('should timeline works', () => {
+    const wrapper = mount(TimelineItem, {
+      props: {
+        type: 'primary'
+      }
+    })
+    expect(wrapper.find('.el-timeline-item__node').classes()).toContain(
+      'el-timeline-item__node--primary'
+    )
+
+    // expect(wrapper.find('.el-timeline-item__content').text()).toBe('bbb')
+  })
+})
+describe('TimelineItem.vue', () => {
+  it('should timeline works', () => {
+    const wrapper = mount(TimelineItem, {
+      props: {
+        color: 'red'
+      }
+    })
+
+    expect(wrapper.find('.el-timeline-item__node').attributes().style).toBe(
+      'background-color: red;'
+    )
+  })
+})
+
+describe('TimelineItem.vue', () => {
+  it('should timeline works', () => {
+    const wrapper = mount(TimelineItem, {
+      props: {
+        size: 'large'
+      }
+    })
+
+    // expect(wrapper.classes()).toContain('el-timeline-item__node--')
+
+    expect(wrapper.find('.el-timeline-item__node').classes()).toContain(
+      'el-timeline-item__node--large'
+    )
+  })
+})
+
+describe('TimelineItem.vue', () => {
+  it('should timeline works', () => {
+    const wrapper = mount(TimelineItem, {
+      props: {
+        icon: 'ccc'
+      }
+    })
+
+    // expect(wrapper.classes()).toContain('el-timeline-item__node--')
+
+    expect(wrapper.find('.el-timeline-item__icon').classes()).toContain('ccc')
+  })
+})
