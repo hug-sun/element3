@@ -1,8 +1,8 @@
-import Switch from './Switch.vue'
+import ElSwitch from './Switch.vue'
 
 /* istanbul ignore next */
-Switch.install = function (app) {
-  app.component(Switch.name, Switch)
+ElSwitch.install = function (app) {
+  app.component(ElSwitch.name, ElSwitch)
 }
 
-export default Switch
+export default ElSwitch

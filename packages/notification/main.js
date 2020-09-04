@@ -23,12 +23,13 @@ const Notification = function (options) {
       verticalOffset += (instance.el.offsetHeight || 0) + 16
     })
   verticalOffset += 16
+  const nextZIndex = PopupManager.nextZIndex()
   options = merge(
     {
       id,
       position,
       verticalOffset,
-      style: { zIndex: PopupManager.nextZIndex() },
+      zIndex: nextZIndex,
       onClose() {
         Notification.close(id, userOnClose)
       }
@@ -49,6 +50,7 @@ const Notification = function (options) {
   const container = document.createElement('div')
 
   render(instance, container)
+  instance.el.style.zIndex = nextZIndex
   instances.push(instance)
   document.body.appendChild(instance.el)
   return {

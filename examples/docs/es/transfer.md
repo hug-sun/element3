@@ -4,32 +4,34 @@
 :::demo Los datos se pasan a Transfer a través del atributo `data`. Los datos tienen que ser un array de objetos, y cada objeto debe tener estos atributos: `key` que será el identificador del ítem, `label` que será el texto a mostrar, y `disabled` que indicará si el elemento esta desactivado. Los items dentro de la lista destino están sincronizados con la variable asociada a `v-model`, y el valor de esa variable es un array de claves de los elementos de la lista destino. Así que si no quiere que la lista destino esté vacía inicialmente puede inicializar el `v-model` con un array.
 ```html
 <template>
-  <el-transfer
-    v-model="value"
-    :data="data">
-  </el-transfer>
+  <el-transfer v-model="value" :data="data"></el-transfer>
 </template>
 
 <script>
-  export default {
-    data() {
-      const generateData = _ => {
-        const data = [];
-        for (let i = 1; i <= 15; i++) {
-          data.push({
-            key: i,
-            label: `Option ${ i }`,
-            disabled: i % 4 === 0
-          });
-        }
-        return data;
-      };
-      return {
-        data: generateData(),
-        value: [1, 4]
-      };
-    }
-  };
+import { reactive, toRefs } from 'vue'
+
+export default {
+  setup() {
+    const state = reactive({
+      data: generateData(),
+      value: [1, 4]
+    })
+
+    return toRefs(state)
+  }
+}
+
+const generateData = _ => {
+  const data = []
+  for (let i = 1; i <= 15; i++) {
+    data.push({
+      key: i,
+      label: `Option ${ i }`,
+      disabled: i % 4 === 0
+    })
+  }
+  return data
+}
 </script>
 ```
 :::
@@ -54,27 +56,27 @@ Puede buscar y filtrar los items.
   export default {
     data() {
       const generateData = _ => {
-        const data = [];
-        const states = ['California', 'Illinois', 'Maryland', 'Texas', 'Florida', 'Colorado', 'Connecticut '];
-        const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT'];
+        const data = []
+        const states = ['California', 'Illinois', 'Maryland', 'Texas', 'Florida', 'Colorado', 'Connecticut ']
+        const initials = ['CA', 'IL', 'MD', 'TX', 'FL', 'CO', 'CT']
         states.forEach((city, index) => {
           data.push({
             label: city,
-            key: index,
+            key: initials[index],
             initial: initials[index]
-          });
-        });
-        return data;
-      };
+          })
+        })
+        return data
+      }
       return {
         data: generateData(),
         value: [],
         filterMethod(query, item) {
-          return item.initial.toLowerCase().indexOf(query.toLowerCase()) > -1;
+          return item.initial.toLowerCase().indexOf(query.toLowerCase()) > -1
         }
-      };
+      }
     }
-  };
+  }
 </script>
 ```
 :::
@@ -102,9 +104,14 @@ Puede personalizar los títulos, botones, la función de renderizado de los item
         hasChecked: '${checked}/${total}'
       }"
       @change="handleChange"
-      :data="data">
-      <el-button class="transfer-footer" slot="left-footer" size="small">Operation</el-button>
-      <el-button class="transfer-footer" slot="right-footer" size="small">Operation</el-button>
+      :data="data"
+    >
+      <template #left-footer>
+        <el-button class="transfer-footer" size="small">Operation</el-button>
+      </template>
+      <template #right-footer>
+        <el-button class="transfer-footer" size="small">Operation</el-button>
+      </template>
     </el-transfer>
   </div>
   <p style="text-align: center; margin: 50px 0 20px">Customize data items using scoped slot</p>
@@ -122,51 +129,63 @@ Puede personalizar los títulos, botones, la función de renderizado de los item
         hasChecked: '${checked}/${total}'
       }"
       @change="handleChange"
-      :data="data">
-      <span slot-scope="{ option }">{{ option.key }} - {{ option.label }}</span>
-      <el-button class="transfer-footer" slot="left-footer" size="small">Operation</el-button>
-      <el-button class="transfer-footer" slot="right-footer" size="small">Operation</el-button>
+      :data="data"
+    >
+      <template #default="{ option }">
+        <span>{{ option.key }} - {{ option.label }}</span>
+      </template>
+      
+      <template #left-footer>
+        <el-button class="transfer-footer" size="small">Operation</el-button>
+      </template>
+      <template #right-footer>
+        <el-button class="transfer-footer" size="small">Operation</el-button>
+      </template>
     </el-transfer>
   </div>
 </template>
 
-<style>
+<style scoped>
   .transfer-footer {
-    margin-left: 20px;
+    margin-left: 15px;
     padding: 6px 5px;
   }
 </style>
 
 <script>
-  export default {
-    data() {
-      const generateData = _ => {
-        const data = [];
-        for (let i = 1; i <= 15; i++) {
-          data.push({
-            key: i,
-            label: `Option ${ i }`,
-            disabled: i % 4 === 0
-          });
-        }
-        return data;
-      };
-      return {
-        data: generateData(),
-        value: [1],
-        value4: [1],
-        renderFunc(h, option) {
-          return <span>{ option.key } - { option.label }</span>;
-        }
-      };
-    },
+import { reactive, toRefs } from 'vue'
 
-    methods: {
-      handleChange(value, direction, movedKeys) {
-        console.log(value, direction, movedKeys);
-      }
+export default {
+  setup() {
+    const state = reactive({
+      data: generateData(),
+      value: [1],
+      value4: [1]
+    })
+
+    const renderFunc = (h, option) => <span>{ option.key } - { option.label }</span>
+
+    const handleChange = (value, direction, movedKeys) => console.log(value, direction, movedKeys)
+    
+    return {
+      ...toRefs(state),
+      renderFunc,
+      handleChange
     }
-  };
+  }
+}
+
+const generateData = _ => {
+  const data = []
+  for (let i = 1; i <= 15; i++) {
+    data.push({
+      key: i,
+      label: `Option ${ i }`,
+      disabled: i % 4 === 0
+    })
+  }
+  return data
+}
 </script>
 ```
 :::
@@ -184,30 +203,36 @@ Por defecto Transfer busca los atributos `key`, `label`, y `disabled` en cada el
       key: 'value',
       label: 'desc'
     }"
-    :data="data">
+    :data="data"
+  >
   </el-transfer>
 </template>
 
 <script>
-  export default {
-    data() {
-      const generateData = _ => {
-        const data = [];
-        for (let i = 1; i <= 15; i++) {
-          data.push({
-            value: i,
-            desc: `Option ${ i }`,
-            disabled: i % 4 === 0
-          });
-        }
-        return data;
-      };
-      return {
-        data: generateData(),
-        value: []
-      };
-    }
-  };
+import { reactive, toRefs } from 'vue'
+
+export default {
+  setup() {
+    const state = reactive({
+      value: [],
+      data: generateData()
+    })
+
+    return toRefs(state)
+  }
+}
+
+const generateData = _ => {
+  const data = []
+  for (let i = 1; i <= 15; i++) {
+    data.push({
+      value: i,
+      desc: `Option ${ i }`,
+      disabled: i % 4 === 0
+    })
+  }
+  return data
+}
 </script>
 ```
 :::
