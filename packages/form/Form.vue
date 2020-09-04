@@ -223,7 +223,7 @@ const useValidate = (rules, model, fields, validateOnRuleChange) => {
     })
   }
 
-  watch(() => rules, () => {
+  watch(rules, () => {
     // remove then add event listeners on form-item after form rules change
     fields.forEach((field) => {
       field.removeValidateEvents()
