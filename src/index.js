@@ -14,6 +14,8 @@ import Popover from '../packages/popover/index.js';
 import Tooltip from '../packages/tooltip/index.js';
 import Breadcrumb from '../packages/breadcrumb/index.js';
 import BreadcrumbItem from '../packages/breadcrumb-item/index.js';
+import Form from '../packages/form/index.js';
+import FormItem from '../packages/form-item/index.js';
 import Tag from '../packages/tag/index.js';
 import Alert from '../packages/alert/index.js';
 import Icon from '../packages/icon/index.js';
@@ -52,6 +54,8 @@ const components = [
   Tooltip,
   Breadcrumb,
   BreadcrumbItem,
+  Form,
+  FormItem,
   Tag,
   Alert,
   Icon,
@@ -126,6 +130,8 @@ export default {
   Tooltip,
   Breadcrumb,
   BreadcrumbItem,
+  Form,
+  FormItem,
   Tag,
   Alert,
   Icon,
