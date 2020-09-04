@@ -3,10 +3,10 @@ import { computed, getCurrentInstance, Transition } from 'vue'
 export default {
   name: 'ElTag',
   props: {
-    closable: Boolean,
     type: String,
-    hit: Boolean,
+    closable: Boolean,
     disableTransitions: Boolean,
+    hit: Boolean,
     color: String,
     size: String,
     effect: {
