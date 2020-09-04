@@ -3,12 +3,24 @@ import { computed, getCurrentInstance, Transition } from 'vue'
 export default {
   name: 'ElTag',
   props: {
-    type: String,
+    type: {
+      type: String,
+      default: '',
+      validator(val) {
+        return ['success', 'info', 'warning', 'danger'].indexOf(val) !== -1
+      }
+    },
     closable: Boolean,
     disableTransitions: Boolean,
     hit: Boolean,
     color: String,
-    size: String,
+    size: {
+      type: String,
+      default: '',
+      validator(val) {
+        return ['medium', 'small', 'mini'].indexOf(val) !== -1
+      }
+    },
     effect: {
       type: String,
       default: 'light',
@@ -20,12 +32,12 @@ export default {
   setup(props, { emit, slots }) {
     const {
       type,
-      hit,
-      effect,
-      color,
       closable,
       disableTransitions,
-      size
+      hit,
+      color,
+      size,
+      effect
     } = props
 
     const tagSize = computed(() => {
