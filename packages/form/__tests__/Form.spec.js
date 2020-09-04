@@ -2,6 +2,7 @@ import Form from '../Form.vue'
 import FormItem from '../../form-item/FormItem.vue'
 
 import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 
 const components = {
   ElForm: Form,
@@ -351,5 +352,39 @@ describe('Form', () => {
         done()
       }, 100)
     }, 100)
+  })
+
+  it('modify rules', async () => {
+    const rules = {
+      name: [{ min: 5, message: '用户名至少5位' }]
+    }
+    const wrapper = mount({
+      template: `
+        <el-form :model="form" :rules="rules">
+          <el-form-item label="活动名称" prop="name">
+          </el-form-item>
+        </el-form>
+      `,
+      components,
+      data() {
+        return {
+          form: {
+            name: 'tom'
+          },
+          rules
+        }
+      }
+    })
+
+    const form = wrapper.findComponent(Form).vm
+    form.validate((valid) => console.log(valid))
+    await nextTick()
+    // 开始校验有错误
+    expect(wrapper.find('.el-form-item__error').text()).toBe('用户名至少5位')
+    // 修改规则后重新校验，错误信息消失
+    rules.name[0].min = 3
+    setTimeout(() => {
+      expect(wrapper.find('.el-form-item__error').exists()).toBe(false)
+    }, 500)
   })
 })
