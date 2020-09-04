@@ -1,4 +1,4 @@
-import Row from './src/row'
+import Row from './Row.js'
 
 /* istanbul ignore next */
 Row.install = function (app) {

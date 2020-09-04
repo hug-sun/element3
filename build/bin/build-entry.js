@@ -116,8 +116,11 @@ ComponentNames.forEach((name) => {
       'message',
       'timeline',
       'timeline-item',
+      'input-number',
       'step',
-      'steps'
+      'steps',
+      'drawer',
+      'transfer'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
