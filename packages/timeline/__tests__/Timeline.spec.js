@@ -21,4 +21,18 @@ describe('Timeline.vue', () => {
     })
     expect(wrapper.find('.el-timeline').text()).toBe('BA')
   })
+
+  it('should slot null', () => {
+    const wrapper = mount(Timeline, {})
+    expect(wrapper.find('.el-timeline').text()).toBe('')
+  })
+
+  it('should slot empty array', () => {
+    const wrapper = mount(Timeline, {
+      slots: {
+        default: []
+      }
+    })
+    expect(wrapper.find('.el-timeline').text()).toBe('')
+  })
 })
