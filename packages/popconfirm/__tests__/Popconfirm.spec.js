@@ -57,26 +57,14 @@ describe('Popconfirm', () => {
   })
 
   it('Events:confirm event', async () => {
-    const wrapper = mount(Popconfirm, {
-      slots: {
-        reference:
-          '<el-button class="reference-slot">reference slot</el-button>'
-      }
-    })
-    await wrapper.find('.reference-slot').trigger('click')
+    const wrapper = mount(Popconfirm)
     const confirmBtn = wrapper.find('.el-popconfirm__action>button:last-child')
     await confirmBtn.trigger('click')
     expect(wrapper.emitted('onConfirm')).toBeTruthy()
   })
 
   it('Events:cancel event', async () => {
-    const wrapper = mount(Popconfirm, {
-      slots: {
-        reference:
-          '<el-button class="reference-slot">reference slot</el-button>'
-      }
-    })
-    await wrapper.find('.reference-slot').trigger('click')
+    const wrapper = mount(Popconfirm)
     const cancelBtn = wrapper.find('.el-popconfirm__action>button:first-child')
     await cancelBtn.trigger('click')
     expect(wrapper.emitted('onCancel')).toBeTruthy()
