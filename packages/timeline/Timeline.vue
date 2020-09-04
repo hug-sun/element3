@@ -1,4 +1,5 @@
 <script>
+import { Fragment } from 'vue'
 export default {
   name: 'ElTimeline',
 
@@ -25,8 +26,7 @@ export default {
     if (this.$slots.default) {
       slots = this.$slots.default()
       let children
-      // judge is Fragment
-      if (slots.length > 0 && slots[0].shapeFlag === 16) {
+      if (slots.length > 0 && slots[0].type === Fragment) {
         children = slots[0].children
       } else {
         children = slots
