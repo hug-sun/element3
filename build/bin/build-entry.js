@@ -39,8 +39,10 @@ const install = function(app, opts = {}) {
   // app.config.globalProperties.$alert = MessageBox.alert;
   // app.config.globalProperties.$confirm = MessageBox.confirm;
   // app.config.globalProperties.$prompt = MessageBox.prompt;
-  // app.config.globalProperties.$notify = Notification;
-  app.config.globalProperties.$message = Message;
+
+   app.config.globalProperties.$notify = Notification;
+   app.config.globalProperties.$message = Message;
+
 };
 
 /* istanbul ignore if */
@@ -110,7 +112,17 @@ ComponentNames.forEach((name) => {
       'divider',
       'progress',
       'message',
-      'pagination'
+      'pagination',
+      'notification',
+      'page-header',
+      'message',
+      'timeline',
+      'timeline-item',
+      'input-number',
+      'step',
+      'steps',
+      'drawer',
+      'transfer'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换

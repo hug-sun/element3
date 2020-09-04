@@ -1,10 +1,10 @@
-import Vue, { VNode } from 'vue'
+import  { VNode } from 'vue'
 import { MessageType } from './message'
 
 export type NotificationPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
 
 /** Notification Component */
-export declare class ElNotificationComponent extends Vue {
+export declare class ElNotificationComponent  {
   /** Close the Notification instance */
   close (): void
 }

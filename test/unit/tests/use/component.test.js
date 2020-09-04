@@ -1,4 +1,4 @@
-import { createComponent } from 'main/use/component.js'
+import { createComponent, unmountComponent } from 'main/use/component.js'
 
 describe('component', () => {
   describe('createComponent', () => {
@@ -18,6 +18,17 @@ describe('component', () => {
 
       expect($cf).toBeCalled()
       expect(instance.ctx.$el.innerHTML).toBe('foo')
+    })
+
+    it('the specified component should be destroyed', () => {
+      const Comp = {
+        template: '<div>foo</div>'
+      }
+
+      const instance = createComponent(Comp)
+      expect(instance.isMounted).toBe(true)
+      unmountComponent(instance)
+      expect(instance.isUnmounted).toBe(true)
     })
   })
 })
