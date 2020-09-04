@@ -19,6 +19,7 @@ import BreadcrumbItem from '../packages/breadcrumb-item/index.js';
 import Tag from '../packages/tag/index.js';
 import Alert from '../packages/alert/index.js';
 import Notification from '../packages/notification/index.js';
+import Loading from '../packages/loading/index.js';
 import Icon from '../packages/icon/index.js';
 import Row from '../packages/row/index.js';
 import Col from '../packages/col/index.js';
@@ -42,6 +43,7 @@ import TimelineItem from '../packages/timeline-item/index.js';
 import Link from '../packages/link/index.js';
 import Divider from '../packages/divider/index.js';
 import Image from '../packages/image/index.js';
+import Calendar from '../packages/calendar/index.js';
 import Backtop from '../packages/backtop/index.js';
 import PageHeader from '../packages/page-header/index.js';
 import Avatar from '../packages/avatar/index.js';
@@ -91,6 +93,7 @@ const components = [
   Link,
   Divider,
   Image,
+  Calendar,
   Backtop,
   PageHeader,
   Avatar,
@@ -107,14 +110,14 @@ const install = function(app, opts = {}) {
   });
 
   // app.use(InfiniteScroll);
-  // app.use(Loading.directive);
+  app.use(Loading.directive);
 
   app.config.globalProperties.$ELEMENT = {
     size: opts.size || '',
     zIndex: opts.zIndex || 2000
   };
 
-  // app.config.globalProperties.$loading = Loading.service;
+  app.config.globalProperties.$loading = Loading.service;
   // app.config.globalProperties.$msgbox = MessageBox;
   // app.config.globalProperties.$alert = MessageBox.alert;
   // app.config.globalProperties.$confirm = MessageBox.confirm;
@@ -136,7 +139,6 @@ export default {
   i18n: locale.i18n,
   install,
   CollapseTransition,
-  // Loading,
   Pagination,
   Dialog,
   Input,
@@ -157,6 +159,7 @@ export default {
   Tag,
   Alert,
   Notification,
+  Loading,
   Icon,
   Row,
   Col,
@@ -180,6 +183,7 @@ export default {
   Link,
   Divider,
   Image,
+  Calendar,
   Backtop,
   PageHeader,
   Avatar,
