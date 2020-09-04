@@ -41,7 +41,7 @@ export default {
 
   setup(props,{ attrs, emit, slots }){
     
-    const {selectedDay,range,date,hideHeader,firstDayOfWeek}=toRefs(props);
+    const {selectedDay,date,hideHeader,firstDayOfWeek}=toRefs(props);
     const  WEEK_DAYS= ref(getI18nSettings().dayNames)
     
     const { elCalendar} = useInject()
