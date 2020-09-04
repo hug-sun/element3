@@ -34,7 +34,7 @@ const install = function(app, opts = {}) {
     zIndex: opts.zIndex || 2000
   };
 
-  // app.config.globalProperties.$loading = Loading.service;
+  app.config.globalProperties.$loading = Loading.service;
   // app.config.globalProperties.$msgbox = MessageBox;
   // app.config.globalProperties.$alert = MessageBox.alert;
   // app.config.globalProperties.$confirm = MessageBox.confirm;
@@ -111,8 +111,6 @@ ComponentNames.forEach((name) => {
       'rate',
       'divider',
       'progress',
-      'message',
-      'pagination',
       'notification',
       'page-header',
       'message',
@@ -122,7 +120,8 @@ ComponentNames.forEach((name) => {
       'step',
       'steps',
       'drawer',
-      'transfer'
+      'transfer',
+      'loading'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
