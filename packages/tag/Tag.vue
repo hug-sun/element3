@@ -3,7 +3,6 @@ import { computed, getCurrentInstance, Transition } from 'vue'
 export default {
   name: 'ElTag',
   props: {
-    text: String,
     closable: Boolean,
     type: String,
     hit: Boolean,
