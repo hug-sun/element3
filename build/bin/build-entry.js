@@ -109,7 +109,8 @@ ComponentNames.forEach((name) => {
       'rate',
       'divider',
       'progress',
-      'message'
+      'message',
+      'pagination'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
