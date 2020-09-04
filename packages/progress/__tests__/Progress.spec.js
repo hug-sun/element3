@@ -16,24 +16,24 @@ describe('Progress.vue', () => {
     })
 
     it('type', () => {
-      const wrapper_line = mount(Progress, {
+      const wrapperLine = mount(Progress, {
         props: {
           type: 'line'
         }
       })
-      const wrapper_circle = mount(Progress, {
+      const wrapperCircle = mount(Progress, {
         props: {
           type: 'circle'
         }
       })
-      const wrapper_dashboard = mount(Progress, {
+      const wrapperDashboard = mount(Progress, {
         props: {
           type: 'dashboard'
         }
       })
-      expect(wrapper_line.classes()).toContain('el-progress--line')
-      expect(wrapper_circle.classes()).toContain('el-progress--circle')
-      expect(wrapper_dashboard.classes()).toContain('el-progress--dashboard')
+      expect(wrapperLine.classes()).toContain('el-progress--line')
+      expect(wrapperCircle.classes()).toContain('el-progress--circle')
+      expect(wrapperDashboard.classes()).toContain('el-progress--dashboard')
     })
 
     it('strokeWidth', () => {
@@ -57,40 +57,40 @@ describe('Progress.vue', () => {
     })
 
     it('status', () => {
-      const wrapper_success = mount(Progress, {
+      const wrapperSuccess = mount(Progress, {
         props: {
           status: 'success'
         }
       })
-      const wrapper_exception = mount(Progress, {
+      const wrapperException = mount(Progress, {
         props: {
           status: 'exception'
         }
       })
-      const wrapper_warning = mount(Progress, {
+      const wrapperWarning = mount(Progress, {
         props: {
           status: 'warning'
         }
       })
-      expect(wrapper_success.classes()).toContain('is-success')
-      expect(wrapper_exception.classes()).toContain('is-exception')
-      expect(wrapper_warning.classes()).toContain('is-warning')
+      expect(wrapperSuccess.classes()).toContain('is-success')
+      expect(wrapperException.classes()).toContain('is-exception')
+      expect(wrapperWarning.classes()).toContain('is-warning')
     })
 
-    it('color', async() => {
-      const wrapper_string = mount(Progress, {
+    it('color', async () => {
+      const wrapperString = mount(Progress, {
         props: {
           color: 'rgb(0, 0, 0)'
         }
       })
-      const wrapper_function = mount(Progress, {
+      const wrapperFunction = mount(Progress, {
         props: {
           color: () => {
             return '#13ce66'
           }
         }
       })
-      const wrapper_array = mount(Progress, {
+      const wrapperArray = mount(Progress, {
         props: {
           percentage: 50,
           color: [
@@ -104,21 +104,21 @@ describe('Progress.vue', () => {
       })
 
       expect(
-        wrapper_string.find('.el-progress-bar__inner').attributes().style
+        wrapperString.find('.el-progress-bar__inner').attributes().style
       ).toContain('rgb(0, 0, 0)')
       expect(
-        wrapper_function.find('.el-progress-bar__inner').attributes().style
+        wrapperFunction.find('.el-progress-bar__inner').attributes().style
       ).toContain('rgb(19, 206, 102)')
 
       expect(
-        wrapper_array.find('.el-progress-bar__inner').attributes().style
+        wrapperArray.find('.el-progress-bar__inner').attributes().style
       ).toContain('rgb(32, 160, 255)')
-      await wrapper_array.setProps({
+      await wrapperArray.setProps({
         percentage: 70
       })
 
       expect(
-        wrapper_array.find('.el-progress-bar__inner').attributes().style
+        wrapperArray.find('.el-progress-bar__inner').attributes().style
       ).toContain('rgb(19, 206, 102)')
     })
 

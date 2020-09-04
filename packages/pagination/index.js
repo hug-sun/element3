@@ -1,7 +1,7 @@
-import Pagination from './src/pagination'
+import Pagination from './Pagination'
 
 /* istanbul ignore next */
-Pagination.install = function(app) {
+Pagination.install = function (app) {
   app.component(Pagination.name, Pagination)
 }
 

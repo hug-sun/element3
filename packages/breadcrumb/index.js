@@ -1,7 +1,7 @@
-import ElBreadcrumb from './src/Breadcrumb'
+import ElBreadcrumb from './Breadcrumb'
 
 /* istanbul ignore next */
-ElBreadcrumb.install = function(app) {
+ElBreadcrumb.install = function (app) {
   app.component(ElBreadcrumb.name, ElBreadcrumb)
 }
 

@@ -18,7 +18,10 @@ function stripTemplate(content) {
   if (!content) {
     return content
   }
-  return content.replace(/<(script|style)[\s\S]+<\/\1>/g, '').trim()
+  content = content.replace(/<(script|style)[\s\S]+<\/\1>/g, '').trim()
+  // 过滤<template>
+  const ret = content.match(/<(template)\s*>([\s\S]+)<\/\1>/)
+  return ret ? ret[2].trim() : content
 }
 
 // function pad(source) {
@@ -29,7 +32,6 @@ function stripTemplate(content) {
 // }
 
 function genInlineComponentText(template, script) {
-
   // const finalOptions = {
   //   source: `<div>${template}</div>`,
   //   filename: 'inline-component', // TODO：这里有待调整
@@ -60,7 +62,11 @@ function genInlineComponentText(template, script) {
   // todo: 这里采用了硬编码有待改进
   script = script.trim()
   if (script) {
-    script = script.replace(/export\s+default/, 'const democomponentExport =')
+    script = script
+      .replace(/export\s+default/, 'const democomponentExport =')
+      .replace(/import ([,{}\w\s]+) from ['"\w]+/g, function (s0, s1) {
+        return `const ${s1} = Vue`
+      })
   } else {
     script = 'const democomponentExport = {}'
   }
@@ -68,11 +74,16 @@ function genInlineComponentText(template, script) {
     ${demoComponentContent}
     ${script}
     return {
+      mounted(){
+        this.$nextTick(()=>{
+          const blocks = document.querySelectorAll('pre code:not(.hljs)')
+          Array.prototype.forEach.call(blocks, hljs.highlightBlock)
+        })
+      },
       render,
       ...democomponentExport
     }
   })()`
-  // console.log(demoComponentContent)
   return demoComponentContent
 }
 

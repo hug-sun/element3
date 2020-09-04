@@ -2,50 +2,50 @@
   <div
     :class="carouselClasses"
     @mouseenter.stop="handleMouseEnter"
-    @mouseleave.stop="handleMouseLeave">
-    <div
-      class="el-carousel__container"
-      :style="{ height: height }">
-      <transition
-        v-if="arrowDisplay"
-        name="carousel-arrow-left">
+    @mouseleave.stop="handleMouseLeave"
+  >
+    <div class="el-carousel__container" :style="{ height: height }">
+      <transition v-if="arrowDisplay" name="carousel-arrow-left">
         <button
           type="button"
           v-show="(arrow === 'always' || hover) && (loop || activeIndex > 0)"
           @mouseenter="handleButtonEnter('left')"
           @mouseleave="handleButtonLeave"
           @click.stop="throttledArrowClick(activeIndex - 1)"
-          class="el-carousel__arrow el-carousel__arrow--left">
+          class="el-carousel__arrow el-carousel__arrow--left"
+        >
           <i class="el-icon-arrow-left"></i>
         </button>
       </transition>
-      <transition
-        v-if="arrowDisplay"
-        name="carousel-arrow-right">
+      <transition v-if="arrowDisplay" name="carousel-arrow-right">
         <button
           type="button"
-          v-show="(arrow === 'always' || hover) && (loop || activeIndex < items.length - 1)"
+          v-show="
+            (arrow === 'always' || hover) &&
+            (loop || activeIndex < items.length - 1)
+          "
           @mouseenter="handleButtonEnter('right')"
           @mouseleave="handleButtonLeave"
           @click.stop="throttledArrowClick(activeIndex + 1)"
-          class="el-carousel__arrow el-carousel__arrow--right">
+          class="el-carousel__arrow el-carousel__arrow--right"
+        >
           <i class="el-icon-arrow-right"></i>
         </button>
       </transition>
       <slot></slot>
     </div>
-    <ul
-      v-if="indicatorPosition !== 'none'"
-      :class="indicatorsClasses">
+    <ul v-if="indicatorPosition !== 'none'" :class="indicatorsClasses">
       <li
         v-for="(item, index) in items"
         :key="index"
         :class="[
           'el-carousel__indicator',
           'el-carousel__indicator--' + direction,
-          { 'is-active': index === activeIndex }]"
+          { 'is-active': index === activeIndex }
+        ]"
         @mouseenter="throttledIndicatorHover(index)"
-        @click.stop="handleIndicatorClick(index)">
+        @click.stop="handleIndicatorClick(index)"
+      >
         <button class="el-carousel__button">
           <span v-if="hasLabel">{{ item.ctx.label }}</span>
         </button>
@@ -55,7 +55,18 @@
 </template>
 
 <script>
-import { ref, toRefs, computed, watch, reactive, nextTick, provide, onMounted, getCurrentInstance, onUnmounted} from 'vue'
+import {
+  ref,
+  toRefs,
+  computed,
+  watch,
+  reactive,
+  nextTick,
+  provide,
+  onMounted,
+  getCurrentInstance,
+  onUnmounted
+} from 'vue'
 import throttle from 'throttle-debounce/throttle'
 import { useResizeEvent } from 'element-ui/src/utils/resize-event'
 
@@ -103,8 +114,7 @@ export default {
     }
   },
   emits: ['change'],
-  setup(props, {emit}) {
-
+  setup(props, { emit }) {
     // 初始化状态
     const initData = reactive({
       items: [],
@@ -153,7 +163,10 @@ export default {
     onMounted(() => {
       nextTick(() => {
         addResizeListener(_this.vnode.el, resetItemPosition)
-        if (props.initialIndex < initData.items.length && props.initialIndex >= 0) {
+        if (
+          props.initialIndex < initData.items.length &&
+          props.initialIndex >= 0
+        ) {
           initData.activeIndex = props.initialIndex
         }
         startTimer()
@@ -164,16 +177,22 @@ export default {
       removeResizeListener(resetItemPosition)
     })
 
-    watch(() => initData.items, (val) => {
-      if (val.length > 0) setActiveItem(props.initialIndex)
-    })
-
-    watch(() => initData.activeIndex, (val, oldVal) => {
-      resetItemPosition(oldVal)
-      if (oldVal > -1) {
-        emit('change', val, oldVal)
+    watch(
+      () => initData.items,
+      (val) => {
+        if (val.length > 0) setActiveItem(props.initialIndex)
       }
-    })
+    )
+
+    watch(
+      () => initData.activeIndex,
+      (val, oldVal) => {
+        resetItemPosition(oldVal)
+        if (oldVal > -1) {
+          emit('change', val, oldVal)
+        }
+      }
+    )
 
     // 暴露方法
     const prev = () => {
@@ -185,11 +204,7 @@ export default {
     }
 
     // 取出视图所需参数
-    const {
-      items,
-      activeIndex,
-      hover
-    } = toRefs(initData)
+    const { items, activeIndex, hover } = toRefs(initData)
 
     /**
      * 向CarouselItem提供属性及方法
@@ -254,11 +269,19 @@ const useArrowButton = (props, initData) => {
 
   const itemInStage = (item, index) => {
     const length = initData.items.length
-    if (index === length - 1 && item.ctx.inStage && initData.items[0].active ||
-      (item.ctx.inStage && initData.items[index + 1] && initData.items[index + 1].active)) {
+    if (
+      (index === length - 1 && item.ctx.inStage && initData.items[0].active) ||
+      (item.ctx.inStage &&
+        initData.items[index + 1] &&
+        initData.items[index + 1].active)
+    ) {
       return 'left'
-    } else if (index === 0 && item.ctx.inStage && initData.items[length - 1].active ||
-      (item.ctx.inStage && initData.items[index - 1] && initData.items[index - 1].active)) {
+    } else if (
+      (index === 0 && item.ctx.inStage && initData.items[length - 1].active) ||
+      (item.ctx.inStage &&
+        initData.items[index - 1] &&
+        initData.items[index - 1].active)
+    ) {
       return 'right'
     }
     return false
@@ -272,7 +295,9 @@ const useArrowButton = (props, initData) => {
 
   const setActiveItem = (index) => {
     if (typeof index === 'string') {
-      const filteredItems = initData.items.filter(item => item.ctx.name === index)
+      const filteredItems = initData.items.filter(
+        (item) => item.ctx.name === index
+      )
       if (filteredItems.length > 0) {
         index = initData.items.indexOf(filteredItems[0])
       }
@@ -282,7 +307,7 @@ const useArrowButton = (props, initData) => {
       console.warn('[Element Warn][Carousel]index must be an integer.')
       return
     }
-    let length = initData.items.length
+    const length = initData.items.length
     const oldIndex = initData.activeIndex
     if (index < 0) {
       initData.activeIndex = loop.value ? length - 1 : 0
@@ -296,7 +321,7 @@ const useArrowButton = (props, initData) => {
     }
   }
 
-  const throttledArrowClick = throttle(300, true, index => {
+  const throttledArrowClick = throttle(300, true, (index) => {
     setActiveItem(index)
   })
 
@@ -311,7 +336,7 @@ const useArrowButton = (props, initData) => {
 
   const handleButtonLeave = () => {
     if (props.direction === 'vertical') return
-    initData.items.forEach(item => {
+    initData.items.forEach((item) => {
       item.ctx.hover = false
     })
   }
@@ -336,13 +361,12 @@ const useArrowButton = (props, initData) => {
 }
 
 const useIndicator = (props, initData) => {
-
   const handleIndicatorHover = (index) => {
     if (props.trigger === 'hover' && index !== initData.activeIndex) {
       initData.activeIndex = index
     }
   }
-  const throttledIndicatorHover = throttle(300, index => {
+  const throttledIndicatorHover = throttle(300, (index) => {
     handleIndicatorHover(index)
   })
 
@@ -351,11 +375,14 @@ const useIndicator = (props, initData) => {
   }
 
   const hasLabel = computed(() => {
-    return initData.items.some(item => item.ctx.label.toString().length > 0)
+    return initData.items.some((item) => item.ctx.label.toString().length > 0)
   })
 
   const indicatorsClasses = computed(() => {
-    const classes = ['el-carousel__indicators', 'el-carousel__indicators--' + props.direction]
+    const classes = [
+      'el-carousel__indicators',
+      'el-carousel__indicators--' + props.direction
+    ]
     if (hasLabel) {
       classes.push('el-carousel__indicators--labels')
     }
@@ -374,7 +401,6 @@ const useIndicator = (props, initData) => {
 }
 
 const useInitSlide = (props, initData, loop) => {
-
   const autoplay = ref(props.autoplay)
 
   const playSlides = () => {

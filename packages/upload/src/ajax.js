@@ -39,7 +39,7 @@ export default function upload(option) {
   if (xhr.upload) {
     xhr.upload.onprogress = function progress(e) {
       if (e.total > 0) {
-        e.percent = e.loaded / e.total * 100
+        e.percent = (e.loaded / e.total) * 100
       }
       option.onProgress(e)
     }
@@ -48,7 +48,7 @@ export default function upload(option) {
   const formData = new FormData()
 
   if (option.data) {
-    Object.keys(option.data).forEach(key => {
+    Object.keys(option.data).forEach((key) => {
       formData.append(key, option.data[key])
     })
   }
@@ -75,8 +75,8 @@ export default function upload(option) {
 
   const headers = option.headers || {}
 
-  for (let item in headers) {
-    if (headers.hasOwnProperty(item) && headers[item] !== null) {
+  for (const item in headers) {
+    if (Object.hasOwnProperty.call(headers, item) && headers[item] !== null) {
       xhr.setRequestHeader(item, headers[item])
     }
   }

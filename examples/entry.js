@@ -1,46 +1,47 @@
-import {createApp,reactive,nextTick} from 'vue';
-import entry from './app';
+import { createApp, reactive } from 'vue'
+import entry from './app'
 
-import { createRouter,createWebHashHistory} from 'vue-router';
-import Element from 'main/index.js';
-import hljs from 'highlight.js';
-import routes from './route.config';
-import demoBlock from './components/demo-block';
-import MainFooter from './components/footer';
-import MainHeader from './components/header';
-import SideNav from './components/side-nav';
-import FooterNav from './components/footer-nav';
-import title from './i18n/title';
+import { createRouter, createWebHashHistory } from 'vue-router'
+import Element from 'main/index.js'
+// import hljs from 'highlight.js'
+import routes from './route.config'
+import demoBlock from './components/demo-block'
+import MainHeader from './components/header'
+import SideNav from './components/side-nav'
+import FooterNav from './components/footer-nav'
+import title from './i18n/title'
 
-import 'packages/theme-chalk/src/index.scss';
-import './demo-styles/index.scss';
-import './assets/styles/common.css';
-import './assets/styles/fonts/style.css';
-import icon from './icon.json';
+import 'packages/theme-chalk/src/index.scss'
+import './demo-styles/index.scss'
+import './assets/styles/common.css'
+import './assets/styles/fonts/style.css'
+import icon from './icon.json'
 
 const app = createApp({ // eslint-disable-line
   ...entry
 })
-app.use(Element);
+app.use(Element)
 // app.use(VueRouter);
-app.component('demo-block', demoBlock);
+app.component('demo-block', demoBlock)
 // app.component('main-footer', MainFooter);
-app.component('main-header', MainHeader);
-app.component('side-nav', SideNav);
-app.component('footer-nav', FooterNav);
+app.component('main-header', MainHeader)
+app.component('side-nav', SideNav)
+app.component('footer-nav', FooterNav)
 
 const globalEle = reactive({
   data: { $isEle: false } // 是否 ele 用户
-});
+})
 
 app.mixin({
   computed: {
     $isEle: {
-      get: () => (globalEle.data.$isEle),
-      set: (data) => {globalEle.data.$isEle = data;}
+      get: () => globalEle.data.$isEle,
+      set: (data) => {
+        globalEle.data.$isEle = data
+      }
     }
   }
-});
+})
 app.config.globalProperties.$icon = icon
 
 const router = createRouter({
@@ -50,17 +51,11 @@ const router = createRouter({
 })
 app.use(router)
 
-
-router.isReady().then(()=>{
-  console.log('>>', document.querySelectorAll('pre code:not(.hljs)'))
-
-  router.afterEach(async route => {
-
-    await nextTick()
-
-    const blocks = document.querySelectorAll('pre code:not(.hljs)');
-    console.log(blocks)
-    Array.prototype.forEach.call(blocks, hljs.highlightBlock);
+router.isReady().then(() => {
+  router.afterEach(async (route) => {
+    // await nextTick()
+    // const blocks = document.querySelectorAll('pre code:not(.hljs)')
+    // Array.prototype.forEach.call(blocks, hljs.highlightBlock)
 
     // https://github.com/highlightjs/highlight.js/issues/909#issuecomment-131686186
 
@@ -69,18 +64,18 @@ router.isReady().then(()=>{
     //   Array.prototype.forEach.call(blocks, hljs.highlightBlock);
     // },1000)
 
-    const data = title[route.meta.lang];
-    for (let val in data) {
+    const data = title[route.meta.lang]
+    for (const val in data) {
       if (new RegExp('^' + val, 'g').test(route.name)) {
-        document.title = data[val];
-        return;
+        document.title = data[val]
+        return
       }
     }
-    document.title = 'Element';
-    ga('send', 'event', 'PageView', route.name);
-  });
-  app.mount('#app');
-
+    document.title = 'Element'
+    // eslint-disable-next-line no-undef
+    ga('send', 'event', 'PageView', route.name)
+  })
+  app.mount('#app')
 })
 
 export default app

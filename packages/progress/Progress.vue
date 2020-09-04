@@ -6,7 +6,7 @@
       status ? 'is-' + status : '',
       {
         'el-progress--without-text': !showText,
-        'el-progress--text-inside': textInside,
+        'el-progress--text-inside': textInside
       }
     ]"
     role="progressbar"
@@ -15,13 +15,22 @@
     aria-valuemax="100"
   >
     <div class="el-progress-bar" v-if="type === 'line'">
-      <div class="el-progress-bar__outer" :style="{height: strokeWidth + 'px'}">
+      <div
+        class="el-progress-bar__outer"
+        :style="{ height: strokeWidth + 'px' }"
+      >
         <div class="el-progress-bar__inner" :style="barStyle">
-          <div class="el-progress-bar__innerText" v-if="showText && textInside">{{content}}</div>
+          <div class="el-progress-bar__innerText" v-if="showText && textInside">
+            {{ content }}
+          </div>
         </div>
       </div>
     </div>
-    <div class="el-progress-circle" :style="{height: width + 'px', width: width + 'px'}" v-else>
+    <div
+      class="el-progress-circle"
+      :style="{ height: width + 'px', width: width + 'px' }"
+      v-else
+    >
       <svg viewBox="0 0 100 100">
         <path
           class="el-progress-circle__track"
@@ -45,9 +54,9 @@
     <div
       class="el-progress__text"
       v-if="showText && !textInside"
-      :style="{fontSize: progressTextSize + 'px'}"
+      :style="{ fontSize: progressTextSize + 'px' }"
     >
-      <template v-if="!status">{{content}}</template>
+      <template v-if="!status">{{ content }}</template>
       <i v-else :class="iconClass"></i>
     </div>
   </div>
@@ -226,11 +235,11 @@ const useTrackPath = (radius, type) => {
           M 50 50
           m 0 ${isDashboard ? '' : '-'}${radius.value}
           a ${radius.value} ${radius.value} 0 1 1 0 ${isDashboard ? '-' : ''}${
-  radius.value * 2
-}
+      radius.value * 2
+    }
           a ${radius.value} ${radius.value} 0 1 1 0 ${isDashboard ? '' : '-'}${
-  radius.value * 2
-}
+      radius.value * 2
+    }
           `
   })
   return trackPath

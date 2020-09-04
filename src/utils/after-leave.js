@@ -6,10 +6,10 @@
  * @param {Number} speed the speed of transition, default value is 300ms
  * @param {Boolean} once weather bind after-leave once. default value is false.
  */
-export default function(instance, callback, speed = 300, once = false) {
+export default function (instance, callback, speed = 300, once = false) {
   if (!instance || !callback) throw new Error('instance & callback is required')
   let called = false
-  const afterLeaveCallback = function() {
+  const afterLeaveCallback = function () {
     if (called) return
     called = true
     if (callback) {
@@ -24,4 +24,4 @@ export default function(instance, callback, speed = 300, once = false) {
   setTimeout(() => {
     afterLeaveCallback()
   }, speed + 100)
-};
+}

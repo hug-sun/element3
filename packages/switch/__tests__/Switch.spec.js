@@ -1,7 +1,7 @@
 import Switch from '../Switch.vue'
 import { mount } from '@vue/test-utils'
 describe('Switch', () => {
-  it('modelValue', async() => {
+  it('modelValue', async () => {
     const wrapper = mount(Switch, {
       props: {
         modelValue: false
@@ -17,7 +17,7 @@ describe('Switch', () => {
     expect(wrapper.classes()).toContain('is-checked')
   })
 
-  it('should not click when set disabled to true', async() => {
+  it('should not click when set disabled to true', async () => {
     const wrapper = mount(Switch, {
       props: {
         disabled: true
@@ -162,5 +162,4 @@ describe('Switch', () => {
 
     expect(wrapper.emitted('update:modelValue')).toEqual([['3']])
   })
-
 })

@@ -1,7 +1,7 @@
-import Card from './src/main'
+import Card from './Card'
 
 /* istanbul ignore next */
-Card.install = function(app) {
+Card.install = function (app) {
   app.component(Card.name, Card)
 }
 

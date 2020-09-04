@@ -5,7 +5,7 @@ import { PopupManager } from 'element-ui/src/utils/popup'
 import afterLeave from 'element-ui/src/utils/after-leave'
 import merge from 'element-ui/src/utils/merge'
 
-const LoadingConstructor = {extends: loadingVue}
+const LoadingConstructor = { extends: loadingVue }
 
 const defaults = {
   text: null,
@@ -20,46 +20,50 @@ let fullscreenLoading
 LoadingConstructor.prototype.originalPosition = ''
 LoadingConstructor.prototype.originalOverflow = ''
 
-LoadingConstructor.prototype.close = function() {
+LoadingConstructor.prototype.close = function () {
   if (this.fullscreen) {
     fullscreenLoading = undefined
   }
-  afterLeave(this, _ => {
-    const target = this.fullscreen || this.body
-      ? document.body
-      : this.target
-    removeClass(target, 'el-loading-parent--relative')
-    removeClass(target, 'el-loading-parent--hidden')
-    if (this.$el && this.$el.parentNode) {
-      this.$el.parentNode.removeChild(this.$el)
-    }
-    this.$destroy()
-  }, 300)
+  afterLeave(
+    this,
+    (_) => {
+      const target = this.fullscreen || this.body ? document.body : this.target
+      removeClass(target, 'el-loading-parent--relative')
+      removeClass(target, 'el-loading-parent--hidden')
+      if (this.$el && this.$el.parentNode) {
+        this.$el.parentNode.removeChild(this.$el)
+      }
+      this.$destroy()
+    },
+    300
+  )
   this.visible = false
 }
 
 const addStyle = (options, parent, instance) => {
-  let maskStyle = {}
+  const maskStyle = {}
   if (options.fullscreen) {
     instance.originalPosition = getStyle(document.body, 'position')
     instance.originalOverflow = getStyle(document.body, 'overflow')
     maskStyle.zIndex = PopupManager.nextZIndex()
   } else if (options.body) {
-    instance.originalPosition = getStyle(document.body, 'position');
-    ['top', 'left'].forEach(property => {
-      let scroll = property === 'top' ? 'scrollTop' : 'scrollLeft'
-      maskStyle[property] = options.target.getBoundingClientRect()[property] +
+    instance.originalPosition = getStyle(document.body, 'position')
+    ;['top', 'left'].forEach((property) => {
+      const scroll = property === 'top' ? 'scrollTop' : 'scrollLeft'
+      maskStyle[property] =
+        options.target.getBoundingClientRect()[property] +
         document.body[scroll] +
         document.documentElement[scroll] +
         'px'
-    });
-    ['height', 'width'].forEach(property => {
-      maskStyle[property] = options.target.getBoundingClientRect()[property] + 'px'
+    })
+    ;['height', 'width'].forEach((property) => {
+      maskStyle[property] =
+        options.target.getBoundingClientRect()[property] + 'px'
     })
   } else {
     instance.originalPosition = getStyle(parent, 'position')
   }
-  Object.keys(maskStyle).forEach(property => {
+  Object.keys(maskStyle).forEach((property) => {
     instance.$el.style[property] = maskStyle[property]
   })
 }
@@ -80,14 +84,17 @@ const Loading = (options = {}) => {
     return fullscreenLoading
   }
 
-  let parent = options.body ? document.body : options.target
-  let instance = new LoadingConstructor({
+  const parent = options.body ? document.body : options.target
+  const instance = new LoadingConstructor({
     el: document.createElement('div'),
     data: options
   })
 
   addStyle(options, parent, instance)
-  if (instance.originalPosition !== 'absolute' && instance.originalPosition !== 'fixed') {
+  if (
+    instance.originalPosition !== 'absolute' &&
+    instance.originalPosition !== 'fixed'
+  ) {
     addClass(parent, 'el-loading-parent--relative')
   }
   if (options.fullscreen && options.lock) {

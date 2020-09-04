@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils'
 import Radio from '../Radio'
 import RadioGroup from 'element-ui/packages/radio-group/RadioGroup'
-import {ref} from '@vue/reactivity'
-import {h, nextTick} from '@vue/runtime-core'
+import { ref } from '@vue/reactivity'
+import { h, nextTick } from '@vue/runtime-core'
 import RadioButton from 'element-ui/packages/radio-button/RadioButton'
 
 describe('Radio', () => {
@@ -25,7 +25,7 @@ describe('Radio', () => {
 
       expect(wrapper.classes()).toContain('is-bordered')
     })
-    it('bind value by v-model', async() => {
+    it('bind value by v-model', async () => {
       const radio = ref(0)
       const wrapper = mount(Radio, {
         props: {
@@ -40,7 +40,7 @@ describe('Radio', () => {
 
       expect(wrapper.classes()).toContain('is-checked')
     })
-    it('change event', async() => {
+    it('change event', async () => {
       const radio = ref(0)
       const data = ref(0)
       const wrapper = mount(Radio, {
@@ -65,7 +65,7 @@ describe('Radio', () => {
 
 describe('Radio Group', () => {
   describe('props', () => {
-    it('disabled', async() => {
+    it('disabled', async () => {
       const radio = ref(1)
       const wrapper = mount(RadioGroup, {
         props: {
@@ -76,14 +76,16 @@ describe('Radio Group', () => {
           disabled: true
         },
         slots: {
-          default: [1, 2, 3].map(item => h(Radio, {
-            label: item
-          }))
+          default: [1, 2, 3].map((item) =>
+            h(Radio, {
+              label: item
+            })
+          )
         }
       })
       expect(wrapper.findAllComponents('.is-disabled').length).toEqual(3)
     })
-    it('bind value by v-model', async() => {
+    it('bind value by v-model', async () => {
       const radio = ref(1)
       const wrapper = mount(RadioGroup, {
         props: {
@@ -93,9 +95,11 @@ describe('Radio Group', () => {
           }
         },
         slots: {
-          default: [1, 2, 3].map(item => h(Radio, {
-            label: item
-          }))
+          default: [1, 2, 3].map((item) =>
+            h(Radio, {
+              label: item
+            })
+          )
         }
       })
       expect(wrapper.find('.is-checked').exists()).toBe(true)
@@ -105,7 +109,7 @@ describe('Radio Group', () => {
         expect(wrapper.findComponent('.is-checked').vm.label).toEqual(2)
       })
     })
-    it('change event', async() => {
+    it('change event', async () => {
       const radio = ref(1)
       const data = ref(1)
       const wrapper = mount(RadioGroup, {
@@ -119,9 +123,11 @@ describe('Radio Group', () => {
           }
         },
         slots: {
-          default: [1, 2, 3].map(item => h(Radio, {
-            label: item
-          }))
+          default: [1, 2, 3].map((item) =>
+            h(Radio, {
+              label: item
+            })
+          )
         }
       })
       await wrapper.findAllComponents(Radio)[1].trigger('click')
@@ -129,7 +135,7 @@ describe('Radio Group', () => {
         expect(data.value).toEqual(2)
       })
     })
-    it('keyboard event', async() => {
+    it('keyboard event', async () => {
       const radio = ref(1)
       const wrapper = mount(RadioGroup, {
         props: {
@@ -139,18 +145,20 @@ describe('Radio Group', () => {
           }
         },
         slots: {
-          default: [1, 2, 3].map(item => h(Radio, {
-            label: item
-          }))
+          default: [1, 2, 3].map((item) =>
+            h(Radio, {
+              label: item
+            })
+          )
         }
       })
-      await wrapper.findComponent(Radio).trigger('keydown', {keyCode: 39})
+      await wrapper.findComponent(Radio).trigger('keydown', { keyCode: 39 })
       expect(radio.value).toEqual(2)
-      await wrapper.findComponent(Radio).trigger('keydown', {keyCode: 40})
+      await wrapper.findComponent(Radio).trigger('keydown', { keyCode: 40 })
       expect(radio.value).toEqual(2)
-      await wrapper.findComponent(Radio).trigger('keydown', {keyCode: 38})
+      await wrapper.findComponent(Radio).trigger('keydown', { keyCode: 38 })
       expect(radio.value).toEqual(3)
-      await wrapper.findComponent(Radio).trigger('keydown', {keyCode: 37})
+      await wrapper.findComponent(Radio).trigger('keydown', { keyCode: 37 })
       expect(radio.value).toEqual(3)
     })
   })
@@ -158,7 +166,7 @@ describe('Radio Group', () => {
 
 describe('Radio Button', () => {
   describe('props', () => {
-    it('bind value by v-model', async() => {
+    it('bind value by v-model', async () => {
       const radio = ref(1)
       const wrapper = mount(RadioGroup, {
         props: {
@@ -168,9 +176,11 @@ describe('Radio Button', () => {
           }
         },
         slots: {
-          default: [1, 2, 3].map(item => h(RadioButton, {
-            label: item
-          }))
+          default: [1, 2, 3].map((item) =>
+            h(RadioButton, {
+              label: item
+            })
+          )
         }
       })
       expect(wrapper.find('.is-active').exists()).toBe(true)

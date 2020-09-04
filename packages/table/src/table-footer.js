@@ -9,20 +9,25 @@ export default {
   render(h) {
     let sums = []
     if (this.summaryMethod) {
-      sums = this.summaryMethod({ columns: this.columns, data: this.store.states.data })
+      sums = this.summaryMethod({
+        columns: this.columns,
+        data: this.store.states.data
+      })
     } else {
       this.columns.forEach((column, index) => {
         if (index === 0) {
           sums[index] = this.sumText
           return
         }
-        const values = this.store.states.data.map(item => Number(item[column.property]))
+        const values = this.store.states.data.map((item) =>
+          Number(item[column.property])
+        )
         const precisions = []
         let notNumber = true
-        values.forEach(value => {
+        values.forEach((value) => {
           if (!isNaN(value)) {
             notNumber = false
-            let decimal = ('' + value).split('.')[1]
+            const decimal = ('' + value).split('.')[1]
             precisions.push(decimal ? decimal.length : 0)
           }
         })
@@ -47,33 +52,29 @@ export default {
         class="el-table__footer"
         cellspacing="0"
         cellpadding="0"
-        border="0">
+        border="0"
+      >
         <colgroup>
-          {
-            this.columns.map(column => <col name={ column.id } key={column.id} />)
-          }
-          {
-            this.hasGutter ? <col name="gutter" /> : ''
-          }
+          {this.columns.map((column) => (
+            <col name={column.id} key={column.id} />
+          ))}
+          {this.hasGutter ? <col name="gutter" /> : ''}
         </colgroup>
-        <tbody class={ [{ 'has-gutter': this.hasGutter }] }>
+        <tbody class={[{ 'has-gutter': this.hasGutter }]}>
           <tr>
-            {
-              this.columns.map((column, cellIndex) => <td
+            {this.columns.map((column, cellIndex) => (
+              <td
                 key={cellIndex}
-                colspan={ column.colSpan }
-                rowspan={ column.rowSpan }
-                class={ this.getRowClasses(column, cellIndex) }>
-                <div class={ ['cell', column.labelClassName] }>
-                  {
-                    sums[cellIndex]
-                  }
+                colspan={column.colSpan}
+                rowspan={column.rowSpan}
+                class={this.getRowClasses(column, cellIndex)}
+              >
+                <div class={['cell', column.labelClassName]}>
+                  {sums[cellIndex]}
                 </div>
-              </td>)
-            }
-            {
-              this.hasGutter ? <th class="gutter"></th> : ''
-            }
+              </td>
+            ))}
+            {this.hasGutter ? <th class="gutter"></th> : ''}
           </tr>
         </tbody>
       </table>
@@ -113,9 +114,9 @@ export default {
       isAllSelected: 'isAllSelected',
       leftFixedLeafCount: 'fixedLeafColumnsLength',
       rightFixedLeafCount: 'rightFixedLeafColumnsLength',
-      columnsCount: states => states.columns.length,
-      leftFixedCount: states => states.fixedColumns.length,
-      rightFixedCount: states => states.rightFixedColumns.length
+      columnsCount: (states) => states.columns.length,
+      leftFixedCount: (states) => states.fixedColumns.length,
+      rightFixedCount: (states) => states.rightFixedColumns.length
     })
   },
 
@@ -129,10 +130,14 @@ export default {
           before += columns[i].colSpan
         }
         return before < this.columnsCount - this.rightFixedLeafCount
-      } else if (!this.fixed && column.fixed) { // hide cell when footer instance is not fixed and column is fixed
+      } else if (!this.fixed && column.fixed) {
+        // hide cell when footer instance is not fixed and column is fixed
         return true
       } else {
-        return (index < this.leftFixedCount) || (index >= this.columnsCount - this.rightFixedCount)
+        return (
+          index < this.leftFixedCount ||
+          index >= this.columnsCount - this.rightFixedCount
+        )
       }
     },
 

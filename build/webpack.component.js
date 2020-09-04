@@ -1,10 +1,10 @@
 // 按需加载
-const path = require('path');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const {VueLoaderPlugin} = require('vue-loader');
+const path = require('path')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
-const Components = require('../components.json');
-const config = require('./config');
+const Components = require('../components.json')
+const config = require('./config')
 
 const webpackConfig = {
   mode: 'production',
@@ -60,10 +60,7 @@ const webpackConfig = {
       }
     ]
   },
-  plugins: [
-    new ProgressBarPlugin(),
-    new VueLoaderPlugin()
-  ]
-};
+  plugins: [new ProgressBarPlugin(), new VueLoaderPlugin()]
+}
 
-module.exports = webpackConfig;
+module.exports = webpackConfig

@@ -1,6 +1,9 @@
 // reference https://github.com/noeldelgado/gemini-scrollbar/blob/master/index.js
 import { nextTick, reactive, ref, toRefs, onMounted, onUnmounted } from 'vue'
-import { addResizeListener, removeResizeListener } from 'element-ui/src/utils/resize-event'
+import {
+  addResizeListener,
+  removeResizeListener
+} from 'element-ui/src/utils/resize-event'
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width'
 import { toObject } from 'element-ui/src/utils/util'
 import Bar from './Bar'
@@ -14,18 +17,20 @@ const useScroll = (wrap, native, resize, noresize) => {
   })
 
   const handleScroll = () => {
-    data.moveY = ((wrap.value.scrollTop * 100) / wrap.value.clientHeight)
-    data.moveX = ((wrap.value.scrollLeft * 100) / wrap.value.clientWidth)
+    data.moveY = (wrap.value.scrollTop * 100) / wrap.value.clientHeight
+    data.moveX = (wrap.value.scrollLeft * 100) / wrap.value.clientWidth
   }
 
   const update = () => {
     if (!wrap) return
 
-    let heightPercentage = (wrap.value.clientHeight * 100 / wrap.value.scrollHeight)
-    let widthPercentage = (wrap.value.clientWidth * 100 / wrap.value.scrollWidth)
+    const heightPercentage =
+      (wrap.value.clientHeight * 100) / wrap.value.scrollHeight
+    const widthPercentage =
+      (wrap.value.clientWidth * 100) / wrap.value.scrollWidth
 
-    data.sizeHeight = (heightPercentage < 100) ? (heightPercentage + '%') : ''
-    data.sizeWidth = (widthPercentage < 100) ? (widthPercentage + '%') : ''
+    data.sizeHeight = heightPercentage < 100 ? heightPercentage + '%' : ''
+    data.sizeWidth = widthPercentage < 100 ? widthPercentage + '%' : ''
   }
 
   onMounted(() => {
@@ -63,7 +68,7 @@ export default {
     }
   },
 
-  setup(props, {slots}) {
+  setup(props, { slots }) {
     const wrap = ref(null)
     const resize = ref(null)
     let {
@@ -79,7 +84,7 @@ export default {
     wrapClass = ref(wrapClass)
     viewClass = ref(viewClass)
     viewStyle = ref(viewStyle)
-    let gutter = scrollbarWidth()
+    const gutter = scrollbarWidth()
     let style = wrapStyle.value
     // eslint-disable-next-line no-unused-vars
     const ComponentName = tag.value
@@ -97,12 +102,16 @@ export default {
       }
     }
 
-    const {data, handleScroll} = useScroll(wrap, native, resize, noresize)
+    const { data, handleScroll } = useScroll(wrap, native, resize, noresize)
     return () => (
-      <div class='el-scrollbar'>
+      <div class="el-scrollbar">
         <div
           ref={wrap}
-          class={[wrapClass.value, 'el-scrollbar__wrap', {'el-scrollbar__wrap--hidden-default': !native.value && !gutter}]}
+          class={[
+            wrapClass.value,
+            'el-scrollbar__wrap',
+            { 'el-scrollbar__wrap--hidden-default': !native.value && !gutter }
+          ]}
           onScroll={() => {
             !native.value && handleScroll()
           }}
@@ -113,24 +122,13 @@ export default {
             class={['el-scrollbar__view', viewClass.value]}
             style={viewStyle.value}
           >
-            {
-              slots.default()
-            }
+            {slots.default()}
           </ComponentName>
         </div>
-        {
-          !native.value && [
-            <Bar
-              move={data.moveX}
-              size={data.sizeWidth}
-            />,
-            <Bar
-              vertical
-              move={data.moveY}
-              size={data.sizeHeight}
-            />
-          ]
-        }
+        {!native.value && [
+          <Bar move={data.moveX} size={data.sizeWidth} />,
+          <Bar vertical move={data.moveY} size={data.sizeHeight} />
+        ]}
       </div>
     )
   }

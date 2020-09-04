@@ -1,7 +1,7 @@
 import ElTabs from './src/tabs'
 
 /* istanbul ignore next */
-ElTabs.install = function(app) {
+ElTabs.install = function (app) {
   app.component(ElTabs.name, ElTabs)
 }
 

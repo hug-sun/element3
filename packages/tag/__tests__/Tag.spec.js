@@ -2,7 +2,6 @@ import Tag from '../Tag.vue'
 import { mount } from '@vue/test-utils'
 
 describe('Tag.vue', () => {
-
   describe('props', () => {
     it('text', () => {
       const wrapper = mount(Tag, {
@@ -47,7 +46,9 @@ describe('Tag.vue', () => {
           color: 'rgb(0, 0, 0)'
         }
       })
-      expect(wrapper.attributes('style')).toBe('background-color: rgb(0, 0, 0);')
+      expect(wrapper.attributes('style')).toBe(
+        'background-color: rgb(0, 0, 0);'
+      )
     })
 
     it('theme', () => {
@@ -60,7 +61,6 @@ describe('Tag.vue', () => {
       expect(wrapper.find('.el-tag--light').exists()).toBeFalsy()
       expect(wrapper.find('.el-tag--plain').exists()).toBeFalsy()
     })
-
   })
   describe('event', () => {
     it('closable', () => {

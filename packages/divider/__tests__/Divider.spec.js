@@ -14,7 +14,7 @@ describe('Divider.vue', () => {
 
   it('direction', () => {
     const vm = mount(Divider, {
-      props: {direction: 'vertical'}
+      props: { direction: 'vertical' }
     })
 
     expect(vm.classes()).toContain('el-divider--vertical')
@@ -22,7 +22,7 @@ describe('Divider.vue', () => {
 
   it('contentPosition', () => {
     const vm = mount(Divider, {
-      props: {'content-position': 'left'},
+      props: { 'content-position': 'left' },
       slots: {
         default: () => {
           return 'some text'

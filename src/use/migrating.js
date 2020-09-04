@@ -11,11 +11,8 @@ export function migrating(options) {
       if (attrs[key]) {
         const warn = options[key]
         const type = isOn(key) ? 'Event' : 'Attribute'
-        console.warn(
-          `[Element Migrating][${componentName}][${type}]: ${warn}`
-        )
+        console.warn(`[Element Migrating][${componentName}][${type}]: ${warn}`)
       }
     }
-
   })
 }

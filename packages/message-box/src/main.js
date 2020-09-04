@@ -1,3 +1,9 @@
+// #todo
+import { nextTick } from 'vue'
+import msgboxVue from './main.vue'
+import merge from 'element-ui/src/utils/merge'
+import { isVNode } from 'element-ui/src/utils/vdom'
+
 const defaults = {
   title: null,
   message: '',
@@ -33,12 +39,6 @@ const defaults = {
   distinguishCancelAndClose: false
 }
 
-// #todo
-import {nextTick} from 'vue'
-import msgboxVue from './main.vue'
-import merge from 'element-ui/src/utils/merge'
-import { isVNode } from 'element-ui/src/utils/vdom'
-
 const MessageBoxConstructor = {
   extends: msgboxVue
 }
@@ -46,9 +46,9 @@ const MessageBoxConstructor = {
 let currentMsg, instance
 let msgQueue = []
 
-const defaultCallback = action => {
+const defaultCallback = (action) => {
   if (currentMsg) {
-    let callback = currentMsg.callback
+    const callback = currentMsg.callback
     if (typeof callback === 'function') {
       if (instance.showInput) {
         callback(instance.inputValue, action)
@@ -63,7 +63,10 @@ const defaultCallback = action => {
         } else {
           currentMsg.resolve(action)
         }
-      } else if (currentMsg.reject && (action === 'cancel' || action === 'close')) {
+      } else if (
+        currentMsg.reject &&
+        (action === 'cancel' || action === 'close')
+      ) {
         currentMsg.reject(action)
       }
     }
@@ -88,9 +91,9 @@ const showNextMsg = () => {
     if (msgQueue.length > 0) {
       currentMsg = msgQueue.shift()
 
-      let options = currentMsg.options
-      for (let prop in options) {
-        if (options.hasOwnProperty(prop)) {
+      const options = currentMsg.options
+      for (const prop in options) {
+        if (Object.hasOwnProperty.call(options, prop)) {
           instance[prop] = options[prop]
         }
       }
@@ -98,7 +101,7 @@ const showNextMsg = () => {
         instance.callback = defaultCallback
       }
 
-      let oldCb = instance.callback
+      const oldCb = instance.callback
       instance.callback = (action, instance) => {
         oldCb(action, instance)
         showNextMsg()
@@ -109,7 +112,13 @@ const showNextMsg = () => {
       } else {
         delete instance.$slots.default
       }
-      ['modal', 'showClose', 'closeOnClickModal', 'closeOnPressEscape', 'closeOnHashChange'].forEach(prop => {
+      ;[
+        'modal',
+        'showClose',
+        'closeOnClickModal',
+        'closeOnPressEscape',
+        'closeOnHashChange'
+      ].forEach((prop) => {
         if (instance[prop] === undefined) {
           instance[prop] = true
         }
@@ -123,7 +132,7 @@ const showNextMsg = () => {
   }
 }
 
-const MessageBox = function(options, callback) {
+const MessageBox = function (options, callback) {
   // if (Vue.prototype.$isServer) return
   if (typeof options === 'string' || isVNode(options)) {
     options = {
@@ -157,7 +166,7 @@ const MessageBox = function(options, callback) {
   }
 }
 
-MessageBox.setDefaults = defaults => {
+MessageBox.setDefaults = (defaults) => {
   MessageBox.defaults = defaults
 }
 
@@ -168,13 +177,18 @@ MessageBox.alert = (message, title, options) => {
   } else if (title === undefined) {
     title = ''
   }
-  return MessageBox(merge({
-    title: title,
-    message: message,
-    $type: 'alert',
-    closeOnPressEscape: false,
-    closeOnClickModal: false
-  }, options))
+  return MessageBox(
+    merge(
+      {
+        title: title,
+        message: message,
+        $type: 'alert',
+        closeOnPressEscape: false,
+        closeOnClickModal: false
+      },
+      options
+    )
+  )
 }
 
 MessageBox.confirm = (message, title, options) => {
@@ -184,12 +198,17 @@ MessageBox.confirm = (message, title, options) => {
   } else if (title === undefined) {
     title = ''
   }
-  return MessageBox(merge({
-    title: title,
-    message: message,
-    $type: 'confirm',
-    showCancelButton: true
-  }, options))
+  return MessageBox(
+    merge(
+      {
+        title: title,
+        message: message,
+        $type: 'confirm',
+        showCancelButton: true
+      },
+      options
+    )
+  )
 }
 
 MessageBox.prompt = (message, title, options) => {
@@ -199,13 +218,18 @@ MessageBox.prompt = (message, title, options) => {
   } else if (title === undefined) {
     title = ''
   }
-  return MessageBox(merge({
-    title: title,
-    message: message,
-    showCancelButton: true,
-    showInput: true,
-    $type: 'prompt'
-  }, options))
+  return MessageBox(
+    merge(
+      {
+        title: title,
+        message: message,
+        showCancelButton: true,
+        showInput: true,
+        $type: 'prompt'
+      },
+      options
+    )
+  )
 }
 
 MessageBox.close = () => {

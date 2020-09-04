@@ -1,86 +1,53 @@
 # (wip) element for vue3
 
-1. 修改build/bin/buld-entry.js的72行
-2. 组件加上白名单，比如加一个'input'，执行'npm run dev'
-3. 访问文档，在对应的组件页面调试报错即可，完成的记得标记
-4. 
+1. 修改 build/bin/buld-entry.js 的 72 行。
+2. 组件加上白名单，比如加一个 'input'，执行 `npm run dev`。
+3. 访问文档(也可访问 http://localhost:8086/#/ )，在对应的组件页面调试报错即可，完成的记得标记。
+4. 提交代码前请先拉取代码，commit 时信息格式为 key: content，如 `refactor: refactor alert`，注意表达简洁易懂。
+## Install
+```js
+npm install element3 -S
+
+```
+## Quick Start
+```js
+import "element3/lib/theme-chalk/index.css";
+import { createApp } from "vue";
+import Element3 from "element3";
+import App from "./App.vue";
+
+const app = createApp(App);
+app.use(Element3);
+app.mount("#app");
+
+// or
+import {
+  ElButton
+  // ...
+} from 'element3'
+
+Vue.use(ElButton)
+```
+> 注意暂时不要在生产坏境使用
+
+## export components
+目前已经导出可以使用的组件列表
+- ElButton
+- ElSwitch
+
 ## Join Discussion Group
 
 Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in discussion group :
 
 <img alt="Join Discusion Group" src="https://pic4.zhimg.com/80/v2-73947edcba4cbfe52cd779a3b1b974b5_1440w.png" width="300">
 
+## Contribution
 
-### basic
-- [x] layout
-- [x] container
-- [x] color
-- [x] typography
-- [x] border
-- [x] icon
-- [x] button
-- [x] link
-
-### form
-- [x] radio
-- [ ] checkbox
-- [ ] input
-- [ ] inputNumber
-- [ ] select
-- [ ] cascader
-- [ ] switch
-- [ ] slider
-- [ ] timePicker
-- [ ] timePicker
-- [ ] datePicker
-- [ ] dateTimePicker
-- [ ] Upload
-- [x] Rate
-- [ ] ColorPicker
-- [ ] Transfer
-- [ ] Form
-
-### data
-- [ ] Table
-- [ ] Tag
-- [ ] Progress
-- [ ] Tree
-- [ ] Pagination
-- [x] Badge
-- [x] Avatar
-
-### Notice
-- [ ] Alert
-- [ ] Loading
-- [ ] Message
-- [ ] MessageBox
-- [ ] Notification
-
-### Navigation
-- [ ] Navmenu
-- [ ] Tabs
-- [ ] Breadcrumb
-- [ ] dropdown
-- [ ] steps
+[See Contributing Guide.](https://juejin.im/post/6864462363039531022)
 
 
-### other
-- [ ] dialog
-- [ ] tooltip
-- [ ] popover
-- [ ] popoconfirm
-- [ ] Card
-- [ ] Carousel
-- [ ] Collapse
-- [ ] Timeline
-- [ ] divider
-- [ ] Calendar
-- [ ] image
-- [ ] backtop
-- [ ] infiniteScroll
-- [ ] drawer
 <p align="center">
-  <img src="https://cdn.rawgit.com/ElemeFE/element/dev/element_logo.svg">
+  <img src="https://gitee.com/pandafe/element3/raw/master/element_logo.svg">
 </p>
 
 <p align="center">
@@ -145,6 +112,7 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
 > A Vue.js 3.0 UI Toolkit for Web.（WIP）
 
 ## Links
+
 - Homepage and documentation
   - [International users](http://element.eleme.io/#/en-US)
   - [Chinese users](http://element-cn.eleme.io/#/zh-CN)
@@ -167,12 +135,14 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
   - [Chinese users](https://gitter.im/ElemeFE/element)
 
 ## Install
+
 ```shell
 npm install element-ui -S
 ```
 
 ## Quick Start
-``` javascript
+
+```javascript
 import Vue from 'vue'
 import Element from 'element-ui'
 
@@ -188,29 +158,37 @@ import {
 Vue.component(Select.name, Select)
 Vue.component(Button.name, Button)
 ```
+
 For more information, please refer to [Quick Start](http://element.eleme.io/#/en-US/component/quickstart) in our documentation.
 
 ## Browser Support
+
 Modern browsers and Internet Explorer 10+.
 
 ## Development
+
 Skip this part if you just want to use Element.
 
 For those who are interested in contributing to Element, please refer to our contributing guide ([中文](https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.zh-CN.md) | [English](https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.en-US.md) | [Español](https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.es.md) | [Français](https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.fr-FR.md)) to see how to run this project.
 
 ## Changelog
+
 Detailed changes for each release are documented in the [release notes](https://github.com/ElemeFE/element/releases).
 
 ## FAQ
+
 We have collected some [frequently asked questions](https://github.com/ElemeFE/element/blob/master/FAQ.md). Before reporting an issue, please search if the FAQ has the answer to your problem.
 
 ## Contribution
+
 Please make sure to read the contributing guide ([中文](https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.zh-CN.md) | [English](https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.en-US.md) | [Español](https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.es.md) | [Français](https://github.com/ElemeFE/element/blob/master/.github/CONTRIBUTING.fr-FR.md)) before making a pull request.
 
 [![Let's fund issues in this repository](https://issuehunt.io/static/embed/issuehunt-button-v1.svg)](https://issuehunt.io/repos/67274736)
 
 ## Special Thanks
+
 English documentation is brought to you by SwiftGG Translation Team:
+
 - [raychenfj](https://github.com/raychenfj)
 - [kevin](http://thekevin.cn/)
 - [曾小涛](https://github.com/zengxiaotao)
@@ -223,6 +201,7 @@ English documentation is brought to you by SwiftGG Translation Team:
 - [mmoaay](https://github.com/mmoaay)
 
 Spanish documentation is made possible by these community developers:
+
 - [adavie1](https://github.com/adavie1)
 - [carmencitaqiu](https://github.com/carmencitaqiu)
 - [coderdiaz](https://github.com/coderdiaz)
@@ -235,6 +214,7 @@ Spanish documentation is made possible by these community developers:
 - [thechosenjuan](https://github.com/thechosenjuan)
 
 French documentation is made possible by these community developers:
+
 - [smalesys](https://github.com/smalesys)
 - [blombard](https://github.com/blombard)
 
@@ -278,7 +258,6 @@ Support us with a monthly donation and help us continue our activities. [[Become
 <a href="https://opencollective.com/element/backer/28/website" target="_blank"><img src="https://opencollective.com/element/backer/28/avatar.svg"></a>
 <a href="https://opencollective.com/element/backer/29/website" target="_blank"><img src="https://opencollective.com/element/backer/29/avatar.svg"></a>
 
-
 ## Sponsors
 
 Become a sponsor and get your logo on our README on Github with a link to your site. [[Become a sponsor](https://opencollective.com/element#sponsor)]
@@ -314,6 +293,6 @@ Become a sponsor and get your logo on our README on Github with a link to your s
 <a href="https://opencollective.com/element/sponsor/28/website" target="_blank"><img src="https://opencollective.com/element/sponsor/28/avatar.svg"></a>
 <a href="https://opencollective.com/element/sponsor/29/website" target="_blank"><img src="https://opencollective.com/element/sponsor/29/avatar.svg"></a>
 
-
 ## LICENSE
+
 [MIT](LICENSE)

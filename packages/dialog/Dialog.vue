@@ -1,12 +1,24 @@
 <template>
-  <transition name="dialog-fade" @after-enter="afterEnter" @after-leave="afterLeave">
-    <div v-show="visible" class="el-dialog__wrapper" @click.self="handleWrapperClick">
+  <transition
+    name="dialog-fade"
+    @after-enter="afterEnter"
+    @after-leave="afterLeave"
+  >
+    <div
+      v-show="visible"
+      class="el-dialog__wrapper"
+      @click.self="handleWrapperClick"
+    >
       <div
         role="dialog"
         :key="key"
         aria-modal="true"
         :aria-label="title || 'dialog'"
-        :class="['el-dialog', { 'is-fullscreen': fullscreen, 'el-dialog--center': center }, customClass]"
+        :class="[
+          'el-dialog',
+          { 'is-fullscreen': fullscreen, 'el-dialog--center': center },
+          customClass
+        ]"
         ref="dialog"
         :style="style"
       >
@@ -36,8 +48,8 @@
 </template>
 
 <script>
-import { popupProps, usePopup } from "element-ui/src/use/popup";
-import { useEmitter } from "element-ui/src/use/emitter";
+import { popupProps, usePopup } from 'element-ui/src/use/popup'
+import { useEmitter } from 'element-ui/src/use/emitter'
 import {
   toRefs,
   ref,
@@ -47,152 +59,159 @@ import {
   onUnmounted,
   watch,
   nextTick
-} from "vue";
+} from 'vue'
 
 export default {
-  name: "ElDialog",
+  name: 'ElDialog',
   props: {
-     ...popupProps,
+    ...popupProps,
     title: {
       type: String,
-      default: "",
+      default: ''
     },
 
     modal: {
       type: Boolean,
-      default: true,
+      default: true
     },
 
     modalAppendToBody: {
       type: Boolean,
-      default: true,
+      default: true
     },
 
     appendToBody: {
       type: Boolean,
-      default: false,
+      default: false
     },
 
     lockScroll: {
       type: Boolean,
-      default: true,
+      default: true
     },
 
     closeOnClickModal: {
       type: Boolean,
-      default: true,
+      default: true
     },
     closeOnPressEscape: {
       type: Boolean,
-      default: true,
+      default: true
     },
     showClose: {
       type: Boolean,
-      default: true,
+      default: true
     },
     width: String,
     fullscreen: Boolean,
     customClass: {
       type: String,
-      default: "",
+      default: ''
     },
 
     top: {
       type: String,
-      default: "15vh",
+      default: '15vh'
     },
     beforeClose: Function,
     center: {
       type: Boolean,
-      default: false,
+      default: false
     },
     destroyOnClose: Boolean
   },
-  emits: ["update:visible", "close", "opened","open","closed"],
+  emits: ['update:visible', 'close', 'opened', 'open', 'closed'],
   setup(props, { emit, slots }) {
-    const { visible, rendered, open } = usePopup(props);
-    const { appendToBody, fullscreen, top, width, closeOnClickModal,destroyOnClose } = toRefs(props);
-    const { beforeClose } = props;
-    const closed = ref(false);
-    const key = ref(0);
-    const dialog = ref(null);
-    const instanc = getCurrentInstance();
-    const { broadcast } = useEmitter();
+    const { visible, rendered, open } = usePopup(props)
+    const {
+      appendToBody,
+      fullscreen,
+      top,
+      width,
+      closeOnClickModal,
+      destroyOnClose
+    } = toRefs(props)
+    const { beforeClose } = props
+    const closed = ref(false)
+    const key = ref(0)
+    const dialog = ref(null)
+    const instanc = getCurrentInstance()
+    const { broadcast } = useEmitter()
     const style = computed(() => {
-      let style = {};
-      if (!(fullscreen&&fullscreen.value)) {
-        style.marginTop = top.value;
-        if (width&&width.value) {
-          style.width = width.value;
+      const style = {}
+      if (!(fullscreen && fullscreen.value)) {
+        style.marginTop = top.value
+        if (width && width.value) {
+          style.width = width.value
         }
       }
-      return style;
-    });
+      return style
+    })
     const handleWrapperClick = () => {
-      if (!closeOnClickModal) return;
-      handleClose();
-    };
+      if (!closeOnClickModal) return
+      handleClose()
+    }
     const handleClose = () => {
-      if (typeof beforeClose === "function") {
-        beforeClose(hide);
+      if (typeof beforeClose === 'function') {
+        beforeClose(hide)
       } else {
-        hide();
+        hide()
       }
-    };
+    }
     const hide = (cancel) => {
       if (cancel !== false) {
-        emit("update:visible", false);
-        emit("close");
-        closed.value = true;
+        emit('update:visible', false)
+        emit('close')
+        closed.value = true
       }
-    };
+    }
     const updatePopper = () => {
-      broadcast("ElSelectDropdown", "updatePopper");
-      broadcast("ElDropdownMenu", "updatePopper");
-    };
+      broadcast('ElSelectDropdown', 'updatePopper')
+      broadcast('ElDropdownMenu', 'updatePopper')
+    }
     const afterEnter = () => {
-      emit("opened");
-    };
+      emit('opened')
+    }
     const afterLeave = () => {
-      emit("closed");
-    };
-    watch(visible,(val)=>{
-       let el = instanc.ctx.$el;
-       if (val) {
-        closed.value = false;
-        emit("open");
-        el.addEventListener("scroll", updatePopper);
+      emit('closed')
+    }
+    watch(visible, (val) => {
+      const el = instanc.ctx.$el
+      if (val) {
+        closed.value = false
+        emit('open')
+        el.addEventListener('scroll', updatePopper)
         nextTick(() => {
-          dialog.value.scrollTop = 0;
-        });
+          dialog.value.scrollTop = 0
+        })
         if (appendToBody.value) {
-          document.body.appendChild(el);
+          document.body.appendChild(el)
         }
       } else {
-        el.removeEventListener("scroll", updatePopper);
-        if (!closed.value) emit("close");
-        if (destroyOnClose&&destroyOnClose.value) {
+        el.removeEventListener('scroll', updatePopper)
+        if (!closed.value) emit('close')
+        if (destroyOnClose && destroyOnClose.value) {
           nextTick(() => {
-            key.value++;
-          });
+            key.value++
+          })
         }
       }
-    });
+    })
     onMounted(() => {
       if (visible.value) {
-        rendered.value = true;
-        open();
+        rendered.value = true
+        open()
         if (appendToBody.value) {
-          document.body.appendChild(instanc.ctx.$el);
+          document.body.appendChild(instanc.ctx.$el)
         }
       }
-    });
+    })
     onUnmounted(() => {
-      let el = instanc.ctx.$el;
-      if(appendToBody.value && el && el.parentNode) {
-        el.parentNode.removeChild(el);
+      const el = instanc.ctx.$el
+      if (appendToBody.value && el && el.parentNode) {
+        el.parentNode.removeChild(el)
       }
-    });
+    })
     return {
       dialog,
       key,
@@ -205,5 +224,5 @@ export default {
       afterLeave
     }
   }
-};
+}
 </script>

@@ -77,7 +77,10 @@ describe('${ComponentName}', () => {
 `
   },
   {
-    filename: path.join('../../packages/theme-chalk/src', `${componentname}.scss`),
+    filename: path.join(
+      '../../packages/theme-chalk/src',
+      `${componentname}.scss`
+    ),
     content: `@import "mixins/mixins";
 @import "common/var";
 
@@ -106,11 +109,14 @@ fileSave(path.join(__dirname, '../../components.json'))
   .end('\n')
 
 // 添加到 index.scss
-const sassPath = path.join(__dirname, '../../packages/theme-chalk/src/index.scss')
-const sassImportText = `${fs.readFileSync(sassPath)}@import "./${componentname}.scss";`
-fileSave(sassPath)
-  .write(sassImportText, 'utf8')
-  .end('\n')
+const sassPath = path.join(
+  __dirname,
+  '../../packages/theme-chalk/src/index.scss'
+)
+const sassImportText = `${fs.readFileSync(
+  sassPath
+)}@import "./${componentname}.scss";`
+fileSave(sassPath).write(sassImportText, 'utf8').end('\n')
 
 // 添加到 element-ui.d.ts
 const elementTsPath = path.join(__dirname, '../../types/element-ui.d.ts')
@@ -122,14 +128,16 @@ export class ${ComponentName} extends El${ComponentName} {}`
 const index = elementTsText.indexOf('export') - 1
 const importString = `import { El${ComponentName} } from './${componentname}'`
 
-elementTsText = elementTsText.slice(0, index) + importString + '\n' + elementTsText.slice(index)
+elementTsText =
+  elementTsText.slice(0, index) +
+  importString +
+  '\n' +
+  elementTsText.slice(index)
 
-fileSave(elementTsPath)
-  .write(elementTsText, 'utf8')
-  .end('\n')
+fileSave(elementTsPath).write(elementTsText, 'utf8').end('\n')
 
 // 创建 package
-Files.forEach(file => {
+Files.forEach((file) => {
   fileSave(path.join(PackagePath, file.filename))
     .write(file.content, 'utf8')
     .end('\n')
@@ -138,13 +146,14 @@ Files.forEach(file => {
 // 添加到 nav.config.json
 const navConfigFile = require('../../examples/nav.config.json')
 
-Object.keys(navConfigFile).forEach(lang => {
-  let groups = navConfigFile[lang][4].groups
+Object.keys(navConfigFile).forEach((lang) => {
+  const groups = navConfigFile[lang][4].groups
   groups[groups.length - 1].list.push({
     path: `/${componentname}`,
-    title: lang === 'zh-CN' && componentname !== chineseName
-      ? `${ComponentName} ${chineseName}`
-      : ComponentName
+    title:
+      lang === 'zh-CN' && componentname !== chineseName
+        ? `${ComponentName} ${chineseName}`
+        : ComponentName
   })
 })
 

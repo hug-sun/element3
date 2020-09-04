@@ -1,7 +1,7 @@
 import Popconfirm from './src/main'
 
 /* istanbul ignore next */
-Popconfirm.install = function(app) {
+Popconfirm.install = function (app) {
   app.component(Popconfirm.name, Popconfirm)
 }
 

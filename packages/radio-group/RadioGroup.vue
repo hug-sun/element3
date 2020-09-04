@@ -10,7 +10,14 @@
 </template>
 <script>
 import { useEmitter } from 'element-ui/src/use/emitter'
-import { getCurrentInstance, onMounted, watch, toRefs, computed, inject } from 'vue'
+import {
+  getCurrentInstance,
+  onMounted,
+  watch,
+  toRefs,
+  computed,
+  inject
+} from 'vue'
 const keyCode = Object.freeze({
   LEFT: 37,
   UP: 38,
@@ -111,9 +118,7 @@ function useStyle({ elFormItem, size }) {
 
   const radioGroupSize = computed(() => {
     return (
-      size.value ||
-      elFormItem.ctx.elFormItemSize ||
-      (ctx.$ELEMENT || {}).size
+      size.value || elFormItem.ctx.elFormItemSize || (ctx.$ELEMENT || {}).size
     )
   })
 

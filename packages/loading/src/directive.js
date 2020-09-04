@@ -1,12 +1,12 @@
-import {nextTick} from 'vue'
+import { nextTick } from 'vue'
 import Loading from './loading.vue'
 import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom'
 import { PopupManager } from 'element-ui/src/utils/popup'
 import afterLeave from 'element-ui/src/utils/after-leave'
-const Mask = {extends: Loading}
+const Mask = { extends: Loading }
 
 const loadingDirective = {}
-loadingDirective.install = app => {
+loadingDirective.install = (app) => {
   // if (Vue.prototype.$isServer) return
   const toggleLoading = (el, binding) => {
     if (binding.value) {
@@ -22,18 +22,19 @@ loadingDirective.install = app => {
           removeClass(el.mask, 'is-fullscreen')
 
           if (binding.modifiers.body) {
-            el.originalPosition = getStyle(document.body, 'position');
-
-            ['top', 'left'].forEach(property => {
+            el.originalPosition = getStyle(document.body, 'position')
+            ;['top', 'left'].forEach((property) => {
               const scroll = property === 'top' ? 'scrollTop' : 'scrollLeft'
-              el.maskStyle[property] = el.getBoundingClientRect()[property] +
+              el.maskStyle[property] =
+                el.getBoundingClientRect()[property] +
                 document.body[scroll] +
                 document.documentElement[scroll] -
-                parseInt(getStyle(document.body, `margin-${ property }`), 10) +
+                parseInt(getStyle(document.body, `margin-${property}`), 10) +
                 'px'
-            });
-            ['height', 'width'].forEach(property => {
-              el.maskStyle[property] = el.getBoundingClientRect()[property] + 'px'
+            })
+            ;['height', 'width'].forEach((property) => {
+              el.maskStyle[property] =
+                el.getBoundingClientRect()[property] + 'px'
             })
 
             insertDom(document.body, el, binding)
@@ -44,27 +45,40 @@ loadingDirective.install = app => {
         }
       })
     } else {
-      afterLeave(el.instance, _ => {
-        if (!el.instance.hiding) return
-        el.domVisible = false
-        const target = binding.modifiers.fullscreen || binding.modifiers.body
-          ? document.body
-          : el
-        removeClass(target, 'el-loading-parent--relative')
-        removeClass(target, 'el-loading-parent--hidden')
-        el.instance.hiding = false
-      }, 300, true)
+      afterLeave(
+        el.instance,
+        (_) => {
+          if (!el.instance.hiding) return
+          el.domVisible = false
+          const target =
+            binding.modifiers.fullscreen || binding.modifiers.body
+              ? document.body
+              : el
+          removeClass(target, 'el-loading-parent--relative')
+          removeClass(target, 'el-loading-parent--hidden')
+          el.instance.hiding = false
+        },
+        300,
+        true
+      )
       el.instance.visible = false
       el.instance.hiding = true
     }
   }
   const insertDom = (parent, el, binding) => {
-    if (!el.domVisible && getStyle(el, 'display') !== 'none' && getStyle(el, 'visibility') !== 'hidden') {
-      Object.keys(el.maskStyle).forEach(property => {
+    if (
+      !el.domVisible &&
+      getStyle(el, 'display') !== 'none' &&
+      getStyle(el, 'visibility') !== 'hidden'
+    ) {
+      Object.keys(el.maskStyle).forEach((property) => {
         el.mask.style[property] = el.maskStyle[property]
       })
 
-      if (el.originalPosition !== 'absolute' && el.originalPosition !== 'fixed') {
+      if (
+        el.originalPosition !== 'absolute' &&
+        el.originalPosition !== 'fixed'
+      ) {
         addClass(parent, 'el-loading-parent--relative')
       }
       if (binding.modifiers.fullscreen && binding.modifiers.lock) {
@@ -87,7 +101,7 @@ loadingDirective.install = app => {
     }
   }
   app.directive('loading', {
-    bind: function(el, binding, vnode) {
+    bind: function (el, binding, vnode) {
       const textExr = el.getAttribute('element-loading-text')
       const spinnerExr = el.getAttribute('element-loading-spinner')
       const backgroundExr = el.getAttribute('element-loading-background')
@@ -96,10 +110,10 @@ loadingDirective.install = app => {
       const mask = new Mask({
         el: document.createElement('div'),
         data: {
-          text: vm && vm[textExr] || textExr,
-          spinner: vm && vm[spinnerExr] || spinnerExr,
-          background: vm && vm[backgroundExr] || backgroundExr,
-          customClass: vm && vm[customClassExr] || customClassExr,
+          text: (vm && vm[textExr]) || textExr,
+          spinner: (vm && vm[spinnerExr]) || spinnerExr,
+          background: (vm && vm[backgroundExr]) || backgroundExr,
+          customClass: (vm && vm[customClassExr]) || customClassExr,
           fullscreen: !!binding.modifiers.fullscreen
         }
       })
@@ -110,18 +124,16 @@ loadingDirective.install = app => {
       binding.value && toggleLoading(el, binding)
     },
 
-    update: function(el, binding) {
+    update: function (el, binding) {
       el.instance.setText(el.getAttribute('element-loading-text'))
       if (binding.oldValue !== binding.value) {
         toggleLoading(el, binding)
       }
     },
 
-    unbind: function(el, binding) {
+    unbind: function (el, binding) {
       if (el.domInserted) {
-        el.mask &&
-        el.mask.parentNode &&
-        el.mask.parentNode.removeChild(el.mask)
+        el.mask && el.mask.parentNode && el.mask.parentNode.removeChild(el.mask)
         toggleLoading(el, { value: false, modifiers: binding.modifiers })
       }
       el.instance && el.instance.$destroy()
