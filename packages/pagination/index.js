@@ -1,4 +1,4 @@
-import Pagination from './src/pagination'
+import Pagination from './Pagination'
 
 /* istanbul ignore next */
 Pagination.install = function (app) {

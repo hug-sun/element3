@@ -1,43 +1,30 @@
 <template>
-  <el-button
-          plain
-          @click="open1">
-    可自动关闭
-  </el-button>
-  <el-button
-          plain
-          @click="open2">
-    不会自动关闭
-  </el-button>
-  <el-button
-          plain
-          @click="close">
-    全部关闭
-  </el-button>
+  <el-transfer v-model="value" :data="data"></el-transfer>
 </template>
 
 <script>
-  import {h} from 'vue'
-  export default {
-    methods: {
-      open1() {
+import { reactive, toRefs } from 'vue'
 
-        this.$notify({
-          title: '标题名称',
-          message: h('i', { style: 'color: teal'}, '这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案')
-        });
-      },
+export default {
+  setup() {
+    const state = reactive({
+      data: generateData(),
+      value: [1, 4]
+    })
 
-      open2() {
-        this.$notify({
-          title: '提示',
-          message: '这是一条不会自动关闭的消息',
-          duration: 0
-        });
-      },
-      close(){
-        this.$notify.closeAll();
-      }
-    }
+    return toRefs(state)
   }
+}
+
+const generateData = _ => {
+  const data = []
+  for (let i = 1; i <= 15; i++) {
+    data.push({
+      key: i,
+      label: `备选项 ${ i }`,
+      disabled: i % 4 === 0
+    })
+  }
+  return data
+}
 </script>

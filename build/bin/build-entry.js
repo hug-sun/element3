@@ -111,8 +111,18 @@ ComponentNames.forEach((name) => {
       'rate',
       'divider',
       'progress',
+      'message',
+      'pagination',
       'notification',
-      'message'
+      'page-header',
+      'message',
+      'timeline',
+      'timeline-item',
+      'input-number',
+      'step',
+      'steps',
+      'drawer',
+      'transfer'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
