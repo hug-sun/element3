@@ -1,10 +1,12 @@
 {
   "name": "element3",
-  "version": "2.13.3",
+  "version": "0.0.4",
   "description": "A Component Library for Vue.js.",
-  "main": "lib/element-ui.common.js",
+  "main": "dist/element3-ui.esm.js",
+  "module": "dist/element3-ui.esm.js",
   "files": [
     "lib",
+    "dist",
     "src",
     "packages",
     "types"
@@ -29,7 +31,8 @@
     "pub": "npm run bootstrap && sh build/git-release.sh && sh build/release.sh && node build/bin/gen-indices.js && sh build/deploy-faas.sh",
     "test": "npm run lint && npm run build:theme && cross-env CI_ENV=/dev/ BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "test:watch": "npm run build:theme && cross-env BABEL_ENV=test karma start test/unit/karma.conf.js",
-    "test:unit": "jest"
+    "test:unit": "jest",
+    "build:next": "rollup -c"
   },
   "faas": [
     {
@@ -75,6 +78,7 @@
     "deepmerge": "^1.2.0",
     "normalize-wheel": "^1.0.1",
     "resize-observer-polyfill": "^1.5.0",
+    "rollup": "^2.26.9",
     "throttle-debounce": "^1.0.1"
   },
   "peerDependencies": {
@@ -85,6 +89,9 @@
     "@babel/core": "^7.10.5",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "^7.10.4",
+    "@rollup/plugin-commonjs": "^15.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "@testing-library/jest-dom": "^5.11.2",
     "@types/jest": "^26.0.7",
     "@vue/compiler-dom": "^3.0.0-rc.5",
@@ -156,6 +163,10 @@
     "prettier": "^2.0.5",
     "progress-bar-webpack-plugin": "^1.11.0",
     "rimraf": "^2.5.4",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-peer-deps-external": "^2.2.3",
+    "rollup-plugin-scss": "^2.6.0",
+    "rollup-plugin-vue": "^6.0.0-beta.10",
     "sass-loader": "^7.1.0",
     "select-version-cli": "^0.0.2",
     "sinon": "^7.2.7",

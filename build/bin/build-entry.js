@@ -114,9 +114,14 @@ ComponentNames.forEach((name) => {
       'notification',
       'page-header',
       'message',
+      'timeline',
+      'timeline-item',
+      'input-number',
       'step',
       'steps',
-      'popconfirm'
+      'popconfirm',
+      'drawer',
+      'transfer'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换

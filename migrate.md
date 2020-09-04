@@ -36,7 +36,7 @@
 |         Radio 单选框          |   ✅   | 修改 From 组件时需要处理一些逻辑 |
 |        Checkbox 多选框        |   ✅   |  修改 From 组件时需要处理一些逻辑 |
 |         Input 输入框          |   ❌   |                无                |
-|      InputNumber 计数器       |   ❌   |                无                |
+|      InputNumber 计数器       |   ✅   |        功能完成，没写完全测试                 |
 |         Select 选择器         |   ❌   |                无                |
 |      Cascader 级联选择器      |   ❌   |                无                |
 |          Switch 开关          |   ❌   |                无                |

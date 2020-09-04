@@ -1,23 +1,24 @@
-import Row from '../index.js'
+import Row from '../Row.js'
 import { mount } from '@vue/test-utils'
 describe('Row.vue', () => {
-
   it('create', () => {
     const wrapper = mount(Row)
     expect(wrapper.classes()).toContain('el-row')
   })
   it('gutter', () => {
     const wrapper = mount(Row, {
-      props:{
+      props: {
         gutter: 20
       }
     })
-    expect(wrapper.attributes('style')).toBe('margin-left: -10px; margin-right: -10px;')
+    expect(wrapper.attributes('style')).toBe(
+      'margin-left: -10px; margin-right: -10px;'
+    )
   })
 
   it('type', () => {
     const wrapper = mount(Row, {
-      props:{
+      props: {
         type: 'flex'
       }
     })
@@ -25,7 +26,7 @@ describe('Row.vue', () => {
   })
   it('justify', () => {
     const wrapper = mount(Row, {
-      props:{
+      props: {
         justify: 'end'
       }
     })
@@ -33,7 +34,7 @@ describe('Row.vue', () => {
   })
   it('align', () => {
     const wrapper = mount(Row, {
-      props:{
+      props: {
         align: 'bottom'
       }
     })

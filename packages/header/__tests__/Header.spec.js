@@ -8,12 +8,10 @@ describe('Header.vue', () => {
   })
 
   it('Header default height equals 60px', () => {
-    const wrapper = mount(Header);
+    const wrapper = mount(Header)
 
-    expect(wrapper.find('.el-header').attributes().style).toBe(
-      'height: 60px;'
-    );
-  });
+    expect(wrapper.find('.el-header').attributes().style).toBe('height: 60px;')
+  })
 
   it('Header 设置高度', () => {
     const wrapper = mount(Header, {

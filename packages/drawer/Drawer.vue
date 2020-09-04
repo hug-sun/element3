@@ -29,9 +29,9 @@
             v-if="withHeader"
           >
             <slot name="title">
-              <span role="heading" tabindex="0" :title="title">{{
-                title
-              }}</span>
+              <span role="heading" tabindex="0" :title="title">
+                {{ title }}
+              </span>
             </slot>
             <button
               :aria-label="`close ${title || 'drawer'}`"
@@ -53,14 +53,23 @@
 </template>
 
 <script>
-import Popup from 'element-ui/src/utils/popup'
-import emitter from 'element-ui/src/mixins/emitter'
+import {
+  toRefs,
+  computed,
+  ref,
+  watch,
+  getCurrentInstance,
+  nextTick,
+  onMounted,
+  onUnmounted
+} from 'vue'
+import { popupProps, usePopup } from 'element-ui/src/use/popup'
 import Utils from 'element-ui/src/utils/aria-utils'
 
 export default {
   name: 'ElDrawer',
-  mixins: [Popup, emitter],
   props: {
+    ...popupProps,
     appendToBody: {
       type: Boolean,
       default: false
@@ -119,85 +128,124 @@ export default {
       default: true
     }
   },
-  computed: {
-    isHorizontal() {
-      return this.direction === 'rtl' || this.direction === 'ltr'
-    }
-  },
-  data() {
-    return {
-      closed: false,
-      prevActiveElement: null
-    }
-  },
-  watch: {
-    visible(val) {
+  emits: ['update:visible', 'close', 'opened', 'open', 'closed'],
+  setup(props, { emit }) {
+    const { rendered, open } = usePopup(props)
+    const {
+      appendToBody,
+      beforeClose,
+      customClass,
+      destroyOnClose,
+      direction,
+      showClose,
+      size,
+      title,
+      visible,
+      wrapperClosable,
+      withHeader
+    } = toRefs(props)
+
+    const closed = ref(false)
+    const prevActiveElement = ref(null)
+    const drawer = ref(null)
+    const self = getCurrentInstance().proxy
+
+    const isHorizontal = computed(() => {
+      return direction.value === 'rtl' || direction.value === 'ltr'
+    })
+
+    watch(visible, (val) => {
+      const el = self.$el
       if (val) {
-        this.closed = false
-        this.$emit('open')
-        if (this.appendToBody) {
-          document.body.appendChild(this.$el)
+        closed.value = false
+        emit('open')
+        if (appendToBody.value) {
+          document.body.appendChild(el)
         }
-        this.prevActiveElement = document.activeElement
-        this.$nextTick(() => {
-          Utils.focusFirstDescendant(this.$refs.drawer)
+        prevActiveElement.value = document.activeElement
+        nextTick(() => {
+          Utils.focusFirstDescendant(drawer.value)
         })
       } else {
-        if (!this.closed) this.$emit('close')
-        this.$nextTick(() => {
-          if (this.prevActiveElement) {
-            this.prevActiveElement.focus()
+        if (!closed.value) emit('close')
+        nextTick(() => {
+          if (prevActiveElement.value) {
+            prevActiveElement.value.focus()
           }
         })
       }
+    })
+
+    const afterEnter = () => {
+      emit('opened')
     }
-  },
-  methods: {
-    afterEnter() {
-      this.$emit('opened')
-    },
-    afterLeave() {
-      this.$emit('closed')
-    },
-    hide(cancel) {
-      if (cancel !== false) {
-        this.$emit('update:visible', false)
-        this.$emit('close')
-        if (this.destroyOnClose === true) {
-          this.rendered = false
-        }
-        this.closed = true
+
+    const afterLeave = () => {
+      emit('closed')
+    }
+
+    const handleWrapperClick = () => {
+      if (wrapperClosable.value) {
+        closeDrawer()
       }
-    },
-    handleWrapperClick() {
-      if (this.wrapperClosable) {
-        this.closeDrawer()
-      }
-    },
-    closeDrawer() {
-      if (typeof this.beforeClose === 'function') {
-        this.beforeClose(this.hide)
+    }
+
+    const closeDrawer = () => {
+      if (beforeClose && typeof beforeClose.value === 'function') {
+        beforeClose.value(hide)
       } else {
-        this.hide()
+        hide()
       }
-    },
-    handleClose() {
+    }
+
+    const hide = (cancel) => {
+      if (cancel !== false) {
+        emit('update:visible', false)
+        emit('close')
+        if (destroyOnClose.value === true) {
+          rendered.value = false
+        }
+        closed.value = true
+      }
+    }
+
+    // todo: ESC 退出模态框,暂时无调用，lint过不去先在return调用
+    const handleClose = () => {
       // This method here will be called by PopupManger, when the `closeOnPressEscape` was set to true
       // pressing `ESC` will call this method, and also close the drawer.
       // This method also calls `beforeClose` if there was one.
-      this.closeDrawer()
+      closeDrawer()
     }
-  },
-  mounted() {
-    if (this.visible) {
-      this.rendered = true
-      this.open()
-    }
-  },
-  destroyed() {
-    // if appendToBody is true, remove DOM node after destroy
-    if (this.appendToBody && this.$el && this.$el.parentNode) {
-      this.$el.parentNode.removeChild(this.$el)
+
+    onMounted(() => {
+      if (visible.value) {
+        rendered.value = true
+        open()
+      }
+    })
+
+    onUnmounted(() => {
+      // if appendToBody is true, remove DOM node after destroy
+      if (appendToBody.value && self.$el && self.$el.parentNode) {
+        self.$el.parentNode.removeChild(self.$el)
+      }
+    })
+
+    return {
+      customClass,
+      direction,
+      showClose,
+      size,
+      title,
+      withHeader,
+      isHorizontal,
+      drawer,
+      rendered,
+      afterEnter,
+      afterLeave,
+      handleWrapperClick,
+      closeDrawer,
+      handleClose
     }
   }
 }
