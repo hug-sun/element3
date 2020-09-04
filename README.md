@@ -33,6 +33,7 @@ Vue.use(ElButton)
 ## export components
 目前已经导出可以使用的组件列表
 - ElButton
+- ElSwitch
 
 ## Join Discussion Group
 
