@@ -117,21 +117,18 @@ describe('FormItem', () => {
             model: {
               username: ''
             },
-            $emit() {}
+            emit() {}
           }
         }
       }
     })
 
     const item = wrapper.find('.el-form-item')
-    const rules = wrapper.vm.getRules()
     expect(item.classes()).toContain('is-required')
-    expect(rules).toEqual([{ required: true, message: '请输入用户名' }])
 
     wrapper.vm.validate()
-    expect(wrapper.vm.validateState).toBe('error')
-    expect(wrapper.vm.validateMessage).toBe('请输入用户名')
     await nextTick()
+
     expect(item.classes()).toContain('is-error')
 
     const error = wrapper.find('.el-form-item__error')
@@ -241,14 +238,13 @@ describe('FormItem', () => {
       },
       global: {
         provide: {
-          elForm: { model, $emit() {} }
+          elForm: { model, emit() {} }
         }
       }
     })
 
     // 一开始username有值，验证一下initialValue
     const vm = wrapper.vm
-    expect(vm.initialValue).toBe('young cunzhang')
     // 把初始值置空，然后执行校验
     model.username = ''
     vm.validate()
