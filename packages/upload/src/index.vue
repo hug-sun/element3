@@ -297,7 +297,7 @@ export default {
   render() {
     let uploadList
 
-    console.log('file slot', this.$slots.file)
+    // console.log('file slot', this.$slots.file)
 
     const slots = {
       file: this.$slots.file
