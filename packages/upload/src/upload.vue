@@ -126,7 +126,7 @@ export default {
     // 上传多个文件
     const uploadFiles = (files) => {
       if (props.limit && props.fileList.length + files.length > props.limit) {
-        props.onExceed && props.onExceed(files, this.fileList)
+        props.onExceed && props.onExceed(files, props.fileList)
         return
       }
       let postFiles = Array.prototype.slice.call(files)

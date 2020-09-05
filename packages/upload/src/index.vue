@@ -202,12 +202,12 @@ export default {
     }
     // 处理操作成功的钩子函数
     const handleSuccess = (res, rawFile) => {
-      const file = this.getFile(rawFile)
+      const file = getFile(rawFile)
       if (file) {
         file.status = 'success'
         file.response = res
-        props.onSuccess(res, file, this.uploadFiles)
-        props.onChange(file, this.uploadFiles)
+        props.onSuccess(res, file, state.uploadFiles)
+        props.onChange(file, state.uploadFiles)
       }
     }
     // 处理异常错误的钩子函数
@@ -296,14 +296,6 @@ export default {
 
   render() {
     let uploadList
-
-    // {(props) => {
-    //         if (this.$slots.file) {
-    //           return this.$scopedSlots.file({
-    //             file: props.file
-    //           })
-    //         }
-    // }}
 
     console.log('file slot', this.$slots.file)
 
