@@ -7,7 +7,12 @@
 :::demo
 ```html
 <template>
-  <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+  <ul
+    class="infinite-list"
+    v-infinite-scroll="load"
+    :infinite-scroll-delay="0"
+    style="overflow:auto"
+  >
     <li v-for="i in count" class="infinite-list-item">{{ i }}</li>
   </ul>
 </template>
@@ -38,7 +43,8 @@
     <ul
       class="list"
       v-infinite-scroll="load"
-      infinite-scroll-disabled="disabled">
+      :infinite-scroll-delay="0"
+      :infinite-scroll-disabled="disabled">
       <li v-for="i in count" class="list-item">{{ i }}</li>
     </ul>
     <p v-if="loading">加载中...</p>
