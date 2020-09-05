@@ -27,14 +27,14 @@ const install = function(app, opts = {}) {
   });
 
   app.use(InfiniteScroll);
-  // app.use(Loading.directive);
+  app.use(Loading.directive);
 
   app.config.globalProperties.$ELEMENT = {
     size: opts.size || '',
     zIndex: opts.zIndex || 2000
   };
 
-  // app.config.globalProperties.$loading = Loading.service;
+  app.config.globalProperties.$loading = Loading.service;
   // app.config.globalProperties.$msgbox = MessageBox;
   // app.config.globalProperties.$alert = MessageBox.alert;
   // app.config.globalProperties.$confirm = MessageBox.confirm;
@@ -56,7 +56,6 @@ export default {
   i18n: locale.i18n,
   install,
   CollapseTransition,
-  // Loading,
 {{list}}
 };
 `
@@ -73,6 +72,7 @@ ComponentNames.forEach((name) => {
   if (
     [
       'infinite-scroll',
+      'loading',
       'image',
       'card',
       'alert',
@@ -153,7 +153,7 @@ ComponentNames.forEach((name) => {
       )
     }
 
-    if (componentName !== 'Loading') listTemplate.push(`  ${componentName}`)
+    listTemplate.push(`  ${componentName}`)
   } else {
   }
 })

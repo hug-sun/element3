@@ -19,6 +19,7 @@ import BreadcrumbItem from '../packages/breadcrumb-item/index.js';
 import Tag from '../packages/tag/index.js';
 import Alert from '../packages/alert/index.js';
 import Notification from '../packages/notification/index.js';
+import Loading from '../packages/loading/index.js';
 import Icon from '../packages/icon/index.js';
 import Row from '../packages/row/index.js';
 import Col from '../packages/col/index.js';
@@ -107,14 +108,14 @@ const install = function(app, opts = {}) {
   });
 
   // app.use(InfiniteScroll);
-  // app.use(Loading.directive);
+  app.use(Loading.directive);
 
   app.config.globalProperties.$ELEMENT = {
     size: opts.size || '',
     zIndex: opts.zIndex || 2000
   };
 
-  // app.config.globalProperties.$loading = Loading.service;
+  app.config.globalProperties.$loading = Loading.service;
   // app.config.globalProperties.$msgbox = MessageBox;
   // app.config.globalProperties.$alert = MessageBox.alert;
   // app.config.globalProperties.$confirm = MessageBox.confirm;
@@ -136,7 +137,6 @@ export default {
   i18n: locale.i18n,
   install,
   CollapseTransition,
-  // Loading,
   Pagination,
   Dialog,
   Input,
@@ -157,6 +157,7 @@ export default {
   Tag,
   Alert,
   Notification,
+  Loading,
   Icon,
   Row,
   Col,
