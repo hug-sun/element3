@@ -27,20 +27,22 @@ const install = function(app, opts = {}) {
   });
 
   // app.use(InfiniteScroll);
-  // app.use(Loading.directive);
+  app.use(Loading.directive);
 
   app.config.globalProperties.$ELEMENT = {
     size: opts.size || '',
     zIndex: opts.zIndex || 2000
   };
 
-  // app.config.globalProperties.$loading = Loading.service;
+  app.config.globalProperties.$loading = Loading.service;
   // app.config.globalProperties.$msgbox = MessageBox;
   // app.config.globalProperties.$alert = MessageBox.alert;
   // app.config.globalProperties.$confirm = MessageBox.confirm;
   // app.config.globalProperties.$prompt = MessageBox.prompt;
-  // app.config.globalProperties.$notify = Notification;
-  // app.config.globalProperties.$message = Message;
+
+   app.config.globalProperties.$notify = Notification;
+   app.config.globalProperties.$message = Message;
+
 };
 
 /* istanbul ignore if */
@@ -54,7 +56,6 @@ export default {
   i18n: locale.i18n,
   install,
   CollapseTransition,
-  // Loading,
 {{list}}
 };
 `
@@ -70,6 +71,9 @@ var listTemplate = []
 ComponentNames.forEach((name) => {
   if (
     [
+      'loading',
+      'image',
+      'card',
       'alert',
       'scrollbar',
       'backtop',
@@ -109,6 +113,18 @@ ComponentNames.forEach((name) => {
       'progress',
       'form',
       'form-item'
+      'message',
+      'pagination',
+      'notification',
+      'page-header',
+      'message',
+      'timeline',
+      'timeline-item',
+      'input-number',
+      'step',
+      'steps',
+      'drawer',
+      'transfer'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
@@ -138,7 +154,7 @@ ComponentNames.forEach((name) => {
       )
     }
 
-    if (componentName !== 'Loading') listTemplate.push(`  ${componentName}`)
+    listTemplate.push(`  ${componentName}`)
   } else {
   }
 })
