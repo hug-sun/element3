@@ -122,6 +122,7 @@ ComponentNames.forEach((name) => {
       'input-number',
       'step',
       'steps',
+      'popconfirm',
       'drawer',
       'transfer'
     ].indexOf(name) > -1
