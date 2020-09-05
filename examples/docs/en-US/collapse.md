@@ -101,7 +101,7 @@ Besides using the `title` attribute, you can customize panel title with named sl
 ### Collapse Attributes
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| modelValue / v-model | currently active panel | string (accordion mode) / array (non-accordion mode) | — | — |
+| modelValue / v-model | currently active panel | string/number (accordion mode) / array (non-accordion mode) | — | — |
 | accordion | whether to activate accordion mode | boolean | — | false |
 
 ### Collapse Events
@@ -112,6 +112,6 @@ Besides using the `title` attribute, you can customize panel title with named sl
 ### Collapse Item Attributes
 | Attribute      | Description          | Type      | Accepted Values       | Default  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| name      | unique identification of the panel | string | — | — |
+| name      | unique identification of the panel | string/number | — | — |
 | title     | title of the panel                 | string        | — | — |
 | disabled  | disable the collapse item          | boolean       | — | — |

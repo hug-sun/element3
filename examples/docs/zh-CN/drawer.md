@@ -22,7 +22,7 @@
 
 <el-drawer
   title="我是标题"
-  :visible.sync="drawer"
+  v-model:visible="drawer"
   :direction="direction"
   :before-close="handleClose">
   <span>我来啦!</span>
@@ -63,7 +63,7 @@
 
 <el-drawer
   title="我是标题"
-  :visible.sync="drawer"
+  v-model:visible="drawer"
   :with-header="false">
   <span>我来啦!</span>
 </el-drawer>
@@ -92,7 +92,7 @@
 <el-button type="text" @click="dialog = true">打开嵌套 Form 的 Drawer</el-button>
 <el-drawer
   title="我嵌套了表格!"
-  :visible.sync="table"
+  v-model:visible="table"
   direction="rtl"
   size="50%">
    <el-table :data="gridData">
@@ -105,7 +105,7 @@
 <el-drawer
   title="我嵌套了 Form !"
   :before-close="handleClose"
-  :visible.sync="dialog"
+  v-model:visible="dialog"
   direction="ltr"
   custom-class="demo-drawer"
   ref="drawer"
@@ -210,7 +210,7 @@ export default {
 
 <el-drawer
   title="我是外面的 Drawer"
-  :visible.sync="drawer"
+  v-model:visible="drawer"
   size="50%">
   <div>
    <el-button @click="innerDrawer = true">打开里面的!</el-button>
@@ -218,7 +218,7 @@ export default {
      title="我是里面的"
      :append-to-body="true"
      :before-close="handleClose"
-     :visible.sync="innerDrawer">
+     v-model:visible="innerDrawer">
      <p>_(:зゝ∠)_</p>
    </el-drawer>
   </div>

@@ -8,25 +8,30 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      const generateData = _ => {
-        const data = [];
-        for (let i = 1; i <= 15; i++) {
-          data.push({
-            key: i,
-            label: `备选项 ${ i }`,
-            disabled: i % 4 === 0
-          });
-        }
-        return data;
-      };
-      return {
-        data: generateData(),
-        value: [1, 4]
-      };
-    }
-  };
+import { reactive, toRefs } from 'vue'
+
+export default {
+  setup() {
+    const state = reactive({
+      data: generateData(),
+      value: [1, 4]
+    })
+
+    return toRefs(state)
+  }
+}
+
+const generateData = _ => {
+  const data = []
+  for (let i = 1; i <= 15; i++) {
+    data.push({
+      key: i,
+      label: `备选项 ${ i }`,
+      disabled: i % 4 === 0
+    })
+  }
+  return data
+}
 </script>
 ```
 :::
@@ -43,35 +48,43 @@
     :filter-method="filterMethod"
     filter-placeholder="请输入城市拼音"
     v-model="value"
-    :data="data">
+    :data="data"
+  >
   </el-transfer>
 </template>
 
 <script>
-  export default {
-    data() {
-      const generateData = _ => {
-        const data = [];
-        const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
-        const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
-        cities.forEach((city, index) => {
-          data.push({
-            label: city,
-            key: index,
-            pinyin: pinyin[index]
-          });
-        });
-        return data;
-      };
-      return {
-        data: generateData(),
-        value: [],
-        filterMethod(query, item) {
-          return item.pinyin.indexOf(query) > -1;
-        }
-      };
+import { reactive, toRefs } from 'vue'
+
+export default {
+  setup() {
+    const filterMethod = (query, item) => item.pinyin.indexOf(query) > -1
+
+    const state = reactive({
+      data: generateData(),
+      value: []
+    })
+    
+    return {
+      ...toRefs(state),
+      filterMethod
     }
-  };
+  }
+}
+
+const generateData = _ => {
+  const data = []
+  const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都']
+  const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu']
+  cities.forEach((city, index) => {
+    data.push({
+      label: city,
+      key: pinyin[index],
+      pinyin: pinyin[index]
+    })
+  })
+  return data
+}
 </script>
 ```
 :::
@@ -99,9 +112,14 @@
         hasChecked: '${checked}/${total}'
       }"
       @change="handleChange"
-      :data="data">
-      <el-button class="transfer-footer" slot="left-footer" size="small">操作</el-button>
-      <el-button class="transfer-footer" slot="right-footer" size="small">操作</el-button>
+      :data="data"
+    >
+      <template #left-footer>
+        <el-button class="transfer-footer" size="small">操作</el-button>
+      </template>
+      <template #right-footer>
+        <el-button class="transfer-footer" size="small">操作</el-button>
+      </template>
     </el-transfer>
   </div>
   <p style="text-align: center; margin: 50px 0 20px">使用 scoped-slot 自定义数据项</p>
@@ -119,51 +137,63 @@
         hasChecked: '${checked}/${total}'
       }"
       @change="handleChange"
-      :data="data">
-      <span slot-scope="{ option }">{{ option.key }} - {{ option.label }}</span>
-      <el-button class="transfer-footer" slot="left-footer" size="small">操作</el-button>
-      <el-button class="transfer-footer" slot="right-footer" size="small">操作</el-button>
+      :data="data"
+    >
+      <template #default="{ option }">
+        <span>{{ option.key }} - {{ option.label }}</span>
+      </template>
+      
+      <template #left-footer>
+        <el-button class="transfer-footer" size="small">操作</el-button>
+      </template>
+      <template #right-footer>
+        <el-button class="transfer-footer" size="small">操作</el-button>
+      </template>
     </el-transfer>
   </div>
 </template>
 
-<style>
+<style scoped>
   .transfer-footer {
-    margin-left: 20px;
+    margin-left: 15px;
     padding: 6px 5px;
   }
 </style>
 
 <script>
-  export default {
-    data() {
-      const generateData = _ => {
-        const data = [];
-        for (let i = 1; i <= 15; i++) {
-          data.push({
-            key: i,
-            label: `备选项 ${ i }`,
-            disabled: i % 4 === 0
-          });
-        }
-        return data;
-      };
-      return {
-        data: generateData(),
-        value: [1],
-        value4: [1],
-        renderFunc(h, option) {
-          return <span>{ option.key } - { option.label }</span>;
-        }
-      };
-    },
+import { reactive, toRefs } from 'vue'
 
-    methods: {
-      handleChange(value, direction, movedKeys) {
-        console.log(value, direction, movedKeys);
-      }
+export default {
+  setup() {
+    const state = reactive({
+      data: generateData(),
+      value: [1],
+      value4: [1]
+    })
+
+    const renderFunc = (h, option) => <span>{ option.key } - { option.label }</span>
+
+    const handleChange = (value, direction, movedKeys) => console.log(value, direction, movedKeys)
+    
+    return {
+      ...toRefs(state),
+      renderFunc,
+      handleChange
     }
-  };
+  }
+}
+
+const generateData = _ => {
+  const data = []
+  for (let i = 1; i <= 15; i++) {
+    data.push({
+      key: i,
+      label: `备选项 ${ i }`,
+      disabled: i % 4 === 0
+    })
+  }
+  return data
+}
 </script>
 ```
 :::
@@ -180,30 +210,36 @@
       key: 'value',
       label: 'desc'
     }"
-    :data="data">
+    :data="data"
+  >
   </el-transfer>
 </template>
 
 <script>
-  export default {
-    data() {
-      const generateData = _ => {
-        const data = [];
-        for (let i = 1; i <= 15; i++) {
-          data.push({
-            value: i,
-            desc: `备选项 ${ i }`,
-            disabled: i % 4 === 0
-          });
-        }
-        return data;
-      };
-      return {
-        data: generateData(),
-        value: []
-      };
-    }
-  };
+import { reactive, toRefs } from 'vue'
+
+export default {
+  setup() {
+    const state = reactive({
+      value: [],
+      data: generateData()
+    })
+
+    return toRefs(state)
+  }
+}
+
+const generateData = _ => {
+  const data = []
+  for (let i = 1; i <= 15; i++) {
+    data.push({
+      value: i,
+      desc: `备选项 ${ i }`,
+      disabled: i % 4 === 0
+    })
+  }
+  return data
+}
 </script>
 ```
 :::

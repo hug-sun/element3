@@ -60,7 +60,7 @@ export default {
   props: {
     title: String,
     name: {
-      type: String,
+      type: [String, Number],
       default() {
         return generateId().toString()
       }

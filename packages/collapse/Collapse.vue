@@ -12,7 +12,7 @@ export default {
   props: {
     accordion: Boolean,
     modelValue: {
-      type: [Array, String],
+      type: [Array, String, Number],
       default() {
         return []
       }
@@ -64,7 +64,7 @@ export default {
       off('collapse-item-click', handleItemClick)
     })
 
-    return { setActiveNames }
+    return {}
   }
 }
 </script>
