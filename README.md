@@ -4,21 +4,25 @@
 2. 组件加上白名单，比如加一个 'input'，执行 `npm run dev`。
 3. 访问文档(也可访问 http://localhost:8086/#/ )，在对应的组件页面调试报错即可，完成的记得标记。
 4. 提交代码前请先拉取代码，commit 时信息格式为 key: content，如 `refactor: refactor alert`，注意表达简洁易懂。
+
 ## Install
+
 ```js
 npm install element3 -S
 
 ```
-## Quick Start
-```js
-import "element3/lib/theme-chalk/index.css";
-import { createApp } from "vue";
-import Element3 from "element3";
-import App from "./App.vue";
 
-const app = createApp(App);
-app.use(Element3);
-app.mount("#app");
+## Quick Start
+
+```js
+import 'element3/lib/theme-chalk/index.css'
+import { createApp } from 'vue'
+import Element3 from 'element3'
+import App from './App.vue'
+
+const app = createApp(App)
+app.use(Element3)
+app.mount('#app')
 
 // or
 import {
@@ -28,12 +32,16 @@ import {
 
 Vue.use(ElButton)
 ```
+
 > 注意暂时不要在生产坏境使用
 
 ## export components
+
 目前已经导出可以使用的组件列表
+
 - ElButton
 - ElSwitch
+- ElProgress
 
 ## Join Discussion Group
 
@@ -44,7 +52,6 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
 ## Contribution
 
 [See Contributing Guide.](https://juejin.im/post/6864462363039531022)
-
 
 <p align="center">
   <img src="https://gitee.com/pandafe/element3/raw/master/element_logo.svg">
