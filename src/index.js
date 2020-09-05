@@ -44,11 +44,12 @@ import Link from '../packages/link/index.js';
 import Divider from '../packages/divider/index.js';
 import Image from '../packages/image/index.js';
 import Backtop from '../packages/backtop/index.js';
+import InfiniteScroll from '../packages/infinite-scroll/index.js';
 import PageHeader from '../packages/page-header/index.js';
 import Avatar from '../packages/avatar/index.js';
 import Drawer from '../packages/drawer/index.js';
 import locale from 'element-ui/src/locale';
- import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
+import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
 const components = [
   Pagination,
@@ -107,7 +108,7 @@ const install = function(app, opts = {}) {
     app.component(component.name, component);
   });
 
-  // app.use(InfiniteScroll);
+  app.use(InfiniteScroll);
   app.use(Loading.directive);
 
   app.config.globalProperties.$ELEMENT = {
@@ -182,6 +183,7 @@ export default {
   Divider,
   Image,
   Backtop,
+  InfiniteScroll,
   PageHeader,
   Avatar,
   Drawer
