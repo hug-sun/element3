@@ -71,7 +71,6 @@ describe('emitter', () => {
     it('parent to child', () => {
       const handleChildOn = jest.fn()
       const handleChildOnce = jest.fn()
-      let broadcastFn
       const ChildOn = {
         name: 'ChildOn',
         template: '<div></div>',
