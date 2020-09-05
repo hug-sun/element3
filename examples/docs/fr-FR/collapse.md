@@ -101,17 +101,17 @@ En plus de l'utilisation de l'attribut `title`, vous pouvez configurer les titre
 ### Attributs de Collapse
 | Attribut      | Description          | Type      | Valeurs acceptées       | Défaut  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| modelValue / v-model | Le panneau actuellement activé. | string/number (en mode accordéon) / array (en mode normal) | — | — |
+| modelValue / v-model | Le panneau actuellement activé. | string / number (en mode accordéon) / array (en mode normal) | — | — |
 | accordion | Active le mode accordéon. | boolean | — | false |
 
 ### Évènements de Collapse
 | Nom | Description | Paramètres |
 |---------|---------|---------|
-| update:modelValue | Se déclenche quand un panneau est activé / désactivé. | (activeNames: array (en mode normal) / string (en mode accordéon)) |
+| update:modelValue | Se déclenche quand un panneau est activé / désactivé. | (activeNames: array (en mode normal) / string / number (en mode accordéon)) |
 
 ### Attributs de Collapse-Item
 | Attribut      | Description          | Type      | Valeurs acceptées       | Défaut  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| name      | Identifiant unique du panneau. | string/number | — | — |
+| name      | Identifiant unique du panneau. | string / number | — | — |
 | title     | Titre du panneau.              | string        | — | — |
 | disabled  | Désactive le panneau.          | boolean       | — | — |
