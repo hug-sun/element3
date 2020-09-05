@@ -112,6 +112,8 @@ ComponentNames.forEach((name) => {
       'rate',
       'divider',
       'progress',
+      'form',
+      'form-item'
       'message',
       'pagination',
       'notification',
