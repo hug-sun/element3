@@ -1,9 +1,3 @@
-// import { getStyle } from '../../../src/utils/dom'
-// import { createVue, destroyVM } from '../util'
-// import Vue from 'vue'
-// import LoadingRaw from 'packages/loading'
-// const Loading = LoadingRaw.service
-
 import { nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
 import Loading from '../index'
