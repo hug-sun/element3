@@ -17,13 +17,13 @@ const webpackConfig = {
   mode: process.env.NODE_ENV,
   entry: isProd
     ? {
-        docs: './examples/entry.js'
+        docs: path.resolve(__dirname, '../examples/entry.js')
       }
     : isPlay
-    ? './examples/play.js'
-    : './examples/entry.js',
+    ? path.resolve(__dirname, '../examples/play.js')
+    : path.resolve(__dirname, '../examples/entry.js'),
   output: {
-    path: path.resolve(process.cwd(), './examples/element-ui/'),
+    path: path.resolve(__dirname, '../examples/element-ui/'),
     publicPath: process.env.CI_ENV || '',
     filename: '[name].[hash:7].js',
     chunkFilename: isProd ? '[name].[hash:7].js' : '[name].js'
