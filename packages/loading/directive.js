@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import Loading from './loading.vue'
+import Loading from './Loading.vue'
 import { removeClass } from 'element-ui/src/utils/dom'
 
 import { createComponent } from 'element-ui/src/use/component'
