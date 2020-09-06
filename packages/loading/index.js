@@ -1,11 +1,11 @@
-// import directive from './src/directive'
+import directive from './directive'
 import service from './service'
 
 export default {
   install(app) {
-    // app.use(directive)
+    app.use(directive)
     app.config.globalProperties.$loading = service
   },
-  // directive,
+  directive,
   service
 }
