@@ -1,16 +1,31 @@
 'use strict'
 
 const { series, src, dest } = require('gulp')
-const sass = require('gulp-sass')
+const through2 = require('through2')
+const sass = require('sass')
+const Fiber = require('fibers')
+const replaceExt = require('replace-ext')
 const autoprefixer = require('gulp-autoprefixer')
 const cssmin = require('gulp-cssmin')
 
 function compile() {
   return src('./src/*.scss')
-    .pipe(sass.sync())
+    .pipe(
+      through2.obj(function (file, enc, cb) {
+        const result = sass.renderSync({ file: file.path, fiber: Fiber })
+        file.contents = result.css
+        file.path = replaceExt(file.path, '.css')
+
+        if (file.stat) {
+          file.stat.atime = file.stat.mtime = file.stat.ctime = new Date()
+        }
+
+        cb(null, file)
+      })
+    )
     .pipe(
       autoprefixer({
-        browsers: ['ie > 9', 'last 2 versions'],
+        overrideBrowserslist: ['ie > 9', 'last 2 versions'],
         cascade: false
       })
     )

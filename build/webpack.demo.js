@@ -7,6 +7,7 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const Fiber = require('fibers')
 
 const config = require('./config')
 
@@ -73,7 +74,13 @@ const webpackConfig = {
         use: [
           isProd ? MiniCssExtractPlugin.loader : 'style-loader',
           'css-loader',
-          'sass-loader'
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+              fiber: Fiber
+            }
+          }
         ]
       },
       {
