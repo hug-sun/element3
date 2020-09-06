@@ -54,13 +54,21 @@ export default {
     const handleAfterLeave = () => {
       emit('afterLeave')
     }
+    const show = () => {
+      $data.visible = true
+    }
     const close = () => {
       $data.visible = false
+    }
+    const setText = (text) => {
+      $data.text = text
     }
     return {
       ...toRefs($data),
       handleAfterLeave,
-      close
+      show,
+      close,
+      setText
     }
   }
 }
