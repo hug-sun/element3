@@ -17,13 +17,10 @@
 </template>
 
 <script type="text/babel">
-import Emitter from 'element-ui/src/mixins/emitter'
 import { getValueByPath, escapeRegexpString } from 'element-ui/src/utils/util'
 import { useEmitter } from 'element-ui/src/use/emitter'
 
 export default {
-  mixins: [Emitter],
-
   name: 'ElOption',
 
   componentName: 'ElOption',
@@ -40,6 +37,11 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+
+  setup() {
+    const { dispatch } = useEmitter()
+    return { dispatch }
   },
 
   data() {
@@ -149,7 +151,7 @@ export default {
 
     selectOptionClick() {
       if (this.disabled !== true && this.groupDisabled !== true) {
-        this.dispatch('ElSelect', 'handleOptionClick', [this, true])
+        this.dispatch('ElSelect', 'handleOptionClick', this, true)
       }
     },
 

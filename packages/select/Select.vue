@@ -364,13 +364,16 @@ export default {
   },
 
   emits: [
+    'update:modelValue',
     'input',
     'change',
     'blur',
     'focus',
     'clear',
     'visible-change',
-    'remove-tag'
+    'remove-tag',
+    'handleOptionClick',
+    'setSelected'
   ],
 
   setup() {
@@ -796,7 +799,8 @@ export default {
         ) {
           value.push(option.value)
         }
-        this.$emit('input', value)
+        // this.$emit('input', value)
+        this.$emit('update:modelValue', value)
         this.emitChange(value)
         if (option.created) {
           this.query = ''
@@ -805,7 +809,8 @@ export default {
         }
         if (this.filterable) this.$refs.input.focus()
       } else {
-        this.$emit('input', option.value)
+        // this.$emit('input', option.value)
+        this.$emit('update:modelValue', option.value)
         this.emitChange(option.value)
         this.visible = false
       }

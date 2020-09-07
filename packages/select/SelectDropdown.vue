@@ -61,7 +61,7 @@ export default {
     const referenceElm = ref(null)
     const popperElm = ref(null)
 
-    const { updatePopper, destroyPopper } = usePopper(props, {
+    const popper = usePopper(props, {
       slots,
       emit,
       referenceElm
@@ -69,11 +69,17 @@ export default {
 
     onMounted(() => {
       referenceElm.value = elSelect.$refs.reference.$el
-      elSelect.popperElmm = popperElm.value = ctx.$el
+      elSelect.popperElm = popperElm.value = ctx.$el
       on('updatePopper', () => {
-        if (elSelect.visible) updatePopper()
+        console.log('updatePopper')
+
+        if (elSelect.visible) popper.updatePopper()
       })
-      on('destroyPopper', destroyPopper)
+      on('destroyPopper', () => {
+        console.log('destroyPopper')
+
+        popper.destroyPopper()
+      })
     })
 
     const minWidth = ref('')
@@ -89,7 +95,13 @@ export default {
       return elSelect.popperClass
     })
 
-    return { elSelect, referenceElm, minWidth, popperClass }
+    return {
+      elSelect,
+      referenceElm,
+      minWidth,
+      popperClass,
+      ...popper
+    }
   }
 }
 </script>

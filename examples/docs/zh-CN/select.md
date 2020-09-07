@@ -16,6 +16,7 @@
       :value="item.value">
     </el-option>
   </el-select>
+  <p>value: {{value}}</p>
 </template>
 
 <script>

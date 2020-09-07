@@ -80,8 +80,8 @@ export default {
       const gutterWith = `-${gutter}px`
       const gutterStyle = `margin-bottom: ${gutterWith}; margin-right: ${gutterWith};`
 
-      if (Array.isArray(wrapStyle.value)) {
-        style = toObject(wrapStyle.value)
+      if (Array.isArray(wrapStyle?.value)) {
+        style = toObject(wrapStyle?.value)
         style.marginRight = style.marginBottom = gutterWith
       } else if (typeof wrapStyle === 'string') {
         style += gutterStyle
