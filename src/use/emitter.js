@@ -105,7 +105,12 @@ function broadcast(instance) {
     const _broadcast = (componentInstance) => {
       if (!componentInstance) return
 
-      const children = componentInstance.subTree.children
+      let children = componentInstance.subTree.children
+
+      if (children.default) {
+        children = children.default()
+      }
+
       if (children) {
         children.forEach((vnode) => {
           const childComponent = vnode.component
