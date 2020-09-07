@@ -29,9 +29,6 @@ describe('TimelineItem.vue', () => {
       }
     })
 
-    // expect(wrapper.find('.hideTimestamp').text()).toBe(
-    //   ''
-    // )
     expect(wrapper.exists()).toBe(true)
     expect(wrapper.find('.el-timeline-item__content').text()).toBe('aaa')
   })
@@ -43,15 +40,10 @@ describe('TimelineItem.vue', () => {
       props: {
         placement: 'top'
       }
-      // slots: {
-      //   default: 'bbb'
-      // }
     })
     expect(wrapper.find('.el-timeline-item__timestamp').classes()).toContain(
       'is-top'
     )
-
-    // expect(wrapper.find('.el-timeline-item__content').text()).toBe('bbb')
   })
 })
 
@@ -65,8 +57,6 @@ describe('TimelineItem.vue', () => {
     expect(wrapper.find('.el-timeline-item__node').classes()).toContain(
       'el-timeline-item__node--primary'
     )
-
-    // expect(wrapper.find('.el-timeline-item__content').text()).toBe('bbb')
   })
 })
 describe('TimelineItem.vue', () => {
@@ -91,8 +81,6 @@ describe('TimelineItem.vue', () => {
       }
     })
 
-    // expect(wrapper.classes()).toContain('el-timeline-item__node--')
-
     expect(wrapper.find('.el-timeline-item__node').classes()).toContain(
       'el-timeline-item__node--large'
     )
@@ -106,9 +94,6 @@ describe('TimelineItem.vue', () => {
         icon: 'ccc'
       }
     })
-
-    // expect(wrapper.classes()).toContain('el-timeline-item__node--')
-
     expect(wrapper.find('.el-timeline-item__icon').classes()).toContain('ccc')
   })
 })
