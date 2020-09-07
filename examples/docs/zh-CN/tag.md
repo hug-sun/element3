@@ -22,23 +22,46 @@
 ```html
 <el-tag
   v-for="tag in tags"
-  :key="tag.name"
+  :key="tag"
   closable
-  :type="tag.type">
+  :type="tag.type"
+  @close="handleClose(tag)"
+  :disable-transitions="disable"
+  >
   {{tag.name}}
 </el-tag>
-
+<el-button class="button-new-tag" size="small" @click="handleToggle">{{disable?'禁用动画':'启用动画'}}</el-button>
+<el-button class="button-new-tag" size="small" @click="handleReset">重置</el-button>
 <script>
+  import { ref, computed, reactive,toRefs } from "vue";
   export default {
-    data() {
+    setup() {
+      const defaultTags = [
+        { name: '标签一', type: '' },
+        { name: '标签二', type: 'success' },
+        { name: '标签三', type: 'info' },
+        { name: '标签四', type: 'warning' },
+        { name: '标签五', type: 'danger' }
+      ]
+      let tags = ref(Object.assign([], defaultTags))
+      console.log(tags)
+      const handleClose = (tag) => {
+        tags.value.splice(tags.value.indexOf(tag), 1);
+      }
+      const handleReset = () => {
+        console.log('reset')
+        tags.value = Object.assign([], defaultTags)
+      }
+      let disable = ref(false)
+      const handleToggle = () => {
+        disable.value = !disable.value
+      }
       return {
-        tags: [
-          { name: '标签一', type: '' },
-          { name: '标签二', type: 'success' },
-          { name: '标签三', type: 'info' },
-          { name: '标签四', type: 'warning' },
-          { name: '标签五', type: 'danger' }
-        ]
+        tags,
+        handleClose,
+        handleReset,
+        disable,
+        handleToggle
       };
     }
   }
@@ -52,6 +75,7 @@
 
 :::demo
 ```html
+<template>
 <el-tag
   :key="tag"
   v-for="tag in dynamicTags"
@@ -122,6 +146,7 @@
     }
   }
 </script>
+</template>
 ```
 :::
 
