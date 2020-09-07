@@ -43,6 +43,7 @@ Vue.use(ElButton)
 - ElSwitch
 - ElProgress
 - ElLink
+- ElIcon
 
 ## Join Discussion Group
 
