@@ -19,13 +19,22 @@
 <script type="text/babel">
 import { getValueByPath, escapeRegexpString } from 'element-ui/src/utils/util'
 import { useEmitter } from 'element-ui/src/use/emitter'
+import {
+  inject,
+  getCurrentInstance,
+  reactive,
+  computed,
+  watch,
+  toRefs,
+  unref,
+  onBeforeMount,
+  onBeforeUnmount
+} from 'vue'
 
 export default {
   name: 'ElOption',
 
   componentName: 'ElOption',
-
-  inject: ['select'],
 
   props: {
     value: {
@@ -39,94 +48,74 @@ export default {
     }
   },
 
-  setup() {
-    const { dispatch } = useEmitter()
-    return { dispatch }
-  },
-
-  data() {
-    return {
+  setup(props) {
+    const { on, dispatch } = useEmitter()
+    const select = inject('select')
+    const { ctx } = getCurrentInstance()
+    const { value, label, disabled, created } = toRefs(props)
+    const data = reactive({
       index: -1,
       groupDisabled: false,
       visible: true,
       hitState: false,
       hover: false
-    }
-  },
+    })
 
-  computed: {
-    isObject() {
+    const isObject = computed(() => {
+      const v = unref(value)
+      console.log(v.toString())
+      console.log(Object.prototype.toString.call(v))
       return (
-        Object.prototype.toString.call(this.value).toLowerCase() ===
-        '[object object]'
+        Object.prototype.toString.call(v).toLowerCase() === '[object object]'
       )
-    },
+    })
 
-    currentLabel() {
-      return this.label || (this.isObject ? '' : this.value)
-    },
+    const currentLabel = computed(() => {
+      return label.value || (isObject ? '' : unref(value))
+    })
 
-    currentValue() {
-      return this.value || this.label || ''
-    },
+    const currentValue = computed(() => {
+      return unref(value) || label.value || ''
+    })
 
-    itemSelected() {
-      if (!this.select.multiple) {
-        return this.isEqual(this.value, this.select.modelValue)
+    const itemSelected = computed(() => {
+      if (!select.multiple) {
+        return isEqual(value, select.modelValue)
       } else {
-        return this.contains(this.select.modelValue, this.value)
+        return contains(select.modelValue, value)
       }
-    },
+    })
 
-    limitReached() {
-      if (this.select.multiple) {
+    const limitReached = computed(() => {
+      if (select.multiple) {
         return (
-          !this.itemSelected &&
-          (this.select.modelValue || []).length >= this.select.multipleLimit &&
-          this.select.multipleLimit > 0
+          !itemSelected &&
+          (select.modelValue || []).length >= select.multipleLimit &&
+          select.multipleLimit > 0
         )
       } else {
         return false
       }
-    }
-  },
+    })
 
-  watch: {
-    currentLabel() {
-      if (!this.created && !this.select.remote)
-        this.dispatch('ElSelect', 'setSelected')
-    },
-    value(val, oldVal) {
-      const { remote, valueKey } = this.select
-      if (!this.created && !remote) {
-        if (
-          valueKey &&
-          typeof val === 'object' &&
-          typeof oldVal === 'object' &&
-          val[valueKey] === oldVal[valueKey]
-        ) {
-          return
-        }
-        this.dispatch('ElSelect', 'setSelected')
-      }
-    }
-  },
-
-  methods: {
-    isEqual(a, b) {
-      if (!this.isObject) {
+    function isEqual(a, b) {
+      a = unref(a)
+      b = unref(b)
+      if (!isObject) {
         return a === b
       } else {
-        const valueKey = this.select.modelValueKey
+        const valueKey = select.valueKey
         return getValueByPath(a, valueKey) === getValueByPath(b, valueKey)
       }
-    },
+    }
 
-    contains(arr = [], target) {
-      if (!this.isObject) {
+    function contains(arr = [], target) {
+      arr = unref(arr)
+      target = unref(target)
+      if (!isObject) {
         return arr && arr.indexOf(target) > -1
       } else {
-        const valueKey = this.select.modelValueKey
+        const valueKey = select.valueKey
         return (
           arr &&
           arr.some((item) => {
@@ -137,56 +126,80 @@ export default {
           })
         )
       }
-    },
+    }
 
-    handleGroupDisabled(val) {
-      this.groupDisabled = val
-    },
+    function handleGroupDisabled(val) {
+      data.groupDisabled = val
+    }
 
-    hoverItem() {
-      if (!this.disabled && !this.groupDisabled) {
-        this.select.hoverIndex = this.select.options.indexOf(this)
-      }
-    },
-
-    selectOptionClick() {
-      if (this.disabled !== true && this.groupDisabled !== true) {
-        this.dispatch('ElSelect', 'handleOptionClick', this, true)
-      }
-    },
-
-    queryChange(query) {
-      this.visible =
-        new RegExp(escapeRegexpString(query), 'i').test(this.currentLabel) ||
-        this.created
-      if (!this.visible) {
-        this.select.filteredOptionsCount--
+    function hoverItem() {
+      if (!disabled && !data.groupDisabled) {
+        select.hoverIndex = select.options.indexOf(ctx)
       }
     }
-  },
 
-  created() {
-    this.select.options.push(this)
-    this.select.cachedOptions.push(this)
-    this.select.optionsCount++
-    this.select.filteredOptionsCount++
-
-    const { on } = useEmitter()
-    on('queryChange', this.queryChange)
-    on('handleGroupDisabled', this.handleGroupDisabled)
-  },
-
-  beforeDestroy() {
-    const { selected, multiple } = this.select
-    const selectedOptions = multiple ? selected : [selected]
-    const index = this.select.cachedOptions.indexOf(this)
-    const selectedIndex = selectedOptions.indexOf(this)
-
-    // if option is not selected, remove it from cache
-    if (index > -1 && selectedIndex < 0) {
-      this.select.cachedOptions.splice(index, 1)
+    function selectOptionClick() {
+      if (disabled !== true && data.groupDisabled !== true) {
+        dispatch('ElSelect', 'handleOptionClick', this, true)
+      }
     }
-    this.select.onOptionDestroy(this.select.options.indexOf(this))
+
+    function queryChange(query) {
+      data.visible =
+        new RegExp(escapeRegexpString(query), 'i').test(currentLabel) || created
+      if (!data.visible) {
+        select.filteredOptionsCount--
+      }
+    }
+
+    watch(currentLabel, () => {
+      if (!created && !select.remote) dispatch('ElSelect', 'setSelected')
+    })
+    watch(value, (val, oldVal) => {
+      const { remote, valueKey } = select
+      if (!created && !remote) {
+        if (
+          valueKey &&
+          typeof val === 'object' &&
+          typeof oldVal === 'object' &&
+          val[valueKey] === oldVal[valueKey]
+        ) {
+          return
+        }
+        dispatch('ElSelect', 'setSelected')
+      }
+    })
+    onBeforeMount(() => {
+      select.options.push(ctx)
+      select.cachedOptions.push(ctx)
+      select.optionsCount++
+      select.filteredOptionsCount++
+
+      on('queryChange', queryChange)
+      on('handleGroupDisabled', handleGroupDisabled)
+    })
+    onBeforeUnmount(() => {
+      const { selected, multiple } = select
+      const selectedOptions = multiple ? selected : [selected]
+      const index = select.cachedOptions.indexOf(ctx)
+      const selectedIndex = selectedOptions.indexOf(ctx)
+
+      // if option is not selected, remove it from cache
+      if (index > -1 && selectedIndex < 0) {
+        select.cachedOptions.splice(index, 1)
+      }
+      select.onOptionDestroy(select.options.indexOf(ctx))
+    })
+
+    return {
+      ...toRefs(data),
+      selectOptionClick,
+      itemSelected,
+      limitReached,
+      currentLabel,
+      currentValue,
+      hoverItem
+    }
   }
 }
 </script>
