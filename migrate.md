@@ -70,7 +70,7 @@
 |         Dialog 对话框         |   ❌   |                                  |
 |       Tooltip 文字提示        |   ❌   |                                  |
 |        Popover 弹出框         |   ❌   |                                  |
-|     Popconfirm 气泡确认框     |   ❌   |                                  |
+|     Popconfirm 气泡确认框     |   ✅   |                                  |
 |           Card 卡片           |   ❌   |                                  |
 |        Carousel 走马灯        |   ✅   |                                  |
 |       Collapse 折叠面板       |   ❌   |                                  |
