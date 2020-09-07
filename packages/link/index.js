@@ -1,8 +1,8 @@
-import Link from './Link.vue'
+import ElLink from './Link.vue'
 
 /* istanbul ignore next */
-Link.install = function (app) {
-  app.component(Link.name, Link)
+ElLink.install = function (app) {
+  app.component(ElLink.name, ElLink)
 }
 
-export default Link
+export default ElLink
