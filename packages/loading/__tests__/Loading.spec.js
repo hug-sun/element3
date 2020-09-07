@@ -1,13 +1,17 @@
-// import { getStyle } from '../../../src/utils/dom'
-// import { createVue, destroyVM } from '../util'
-// import Vue from 'vue'
-// import LoadingRaw from 'packages/loading'
-// const Loading = LoadingRaw.service
-
-// import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
+import { mount } from '@vue/test-utils'
 import Loading from '../index'
+import { directive as LoadingDirective } from '../directive'
+// todo
+// loading 的单元测试需要重写
 
 const LoadingService = Loading.service
+
+const globalOption = {
+  directives: {
+    Loading: LoadingDirective
+  }
+}
 
 describe('Loading', () => {
   let loadingInstance, loadingInstance2
@@ -32,175 +36,179 @@ describe('Loading', () => {
     }, 100)
   })
 
-  // describe('as a directive', () => {
-  //   it('create', done => {
-  //     vm = createVue({
-  //       template: `
-  //       <div v-loading="loading"></div>
-  //     `,
-  //
-  //       data() {
-  //         return {
-  //           loading: true
-  //         }
-  //       }
-  //     })
-  //     Vue.nextTick(() => {
-  //       const mask = vm.$el.querySelector('.el-loading-mask')
-  //       expect(mask).to.exist
-  //       vm.loading = false
-  //       setTimeout(() => {
-  //         expect(mask.style.display).to.equal('none')
-  //         done()
-  //       }, 100)
-  //     })
-  //   })
-  //
-  //   it('unbind', done => {
-  //     const vm1 = createVue({
-  //       template: `
-  //       <div v-if="show" v-loading="loading"></div>
-  //     `,
-  //
-  //       data() {
-  //         return {
-  //           show: true,
-  //           loading: true
-  //         }
-  //       }
-  //     })
-  //     const vm2 = createVue({
-  //       template: `
-  //       <div v-if="show" v-loading.body="loading"></div>
-  //     `,
-  //
-  //       data() {
-  //         return {
-  //           show: true,
-  //           loading: true
-  //         }
-  //       }
-  //     })
-  //     Vue.nextTick(() => {
-  //       vm1.loading = false
-  //       vm2.loading = false
-  //       Vue.nextTick(() => {
-  //         vm1.show = false
-  //         vm2.show = false
-  //         Vue.nextTick(() => {
-  //           expect(document.querySelector('.el-loading-mask')).to.not.exist
-  //           done()
-  //         })
-  //       })
-  //     })
-  //   })
-  //
-  //   it('body', done => {
-  //     vm = createVue({
-  //       template: `
-  //       <div v-loading.body="loading"></div>
-  //     `,
-  //
-  //       data() {
-  //         return {
-  //           loading: true
-  //         }
-  //       }
-  //     }, true)
-  //     Vue.nextTick(() => {
-  //       const mask = document.querySelector('.el-loading-mask')
-  //       expect(mask.parentNode === document.body).to.true
-  //       vm.loading = false
-  //       document.body.removeChild(mask)
-  //       document.body.removeChild(vm.$el)
-  //       done()
-  //     })
-  //   })
-  //
-  //   it('fullscreen', done => {
-  //     vm = createVue({
-  //       template: `
-  //       <div v-loading.fullscreen="loading"></div>
-  //     `,
-  //
-  //       data() {
-  //         return {
-  //           loading: true
-  //         }
-  //       }
-  //     }, true)
-  //     Vue.nextTick(() => {
-  //       const mask = document.querySelector('.el-loading-mask')
-  //       expect(mask.parentNode === document.body).to.true
-  //       expect(mask.classList.contains('is-fullscreen')).to.true
-  //       vm.loading = false
-  //       document.body.removeChild(mask)
-  //       document.body.removeChild(vm.$el)
-  //       done()
-  //     })
-  //   })
-  //
-  //   it('lock', done => {
-  //     vm = createVue({
-  //       template: `
-  //       <div v-loading.fullscreen.lock="loading"></div>
-  //     `,
-  //
-  //       data() {
-  //         return {
-  //           loading: true
-  //         }
-  //       }
-  //     }, true)
-  //     Vue.nextTick(() => {
-  //       expect(getStyle(document.body, 'overflow')).to.equal('hidden')
-  //       vm.loading = false
-  //       document.body.removeChild(document.querySelector('.el-loading-mask'))
-  //       document.body.removeChild(vm.$el)
-  //       done()
-  //     })
-  //   })
-  //
-  //   it('text', done => {
-  //     vm = createVue({
-  //       template: `
-  //       <div v-loading="loading" element-loading-text="拼命加载中"></div>
-  //     `,
-  //
-  //       data() {
-  //         return {
-  //           loading: true
-  //         }
-  //       }
-  //     }, true)
-  //     Vue.nextTick(() => {
-  //       const mask = document.querySelector('.el-loading-mask')
-  //       const text = mask.querySelector('.el-loading-text')
-  //       expect(text).to.exist
-  //       expect(text.textContent).to.equal('拼命加载中')
-  //       done()
-  //     })
-  //   })
-  //
-  //   it('customClass', done => {
-  //     vm = createVue({
-  //       template: `
-  //       <div v-loading="loading" element-loading-custom-class="loading-custom-class"></div>
-  //     `,
-  //
-  //       data() {
-  //         return {
-  //           loading: true
-  //         }
-  //       }
-  //     }, true)
-  //     Vue.nextTick(() => {
-  //       const mask = document.querySelector('.el-loading-mask')
-  //       expect(mask.classList.contains('loading-custom-class')).to.true
-  //       done()
-  //     })
-  //   })
-  // })
+  describe('as a directive', () => {
+    it('create', async () => {
+      const wrapper = mount(
+        {
+          template: `
+          <div v-loading="loading"></div>
+        `,
+          data() {
+            return {
+              loading: true
+            }
+          }
+        },
+        {
+          global: globalOption
+        }
+      )
+      await nextTick()
+      const mask = wrapper.find('.el-loading-mask')
+      expect(mask.exists()).toBeTruthy()
+    })
+
+    it('unbind', async () => {
+      const wrapper = mount(
+        {
+          template: `
+            <div v-if="show" v-loading="loading"></div>
+        `,
+          data() {
+            return {
+              show: true,
+              loading: true
+            }
+          }
+        },
+        {
+          global: globalOption
+        }
+      )
+
+      await nextTick()
+
+      wrapper.vm.show = false
+
+      await nextTick()
+
+      const mask = wrapper.find('.el-loading-mask')
+      expect(mask.exists()).toBeFalsy()
+    })
+
+    it('body', async () => {
+      mount(
+        {
+          template: `
+            <div v-if="show" v-loading.fullscreen="loading"></div>
+          `,
+          data() {
+            return {
+              loading: true,
+              show: true
+            }
+          }
+        },
+        {
+          global: globalOption
+        }
+      )
+      await nextTick()
+
+      const mask = document.querySelector('.el-loading-mask')
+      expect(mask).toBeTruthy()
+      expect(mask.parentNode === document.body).toBeTruthy()
+
+      document.body.removeChild(mask)
+    })
+
+    it('fullscreen', async () => {
+      mount(
+        {
+          template: `
+            <div v-if="show" v-loading.fullscreen="loading"></div>
+          `,
+          data() {
+            return {
+              loading: true,
+              show: true
+            }
+          }
+        },
+        {
+          global: globalOption
+        }
+      )
+      await nextTick()
+
+      const mask = document.querySelector('.el-loading-mask')
+      expect(mask).toBeTruthy()
+      expect(mask.parentNode === document.body).toBeTruthy()
+
+      document.body.removeChild(mask)
+    })
+
+    it('lock', async () => {
+      // vm = createVue(
+      //   {
+      //     template: `
+      //   <div v-loading.fullscreen.lock="loading"></div>
+      // `,
+      //
+      //     data() {
+      //       return {
+      //         loading: true
+      //       }
+      //     }
+      //   },
+      //   true
+      // )
+      // Vue.nextTick(() => {
+      //   expect(getStyle(document.body, 'overflow')).to.equal('hidden')
+      //   vm.loading = false
+      //   document.body.removeChild(document.querySelector('.el-loading-mask'))
+      //   document.body.removeChild(vm.$el)
+      //   done()
+      // })
+    })
+
+    it('text', async () => {
+      const wrapper = mount(
+        {
+          template: `
+            <div v-if="show" v-loading="loading" element-loading-text="拼命加载中"></div>
+          `,
+          data() {
+            return {
+              loading: true,
+              show: true
+            }
+          }
+        },
+        {
+          global: globalOption
+        }
+      )
+      await nextTick()
+
+      const text = wrapper.find('.el-loading-text')
+      expect(text.exists()).toBeTruthy()
+      expect(text.text()).toEqual('拼命加载中')
+    })
+
+    it('customClass', async () => {
+      const wrapper = mount(
+        {
+          template: `
+            <div v-if="show" v-loading="loading"  element-loading-custom-class="loading-custom-class"></div>
+          `,
+          data() {
+            return {
+              loading: true,
+              show: true
+            }
+          }
+        },
+        {
+          global: globalOption
+        }
+      )
+      await nextTick()
+
+      const mask = wrapper.find('.el-loading-mask')
+      expect(mask.classes()).toContain('loading-custom-class')
+    })
+  })
 
   describe('as a service', () => {
     it('create', () => {
@@ -273,7 +281,7 @@ describe('Loading', () => {
       ).toBe(true)
     })
 
-    it('text', () => {
+    it.only('text', () => {
       loadingInstance = LoadingService({
         text: 'Loading...'
       })

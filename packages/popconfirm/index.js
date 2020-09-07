@@ -1,4 +1,4 @@
-import Popconfirm from './src/main'
+import Popconfirm from './Popconfirm'
 
 /* istanbul ignore next */
 Popconfirm.install = function (app) {

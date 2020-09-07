@@ -1,7 +1,7 @@
 {
   "name": "element3",
-  "version": "0.0.5",
-  "description": "A Component Library for Vue.js.",
+  "version": "0.0.8",
+  "description": "A Component Library for Vue3",
   "main": "dist/element3-ui.esm.js",
   "module": "dist/element3-ui.esm.js",
   "files": [
@@ -32,7 +32,8 @@
     "test": "npm run lint && npm run build:theme && cross-env CI_ENV=/dev/ BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "test:watch": "npm run build:theme && cross-env BABEL_ENV=test karma start test/unit/karma.conf.js",
     "test:unit": "jest",
-    "build:next": "rollup -c"
+    "build:next": "rollup -c",
+    "release": "node scripts/release.js"
   },
   "faas": [
     {
@@ -50,17 +51,21 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:ElemeFE/element.git"
+    "url": "git@github.com:kkbjs/element3.git"
   },
-  "homepage": "http://element.eleme.io",
+  "homepage": "https://element3.vercel.app/#/zh-CN",
   "keywords": [
     "eleme",
     "vue",
-    "components"
+    "components",
+    "element",
+    "ui",
+    "vue3",
+    "vue-next"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ElemeFE/element/issues"
+    "url": "https://github.com/kkbjs/element3/issues"
   },
   "unpkg": "lib/index.js",
   "style": "lib/theme-chalk/index.css",
@@ -114,12 +119,14 @@
     "babel-preset-stage-2": "^6.24.1",
     "babel-regenerator-runtime": "^6.5.0",
     "chai": "^4.2.0",
+    "chalk": "^4.1.0",
     "chokidar": "^1.7.0",
     "copy-webpack-plugin": "^5.0.0",
     "coveralls": "^3.0.3",
     "cp-cli": "^1.0.2",
     "cross-env": "^3.1.3",
     "css-loader": "^2.1.0",
+    "enquirer": "^2.3.6",
     "es6-promise": "^4.0.5",
     "eslint": "^7.7.0",
     "eslint-config-prettier": "^6.11.0",
@@ -131,6 +138,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.2.2",
+    "execa": "^4.0.3",
     "file-loader": "^1.1.11",
     "file-save": "^0.2.0",
     "gulp": "^4.0.0",
@@ -156,6 +164,7 @@
     "markdown-it-chain": "^1.3.0",
     "markdown-it-container": "^2.0.0",
     "mini-css-extract-plugin": "^0.4.1",
+    "minimist": "^1.2.5",
     "mitt": "^2.1.0",
     "mocha": "^6.0.2",
     "node-sass": "^4.11.0",
