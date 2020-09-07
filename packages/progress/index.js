@@ -1,6 +1,5 @@
-import ElProgress from './Progress'
+import ElProgress from './Progress.vue'
 
-/* istanbul ignore next */
 ElProgress.install = function (app) {
   app.component(ElProgress.name, ElProgress)
 }

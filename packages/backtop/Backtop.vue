@@ -23,6 +23,7 @@ import ElIcon from 'element-ui/packages/icon'
 const cubic = (value) => Math.pow(value, 3)
 const easeInOutCubic = (value) =>
   value < 0.5 ? cubic(value * 2) / 2 : 1 - cubic((1 - value) * 2) / 2
+
 export default {
   name: 'ElBacktop',
   components: {
@@ -46,14 +47,18 @@ export default {
       default: 40
     }
   },
+
   setup(props, { emit }) {
     const el = ref(null)
     const container = ref(null)
     const visible = ref(null)
     let throttledScrollHandler
+
     const { visibilityHeight, target, right, bottom } = toRefs(props)
+
     const styleBottom = computed(() => `${bottom.value}px`)
     const styleRight = computed(() => `${right.value}px`)
+
     const init = () => {
       container.value = document
       el.value = document.documentElement
@@ -65,14 +70,17 @@ export default {
         container.value = el.value
       }
     }
+
     const onScroll = () => {
       const scrollTop = el.value.scrollTop
       visible.value = scrollTop >= visibilityHeight.value
     }
+
     const handleClick = (e) => {
       scrollToTop()
       emit('click', e)
     }
+
     const scrollToTop = () => {
       const element = el.value
       const beginTime = Date.now()
@@ -90,14 +98,17 @@ export default {
       }
       rAF(frameFunc)
     }
+
     onMounted(() => {
       init()
       throttledScrollHandler = throttle(300, onScroll)
       container.value.addEventListener('scroll', throttledScrollHandler)
     })
+
     onUnmounted(() => {
       container.value.removeEventListener('scroll', throttledScrollHandler)
     })
+
     return {
       visible,
       styleBottom,

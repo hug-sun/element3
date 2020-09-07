@@ -32,7 +32,7 @@
 
 <script>
 import { computed, toRefs, onMounted } from 'vue'
-import SwitchLabel from './SwitchLabel'
+import SwitchLabel from './SwitchLabel.vue'
 export default {
   name: 'ElSwitch',
   components: {

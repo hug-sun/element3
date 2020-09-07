@@ -1,4 +1,4 @@
-import Drawer from './src/main'
+import Drawer from './Drawer'
 
 /* istanbul ignore next */
 Drawer.install = function (app) {

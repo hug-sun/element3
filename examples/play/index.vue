@@ -4,15 +4,18 @@
 
 <script>
 import { reactive, toRefs } from 'vue'
+
 export default {
   setup() {
     const state = reactive({
       data: generateData(),
       value: [1, 4]
     })
+
     return toRefs(state)
   }
 }
+
 const generateData = _ => {
   const data = []
   for (let i = 1; i <= 15; i++) {
