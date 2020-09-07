@@ -164,12 +164,11 @@
 </template>
 
 <script type="text/babel">
-import Emitter from 'element-ui/src/mixins/emitter'
 import Focus from 'element-ui/src/mixins/focus'
 import Locale from 'element-ui/src/mixins/locale'
 import ElInput from 'element-ui/packages/input'
-import ElSelectMenu from './select-dropdown.vue'
-import ElOption from './option.vue'
+import ElSelectMenu from './SelectDropdown'
+import ElOption from 'element-ui/packages/option/Option'
 import ElTag from 'element-ui/packages/tag'
 import ElScrollbar from 'element-ui/packages/scrollbar'
 import debounce from 'throttle-debounce/debounce'
@@ -188,9 +187,10 @@ import {
 } from 'element-ui/src/utils/util'
 import NavigationMixin from './navigation-mixin'
 import { isKorean } from 'element-ui/src/utils/shared'
+import { useEmitter } from 'element-ui/src/use/emitter'
 
 export default {
-  mixins: [Emitter, Locale, Focus('reference'), NavigationMixin],
+  mixins: [Locale, Focus('reference'), NavigationMixin],
 
   name: 'ElSelect',
 
@@ -227,8 +227,10 @@ export default {
 
     showClose() {
       const hasValue = this.multiple
-        ? Array.isArray(this.value) && this.value.length > 0
-        : this.value !== undefined && this.value !== null && this.value !== ''
+        ? Array.isArray(this.modelValue) && this.modelValue.length > 0
+        : this.modelValue !== undefined &&
+          this.modelValue !== null &&
+          this.modelValue !== ''
       const criteria =
         this.clearable && !this.selectDisabled && this.inputHovering && hasValue
       return criteria
@@ -305,7 +307,7 @@ export default {
   props: {
     name: String,
     id: String,
-    value: {
+    modelValue: {
       required: true
     },
     autocomplete: {
@@ -361,6 +363,21 @@ export default {
     }
   },
 
+  emits: [
+    'input',
+    'change',
+    'blur',
+    'focus',
+    'clear',
+    'visible-change',
+    'remove-tag'
+  ],
+
+  setup() {
+    const { dispatch, broadcast, on } = useEmitter()
+    return { dispatch, broadcast, on }
+  },
+
   data() {
     return {
       options: [],
@@ -399,7 +416,7 @@ export default {
       this.cachedPlaceHolder = this.currentPlaceholder = val
     },
 
-    value(val, oldVal) {
+    modelValue(val, oldVal) {
       if (this.multiple) {
         this.resetInputHeight()
         if (
@@ -580,7 +597,7 @@ export default {
     },
 
     emitChange(val) {
-      if (!valueEquals(this.value, val)) {
+      if (!valueEquals(this.modelValue, val)) {
         this.$emit('change', val)
       }
     },
@@ -621,7 +638,7 @@ export default {
 
     setSelected() {
       if (!this.multiple) {
-        const option = this.getOption(this.value)
+        const option = this.getOption(this.modelValue)
         if (option.created) {
           this.createdLabel = option.currentLabel
           this.createdSelected = true
@@ -634,8 +651,8 @@ export default {
         return
       }
       const result = []
-      if (Array.isArray(this.value)) {
-        this.value.forEach((value) => {
+      if (Array.isArray(this.modelValue)) {
+        this.modelValue.forEach((value) => {
           result.push(this.getOption(value))
         })
       }
@@ -703,7 +720,7 @@ export default {
 
     deletePrevTag(e) {
       if (e.target.value.length <= 0 && !this.toggleLastOptionHitState()) {
-        const value = this.value.slice()
+        const value = this.modelValue.slice()
         value.pop()
         this.$emit('input', value)
         this.emitChange(value)
@@ -769,7 +786,7 @@ export default {
 
     handleOptionSelect(option, byClick) {
       if (this.multiple) {
-        const value = (this.value || []).slice()
+        const value = (this.modelValue || []).slice()
         const optionIndex = this.getValueIndex(value, option.value)
         if (optionIndex > -1) {
           value.splice(optionIndex, 1)
@@ -865,7 +882,7 @@ export default {
     deleteTag(event, tag) {
       const index = this.selected.indexOf(tag)
       if (index > -1 && !this.selectDisabled) {
-        const value = this.value.slice()
+        const value = this.modelValue.slice()
         value.splice(index, 1)
         this.$emit('input', value)
         this.emitChange(value)
@@ -942,10 +959,10 @@ export default {
 
   created() {
     this.cachedPlaceHolder = this.currentPlaceholder = this.placeholder
-    if (this.multiple && !Array.isArray(this.value)) {
+    if (this.multiple && !Array.isArray(this.modelValue)) {
       this.$emit('input', [])
     }
-    if (!this.multiple && Array.isArray(this.value)) {
+    if (!this.multiple && Array.isArray(this.modelValue)) {
       this.$emit('input', '')
     }
 
@@ -957,12 +974,16 @@ export default {
       this.handleQueryChange(e.target.value)
     })
 
-    this.$on('handleOptionClick', this.handleOptionSelect)
-    this.$on('setSelected', this.setSelected)
+    this.on('handleOptionClick', this.handleOptionSelect)
+    this.on('setSelected', this.setSelected)
   },
 
   mounted() {
-    if (this.multiple && Array.isArray(this.value) && this.value.length > 0) {
+    if (
+      this.multiple &&
+      Array.isArray(this.modelValue) &&
+      this.modelValue.length > 0
+    ) {
       this.currentPlaceholder = ''
     }
     addResizeListener(this.$el, this.handleResize)

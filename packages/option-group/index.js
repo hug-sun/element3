@@ -1,4 +1,4 @@
-import ElOptionGroup from '../select/src/option-group'
+import ElOptionGroup from './OptionGroup'
 
 /* istanbul ignore next */
 ElOptionGroup.install = function (app) {

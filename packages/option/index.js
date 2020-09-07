@@ -1,4 +1,4 @@
-import ElOption from '../select/src/option'
+import ElOption from './Option'
 
 /* istanbul ignore next */
 ElOption.install = function (app) {

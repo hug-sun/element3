@@ -10,6 +10,8 @@ import Checkbox from '../packages/checkbox/index.js';
 import CheckboxButton from '../packages/checkbox-button/index.js';
 import CheckboxGroup from '../packages/checkbox-group/index.js';
 import Switch from '../packages/switch/index.js';
+import Select from '../packages/select/index.js';
+import Option from '../packages/option/index.js';
 import Button from '../packages/button/index.js';
 import ButtonGroup from '../packages/button-group/index.js';
 import Popover from '../packages/popover/index.js';
@@ -62,6 +64,8 @@ const components = [
   CheckboxButton,
   CheckboxGroup,
   Switch,
+  Select,
+  Option,
   Button,
   ButtonGroup,
   Popover,
@@ -148,6 +152,8 @@ export default {
   CheckboxButton,
   CheckboxGroup,
   Switch,
+  Select,
+  Option,
   Button,
   ButtonGroup,
   Popover,

@@ -19,6 +19,7 @@
 <script type="text/babel">
 import Emitter from 'element-ui/src/mixins/emitter'
 import { getValueByPath, escapeRegexpString } from 'element-ui/src/utils/util'
+import { useEmitter } from 'element-ui/src/use/emitter'
 
 export default {
   mixins: [Emitter],
@@ -69,9 +70,9 @@ export default {
 
     itemSelected() {
       if (!this.select.multiple) {
-        return this.isEqual(this.value, this.select.value)
+        return this.isEqual(this.value, this.select.modelValue)
       } else {
-        return this.contains(this.select.value, this.value)
+        return this.contains(this.select.modelValue, this.value)
       }
     },
 
@@ -79,7 +80,7 @@ export default {
       if (this.select.multiple) {
         return (
           !this.itemSelected &&
-          (this.select.value || []).length >= this.select.multipleLimit &&
+          (this.select.modelValue || []).length >= this.select.multipleLimit &&
           this.select.multipleLimit > 0
         )
       } else {
@@ -114,7 +115,7 @@ export default {
       if (!this.isObject) {
         return a === b
       } else {
-        const valueKey = this.select.valueKey
+        const valueKey = this.select.modelValueKey
         return getValueByPath(a, valueKey) === getValueByPath(b, valueKey)
       }
     },
@@ -123,7 +124,7 @@ export default {
       if (!this.isObject) {
         return arr && arr.indexOf(target) > -1
       } else {
-        const valueKey = this.select.valueKey
+        const valueKey = this.select.modelValueKey
         return (
           arr &&
           arr.some((item) => {
@@ -168,8 +169,9 @@ export default {
     this.select.optionsCount++
     this.select.filteredOptionsCount++
 
-    this.$on('queryChange', this.queryChange)
-    this.$on('handleGroupDisabled', this.handleGroupDisabled)
+    const { on } = useEmitter()
+    on('queryChange', this.queryChange)
+    on('handleGroupDisabled', this.handleGroupDisabled)
   },
 
   beforeDestroy() {
