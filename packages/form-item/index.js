@@ -1,4 +1,4 @@
-import ElFormItem from './FormItem.vue'
+import ElFormItem from '../form/src/form-item'
 
 /* istanbul ignore next */
 ElFormItem.install = function (app) {

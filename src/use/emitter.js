@@ -2,17 +2,19 @@ import { getCurrentInstance } from 'vue'
 import { capitalize } from 'element-ui/src/utils/util'
 const EVENT_NAME_KEY = Symbol('ELEMENT_EVENTS')
 
-export function useEmitter(instance = getCurrentInstance()) {
+export function useEmitter() {
   return {
-    dispatch: dispatch(instance),
-    broadcast: broadcast(instance),
-    on: on(instance),
-    once: once(instance),
-    off: off(instance)
+    dispatch: dispatch(),
+    broadcast: broadcast(),
+    on: on(),
+    once: once(),
+    off: off()
   }
 }
 
-function on(instance) {
+function on() {
+  const instance = getCurrentInstance()
+
   return (originalEventName, callback) => {
     const eventName = 'on' + capitalize(originalEventName)
 
@@ -39,9 +41,9 @@ function on(instance) {
     instance.vnode.props[eventName].__events.push(callback)
   }
 }
-function once(instance) {
-  const $off = off(instance)
-  const $on = on(instance)
+function once() {
+  const $off = off()
+  const $on = on()
   return (originalEventName, handle) => {
     const _on = (...params) => {
       $off(originalEventName, _on)
@@ -51,7 +53,9 @@ function once(instance) {
   }
 }
 
-function off(instance) {
+function off() {
+  const instance = getCurrentInstance()
+
   return (originalEventName, callback) => {
     const eventNameList =
       instance.vnode.props && instance.vnode.props[EVENT_NAME_KEY]
@@ -87,7 +91,9 @@ function off(instance) {
   }
 }
 
-function dispatch(instance) {
+function dispatch() {
+  const instance = getCurrentInstance()
+
   return (componentName, eventName, ...params) => {
     let parent = instance.parent
     while (parent && parent.type.name !== componentName) {
@@ -100,7 +106,9 @@ function dispatch(instance) {
   }
 }
 
-function broadcast(instance) {
+function broadcast() {
+  const instance = getCurrentInstance()
+
   return (componentName, eventName, ...params) => {
     const _broadcast = (componentInstance) => {
       if (!componentInstance) return

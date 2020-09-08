@@ -19,14 +19,11 @@
         </el-button>
       </div>
     </div>
-    <template v-slot:reference>
-      <slot name="reference"></slot>
-    </template>
+    <slot name="reference" slot="reference"></slot>
   </el-popover>
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
 import ElPopover from 'element-ui/packages/popover'
 import ElButton from 'element-ui/packages/button'
 import { t } from 'element-ui/src/locale'
@@ -70,22 +67,19 @@ export default {
     ElPopover,
     ElButton
   },
-  setup(props, { emit }) {
-    const state = reactive({
-      visible: false
-    })
-    const confirm = () => {
-      state.visible = false
-      emit('onConfirm')
-    }
-    const cancel = () => {
-      state.visible = false
-      emit('onCancel')
-    }
+  data() {
     return {
-      ...toRefs(state),
-      confirm,
-      cancel
+      visible: false
+    }
+  },
+  methods: {
+    confirm() {
+      this.visible = false
+      this.$emit('onConfirm')
+    },
+    cancel() {
+      this.visible = false
+      this.$emit('onCancel')
     }
   }
 }

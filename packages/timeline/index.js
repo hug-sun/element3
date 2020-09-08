@@ -1,4 +1,4 @@
-import Timeline from './Timeline'
+import Timeline from './src/main'
 
 /* istanbul ignore next */
 Timeline.install = function (app) {

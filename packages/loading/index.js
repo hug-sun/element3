@@ -1,5 +1,5 @@
-import directive from './directive'
-import service from './service'
+import directive from './src/directive'
+import service from './src/index'
 
 export default {
   install(app) {

@@ -68,12 +68,24 @@ export default {
     }
   },
 
-  setup(props) {
+  setup(props, { slots }) {
     const wrap = ref(null)
     const resize = ref(null)
-    const { wrapStyle, tag, native, noresize } = toRefs(props)
+    let {
+      wrapStyle,
+      wrapClass,
+      tag,
+      viewClass,
+      viewStyle,
+      native,
+      noresize
+    } = toRefs(props)
+    wrapStyle = ref(wrapStyle)
+    wrapClass = ref(wrapClass)
+    viewClass = ref(viewClass)
+    viewStyle = ref(viewStyle)
     const gutter = scrollbarWidth()
-    let style = wrapStyle?.value
+    let style = wrapStyle.value
     // eslint-disable-next-line no-unused-vars
     const ComponentName = tag.value
     if (gutter) {
@@ -91,48 +103,31 @@ export default {
     }
 
     const { data, handleScroll } = useScroll(wrap, native, resize, noresize)
-    return {
-      // state
-      data,
-      style,
-      native,
-      gutter,
-      wrap,
-      resize,
-      ComponentName,
-      // methods
-      handleScroll
-    }
-  },
-  render() {
-    const ComponentName = this.ComponentName
-    return (
+    return () => (
       <div class="el-scrollbar">
         <div
-          ref="wrap"
+          ref={wrap}
           class={[
-            this.wrapClass,
+            wrapClass.value,
             'el-scrollbar__wrap',
-            {
-              'el-scrollbar__wrap--hidden-default': !this.native && !this.gutter
-            }
+            { 'el-scrollbar__wrap--hidden-default': !native.value && !gutter }
           ]}
           onScroll={() => {
-            !this.native && this.handleScroll()
+            !native.value && handleScroll()
           }}
-          style={this.style}
+          style={style}
         >
           <ComponentName
-            ref="resize"
-            class={['el-scrollbar__view', this.viewClass]}
-            style={this.viewStyle}
+            ref={resize}
+            class={['el-scrollbar__view', viewClass.value]}
+            style={viewStyle.value}
           >
-            {this.$slots.default()}
+            {slots.default()}
           </ComponentName>
         </div>
-        {!this.native.value && [
-          <Bar move={this.data.moveX} size={this.data.sizeWidth} />,
-          <Bar vertical move={this.data.moveY} size={this.data.sizeHeight} />
+        {!native.value && [
+          <Bar move={data.moveX} size={data.sizeWidth} />,
+          <Bar vertical move={data.moveY} size={data.sizeHeight} />
         ]}
       </div>
     )
