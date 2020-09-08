@@ -14,7 +14,7 @@
                 popperClass
             ]"
     >
-      <slot @mouseenter="show" @mouseleave="hide" @blur="handleBlur" @click="removeFocusing"></slot>
+      <slot></slot>
     </div>
   </transition>
 </template>

@@ -3,7 +3,7 @@ import debounce from 'throttle-debounce/debounce'
 import { addClass, removeClass, on, off } from 'element-ui/src/utils/dom'
 import { generateId } from 'element-ui/src/utils/util'
 // eslint-disable-next-line
-import { h, createApp} from 'vue'
+import { h, createApp, Transition as _Transition } from 'vue'
 
 export default {
   name: 'ElTooltip',
@@ -68,42 +68,60 @@ export default {
     if (this.$isServer) return
 
     this.popperVM = createApp({
-      data: { node: '' },
-      render(h) {
+      data() {
+        return {
+          node: '' 
+        }
+      },
+      render() {
+        debugger
         return this.node
       }
     })
 
+    console.log(this.popperVM.node);
+
     this.debounceClose = debounce(200, () => this.handleClosePopper())
   },
 
-  render(h) {
+  render() {
+    debugger
     if (this.popperVM) {
-      this.popperVM.node = (
-        // <transition name={this.transition} onAfterLeave={this.doDestroy}>
-          <div
-            onMouseleave={() => {
-              this.setExpectedState(false)
-              this.debounceClose()
-            }}
-            onMouseenter={() => {
-              this.setExpectedState(true)
-            }}
-            ref="popper"
-            role="tooltip"
-            id={this.tooltipId}
-            aria-hidden={this.disabled || !this.showPopper ? 'true' : 'false'}
-            v-show={!this.disabled && this.showPopper}
-            class={[
-              'el-tooltip__popper',
-              'is-' + this.effect,
-              this.popperClass
-            ]}
-          >
-            {this.$slots.content || this.content}
-          </div>
-        // </transition>
+      this.popperVM.node = h(_Transition, {
+          name: this.transition,
+          onAfterLeave: this.doDestroy
+        },
+        [
+          h('div', 
+            {
+              onMouseleave: () => {
+                this.setExpectedState(false)
+                this.debounceClose()
+              },
+              onMouseenter: () => {
+                this.setExpectedState(true)
+              },
+              ref: "popper",
+              role: "tooltip",
+              id: this.tooltipId,
+              'aria-hidden': this.disabled || !this.showPopper ? 'true' : 'false',
+              directives: [
+                {
+                  name: 'show',
+                  value: !this.disabled && this.showPopper
+                }
+              ],
+              class: [
+                'el-tooltip__popper',
+                'is-' + this.effect,
+                this.popperClass
+              ]
+            }, 
+            (this.$slots.content || this.content)
+          )
+        ]
       )
+      // this.popperVM.mount('body');
     }
 
     const firstElement = this.getFirstElement()
@@ -225,6 +243,7 @@ export default {
       if (!Array.isArray(slots)) return null
       let element = null
       for (let index = 0; index < slots.length; index++) {
+        console.log(slots[index], 'slots[index]');
         // if (slots[index] && slots[index].tag) {
           element = slots[index]
         // }
