@@ -16,7 +16,6 @@
       :value="item.value">
     </el-option>
   </el-select>
-  <p>value: {{value}}</p>
 </template>
 
 <script>
@@ -47,6 +46,156 @@
 ```
 :::
 
+### 有禁用选项
+
+:::demo 在`el-option`中，设定`disabled`值为 true，即可禁用该选项
+```html
+<template>
+  <el-select v-model="value" placeholder="请选择">
+    <el-option
+      v-for="item in options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value"
+      :disabled="item.disabled">
+    </el-option>
+  </el-select>
+    <p>value: {{value}}</p>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        value:'',
+        options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶',
+          disabled: true
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value: ''
+      }
+    }
+  }
+</script>
+```
+:::
+
+### 禁用状态
+
+选择器不可用状态
+
+:::demo 为`el-select`设置`disabled`属性，则整个选择器不可用
+```html
+<template>
+  <el-select v-model="value" disabled placeholder="请选择">
+    <el-option
+      v-for="item in options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
+</template>
+  
+<script>
+  export default {
+    data() {
+      return {
+        options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value: ''
+      }
+    }
+  }
+</script>
+```
+:::
+
+### 分组
+
+备选项进行分组展示
+
+:::demo 使用`el-option-group`对备选项进行分组，它的`label`属性为分组名
+```html
+<template>
+  <el-select v-model="value" placeholder="请选择">
+    <el-option-group
+      v-for="group in options"
+      :key="group.label"
+      :label="group.label">
+      <el-option
+        v-for="item in group.options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-option-group>
+  </el-select>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        options: [{
+          label: '热门城市',
+          options: [{
+            value: 'Shanghai',
+            label: '上海'
+          }, {
+            value: 'Beijing',
+            label: '北京'
+          }]
+        }, {
+          label: '城市名',
+          options: [{
+            value: 'Chengdu',
+            label: '成都'
+          }, {
+            value: 'Shenzhen',
+            label: '深圳'
+          }, {
+            value: 'Guangzhou',
+            label: '广州'
+          }, {
+            value: 'Dalian',
+            label: '大连'
+          }]
+        }],
+        value: ''
+      }
+    }
+  }
+</script>
+```
+:::
 
 
 ### Select Attributes

@@ -127,7 +127,8 @@ ComponentNames.forEach((name) => {
       'drawer',
       'transfer',
       'select',
-      'option'
+      'option',
+      'option-group'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换

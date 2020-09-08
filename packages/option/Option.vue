@@ -63,15 +63,13 @@ export default {
 
     const isObject = computed(() => {
       const v = unref(value)
-      console.log(v.toString())
-      console.log(Object.prototype.toString.call(v))
       return (
         Object.prototype.toString.call(v).toLowerCase() === '[object object]'
       )
     })
 
     const currentLabel = computed(() => {
-      return label.value || (isObject ? '' : unref(value))
+      return unref(label) || (isObject ? '' : unref(value))
     })
 
     const currentValue = computed(() => {
@@ -80,9 +78,9 @@ export default {
 
     const itemSelected = computed(() => {
       if (!select.multiple) {
-        return isEqual(value, select.modelValue)
+        return isEqual(unref(value), select.modelValue)
       } else {
-        return contains(select.modelValue, value)
+        return contains(select.modelValue, unref(value))
       }
     })
 
@@ -99,9 +97,7 @@ export default {
     })
 
     function isEqual(a, b) {
-      a = unref(a)
-      b = unref(b)
-      if (!isObject) {
+      if (!unref(isObject)) {
         return a === b
       } else {
         const valueKey = select.valueKey
@@ -110,9 +106,7 @@ export default {
     }
 
     function contains(arr = [], target) {
-      arr = unref(arr)
-      target = unref(target)
-      if (!isObject) {
+      if (!unref(isObject)) {
         return arr && arr.indexOf(target) > -1
       } else {
         const valueKey = select.valueKey
@@ -133,31 +127,32 @@ export default {
     }
 
     function hoverItem() {
-      if (!disabled && !data.groupDisabled) {
+      if (!disabled.value && !data.groupDisabled) {
         select.hoverIndex = select.options.indexOf(ctx)
       }
     }
 
     function selectOptionClick() {
-      if (disabled !== true && data.groupDisabled !== true) {
+      if (disabled.value !== true && data.groupDisabled !== true) {
         dispatch('ElSelect', 'handleOptionClick', this, true)
       }
     }
 
     function queryChange(query) {
       data.visible =
-        new RegExp(escapeRegexpString(query), 'i').test(currentLabel) || created
+        new RegExp(escapeRegexpString(query), 'i').test(currentLabel) ||
+        created.value
       if (!data.visible) {
         select.filteredOptionsCount--
       }
     }
 
     watch(currentLabel, () => {
-      if (!created && !select.remote) dispatch('ElSelect', 'setSelected')
+      if (!created.value && !select.remote) dispatch('ElSelect', 'setSelected')
     })
     watch(value, (val, oldVal) => {
       const { remote, valueKey } = select
-      if (!created && !remote) {
+      if (!created.value && !remote) {
         if (
           valueKey &&
           typeof val === 'object' &&
