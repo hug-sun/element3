@@ -105,10 +105,10 @@
       @mouseenter.native="inputHovering = true"
       @mouseleave.native="inputHovering = false"
     >
-      <template slot="prefix" v-if="$slots.prefix">
+      <template v-slot:prefix v-if="$slots.prefix">
         <slot name="prefix"></slot>
       </template>
-      <template slot="suffix">
+      <template v-slot:suffix>
         <i
           v-show="!showClose"
           :class="[
