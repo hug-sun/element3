@@ -158,5 +158,17 @@ describe('Avatar.vue', () => {
         'scale-down'
       )
     })
+
+    it('srcSet', () => {
+      const wrapper = mount(Avatar, {
+        props: {
+          src: IMAGE_SUCCESS,
+          srcSet: 'big.jpg 1440w,middle.jpg 800w'
+        }
+      })
+      expect(wrapper.find('img').attributes('srcset')).toBe(
+        'big.jpg 1440w,middle.jpg 800w'
+      )
+    })
   })
 })
