@@ -347,7 +347,7 @@ const validator = function (val) {
 
 export default {
   mixins: [Emitter, NewPopper],
-
+  emits: ['focus'],
   inject: {
     elForm: {
       default: ''
@@ -519,9 +519,9 @@ export default {
     },
 
     haveTrigger() {
-      if (typeof this.showTrigger !== 'undefined') {
-        return this.showTrigger
-      }
+      // if (typeof this.showTrigger !== 'undefined') {
+      //   return this.showTrigger
+      // }
       return HAVE_TRIGGER_TYPES.indexOf(this.type) !== -1
     },
 
@@ -620,7 +620,7 @@ export default {
     }
     this.placement = PLACEMENT_MAP[this.align] || PLACEMENT_MAP.left
 
-    this.$on('fieldReset', this.handleFieldReset)
+    // this.$on('fieldReset', this.handleFieldReset)
   },
 
   methods: {
