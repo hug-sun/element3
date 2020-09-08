@@ -114,7 +114,6 @@ describe('Avatar.vue', () => {
           alt: 'icon'
         }
       })
-
       expect(wrapper.find('img').attributes('alt')).toBe('icon')
     })
 
