@@ -114,7 +114,6 @@ describe('Avatar.vue', () => {
           alt: 'icon'
         }
       })
-
       expect(wrapper.find('img').attributes('alt')).toBe('icon')
     })
 
@@ -166,9 +165,7 @@ describe('Avatar.vue', () => {
           srcSet: 'big.jpg 1440w,middle.jpg 800w'
         }
       })
-      expect(wrapper.find('img').attributes('srcset')).toBe(
-        'big.jpg 1440w,middle.jpg 800w'
-      )
+      expect(wrapper.find('img').attributes('srcset')).toBe('big.jpg 1440w,middle.jpg 800w')
     })
   })
 })
