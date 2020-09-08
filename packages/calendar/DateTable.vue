@@ -85,7 +85,6 @@ export default {
         day
       }
 
-      // custInfo.value = { date, data }
       return render({ date, data })
     }
 
