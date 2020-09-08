@@ -10,11 +10,18 @@
 </template>
 
 <script type="text/babel">
-import Emitter from 'element-ui/src/mixins/emitter'
+import { useEmitter } from 'element-ui/src/use/emitter'
+import {
+  watch,
+  getCurrentInstance,
+  onBeforeMount,
+  onMounted,
+  ref,
+  unref,
+  toRefs
+} from 'vue'
 
 export default {
-  mixins: [Emitter],
-
   name: 'ElOptionGroup',
 
   componentName: 'ElOptionGroup',
@@ -27,35 +34,34 @@ export default {
     }
   },
 
-  data() {
-    return {
-      visible: true
-    }
-  },
+  setup(props) {
+    const { disabled } = toRefs(props)
+    const visible = ref(true)
+    const { on, broadcast } = useEmitter()
+    const { ctx } = getCurrentInstance()
 
-  watch: {
-    disabled(val) {
-      this.broadcast('ElOption', 'handleGroupDisabled', val)
-    }
-  },
+    watch(disabled, (val) => {
+      broadcast('ElOption', 'handleGroupDisabled', val)
+    })
 
-  methods: {
-    queryChange() {
-      this.visible =
-        this.$children &&
-        Array.isArray(this.$children) &&
-        this.$children.some((option) => option.visible === true)
+    function queryChange() {
+      visible.value =
+        ctx.$children &&
+        Array.isArray(ctx.$children) &&
+        ctx.$children.some((option) => option.visible === true)
     }
-  },
 
-  created() {
-    this.$on('queryChange', this.queryChange)
-  },
+    onBeforeMount(() => {
+      on('queryChange', queryChange)
+    })
 
-  mounted() {
-    if (this.disabled) {
-      this.broadcast('ElOption', 'handleGroupDisabled', this.disabled)
-    }
+    onMounted(() => {
+      if (unref(disabled)) {
+        broadcast('ElOption', 'handleGroupDisabled', unref(disabled))
+      }
+    })
+
+    return { visible }
   }
 }
 </script>
