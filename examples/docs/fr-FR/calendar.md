@@ -26,10 +26,8 @@ Affiche un calendrier.
 :::demo Personnalisez le contenu du calendrier en utilisant le `scoped-slot` appelé `dateCell`. Dans ce `scoped-slot` vous aurez accès au paramètres date (date de la cellule courante), data (incluant les attributs type, isSelected et day). Pour plus d'informations, référez-vous à la documentation ci-dessous.
 ```html
 <el-calendar>
-  <!-- Use 2.5 slot syntax. If you use Vue 2.6, please use new slot syntax-->
-  <template
-    slot="dateCell"
-    slot-scope="{date, data}">
+  <!-- Use 3.0 slot syntax.-->
+  <template #default="{date, data}">
     <p :class="data.isSelected ? 'is-selected' : ''">
       {{ data.day.split('-').slice(1).join('-') }} {{ data.isSelected ? '✔️' : ''}}
     </p>
