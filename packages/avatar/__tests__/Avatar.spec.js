@@ -165,7 +165,7 @@ describe('Avatar.vue', () => {
           srcSet: 'big.jpg 1440w,middle.jpg 800w'
         }
       })
-      expect(wrapper.find('img').attributes('srcset')).toBe('big.jpg 1440w,middle.jpg 800w')	
+      expect(wrapper.find('img').attributes('srcset')).toBe('big.jpg 1440w,middle.jpg 800w')
     })
   })
 })
