@@ -25,11 +25,11 @@ describe('Dialog', () => {
   it('showClose', () => {
     const wrapperTrue = mount(Dialog, {
       props: {
-        default: true
+        showClose: false
       }
     })
 
-    expect(wrapperTrue.find('.el-dialog__headerbtn').exists()).toBe(true)
+    expect(wrapperTrue.find('.el-dialog__headerbtn').exists()).toBe(false)
   })
 
   test('Dialog render', async () => {
