@@ -1,6 +1,6 @@
 import Transfer from './src/Transfer.vue'
 
-/* istanbul ignore next1 */
+/* istanbul ignore next */
 Transfer.install = function (app) {
   app.component(Transfer.name, Transfer)
 }
