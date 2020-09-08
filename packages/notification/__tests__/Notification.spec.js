@@ -24,7 +24,9 @@ describe('Notification', () => {
     setTimeout(() => {
       // 此处2.x的用例测试是否存在，看实现close效果为display：none
       // expect(notification.find('.el-notification').exists()).toBe(false)
-      expect(notification.find('.el-notification').element.style.display).toBe('none')
+      expect(notification.find('.el-notification').element.style.display).toBe(
+        'none'
+      )
       done()
     }, 1000)
   })
@@ -37,7 +39,9 @@ describe('Notification', () => {
     })
     notification.find('.el-notification__closeBtn').trigger('click')
     setTimeout(() => {
-      expect(notification.find('.el-notification').element.style.display).toBe('none')
+      expect(notification.find('.el-notification').element.style.display).toBe(
+        'none'
+      )
       done()
     }, 500)
   })

@@ -118,7 +118,6 @@ ComponentNames.forEach((name) => {
       'pagination',
       'notification',
       'page-header',
-      'message',
       'timeline',
       'timeline-item',
       'input-number',
