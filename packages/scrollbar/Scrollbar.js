@@ -22,7 +22,7 @@ const useScroll = (wrap, native, resize, noresize) => {
   }
 
   const update = () => {
-    if (!wrap) return
+    if (!wrap?.value) return
 
     const heightPercentage =
       (wrap.value.clientHeight * 100) / wrap.value.scrollHeight
@@ -74,14 +74,13 @@ export default {
     const { wrapStyle, tag, native, noresize } = toRefs(props)
     const gutter = scrollbarWidth()
     let style = wrapStyle?.value
-    // eslint-disable-next-line no-unused-vars
     const ComponentName = tag.value
     if (gutter) {
       const gutterWith = `-${gutter}px`
       const gutterStyle = `margin-bottom: ${gutterWith}; margin-right: ${gutterWith};`
 
-      if (Array.isArray(wrapStyle)) {
-        style = toObject(wrapStyle)
+      if (Array.isArray(wrapStyle?.value)) {
+        style = toObject(wrapStyle?.value)
         style.marginRight = style.marginBottom = gutterWith
       } else if (typeof wrapStyle === 'string') {
         style += gutterStyle

@@ -1,4 +1,4 @@
-import { ref, computed, watch, h, toRefs, Fragment } from 'vue'
+import { ref, computed, watch, toRefs } from 'vue'
 import Pager from './components/Pager'
 import Prev from './components/Prev.vue'
 import Next from './components/Next'
@@ -8,7 +8,7 @@ import Total from './components/Total'
 const useLayout = (layout) => {
   const template = []
   const rightWrapper = []
-  const components = layout.value.split(',').map((item) => item.trim())
+  const components = layout.split(',').map((item) => item.trim())
   const findIndex = components.findIndex((item) => item === '->')
   for (let i = 0; i < components.length; i++) {
     if (findIndex >= 0) {
@@ -169,22 +169,10 @@ export default {
     'nextClick'
   ],
 
-  setup(props, { emit, slots }) {
+  setup(props, { emit }) {
     const currentPageEmitted = ref(false)
     const pageSizeEmitted = ref(false)
-    const {
-      layout,
-      small,
-      background,
-      currentPage,
-      total,
-      pageCount,
-      pageSize,
-      disabled,
-      hideOnSinglePage
-    } = toRefs(props)
-
-    if (!layout.value) return null
+    const { currentPage, total, pageCount, pageSize, disabled } = toRefs(props)
 
     const internalCurrentPage = useInternalCurrentPage({
       currentPage,
@@ -202,92 +190,110 @@ export default {
       pageSize: internalPageSize
     })
 
-    if (hideOnSinglePage && internalPageCount.value === 1) return null
-
-    const { template, rightWrapper } = useLayout(layout)
-
-    return () => {
-      const templateComponent = {
-        prev: h(Prev, {
-          currentPage: internalCurrentPage.value,
-          disabled: disabled.value,
-          prevText: props.prevText,
-          prev() {
-            if (disabled.value) return
-            internalCurrentPage.value = getValidCurrentPage(
-              internalCurrentPage.value - 1,
-              internalPageCount.value
-            )
-            emit('prevClick', internalCurrentPage.value)
-          }
-        }),
-        jumper: h(Jumper, {
-          currentPage: internalCurrentPage.value,
-          pageCount: internalPageCount.value,
-          handleChange(val) {
-            internalCurrentPage.value = getValidCurrentPage(
-              val,
-              internalPageCount.value
-            )
-          },
-          disabled: disabled.value
-        }),
-        pager: h(Pager, {
-          currentPage: internalCurrentPage.value,
-          'onUpdate:currentPage'(val) {
-            internalCurrentPage.value = val
-          },
-          pageCount: internalPageCount.value,
-          disabled: disabled.value
-        }),
-        next: h(Next, {
-          currentPage: internalCurrentPage.value,
-          pageCount: internalPageCount.value,
-          disabled: disabled.value,
-          nextText: props.nextText,
-          next() {
-            if (disabled.value) return
-            internalCurrentPage.value = getValidCurrentPage(
-              internalCurrentPage.value + 1,
-              internalPageCount.value
-            )
-            emit('nextClick', internalCurrentPage.value)
-          }
-        }),
-        // sizes: <sizes pageSizes={this.pageSizes}></sizes>,
-        slot: h(Fragment, slots.default?.() ?? ''),
-        total: h(Total, {
-          total: total?.value
-        })
+    return {
+      // state
+      internalCurrentPage,
+      internalPageCount,
+      internalPageSize,
+      // methods
+      prev() {
+        if (disabled.value) return
+        internalCurrentPage.value = getValidCurrentPage(
+          internalCurrentPage.value - 1,
+          internalPageCount.value
+        )
+        emit('prevClick', internalCurrentPage.value)
+      },
+      next() {
+        if (disabled.value) return
+        internalCurrentPage.value = getValidCurrentPage(
+          internalCurrentPage.value + 1,
+          internalPageCount.value
+        )
+        emit('nextClick', internalCurrentPage.value)
+      },
+      onUpdate(val) {
+        internalCurrentPage.value = val
+      },
+      handleChange(val) {
+        internalCurrentPage.value = getValidCurrentPage(
+          val,
+          internalPageCount.value
+        )
       }
-
-      return (
-        <div
-          class={[
-            'el-pagination',
-            {
-              'is-background': background.value,
-              'el-pagination--small': small.value
-            }
-          ]}
-        >
-          {rightWrapper.length ? (
-            <div className="el-pagination__rightwrapper">
-              {rightWrapper.map((item) => {
-                const Comp = templateComponent[item]
-                return <Comp />
-              })}
-            </div>
-          ) : (
-            ''
-          )}
-
-          {template.map((item) => {
-            const Comp = templateComponent[item]
-            return <Comp />
-          })}
-        </div>
-      )
     }
+  },
+  render() {
+    if (!this.layout || (this.hideOnSinglePage && this.internalPageCount === 1))
+      return ''
+
+    const { template, rightWrapper } = useLayout(this.layout)
+
+    const templateComponent = {
+      prev: (
+        <Prev
+          currentPage={this.internalCurrentPage}
+          disabled={this.disabled}
+          prevText={this.prevText}
+          prev={this.prev}
+        />
+      ),
+      jumper: (
+        <Jumper
+          currentPage={this.internalCurrentPage}
+          pageCount={this.internalPageCount}
+          handleChange={this.handleChange}
+          disabled={this.disabled}
+        />
+      ),
+      pager: (
+        <Pager
+          currentPage={this.internalCurrentPage}
+          onUpdate:currentPage={this.onUpdate}
+          pageCount={this.internalPageCount}
+          disabled={this.disabled}
+        />
+      ),
+      next: (
+        <Next
+          currentPage={this.internalCurrentPage}
+          pageCount={this.internalPageCount}
+          disabled={this.disabled}
+          nextText={this.nextText}
+          next={this.next}
+        />
+      ),
+      sizes: <span>sizes</span>,
+      slot: <>{this.$slots.default?.()}</>,
+      total: <Total total={this.total} />
+    }
+
+    return (
+      <div
+        class={[
+          'el-pagination',
+          {
+            'is-background': this.background,
+            'el-pagination--small': this.small
+          }
+        ]}
+      >
+        {rightWrapper.length ? (
+          <div className="el-pagination__rightwrapper">
+            {rightWrapper.map((item) => {
+              const Comp = templateComponent[item]
+              return <Comp />
+            })}
+          </div>
+        ) : (
+          ''
+        )}
+
+        {template.map((item) => {
+          const Comp = templateComponent[item]
+          return <Comp />
+        })}
+      </div>
+    )
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "element3",
-  "version": "0.0.7",
-  "description": "A Component Library for Vue.js.",
+  "version": "0.0.8",
+  "description": "A Component Library for Vue3",
   "main": "dist/element3-ui.esm.js",
   "module": "dist/element3-ui.esm.js",
   "files": [
@@ -51,17 +51,21 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:ElemeFE/element.git"
+    "url": "git@github.com:kkbjs/element3.git"
   },
-  "homepage": "http://element.eleme.io",
+  "homepage": "https://element3.vercel.app/#/zh-CN",
   "keywords": [
     "eleme",
     "vue",
-    "components"
+    "components",
+    "element",
+    "ui",
+    "vue3",
+    "vue-next"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ElemeFE/element/issues"
+    "url": "https://github.com/kkbjs/element3/issues"
   },
   "unpkg": "lib/index.js",
   "style": "lib/theme-chalk/index.css",
