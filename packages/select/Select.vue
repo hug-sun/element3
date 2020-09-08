@@ -4,6 +4,8 @@
     :class="[selectSize ? 'el-select--' + selectSize : '']"
     @click.stop="toggleMenu"
     v-clickoutside="handleClose"
+    @mouseenter.native="inputHovering = true"
+    @mouseleave.native="inputHovering = false"
   >
     <div
       class="el-select__tags"
@@ -102,8 +104,6 @@
       @keydown.native.esc.stop.prevent="visible = false"
       @keydown.native.tab="visible = false"
       @paste.native="debouncedOnInputChange"
-      @mouseenter.native="inputHovering = true"
-      @mouseleave.native="inputHovering = false"
     >
       <template v-slot:prefix v-if="$slots.prefix">
         <slot name="prefix"></slot>
@@ -725,7 +725,7 @@ export default {
       if (e.target.value.length <= 0 && !this.toggleLastOptionHitState()) {
         const value = this.modelValue.slice()
         value.pop()
-        this.$emit('input', value)
+        this.$emit('update:modelValue', value)
         this.emitChange(value)
       }
     },
@@ -799,7 +799,6 @@ export default {
         ) {
           value.push(option.value)
         }
-        // this.$emit('input', value)
         this.$emit('update:modelValue', value)
         this.emitChange(value)
         if (option.created) {
@@ -809,7 +808,6 @@ export default {
         }
         if (this.filterable) this.$refs.input.focus()
       } else {
-        // this.$emit('input', option.value)
         this.$emit('update:modelValue', option.value)
         this.emitChange(option.value)
         this.visible = false
@@ -878,7 +876,7 @@ export default {
     deleteSelected(event) {
       event.stopPropagation()
       const value = this.multiple ? [] : ''
-      this.$emit('input', value)
+      this.$emit('update:modelValue', value)
       this.emitChange(value)
       this.visible = false
       this.$emit('clear')
@@ -889,7 +887,8 @@ export default {
       if (index > -1 && !this.selectDisabled) {
         const value = this.modelValue.slice()
         value.splice(index, 1)
-        this.$emit('input', value)
+        // this.$emit('input', value)
+        this.$emit('update:modelValue', value)
         this.emitChange(value)
         this.$emit('remove-tag', tag.value)
       }
@@ -965,10 +964,12 @@ export default {
   created() {
     this.cachedPlaceHolder = this.currentPlaceholder = this.placeholder
     if (this.multiple && !Array.isArray(this.modelValue)) {
-      this.$emit('input', [])
+      // this.$emit('input', [])
+      this.$emit('update:modelValue', [])
     }
     if (!this.multiple && Array.isArray(this.modelValue)) {
-      this.$emit('input', '')
+      // this.$emit('input', '')
+      this.$emit('update:modelValue', '')
     }
 
     this.debouncedOnInputChange = debounce(this.debounce, () => {
