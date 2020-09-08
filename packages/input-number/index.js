@@ -1,4 +1,4 @@
-import ElInputNumber from './src/input-number'
+import ElInputNumber from './InputNumber'
 
 /* istanbul ignore next */
 ElInputNumber.install = function (app) {

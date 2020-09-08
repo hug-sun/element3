@@ -5,6 +5,46 @@
 3. 访问文档(也可访问 http://localhost:8086/#/ )，在对应的组件页面调试报错即可，完成的记得标记。
 4. 提交代码前请先拉取代码，commit 时信息格式为 key: content，如 `refactor: refactor alert`，注意表达简洁易懂。
 
+## Install
+
+```js
+npm install element3 -S
+
+```
+
+## Quick Start
+
+```js
+import 'element3/lib/theme-chalk/index.css'
+import { createApp } from 'vue'
+import Element3 from 'element3'
+import App from './App.vue'
+
+const app = createApp(App)
+app.use(Element3)
+app.mount('#app')
+
+// or
+import {
+  ElButton
+  // ...
+} from 'element3'
+
+Vue.use(ElButton)
+```
+
+> 注意暂时不要在生产坏境使用
+
+## export components
+
+目前已经导出可以使用的组件列表
+
+- ElButton
+- ElSwitch
+- ElProgress
+- ElLink
+- ElIcon
+
 ## Join Discussion Group
 
 Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in discussion group :
@@ -15,81 +55,8 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
 
 [See Contributing Guide.](https://juejin.im/post/6864462363039531022)
 
-### basic
-
-- [x] layout
-- [x] container
-- [x] color
-- [x] typography
-- [x] border
-- [x] icon
-- [x] button
-- [x] link
-
-### form
-
-- [x] radio
-- [ ] checkbox
-- [ ] input
-- [ ] inputNumber
-- [ ] select
-- [ ] cascader
-- [ ] switch
-- [ ] slider
-- [ ] timePicker
-- [ ] timePicker
-- [ ] datePicker
-- [ ] dateTimePicker
-- [ ] Upload
-- [x] Rate
-- [ ] ColorPicker
-- [ ] Transfer
-- [ ] Form
-
-### data
-
-- [ ] Table
-- [ ] Tag
-- [ ] Progress
-- [ ] Tree
-- [ ] Pagination
-- [x] Badge
-- [x] Avatar
-
-### Notice
-
-- [ ] Alert
-- [ ] Loading
-- [ ] Message
-- [ ] MessageBox
-- [ ] Notification
-
-### Navigation
-
-- [ ] Navmenu
-- [ ] Tabs
-- [ ] Breadcrumb
-- [ ] dropdown
-- [ ] steps
-
-### other
-
-- [ ] dialog
-- [ ] tooltip
-- [ ] popover
-- [ ] popoconfirm
-- [ ] Card
-- [ ] Carousel
-- [ ] Collapse
-- [ ] Timeline
-- [ ] divider
-- [ ] Calendar
-- [ ] image
-- [ ] backtop
-- [ ] infiniteScroll
-- [ ] drawer
 <p align="center">
-  <img src="https://cdn.rawgit.com/ElemeFE/element/dev/element_logo.svg">
+  <img src="https://gitee.com/pandafe/element3/raw/master/element_logo.svg">
 </p>
 
 <p align="center">

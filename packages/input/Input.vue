@@ -1,6 +1,7 @@
 <template>
   <div
     :class="[
+      classProp,
       type === 'textarea' ? 'el-textarea' : 'el-input',
       inputSize ? 'el-input--' + inputSize : '',
       {
@@ -258,6 +259,7 @@ export default {
 
     return {
       ...toRefs(state),
+      classProp: props.class,
       inputSize,
       validateState,
       validateIcon,
@@ -299,6 +301,7 @@ export default {
     form: String,
     disabled: Boolean,
     readonly: Boolean,
+    class: String,
     type: {
       type: String,
       default: 'text'

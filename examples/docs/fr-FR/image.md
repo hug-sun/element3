@@ -31,7 +31,7 @@ En plus des propriétés natives de img, ce composant supporte le lazy loading, 
 
 ### Placeholder
 
-:::demo Placeholder personnalisé qui s'affiche lorsque l'image n'est pas encore chargée, grâce à `slot = placeholder`.
+:::demo Placeholder personnalisé qui s'affiche lorsque l'image n'est pas encore chargée, grâce à `v-slot:placeholder`.
 ```html
 <div class="demo-image__placeholder">
   <div class="block">
@@ -41,9 +41,11 @@ En plus des propriétés natives de img, ce composant supporte le lazy loading, 
   <div class="block">
     <span class="demonstration">Personnalisé</span>
     <el-image :src="src">
-      <div slot="placeholder" class="image-slot">
-        Chargement<span class="dot">...</span>
-      </div>
+      <template #placeholder>
+        <div class="image-slot">
+          Chargement<span class="dot">...</span>
+        </div>
+      </template>
     </el-image>
   </div>
 </div>
@@ -62,7 +64,7 @@ En plus des propriétés natives de img, ce composant supporte le lazy loading, 
 
 ### Échec du chargement
 
-:::demo Contenu personnalisé qui s'affiche lorsque le chargement a échoué, grâce à `slot = error`.
+:::demo Contenu personnalisé qui s'affiche lorsque le chargement a échoué, grâce à `v-slot:error`.
 ```html
 <div class="demo-image__error">
   <div class="block">
@@ -72,9 +74,11 @@ En plus des propriétés natives de img, ce composant supporte le lazy loading, 
   <div class="block">
     <span class="demonstration">Personnalisé</span>
     <el-image>
-      <div slot="error" class="image-slot">
-        <i class="el-icon-picture-outline"></i>
-      </div>
+      <template #error>
+        <div class="image-slot">
+          <i class="el-icon-picture-outline"></i>
+        </div>
+      </template>
     </el-image>
   </div>
 </div>
