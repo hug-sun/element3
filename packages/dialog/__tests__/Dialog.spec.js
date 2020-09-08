@@ -21,6 +21,16 @@ describe('Dialog', () => {
     expect(wrapper.find('.el-dialog__footer').text()).toBe('SoltFooter')
   })
 
+  it('showClose', () => {
+    const wrapperTrue = mount(Dialog, {
+      props: {
+        default: true
+      }
+    })
+    expect(wrapperTrue.find('.el-dialog__headerbtn').attributes('style')).toBe(
+      undefined
+    )
+  })
   test('Dialog render', async () => {
     const dialog = mount(Dialog, {
       slots: {
