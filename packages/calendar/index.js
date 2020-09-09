@@ -1,4 +1,4 @@
-import Calendar from './src/main'
+import Calendar from './Calendar'
 
 /* istanbul ignore next */
 Calendar.install = function (app) {

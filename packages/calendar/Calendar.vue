@@ -46,12 +46,13 @@
 </template>
 
 <script>
-import Locale from 'element-ui/src/mixins/locale'
+import {useLocale} from 'element-ui/src/use/locale'
 import fecha from 'element-ui/src/utils/date'
 import ElButton from 'element-ui/packages/button'
 import ElButtonGroup from 'element-ui/packages/button-group'
 import DateTable from './date-table'
 import { validateRangeInOneMonth } from 'element-ui/src/utils/date-util'
+import { reactive, provide, computed, toRefs ,getCurrentInstance} from 'vue'
 
 const validTypes = ['prev-month', 'today', 'next-month']
 const weekDays = [
@@ -68,7 +69,6 @@ const oneDay = 86400000
 export default {
   name: 'ElCalendar',
 
-  mixins: [Locale],
 
   components: {
     DateTable,
@@ -77,7 +77,7 @@ export default {
   },
 
   props: {
-    value: [Date, String, Number],
+    modelValue: [Date, String, Number],
     range: {
       type: Array,
       validator(range) {
@@ -101,44 +101,185 @@ export default {
       default: 1
     }
   },
+  emits:['input','update:modelValue'],
+  setup(props,{ attrs, emit, slots }){
+    
+       const instance = getCurrentInstance()
+     
+       provide('elCalendar', instance)
+        
+       const state=reactive({
+         selectedDay: '',
+         now: new Date()
+       });
 
-  provide() {
-    return {
-      elCalendar: this
-    }
-  },
+     const t = useLocale()
+       
+     // computed 
 
-  methods: {
-    pickDay(day) {
-      this.realSelectedDay = day
-    },
+    const prevMonthDatePrefix=computed(()=> {
+      const temp = new Date(date.value.getTime())
+      temp.setDate(0)
+      return fecha.format(temp, 'yyyy-MM')
+    });
+    const curMonthDatePrefix=computed(()=>{
+       return fecha.format(date.value, 'yyyy-MM')
+    });
+  
+    const nextMonthDatePrefix=computed(()=>{
+      const temp = new Date(
+        date.value.getFullYear(),
+        date.value.getMonth() + 1,
+        1
+      )
+      return fecha.format(temp, 'yyyy-MM')
+    });
 
-    selectDate(type) {
+    const formatedDate=computed(()=>{
+      return fecha.format(date.value, 'yyyy-MM-dd')
+    });
+    const i18nDate=computed(()=>{
+      
+      const year = date.value.getFullYear()
+      const month = date.value.getMonth() + 1;
+
+      const pickedMonth="el.datepicker.month"+month;
+   
+      return `${year} ${t('el.datepicker.year')} ${t(pickedMonth)}`
+    });
+
+  
+    const formatedToday=computed(()=>{
+      return fecha.format(state.now, 'yyyy-MM-dd')
+
+    });
+    const realSelectedDay=computed({
+      get() {
+        if (!props.modelValue) return state.selectedDay
+        return formatedDate.value
+      },
+      set(val) {
+        state.selectedDay = val
+        const date = new Date(val)
+        
+        emit('input', date)
+        emit('update:modelValue',date);
+      }
+    });
+
+    const date =computed(()=>{
+       if (!props.modelValue) {
+        if (realSelectedDay.value) {
+          const d = state.selectedDay.split('-')
+          return new Date(d[0], d[1] - 1, d[2])
+        } else if (validatedRange.length) {
+         
+          return validatedRange[0][0]
+        }
+        return state.now
+      } else {
+       
+        return toDate(props.modelValue)
+      }
+    });
+    const validatedRange=computed(()=>{
+          let range = props.range
+         
+      if (!range) return []
+      range = props.range&&range.reduce((prev, val, index) => {
+        const date = toDate(val)
+        if (rangeValidator(date, index === 0)) {
+          prev = prev.concat(date)
+        }
+        return prev
+      }, [])
+  
+      if (range.length === 2) {
+        const [start, end] = range
+        if (start > end) {
+          console.warn(
+            '[ElementCalendar]end time should be greater than start time'
+          )
+          return []
+        }
+        // start time and end time in one month
+        if (validateRangeInOneMonth(start, end)) {
+          return [[start, end]]
+        }
+        const data = []
+        let startDay = new Date(start.getFullYear(), start.getMonth() + 1, 1)
+        const lastDay = toDate(startDay.getTime() - oneDay)
+        if (!validateRangeInOneMonth(startDay, end)) {
+          console.warn(
+            '[ElementCalendar]start time and end time interval must not exceed two months'
+          )
+          return []
+        }
+        // 第一个月的时间范围
+        data.push([start, lastDay])
+        // 下一月的时间范围，需要计算一下该月的第一个周起始日
+        const firstDayOfWeek = realFirstDayOfWeek.value;
+        const nextMontFirstDay = startDay.getDay()
+        let interval = 0
+        if (nextMontFirstDay !== firstDayOfWeek) {
+          if (firstDayOfWeek === 0) {
+            interval = 7 - nextMontFirstDay
+          } else {
+            interval = firstDayOfWeek - nextMontFirstDay
+            interval = interval > 0 ? interval : 7 + interval
+          }
+        }
+        startDay = toDate(startDay.getTime() + interval * oneDay)
+        if (startDay.getDate() < end.getDate()) {
+          data.push([startDay, end])
+        }
+        return data
+      }
+      return []
+    });
+    // if range is valid, we get a two-digit array
+   const realFirstDayOfWeek=computed(()=>{
+      if (props.firstDayOfWeek < 1 || props.firstDayOfWeek > 6) {
+        return 0
+      }
+      return Math.floor(props.firstDayOfWeek)
+   });
+
+    // methods;
+
+   const pickDay=(day)=> {
+    
+      realSelectedDay.value = day
+    };
+
+    const selectDate=(type)=> {
+      
       if (validTypes.indexOf(type) === -1) {
         throw new Error(`invalid type ${type}`)
       }
       let day = ''
       if (type === 'prev-month') {
-        day = `${this.prevMonthDatePrefix}-01`
+        day = `${prevMonthDatePrefix.value}-01`
+     
       } else if (type === 'next-month') {
-        day = `${this.nextMonthDatePrefix}-01`
+        day = `${nextMonthDatePrefix.value}-01`
       } else {
-        day = this.formatedToday
+        day = formatedToday.value;
       }
 
-      if (day === this.formatedDate) return
-      this.pickDay(day)
-    },
-
-    toDate(val) {
-      if (!val) {
+      if (day === formatedDate.value) return
+      pickDay(day)
+    };
+    const toDate=(val)=>{
+       if (!val) {
         throw new Error('invalid val')
       }
       return val instanceof Date ? val : new Date(val)
-    },
+    }
+  
 
-    rangeValidator(date, isStart) {
-      const firstDayOfWeek = this.realFirstDayOfWeek
+    const rangeValidator=(date, isStart)=>{
+      const firstDayOfWeek = realFirstDayOfWeek.value
       const expected = isStart
         ? firstDayOfWeek
         : firstDayOfWeek === 0
@@ -157,138 +298,28 @@ export default {
       }
       return true
     }
-  },
 
-  computed: {
-    prevMonthDatePrefix() {
-      const temp = new Date(this.date.getTime())
-      temp.setDate(0)
-      return fecha.format(temp, 'yyyy-MM')
-    },
-
-    curMonthDatePrefix() {
-      return fecha.format(this.date, 'yyyy-MM')
-    },
-
-    nextMonthDatePrefix() {
-      const temp = new Date(
-        this.date.getFullYear(),
-        this.date.getMonth() + 1,
-        1
-      )
-      return fecha.format(temp, 'yyyy-MM')
-    },
-
-    formatedDate() {
-      return fecha.format(this.date, 'yyyy-MM-dd')
-    },
-
-    i18nDate() {
-      const year = this.date.getFullYear()
-      const month = this.date.getMonth() + 1
-      return `${year} ${this.t('el.datepicker.year')} ${this.t(
-        'el.datepicker.month' + month
-      )}`
-    },
-
-    formatedToday() {
-      return fecha.format(this.now, 'yyyy-MM-dd')
-    },
-
-    realSelectedDay: {
-      get() {
-        if (!this.value) return this.selectedDay
-        return this.formatedDate
-      },
-      set(val) {
-        this.selectedDay = val
-        const date = new Date(val)
-        this.$emit('input', date)
-      }
-    },
-
-    date() {
-      if (!this.value) {
-        if (this.realSelectedDay) {
-          const d = this.selectedDay.split('-')
-          return new Date(d[0], d[1] - 1, d[2])
-        } else if (this.validatedRange.length) {
-          return this.validatedRange[0][0]
-        }
-        return this.now
-      } else {
-        return this.toDate(this.value)
-      }
-    },
-
-    // if range is valid, we get a two-digit array
-    validatedRange() {
-      let range = this.range
-      if (!range) return []
-      range = range.reduce((prev, val, index) => {
-        const date = this.toDate(val)
-        if (this.rangeValidator(date, index === 0)) {
-          prev = prev.concat(date)
-        }
-        return prev
-      }, [])
-      if (range.length === 2) {
-        const [start, end] = range
-        if (start > end) {
-          console.warn(
-            '[ElementCalendar]end time should be greater than start time'
-          )
-          return []
-        }
-        // start time and end time in one month
-        if (validateRangeInOneMonth(start, end)) {
-          return [[start, end]]
-        }
-        const data = []
-        let startDay = new Date(start.getFullYear(), start.getMonth() + 1, 1)
-        const lastDay = this.toDate(startDay.getTime() - oneDay)
-        if (!validateRangeInOneMonth(startDay, end)) {
-          console.warn(
-            '[ElementCalendar]start time and end time interval must not exceed two months'
-          )
-          return []
-        }
-        // 第一个月的时间范围
-        data.push([start, lastDay])
-        // 下一月的时间范围，需要计算一下该月的第一个周起始日
-        const firstDayOfWeek = this.realFirstDayOfWeek
-        const nextMontFirstDay = startDay.getDay()
-        let interval = 0
-        if (nextMontFirstDay !== firstDayOfWeek) {
-          if (firstDayOfWeek === 0) {
-            interval = 7 - nextMontFirstDay
-          } else {
-            interval = firstDayOfWeek - nextMontFirstDay
-            interval = interval > 0 ? interval : 7 + interval
-          }
-        }
-        startDay = this.toDate(startDay.getTime() + interval * oneDay)
-        if (startDay.getDate() < end.getDate()) {
-          data.push([startDay, end])
-        }
-        return data
-      }
-      return []
-    },
-
-    realFirstDayOfWeek() {
-      if (this.firstDayOfWeek < 1 || this.firstDayOfWeek > 6) {
-        return 0
-      }
-      return Math.floor(this.firstDayOfWeek)
-    }
-  },
-
-  data() {
     return {
-      selectedDay: '',
-      now: new Date()
+      ...toRefs(state),
+      prevMonthDatePrefix,
+      curMonthDatePrefix,
+      nextMonthDatePrefix,
+      formatedDate,
+      i18nDate,
+      formatedToday,
+      realSelectedDay,
+      date,
+      validatedRange,
+      realFirstDayOfWeek,
+      pickDay,
+      selectDate,
+      toDate,
+      t,
+      rangeValidator,
     }
-  }
+
+       
+  },
+
 }
 </script>
