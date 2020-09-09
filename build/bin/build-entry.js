@@ -71,7 +71,6 @@ var listTemplate = []
 ComponentNames.forEach((name) => {
   if (
     [
-      'color-picker',
       'infinite-scroll',
       'loading',
       'image',
