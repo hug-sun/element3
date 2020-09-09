@@ -1,35 +1,30 @@
 <template>
-  <slot name="default" :class="className">
-  </slot>
-  <teleport to="body">
-    <transition :name="transition" @after-leave="doDestroy">
-      <div
-        @mouseleave="mouseleaveHandler"
-        @mouseenter="mouseenterHandler"
-        ref="popper"
-        role="tooltip"
-        :id="tooltipId"
-        :aria-hidden="disabled || !showPopper ? 'true' : 'false'"
-        v-show="!disabled && showPopper"
-        :class="[
-          'el-tooltip__popper',
-          'is-' + effect,
-          popperClass
-        ]"
-      >
-        <slot name="content" v-if="slots.content"></slot>
-        <template v-else>{{ content }}</template>
-      </div>
-    </transition>
-  </teleport>
+  <transition :name="transition">
+    <div
+      @mouseleave="mouseleaveHandler"
+      @mouseenter="mouseenterHandler"
+      ref="popper"
+      role="tooltip"
+      :id="tooltipId"
+      :aria-hidden="disabled || !showPopper ? 'true' : 'false'"
+      v-show="!disabled && showPopper"
+      :class="[
+                'el-tooltip__popper',
+                'is-' + effect,
+                popperClass
+            ]"
+    >
+      {{ content }}
+    </div>
+  </transition>
 </template>
 <script>
-import { vuePopperProps, useVuePopper } from 'packages/popover/vue-popper'
+import Popper from 'element-ui/src/utils/vue-popper'
 import debounce from 'throttle-debounce/debounce'
 import { addClass, removeClass, on } from 'element-ui/src/utils/dom'
 import { generateId } from 'element-ui/src/utils/util'
+// eslint-disable-next-line
 import {
-  h,
   watch,
   onMounted,
   onBeforeUnmount,
@@ -39,13 +34,8 @@ import {
 
 export default {
   name: 'ElTooltip',
-  emits: ['input', 'update:modelValue'],
+  mixins: [Popper],
   props: {
-    ...vuePopperProps,
-    className: {
-      type: String,
-      default: ''
-    },
     openDelay: {
       type: Number,
       default: 0
@@ -91,6 +81,15 @@ export default {
     }
   },
   setup(props, context) {
+    const tooltipId = `el-tooltip-${generateId()}`
+    let timeoutPending = null
+    let focusing = false
+    const expectedState = false
+    const debounceClose = debounce(200, () => handleClosePopper())
+    let timeout = null
+    const currentInstance = getCurrentInstance()
+
+    const { slots } = context
     const {
       value,
       transition,
@@ -102,36 +101,6 @@ export default {
       enterable,
       tabindex
     } = props
-    const { slots } = context
-
-    if (Array.isArray(slots.default())) {
-      slots.default().forEach((slot) => {
-        console.log( h(slot) )
-      })
-    }
-    if (slots.content) {
-      console.log(slots.content(), 'slots.content')
-    }
-    const {
-      showPopper,
-      currentPlacement,
-      popperElm,
-      popperJS,
-      createPopper,
-      updatePopper,
-      doDestroy,
-      destroyPopper,
-      resetTransformOrigin,
-      appendArrow
-    } = useVuePopper(props, context)
-
-    const tooltipId = `el-tooltip-${generateId()}`
-    let timeoutPending = null
-    let focusing = false
-    let expectedState = false
-    const debounceClose = debounce(200, () => handleClosePopper())
-    let timeout = null
-    const currentInstance = getCurrentInstance()
 
     watch(
       () => focusing,
@@ -233,6 +202,7 @@ export default {
     }
 
     onMounted(() => {
+      console.log(currentInstance)
       let referenceElm = currentInstance.vnode.el
       if (referenceElm.nodeType === 1) {
         referenceElm.setAttribute('aria-describedby', tooltipId)
@@ -269,8 +239,6 @@ export default {
     onUnmounted(() => {})
 
     return {
-      className: context.attrs.class,
-      slots,
       mouseleaveHandler,
       mouseenterHandler,
       show,
@@ -278,10 +246,8 @@ export default {
       handleBlur,
       removeFocusing,
       transition,
-      doDestroy,
       tooltipId,
       disabled,
-      showPopper,
       effect,
       popperClass
     }

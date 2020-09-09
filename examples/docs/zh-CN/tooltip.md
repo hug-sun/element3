@@ -116,8 +116,10 @@ Tooltip 组件提供了两个不同的主题：`dark`和`light`。
 :::demo 用具名 slot 分发`content`，替代`tooltip`中的`content`属性。
 ```html
 <el-tooltip placement="top">
-  <div slot="content">多行信息<br/>第二行信息</div>
-  <el-button>Top center</el-button>
+  <template v-slot:content>多行信息<br/>第二行信息</template>
+  <el-button class="test" @click="console.log(111)">Top center</el-button>
+  
+  <div class="zmm">张明明</div>
 </el-tooltip>
 ```
 :::

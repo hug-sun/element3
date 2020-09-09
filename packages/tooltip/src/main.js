@@ -244,9 +244,9 @@ export default {
       let element = null
       for (let index = 0; index < slots.length; index++) {
         console.log(slots[index], 'slots[index]');
-        // if (slots[index] && slots[index].tag) {
+        if (slots[index] && slots[index].type) {
           element = slots[index]
-        // }
+        }
       }
       return element
     }
