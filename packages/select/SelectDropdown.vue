@@ -15,9 +15,11 @@ import {
   onMounted,
   inject,
   ref,
+  toRefs,
   getCurrentInstance,
   computed,
-  watch
+  watch,
+  reactive
 } from 'vue'
 
 export default {
@@ -53,55 +55,63 @@ export default {
     }
   },
 
-  setup(props, { slots, emit }) {
-    const { on } = useEmitter()
-    const { ctx } = getCurrentInstance()
+  setup(props, ctx) {
     const elSelect = inject('select')
+    const { referenceElm, popperElm } = usePopperElm(elSelect)
+    const popper = usePopper(referenceElm, props, ctx)
 
-    const referenceElm = ref(null)
-    const popperElm = ref(null)
-
-    const popper = usePopper(props, {
-      slots,
-      emit,
-      referenceElm
-    })
-
-    onMounted(() => {
-      referenceElm.value = elSelect.$refs.reference.$el
-      elSelect.popperElm = popperElm.value = ctx.$el
-      on('updatePopper', () => {
-        console.log('updatePopper')
-
-        if (elSelect.visible) popper.updatePopper()
-      })
-      on('destroyPopper', () => {
-        console.log('destroyPopper')
-
-        popper.destroyPopper()
-      })
-    })
-
-    const minWidth = ref('')
-
-    watch(
-      () => elSelect.inputWidth,
-      () => {
-        minWidth.value = elSelect.$el.getBoundingClientRect().width + 'px'
-      }
-    )
+    usePopperUpdate(() => {
+      if (elSelect.visible) popper.updatePopper()
+    }, popper.destroyPopper)
 
     const popperClass = computed(() => {
       return elSelect.popperClass
     })
 
+    const minWidth = useMinWidth(elSelect)
+
     return {
       elSelect,
       referenceElm,
+      popperElm,
       minWidth,
       popperClass,
       ...popper
     }
   }
+}
+
+function usePopperElm(elSelect) {
+  const { ctx } = getCurrentInstance()
+  const elms = reactive({
+    referenceElm: null,
+    popperElm: null
+  })
+  onMounted(() => {
+    elms.referenceElm = elSelect.$refs.reference.$el
+    elSelect.popperElm = elms.popperElm = ctx.$el
+  })
+  return { ...toRefs(elms) }
+}
+
+function usePopperUpdate(updateFn, destroyFn) {
+  const { on } = useEmitter()
+
+  onMounted(() => {
+    on('updatePopper', updateFn)
+    on('destroyPopper', destroyFn)
+  })
+}
+
+function useMinWidth(elSelect) {
+  const minWidth = ref('')
+
+  watch(
+    () => elSelect.inputWidth,
+    () => {
+      minWidth.value = elSelect.$el.getBoundingClientRect().width + 'px'
+    }
+  )
+  return minWidth
 }
 </script>
