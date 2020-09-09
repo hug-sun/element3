@@ -29,8 +29,8 @@
           :type="type"
           :panes="panes"
           :stretch="stretch"
-          :onTabRemove="handleTabRemove"
-          :onTabClick="handleTabClick"
+          @TabRemove="handleTabRemove"
+          @TabClick="handleTabClick"
         ></tab-nav>
       </div>
 
@@ -62,8 +62,8 @@
           :type="type"
           :panes="panes"
           :stretch="stretch"
-          :onTabRemove="handleTabRemove"
-          :onTabClick="handleTabClick"
+          @TabRemove="handleTabRemove"
+          @TabClick="handleTabClick"
         ></tab-nav>
       </div>
     </template>
@@ -79,9 +79,11 @@ import {
   getCurrentInstance,
   nextTick,
   onMounted,
+  reactive,
   onUpdated
 } from 'vue'
 import * as Vue from 'vue'
+
 import { useEmitter } from 'element-ui/src/use/emitter'
 
 export default {
@@ -111,12 +113,16 @@ export default {
   setup(props, { attrs, emit, slots }){
     const { closable, addable, editable, tabPosition, stretch } = toRefs(props)
     const currentName = ref(props.value || props.modelValue)
-    const panes = ref([])
+    
+    const {panes}=usePanes()
+    
     const instance = getCurrentInstance()
     const { on } = useEmitter()
-  
+    const nav=ref(null);
     provide('rootTabs', instance);
-    
+
+ 
+   
     watch(props.modelValue, (modelValue, prevModelValue) => {
       setCurrentName(value)
     })
@@ -125,7 +131,8 @@ export default {
     })
 
     watch(currentName, (currentName, prevCurrentName) => {
-      console.log(ctx.refs.nav)
+      console.log(instance.refs.nav)
+      console.log(nav);
       if (instance.refs.nav) {
         nextTick(() => {
           instance.refs.nav.$nextTick((_) => {
@@ -134,42 +141,31 @@ export default {
         })
       }
     })
-
+    
     // methods
     const calcPaneInstances=(isForceUpdate = false) =>{
        const slotsDefault = slots.default()
-       console.log(slotsDefault);
-      if (slotsDefault) {
-         const paneSlots = slotsDefault.filter(
-          vnode => vnode.type.componentName === 'ElTabPane'
-        )
-     
-        // update indeed
-        const panes = paneSlots.map(
-          (item) => getCurrentInstance(item)
-        )
-        console.log(panes);
-        panes.value = paneSlots;
-        // const panesChanged = !(
-        //   panes.length === this.panes.length &&
-        //   panes.every((pane, index) => pane === this.panes[index])
-        // )
-        // if (isForceUpdate || panesChanged) {
-        //   this.panes = panes
-        // }
-      } else if (this.panes.length !== 0) {
-        panes.value = []
+      if (slotsDefault.length) {
+        
+        // panes=usePanes
+          
+      } else if (panes.length !== 0) {
+        panes= []
       }
     }
 
-    const handleTabClick = (tab, tabName, event) => {
-      if (tab.disabled) return
+    const handleTabClick = (data) => {
+      console.log(data);
+      let {pane, tabName, ev}=data;
+      if (pane.disabled) return
       setCurrentName(tabName)
-      emit('tab-click', tab, event)
+      emit('tab-click', pane, ev)
     }
 
-    const handleTabRemove = (pane, ev) => {
+    const handleTabRemove = (data) => {
+      let {pane, ev}=data;
       if (pane.disabled) return
+      consoe.log(pane);
       ev.stopPropagation()
       emit('edit', pane.name, 'remove')
       emit('tab-remove', pane.name)
@@ -184,6 +180,7 @@ export default {
         const changeCurrentName = () => {
           currentName.value = value
           emit('input', value)
+          emit('update:modelValue', value)
         }
 
         const beforeLeave = props.beforeLeave
@@ -218,7 +215,7 @@ export default {
     onMounted(() => {
 
       if (!currentName.value) {
-        getMatchedCSSRules('0')
+        setCurrentName('0')
       }
 
       on('tab-nav-update', calcPaneInstances.bind(null, true))
@@ -236,12 +233,34 @@ export default {
       handleTabRemove,
       editable,
       panes,
+      nav,
       stretch
     }
 
 
 
 
-  },
+  }
 }
+
+const usePanes = () => {
+  const panes = reactive([])
+  const { on } = useEmitter()
+
+  on('el.tabs.addField', (pane) => {
+    if (pane) {
+      panes.push(pane)
+    }
+  })
+
+  on('el.tabs.removeField', (pane) => {
+
+   panes.splice(panes.indexOf(pane), 1)
+
+  })
+
+
+  return {panes}
+}
+
 </script>

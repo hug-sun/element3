@@ -9,6 +9,7 @@
     :aria-labelledby="`tab-${paneName}`"
   >
     <slot></slot>
+    <slot name='label'></slot>
   </div>
 </template>
 <script>
@@ -20,9 +21,10 @@ import {
   getCurrentInstance,
   unref,
   onUpdated,
-  onMounted
+  onMounted,
+  onBeforeUnmount
 } from 'vue'
-
+import { useEmitter } from 'element-ui/src/use/emitter'
 export default {
   name: 'ElTabPane',
 
@@ -49,6 +51,8 @@ export default {
         parent.emit('tab-nav-update');
      })
 
+    useDispatchFiled(props)
+
     const isClosable=computed(()=>{
        
        return closable.value || parent.type.props.closable()
@@ -56,7 +60,9 @@ export default {
     
     const active=computed(()=>{
       console.log(parent)
-      const active = parent.props.modelValue === (name.value || index.value)
+      console.log(parent.props.modelValue);
+      const active = parent.props.modelValue === (props.name  ||props.label|| index.value)
+
       if (active) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         loaded.value = true
@@ -65,7 +71,7 @@ export default {
     });
 
     const  paneName =computed(()=>{
-      return name.value || index.value
+      return props.name || index.value
     });
 
      return {
@@ -76,7 +82,6 @@ export default {
        loaded,
        label, 
        labelContent, 
-       name, 
        closable,
        disabled,
        lazy
@@ -86,4 +91,18 @@ export default {
   }
   
 }
+
+ function useDispatchFiled(props) {
+  const { dispatch } = useEmitter()
+  const { ctx } = getCurrentInstance()
+
+  onMounted(() => {
+   dispatch('ElTabs', 'el.tabs.addField', ctx)
+  })
+
+  onBeforeUnmount(() => {
+    dispatch('ElTabs', 'el.tabs.removeField', ctx)
+  })
+}
+
 </script>

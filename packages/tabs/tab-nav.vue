@@ -53,20 +53,13 @@ export default {
       },
     currentName: String,
     editable: Boolean,
-    onTabClick: {
-      type: Function,
-      default: noop
-    },
-    onTabRemove: {
-      type: Function,
-      default: noop
-    },
+
     type: String,
     stretch: Boolean
   },
   setup(props,{ attrs, emit, slots }){
     console.log(props);
-     const {editable, onTabClick,onTabRemove,stretch } = toRefs(props)
+    const {editable,stretch } = toRefs(props)
     const { refs }=getCurrentInstance();
     const $refs=refs;
      const state=reactive({
@@ -200,6 +193,7 @@ export default {
     }
 
   const  changeTab=(e)=>{
+    console.log(e);
       const keyCode = e.keyCode
       let nextIndex
       let currentIndex, tabList
@@ -291,7 +285,18 @@ export default {
         window.removeEventListener('focus', windowFocusHandler)
     });
 
+    const onTabClick=(pane, tabName, ev)=>{
+      let data={pane, tabName, ev}
+      
+      emit('TabClick',data);
+    }
+    const onTabRemove=(pane, ev)=>{
+       let data={pane, ev}
+    
+      emit('TabRemove',data);
+    }
 
+    
 
     return () =>{
       const tabPosition=getTabPosition();
@@ -312,12 +317,14 @@ export default {
         ]
       : null
       let panes=props.panes;
+      console.log(panes);
       let type=props.type;
+      console.log(type);
     const tabs=panes.map((pane, index)=>{
-           console.log(pane);
-          let tabName = pane.props.name || pane.index || index;
+           
+          let tabName = pane.name || pane.index || index;
           // 获取实例的isClosable;
-        const closable = pane.isClosable || editable.value;
+        const closable = pane.closable || editable.value;
 
         pane.index = `${index}`;
 
@@ -325,7 +332,7 @@ export default {
           ? <span class="el-icon-close" on-click={(ev) => { onTabRemove(pane, ev); }}></span>
           : null;
 
-        const tabLabelContent = pane.slots.label() || pane.props.label;
+        const tabLabelContent = pane.labelContent || pane.label;
         const tabindex = pane.active ? 0 : -1;
        
         return (
@@ -348,7 +355,7 @@ export default {
             refInFor
             on-focus={ ()=> { setFocus(); }}
             on-blur ={ ()=> { removeFocus(); }}
-            on-click={(ev) => { removeFocus(); onTabClick(pane, tabName, ev); }}
+            onClick={(ev) => { removeFocus(); onTabClick(pane, tabName, ev); }}
             on-keydown={(ev) => { if (closable && (ev.keyCode === 46 || ev.keyCode === 8)) { onTabRemove(pane, ev);} }}
           >
             {tabLabelContent}
