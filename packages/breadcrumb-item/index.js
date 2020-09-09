@@ -1,4 +1,4 @@
-import ElBreadcrumbItem from '../breadcrumb/BreadcrumbItem'
+import ElBreadcrumbItem from '../breadcrumb/BreadcrumbItem.vue'
 
 /* istanbul ignore next */
 ElBreadcrumbItem.install = function (app) {
