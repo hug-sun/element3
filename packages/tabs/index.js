@@ -1,4 +1,4 @@
-import ElTabs from './src/tabs'
+import ElTabs from './tabs'
 
 /* istanbul ignore next */
 ElTabs.install = function (app) {

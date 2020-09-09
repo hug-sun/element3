@@ -124,6 +124,8 @@ ComponentNames.forEach((name) => {
       'input-number',
       'step',
       'steps',
+      'tabs',
+      'tab-pane',
       'popconfirm',
       'drawer',
       'transfer'

@@ -1,30 +1,22 @@
 <template>
-  <el-transfer v-model="value" :data="data"></el-transfer>
+  <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+    <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
+    <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+    <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+    <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+  </el-tabs>
 </template>
-
 <script>
-import { reactive, toRefs } from 'vue'
-
-export default {
-  setup() {
-    const state = reactive({
-      data: generateData(),
-      value: [1, 4]
-    })
-
-    return toRefs(state)
-  }
-}
-
-const generateData = _ => {
-  const data = []
-  for (let i = 1; i <= 15; i++) {
-    data.push({
-      key: i,
-      label: `备选项 ${ i }`,
-      disabled: i % 4 === 0
-    })
-  }
-  return data
-}
+  export default {
+    data() {
+      return {
+        activeName: 'first'
+      };
+    },
+    methods: {
+      handleClick(tab, event) {
+        console.log(tab, event);
+      }
+    }
+  };
 </script>

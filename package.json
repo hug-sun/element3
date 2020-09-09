@@ -167,7 +167,7 @@
     "minimist": "^1.2.5",
     "mitt": "^2.1.0",
     "mocha": "^6.0.2",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.14.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss": "^7.0.14",
     "prettier": "^2.0.5",

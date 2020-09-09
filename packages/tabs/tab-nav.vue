@@ -95,7 +95,7 @@ export default {
  const scrollPrev=()=> {
       
       const containerSize = $refs.navScroll[
-        `offset${firstUpperCase(this.sizeName)}`
+        `offset${firstUpperCase(sizeName.value)}`
       ]
       const currentOffset = state.navOffset
 
@@ -112,9 +112,9 @@ export default {
  
       
 
-      const navSize = refs.nav[`offset${firstUpperCase(sizeName)}`]
+      const navSize = refs.nav[`offset${firstUpperCase(sizeName.value)}`]
       const containerSize =refs.navScroll[
-        `offset${firstUpperCase(sizeName)}`
+        `offset${firstUpperCase(sizeName.value)}`
       ]
       const currentOffset = state.navOffset
 
@@ -130,11 +130,11 @@ export default {
 
   const scrollToActiveTab=()=> {
      
-    
+      const instance =getCurrentInstance();
       if (!state.scrollable) return
       
       const nav = refs.nav
-      const activeTab = ctx.$el.querySelector('.is-active')
+      const activeTab = instance.$el.querySelector('.is-active')
       if (!activeTab) return
       const navScroll = refs.navScroll
       const isHorizontal =
@@ -177,9 +177,9 @@ export default {
     
       if (!refs.nav) return
   
-      const navSize = refs.nav[`offset${firstUpperCase(sizeName)}`]
+      const navSize = refs.nav[`offset${firstUpperCase(sizeName.value)}`]
       const containerSize =refs.navScroll[
-        `offset${firstUpperCase(sizeName)}`
+        `offset${firstUpperCase(sizeName.value)}`
       ]
       const currentOffset = state.navOffset
 
@@ -293,9 +293,8 @@ export default {
 
 
 
-       return () =>{
-           const tabPosition=getTabPosition();
-        console.log( tabPosition);
+    return () =>{
+      const tabPosition=getTabPosition();
       const scrollBtn = state.scrollable
       ? [
           <span
@@ -312,7 +311,6 @@ export default {
           </span>
         ]
       : null
-      console.log(props.panes);
       let panes=props.panes;
       let type=props.type;
     const tabs=panes.map((pane, index)=>{
@@ -327,7 +325,7 @@ export default {
           ? <span class="el-icon-close" on-click={(ev) => { onTabRemove(pane, ev); }}></span>
           : null;
 
-        const tabLabelContent = pane.children.default() || pane.props.label;
+        const tabLabelContent = pane.slots.label() || pane.props.label;
         const tabindex = pane.active ? 0 : -1;
        
         return (

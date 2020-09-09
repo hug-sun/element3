@@ -69,7 +69,6 @@
     </template>
   </div>
 </template>
-
 <script>
 import TabNav from './tab-nav'
 import {
@@ -86,6 +85,7 @@ import * as Vue from 'vue'
 import { useEmitter } from 'element-ui/src/use/emitter'
 
 export default {
+
   name: 'ElTabs',
 
   components: {
@@ -108,35 +108,115 @@ export default {
   },
   emits: ['tab-click','update:modelValue', 'edit', 'tab-remove', 'tab-add', 'input'],
 
-  setup(props, { attrs, emit, slots }) {
-   console.log(Vue)
+  setup(props, { attrs, emit, slots }){
     const { closable, addable, editable, tabPosition, stretch } = toRefs(props)
     const currentName = ref(props.value || props.modelValue)
     const panes = ref([])
-    const ctx = getCurrentInstance()
+    const instance = getCurrentInstance()
     const { on } = useEmitter()
   
-    provide('rootTabs', ctx)
-
+    provide('rootTabs', instance);
+    
     watch(props.modelValue, (modelValue, prevModelValue) => {
       setCurrentName(value)
     })
     watch(props.value, (value, prevValue) => {
       setCurrentName(value)
     })
+
     watch(currentName, (currentName, prevCurrentName) => {
       console.log(ctx.refs.nav)
-      if (ctx.refs.nav) {
+      if (instance.refs.nav) {
         nextTick(() => {
-          ctx.refs.nav.$nextTick(_ => {
-            // console.log(ctx.refs.nav.scrollToActiveTab);
-            // ctx.refs.nav.scrollToActiveTab()
+          instance.refs.nav.$nextTick((_) => {
+            instance.refs.nav.scrollToActiveTab()
           })
         })
       }
     })
 
+    // methods
+    const calcPaneInstances=(isForceUpdate = false) =>{
+       const slotsDefault = slots.default()
+       console.log(slotsDefault);
+      if (slotsDefault) {
+         const paneSlots = slotsDefault.filter(
+          vnode => vnode.type.componentName === 'ElTabPane'
+        )
+     
+        // update indeed
+        const panes = paneSlots.map(
+          (item) => getCurrentInstance(item)
+        )
+        console.log(panes);
+        panes.value = paneSlots;
+        // const panesChanged = !(
+        //   panes.length === this.panes.length &&
+        //   panes.every((pane, index) => pane === this.panes[index])
+        // )
+        // if (isForceUpdate || panesChanged) {
+        //   this.panes = panes
+        // }
+      } else if (this.panes.length !== 0) {
+        panes.value = []
+      }
+    }
+
+    const handleTabClick = (tab, tabName, event) => {
+      if (tab.disabled) return
+      setCurrentName(tabName)
+      emit('tab-click', tab, event)
+    }
+
+    const handleTabRemove = (pane, ev) => {
+      if (pane.disabled) return
+      ev.stopPropagation()
+      emit('edit', pane.name, 'remove')
+      emit('tab-remove', pane.name)
+    }
+
+    const handleTabAdd = () => {
+      emit('edit', null, 'add')
+      emit('tab-add')
+    }
+
+    const setCurrentName = value => {
+        const changeCurrentName = () => {
+          currentName.value = value
+          emit('input', value)
+        }
+
+        const beforeLeave = props.beforeLeave
+        if (currentName.value !== value && beforeLeave) {
+          const before = beforeLeave(value, currentName.value)
+          if (before && before.then) {
+            before.then(
+              () => {
+                changeCurrentName()
+                ctx.refs.nav && ctx.refs.nav.removeFocus()
+              },
+              () => {
+                // https://github.com/ElemeFE/element/pull/14816
+                // ignore promise rejection in `before-leave` hook
+              }
+            )
+          } else if (before !== false) {
+            changeCurrentName()
+          }
+        } else {
+          changeCurrentName()
+        }
+    }
+
+   const handleKeyDown = ev => {
+      if (ev.keyCode === 13) {
+        handleTabAdd()
+      }
+    }
+
+   
     onMounted(() => {
+
       if (!currentName.value) {
         getMatchedCSSRules('0')
       }
@@ -149,82 +229,6 @@ export default {
     onUpdated(() => {
       calcPaneInstances()
     })
-    const handleTabClick = (tab, tabName, event) => {
-      if (tab.disabled) return
-      setCurrentName(tabName)
-      emit('tab-click', tab, event)
-    }
-
-    const calcPaneInstances = (isForceUpdate = false) => {
-
-      const slotsDefault = slots.default()
-      if (slotsDefault) {
-        const paneSlots = slotsDefault.filter(
-          vnode => vnode.type.componentName === 'ElTabPane'
-        )
-        console.log(paneSlots)
-        // update indeed
-        // const panes = paneSlots.map(
-        //   ({ component }) => component
-        // )
-      
-        panes.value = paneSlots
-        console.log(panes.value)
-        // const panesChanged = !(
-        //   panes.length === panes.length &&
-        //   panes.every((pane, index) => pane === panes[index])
-        // )
-        // console.log(panesChanged);
-        // if (isForceUpdate || panesChanged) {
-        //   panes.value = panes
-        // }
-      } else if (panes.value.length !== 0) {
-        panes.value = []
-      }
-    }
-
-    const handleKeyDown = ev => {
-      if (ev.keyCode === 13) {
-        handleTabAdd()
-      }
-    }
-    const handleTabRemove = (pane, ev) => {
-      if (pane.disabled) return
-      ev.stopPropagation()
-      emit('edit', pane.name, 'remove')
-      emit('tab-remove', pane.name)
-    }
-    const handleTabAdd = () => {
-      emit('edit', null, 'add')
-      emit('tab-add')
-    }
-    const setCurrentName = value => {
-      const changeCurrentName = () => {
-        currentName.value = value
-        emit('input', value)
-      }
-
-      const beforeLeave = props.beforeLeave
-      if (currentName.value !== value && beforeLeave) {
-        const before = beforeLeave(value, currentName.value)
-        if (before && before.then) {
-          before.then(
-            () => {
-              changeCurrentName()
-              ctx.refs.nav && ctx.refs.nav.removeFocus()
-            },
-            () => {
-              // https://github.com/ElemeFE/element/pull/14816
-              // ignore promise rejection in `before-leave` hook
-            }
-          )
-        } else if (before !== false) {
-          changeCurrentName()
-        }
-      } else {
-        changeCurrentName()
-      }
-    }
 
     return {
       currentName,
@@ -235,6 +239,9 @@ export default {
       stretch
     }
 
-  }
+
+
+
+  },
 }
 </script>
