@@ -4,9 +4,19 @@ import ElSwitch from '../packages/switch'
 import ElProgress from '../packages/progress'
 import ElLink from '../packages/link'
 import ElIcon from '../packages/icon'
+import ElBreadcrumb from '../packages/breadcrumb'
+import ElBreadcrumbItem from '../packages/breadcrumb-item'
 import { version } from '../package.json'
 
-const components = [ElButton, ElSwitch, ElProgress, ElLink, ElIcon]
+const components = [
+  ElButton,
+  ElSwitch,
+  ElProgress,
+  ElLink,
+  ElIcon,
+  ElBreadcrumb,
+  ElBreadcrumbItem
+]
 
 const install = (app) => {
   components.forEach((component) => {
@@ -19,6 +29,14 @@ const elementUI = {
   install
 }
 
-export { ElButton, ElSwitch, ElProgress, ElLink, ElIcon }
+export {
+  ElButton,
+  ElSwitch,
+  ElProgress,
+  ElLink,
+  ElIcon,
+  ElBreadcrumb,
+  ElBreadcrumbItem
+}
 
 export default elementUI

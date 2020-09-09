@@ -44,6 +44,8 @@ Vue.use(ElButton)
 - ElProgress
 - ElLink
 - ElIcon
+- ElBreadcrumb
+- ElBreadcrumbItem
 
 ## Join Discussion Group
 
