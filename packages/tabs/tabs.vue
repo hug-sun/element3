@@ -27,7 +27,7 @@
           :currentName="currentName"
           :editable="editable"
           :type="type"
-          :panes="panes"
+          :panes="panesArr"
           :stretch="stretch"
           @TabRemove="handleTabRemove"
           @TabClick="handleTabClick"
@@ -60,7 +60,7 @@
           :currentName="currentName"
           :editable="editable"
           :type="type"
-          :panes="panes"
+          :panes="panesArr"
           :stretch="stretch"
           @TabRemove="handleTabRemove"
           @TabClick="handleTabClick"
@@ -82,7 +82,6 @@ import {
   reactive,
   onUpdated
 } from 'vue'
-import * as Vue from 'vue'
 
 import { useEmitter } from 'element-ui/src/use/emitter'
 
@@ -111,11 +110,11 @@ export default {
   emits: ['tab-click','update:modelValue', 'edit', 'tab-remove', 'tab-add', 'input'],
 
   setup(props, { attrs, emit, slots }){
-    const { closable, addable, editable, tabPosition, stretch } = toRefs(props)
+    const {  editable, stretch } = toRefs(props)
     const currentName = ref(props.value || props.modelValue)
     
-    const {panes}=usePanes()
-    
+    const {panes} = usePanes();
+    const panesArr=panes;
     const instance = getCurrentInstance()
     const { on } = useEmitter()
     const nav=ref(null);
@@ -124,10 +123,12 @@ export default {
  
    
     watch(props.modelValue, (modelValue, prevModelValue) => {
-      setCurrentName(value)
+      setCurrentName(modelValue)
     })
     watch(props.value, (value, prevValue) => {
+
       setCurrentName(value)
+
     })
 
     watch(currentName, (currentName, prevCurrentName) => {
@@ -146,11 +147,10 @@ export default {
     const calcPaneInstances=(isForceUpdate = false) =>{
        const slotsDefault = slots.default()
       if (slotsDefault.length) {
-        
-        // panes=usePanes
-          
-      } else if (panes.length !== 0) {
-        panes= []
+       //   
+      
+      } else if (panesArr.value.length !== 0) {
+        panesArr.value= []
       }
     }
 
@@ -233,6 +233,7 @@ export default {
       handleTabRemove,
       editable,
       panes,
+      panesArr,
       nav,
       stretch
     }
@@ -244,18 +245,18 @@ export default {
 }
 
 const usePanes = () => {
-  const panes = reactive([])
+  const panes = ref([])
   const { on } = useEmitter()
 
   on('el.tabs.addField', (pane) => {
     if (pane) {
-      panes.push(pane)
+      panes.value.push(pane)
     }
   })
 
   on('el.tabs.removeField', (pane) => {
 
-   panes.splice(panes.indexOf(pane), 1)
+   panes.value.splice(panes.value.indexOf(pane), 1)
 
   })
 

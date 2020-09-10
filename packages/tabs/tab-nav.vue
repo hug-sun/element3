@@ -5,9 +5,8 @@ import {
   addResizeListener,
   removeResizeListener
 } from 'element-ui/src/utils/resize-event'
-import { h,reactive, toRefs,inject,onUpdated,onMounted,onBeforeUnmount,unref, computed,getCurrentInstance } from 'vue'
+import { reactive, toRefs,inject,onUpdated,onMounted,onBeforeUnmount, computed,getCurrentInstance } from 'vue'
 
-function noop() {}
 const firstUpperCase = (str) => {
   return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
 }
@@ -317,9 +316,7 @@ export default {
         ]
       : null
       let panes=props.panes;
-      console.log(panes);
       let type=props.type;
-      console.log(type);
     const tabs=panes.map((pane, index)=>{
            
           let tabName = pane.name || pane.index || index;

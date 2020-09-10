@@ -19,7 +19,6 @@ import {
   computed,
   toRefs,
   getCurrentInstance,
-  unref,
   onUpdated,
   onMounted,
   onBeforeUnmount
@@ -42,7 +41,7 @@ export default {
 
   setup(props,ctx){
    
-    const { label, labelContent, name, closable,disabled,lazy } = toRefs(props)
+    const { label, labelContent, closable,disabled,lazy } = toRefs(props)
     const index = ref(null)
     const loaded = ref(false)
     let {parent}=getCurrentInstance();
