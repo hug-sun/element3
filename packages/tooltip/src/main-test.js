@@ -92,6 +92,7 @@ export default {
         const debounceClose = debounce(200, () => handleClosePopper())
 
         const show = () => {
+            debugger
             setExpectedState(true)
             handleShowPopper()
         }
@@ -176,41 +177,56 @@ export default {
         })
 
         watchEffect(() => {
-            debugger
+            // debugger
             const popperVM = createApp({
                 setup() {
-                    debugger
-                    return () => (<Transition name={transition} onAfterLeave={doDestroy}>
-                        <div
-                                onMouseleave={() => {
-                                    setExpectedState(false)
-                                    debounceClose()
-                                }}
-                                onMouseenter={() => {
-                                    setExpectedState(true)
-                                }}
-                                ref="popper"
-                                role="tooltip"
-                                id={tooltipId}
-                                aria-hidden={disabled || !showPopper.value ? 'true' : 'false'}
-                                v-show={!disabled && showPopper.value}
-                                class={[
-                                    'el-tooltip__popper',
-                                    'is-' + effect,
-                                    popperClass
-                                ]}
-                            >
-                                {slots.content ? slots.content() : content}
-                            </div>
-                    </Transition>)
-                }
-            }).mount()
+                    console.log('setup')
+                    const popperInstance = getCurrentInstance()
 
-            debugger
+                    onMounted(() => {
+                        console.log('popperVM-onMounted')
+                        popperElm.value = popperInstance.ctx.$refs.popper
+                    })
+
+                    return () => {
+                        return (<Transition name={transition} onAfterLeave={doDestroy}>
+                            <div
+                                    onMouseleave={() => {
+                                        setExpectedState(false)
+                                        debounceClose()
+                                    }}
+                                    onMouseenter={() => {
+                                        setExpectedState(true)
+                                    }}
+                                    ref="popper"
+                                    role="tooltip"
+                                    id={tooltipId}
+                                    aria-hidden={disabled || !showPopper.value ? 'true' : 'false'}
+                                    v-show={!disabled && showPopper.value}
+                                    class={[
+                                        'el-tooltip__popper',
+                                        'is-' + effect,
+                                        popperClass
+                                    ]}
+                                >
+                                    {slots.content ? slots.content() : content}
+                                </div>
+                        </Transition>)
+                    }
+                }
+            })
+            if (!disabled && showPopper.value) {
+                const divDom = document.createElement('div');
+                popperVM.mount(divDom);
+            }
+            // document.body.appendChild(divDom);
+            console.log(popperVM, 'popperVM')
+            // debugger
 
         })
 
         onMounted(() => {
+            debugger
             referenceElm.value = instance.ctx.$el
             if (referenceElm.value.nodeType === 1) {
                 referenceElm.value.setAttribute('aria-describedby', tooltipId)
