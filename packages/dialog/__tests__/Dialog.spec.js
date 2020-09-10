@@ -8,6 +8,7 @@ describe('Dialog', () => {
         visible: true
       }
     })
+
     expect(dialog.props().title).toBe('dialog test')
     expect(dialog.find('.el-dialog__title').text()).toBe('dialog test')
   })
@@ -24,13 +25,13 @@ describe('Dialog', () => {
   it('showClose', () => {
     const wrapperTrue = mount(Dialog, {
       props: {
-        default: true
+        showClose: false
       }
     })
-    expect(wrapperTrue.find('.el-dialog__headerbtn').attributes('style')).toBe(
-      undefined
-    )
+
+    expect(wrapperTrue.find('.el-dialog__headerbtn').exists()).toBe(false)
   })
+
   test('Dialog render', async () => {
     const dialog = mount(Dialog, {
       slots: {
