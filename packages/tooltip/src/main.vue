@@ -104,14 +104,14 @@ export default {
     } = props
     const { slots } = context
 
-    if (Array.isArray(slots.default())) {
-      slots.default().forEach((slot) => {
-        console.log( h(slot) )
-      })
-    }
-    if (slots.content) {
-      console.log(slots.content(), 'slots.content')
-    }
+    // if (Array.isArray(slots.default())) {
+    //   slots.default().forEach((slot) => {
+    //     console.log( h(slot) )
+    //   })
+    // }
+    // if (slots.content) {
+    //   console.log(slots.content(), 'slots.content')
+    // }
     const {
       showPopper,
       currentPlacement,

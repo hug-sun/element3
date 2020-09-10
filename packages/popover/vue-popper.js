@@ -131,6 +131,7 @@ function useVuePopper(props, { emit, slots, referenceEl }) {
   }
 
   function updatePopper() {
+    debugger
     const popperJSRef = popperJS.value
     if (popperJSRef) {
       popperJSRef.update()
