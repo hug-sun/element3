@@ -48,7 +48,6 @@ export default {
   props: {
     panes:{
         type: Array,
-        default: []
       },
     currentName: String,
     editable: Boolean,
