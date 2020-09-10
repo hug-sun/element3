@@ -79,7 +79,6 @@ import {
   getCurrentInstance,
   nextTick,
   onMounted,
-  reactive,
   onUpdated
 } from 'vue'
 
@@ -165,7 +164,6 @@ export default {
     const handleTabRemove = (data) => {
       let {pane, ev}=data;
       if (pane.disabled) return
-      consoe.log(pane);
       ev.stopPropagation()
       emit('edit', pane.name, 'remove')
       emit('tab-remove', pane.name)
@@ -190,7 +188,7 @@ export default {
             before.then(
               () => {
                 changeCurrentName()
-                ctx.refs.nav && ctx.refs.nav.removeFocus()
+                instance.refs.nav && instance.refs.nav.removeFocus()
               },
               () => {
                 // https://github.com/ElemeFE/element/pull/14816
@@ -235,6 +233,7 @@ export default {
       panes,
       panesArr,
       nav,
+      handleKeyDown,
       stretch
     }
 
