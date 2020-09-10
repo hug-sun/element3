@@ -52,7 +52,6 @@ export default {
       },
     currentName: String,
     editable: Boolean,
-
     type: String,
     stretch: Boolean
   },
@@ -317,7 +316,7 @@ export default {
       : null
       let panes=props.panes;
       let type=props.type;
-    const tabs=panes.map((pane, index)=>{
+       const tabs=panes.map((pane, index)=>{
            
           let tabName = pane.name || pane.index || index;
           // 获取实例的isClosable;
