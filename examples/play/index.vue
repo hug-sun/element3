@@ -1,126 +1,153 @@
 <template>
-  <el-checkbox-group
-    v-model="checkList"
-    @change="onChange"
-  >
-    <el-checkbox
-      v-for="(item, index) in ['A','B','C']" :key="index"
-      :label="item"
-      :checked="true"
-    ></el-checkbox>
-  </el-checkbox-group>
-  <el-checkbox-group v-model="checkList" @change="onChange">
-    <el-checkbox label="A" :checked="true"></el-checkbox>
-    <el-checkbox label="B" :checked="true"></el-checkbox>
-    <el-checkbox label="C"></el-checkbox>
-  </el-checkbox-group>
-  <view>
-    <el-checkbox
-      v-model="checked1"
-      label="1"
-      checked
-    >备选项1</el-checkbox>
-    <el-checkbox
-      v-model="checked1"
-      label="2"
-    >备选项2</el-checkbox>
-  </view>
-  <br>
-  <view>
-    <el-checkbox v-model="checked2" @change="onChange">备选项1</el-checkbox>
-  </view>
-  <br>
-  <view>
-    <el-checkbox-group
-      v-model="checked3"
-      :min="1"
-      :max="2"
-      text-color="red"
-      fill="blue"
-    >
-      <el-checkbox-button label="A"></el-checkbox-button>
-      <el-checkbox-button label="B"></el-checkbox-button>
-      <el-checkbox-button label="C"></el-checkbox-button>
-    </el-checkbox-group>
-  </view>
-  <br>
-  <view>
-    <el-checkbox
-      :indeterminate="isIndeterminate"
-      v-model="checkAll"
-      @change="handleCheckAllChange"
-    >全选</el-checkbox>
-    <div style="margin: 15px 0;"></div>
-    <el-checkbox-group
-      v-model="checkedCities"
-      @change="handleCheckedCitiesChange"
-    >
-      <el-checkbox
-        v-for="city in cities"
-        :label="city"
-        :key="city"
-      >{{city}}</el-checkbox>
-    </el-checkbox-group>
-  </view>
+  <div class="custom-tree-container">
+
+    <div class="block">
+      <p>使用 scoped slot</p>
+      <el-tree
+        ref="elTree"
+        show-checkbox
+        draggable
+        :data="data"
+        :expandOnClickNode="false"
+        :render-content="renderContent"
+        :asyncLoadFn="load"
+      >
+        <template v-slot="{node, data}">
+          <span class="custom-tree-node">
+            <span>{{ node.label }}</span>
+            <span>
+              <el-button
+                type="text"
+                size="mini"
+                @click="() => append(node, data)"
+              >
+                Append
+              </el-button>
+              <el-button
+                type="text"
+                size="mini"
+                @click="() => remove(node, data)"
+              >
+                Delete
+              </el-button>
+            </span>
+          </span>
+        </template>
+      </el-tree>
+    </div>
+  </div>
 </template>
 
 <script>
-const cityOptions = ["上海", "北京", "广州", "深圳"];
-export default {
-  data() {
-    return {
-      checkList: [],
-      checked1: [],
-      checked2: true,
-      checked3: [],
-      disabled: true,
-      checkAll: false,
-      checkedCities: ["上海", "北京"],
-      cities: cityOptions,
-      isIndeterminate: true,
-    };
-  },
-  watch: {
-    checkList: {
-      handler: (v) => {
-        console.log("watch:checkList :>> ", v);
-      },
-      deep: true,
-    },
-    checked1: {
-      handler: (v) => {
-        console.log("watch:checked1 :>> ", v);
-      },
-      deep: true,
-    },
-    checked3: {
-      handler: (v) => {
-        console.log("watch:checked3 :>> ", v);
-      },
-      deep: true,
-    },
-    checked2: {
-      handler: (v) => {
-        console.log("watch:checked2 :>> ", v);
-      },
-    },
-  },
-  methods: {
-    onChange(v) {
-      console.log("change:", v);
-    },
-    handleCheckAllChange(val) {
-      this.checkedCities = val ? [...cityOptions] : [];
+import { h } from 'vue';
+let id = 1000;
 
-      this.isIndeterminate = false;
-      console.log("val :>> ", val, this.checkedCities);
+export default {
+  data () {
+    const data = [{
+      id: 1,
+      label: '一级 1',
+      children: [{
+        id: 4,
+        label: '二级 1-1',
+        children: [{
+          id: 9,
+          label: '三级 1-1-1'
+        }, {
+          id: 10,
+          label: '三级 1-1-2'
+        }]
+      }]
+    }, {
+      id: 2,
+      label: '一级 2',
+      children: [{
+        id: 5,
+        label: '二级 2-1'
+      }, {
+        id: 6,
+        label: '二级 2-2'
+      }]
+    }, {
+      id: 3,
+      label: '一级 3',
+      children: [{
+        id: 7,
+        label: '二级 3-1'
+      }, {
+        id: 8,
+        label: '二级 3-2',
+        isAsync: true
+      }]
+    }];
+    return {
+      data: JSON.parse(JSON.stringify(data))
+    }
+  },
+
+  watch: {
+    data: {
+      deep: true,
+      handler: function (val, oldVal) {
+        console.log('val :>> ', val);
+      }
     },
-    handleCheckedCitiesChange(value) {
-      let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
-      this.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.cities.length;
+  },
+
+  methods: {
+    append (node, data) {
+      const newChild = { id: id++, label: 'testtest', children: [] };
+      if (!data.children) {
+        data.children = [];
+      }
+      node.append(newChild);
+      // data.children.push(newChild)
     },
+
+    remove (node) {
+      node.remove()
+    },
+
+    renderContent ({ node, data }) {
+      return h('span', node.label)
+      // return (
+      //   <span class="custom-tree-node">
+      //     <span>{node.label}</span>
+      //     <span>
+      //       <el-button size="mini" type="text" on-click={() => this.append(data)}>Append</el-button>
+      //       <el-button size="mini" type="text" on-click={() => this.remove(node, data)}>Delete</el-button>
+      //     </span>
+      //   </span>);
+    },
+
+    load (node, resolve) {
+      setTimeout(() => {
+        resolve([{
+          id: 7,
+          label: '二级 3-1'
+        }])
+      }, 3000)
+    }
+  },
+  async mounted () {
+    this.$refs.elTree.append({
+      id: 7,
+      label: '二级 3-1'
+    })
   },
 };
 </script>
+
+<style>
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+html{
+  /* margin: 300px; */
+}
+</style>

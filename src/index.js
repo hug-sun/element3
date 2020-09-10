@@ -15,6 +15,7 @@ import Tooltip from '../packages/tooltip/index.js';
 import Breadcrumb from '../packages/breadcrumb/index.js';
 import BreadcrumbItem from '../packages/breadcrumb-item/index.js';
 import Tag from '../packages/tag/index.js';
+import Tree from '../packages/tree/index.js';
 import Alert from '../packages/alert/index.js';
 import Icon from '../packages/icon/index.js';
 import Row from '../packages/row/index.js';
@@ -53,6 +54,7 @@ const components = [
   Breadcrumb,
   BreadcrumbItem,
   Tag,
+  Tree,
   Alert,
   Icon,
   Row,
@@ -127,6 +129,7 @@ export default {
   Breadcrumb,
   BreadcrumbItem,
   Tag,
+  Tree,
   Alert,
   Icon,
   Row,

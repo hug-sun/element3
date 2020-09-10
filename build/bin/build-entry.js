@@ -106,7 +106,8 @@ ComponentNames.forEach((name) => {
       'dialog',
       'rate',
       'divider',
-      'progress'
+      'progress',
+      'tree'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
