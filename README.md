@@ -46,6 +46,7 @@ Vue.use(ElButton)
 - ElIcon
 - ElBreadcrumb
 - ElBreadcrumbItem
+- ElContainer
 
 ## Join Discussion Group
 
