@@ -12,7 +12,7 @@
 <div class="box">
   <div class="top">
     <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start">
-      <el-button class="zmm" @focus="focusHandler">上左</el-button>
+      <el-button>上左</el-button>
     </el-tooltip>
     <el-tooltip class="item" effect="dark" content="Top Center 提示文字" placement="top">
       <el-button>上边</el-button>
@@ -56,21 +56,6 @@
     </el-tooltip>
   </div>
 </div>
-<script>
-  export default {
-    data() {
-      return {
-
-      };
-    },
-    methods: {
-      focusHandler() {
-        console.log('focusHandler');
-      }
-    }
-  };
-</script>
-
 <style>
   .box {
     width: 400px;
@@ -131,9 +116,7 @@ Tooltip 组件提供了两个不同的主题：`dark`和`light`。
 ```html
 <el-tooltip placement="top">
   <template v-slot:content>多行信息<br/>第二行信息</template>
-  <el-button class="test" @click="console.log(111)">Top center</el-button>
-  
-  <div class="zmm">张明明</div>
+  <el-button>Top center</el-button>
 </el-tooltip>
 ```
 :::
