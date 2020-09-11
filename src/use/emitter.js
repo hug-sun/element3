@@ -1,6 +1,11 @@
 import { getCurrentInstance } from 'vue'
 import mitt from 'mitt'
 
+const DISPATCH = 'dispatch'
+const BROADCAST = 'broadcast'
+
+const wrapper = Symbol('wrapper')
+
 const emitter = mitt()
 
 export function useEmitter() {
@@ -9,11 +14,11 @@ export function useEmitter() {
   function on(type, handler) {
     const handleWrapper = (e) => {
       const { value, type, emitComponentInstance } = e
-      if (type === 'broadcast') {
+      if (type === BROADCAST) {
         if (isChildComponent(currentComponentInstance, emitComponentInstance)) {
           handler && handler(value)
         }
-      } else if (type === 'dispatch') {
+      } else if (type === DISPATCH) {
         if (isChildComponent(emitComponentInstance, currentComponentInstance)) {
           handler && handler(value)
         }
@@ -23,13 +28,13 @@ export function useEmitter() {
     }
 
     // Save the real handler because the need to call off
-    handler.wrapper = handleWrapper
+    handler[wrapper] = handleWrapper
     emitter.on(type, handleWrapper)
   }
 
   function broadcast(type, evt) {
     emitter.emit(type, {
-      type: 'broadcast',
+      type: BROADCAST,
       emitComponentInstance: currentComponentInstance,
       value: evt
     })
@@ -37,14 +42,14 @@ export function useEmitter() {
 
   function dispatch(type, evt) {
     emitter.emit(type, {
-      type: 'dispatch',
+      type: DISPATCH,
       emitComponentInstance: currentComponentInstance,
       value: evt
     })
   }
 
   function off(type, handler) {
-    emitter.off(type, handler.wrapper)
+    emitter.off(type, handler[wrapper])
   }
 
   function emit(type, evt) {
