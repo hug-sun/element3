@@ -94,7 +94,10 @@ export default {
 
   props: {
     type: String,
-    modelValue: String,
+    modelValue: {
+      type:String,
+      default:null
+    },
     closable: Boolean,
     addable: Boolean,
     value: {},
@@ -213,7 +216,7 @@ export default {
     onMounted(() => {
 
       if (!currentName.value) {
-        setCurrentName('0')
+        setCurrentName('2')
       }
 
       on('tab-nav-update', calcPaneInstances.bind(null, true))

@@ -8,8 +8,11 @@
     :id="`pane-${paneName}`"
     :aria-labelledby="`tab-${paneName}`"
   >
-    <slot></slot>
-    <slot name='label'></slot>
+    <slot>
+      
+    </slot> 
+    <!-- <slot name='label'></slot> -->
+    
   </div>
 </template>
 <script>
@@ -44,8 +47,9 @@ export default {
     const { label, labelContent, closable,disabled,lazy } = toRefs(props)
     const index = ref(null)
     const loaded = ref(false)
+  
     let {parent}=getCurrentInstance();
-   
+    console.log(getCurrentInstance());
       onUpdated(()=>{
         parent.emit('tab-nav-update');
      })
@@ -55,11 +59,13 @@ export default {
     const isClosable=computed(()=>{
        
        return closable.value || parent.type.props.closable()
+
     });
-    
+
     const active=computed(()=>{
+
       console.log(parent)
-      console.log(parent.props.modelValue);
+      console.log(parent.props.modelValue,index.value);
       const active = parent.props.modelValue === (props.name  ||props.label|| index.value)
 
       if (active) {

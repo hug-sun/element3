@@ -326,8 +326,8 @@ export default {
         const btnClose = closable
           ? <span class="el-icon-close" on-click={(ev) => { onTabRemove(pane, ev); }}></span>
           : null;
-
-        const tabLabelContent = pane.labelContent || pane.label;
+        console.log(pane.$slots.label&&pane.$slots.label())  ;
+        const tabLabelContent = pane.labelContent || pane.label||pane.$slots.label();
         const tabindex = pane.active ? 0 : -1;
        
         return (

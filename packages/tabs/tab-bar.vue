@@ -61,7 +61,9 @@ const useBarStyle=(tabs)=>{
             .toLowerCase()
             .replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
         }
+        
         tabs.value.every((tab, index) => {
+
           let { parent } = getCurrentInstance()
           console.log(getCurrentInstance());
           const $el = arrayFind(
