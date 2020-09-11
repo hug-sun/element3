@@ -21,7 +21,6 @@ export default {
 setup(props,ctx){
 
   const {tabs}=toRefs(props);
-  console.log(tabs);
 
   const barStyle=useBarStyle(tabs);
 
