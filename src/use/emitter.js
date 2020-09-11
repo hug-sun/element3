@@ -58,12 +58,21 @@ export function useEmitter() {
     })
   }
 
+  function once(type, handler) {
+    const handleOn = () => {
+      handler && handler()
+      off(type, handleOn)
+    }
+    on(type, handleOn)
+  }
+
   return {
     on,
     broadcast,
     dispatch,
     off,
-    emit
+    emit,
+    once
   }
 }
 

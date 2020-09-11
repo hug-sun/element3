@@ -1,4 +1,4 @@
-import { useEmitter } from '../../../../src/use/new-emitter'
+import { useEmitter } from '../../../../src/use/emitter'
 import { mount } from '@vue/test-utils'
 import { onMounted } from 'vue'
 
@@ -160,5 +160,24 @@ describe('useEmitter', () => {
     mount(Comp)
 
     expect(handleEmit).toBeCalledTimes(2)
+  })
+
+  it('once ', () => {
+    const handleEmit = jest.fn()
+    const Comp = {
+      template: '<div></div>',
+      setup() {
+        const { once, emit } = useEmitter()
+
+        once('emit', handleEmit)
+
+        emit('emit', 1)
+        emit('emit', 2)
+      }
+    }
+
+    mount(Comp)
+
+    expect(handleEmit).toBeCalledTimes(1)
   })
 })
