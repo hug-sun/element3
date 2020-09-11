@@ -81,6 +81,7 @@ ComponentNames.forEach((name) => {
       'popover',
       'button',
       'button-group',
+      'calendar',
       'link',
       'dialog',
       'icon',

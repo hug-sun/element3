@@ -37,6 +37,7 @@ async function main() {
   await execa('npm', ['publish', '--registry', 'https://registry.npmjs.org'])
 
   step('\nPushing to GitHub...')
+  await execa('git', ['push', 'origin', 'master'])
   await execa('git', ['push', 'origin', `v${targetVersion}`])
 
   console.log()
