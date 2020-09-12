@@ -11,7 +11,6 @@
     <slot>
       
     </slot> 
-    <!-- <slot name='label'></slot> -->
     
   </div>
 </template>
@@ -24,7 +23,8 @@ import {
   getCurrentInstance,
   onUpdated,
   onMounted,
-  onBeforeUnmount
+  onBeforeUnmount,
+  reactive
 } from 'vue'
 import { useEmitter } from 'element-ui/src/use/emitter'
 export default {
@@ -45,11 +45,12 @@ export default {
   setup(props,ctx){
    
     const { label, labelContent, closable,disabled,lazy } = toRefs(props)
-    const index = ref(null)
+    const state = reactive({
+      index:null
+    })
     const loaded = ref(false)
   
     let {parent}=getCurrentInstance();
-    console.log(getCurrentInstance());
       onUpdated(()=>{
         parent.emit('tab-nav-update');
      })
@@ -64,10 +65,9 @@ export default {
 
     const active=computed(()=>{
 
-      console.log(parent)
-      console.log(parent.props.modelValue,index.value);
-      const active = parent.props.modelValue === (props.name  ||props.label|| index.value)
-
+     
+      const active = parent.proxy.currentName == (props.name  || state.index)
+  
       if (active) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         loaded.value = true
@@ -76,14 +76,13 @@ export default {
     });
 
     const  paneName =computed(()=>{
-      return props.name || index.value
+      return props.name || state.index
     });
-
      return {
+       state,
        active,
        isClosable,
        paneName,
-       index,
        loaded,
        label, 
        labelContent, 

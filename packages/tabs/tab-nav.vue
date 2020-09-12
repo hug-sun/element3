@@ -55,7 +55,7 @@ export default {
     stretch: Boolean
   },
   setup(props,{ attrs, emit, slots }){
-    console.log(props);
+    
     const {editable,stretch } = toRefs(props)
     const { refs }=getCurrentInstance();
     const $refs=refs;
@@ -69,7 +69,7 @@ export default {
 
    
     const tabPosition=getTabPosition();
-    console.log(tabPosition);
+   
 
      const navStyle=useNavStyle(state,tabPosition);
 
@@ -190,7 +190,6 @@ export default {
     }
 
   const  changeTab=(e)=>{
-    console.log(e);
       const keyCode = e.keyCode
       let nextIndex
       let currentIndex, tabList
@@ -319,15 +318,12 @@ export default {
            
           let tabName = pane.name || pane.index || index;
           // 获取实例的isClosable;
-        const closable = pane.closable || editable.value;
-
-        pane.index = `${index}`;
-
+        const closable = pane.closable || editable.value;  
+        pane.state.index = `${index}` ;
         const btnClose = closable
           ? <span class="el-icon-close" on-click={(ev) => { onTabRemove(pane, ev); }}></span>
           : null;
-        console.log(pane.$slots.label&&pane.$slots.label())  ;
-        const tabLabelContent = pane.labelContent || pane.label||pane.$slots.label();
+        const tabLabelContent = pane.labelContent || pane.label||(pane.$slots.label&&pane.$slots.label());
         const tabindex = pane.active ? 0 : -1;
        
         return (

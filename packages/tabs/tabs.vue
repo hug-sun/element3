@@ -178,6 +178,7 @@ export default {
     }
 
     const setCurrentName = value => {
+      console.log(value);
         const changeCurrentName = () => {
           currentName.value = value
           emit('input', value)
@@ -185,6 +186,7 @@ export default {
         }
 
         const beforeLeave = props.beforeLeave
+        console.log(beforeLeave);
         if (currentName.value !== value && beforeLeave) {
           const before = beforeLeave(value, currentName.value)
           if (before && before.then) {
