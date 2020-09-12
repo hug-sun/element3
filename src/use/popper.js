@@ -49,7 +49,7 @@ const popperProps = {
   }
 }
 
-function usePopper(referenceElm, props, { emit, slots }) {
+function usePopper(props, { emit, slots }, { referenceElm, popperElm }) {
   const {
     transformOrigin,
     placement,
@@ -66,7 +66,6 @@ function usePopper(referenceElm, props, { emit, slots }) {
 
   const showPopper = ref(false)
   const currentPlacement = ref('')
-  const popperElm = ref(null)
   const popperJS = ref(null)
   const instance = getCurrentInstance()
 
@@ -221,6 +220,7 @@ function usePopper(referenceElm, props, { emit, slots }) {
   return {
     showPopper,
     currentPlacement,
+    referenceElm,
     popperElm,
     popperJS,
     createPopper,
