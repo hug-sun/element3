@@ -56,9 +56,7 @@ describe('Tree.js', () => {
     const tree = new Tree(data /*, default */)
 
     expect(tree.root.childNodes).toHaveLength(data.length)
-    expect(tree.root.childNodes[0].childNodes[0].label).toBe(
-      data[0].children[0].label
-    )
+    expect(tree.root.childNodes[0].label).toBe(data[0].label)
   })
 
   it('update', () => {
