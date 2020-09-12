@@ -1,16 +1,15 @@
-import Popper from 'element-ui/src/utils/vue-popper'
+import { vuePopperProps, useVuePopper } from 'packages/popover/vue-popper'
 import debounce from 'throttle-debounce/debounce'
 import { addClass, removeClass, on, off } from 'element-ui/src/utils/dom'
 import { generateId } from 'element-ui/src/utils/util'
 // eslint-disable-next-line
-import { h, createApp} from 'vue'
+import { createApp, ref, watch, onMounted, onUnmounted, getCurrentInstance, Transition } from 'vue'
 
 export default {
   name: 'ElTooltip',
-
-  mixins: [Popper],
-
+  emits: ['input', 'update:modelValue', 'created'],
   props: {
+    ...vuePopperProps,
     openDelay: {
       type: Number,
       default: 0
@@ -55,195 +54,213 @@ export default {
       default: 0
     }
   },
-
-  data() {
-    return {
-      tooltipId: `el-tooltip-${generateId()}`,
-      timeoutPending: null,
-      focusing: false
-    }
-  },
   beforeCreate() {
     if (this.$isServer) return
 
     this.popperVM = createApp({
-      data: { node: '' },
-      render(h) {
+      data() {
+        return {
+          node: ''
+        }
+      },
+      render() {
         return this.node
       }
+    }).mount(document.createElement('div'))
+  },
+  setup(props, context) {
+    const timeoutPending = ref(null)
+    const timeout = ref(null)
+    const focusing = ref(false)
+    const expectedState = ref(false)
+    const referenceElm = ref(null)
+    const { emit, slots } = context
+    const {
+      modelValue,
+      openDelay,
+      disabled,
+      manual,
+      effect,
+      popperClass,
+      content,
+      transition,
+      enterable,
+      hideAfter,
+      tabindex
+    } = props
+    const { showPopper, updatePopper, doDestroy } = useVuePopper(props, {
+      emit,
+      slots,
+      referenceEl: referenceElm
     })
 
-    this.debounceClose = debounce(200, () => this.handleClosePopper())
-  },
+    const instance = getCurrentInstance()
+    const tooltipId = `el-tooltip-${generateId()}`
+    const debounceClose = debounce(200, () => handleClosePopper())
 
-  render(h) {
-    if (this.popperVM) {
-      this.popperVM.node = (
-        <transition name={this.transition} onAfterLeave={this.doDestroy}>
-          <div
-            onMouseleave={() => {
-              this.setExpectedState(false)
-              this.debounceClose()
-            }}
-            onMouseenter={() => {
-              this.setExpectedState(true)
-            }}
-            ref="popper"
-            role="tooltip"
-            id={this.tooltipId}
-            aria-hidden={this.disabled || !this.showPopper ? 'true' : 'false'}
-            v-show={!this.disabled && this.showPopper}
-            class={[
-              'el-tooltip__popper',
-              'is-' + this.effect,
-              this.popperClass
-            ]}
-          >
-            {this.$slots.content || this.content}
-          </div>
-        </transition>
-      )
+    const show = () => {
+      setExpectedState(true)
+      handleShowPopper()
     }
 
-    const firstElement = this.getFirstElement()
-    if (!firstElement) return null
-
-    const data = (firstElement.data = firstElement.data || {})
-    data.staticClass = this.addTooltipClass(data.staticClass)
-
-    return firstElement
-  },
-
-  mounted() {
-    this.referenceElm = this.$el
-    if (this.$el.nodeType === 1) {
-      this.$el.setAttribute('aria-describedby', this.tooltipId)
-      this.$el.setAttribute('tabindex', this.tabindex)
-      on(this.referenceElm, 'mouseenter', this.show)
-      on(this.referenceElm, 'mouseleave', this.hide)
-      on(this.referenceElm, 'focus', () => {
-        if (!this.$slots.default || !this.$slots.default.length) {
-          this.handleFocus()
-          return
-        }
-        const instance = this.$slots.default[0].componentInstance
-        if (instance && instance.focus) {
-          instance.focus()
-        } else {
-          this.handleFocus()
-        }
-      })
-      on(this.referenceElm, 'blur', this.handleBlur)
-      on(this.referenceElm, 'click', this.removeFocusing)
+    const hide = () => {
+      setExpectedState(false)
+      debounceClose()
     }
-    // fix issue https://github.com/ElemeFE/element/issues/14424
-    if (this.value && this.popperVM) {
-      this.popperVM.$nextTick(() => {
-        if (this.value) {
-          this.updatePopper()
-        }
-      })
-    }
-  },
-  watch: {
-    focusing(val) {
-      if (val) {
-        addClass(this.referenceElm, 'focusing')
-      } else {
-        removeClass(this.referenceElm, 'focusing')
-      }
-    }
-  },
-  methods: {
-    show() {
-      this.setExpectedState(true)
-      this.handleShowPopper()
-    },
 
-    hide() {
-      this.setExpectedState(false)
-      this.debounceClose()
-    },
-    handleFocus() {
-      this.focusing = true
-      this.show()
-    },
-    handleBlur() {
-      this.focusing = false
-      this.hide()
-    },
-    removeFocusing() {
-      this.focusing = false
-    },
+    const handleFocus = () => {
+      focusing.value = true
+      show()
+    }
 
-    addTooltipClass(prev) {
+    const handleBlur = () => {
+      focusing.value = false
+      hide()
+    }
+
+    const removeFocusing = () => {
+      focusing.value = false
+    }
+
+    const addTooltipClass = (prev) => {
       if (!prev) {
         return 'el-tooltip'
       } else {
         return 'el-tooltip ' + prev.replace('el-tooltip', '')
       }
-    },
+    }
 
-    handleShowPopper() {
-      if (!this.expectedState || this.manual) return
-      clearTimeout(this.timeout)
-      this.timeout = setTimeout(() => {
-        this.showPopper = true
-      }, this.openDelay)
+    const handleShowPopper = () => {
+      if (!expectedState.value || manual) return
+      clearTimeout(timeout.value)
+      timeout.value = setTimeout(() => {
+        showPopper.value = true
+      }, openDelay)
 
-      if (this.hideAfter > 0) {
-        this.timeoutPending = setTimeout(() => {
-          this.showPopper = false
-        }, this.hideAfter)
+      if (hideAfter > 0) {
+        timeoutPending.value = setTimeout(() => {
+          showPopper.value = false
+        }, hideAfter)
       }
-    },
+    }
 
-    handleClosePopper() {
-      if ((this.enterable && this.expectedState) || this.manual) return
-      clearTimeout(this.timeout)
+    const handleClosePopper = () => {
+      if ((enterable && expectedState.value) || manual) return
+      clearTimeout(timeout.value)
 
-      if (this.timeoutPending) {
-        clearTimeout(this.timeoutPending)
+      if (timeoutPending.value) {
+        clearTimeout(timeoutPending.value)
       }
-      this.showPopper = false
+      showPopper.value = false
 
-      if (this.disabled) {
-        this.doDestroy()
+      if (disabled) {
+        doDestroy()
       }
-    },
+    }
 
-    setExpectedState(expectedState) {
-      if (expectedState === false) {
-        clearTimeout(this.timeoutPending)
+    const setExpectedState = (state) => {
+      if (state === false) {
+        clearTimeout(timeoutPending.value)
       }
-      this.expectedState = expectedState
-    },
+      expectedState.value = state
+    }
 
-    getFirstElement() {
-      const slots = this.$slots.default
-      if (!Array.isArray(slots)) return null
+    const getFirstElement = () => {
+      const slotsDefault = slots.default()
+      if (!Array.isArray(slotsDefault)) return null
       let element = null
-      for (let index = 0; index < slots.length; index++) {
-        if (slots[index] && slots[index].tag) {
-          element = slots[index]
+      for (let index = 0; index < slotsDefault.length; index++) {
+        if (slotsDefault[index] && slotsDefault[index].type) {
+          element = slotsDefault[index]
         }
       }
       return element
     }
-  },
 
-  beforeDestroy() {
-    this.popperVM && this.popperVM.$destroy()
-  },
+    watch(focusing, (val, old) => {
+      if (val) {
+        addClass(referenceElm.value, 'focusing')
+      } else {
+        removeClass(referenceElm.value, 'focusing')
+      }
+    })
 
-  destroyed() {
-    const reference = this.referenceElm
-    if (reference.nodeType === 1) {
-      off(reference, 'mouseenter', this.show)
-      off(reference, 'mouseleave', this.hide)
-      off(reference, 'focus', this.handleFocus)
-      off(reference, 'blur', this.handleBlur)
-      off(reference, 'click', this.removeFocusing)
+    onMounted(() => {
+      referenceElm.value = instance.ctx.$el
+      if (referenceElm.value.nodeType === 1) {
+        referenceElm.value.setAttribute('aria-describedby', tooltipId)
+        referenceElm.value.setAttribute('tabindex', tabindex)
+        on(referenceElm.value, 'mouseenter', show)
+        on(referenceElm.value, 'mouseleave', hide)
+        on(referenceElm.value, 'focus', () => {
+          if (!slots.default || !slots.default().length) {
+            handleFocus()
+            return
+          }
+          const slotsProps = slots.default()[0].props
+
+          if (slotsProps && slotsProps.onFocus) {
+            slotsProps.onFocus()
+          } else {
+            handleFocus()
+          }
+        })
+        on(referenceElm.value, 'blur', handleBlur)
+        on(referenceElm.value, 'click', removeFocusing)
+      }
+      // fix issue https://github.com/ElemeFE/element/issues/14424
+      if (modelValue && instance.ctx.popperVM) {
+        instance.ctx.popperVM.$nextTick(() => {
+          if (modelValue) {
+            updatePopper()
+          }
+        })
+      }
+    })
+
+    onUnmounted(() => {
+      const reference = referenceElm.value
+      if (reference.nodeType === 1) {
+        off(reference, 'mouseenter', show)
+        off(reference, 'mouseleave', hide)
+        off(reference, 'focus', handleFocus)
+        off(reference, 'blur', handleBlur)
+        off(reference, 'click', removeFocusing)
+      }
+    })
+
+    return () => {
+      if (instance.ctx.popperVM) {
+        instance.ctx.popperVM.node = (
+          <Transition name={transition} onAfterLeave={doDestroy}>
+            <div
+              onMouseleave={() => {
+                setExpectedState(false)
+                debounceClose()
+              }}
+              onMouseenter={() => {
+                setExpectedState(true)
+              }}
+              ref="popper"
+              role="tooltip"
+              id={tooltipId}
+              aria-hidden={disabled || !showPopper.value ? 'true' : 'false'}
+              v-show={!disabled && showPopper.value}
+              class={['el-tooltip__popper', 'is-' + effect, popperClass]}
+            >
+              {slots.content ? slots.content() : content}
+            </div>
+          </Transition>
+        )
+      }
+
+      const firstElement = getFirstElement()
+      if (!firstElement) return null
+
+      const firstElementProps = (firstElement.props = firstElement.props || {})
+      firstElementProps.class = addTooltipClass(firstElementProps.class)
+
+      return firstElement
     }
   }
 }
