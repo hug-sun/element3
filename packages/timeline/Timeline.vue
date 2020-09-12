@@ -1,4 +1,4 @@
-<script>
+<script type="text/jsx">
 import { Fragment } from 'vue'
 export default {
   name: 'ElTimeline',

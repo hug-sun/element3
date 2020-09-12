@@ -1,4 +1,4 @@
-<script>
+<script type="text/jsx">
 import fecha from 'element-ui/src/utils/date'
 import {
   range as rangeArr,

@@ -1,4 +1,4 @@
-<script>
+<script type="text/jsx">
 import {
   computed,
   ref,
