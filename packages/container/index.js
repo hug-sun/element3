@@ -1,8 +1,8 @@
-import Container from './Container'
+import ElContainer from './Container.vue'
 
 /* istanbul ignore next */
-Container.install = function (app) {
-  app.component(Container.name, Container)
+ElContainer.install = function (app) {
+  app.component(ElContainer.name, ElContainer)
 }
 
-export default Container
+export default ElContainer
