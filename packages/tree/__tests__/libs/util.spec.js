@@ -67,12 +67,6 @@ describe('utils.js', () => {
     )
 
     expect(b === a[0]).toBeFalsy()
-    expect(b).toStrictEqual(a[0])
-
-    const c = a.map((item) => nodeMap(item))
-
-    expect(c === a).toBeFalsy()
-    expect(c).toStrictEqual(a)
   })
 
   it('transitionObjectKey', () => {
@@ -81,7 +75,7 @@ describe('utils.js', () => {
       label: '一级 1'
     }
 
-    transitionObjectKey(obj, { id: 'key', label: 'text' })
+    transitionObjectKey(obj, { key: 'id', text: 'label' })
 
     expect(obj).toStrictEqual({
       key: 1,
