@@ -51,6 +51,7 @@ export default {
     const loaded = ref(false)
   
     let {parent}=getCurrentInstance();
+
       onUpdated(()=>{
         parent.emit('tab-nav-update');
      })
@@ -65,8 +66,7 @@ export default {
 
     const active=computed(()=>{
 
-     
-      const active = parent.proxy.currentName == (props.name  || state.index)
+      const active = parent.proxy.currentName === (props.name || state.index)
   
       if (active) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties

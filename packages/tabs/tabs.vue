@@ -100,7 +100,10 @@ export default {
     },
     closable: Boolean,
     addable: Boolean,
-    value: {},
+    value: {
+        type:String,
+      default:null
+    },
     editable: Boolean,
     tabPosition: {
       type: String,
@@ -157,10 +160,10 @@ export default {
     }
 
     const handleTabClick = (data) => {
-      console.log(data);
+    
       let {pane, tabName, ev}=data;
       if (pane.disabled) return
-      setCurrentName(tabName)
+      setCurrentName(String(tabName))
       emit('tab-click', pane, ev)
     }
 
@@ -178,7 +181,6 @@ export default {
     }
 
     const setCurrentName = value => {
-      console.log(value);
         const changeCurrentName = () => {
           currentName.value = value
           emit('input', value)
@@ -186,7 +188,7 @@ export default {
         }
 
         const beforeLeave = props.beforeLeave
-        console.log(beforeLeave);
+       
         if (currentName.value !== value && beforeLeave) {
           const before = beforeLeave(value, currentName.value)
           if (before && before.then) {

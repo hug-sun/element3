@@ -190,6 +190,7 @@ export default {
     }
 
   const  changeTab=(e)=>{
+  
       const keyCode = e.keyCode
       let nextIndex
       let currentIndex, tabList
