@@ -58,10 +58,12 @@ export default {
   setup(props, ctx) {
     const elSelect = inject('select')
     const { referenceElm, popperElm } = usePopperElm(elSelect)
-    const popper = usePopper(referenceElm, props, ctx)
+    const popper = usePopper(referenceElm, popperElm, props, ctx)
 
     usePopperUpdate(() => {
-      if (elSelect.visible) popper.updatePopper()
+      if (elSelect.visible) {
+        popper.updatePopper()
+      }
     }, popper.destroyPopper)
 
     const popperClass = computed(() => {

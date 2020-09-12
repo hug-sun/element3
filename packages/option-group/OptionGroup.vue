@@ -41,7 +41,7 @@ export default {
     const { ctx } = getCurrentInstance()
 
     watch(disabled, (val) => {
-      broadcast('ElOption', 'handleGroupDisabled', val)
+      broadcast('handleGroupDisabled', val)
     })
 
     function queryChange() {
@@ -52,12 +52,12 @@ export default {
     }
 
     onBeforeMount(() => {
-      on('queryChange', queryChange)
+      on('optionGroup.queryChange', queryChange)
     })
 
     onMounted(() => {
       if (unref(disabled)) {
-        broadcast('ElOption', 'handleGroupDisabled', unref(disabled))
+        broadcast('handleGroupDisabled', unref(disabled))
       }
     })
 

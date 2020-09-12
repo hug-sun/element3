@@ -134,13 +134,13 @@ export default {
 
     function selectOptionClick() {
       if (disabled.value !== true && data.groupDisabled !== true) {
-        dispatch('ElSelect', 'handleOptionClick', this, true)
+        dispatch('handleOptionClick', { option: this, byClick: true })
       }
     }
 
     function queryChange(query) {
       data.visible =
-        new RegExp(escapeRegexpString(query), 'i').test(currentLabel) ||
+        new RegExp(escapeRegexpString(query), 'i').test(unref(currentLabel)) ||
         created.value
       if (!data.visible) {
         select.filteredOptionsCount--
@@ -148,7 +148,7 @@ export default {
     }
 
     watch(currentLabel, () => {
-      if (!created.value && !select.remote) dispatch('ElSelect', 'setSelected')
+      if (!created.value && !select.remote) dispatch('setSelected')
     })
     watch(value, (val, oldVal) => {
       const { remote, valueKey } = select
@@ -161,7 +161,7 @@ export default {
         ) {
           return
         }
-        dispatch('ElSelect', 'setSelected')
+        dispatch('setSelected')
       }
     })
     onBeforeMount(() => {

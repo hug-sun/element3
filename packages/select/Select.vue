@@ -97,7 +97,7 @@
       :tabindex="multiple && filterable ? '-1' : null"
       @focus="handleFocus"
       @blur="handleBlur"
-      @keyup.native="debouncedOnInputChange"
+      @keyup="debouncedOnInputChange"
       @keydown.native.down.stop.prevent="navigateOptions('next')"
       @keydown.native.up.stop.prevent="navigateOptions('prev')"
       @keydown.native.enter.prevent="selectOption"
@@ -372,7 +372,6 @@ export default {
     'clear',
     'visible-change',
     'remove-tag',
-    'handleOptionClick',
     'setSelected'
   ],
 
@@ -440,13 +439,13 @@ export default {
         this.inputLength = 20
       }
       if (!valueEquals(val, oldVal)) {
-        this.dispatch('ElFormItem', 'el.form.change', val)
+        this.dispatch('el.form.change', val)
       }
     },
 
     visible(val) {
       if (!val) {
-        this.broadcast('ElSelectDropdown', 'destroyPopper')
+        this.broadcast('destroyPopper')
         if (this.$refs.input) {
           this.$refs.input.blur()
         }
@@ -485,7 +484,7 @@ export default {
           }
         }
       } else {
-        this.broadcast('ElSelectDropdown', 'updatePopper')
+        this.broadcast('updatePopper')
         if (this.filterable) {
           this.query = this.remote ? '' : this.selectedLabel
           this.handleQueryChange(this.query)
@@ -493,8 +492,8 @@ export default {
             this.$refs.input.focus()
           } else {
             if (!this.remote) {
-              this.broadcast('ElOption', 'queryChange', '')
-              this.broadcast('ElOptionGroup', 'queryChange')
+              this.broadcast('queryChange', '')
+              this.broadcast('optionGroup.queryChange')
             }
 
             if (this.selectedLabel) {
@@ -510,7 +509,7 @@ export default {
     options() {
       if (this.$isServer) return
       this.$nextTick(() => {
-        this.broadcast('ElSelectDropdown', 'updatePopper')
+        this.broadcast('updatePopper')
       })
       if (this.multiple) {
         this.resetInputHeight()
@@ -552,7 +551,9 @@ export default {
       }
       this.previousQuery = val
       this.$nextTick(() => {
-        if (this.visible) this.broadcast('ElSelectDropdown', 'updatePopper')
+        if (this.visible) {
+          this.broadcast('updatePopper')
+        }
       })
       this.hoverIndex = -1
       if (this.multiple && this.filterable) {
@@ -568,11 +569,11 @@ export default {
         this.remoteMethod(val)
       } else if (typeof this.filterMethod === 'function') {
         this.filterMethod(val)
-        this.broadcast('ElOptionGroup', 'queryChange')
+        this.broadcast('optionGroup.queryChange')
       } else {
         this.filteredOptionsCount = this.optionsCount
-        this.broadcast('ElOption', 'queryChange', val)
-        this.broadcast('ElOptionGroup', 'queryChange')
+        this.broadcast('queryChange', val)
+        this.broadcast('optionGroup.queryChange')
       }
       if (
         this.defaultFirstOption &&
@@ -765,7 +766,7 @@ export default {
                 sizeInMap
               ) + 'px'
         if (this.visible && this.emptyText !== false) {
-          this.broadcast('ElSelectDropdown', 'updatePopper')
+          this.broadcast('updatePopper')
         }
       })
     },
@@ -787,7 +788,7 @@ export default {
       }, 300)
     },
 
-    handleOptionSelect(option, byClick) {
+    handleOptionSelect({ option, byClick }) {
       if (this.multiple) {
         const value = (this.modelValue || []).slice()
         const optionIndex = this.getValueIndex(value, option.value)
@@ -958,6 +959,10 @@ export default {
       } else {
         return getValueByPath(item.value, this.valueKey)
       }
+    },
+
+    search() {
+      console.log('aaaaa')
     }
   },
 
