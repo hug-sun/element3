@@ -30,7 +30,7 @@ Besides the native features of img, support lazy load, custom placeholder and lo
 
 ### Placeholder
 
-:::demo Custom placeholder content when image hasn't loaded yet by `slot = placeholder`
+:::demo Custom placeholder content when image hasn't loaded yet by `v-slot:placeholder`
 ```html
 <div class="demo-image__placeholder">
   <div class="block">
@@ -40,9 +40,11 @@ Besides the native features of img, support lazy load, custom placeholder and lo
   <div class="block">
     <span class="demonstration">Custom</span>
     <el-image :src="src">
-      <div slot="placeholder" class="image-slot">
-        Loading<span class="dot">...</span>
-      </div>
+      <template #placeholder>
+        <div class="image-slot">
+          Loading<span class="dot">...</span>
+        </div>
+      </template>
     </el-image>
   </div>
 </div>
@@ -61,7 +63,7 @@ Besides the native features of img, support lazy load, custom placeholder and lo
 
 ### Load Failed
 
-:::demo Custom failed content when error occurs to image load by `slot = error`
+:::demo Custom failed content when error occurs to image load by `v-slot:error`
 ```html
 <div class="demo-image__error">
   <div class="block">
@@ -71,9 +73,11 @@ Besides the native features of img, support lazy load, custom placeholder and lo
   <div class="block">
     <span class="demonstration">Custom</span>
     <el-image>
-      <div slot="error" class="image-slot">
-        <i class="el-icon-picture-outline"></i>
-      </div>
+      <template #error>
+        <div class="image-slot">
+          <i class="el-icon-picture-outline"></i>
+        </div>
+      </template>
     </el-image>
   </div>
 </div>
