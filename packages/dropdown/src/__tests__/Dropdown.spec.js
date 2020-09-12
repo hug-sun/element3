@@ -1,10 +1,11 @@
-import Dropdown from '../dropdown.vue'
-import DropdownMenu from '../dropdown-menu.vue'
-import DropdownItem from '../dropdown-item.vue'
-
+import '@testing-library/jest-dom'
 import { mount } from '@vue/test-utils'
 import { nextTick, ref } from 'vue'
 import sinon from 'sinon'
+
+import Dropdown from '../dropdown.vue'
+import DropdownMenu from '../dropdown-menu.vue'
+import DropdownItem from '../dropdown-item.vue'
 
 const components = {
   ElDropdown: Dropdown,
@@ -12,10 +13,10 @@ const components = {
   ElDropdownItem: DropdownItem
 }
 
+jest.useFakeTimers()
+
 const wait = (time = 300) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, time)
-  })
+  jest.runAllTimers()
 }
 
 describe('Dropdown', () => {
