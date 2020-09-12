@@ -1,4 +1,4 @@
-<script type="text/jsx">
+<script lang="jsx">
 import { computed, getCurrentInstance, Transition } from 'vue'
 export default {
   name: 'ElTag',
