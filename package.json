@@ -188,7 +188,7 @@
     "uppercamelcase": "^1.1.0",
     "url-loader": "^1.0.1",
     "vue": "^3.0.0-rc.4",
-    "vue-jest": "vuejs/vue-jest#next",
+    "vue-jest": "^5.0.0-alpha.3",
     "vue-loader": "16.0.0-beta.4",
     "vue-router": "^4.0.0-beta.3",
     "webpack": "^4.14.0",
