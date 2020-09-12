@@ -216,4 +216,25 @@ describe('TreeNode.js', () => {
     expect(node11.isExpanded).toBeFalsy()
     expect(node12.isExpanded).toBeTruthy()
   })
+
+  it('filter', () => {
+    const treeNode = new TreeNode(1, 'root', [
+      new TreeNode(11, 'root-1', [
+        new TreeNode(111, 'root-1-1'),
+        new TreeNode(112, 'root-1-2')
+      ]),
+      new TreeNode(12, 'root-2')
+    ])
+    const node111 = treeNode.findOne(111)
+    const node112 = treeNode.findOne(112)
+    const node12 = treeNode.findOne(12)
+
+    treeNode.filter((node, parentNode, deep) => {
+      return node === node111
+    })
+
+    expect(node111.isVisable).toBeTruthy()
+    expect(node112.isVisable).toBeFalsy()
+    expect(node12.isVisable).toBeFalsy()
+  })
 })

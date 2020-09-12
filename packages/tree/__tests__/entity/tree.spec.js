@@ -68,14 +68,4 @@ describe('Tree.js', () => {
     tree.update()
     expect(tree.root.childNodes[0].label).toBe('更新后') // update after
   })
-
-  it('filter', () => {
-    const tree = new Tree(data)
-    tree.filter((node) => {
-      return node.id === 8
-    })
-    expect(tree.root.childNodes[0].isVisable).toBeFalsy()
-    expect(tree.root.childNodes[1].isVisable).toBeFalsy()
-    expect(tree.root.childNodes[2].isVisable).toBeTruthy()
-  })
 })

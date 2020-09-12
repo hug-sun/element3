@@ -1,4 +1,9 @@
-import { nodeMap, transitionObjectKey } from '../../libs/util'
+import {
+  nodeMap,
+  transitionObjectKey,
+  methodInterceptor,
+  extractMethods
+} from '../../libs/util'
 
 describe('utils.js', () => {
   it('nodeMap', () => {
@@ -150,5 +155,55 @@ describe('utils.js', () => {
     expect(b[0].key).toBe(a[0].id)
     expect(b[1].key).toBe(a[1].id)
     expect(b[1].childNodes[0].key).toBe(a[1].children[0].id)
+  })
+
+  it('methodInterceptor', () => {
+    class O {
+      constructor(a) {
+        this.a = a
+      }
+
+      sum(b) {
+        return this.a + b
+      }
+    }
+
+    const o = new O(15)
+
+    methodInterceptor(
+      O,
+      'sum',
+      function (b) {
+        expect(this.a).toBe(15)
+        expect(b).toBe(10)
+        return [b]
+      },
+      function (ret, [b]) {
+        expect(b).toBe(10)
+        expect(ret).toBe(25)
+        return 'change'
+      }
+    )
+
+    const num = o.sum(10)
+    expect(num).toBe('change')
+  })
+
+  it('extractMethods', () => {
+    class O {
+      constructor(a) {
+        this.a = a
+      }
+
+      sum(b) {
+        return this.a + b
+      }
+    }
+
+    const o = new O(15)
+
+    const { sum } = extractMethods(o, ['sum'])
+
+    expect(sum(10)).toBe(25)
   })
 })
