@@ -14,7 +14,7 @@
     }"
     role="TreeNode"
     tabindex="-1"
-    ref="node"
+    ref="TreeNode"
     :id="'TreeNode' + node.id"
     :aria-expanded="node.isExpanded"
     :aria-disabled="node.isDisabled"
@@ -50,7 +50,7 @@
         :indeterminate="node.isIndeterminate"
         :disabled="node.isDisabled"
         @update:modelValue="onChangeCheckbox"
-        @click="elTree.emit('check', node)"
+        @click="elTree.emit('check', node, node.isChecked, $event)"
       >
       </el-checkbox>
       <span

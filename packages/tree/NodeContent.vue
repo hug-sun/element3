@@ -22,10 +22,7 @@ export default {
       })
     }
 
-    return h(
-      'span',
-      ctx.node.data.raw ? ctx.node.data.raw.label : ctx.node.label
-    )
+    return h('span', ctx.node.label)
   }
 }
 </script>

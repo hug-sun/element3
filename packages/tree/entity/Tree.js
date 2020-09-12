@@ -6,8 +6,6 @@ import {
   methodInterceptor
 } from '../libs/util'
 
-const rootId = Symbol('root')
-
 export class Tree {
   /**
    *
@@ -17,7 +15,14 @@ export class Tree {
   constructor(list, defaultNodeKey = {}, defaultNodeValue = {}) {
     this.isUpdateRaw = true
     this.raw = list
-    this.root = new TreeNode(rootId, null)
+    this.injectAction = this.createAction() // The core method is injected with interceptor functions, the insert RowNode is automatically converted to TreeNode
+    this.root = new TreeNode(
+      Date.now(),
+      'root',
+      [],
+      defaultNodeValue,
+      this.injectAction
+    )
     this.defaultNodeKey = Object.assign(
       {
         id: 'id',
@@ -32,7 +37,8 @@ export class Tree {
       defaultNodeKey
     )
     this.defaultNodeValue = Object.assign({}, defaultNodeValue)
-    this.injectRawAction() // The core method is injected with interceptor functions, the insert RowNode is automatically converted to TreeNode
+    // this.checked = []
+    // this.expanded = []
     this.initRoot()
   }
 
@@ -46,6 +52,30 @@ export class Tree {
     return true
   }
 
+  get checked() {
+    const t = {}
+    this.root.depthEach((node) => {
+      node.isChecked && (t[node.id] = true)
+    })
+    return Object.keys(t)
+  }
+
+  set checked(v) {
+    this.setCheckedByIdList(v, true)
+  }
+
+  get expanded() {
+    const t = {}
+    this.root.depthEach((node) => {
+      node.isExpanded && (t[node.id] = true)
+    })
+    return Object.keys(t)
+  }
+
+  set expanded(v) {
+    this.setExpandedByIdList(v, true)
+  }
+
   initRoot() {
     // rekeyname and create TreeNode
     this.isUpdateRaw = false
@@ -54,30 +84,32 @@ export class Tree {
     this.isUpdateRaw = true
   }
 
-  injectRawAction() {
+  createAction() {
     // this.root changed update this.raw
     const that = this
-    methodInterceptor(TreeNode, 'appendChild', function (rawNode) {
-      if (TreeNode.isType(rawNode)) {
-        that.appendRawNode(this, rawNode.data.raw)
-        return [rawNode]
+    const appendChild = function (node) {
+      if (TreeNode.isType(node)) {
+        that.appendRawNode(this, node.data.raw)
+        return [node]
       }
-      that.appendRawNode(this, rawNode)
-      return [that.rawNodeToTreeNode(rawNode)]
-    })
+      that.appendRawNode(this, node)
+      return [that.rawNodeToTreeNode(node)]
+    }
 
-    methodInterceptor(TreeNode, 'removeChild', function (index) {
+    const removeChild = function (index) {
       that.removeChildRawNode(this, index)
-    })
+    }
 
-    methodInterceptor(TreeNode, 'insertChild', function (index, rawNode) {
-      if (TreeNode.isType(rawNode)) {
-        that.insertRawNode(this, index, rawNode.data.raw)
-        return [index, rawNode]
+    const insertChild = function (index, node) {
+      if (TreeNode.isType(node)) {
+        that.insertRawNode(this, index, node.data.raw)
+        return [index, node]
       }
-      that.insertRawNode(this, index, rawNode)
-      return [index, that.rawNodeToTreeNode(rawNode)]
-    })
+      that.insertRawNode(this, index, node)
+      return [index, that.rawNodeToTreeNode(node)]
+    }
+
+    return { appendChild, removeChild, insertChild }
   }
 
   rawNodeToTreeNode(rawNode) {
@@ -91,7 +123,7 @@ export class Tree {
           Object.assign(
             {},
             this.defaultNodeValue,
-            { data: { raw: node } },
+            { data: { raw: node }, interceptHandler: this.injectAction },
             handledNode,
             { childNodes: [] }
           )
@@ -168,11 +200,15 @@ export class Tree {
   }
 
   checkedAll() {
-    this.root.setChecked()
+    this.root.setChecked(true)
   }
 
   expandAll() {
-    this.root.expand(true)
+    this.root.depthEach((node) => {
+      if (node.isLeaf) {
+        node.expand(true)
+      }
+    })
   }
 
   setCheckedByIdList(idList = [], value = true) {

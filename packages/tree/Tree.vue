@@ -4,14 +4,20 @@
     :class="{
       'el-tree--highlight-current': highlightCurrent
     }"
-    role="tree"
+    role="Tree"
+    @keydown="handleKeydown"
   >
-    <el-tree-node
-      v-for="child in tree.root.childNodes"
-      :node="child"
-      :key="child.id"
-    >
-    </el-tree-node>
+    <template v-if="showRootNode">
+      <el-tree-node :node="tree.root" :key="tree.root.id"> </el-tree-node>
+    </template>
+    <template v-else>
+      <el-tree-node
+        v-for="child in tree.root.childNodes"
+        :node="child"
+        :key="child.id"
+      >
+      </el-tree-node>
+    </template>
     <div class="el-tree__empty-block" v-if="tree.isEmpty">
       <span class="el-tree__empty-text">{{ emptyText }}</span>
     </div>
@@ -39,7 +45,9 @@ import {
   provide,
   getCurrentInstance,
   onMounted,
-  ref
+  ref,
+  onUpdated,
+  watchEffect
 } from 'vue'
 
 export default {
@@ -58,8 +66,8 @@ export default {
     expandOnClickNode: { type: Boolean, default: true },
     checkOnClickNode: Boolean,
     checkDescendants: { type: Boolean, default: false },
-    defaultCheckedKeys: Array,
-    defaultExpandedKeys: Array,
+    checked: Array /* model */,
+    expanded: Array /* model */,
     currentNodeKey: [String, Number],
     renderContent: Function,
     showCheckbox: { type: Boolean, default: false },
@@ -71,12 +79,13 @@ export default {
       default: () => ({
         id: 'id',
         label: 'label',
-        childNodes: 'children',
+        childNodes: 'childNodes',
         isDisabled: 'isDisabled',
         isAsync: 'isAsync',
         isChecked: 'isChecked',
         isVisable: 'isVisable',
-        isExpanded: 'isExpanded'
+        isExpanded: 'isExpanded',
+        isLeaf: 'isLeaf'
       })
     }, // {treeNodeKey : rawNodeKey}
     highlightCurrent: Boolean,
@@ -84,7 +93,8 @@ export default {
     indent: { type: Number, default: 18 },
     iconClass: { type: String, default: 'el-icon-caret-right' },
     async: { type: Boolean, default: false },
-    asyncLoadFn: Function
+    asyncLoadFn: Function,
+    showRootNode: Boolean
   },
 
   emits: [
@@ -100,29 +110,35 @@ export default {
     'node-drag-leave',
     'node-drag-over',
     'node-drag-end',
-    'node-drop'
+    'node-drop',
+    'update:checked',
+    'update:expanded'
   ],
 
   setup(props, { emit }) {
     const instance = getCurrentInstance()
-    const dropIndicator = ref()
+
     const tree = new Tree(props.data, props.defaultNodeKey, {
       asyncLoadFn: props.asyncLoadFn,
       isAsync: props.async
     })
+
     const state = reactive({
       tree
     })
 
-    const dragState = reactive({
-      start: null /* TreeNode */,
-      current: null /* TreeNode */,
-      last: null /* TreeNode */,
-      drop: '' /* String > inner | top | bottom */
-    })
-
     provide('elTree', instance)
-    useInitTree(props, state)
+
+    useTab()
+
+    useExpand(props, state)
+
+    useCheckbox(props, state)
+
+    const { handleKeydown } = useKeyDown()
+
+    const drag = useDrag(props, state)
+
     onMounted(() => {
       if (props.currentNodeKey) {
         const node = document.getElementById('TreeNode' + props.currentNodeKey)
@@ -132,67 +148,8 @@ export default {
       }
     })
 
-    const handleDragStart = (node, e) => {
-      if (typeof props.allowDrag === 'function' && !props.allowDrag(node, e)) {
-        e.preventDefault()
-        return false
-      }
-      dragState.start = node
-      emit('node-drag-start', node, e)
-    }
-    const handleDragOver = (node, e) => {
-      dragState.current = node
-      if (dragState.start === node) return
-      const margin = 7
-      const target = e.path.find((item) => item.id === 'TreeNode' + node.id)
-      const currentBound = target.getBoundingClientRect()
-      const mourseY = e.clientY
-
-      if (currentBound.top + margin > mourseY) {
-        dropIndicator.value.style.top = target.offsetTop + 'px'
-        dropIndicator.value.style.left = node.level * props.indent + 'px'
-        dragState.drop = 'top'
-      } else if (currentBound.top + currentBound.height - margin < mourseY) {
-        dropIndicator.value.style.top =
-          target.offsetTop + currentBound.height + 'px'
-        dropIndicator.value.style.left = node.level * props.indent + 'px'
-        dragState.drop = 'bottom'
-      } else {
-        dragState.drop = 'inner'
-        node.expand(true)
-      }
-
-      // wrap in try catch to address IE's error when first param is 'text/plain'
-      try {
-        // setData is required for draggable to work in FireFox
-        // the content has to be '' so dragging a node out of the tree won't open a new tab in FireFox
-        e.dataTransfer.setData('text/plain', '')
-      } catch (e) {}
-      e.preventDefault()
-
-      emit('node-drag-over', dragState.start, node, e)
-      emit('node-drag-enter', dragState.start, node, e)
-      emit('node-drag-leave', dragState.start, dragState.last, e)
-      dragState.last = node
-    }
-
-    const handleDragEnd = (node, e) => {
-      dragState.current = null
-      emit('node-drag-end', dragState.start, node, e)
-    }
-
-    const handleDrop = (node, e) => {
-      if (typeof props.allowDrog === 'function' && !props.allowDrog(node, e)) {
-        e.preventDefault()
-        return false
-      }
-      dragState.last = node
-      dragState.start.move(node, dragState.drop)
-      emit('node-drop', dragState.start, node, e)
-    }
-
     return {
-      dragState,
+      ...drag,
       ...toRefs(state),
       ...extractMethods(state.tree.root, [
         'append',
@@ -211,22 +168,200 @@ export default {
         'move',
         'filter'
       ]),
+      ...extractMethods(state.tree, [
+        'initRoot',
+        'getParentRawNode',
+        'showAll',
+        'checkedAll',
+        'expandAll'
+      ]),
+      tree: state.tree,
       root: state.tree.root,
-      handleDragStart,
-      handleDragOver,
-      handleDragEnd,
-      handleDrop,
-      dropIndicator
+      handleKeydown
     }
   }
 }
 
-function useInitTree(props, state) {
+function useCheckbox(props, state) {
+  const instance = getCurrentInstance()
+  const { emit } = instance
+
+  watchEffect(() => {
+    emit('update:checked', state.tree.checked)
+  })
+
+  watchEffect(() => {
+    state.tree.setCheckedByIdList(props.checked, true)
+  })
+}
+
+function useExpand(props, state) {
+  const instance = getCurrentInstance()
+  const { emit } = instance
+
   if (props.defaultExpandAll) {
     state.tree.expandAll()
   }
 
-  state.tree.setCheckedByIdList(props.defaultCheckedKeys, true)
-  state.tree.setExpandedByIdList(props.defaultExpandedKeys, true)
+  watchEffect(() => {
+    emit('update:expanded', state.tree.expanded)
+  })
+
+  watchEffect(() => {
+    state.tree.setExpandedByIdList(props.expanded, true)
+  })
+
+  onMounted(() => {
+    state.tree.root.expand(true)
+  })
+}
+
+function useTab() {
+  const instance = getCurrentInstance()
+  const { ctx } = instance
+
+  const initCheckbox = () => {
+    const checkboxItems = ctx.$el.querySelectorAll('input[type=checkbox]')
+    Array.prototype.forEach.call(checkboxItems, (checkbox) => {
+      checkbox.setAttribute('tabindex', -1)
+    })
+  }
+  const initTabIndex = () => {
+    const treeItems = ctx.$el.querySelectorAll('.is-focusable[role=TreeItem]')
+    const checkedItem = ctx.$el.querySelectorAll('.is-checked[role=TreeItem]')
+    if (checkedItem.length) {
+      checkedItem[0].setAttribute('tabindex', 0)
+      return
+    }
+    treeItems[0] && treeItems[0].setAttribute('tabindex', 0)
+  }
+
+  onMounted(initTabIndex)
+  onUpdated(initCheckbox)
+}
+
+function useKeyDown() {
+  const instance = getCurrentInstance()
+  const { ctx } = instance
+  const handleKeydown = (ev) => {
+    const currentItem = ev.target
+    if (currentItem.className.indexOf('el-tree-node') === -1) return
+    const keyCode = ev.keyCode
+    const treeItems = ctx.$el.querySelectorAll('.is-focusable[role=TreeNode]')
+    const treeItemArray = Array.prototype.slice.call(treeItems)
+    const currentIndex = treeItemArray.indexOf(currentItem)
+    let nextIndex
+    if ([38, 40].indexOf(keyCode) > -1) {
+      // up、down
+      ev.preventDefault()
+      if (keyCode === 38) {
+        // up
+        nextIndex = currentIndex !== 0 ? currentIndex - 1 : 0
+      } else {
+        nextIndex =
+          currentIndex < treeItemArray.length - 1 ? currentIndex + 1 : 0
+      }
+      treeItemArray[nextIndex].focus() // 选中
+    }
+    if ([37, 39].indexOf(keyCode) > -1) {
+      // left、right 展开
+      ev.preventDefault()
+      currentItem.click() // 选中
+    }
+    const hasInput = currentItem.querySelector('[type="checkbox"]')
+    if ([13, 32].indexOf(keyCode) > -1 && hasInput) {
+      // space enter选中checkbox
+      ev.preventDefault()
+      hasInput.click()
+    }
+  }
+
+  return {
+    handleKeydown
+  }
+}
+
+function useDrag(props, state) {
+  const instance = getCurrentInstance()
+  const { emit } = instance
+
+  const dropIndicator = ref()
+
+  const dragState = reactive({
+    start: null /* TreeNode */,
+    current: null /* TreeNode */,
+    last: null /* TreeNode */,
+    drop: '' /* String > inner | top | bottom */
+  })
+  const handleDragStart = (node, e) => {
+    if (typeof props.allowDrag === 'function' && !props.allowDrag(node, e)) {
+      e.preventDefault()
+      return false
+    }
+    dragState.start = node
+    emit('node-drag-start', node, e)
+  }
+  const handleDragOver = (node, e) => {
+    dragState.current = node
+    if (dragState.start === node) return
+    const margin = 7
+    const target = e.path.find((item) => item.id === 'TreeNode' + node.id)
+    const currentBound = target.getBoundingClientRect()
+    const mourseY = e.clientY
+
+    if (currentBound.top + margin > mourseY) {
+      dropIndicator.value.style.top = target.offsetTop + 'px'
+      dropIndicator.value.style.left = node.level * props.indent + 'px'
+      dragState.drop = 'top'
+    } else if (currentBound.top + currentBound.height - margin < mourseY) {
+      dropIndicator.value.style.top =
+        target.offsetTop + currentBound.height + 'px'
+      dropIndicator.value.style.left = node.level * props.indent + 'px'
+      dragState.drop = 'bottom'
+    } else {
+      dragState.drop = 'inner'
+      node.expand(true)
+    }
+
+    // wrap in try catch to address IE's error when first param is 'text/plain'
+    try {
+      // setData is required for draggable to work in FireFox
+      // the content has to be '' so dragging a node out of the tree won't open a new tab in FireFox
+      e.dataTransfer.setData('text/plain', '')
+    } catch (_) {}
+    e.preventDefault()
+
+    emit('node-drag-enter', dragState.start, node, e)
+    emit('node-drag-over', dragState.start, node, e)
+    emit('node-drag-leave', dragState.start, dragState.last, e)
+    dragState.last = node
+  }
+
+  const handleDragEnd = (node, e) => {
+    dragState.current = null
+    emit('node-drag-end', dragState.start, node, e)
+  }
+
+  const handleDrop = (node, e) => {
+    if (
+      typeof props.allowDrog === 'function' &&
+      !props.allowDrog(dragState.start, node, dragState.drop, e)
+    ) {
+      e.preventDefault()
+      return false
+    }
+    dragState.last = node
+    dragState.start.move(node, dragState.drop)
+    emit('node-drop', dragState.start, node, e)
+  }
+
+  return {
+    dragState,
+    dropIndicator,
+    handleDragStart,
+    handleDragOver,
+    handleDragEnd,
+    handleDrop
+  }
 }
 </script>

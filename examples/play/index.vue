@@ -7,32 +7,12 @@
         ref="elTree"
         show-checkbox
         draggable
-        :data="data"
+        async
         :expandOnClickNode="false"
         :render-content="renderContent"
-        :asyncLoadFn="load"
+        :async-load-fn="load"
+        v-model:checked="checked"
       >
-        <template v-slot="{node, data}">
-          <span class="custom-tree-node">
-            <span>{{ node.label }}</span>
-            <span>
-              <el-button
-                type="text"
-                size="mini"
-                @click="() => append(node, data)"
-              >
-                Append
-              </el-button>
-              <el-button
-                type="text"
-                size="mini"
-                @click="() => remove(node, data)"
-              >
-                Delete
-              </el-button>
-            </span>
-          </span>
-        </template>
       </el-tree>
     </div>
   </div>
@@ -81,7 +61,8 @@ export default {
       }]
     }];
     return {
-      data: JSON.parse(JSON.stringify(data))
+      data: JSON.parse(JSON.stringify(data)),
+      checked:[]
     }
   },
 
@@ -92,6 +73,9 @@ export default {
         console.log('val :>> ', val);
       }
     },
+    checked(v){
+      console.log('v :>> ', v);
+    }
   },
 
   methods: {
@@ -109,31 +93,33 @@ export default {
     },
 
     renderContent ({ node, data }) {
-      return h('span', node.label)
-      // return (
-      //   <span class="custom-tree-node">
-      //     <span>{node.label}</span>
-      //     <span>
-      //       <el-button size="mini" type="text" on-click={() => this.append(data)}>Append</el-button>
-      //       <el-button size="mini" type="text" on-click={() => this.remove(node, data)}>Delete</el-button>
-      //     </span>
-      //   </span>);
+      // return h('span', node.label)
+      return (
+        <span class="custom-tree-node">
+          <span>{node.label}</span>
+          <span>
+            <el-button size="mini" type="text" onClick={() => this.append(node, data)}>Append</el-button>
+            <el-button size="mini" type="text" onClick={() => this.remove(node, data)}>Delete</el-button>
+          </span>
+        </span>);
     },
 
     load (node, resolve) {
+      console.log('node :>> ', node, this);
+
       setTimeout(() => {
         resolve([{
           id: 7,
           label: '二级 3-1'
         }])
+        console.log('node :>> ', node);
       }, 3000)
     }
   },
   async mounted () {
-    this.$refs.elTree.append({
-      id: 7,
-      label: '二级 3-1'
-    })
+    // setTimeout(() => {
+    //   this.checked.push(7)
+    // }, 1000);
   },
 };
 </script>
@@ -146,8 +132,5 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   padding-right: 8px;
-}
-html{
-  /* margin: 300px; */
 }
 </style>

@@ -6,7 +6,7 @@ const typeFlag = Symbol('TREE_NODE')
 /**
  *
  * @param {*} id
- * @param {string} label 标签
+ * @param {string} label
  * @param {TreeNode[]} childNodes
  * @param {object} param3
  */
@@ -24,11 +24,13 @@ export class TreeNode {
       isExpanded = false,
       isDisabled = false,
       isDraggable = false,
+      isLeaf = false,
       data = {},
       asyncLoadFn = () => null
-    } = {}
+    } = {},
+    { insertChild = null, appendChild = null, removeChild = null } = {}
   ) {
-    this.id = id
+    this.id = id || label
     this.label = label
     this.parent = parent
     this.childNodes = childNodes
@@ -40,10 +42,17 @@ export class TreeNode {
     this.isDraggable = isDraggable
     this.isRendered = false
     this.data = data // Additional data carried by the node
+    this.isLeaf = isLeaf
 
     this.isAsync = isAsync // Load child only at expand time
     this.asyncState = 'notload' // notload || loaded || loading
     this.asyncLoadFn = asyncLoadFn // (currentNode, resolveFn) async load child node
+
+    this.interceptHandler = {
+      insertChild,
+      appendChild,
+      removeChild
+    }
 
     // this.cache = {
     //   level: null
@@ -66,10 +75,13 @@ export class TreeNode {
   }
 
   get isLeaf() {
-    // readonly
     return this.isAsync
       ? this.asyncState === 'loaded' && this.childNodes.length === 0
       : this.childNodes.length === 0
+  }
+
+  set isLeaf(v) {
+    if (v) this.asyncState = 'loaded'
   }
 
   get isRoot() {
@@ -107,7 +119,6 @@ export class TreeNode {
       // this.childNodes = []
       this.append(...childNodes)
       this.asyncState = 'loaded'
-      // this.isAsync = false
     }
     this.asyncState = 'loading'
     this.asyncLoadFn(this, resolveFn)
@@ -163,6 +174,10 @@ export class TreeNode {
    * @param {TreeNode} node
    */
   appendChild(node) {
+    if (this.interceptHandler.appendChild) {
+      const [_node] = this.interceptHandler.appendChild.apply(this, arguments)
+      if (typeof _node !== 'undefined') node = _node
+    }
     if (!TreeNode.isType(node)) {
       return false
     }
@@ -184,6 +199,14 @@ export class TreeNode {
    * @param {TreeNode} node
    */
   insertChild(index, node) {
+    if (this.interceptHandler.appendChild) {
+      const [_index, _node] = this.interceptHandler.insertChild.apply(
+        this,
+        arguments
+      )
+      if (typeof _index !== 'undefined') index = _index
+      if (typeof _node !== 'undefined') node = _node
+    }
     if (!TreeNode.isType(node)) {
       return false
     }
@@ -201,6 +224,9 @@ export class TreeNode {
    * @param {number} index
    */
   removeChild(index) {
+    if (this.interceptHandler.appendChild) {
+      this.interceptHandler.removeChild.apply(this, arguments)
+    }
     if (index < 0 || index >= this.childNodes.length) {
       return false
     }
@@ -316,10 +342,17 @@ export class TreeNode {
     return res
   }
 
-  findMany(label) {
+  /**
+   * find nodes
+   * @param {Function | string} target
+   */
+  findMany(target) {
     const res = []
-    this.depthEach((node) => {
-      if (node.label.search(label) !== -1) {
+    this.depthEach((node, parent, deep) => {
+      if (
+        (typeof target === 'function' && target(node, parent, deep)) ||
+        (typeof target === 'string' && node.label.search(target) !== -1)
+      ) {
         res.push(node)
       }
     })
@@ -350,13 +383,16 @@ export class TreeNode {
   }
 
   filter(callback = () => true) {
+    const arr = []
     this.setSubTreeVisable(false)
     this.depthEach((node, parentNode, deep) => {
       const isShow = callback(node, parentNode, deep)
       if (isShow) {
         node.setVsiable(true)
+        arr.push(node)
       }
     })
+    return arr
   }
 
   setSubTreeVisable(value) {
@@ -398,7 +434,6 @@ export class TreeNode {
       return false
     }
 
-    // TODO: 这里还要继续判断是否允许放置
     return true
   }
 
@@ -450,7 +485,7 @@ export class TreeNode {
     return node.type === typeFlag
   }
 
-  static create({ id, label, childNodes, ...otherParams }) {
-    return new TreeNode(id, label, childNodes, otherParams)
+  static create({ id, label, childNodes, interceptHandler, ...otherParams }) {
+    return new TreeNode(id, label, childNodes, otherParams, interceptHandler)
   }
 }
