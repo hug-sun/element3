@@ -125,7 +125,10 @@ ComponentNames.forEach((name) => {
       'steps',
       'popconfirm',
       'drawer',
-      'transfer'
+      'transfer',
+      'dropdown',
+      'dropdown-item',
+      'dropdown-menu'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
