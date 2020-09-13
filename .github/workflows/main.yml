@@ -40,6 +40,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install modules
-      run: yarn
+      run: npm i
     - name: Pre Deploy test
-      run: yarn build:docs
+      run: npm run build:docs
