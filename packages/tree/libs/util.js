@@ -11,14 +11,16 @@ export function isObject(value) {
  */
 export function nodeMap(
   target,
-  callback = (cloneRawNode, rawNode, isLeaf) => node,
-  { childKey = 'children', mapChildKey = 'children' } = {}
+  callback = (cloneRawNode, rawNode, isLeaf) => null,
+  { childKey = 'children', mapChildKey = 'children' } = { /* TreeNode */ }
 ) {
   const dfs = (node) => {
     if (isObject(node) && !isArray(node[childKey])) {
-      return callback({ ...node }, node, true)
+      const _cloneNode = { ...node };
+      return callback(_cloneNode, node, true)
     }
-    const newNode = callback({ ...node }, node, false)
+    const cloneNode = { ...node }
+    const newNode = callback(cloneNode, node, false)
     if (typeof newNode[childKey] !== 'undefined') delete newNode[childKey]
     newNode[mapChildKey] = []
     for (let i = 0; i < node[childKey].length; i++) {

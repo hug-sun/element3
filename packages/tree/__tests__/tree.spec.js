@@ -1,8 +1,7 @@
 import { mount } from '@vue/test-utils'
 import Tree from '../Tree.vue'
-import { nextTick } from 'vue'
 
-function createData(params) {
+function createData() {
   const data = [
     {
       id: 1,

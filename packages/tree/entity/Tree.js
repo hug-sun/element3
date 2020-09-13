@@ -2,8 +2,7 @@ import { TreeNode } from './TreeNode'
 import {
   nodeMap,
   nodeEach,
-  transitionObjectKey,
-  methodInterceptor
+  transitionObjectKey
 } from '../libs/util'
 
 export class Tree {
