@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom'
 import { mount } from '@vue/test-utils'
-import { nextTick, ref } from 'vue'
-import sinon from 'sinon'
+import { nextTick } from 'vue'
 
 import Dropdown from '../dropdown.vue'
 import DropdownMenu from '../dropdown-menu.vue'
