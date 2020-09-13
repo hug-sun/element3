@@ -1,5 +1,4 @@
 <script lang='jsx'>
-<script>
 import {
   provide,
   toRefs,
