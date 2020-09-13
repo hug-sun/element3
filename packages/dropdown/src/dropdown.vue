@@ -1,4 +1,4 @@
-<script>
+<script lang='jsx'>
 import Clickoutside from 'element-ui/src/utils/clickoutside'
 import Emitter from 'element-ui/src/mixins/emitter'
 import Migrating from 'element-ui/src/mixins/migrating'

@@ -1,5 +1,5 @@
 
-<script>
+<script lang='jsx'>
 import TabBar from './tab-bar'
 import {
   addResizeListener,
