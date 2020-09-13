@@ -1,9 +1,11 @@
 <template>
   <div
-    class="el-tabs__active-bar"
-    :class="`is-${tabPosition}`"
-    :style="barStyle"
-  ></div>
+    :class="[
+    'el-tabs__active-bar',
+    `is-${tabPosition}`]"
+    :style="barStyle">
+    </div>
+
 </template>
 <script>
 import { arrayFind } from 'element-ui/src/utils/util'

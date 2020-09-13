@@ -8,15 +8,12 @@
     :id="`pane-${paneName}`"
     :aria-labelledby="`tab-${paneName}`"
   >
-    <slot>
-      
-    </slot> 
-    
+    <slot></slot> 
   </div>
 </template>
 <script>
 
-import {
+import{
   ref,
   computed,
   toRefs,
@@ -25,7 +22,7 @@ import {
   onMounted,
   onBeforeUnmount,
   reactive
-} from 'vue'
+}from 'vue'
 import { useEmitter } from 'element-ui/src/use/emitter'
 export default {
   name: 'ElTabPane',
