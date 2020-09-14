@@ -27,6 +27,7 @@
           :currentName="currentName"
           :editable="editable"
           :type="type"
+           :tabPosition='tabPosition'
           :panes="panesArr"
           :stretch="stretch"
           @TabRemove="handleTabRemove"
@@ -60,6 +61,7 @@
           :currentName="currentName"
           :editable="editable"
           :type="type"
+          :tabPosition='tabPosition'
           :panes="panesArr"
           :stretch="stretch"
           @TabRemove="handleTabRemove"
@@ -115,6 +117,7 @@ export default {
   emits: ['tab-click','update:modelValue', 'edit', 'tab-remove', 'tab-add', 'input'],
 
   setup(props, { attrs, emit, slots }){
+    console.log(props);
     const {  editable, stretch } = toRefs(props)
     const currentName = ref(props.value || props.modelValue)
     
@@ -123,6 +126,7 @@ export default {
     const instance = getCurrentInstance()
     const { on } = useEmitter()
     const nav=ref(null);
+
     provide('rootTabs', instance);
 
  

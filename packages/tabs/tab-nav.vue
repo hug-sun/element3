@@ -11,33 +11,6 @@ const firstUpperCase = (str) => {
   return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
 }
 
-function getTabPosition(){
-   const rootTabs =inject('rootTabs');
-   let tabPosition=rootTabs.type.props.tabPosition.default
-   
-   return tabPosition
-}
-
-
-
-  const useNavStyle=(state,tabPosition)=>{
-    
-   
-    
-     const navStyle=computed(()=>{
-
-       const dir =['top', 'bottom'].indexOf(tabPosition) !== -1 ? 'X' : 'Y'
-      return {
-        transform: `translate${dir}(-${state.navOffset}px)`
-      }
-
-     });
-     return navStyle;
-      
-  }
-
-
-
 export default {
   name: 'TabNav',
 
@@ -49,6 +22,7 @@ export default {
     panes:{
         type: Array,
       },
+    tabPosition:String,
     currentName: String,
     editable: Boolean,
     type: String,
@@ -68,14 +42,20 @@ export default {
     });
 
    
-    const tabPosition=getTabPosition();
-   
 
-     const navStyle=useNavStyle(state,tabPosition);
+      console.log(props.tabPosition);
+     const navStyle=computed(()=>{
+
+       const dir =['top', 'bottom'].indexOf(props.tabPosition) !== -1 ? 'X' : 'Y'
+      return {
+        transform: `translate${dir}(-${state.navOffset}px)`
+      }
+
+     });
 
     const sizeName=computed(()=>{
 
-         return ['top', 'bottom'].indexOf(tabPosition) !== -1
+         return ['top', 'bottom'].indexOf(props.tabPosition) !== -1
         ? 'width'
         : 'height'
      });
@@ -128,7 +108,7 @@ export default {
       if (!activeTab) return
       const navScroll = refs.navScroll
       const isHorizontal =
-        ['top', 'bottom'].indexOf(tabPosition) !== -1
+        ['top', 'bottom'].indexOf(props.tabPosition) !== -1
       const activeTabBounding = activeTab.getBoundingClientRect()
       const navScrollBounding = navScroll.getBoundingClientRect()
       const maxOffset = isHorizontal
@@ -296,7 +276,7 @@ export default {
     
 
     return () =>{
-      const tabPosition=getTabPosition();
+      // const tabPosition=getTabPosition();
       const scrollBtn = state.scrollable
       ? [
           <span
@@ -326,12 +306,12 @@ export default {
           : null;
         const tabLabelContent = pane.labelContent || pane.label||(pane.$slots.label&&pane.$slots.label());
         const tabindex = pane.active ? 0 : -1;
-       
+   
         return (
           <div
             class={{
               'el-tabs__item': true,
-              [`is-${ tabPosition }`]: true,
+              [`is-${ props.tabPosition }`]: true,
               'is-active': pane.active,
               'is-disabled': pane.disabled,
               'is-closable': closable,
@@ -362,7 +342,7 @@ export default {
         class={[
           'el-tabs__nav-wrap',
           state.scrollable ? 'is-scrollable' : '',
-          `is-${tabPosition}`
+          `is-${props.tabPosition}`
         ]}
       >
         {scrollBtn}
@@ -370,9 +350,9 @@ export default {
           <div
             class={[
               'el-tabs__nav',
-              `is-${tabPosition}`,
+              `is-${props.tabPosition}`,
               stretch.value &&
-              ['top', 'bottom'].indexOf(tabPosition) !== -1
+              ['top', 'bottom'].indexOf(props.tabPosition) !== -1
                 ? 'is-stretch'
                 : ''
             ]}
