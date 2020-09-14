@@ -59,8 +59,8 @@ export function useEmitter() {
   }
 
   function once(type, handler) {
-    const handleOn = () => {
-      handler && handler()
+    const handleOn = (...args) => {
+      handler && handler(...args)
       off(type, handleOn)
     }
     on(type, handleOn)
