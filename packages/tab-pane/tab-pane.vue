@@ -48,7 +48,7 @@ export default {
     const loaded = ref(false)
   
     let {parent}=getCurrentInstance();
-
+     console.log(parent);
       onUpdated(()=>{
         parent.emit('tab-nav-update');
      })
@@ -57,7 +57,7 @@ export default {
 
     const isClosable=computed(()=>{
        
-       return closable.value || parent.type.props.closable()
+       return closable.value || parent.props.closable
 
     });
 
@@ -98,11 +98,12 @@ export default {
   const { ctx } = getCurrentInstance()
 
   onMounted(() => {
-   dispatch('ElTabs', 'el.tabs.addField', ctx)
+   dispatch( 'el.tabs.addField', ctx)
+   
   })
 
   onBeforeUnmount(() => {
-    dispatch('ElTabs', 'el.tabs.removeField', ctx)
+    dispatch('el.tabs.removeField', ctx)
   })
 }
 

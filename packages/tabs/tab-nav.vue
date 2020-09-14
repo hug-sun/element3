@@ -5,7 +5,7 @@ import {
   addResizeListener,
   removeResizeListener
 } from 'element-ui/src/utils/resize-event'
-import { reactive, toRefs,inject,onUpdated,onMounted,onBeforeUnmount, computed,getCurrentInstance } from 'vue'
+import { reactive, toRefs,onUpdated,onMounted,onBeforeUnmount, computed,getCurrentInstance } from 'vue'
 
 const firstUpperCase = (str) => {
   return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
@@ -264,10 +264,11 @@ export default {
 
     const onTabClick=(pane, tabName, ev)=>{
       let data={pane, tabName, ev}
-      
+      console.log('into tabClick');
       emit('TabClick',data);
     }
     const onTabRemove=(pane, ev)=>{
+      console.log(pane,ev);
        let data={pane, ev}
     
       emit('TabRemove',data);
@@ -295,14 +296,15 @@ export default {
       : null
       let panes=props.panes;
       let type=props.type;
+      console.log(panes);
        const tabs=panes.map((pane, index)=>{
            
           let tabName = pane.name || pane.index || index;
           // 获取实例的isClosable;
-        const closable = pane.closable || editable.value;  
+        const closable = pane.isClosable || editable.value;  
         pane.state.index = `${index}` ;
         const btnClose = closable
-          ? <span class="el-icon-close" on-click={(ev) => { onTabRemove(pane, ev); }}></span>
+          ? <span class="el-icon-close" onClick={(ev) => { onTabRemove(pane, ev); }}></span>
           : null;
         const tabLabelContent = pane.labelContent || pane.label||(pane.$slots.label&&pane.$slots.label());
         const tabindex = pane.active ? 0 : -1;
@@ -361,7 +363,7 @@ export default {
             role="tablist"
             on-keydown={changeTab}
           >
-            {!type ? <tab-bar tabs={panes}></tab-bar> : null}
+            {!type ? <tab-bar   tabs={panes}></tab-bar> : null}
             {tabs}
           </div>
         </div>

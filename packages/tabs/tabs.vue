@@ -14,7 +14,7 @@
         <template v-if="editable || addable">
           <span
             class="el-tabs__new-tab"
-            on-click="{handleTabAdd}"
+            @click="handleTabAdd"
             tabindex="0"
             @keydown="handleKeyDown"
           >
@@ -27,7 +27,7 @@
           :currentName="currentName"
           :editable="editable"
           :type="type"
-           :tabPosition='tabPosition'
+          :tabPosition='tabPosition'
           :panes="panesArr"
           :stretch="stretch"
           @TabRemove="handleTabRemove"
@@ -42,13 +42,15 @@
 
     <template v-else>
       <!-- [panels, header] -->
-      <div class="el-tabs__content"> <slot></slot></div>
+      <div class="el-tabs__content"> 
+        <slot></slot>
+        </div>
 
       <div :class="['el-tabs__header', `is-${tabPosition}`]">
         <template v-if="editable || addable">
           <span
             class="el-tabs__new-tab"
-            on-click="{handleTabAdd}"
+            @click="handleTabAdd"
             tabindex="0"
             @keydown="handleKeyDown"
           >
@@ -145,6 +147,7 @@ export default {
       console.log(nav);
       if (instance.refs.nav) {
         nextTick(() => {
+          // 获取dom 实例
           instance.refs.nav.$nextTick((_) => {
             instance.refs.nav.scrollToActiveTab()
           })
@@ -241,6 +244,7 @@ export default {
       handleTabClick,
       handleTabRemove,
       editable,
+      handleTabAdd,
       panes,
       panesArr,
       nav,
