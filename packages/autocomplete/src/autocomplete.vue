@@ -157,10 +157,7 @@ export default {
     suggestionVisible(val) {
       const $input = this.getInput()
       if ($input) {
-        this.broadcast('ElAutocompleteSuggestions', 'visible', [
-          val,
-          $input.offsetWidth
-        ])
+        this.broadcast('visible', [val, $input.offsetWidth])
       }
     }
   },

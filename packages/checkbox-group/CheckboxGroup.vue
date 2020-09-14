@@ -43,7 +43,7 @@ export default {
     })
 
     watch(props.modelValue, (v) => {
-      dispatch('ElFormItem', 'el.form.change', v)
+      dispatch('el.form.change', v)
     })
 
     return {

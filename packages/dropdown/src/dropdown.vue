@@ -265,7 +265,7 @@ export default {
 
     const { broadcast, on } = useEmitter(instance)
     watch(visible, (val) => {
-      broadcast('ElDropdownMenu', 'visible', val)
+      broadcast('visible', val)
       emit('visible-change', val)
     })
 
