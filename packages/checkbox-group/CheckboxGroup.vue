@@ -6,7 +6,7 @@
 
 <script>
 import { useEmitter } from 'element-ui/src/use/emitter'
-import { provide, getCurrentInstance, computed, inject, watch } from 'vue'
+import { provide, getCurrentInstance, computed, inject } from 'vue'
 export default {
   name: 'ElCheckboxGroup',
 
