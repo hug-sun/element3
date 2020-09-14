@@ -98,11 +98,11 @@
       @focus="handleFocus"
       @blur="handleBlur"
       @keyup="debouncedOnInputChange"
-      @keydown.native.down.stop.prevent="navigateOptions('next')"
-      @keydown.native.up.stop.prevent="navigateOptions('prev')"
-      @keydown.native.enter.prevent="selectOption"
-      @keydown.native.esc.stop.prevent="visible = false"
-      @keydown.native.tab="visible = false"
+      @keydown.down.stop.prevent="navigateOptions('next')"
+      @keydown.up.stop.prevent="navigateOptions('prev')"
+      @keydown.enter.prevent="selectOption"
+      @keydown.esc.stop.prevent="visible = false"
+      @keydown.tab="visible = false"
       @paste.native="debouncedOnInputChange"
     >
       <template v-slot:prefix v-if="$slots.prefix">
@@ -869,7 +869,9 @@ export default {
         this.toggleMenu()
       } else {
         if (this.options[this.hoverIndex]) {
-          this.handleOptionSelect(this.options[this.hoverIndex])
+          this.handleOptionSelect({
+            option: this.options[this.hoverIndex]
+          })
         }
       }
     },
@@ -959,10 +961,6 @@ export default {
       } else {
         return getValueByPath(item.value, this.valueKey)
       }
-    },
-
-    search() {
-      console.log('aaaaa')
     }
   },
 
@@ -985,10 +983,6 @@ export default {
       this.handleQueryChange(e.target.value)
     })
 
-    this.on('handleOptionClick', this.handleOptionSelect)
-    this.on('setSelected', this.setSelected)
-  },
-  updated() {
     this.on('handleOptionClick', this.handleOptionSelect)
     this.on('setSelected', this.setSelected)
   },

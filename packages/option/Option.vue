@@ -51,7 +51,7 @@ export default {
   setup(props) {
     const { on, dispatch } = useEmitter()
     const select = inject('select')
-    const { ctx } = getCurrentInstance()
+    const { proxy } = getCurrentInstance()
     const { value, label, disabled, created } = toRefs(props)
     const data = reactive({
       index: -1,
@@ -128,7 +128,7 @@ export default {
 
     function hoverItem() {
       if (!disabled.value && !data.groupDisabled) {
-        select.hoverIndex = select.options.indexOf(ctx)
+        select.hoverIndex = select.options.indexOf(proxy)
       }
     }
 
@@ -165,8 +165,8 @@ export default {
       }
     })
     onBeforeMount(() => {
-      select.options.push(ctx)
-      select.cachedOptions.push(ctx)
+      select.options.push(proxy)
+      select.cachedOptions.push(proxy)
       select.optionsCount++
       select.filteredOptionsCount++
 
@@ -176,14 +176,14 @@ export default {
     onBeforeUnmount(() => {
       const { selected, multiple } = select
       const selectedOptions = multiple ? selected : [selected]
-      const index = select.cachedOptions.indexOf(ctx)
-      const selectedIndex = selectedOptions.indexOf(ctx)
+      const index = select.cachedOptions.indexOf(proxy)
+      const selectedIndex = selectedOptions.indexOf(proxy)
 
       // if option is not selected, remove it from cache
       if (index > -1 && selectedIndex < 0) {
         select.cachedOptions.splice(index, 1)
       }
-      select.onOptionDestroy(select.options.indexOf(ctx))
+      select.onOptionDestroy(select.options.indexOf(proxy))
     })
 
     return {
