@@ -276,12 +276,12 @@ function useDispatchFiled(props) {
 
   onMounted(() => {
     if (props.prop) {
-      dispatch('ElForm', 'el.form.addField', ctx)
+      dispatch('el.form.addField', ctx)
     }
   })
 
   onBeforeUnmount(() => {
-    dispatch('ElForm', 'el.form.removeField', ctx)
+    dispatch('el.form.removeField', ctx)
   })
 }
 
@@ -465,7 +465,7 @@ function useValidate(props, elForm, getFilteredRule, getRules) {
       validateDisabled.value = false
     })
 
-    broadcast('ElTimeSelect', 'fieldReset', initialValue.value)
+    broadcast('fieldReset', initialValue.value)
   }
 
   return {

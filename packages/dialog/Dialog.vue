@@ -166,8 +166,8 @@ export default {
       }
     }
     const updatePopper = () => {
-      broadcast('ElSelectDropdown', 'updatePopper')
-      broadcast('ElDropdownMenu', 'updatePopper')
+      broadcast('updatePopper')
+      broadcast('updatePopper')
     }
     const afterEnter = () => {
       emit('opened')

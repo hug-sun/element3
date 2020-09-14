@@ -33,7 +33,7 @@ export default {
     const { command } = toRefs(props)
 
     const handleClick = () => {
-      dispatch('ElDropdown', 'menu-item-click', command?.value, instance.proxy)
+      dispatch('menu-item-click', command?.value, instance.proxy)
     }
 
     return {

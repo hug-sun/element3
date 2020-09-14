@@ -90,8 +90,7 @@ export default {
 
   watch: {
     currentLabel() {
-      if (!this.created && !this.select.remote)
-        this.dispatch('ElSelect', 'setSelected')
+      if (!this.created && !this.select.remote) this.dispatch('setSelected')
     },
     value(val, oldVal) {
       const { remote, valueKey } = this.select
@@ -104,7 +103,7 @@ export default {
         ) {
           return
         }
-        this.dispatch('ElSelect', 'setSelected')
+        this.dispatch('setSelected')
       }
     }
   },
@@ -148,7 +147,7 @@ export default {
 
     selectOptionClick() {
       if (this.disabled !== true && this.groupDisabled !== true) {
-        this.dispatch('ElSelect', 'handleOptionClick', [this, true])
+        this.dispatch('handleOptionClick', [this, true])
       }
     },
 

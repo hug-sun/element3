@@ -302,7 +302,7 @@ export default {
 
         this.$emit('input', val)
         this.$emit('change', val)
-        this.dispatch('ElFormItem', 'el.form.change', [val])
+        this.dispatch('el.form.change', [val])
       }
     },
     options: {

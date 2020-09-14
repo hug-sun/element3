@@ -317,7 +317,7 @@ describe('Dropdown', () => {
       await triggerElm.trigger('mouseenter')
       await wait(300)
       const zIndex1 = wrapper.findComponent(DropdownMenu).element.style.zIndex
-      dropdown.broadcast('ElDropdownMenu', 'updatePopper')
+      dropdown.broadcast('updatePopper')
       await wait(400)
       const zIndex2 = wrapper.findComponent(DropdownMenu).element.style.zIndex
       expect(zIndex2 > zIndex1).toBeTruthy()
