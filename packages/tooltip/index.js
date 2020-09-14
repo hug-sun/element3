@@ -1,4 +1,4 @@
-import Tooltip from './src/main'
+import Tooltip from './Tooltip'
 
 /* istanbul ignore next */
 Tooltip.install = function (app) {
