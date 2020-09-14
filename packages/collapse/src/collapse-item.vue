@@ -105,12 +105,12 @@ export default {
     },
     handleHeaderClick() {
       if (this.disabled) return
-      this.dispatch('ElCollapse', 'item-click', this)
+      this.dispatch('item-click', this)
       this.focusing = false
       this.isClick = true
     },
     handleEnterClick() {
-      this.dispatch('ElCollapse', 'item-click', this)
+      this.dispatch('item-click', this)
     }
   }
 }

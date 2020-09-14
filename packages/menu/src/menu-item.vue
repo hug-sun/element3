@@ -114,7 +114,7 @@ export default {
     },
     handleClick() {
       if (!this.disabled) {
-        this.dispatch('ElMenu', 'item-click', this)
+        this.dispatch('item-click', this)
         this.$emit('click', this)
       }
     }

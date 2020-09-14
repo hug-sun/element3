@@ -242,7 +242,7 @@ export default {
           resizeTextarea()
         })
         if (unref(validateEvent)) {
-          dispatch('ElFormItem', 'el.form.change', val)
+          dispatch('el.form.change', val)
         }
       }
     )

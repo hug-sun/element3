@@ -220,7 +220,7 @@ export default {
     },
 
     handleChildNodeExpand(nodeData, node, instance) {
-      this.broadcast('ElTreeNode', 'tree-node-expand', node);
+      this.broadcast('tree-node-expand', node);
       this.tree.$emit('node-expand', nodeData, node, instance);
     },
 

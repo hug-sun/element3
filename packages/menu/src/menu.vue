@@ -154,7 +154,7 @@ export default {
 
     collapse(value) {
       if (value) this.openedMenus = [];
-      this.broadcast('ElSubmenu', 'toggle-collapse', value);
+      this.broadcast('toggle-collapse', value);
     }
   },
   methods: {

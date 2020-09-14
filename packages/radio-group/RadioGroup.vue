@@ -47,7 +47,7 @@ export default {
     const elFormItem = inject('elFormItem', { ctx: {} })
 
     watch(modelValue, (v) => {
-      dispatch('ElFormItem', 'el.form.change', v)
+      dispatch('el.form.change', v)
     })
 
     const { handleKeydown } = useKeyDown()

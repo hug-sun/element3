@@ -35,7 +35,7 @@ export default {
 
   watch: {
     disabled(val) {
-      this.broadcast('ElOption', 'handleGroupDisabled', val)
+      this.broadcast('handleGroupDisabled', val)
     }
   },
 
@@ -54,7 +54,7 @@ export default {
 
   mounted() {
     if (this.disabled) {
-      this.broadcast('ElOption', 'handleGroupDisabled', this.disabled)
+      this.broadcast('handleGroupDisabled', this.disabled)
     }
   }
 }
