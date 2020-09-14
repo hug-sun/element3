@@ -69,7 +69,7 @@ export default {
     })
 
     const currentLabel = computed(() => {
-      return unref(label) || (unref(isObject) ? '' : unref(value))
+      return unref(label) || (isObject ? '' : unref(value))
     })
 
     const currentValue = computed(() => {
@@ -87,7 +87,7 @@ export default {
     const limitReached = computed(() => {
       if (select.multiple) {
         return (
-          !unref(itemSelected) &&
+          !itemSelected &&
           (select.modelValue || []).length >= select.multipleLimit &&
           select.multipleLimit > 0
         )
