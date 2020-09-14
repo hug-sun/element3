@@ -20,13 +20,13 @@ describe('useEmitter', () => {
       setup() {
         const { broadcast } = useEmitter()
         onMounted(() => {
-          broadcast('foo', 1)
+          broadcast('foo', 1, 2)
         })
       }
     }
     mount(Comp)
 
-    expect(handleFoo).toBeCalledWith(1)
+    expect(handleFoo).toBeCalledWith(1, 2)
   })
 
   it('当使用 broadcast 时，如果 a 组件不是 b 组件的子组件的话，那么不会触发事件', () => {
@@ -64,7 +64,7 @@ describe('useEmitter', () => {
       template: '<div></div>',
       setup() {
         const { dispatch } = useEmitter()
-        dispatch('foo', 1)
+        dispatch('foo', 1, 2)
       }
     }
     const Comp = {
@@ -79,7 +79,7 @@ describe('useEmitter', () => {
     }
     mount(Comp)
 
-    expect(handleFoo).toBeCalledWith(1)
+    expect(handleFoo).toBeCalledWith(1, 2)
   })
 
   it('当使用 dispatch 时，如果 a 组件不是 b 组件的父组件的话，那么不会触发事件', () => {
@@ -152,14 +152,15 @@ describe('useEmitter', () => {
 
         on('emit', handleEmit)
 
-        emit('emit', 1)
+        emit('emit', 1, 2)
         emit('emit', { test: 'emit' })
       }
     }
 
     mount(Comp)
 
-    expect(handleEmit).toBeCalledTimes(2)
+    expect(handleEmit).toHaveBeenNthCalledWith(1, 1, 2)
+    expect(handleEmit).toHaveBeenNthCalledWith(2, { test: 'emit' })
   })
 
   it('once ', () => {

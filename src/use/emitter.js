@@ -16,14 +16,14 @@ export function useEmitter() {
       const { value, type, emitComponentInstance } = e
       if (type === BROADCAST) {
         if (isChildComponent(currentComponentInstance, emitComponentInstance)) {
-          handler && handler(value)
+          handler && handler(...value)
         }
       } else if (type === DISPATCH) {
         if (isChildComponent(emitComponentInstance, currentComponentInstance)) {
-          handler && handler(value)
+          handler && handler(...value)
         }
       } else {
-        handler && handler(value)
+        handler && handler(...value)
       }
     }
 
@@ -32,19 +32,19 @@ export function useEmitter() {
     emitter.on(type, handleWrapper)
   }
 
-  function broadcast(type, evt) {
+  function broadcast(type, ...args) {
     emitter.emit(type, {
       type: BROADCAST,
       emitComponentInstance: currentComponentInstance,
-      value: evt
+      value: args
     })
   }
 
-  function dispatch(type, evt) {
+  function dispatch(type, ...args) {
     emitter.emit(type, {
       type: DISPATCH,
       emitComponentInstance: currentComponentInstance,
-      value: evt
+      value: args
     })
   }
 
@@ -52,9 +52,9 @@ export function useEmitter() {
     emitter.off(type, handler[wrapper])
   }
 
-  function emit(type, evt) {
+  function emit(type, ...args) {
     emitter.emit(type, {
-      value: evt
+      value: args
     })
   }
 
