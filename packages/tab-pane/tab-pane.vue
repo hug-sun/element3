@@ -73,6 +73,7 @@ export default {
     });
 
     const  paneName =computed(()=>{
+      console.log(props.name,state.index)
       return props.name || state.index
     });
      return {

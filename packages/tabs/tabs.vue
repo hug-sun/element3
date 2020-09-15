@@ -119,7 +119,7 @@ export default {
   emits: ['tab-click','update:modelValue', 'edit', 'tab-remove', 'tab-add', 'input'],
 
   setup(props, { attrs, emit, slots }){
-    console.log(props);
+ 
     const {  editable, stretch } = toRefs(props)
     const currentName = ref(props.value || props.modelValue)
     
@@ -143,13 +143,13 @@ export default {
     })
 
     watch(currentName, (currentName, prevCurrentName) => {
-      console.log(instance.refs.nav)
+     
       console.log(nav);
-      if (instance.refs.nav) {
+      if (nav) {
         nextTick(() => {
           // 获取dom 实例
-          instance.refs.nav.$nextTick((_) => {
-            instance.refs.nav.scrollToActiveTab()
+          nav.$nextTick((_) => {
+            nav.scrollToActiveTab()
           })
         })
       }

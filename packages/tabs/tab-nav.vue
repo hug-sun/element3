@@ -43,7 +43,6 @@ export default {
 
    
 
-      console.log(props.tabPosition);
      const navStyle=computed(()=>{
 
        const dir =['top', 'bottom'].indexOf(props.tabPosition) !== -1 ? 'X' : 'Y'
@@ -264,11 +263,11 @@ export default {
 
     const onTabClick=(pane, tabName, ev)=>{
       let data={pane, tabName, ev}
-      console.log('into tabClick');
+ 
       emit('TabClick',data);
     }
     const onTabRemove=(pane, ev)=>{
-      console.log(pane,ev);
+    
        let data={pane, ev}
     
       emit('TabRemove',data);
@@ -277,7 +276,7 @@ export default {
     
 
     return () =>{
-      // const tabPosition=getTabPosition();
+
       const scrollBtn = state.scrollable
       ? [
           <span
@@ -296,7 +295,6 @@ export default {
       : null
       let panes=props.panes;
       let type=props.type;
-      console.log(panes);
        const tabs=panes.map((pane, index)=>{
            
           let tabName = pane.name || pane.index || index;

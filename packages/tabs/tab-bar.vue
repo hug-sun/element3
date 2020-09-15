@@ -25,7 +25,7 @@ setup(props,ctx){
   const barStyle=useBarStyle(tabs);
 
   const  tabPosition=ref(getTabPosition());
-  console.log(tabPosition);
+
   return {
       barStyle,
       tabPosition
@@ -45,6 +45,7 @@ function getTabPosition(){
 const useBarStyle=(tabs)=>{
 
    const tabPosition= getTabPosition()
+
   const barStyle=computed({
     get(){
        const style = {}
@@ -65,12 +66,13 @@ const useBarStyle=(tabs)=>{
         tabs.value.every((tab, index) => {
 
           let { parent } = getCurrentInstance()
-          console.log(getCurrentInstance());
+         
           const $el = arrayFind(
-            parent.$refs.tabs || [],
+            parent.refs.tabs || [],
 
             (t) => t.id.replace('tab-', '') === tab.paneName
           )
+     
           if (!$el) {
             return false
           }
