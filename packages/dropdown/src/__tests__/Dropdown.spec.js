@@ -19,6 +19,9 @@
 // }
 
 describe('Dropdown', () => {
+  it('create', () => {
+    expect(true).toBe(true)
+  })
   // it('create', (done) => {
   //   const wrapper = mount({
   //     template: `
