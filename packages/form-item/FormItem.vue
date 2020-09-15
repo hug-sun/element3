@@ -105,7 +105,7 @@ export default {
   setup(props) {
     const isNested = ref(false)
     const elForm = inject('elForm', {})
-    const elFormItem = inject('elFormItem')
+    const elFormItem = inject('elFormItem', null)
     isNested.value = !!elFormItem
 
     useDispatchFiled(props)
