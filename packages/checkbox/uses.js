@@ -33,7 +33,7 @@ export function useModel() {
           checked === false &&
           modelValue.splice(labelIndex, 1)
         emit('update:modelValue', modelValue)
-        dispatch('ElCheckboxGroup', 'update:modelValue', modelValue)
+        dispatch('update:modelValue', modelValue)
       } else {
         emit('update:modelValue', checked ? props.trueLabel : props.falseLabel)
       }
@@ -43,7 +43,7 @@ export function useModel() {
   async function handleChange() {
     await nextTick()
     emit('change', model.value)
-    dispatch('ElCheckboxGroup', 'change', model.value)
+    dispatch('change', model.value)
   }
 
   return { model, handleChange }

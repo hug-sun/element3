@@ -433,7 +433,7 @@ export default {
         this.emitChange(this.value)
         this.userInput = null
         if (this.validateEvent) {
-          this.dispatch('ElFormItem', 'el.form.blur')
+          this.dispatch('el.form.blur')
         }
         this.$emit('blur', this)
         this.blur()
@@ -459,7 +459,7 @@ export default {
         !this.pickerVisible &&
         this.validateEvent
       ) {
-        this.dispatch('ElFormItem', 'el.form.change', val)
+        this.dispatch('el.form.change', val)
       }
     }
   },
@@ -981,7 +981,7 @@ export default {
         this.$emit('change', val)
         this.valueOnOpen = val
         if (this.validateEvent) {
-          this.dispatch('ElFormItem', 'el.form.change', val)
+          this.dispatch('el.form.change', val)
         }
       }
     },

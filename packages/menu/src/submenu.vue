@@ -180,7 +180,7 @@ export default {
       ) {
         return
       }
-      this.dispatch('ElMenu', 'submenu-click', this)
+      this.dispatch('submenu-click', this)
     },
     handleMouseenter(event, showTimeout = this.showTimeout) {
       if (
@@ -198,7 +198,7 @@ export default {
       ) {
         return
       }
-      this.dispatch('ElSubmenu', 'mouse-enter-child')
+      this.dispatch('mouse-enter-child')
       clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
         this.rootMenu.openMenu(this.index, this.indexPath)
@@ -216,7 +216,7 @@ export default {
       ) {
         return
       }
-      this.dispatch('ElSubmenu', 'mouse-leave-child')
+      this.dispatch('mouse-leave-child')
       clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
         !this.mouseInChild && this.rootMenu.closeMenu(this.index)

@@ -32,6 +32,16 @@ describe('Dialog', () => {
     expect(wrapperTrue.find('.el-dialog__headerbtn').exists()).toBe(false)
   })
 
+  it('center', () => {
+    const wrapper = mount(Dialog, {
+      props: {
+        center: true
+      }
+    })
+
+    expect(wrapper.find('.el-dialog').classes()).toContain('el-dialog--center')
+  })
+
   test('Dialog render', async () => {
     const dialog = mount(Dialog, {
       slots: {
