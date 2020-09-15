@@ -127,6 +127,9 @@ ComponentNames.forEach((name) => {
       'popconfirm',
       'drawer',
       'transfer',
+      'select',
+      'option',
+      'option-group',
       'dropdown',
       'dropdown-item',
       'dropdown-menu'
