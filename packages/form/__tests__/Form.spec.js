@@ -300,59 +300,59 @@ describe('Form', () => {
     })
   })
 
-  // it('validate event', (done) => {
-  //   const wrapper = mount({
-  //     template: `<el-form :model="form" :rules="rules" ref="form" @validate="onValidate">
-  //       <el-form-item label="活动名称" prop="name">
-  //         <input v-model="form.name" />
-  //       </el-form-item>
-  //     </el-form>`,
-  //     components,
-  //     data() {
-  //       return {
-  //         form: {
-  //           name: ''
-  //         },
-  //         valid: {
-  //           name: null
-  //         },
-  //         error: {
-  //           name: null
-  //         },
-  //         rules: {
-  //           name: [
-  //             { required: true, message: '请输入活动名称', trigger: 'change' }
-  //           ]
-  //         }
-  //       }
-  //     },
-  //     methods: {
-  //       onValidate(prop, valid, msg) {
-  //         this.valid[prop] = valid
-  //         this.error[prop] = msg
-  //       },
-  //       setValue(prop, value) {
-  //         this.form[prop] = value
-  //       }
-  //     }
-  //   })
+  it('validate event', (done) => {
+    const wrapper = mount({
+      template: `<el-form :model="form" :rules="rules" ref="form" @validate="onValidate">
+        <el-form-item label="活动名称" prop="name">
+          <input v-model="form.name" />
+        </el-form-item>
+      </el-form>`,
+      components,
+      data() {
+        return {
+          form: {
+            name: ''
+          },
+          valid: {
+            name: null
+          },
+          error: {
+            name: null
+          },
+          rules: {
+            name: [
+              { required: true, message: '请输入活动名称', trigger: 'change' }
+            ]
+          }
+        }
+      },
+      methods: {
+        onValidate(prop, valid, msg) {
+          this.valid[prop] = valid
+          this.error[prop] = msg
+        },
+        setValue(prop, value) {
+          this.form[prop] = value
+        }
+      }
+    })
 
-  //   wrapper.vm.setValue('name', 'name')
-  //   wrapper.findComponent(FormItem).vm.$emit('el.form.change')
+    wrapper.vm.setValue('name', 'name')
+    wrapper.findComponent(FormItem).vm.validate('change')
 
-  //   setTimeout(() => {
-  //     expect(wrapper.vm.valid.name).toEqual(true)
-  //     expect(wrapper.vm.error.name).toEqual(null)
+    setTimeout(() => {
+      expect(wrapper.vm.valid.name).toEqual(true)
+      expect(wrapper.vm.error.name).toEqual(null)
 
-  //     wrapper.vm.setValue('name', '')
-  //     wrapper.findComponent(FormItem).vm.$emit('el.form.change')
-  //     setTimeout(() => {
-  //       expect(wrapper.vm.valid.name).toEqual(false)
-  //       expect(wrapper.vm.error.name).toEqual('请输入活动名称')
-  //       done()
-  //     }, 100)
-  //   }, 100)
-  // })
+      wrapper.vm.setValue('name', '')
+      wrapper.findComponent(FormItem).vm.validate('change')
+      setTimeout(() => {
+        expect(wrapper.vm.valid.name).toEqual(false)
+        expect(wrapper.vm.error.name).toEqual('请输入活动名称')
+        done()
+      }, 100)
+    }, 100)
+  })
 
   it('modify rules', async () => {
     const rules = {
