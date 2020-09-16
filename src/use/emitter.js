@@ -52,12 +52,6 @@ export function useEmitter() {
     emitter.off(type, handler[wrapper])
   }
 
-  function emit(type, ...args) {
-    emitter.emit(type, {
-      value: args
-    })
-  }
-
   function once(type, handler) {
     const handleOn = (...args) => {
       handler && handler(...args)
@@ -71,7 +65,6 @@ export function useEmitter() {
     broadcast,
     dispatch,
     off,
-    emit,
     once
   }
 }
