@@ -2,7 +2,7 @@ import Checkbox from '../../checkbox/Checkbox'
 import CheckboxButton from '../../checkbox-button/CheckboxButton'
 import CheckboxGroup from '../CheckboxGroup'
 import { mount } from '@vue/test-utils'
-import { ref, nextTick, h } from 'vue'
+import { ref, h, nextTick } from 'vue'
 
 describe('CheckboxGroup.vue and Checkbox.vue', () => {
   describe('props', () => {
@@ -183,7 +183,6 @@ describe('CheckboxGroup.vue and Checkbox.vue', () => {
           default: ['A', 'B', 'C'].map((label) => h(Checkbox, { label }))
         }
       })
-
       await wrapper
         .findAllComponents({ name: 'ElCheckbox' })[2]
         .trigger('click')
@@ -353,7 +352,6 @@ describe('CheckboxGroup.vue and CheckboxButton.vue', () => {
           default: ['A', 'B', 'C'].map((label) => h(CheckboxButton, { label }))
         }
       })
-
       await wrapper
         .findAllComponents({ name: 'ElCheckboxButton' })[2]
         .trigger('click')

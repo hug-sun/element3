@@ -206,7 +206,7 @@ export const useInteractive = (
     focused.value = false
     emit('blur', event)
     if (unref(validateEvent)) {
-      instance.proxy.dispatch('ElFormItem', 'el.form.blur', [unref(modelValue)])
+      instance.proxy.dispatch('el.form.blur', [unref(modelValue)])
     }
   }
 
