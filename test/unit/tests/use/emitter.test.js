@@ -143,42 +143,28 @@ describe('useEmitter', () => {
     expect(count).toBe(1)
   })
 
-  it('使用 emit 可以发送事件', () => {
-    const handleEmit = jest.fn()
-    const Comp = {
-      template: '<div></div>',
-      setup() {
-        const { on, emit } = useEmitter()
-
-        on('emit', handleEmit)
-
-        emit('emit', 1, 2)
-        emit('emit', { test: 'emit' })
-      }
-    }
-
-    mount(Comp)
-
-    expect(handleEmit).toHaveBeenNthCalledWith(1, 1, 2)
-    expect(handleEmit).toHaveBeenNthCalledWith(2, { test: 'emit' })
-  })
-
   it('once ', () => {
-    const handleEmit = jest.fn()
-    const Comp = {
+    const handleFoo = jest.fn()
+    const Foo = {
       template: '<div></div>',
       setup() {
-        const { once, emit } = useEmitter()
-
-        once('emit', handleEmit)
-
-        emit('emit', 1)
-        emit('emit', 2)
+        const { dispatch } = useEmitter()
+        dispatch('foo')
+        dispatch('foo')
       }
     }
-
+    const Comp = {
+      components: {
+        Foo
+      },
+      template: '<div><Foo></Foo></div>',
+      setup() {
+        const { once } = useEmitter()
+        once('foo', handleFoo)
+      }
+    }
     mount(Comp)
 
-    expect(handleEmit).toBeCalledTimes(1)
+    expect(handleFoo).toHaveBeenCalledTimes(1)
   })
 })
