@@ -1,41 +1,37 @@
-import { mount as $mount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import Image from '../Image.vue'
 import { IMAGE_FAIL, IMAGE_SUCCESS as src } from './image'
-
-const mount = async (Component, _options) => {
-  const options = _options || {}
-  options.data =
-    options.data ||
-    function () {
-      return {
-        loading: false
-      }
-    }
-  const wrapper = await $mount(Component, options)
-  return wrapper
-}
 
 describe('Image.vue', () => {
   describe('Attributes', () => {
     it('src', async () => {
-      const wrapper = await mount(Image, {
+      const Wrapper = mount(Image, {
         props: {
           src
         }
       })
-      expect(wrapper.find('.el-image__inner').attributes('src')).toBe(src)
+      Wrapper.vm.loading = false
+      Wrapper.vm.error = false
+      nextTick(() => {
+        expect(Wrapper.find('.el-image__inner').attributes('src')).toBe(src)
+      })
     })
 
     it('fit', async () => {
-      const wrapper = await mount(Image, {
+      const image = mount(Image, {
         props: {
           src,
           fit: 'fill'
         }
       })
-      expect(wrapper.find('.el-image__inner').attributes('style')).toContain(
-        'object-fit: fill;'
-      )
+      image.vm.loading = false
+      image.vm.error = false
+      nextTick(() => {
+        expect(image.find('.el-image__inner').attributes('style')).toContain(
+          'object-fit: fill;'
+        )
+      })
     })
 
     it('alt', async () => {
@@ -45,9 +41,13 @@ describe('Image.vue', () => {
           alt: 'hello world!'
         }
       })
-      expect(wrapper.find('.el-image__inner').attributes('alt')).toBe(
-        'hello world!'
-      )
+      wrapper.vm.loading = false
+      wrapper.vm.error = false
+      nextTick(() => {
+        expect(wrapper.find('.el-image__inner').attributes('alt')).toBe(
+          'hello world!'
+        )
+      })
     })
     test.todo('referrer-policy')
     test.todo('lazy')
@@ -57,14 +57,18 @@ describe('Image.vue', () => {
       const wrapper = await mount(Image, {
         props: {
           previewSrcList: [src, IMAGE_FAIL]
-        },
-        data() {
-          return {
-            showViewer: true
-          }
         }
       })
-      expect(wrapper.find('.el-image-viewer__img').attributes('src')).toBe(src)
+      wrapper.vm.loading = false
+      wrapper.vm.error = false
+      nextTick(() => {
+        wrapper.find('.el-image__preview').trigger('click')
+        setTimeout(() => {
+          expect(wrapper.find('.el-image-viewer__img').attributes('src')).toBe(
+            src
+          )
+        }, 10)
+      })
     })
 
     it('z-index', async () => {
@@ -72,16 +76,18 @@ describe('Image.vue', () => {
         props: {
           previewSrcList: [src, IMAGE_FAIL],
           zIndex: 2020
-        },
-        data() {
-          return {
-            showViewer: true
-          }
         }
       })
-      expect(
-        wrapper.find('.el-image-viewer__wrapper').attributes('style')
-      ).toContain('z-index: 2020')
+      wrapper.vm.loading = false
+      wrapper.vm.error = false
+      nextTick(() => {
+        wrapper.find('.el-image__preview').trigger('click')
+        setTimeout(() => {
+          expect(
+            wrapper.find('.el-image-viewer__wrapper').attributes('style')
+          ).toContain('z-index: 2020')
+        }, 10)
+      })
     })
   })
 
@@ -92,33 +98,39 @@ describe('Image.vue', () => {
 
   describe('Slots', () => {
     it('placeholder', async () => {
-      const wrapper = await $mount(Image, {
-        src,
+      const wrapper = await mount(Image, {
+        props: {
+          src
+        },
         slots: {
           placeholder: () => {
             return 'loading...'
           }
         }
       })
-      expect(wrapper.find('.el-image').text()).toBe('loading...')
+      wrapper.vm.loading = true
+      wrapper.vm.error = false
+      nextTick(() => {
+        expect(wrapper.find('.el-image').text()).toBe('loading...')
+      })
     })
 
     it('error', async () => {
-      const wrapper = await $mount(Image, {
-        src: IMAGE_FAIL,
+      const wrapper = mount(Image, {
+        props: {
+          src: IMAGE_FAIL
+        },
         slots: {
           error: () => {
-            return 'error!'
-          }
-        },
-        data() {
-          return {
-            loading: false,
-            error: true
+            return 'error'
           }
         }
       })
-      expect(wrapper.find('.el-image').text()).toBe('error!')
+      wrapper.vm.loading = false
+      wrapper.vm.error = true
+      nextTick(() => {
+        expect(wrapper.find('.el-image').text()).toBe('error')
+      })
     })
   })
 })

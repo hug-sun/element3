@@ -102,12 +102,13 @@ export default {
     const self = getCurrentInstance().ctx
 
     const imageStyle = computed(() => {
-      const { fit } = self
       if (
-        //! this.$isServer &&
+        // ! this.$isServer &&
         fit
       ) {
-        return isSupportObjectFit() ? { 'object-fit': fit } : getImageStyle(fit)
+        return isSupportObjectFit()
+          ? { 'object-fit': unref(fit) }
+          : getImageStyle(fit)
       }
       return {}
     })
@@ -140,18 +141,6 @@ export default {
 
     watch(show, (val) => {
       val && loadImage()
-    })
-
-    onMounted(() => {
-      if (lazy.value) {
-        addLazyLoadListener()
-      } else {
-        loadImage()
-      }
-    })
-
-    onBeforeUnmount(() => {
-      lazy && removeLazyLoadListener()
     })
 
     const loadImage = () => {
@@ -278,6 +267,18 @@ export default {
       document.body.style.overflow = prevOverflow
       showViewer.value = false
     }
+
+    onMounted(() => {
+      if (lazy.value) {
+        addLazyLoadListener()
+      } else {
+        loadImage()
+      }
+    })
+
+    onBeforeUnmount(() => {
+      lazy && removeLazyLoadListener()
+    })
 
     return {
       t,
