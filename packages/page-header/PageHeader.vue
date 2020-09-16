@@ -26,6 +26,7 @@ export default {
     },
     content: String
   },
+  emits: ['back'],
   setup(props, ctx) {
     const { title, content } = toRefs(props)
     const handleClick = (evt) => {
