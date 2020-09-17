@@ -1,7 +1,101 @@
+<template>
+  <div>
+    <UploadList
+      :disabled="uploadDisabled"
+      :listType="listType"
+      :files="uploadFiles"
+      @remove="handleRemove"
+      :handlePreview="onPreview"
+      v-if="listType === 'picture-card' && showFileList"
+    >
+      <template v-slot:file="props">
+        <slot name="file" :file="props.file"></slot>
+      </template>
+    </UploadList>
+
+    <div v-if="$slots.trigger">
+      <upload
+        :type="type"
+        :drag="drag"
+        :action="action"
+        :multiple="multiple"
+        :before-upload="beforeUpload"
+        :with-credentials="withCredentials"
+        :headers="headers"
+        :name="name"
+        :data="data"
+        :accept="accept"
+        :fileList="uploadFiles"
+        :autoUpload="autoUpload"
+        :listType="listType"
+        :disabled="uploadDisabled"
+        :limit="limit"
+        @exceed="onExceed"
+        @start="handleStart"
+        @progress="handleProgress"
+        @success="handleSuccess"
+        @error="handleError"
+        @preview="onPreview"
+        @remove="handleRemove"
+        :http-request="httpRequest"
+        ref="upload-inner"
+      >
+        <slot name="trigger"></slot>
+        <slot></slot>
+      </upload>
+      <slot></slot>
+    </div>
+    <upload
+      :type="type"
+      :drag="drag"
+      :action="action"
+      :multiple="multiple"
+      :before-upload="beforeUpload"
+      :with-credentials="withCredentials"
+      :headers="headers"
+      :name="name"
+      :data="data"
+      :accept="accept"
+      :fileList="uploadFiles"
+      :autoUpload="autoUpload"
+      :listType="listType"
+      :disabled="uploadDisabled"
+      :limit="limit"
+      @exceed="onExceed"
+      @start="handleStart"
+      @progress="handleProgress"
+      @success="handleSuccess"
+      @error="handleError"
+      @preview="onPreview"
+      @remove="handleRemove"
+      :http-request="httpRequest"
+      ref="upload-inner"
+      v-else
+    >
+      <slot name="trigger"></slot>
+      <slot></slot>
+    </upload>
+
+    <slot name="tip"></slot>
+
+    <UploadList
+      :disabled="uploadDisabled"
+      :listType="listType"
+      :files="uploadFiles"
+      @remove="handleRemove"
+      :handlePreview="onPreview"
+      v-if="listType !== 'picture-card' && showFileList"
+    >
+      <template v-slot:file="props">
+        <slot name="file" :file="props.file"></slot>
+      </template>
+    </UploadList>
+  </div>
+</template>
+
 <script>
 import UploadList from './upload-list'
 import Upload from './upload'
-import ElProgress from 'element-ui/packages/progress'
 import Migrating from 'element-ui/src/mixins/migrating'
 
 function noop() {}
@@ -12,7 +106,6 @@ export default {
   mixins: [Migrating],
 
   components: {
-    ElProgress,
     UploadList,
     Upload
   },
@@ -264,73 +357,6 @@ export default {
         URL.revokeObjectURL(file.url)
       }
     })
-  },
-
-  render(h) {
-    let uploadList
-
-    if (this.showFileList) {
-      uploadList = (
-        <UploadList
-          disabled={this.uploadDisabled}
-          listType={this.listType}
-          files={this.uploadFiles}
-          on-remove={this.handleRemove}
-          handlePreview={this.onPreview}
-        >
-          {(props) => {
-            if (this.$scopedSlots.file) {
-              return this.$scopedSlots.file({
-                file: props.file
-              })
-            }
-          }}
-        </UploadList>
-      )
-    }
-
-    const uploadData = {
-      props: {
-        type: this.type,
-        drag: this.drag,
-        action: this.action,
-        multiple: this.multiple,
-        'before-upload': this.beforeUpload,
-        'with-credentials': this.withCredentials,
-        headers: this.headers,
-        name: this.name,
-        data: this.data,
-        accept: this.accept,
-        fileList: this.uploadFiles,
-        autoUpload: this.autoUpload,
-        listType: this.listType,
-        disabled: this.uploadDisabled,
-        limit: this.limit,
-        'on-exceed': this.onExceed,
-        'on-start': this.handleStart,
-        'on-progress': this.handleProgress,
-        'on-success': this.handleSuccess,
-        'on-error': this.handleError,
-        'on-preview': this.onPreview,
-        'on-remove': this.handleRemove,
-        'http-request': this.httpRequest
-      },
-      ref: 'upload-inner'
-    }
-
-    const trigger = this.$slots.trigger || this.$slots.default
-    const uploadComponent = <upload {...uploadData}>{trigger}</upload>
-
-    return (
-      <div>
-        {this.listType === 'picture-card' ? uploadList : ''}
-        {this.$slots.trigger
-          ? [uploadComponent, this.$slots.default]
-          : uploadComponent}
-        {this.$slots.tip}
-        {this.listType !== 'picture-card' ? uploadList : ''}
-      </div>
-    )
   }
 }
 </script>
