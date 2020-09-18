@@ -1,7 +1,7 @@
 /*
  * @Author: Mr Chang
  * @Date: 2020-09-17 16:36:34
- * @LastEditTime: 2020-09-18 15:59:52
+ * @LastEditTime: 2020-09-18 17:14:36
  * @LastEditors: Mr Chang
  * @Description: 单元测试
  * @FilePath: \element3\packages\color-picker\__tests__\color-picker.spec.js
@@ -95,26 +95,7 @@ describe('ColorPicker', () => {
     const input = document.querySelector('.el-color-dropdown__value input')
     expect(input.value.trim().toUpperCase()).toEqual('#20A0FF')
   })
-
-  // it('should init the right color when open', async () => {
-  //   const modelValue = ref('#0f0')
-  //   const wrapper = mount(ColorPicker, {
-  //     props: {
-  //       modelValue,
-  //       'onUpdate:modelValue'(v) {
-  //         modelValue.value = v
-  //       }
-  //     }
-  //   })
-  //   await wrapper.find('.el-color-picker__trigger').trigger('click')
-  //   const dropdown = document.querySelector('.el-color-dropdown__btn')
-  //   dropdown.click()
-
-  //   await nextTick()
-  //   const hueBar = document.querySelector('.el-color-hue-slider__thumb')
-  //   const top = parseInt(hueBar.style.top, 10)
-  //   expect(top > 10).toBe(true)
-  // })
+  test.todo('should init the right color when open')
 
   it('should clear a color when clear button click', async () => {
     const wrapper = mount({
@@ -172,40 +153,7 @@ describe('ColorPicker', () => {
     expect(picker.vm.color._hue > 0).toBe(true)
   })
 
-  // it('should change hue when saturation is zero', async () => {
-  //   const wrapper = mount({
-  //     template: `
-  //       <el-color-picker v-model="color"></el-color-picker>
-  //     `,
-  //     components: {
-  //       [ColorPicker.name]: ColorPicker
-  //     },
-  //     setup() {
-  //       const color = ref('#FFFFFF')
-  //       return {
-  //         color
-  //       }
-  //     }
-  //   })
-  //   await wrapper.find('.el-color-picker__trigger').trigger('click')
-
-  //   const hueBar = wrapper.findComponent({ name: 'el-color-hue-slider' })
-  //   hueBar.element.getBoundingClientRect = jest.fn(() => ({
-  //     bottom: 626,
-  //     height: 180,
-  //     left: 923,
-  //     right: 935,
-  //     top: 446,
-  //     width: 12,
-  //     x: 923,
-  //     y: 446
-  //   }))
-
-  //   hueBar.vm.handleClick({ target: null, clientX: 0, clientY: 1000 })
-  //   await nextTick()
-  //   const thumb = document.querySelector('.el-color-hue-slider__thumb')
-  //   expect(parseInt(thumb.style.top, 10) > 0).toBe(true)
-  // })
+  test.todo('should change hue when saturation is zero')
 
   it('should change alpha when clicking the alpha bar', async () => {
     const wrapper = mount({
