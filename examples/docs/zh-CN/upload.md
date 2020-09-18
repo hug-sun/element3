@@ -17,7 +17,9 @@
   :on-exceed="handleExceed"
   :file-list="fileList">
   <el-button size="small" type="primary">点击上传</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  <template v-slot:tip>
+      <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  </template>
 </el-upload>
 <script>
   export default {
@@ -37,7 +39,7 @@
         this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
       beforeRemove(file, fileList) {
-        return this.$confirm(`确定移除 ${ file.name }？`);
+        // return this.$confirm(`确定移除 ${ file.name }？`);
       }
     }
   }
@@ -164,9 +166,11 @@
   action="#"
   list-type="picture-card"
   :auto-upload="false">
-    <i slot="default" class="el-icon-plus"></i>
-    <div slot="file" slot-scope="{file}">
-      <img
+    <template v-slot:default>
+      <i class="el-icon-plus"></i>
+    </template>
+    <template v-slot:file="{file}">
+        <img
         class="el-upload-list__item-thumbnail"
         :src="file.url" alt=""
       >
@@ -192,7 +196,8 @@
           <i class="el-icon-delete"></i>
         </span>
       </span>
-    </div>
+      
+    </template>
 </el-upload>
 <el-dialog :visible.sync="dialogVisible">
   <img width="100%" :src="dialogImageUrl" alt="">
@@ -235,7 +240,9 @@
   :file-list="fileList"
   list-type="picture">
   <el-button size="small" type="primary">点击上传</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  <template v-slot:tip>
+     <div  class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  </template>
 </el-upload>
 <script>
   export default {
@@ -269,7 +276,9 @@
   :on-change="handleChange"
   :file-list="fileList">
   <el-button size="small" type="primary">点击上传</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  <template v-slot:tip>
+  <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  </template>
 </el-upload>
 <script>
   export default {
@@ -322,9 +331,13 @@
   :on-remove="handleRemove"
   :file-list="fileList"
   :auto-upload="false">
-  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+  <template v-slot:trigger>
+  <el-button size="small" type="primary">选取文件</el-button>
+  </template>
   <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  <template v-slot:tip>
+    <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+  </template>
 </el-upload>
 <script>
   export default {

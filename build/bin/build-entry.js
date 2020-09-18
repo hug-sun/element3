@@ -110,6 +110,7 @@ ComponentNames.forEach((name) => {
       'breadcrumb',
       'breadcrumb-item',
       'dialog',
+      'upload',
       'rate',
       'divider',
       'progress',

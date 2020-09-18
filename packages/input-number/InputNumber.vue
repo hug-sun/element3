@@ -249,7 +249,7 @@ export default {
               step.value) /
             precisionFactor
         }
-        if (precision !== undefined) {
+        if (precision.value !== undefined) {
           currentValue = currentValue.toFixed(precision.value)
         }
       }

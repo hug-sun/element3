@@ -12,7 +12,7 @@ import {
 const useDrag = ({ bar, state, thumb, cursorDown }) => {
   const instance = getCurrentInstance()
   const { ctx } = instance
-  const wrap = instance.parent.ctx.wrap
+  const wrap = computed(() => instance.parent.ctx.wrap)
   const startDrag = (e) => {
     e.stopImmediatePropagation()
     cursorDown.value = true
@@ -36,8 +36,8 @@ const useDrag = ({ bar, state, thumb, cursorDown }) => {
     const thumbPositionPercentage =
       ((offset - thumbClickPosition) * 100) / ctx.$el[bar.value.offset]
 
-    wrap[bar.value.scroll] =
-      (thumbPositionPercentage * wrap[bar.value.scrollSize]) / 100
+    wrap.value[bar.value.scroll] =
+      (thumbPositionPercentage * wrap.value[bar.value.scrollSize]) / 100
   }
 
   const mouseUpDocumentHandler = (e) => {
@@ -68,8 +68,8 @@ const useDrag = ({ bar, state, thumb, cursorDown }) => {
     const thumbPositionPercentage =
       ((offset - thumbHalf) * 100) / ctx.$el[bar.value.offset]
 
-    wrap[bar.value.scroll] =
-      (thumbPositionPercentage * wrap[bar.value.scrollSize]) / 100
+    wrap.value[bar.value.scroll] =
+      (thumbPositionPercentage * wrap.value[bar.value.scrollSize]) / 100
   }
 
   onUnmounted(() => {
