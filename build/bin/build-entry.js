@@ -132,7 +132,8 @@ ComponentNames.forEach((name) => {
       'option-group',
       'dropdown',
       'dropdown-item',
-      'dropdown-menu'
+      'dropdown-menu',
+      'color-picker'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
