@@ -150,7 +150,6 @@ export default {
       }
     )
     onMounted(() => {
-      // console.log(getCurrentInstance())
       referenceState.popperElm = state.popperElm
       state.referenceElm = referenceState.referenceElm
     })
