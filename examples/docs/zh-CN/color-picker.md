@@ -16,13 +16,14 @@
 </div>
 
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
-      return {
-        color1: '#409EFF',
-        color2: null
-      }
+    setup () {
+      const color1 = ref('#409EFF')
+      const color2 = ref(null)
+      return { color1, color2 }
     }
+    
   };
 </script>
 ```
@@ -35,10 +36,12 @@
 <el-color-picker v-model="color" show-alpha></el-color-picker>
 
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup() {
+      const color = ref('rgba(19, 206, 102, 0.8)')
       return {
-        color: 'rgba(19, 206, 102, 0.8)'
+        color
       }
     }
   };
@@ -57,11 +60,11 @@
 </el-color-picker>
 
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
-      return {
-        color: 'rgba(255, 69, 0, 0.68)',
-        predefineColors: [
+    setup() {
+      const color = ref('rgba(255, 69, 0, 0.68)')
+      const predefineColors = ref([
           '#ff4500',
           '#ff8c00',
           '#ffd700',
@@ -76,7 +79,10 @@
           'hsl(181, 100%, 37%)',
           'hsla(209, 100%, 56%, 0.73)',
           '#c7158577'
-        ]
+        ])
+      return {
+        color,
+        predefineColors
       }
     }
   };
@@ -94,10 +100,12 @@
 <el-color-picker v-model="color" size="mini"></el-color-picker>
 
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup() {
+      const color = ref('#409EFF')
       return {
-        color: '#409EFF'
+        color
       }
     }
   };
@@ -108,7 +116,7 @@
 ### Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| value / v-model | 绑定值 | string | — | — |
+| modelValue / v-model | 绑定值 | string | — | — |
 | disabled | 是否禁用 | boolean | — | false |
 | size | 尺寸 | string | — | medium / small / mini |
 | show-alpha | 是否支持透明度选择 | boolean | — | false |

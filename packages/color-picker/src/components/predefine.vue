@@ -1,3 +1,11 @@
+<!--
+ * @Author: Mr Chang
+ * @Date: 2020-09-02 10:30:20
+ * @LastEditTime: 2020-09-18 15:12:00
+ * @LastEditors: Mr Chang
+ * @Description: 
+ * @FilePath: \element3\packages\color-picker\src\components\predefine.vue
+-->
 <template>
   <div class="el-color-predefine">
     <div class="el-color-predefine__colors">
@@ -15,6 +23,7 @@
 </template>
 
 <script>
+import { inject, reactive, toRefs, watch } from 'vue'
 import Color from '../color'
 
 export default {
@@ -22,16 +31,33 @@ export default {
     colors: { type: Array, required: true },
     color: { required: true }
   },
-  data() {
-    return {
-      rgbaColors: this.parseColors(this.colors, this.color)
+  setup(props) {
+    const state = reactive({
+      rgbaColors: parseColors(props.colors, props.color)
+    })
+
+    const currentColor = inject('currentColor')
+    watch(currentColor, (val) => {
+      const color = new Color()
+      color.fromString(val)
+
+      state.rgbaColors.forEach((item) => {
+        item.selected = color.compare(item)
+      })
+    })
+
+    watch(props.colors, (newVal) => {
+      state.rgbaColors = parseColors(newVal, props.color)
+    })
+
+    watch(props.color, (newVal) => {
+      state.rgbaColors = parseColors(props.colors, newVal)
+    })
+    function handleSelect(index) {
+      props.color.fromString(props.colors[index])
     }
-  },
-  methods: {
-    handleSelect(index) {
-      this.color.fromString(this.colors[index])
-    },
-    parseColors(colors, color) {
+
+    function parseColors(colors, color) {
       return colors.map((value) => {
         const c = new Color()
         c.enableAlpha = true
@@ -41,22 +67,7 @@ export default {
         return c
       })
     }
-  },
-  watch: {
-    '$parent.currentColor'(val) {
-      const color = new Color()
-      color.fromString(val)
-
-      this.rgbaColors.forEach((item) => {
-        item.selected = color.compare(item)
-      })
-    },
-    colors(newVal) {
-      this.rgbaColors = this.parseColors(newVal, this.color)
-    },
-    color(newVal) {
-      this.rgbaColors = this.parseColors(this.colors, newVal)
-    }
+    return { ...toRefs(state), handleSelect }
   }
 }
 </script>
