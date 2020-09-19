@@ -3,10 +3,9 @@ import Header from '../../header/Header.vue'
 import Main from '../../main/Main.vue'
 import { mount } from '@vue/test-utils'
 
-const text = 'my name is XiaoNing'
-
 describe('Container.vue', () => {
   test('Container render', () => {
+    const text = 'my name is XiaoNing'
     const wrapper = mount(Container, {
       slots: {
         default: text
@@ -49,11 +48,12 @@ describe('Container.vue', () => {
     }
     const wrapper = mount(TestComponent)
     // 默认没有is-vertical
-    expect(wrapper.vm.$el.classList.contains('is-vertical')).toBe(false)
+
+    expect(wrapper.classes('is-vertical')).toBe(false)
     wrapper.vm.direction = 'vertical'
     // 子元素排列方向改为vertical 时 将会添加is-vertical
     wrapper.vm.$nextTick(() => {
-      expect(wrapper.vm.$el.classList.contains('is-vertical')).toBe(true)
+      expect(wrapper.classes('is-vertical')).toBe(true)
     })
   })
 })

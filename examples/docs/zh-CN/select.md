@@ -60,12 +60,14 @@
       :disabled="item.disabled">
     </el-option>
   </el-select>
+    <p>value: {{value}}</p>
 </template>
 
 <script>
   export default {
     data() {
       return {
+        value:'',
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -241,55 +243,6 @@
 ```
 :::
 
-### 自定义模板
-
-可以自定义备选项
-
-:::demo 将自定义的 HTML 模板插入`el-option`的 slot 中即可。
-```html
-<template>
-  <el-select v-model="value" placeholder="请选择">
-    <el-option
-      v-for="item in cities"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-      <span style="float: left">{{ item.label }}</span>
-      <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-    </el-option>
-  </el-select>
-</template>
-
-<script>
-  export default {
-    data() {
-      return {
-        cities: [{
-          value: 'Beijing',
-          label: '北京'
-        }, {
-          value: 'Shanghai',
-          label: '上海'
-        }, {
-          value: 'Nanjing',
-          label: '南京'
-        }, {
-          value: 'Chengdu',
-          label: '成都'
-        }, {
-          value: 'Shenzhen',
-          label: '深圳'
-        }, {
-          value: 'Guangzhou',
-          label: '广州'
-        }],
-        value: ''
-      }
-    }
-  }
-</script>
-```
-:::
 
 ### 分组
 
@@ -341,6 +294,56 @@
             value: 'Dalian',
             label: '大连'
           }]
+        }],
+        value: ''
+      }
+    }
+  }
+</script>
+```
+:::
+
+### 自定义模板
+
+可以自定义备选项
+
+:::demo 将自定义的 HTML 模板插入`el-option`的 slot 中即可。
+```html
+<template>
+  <el-select v-model="value" placeholder="请选择">
+    <el-option
+      v-for="item in cities"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+      <span style="float: left">{{ item.label }}</span>
+      <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+    </el-option>
+  </el-select>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        cities: [{
+          value: 'Beijing',
+          label: '北京'
+        }, {
+          value: 'Shanghai',
+          label: '上海'
+        }, {
+          value: 'Nanjing',
+          label: '南京'
+        }, {
+          value: 'Chengdu',
+          label: '成都'
+        }, {
+          value: 'Shenzhen',
+          label: '深圳'
+        }, {
+          value: 'Guangzhou',
+          label: '广州'
         }],
         value: ''
       }

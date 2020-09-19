@@ -2,8 +2,9 @@
   "presets": [["@babel/preset-env", { "targets": { "node": "current" } }]],
   "plugins": [
     "syntax-dynamic-import",
-    "@ant-design-vue/babel-plugin-jsx",
-    "@babel/plugin-proposal-optional-chaining"
+    ["@vue/babel-plugin-jsx"],
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-proposal-nullish-coalescing-operator"
   ],
   "env": {
     "utils": {

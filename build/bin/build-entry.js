@@ -81,6 +81,7 @@ ComponentNames.forEach((name) => {
       'popover',
       'button',
       'button-group',
+      'calendar',
       'link',
       'dialog',
       'icon',
@@ -109,6 +110,7 @@ ComponentNames.forEach((name) => {
       'breadcrumb',
       'breadcrumb-item',
       'dialog',
+      'upload',
       'rate',
       'divider',
       'progress',
@@ -120,7 +122,6 @@ ComponentNames.forEach((name) => {
       'pagination',
       'notification',
       'page-header',
-      'message',
       'timeline',
       'timeline-item',
       'input-number',
@@ -128,7 +129,13 @@ ComponentNames.forEach((name) => {
       'steps',
       'popconfirm',
       'drawer',
-      'transfer'
+      'transfer',
+      'select',
+      'option',
+      'option-group',
+      'dropdown',
+      'dropdown-item',
+      'dropdown-menu'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换

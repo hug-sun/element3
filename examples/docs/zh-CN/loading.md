@@ -117,6 +117,7 @@
 ```
 :::
 
+
 ### 整页加载
 
 页面数据加载时显示。
@@ -128,14 +129,11 @@
   <el-button
     type="primary"
     @click="openFullScreen1"
-    v-loading.fullscreen.lock="fullscreenLoading">
+    v-loading.fullscreen.lock="fullscreenLoading"
+  >
     指令方式
   </el-button>
-  <el-button
-    type="primary"
-    @click="openFullScreen2">
-    服务方式
-  </el-button>
+  <el-button type="primary" @click="openFullScreen2"> 服务方式 </el-button>
 </template>
 
 <script>
@@ -147,26 +145,28 @@
     },
     methods: {
       openFullScreen1() {
-        this.fullscreenLoading = true;
+        this.fullscreenLoading = true
         setTimeout(() => {
-          this.fullscreenLoading = false;
-        }, 2000);
+          this.fullscreenLoading = false
+        }, 2000)
       },
-      openFullScreen2() {
+      openFullScreen2(e) {
         const loading = this.$loading({
-          lock: true,
-          text: 'Loading',
+          // lock: true,
+          // target: e.target,
+          text: 'Loading...',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
-        });
+        })
         setTimeout(() => {
-          loading.close();
-        }, 2000);
+          loading.close()
+        }, 2000)
       }
     }
   }
 </script>
 ```
+
 :::
 
 ### 服务

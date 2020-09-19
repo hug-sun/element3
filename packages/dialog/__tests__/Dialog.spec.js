@@ -8,6 +8,7 @@ describe('Dialog', () => {
         visible: true
       }
     })
+
     expect(dialog.props().title).toBe('dialog test')
     expect(dialog.find('.el-dialog__title').text()).toBe('dialog test')
   })
@@ -19,6 +20,26 @@ describe('Dialog', () => {
       }
     })
     expect(wrapper.find('.el-dialog__footer').text()).toBe('SoltFooter')
+  })
+
+  it('showClose', () => {
+    const wrapperTrue = mount(Dialog, {
+      props: {
+        showClose: false
+      }
+    })
+
+    expect(wrapperTrue.find('.el-dialog__headerbtn').exists()).toBe(false)
+  })
+
+  it('center', () => {
+    const wrapper = mount(Dialog, {
+      props: {
+        center: true
+      }
+    })
+
+    expect(wrapper.find('.el-dialog').classes()).toContain('el-dialog--center')
   })
 
   test('Dialog render', async () => {

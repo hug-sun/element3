@@ -17,11 +17,7 @@ export default {
   props: {
     disabled: Boolean
   },
-  inject: {
-    uploader: {
-      default: ''
-    }
-  },
+  inject: ['uploader'],
   data() {
     return {
       dragover: false
