@@ -286,8 +286,8 @@ export default {
     })
 
     instance.proxy.initDomOperation = initDomOperation
-    instance.proxy.dropdownSize = dropdownSize
-    instance.proxy.visible = visible
+    instance.proxy.dropdownSize = dropdownSize.value
+    instance.proxy.visible = visible.value
     instance.proxy.broadcast = broadcast
 
     provide('dropdown', instance)

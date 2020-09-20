@@ -32,7 +32,7 @@ export default {
             .toLowerCase()
             .replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
         }
-        this.tabs.every((tab, index) => {
+        this.tabs.every((tab) => {
           const $el = arrayFind(
             this.$parent.$refs.tabs || [],
             (t) => t.id.replace('tab-', '') === tab.paneName

@@ -77,14 +77,14 @@ export default {
       hoverZone.innerHTML = ''
     },
 
-    renderEmptyText(h) {
+    renderEmptyText() {
       return (
         <div class="el-cascader-menu__empty-text">
           {this.t('el.cascader.noData')}
         </div>
       )
     },
-    renderNodeList(h) {
+    renderNodeList() {
       const { menuId } = this
       const { isHoverMenu } = this.panel
       const events = { on: {} }

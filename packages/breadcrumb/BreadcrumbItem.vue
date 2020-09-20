@@ -26,7 +26,7 @@ export default {
     replace: Boolean
   },
   setup(props) {
-    const { to, replace } = toRefs(props)
+    const { replace } = toRefs(props)
     const separator = inject('separator')
     const separatorClass = inject('separatorClass')
     const link = ref(null)
@@ -34,15 +34,14 @@ export default {
     onMounted(() => {
       link.value.setAttribute('role', 'link')
       link.value.addEventListener('click', () => {
-        if (!to || !ctx.$router) return
-        replace ? ctx.$router.replace(to) : ctx.$router.push(to)
+        if (!props.to || !ctx.$router) return
+        replace ? ctx.$router.replace(props.to) : ctx.$router.push(props.to)
       })
     })
     return {
       separator,
       separatorClass,
-      link,
-      to
+      link
     }
   }
 }

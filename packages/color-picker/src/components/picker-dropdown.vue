@@ -6,7 +6,7 @@
           ref="hue"
           :color="color"
           vertical
-          style="float: right"
+          style="float: right;"
         ></hue-slider>
         <sv-panel ref="sl" :color="color"></sv-panel>
       </div>
@@ -20,7 +20,7 @@
         <span class="el-color-dropdown__value">
           <el-input
             v-model="customInput"
-            @keyup.native.enter="handleConfirm"
+            @keyup.enter="handleConfirm"
             @blur="handleConfirm"
             :validate-event="false"
             size="mini"

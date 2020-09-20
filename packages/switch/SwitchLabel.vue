@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { toRefs } from 'vue'
 export default {
   props: {
     type: {
@@ -32,10 +31,6 @@ export default {
       type: String,
       default: ''
     }
-  },
-  setup(props) {
-    const { type, active, text, iconClass } = toRefs(props)
-    return { type, text, active, iconClass }
   }
 }
 </script>

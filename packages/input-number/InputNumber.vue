@@ -335,7 +335,6 @@ export default {
 
     return {
       controlsAtRight,
-      controls,
       inputNumberSize,
       displayValue,
       minDisabled,

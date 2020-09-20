@@ -21,7 +21,7 @@ export default {
     lg: [Number, Object],
     xl: [Number, Object]
   },
-  setup(props, { attrs, emit, slots }) {
+  setup(props, { slots }) {
     const { tag } = toRefs(props)
     const gutter = computed(() => {
       let { parent } = getCurrentInstance()

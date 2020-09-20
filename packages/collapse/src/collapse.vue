@@ -68,6 +68,8 @@ export default {
   },
 
   created() {
+    // TODO $on 已经废弃
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('item-click', this.handleItemClick)
   }
 }

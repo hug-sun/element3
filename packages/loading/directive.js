@@ -76,7 +76,7 @@ const loadingDirective = {
     }
   },
 
-  unmounted: function (el, binding) {
+  unmounted: function () {
     // if (el.domInserted) {
     //   el.mask && el.mask.parentNode && el.mask.parentNode.removeChild(el.mask)
     //   toggleLoading(el, { value: false, modifiers: binding.modifiers })

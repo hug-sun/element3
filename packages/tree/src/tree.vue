@@ -134,8 +134,9 @@ export default {
 
   computed: {
     children: {
-      set(value) {
-        this.data = value
+      set() {
+        // TODO 直接修改 props 的值很迷
+        // this.data = value
       },
       get() {
         return this.data
@@ -361,6 +362,9 @@ export default {
     this.root = this.store.root
 
     const dragState = this.dragState
+
+    // TODO $on 已经废弃了，需要重新实现这个逻辑
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('tree-node-drag-start', (event, treeNode) => {
       if (
         typeof this.allowDrag === 'function' &&
@@ -376,12 +380,15 @@ export default {
         // setData is required for draggable to work in FireFox
         // the content has to be '' so dragging a node out of the tree won't open a new tab in FireFox
         event.dataTransfer.setData('text/plain', '')
+        // eslint-disable-next-line no-empty
       } catch (e) {}
       dragState.draggingNode = treeNode
       this.$emit('node-drag-start', treeNode.node, event)
     })
 
-    this.$on('tree-node-drag-over', (event, treeNode) => {
+    // TODO $on 已经废弃了，需要重新实现这个逻辑
+    // eslint-disable-next-line vue/no-deprecated-events-api
+    this.$on('tree-node-drag-over', (event) => {
       const dropNode = findNearestComponent(event.target, 'ElTreeNode')
       const oldDropNode = dragState.dropNode
       if (oldDropNode && oldDropNode !== dropNode) {
@@ -494,6 +501,8 @@ export default {
       this.$emit('node-drag-over', draggingNode.node, dropNode.node, event)
     })
 
+    // TODO $on 已经废弃了，需要重新实现这个逻辑
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('tree-node-drag-end', (event) => {
       const { draggingNode, dropType, dropNode } = dragState
       event.preventDefault()

@@ -7,7 +7,7 @@ import { addClass, removeClass, hasClass } from 'element-ui/src/utils/dom';
 export default {
   name: 'ElMenu',
 
-  render (h) {
+  render () {
     const component = (
       <ul
         role="menubar"
@@ -314,7 +314,10 @@ export default {
   },
   mounted() {
     this.initOpenedMenu();
+    // TODO $on 已经被废弃了，需要重新实现
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('item-click', this.handleItemClick);
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('submenu-click', this.handleSubmenuClick);
     if (this.mode === 'horizontal') {
         new Menubar(this.$el); // eslint-disable-line

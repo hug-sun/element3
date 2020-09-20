@@ -374,7 +374,7 @@ const useRules = (props, elForm) => {
   }
 }
 
-function useValidate(props, elForm, getFilteredRule, getRules) {
+function useValidate(props, elForm, getFilteredRule) {
   const { fieldValue, initialValue } = useFieldValue(props, elForm)
   const { broadcast } = useEmitter()
   const validateState = ref('')

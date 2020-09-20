@@ -600,7 +600,7 @@ export default {
             parsedValue.getMinutes(),
             parsedValue.getSeconds()
           )
-          this.$nextTick((_) => this.$refs.minTimePicker.adjustSpinners())
+          this.$nextTick(() => this.$refs.minTimePicker.adjustSpinners())
         } else {
           this.maxDate = modifyTime(
             this.maxDate,
@@ -608,7 +608,7 @@ export default {
             parsedValue.getMinutes(),
             parsedValue.getSeconds()
           )
-          this.$nextTick((_) => this.$refs.maxTimePicker.adjustSpinners())
+          this.$nextTick(() => this.$refs.maxTimePicker.adjustSpinners())
         }
       }
     },

@@ -3,7 +3,15 @@ import debounce from 'throttle-debounce/debounce'
 import { addClass, removeClass, on, off } from 'element-ui/src/utils/dom'
 import { generateId } from 'element-ui/src/utils/util'
 // eslint-disable-next-line
-import { createApp, ref, watch, onMounted, onUnmounted, getCurrentInstance, Transition } from 'vue'
+import {
+  createApp,
+  ref,
+  watch,
+  onMounted,
+  onUnmounted,
+  getCurrentInstance,
+  Transition
+} from 'vue'
 
 export default {
   name: 'ElTooltip',
@@ -177,7 +185,7 @@ export default {
       return element
     }
 
-    watch(focusing, (val, old) => {
+    watch(focusing, (val) => {
       if (val) {
         addClass(referenceElm.value, 'focusing')
       } else {

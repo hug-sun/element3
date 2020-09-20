@@ -40,7 +40,7 @@ const useDrag = ({ bar, state, thumb, cursorDown }) => {
       (thumbPositionPercentage * wrap.value[bar.value.scrollSize]) / 100
   }
 
-  const mouseUpDocumentHandler = (e) => {
+  const mouseUpDocumentHandler = () => {
     cursorDown.value = false
     state[bar.value.axis] = 0
     off(document, 'mousemove', mouseMoveDocumentHandler)

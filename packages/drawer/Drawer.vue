@@ -134,15 +134,10 @@ export default {
     const {
       appendToBody,
       beforeClose,
-      customClass,
       destroyOnClose,
       direction,
-      showClose,
-      size,
-      title,
       visible,
-      wrapperClosable,
-      withHeader
+      wrapperClosable
     } = toRefs(props)
 
     const closed = ref(false)
@@ -232,12 +227,6 @@ export default {
     })
 
     return {
-      customClass,
-      direction,
-      showClose,
-      size,
-      title,
-      withHeader,
       isHorizontal,
       drawer,
       rendered,
