@@ -33,7 +33,7 @@ export default {
     vertical: Boolean
   },
 
-  setup(props, context) {
+  setup(props) {
     const state = reactive({
       thumbLeft: 0,
       thumbTop: 0,
