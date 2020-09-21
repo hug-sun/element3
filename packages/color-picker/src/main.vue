@@ -183,7 +183,7 @@ export default {
       resetColor()
     }
     const resetColor = () => {
-      nextTick((_) => {
+      nextTick(() => {
         if (props.modelValue) {
           state.color.fromString(props.modelValue)
         } else {
