@@ -133,7 +133,9 @@ ComponentNames.forEach((name) => {
       'option-group',
       'dropdown',
       'dropdown-item',
-      'dropdown-menu'
+      'dropdown-menu',
+      'collapse',
+      'collapse-item'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
@@ -164,7 +166,6 @@ ComponentNames.forEach((name) => {
     }
 
     listTemplate.push(`  ${componentName}`)
-  } else {
   }
 })
 
