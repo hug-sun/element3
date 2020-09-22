@@ -229,7 +229,7 @@ describe('TreeNode.js', () => {
     const node112 = treeNode.findOne(112)
     const node12 = treeNode.findOne(12)
 
-    treeNode.filter((node, parentNode, deep) => {
+    treeNode.filter((node) => {
       return node === node111
     })
 

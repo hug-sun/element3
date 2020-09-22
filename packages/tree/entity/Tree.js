@@ -1,9 +1,5 @@
 import { TreeNode } from './TreeNode'
-import {
-  nodeMap,
-  nodeEach,
-  transitionObjectKey
-} from '../libs/util'
+import { nodeMap, nodeEach, transitionObjectKey } from '../libs/util'
 
 export class Tree {
   /**

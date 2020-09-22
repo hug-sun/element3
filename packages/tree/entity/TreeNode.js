@@ -1,4 +1,3 @@
-/* eslint-disable eqeqeq */
 import { isGreatGrandfather } from '../libs/util'
 
 const typeFlag = Symbol('TREE_NODE')
@@ -421,7 +420,7 @@ export class TreeNode {
    * @param {TreeNode} target
    * @param {string} relative top, bottom, inner
    */
-  isAllowMove(target, relative) {
+  isAllowMove(target) {
     if (
       target === this ||
       target === this.parent ||

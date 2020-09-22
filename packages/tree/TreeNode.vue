@@ -101,7 +101,7 @@ export default {
     ElNodeContent
   },
 
-  setup(props, { emit }) {
+  setup(props) {
     const elTree = inject('elTree')
     const onClickNode = (e) => {
       !elTree.props.expandOnClickNode ||

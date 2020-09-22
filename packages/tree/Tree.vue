@@ -36,9 +36,8 @@
 import { Tree } from './entity/Tree'
 import ElTreeNode from './TreeNode.vue'
 import { t } from 'element-ui/src/locale'
-import { extractMethods } from './libs/util'
-// import emitter from 'element-ui/src/mixins/emitter'
-// import { addClass, removeClass } from 'element-ui/src/utils/dom'
+import { extractMethods, isFunction } from './libs/util'
+
 import {
   reactive,
   toRefs,
@@ -115,7 +114,7 @@ export default {
     'update:expanded'
   ],
 
-  setup(props, { emit }) {
+  setup(props) {
     const instance = getCurrentInstance()
 
     const tree = new Tree(props.data, props.defaultNodeKey, {
@@ -137,7 +136,7 @@ export default {
 
     const { handleKeydown } = useKeyDown()
 
-    const drag = useDrag(props, state)
+    const drag = useDrag(props)
 
     onMounted(() => {
       if (props.currentNodeKey) {
@@ -281,7 +280,7 @@ function useKeyDown() {
   }
 }
 
-function useDrag(props, state) {
+function useDrag(props) {
   const instance = getCurrentInstance()
   const { emit } = instance
 
@@ -324,11 +323,12 @@ function useDrag(props, state) {
     }
 
     // wrap in try catch to address IE's error when first param is 'text/plain'
-    try {
-      // setData is required for draggable to work in FireFox
-      // the content has to be '' so dragging a node out of the tree won't open a new tab in FireFox
+    // setData is required for draggable to work in FireFox
+    // the content has to be '' so dragging a node out of the tree won't open a new tab in FireFox
+    e &&
+      e.dataTransfer &&
+      isFunction(e.dataTransfer.setData) &&
       e.dataTransfer.setData('text/plain', '')
-    } catch (_) {}
     e.preventDefault()
 
     emit('node-drag-enter', dragState.start, node, e)

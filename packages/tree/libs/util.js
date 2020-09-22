@@ -4,6 +4,9 @@ export function isArray(value) {
 export function isObject(value) {
   return value instanceof Object && !(value instanceof Array)
 }
+export function isFunction(value) {
+  return value instanceof Function
+}
 /**
  * Deep traversal of the object
  * @param {object} target
@@ -11,12 +14,14 @@ export function isObject(value) {
  */
 export function nodeMap(
   target,
-  callback = (cloneRawNode, rawNode, isLeaf) => null,
-  { childKey = 'children', mapChildKey = 'children' } = { /* TreeNode */ }
+  callback = () => null,
+  { childKey = 'children', mapChildKey = 'children' } = {
+    /* TreeNode */
+  }
 ) {
   const dfs = (node) => {
     if (isObject(node) && !isArray(node[childKey])) {
-      const _cloneNode = { ...node };
+      const _cloneNode = { ...node }
       return callback(_cloneNode, node, true)
     }
     const cloneNode = { ...node }
