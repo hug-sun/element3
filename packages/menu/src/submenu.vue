@@ -60,9 +60,9 @@ export default {
     }
   },
   watch: {
-    opened(val) {
+    opened() {
       if (this.isMenuPopup) {
-        this.$nextTick((_) => {
+        this.$nextTick(() => {
           this.updatePopper()
         })
       }
@@ -252,11 +252,15 @@ export default {
     }
   },
   created() {
+    // TODO $on 已经废弃了，重构时需要重新实现
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('toggle-collapse', this.handleCollapseToggle)
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('mouse-enter-child', () => {
       this.mouseInChild = true
       clearTimeout(this.timeout)
     })
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('mouse-leave-child', () => {
       this.mouseInChild = false
       clearTimeout(this.timeout)
@@ -267,11 +271,11 @@ export default {
     this.rootMenu.addSubmenu(this)
     this.initPopper()
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.parentMenu.removeSubmenu(this)
     this.rootMenu.removeSubmenu(this)
   },
-  render(h) {
+  render() {
     const {
       active,
       opened,

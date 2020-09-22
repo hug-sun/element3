@@ -214,12 +214,12 @@ const useTransferPanelData = (props, state, slots, emit) => {
 
   watch(
     () => checkableData.value,
-    (val, oldVal) => updateAllChecked()
+    () => updateAllChecked()
   )
 
   watch(
     () => props.data,
-    (val, oldVal) => {
+    () => {
       const checked = []
       const filteredDataKeys = filteredData.value.map(
         (item) => item[keyProp.value]

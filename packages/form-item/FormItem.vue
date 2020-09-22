@@ -105,7 +105,7 @@ export default {
   setup(props) {
     const isNested = ref(false)
     const elForm = inject('elForm', {})
-    const elFormItem = inject('elFormItem')
+    const elFormItem = inject('elFormItem', null)
     isNested.value = !!elFormItem
 
     useDispatchFiled(props)
@@ -272,16 +272,16 @@ function useFieldValue(props, elForm) {
 
 function useDispatchFiled(props) {
   const { dispatch } = useEmitter()
-  const { ctx } = getCurrentInstance()
+  const { proxy } = getCurrentInstance()
 
   onMounted(() => {
     if (props.prop) {
-      dispatch('el.form.addField', ctx)
+      dispatch('el.form.addField', proxy)
     }
   })
 
   onBeforeUnmount(() => {
-    dispatch('el.form.removeField', ctx)
+    dispatch('el.form.removeField', proxy)
   })
 }
 
@@ -374,7 +374,7 @@ const useRules = (props, elForm) => {
   }
 }
 
-function useValidate(props, elForm, getFilteredRule, getRules) {
+function useValidate(props, elForm, getFilteredRule) {
   const { fieldValue, initialValue } = useFieldValue(props, elForm)
   const { broadcast } = useEmitter()
   const validateState = ref('')

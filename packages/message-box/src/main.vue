@@ -53,7 +53,7 @@
             <el-input
               v-model="inputValue"
               :type="inputType"
-              @keydown.enter.native="handleInputEnter"
+              @keydown.enter="handleInputEnter"
               :placeholder="inputPlaceholder"
               ref="input"
             ></el-input>
@@ -74,7 +74,7 @@
             v-if="showCancelButton"
             :round="roundButton"
             size="small"
-            @click.native="handleAction('cancel')"
+            @click="handleAction('cancel')"
             @keydown.enter="handleAction('cancel')"
           >
             {{ cancelButtonText || t('el.messagebox.cancel') }}
@@ -86,7 +86,7 @@
             v-show="showConfirmButton"
             :round="roundButton"
             size="small"
-            @click.native="handleAction('confirm')"
+            @click="handleAction('confirm')"
             @keydown.enter="handleAction('confirm')"
           >
             {{ confirmButtonText || t('el.messagebox.confirm') }}
@@ -268,7 +268,7 @@ export default {
     inputValue: {
       immediate: true,
       handler(val) {
-        this.$nextTick((_) => {
+        this.$nextTick(() => {
           if (this.$type === 'prompt' && val !== null) {
             this.validate()
           }
@@ -315,7 +315,7 @@ export default {
     })
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.closeOnHashChange) {
       window.removeEventListener('hashchange', this.close)
     }

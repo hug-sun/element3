@@ -740,7 +740,7 @@ export default {
     this.$ready = true
   },
 
-  destroyed() {
+  unmounted() {
     this.unbindEvents()
   },
 

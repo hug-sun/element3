@@ -57,9 +57,10 @@ aria.Utils.attemptFocus = function (element) {
     return false
   }
   aria.Utils.IgnoreUtilFocusChanges = true
-  try {
+
+  if (element && element.focus) {
     element.focus()
-  } catch (e) {}
+  }
   aria.Utils.IgnoreUtilFocusChanges = false
   return document.activeElement === element
 }

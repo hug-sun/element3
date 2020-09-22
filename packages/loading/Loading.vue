@@ -52,6 +52,8 @@ export default {
   setup(props, { emit }) {
     const $data = reactive({ ...props })
     const handleAfterLeave = () => {
+      // TODO 这里的 emit 修改会造成对 api 的更改
+      // eslint-disable-next-line vue/custom-event-name-casing
       emit('afterLeave')
     }
     const show = () => {

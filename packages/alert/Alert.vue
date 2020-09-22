@@ -82,7 +82,7 @@ export default {
   },
   emits: ['close'],
   setup(props, { emit, slots }) {
-    const { title, description, type } = toRefs(props)
+    const { description, type } = toRefs(props)
 
     const visible = ref(true)
     const close = () => {
@@ -107,9 +107,6 @@ export default {
     })
 
     return {
-      title,
-      description,
-      type,
       visible,
       typeClass,
       iconClass,

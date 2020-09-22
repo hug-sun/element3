@@ -19,18 +19,8 @@ export default {
     }
   },
   setup(props, { emit, slots }) {
-    const {
-      type,
-      hit,
-      effect,
-      color,
-      closable,
-      disableTransitions,
-      size
-    } = props
-
     const tagSize = computed(() => {
-      return size || (getCurrentInstance().proxy.$ELEMENT || {}).size
+      return props.size || (getCurrentInstance().proxy.$ELEMENT || {}).size
     })
     const handleClose = (event) => {
       event.stopPropagation()
@@ -39,32 +29,32 @@ export default {
     const handleClick = (event) => {
       emit('click', event)
     }
-
-    const classes = [
-      'el-tag',
-      type ? `el-tag--${type}` : '',
-      tagSize.value ? `el-tag--${tagSize.value}` : '',
-      effect ? `el-tag--${effect}` : '',
-      hit && 'is-hit'
-    ]
-    const tagEl = (
-      <span
-        class={classes}
-        style={{ backgroundColor: color }}
-        onClick={handleClick}
-      >
-        {slots.default && slots.default()}
-        {closable && (
-          <i class="el-tag__close el-icon-close" onClick={handleClose}></i>
-        )}
-      </span>
-    )
-    return () =>
-      disableTransitions ? (
+    return () => {
+      const classes = [
+        'el-tag',
+        props.type ? `el-tag--${props.type}` : '',
+        tagSize.value ? `el-tag--${tagSize.value}` : '',
+        props.effect ? `el-tag--${props.effect}` : '',
+        props.hit && 'is-hit'
+      ]
+      const tagEl = (
+        <span
+          class={classes}
+          style={{ backgroundColor: props.color }}
+          onClick={handleClick}
+        >
+          {slots.default && slots.default()}
+          {props.closable && (
+            <i class="el-tag__close el-icon-close" onClick={handleClose}></i>
+          )}
+        </span>
+      )
+      return props.disableTransitions ? (
         tagEl
       ) : (
         <Transition name="el-zoom-in-center">{tagEl}</Transition>
       )
+    }
   }
 }
 </script>

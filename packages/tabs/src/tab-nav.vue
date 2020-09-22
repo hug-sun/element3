@@ -216,7 +216,7 @@ export default {
     this.update()
   },
 
-  render(h) {
+  render() {
     const {
       type,
       panes,
@@ -347,7 +347,7 @@ export default {
     }, 0)
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.$el && this.update) removeResizeListener(this.$el, this.update)
     document.removeEventListener(
       'visibilitychange',

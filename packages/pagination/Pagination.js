@@ -4,6 +4,8 @@ import Prev from './components/Prev.vue'
 import Next from './components/Next'
 import Jumper from './components/Jumper'
 import Total from './components/Total'
+import Sizes from './components/Sizes'
+import { valueEquals } from '../../src/utils/util'
 
 const useLayout = (layout) => {
   const template = []
@@ -77,7 +79,7 @@ const userInternalPageSize = ({ pageSize, emit, emitted }) => {
   const innerPageSize = ref(null)
   return computed({
     get() {
-      return innerPageSize.value ?? pageSize?.value
+      return innerPageSize.value ?? pageSize.value
     },
     set(v) {
       emit('update:pageSize', v)
@@ -172,7 +174,14 @@ export default {
   setup(props, { emit }) {
     const currentPageEmitted = ref(false)
     const pageSizeEmitted = ref(false)
-    const { currentPage, total, pageCount, pageSize, disabled } = toRefs(props)
+    const {
+      currentPage,
+      total,
+      pageCount,
+      pageSize,
+      disabled,
+      pageSizes
+    } = toRefs(props)
 
     const internalCurrentPage = useInternalCurrentPage({
       currentPage,
@@ -181,6 +190,7 @@ export default {
     })
     const internalPageSize = userInternalPageSize({
       pageSize,
+      pageSizes,
       emit,
       emitted: pageSizeEmitted
     })
@@ -220,6 +230,20 @@ export default {
           val,
           internalPageCount.value
         )
+      },
+      handleSizeChange(val) {
+        if (val !== internalPageSize.value) {
+          internalPageSize.value = val = parseInt(val, 10)
+        }
+      },
+      watchHandler(newValue) {
+        if (valueEquals(newValue, pageSizes.value)) return
+        if (Array.isArray(newValue)) {
+          internalPageSize.value =
+            newValue.indexOf(internalPageSize.value) > -1
+              ? internalPageSize.value
+              : pageSizes.value[0]
+        }
       }
     }
   },
@@ -242,8 +266,8 @@ export default {
         <Jumper
           currentPage={this.internalCurrentPage}
           pageCount={this.internalPageCount}
-          handleChange={this.handleChange}
           disabled={this.disabled}
+          onChange={this.handleChange}
         />
       ),
       pager: (
@@ -263,7 +287,16 @@ export default {
           next={this.next}
         />
       ),
-      sizes: <span>sizes</span>,
+      sizes: (
+        <Sizes
+          pageSizes={this.pageSizes}
+          pageSize={this.internalPageSize}
+          popperClass={this.popperClass}
+          handleChange={this.handleSizeChange}
+          disabled={this.disabled}
+          watchHandler={this.watchHandler}
+        />
+      ),
       slot: <>{this.$slots.default?.()}</>,
       total: <Total total={this.total} />
     }

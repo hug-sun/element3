@@ -69,7 +69,7 @@ export default {
 
   emits: ['update:modelValue', 'change'],
 
-  setup(props) {
+  setup() {
     const state = reactive({
       focus: false
     })

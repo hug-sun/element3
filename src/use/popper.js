@@ -1,10 +1,10 @@
 import {
-  ref,
-  toRefs,
-  getCurrentInstance,
   nextTick,
+  ref,
+  getCurrentInstance,
   onBeforeUnmount,
-  watch
+  watch,
+  toRefs
 } from 'vue'
 import { PopupManager } from 'element-ui/src/utils/popup'
 
@@ -29,7 +29,7 @@ const popperProps = {
   offset: {
     default: 0
   },
-  value: Boolean,
+  modelValue: Boolean,
   visibleArrow: Boolean,
   arrowOffset: {
     type: Number,
@@ -46,34 +46,30 @@ const popperProps = {
         gpuAcceleration: false
       }
     }
-  },
-  disabled: {
-    type: Boolean,
-    default: () => false
   }
 }
 
-const usePopper = (props, { emit, slots, popperElm, referenceElm }) => {
+function usePopper(props, { emit, slots }, { referenceElm, popperElm }) {
   const {
-    placement,
-    popperOptions,
-    propPopper,
-    propReference,
-    visibleArrow,
-    appendToBody,
-    offset,
-    arrowOffset,
     transformOrigin,
-    value,
+    placement,
+    reference,
+    popper,
+    offset,
+    modelValue,
+    visibleArrow,
+    arrowOffset,
+    appendToBody,
+    popperOptions,
     disabled
   } = toRefs(props)
-  const instance = getCurrentInstance()
 
   const showPopper = ref(false)
   const currentPlacement = ref('')
   const popperJS = ref(null)
+  const instance = getCurrentInstance()
 
-  const createPopper = () => {
+  function createPopper() {
     if (instance.proxy.$isServer) return
     currentPlacement.value = currentPlacement.value || placement.value
     if (
@@ -81,101 +77,98 @@ const usePopper = (props, { emit, slots, popperElm, referenceElm }) => {
     ) {
       return
     }
+    const options = popperOptions.value
+    const popperRef = (popperElm.value =
+      popperElm.value ||
+      (popper && popper.value) ||
+      instance.proxy.$refs.popper)
 
-    const _options = popperOptions.value
-    const _popper = (popperElm.value =
-      popperElm.value || propPopper.value || instance.proxy.$refs.reference)
-
-    let _reference = (referenceElm.value =
-      referenceElm.value || propReference || instance.proxy.$refs.reference)
+    let referenceRef = (referenceElm.value =
+      referenceElm.value ||
+      (reference && reference.value) ||
+      instance.proxy.$refs.reference)
 
     if (
-      !_reference &&
+      !referenceRef &&
       slots.reference &&
       slots.reference() &&
       slots.reference()[0]
     ) {
-      _reference = referenceElm.value = slots().reference[0].el
+      referenceRef = referenceElm.value = slots.reference()[0].el
     }
 
-    if (!_popper || !_reference) {
-      return
-    }
-    if (visibleArrow.value) {
-      appendArrow(_popper)
-    }
-    if (appendToBody.value) {
-      document.body.appendChild(popperElm.value)
-    }
-    if (popperJS.value?.destory) {
-      popperJS.value.destory()
+    if (!popperRef || !referenceRef) return
+    if (visibleArrow.value) appendArrow(popperRef)
+    if (appendToBody.value) document.body.appendChild(popperElm.value)
+    if (popperJS.value && popperJS.value.destroy) {
+      popperJS.value.destroy()
     }
 
-    _options.placement = currentPlacement.value
-    _options.offset = offset.value
-    _options.arrowOffset = arrowOffset.value
-
-    popperJS.value = new PopperJS(_reference, _popper, _options)
-    popperJS.value.onCreate((_) => {
+    options.placement = currentPlacement.value
+    options.offset = offset.value
+    options.arrowOffset = arrowOffset.value
+    popperJS.value = new PopperJS(referenceRef, popperRef, options)
+    popperJS.value.onCreate(() => {
       emit('created', instance.proxy)
       resetTransformOrigin()
-      nextTick(updatePopper)
+      nextTick(() => updatePopper())
     })
-
-    if (typeof _options.onUpdate === 'function') {
-      popperJS.value.onUpdate(_options.onUpdate)
+    if (typeof options.onUpdate === 'function') {
+      popperJS.value.onUpdate(options.onUpdate)
     }
     popperJS.value._popper.style.zIndex = PopupManager.nextZIndex()
-    popperElm.value?.addEventListener('click', stop)
+    popperElm.value.addEventListener('click', stop)
   }
 
-  const updatePopper = () => {
-    if (popperJS.value) {
-      popperJS.value.update()
-      if (popperJS.value._popper) {
-        popperJS.value._popper.style.zIndex = PopupManager.nextZIndex()
+  function updatePopper() {
+    const popperJSRef = popperJS.value
+    if (popperJSRef) {
+      popperJSRef.update()
+      if (popperJSRef._popper) {
+        popperJSRef._popper.style.zIndex = PopupManager.nextZIndex()
       }
     } else {
       createPopper()
     }
   }
 
-  const doDestroy = (forceDestroy) => {
+  function doDestroy(forceDestroy) {
     /* istanbul ignore if */
     if (!popperJS.value || (showPopper.value && !forceDestroy)) return
     popperJS.value.destroy()
     popperJS.value = null
   }
 
-  const destroyPopper = () => {
+  function destroyPopper() {
     if (popperJS.value) {
       resetTransformOrigin()
     }
   }
 
-  const resetTransformOrigin = () => {
+  function resetTransformOrigin() {
     if (!transformOrigin.value) return
-    const _placementMap = {
+    const placementMap = {
       top: 'bottom',
       bottom: 'top',
       left: 'right',
       right: 'left'
     }
-    const _placement = popperJS.value._popper
+    const placement = popperJS.value._popper
       .getAttribute('x-placement')
       .split('-')[0]
-    const _origin = _placementMap[_placement]
+    const origin = placementMap[placement]
     popperJS.value._popper.style.transformOrigin =
       typeof transformOrigin.value === 'string'
-        ? this.transformOrigin
-        : ['top', 'bottom'].indexOf(_placement) > -1
-        ? `center ${_origin}`
-        : `${_origin} center`
+        ? transformOrigin.value
+        : ['top', 'bottom'].indexOf(placement) > -1
+        ? `center ${origin}`
+        : `${origin} center`
   }
 
   const appended = ref(false)
-  const appendArrow = (element) => {
+  function appendArrow(element) {
     let hash
+
     if (appended.value) {
       return
     }
@@ -200,31 +193,35 @@ const usePopper = (props, { emit, slots, popperElm, referenceElm }) => {
   }
 
   watch(
-    value,
+    modelValue,
     (val) => {
       showPopper.value = val
-      emit('update:value', val)
+      emit('update:modelValue', val)
     },
-    { immediate: true }
+    {
+      immediate: true
+    }
   )
 
   watch(showPopper, (val) => {
     if (disabled.value) return
     val ? updatePopper() : destroyPopper()
-    emit('update:value', val)
+    emit('update:modelValue', val)
   })
 
   onBeforeUnmount(() => {
     doDestroy(true)
-    if (popperElm.value?.parentNode === document.body) {
+    if (popperElm.value && popperElm.value.parentNode === document.body) {
       popperElm.value.removeEventListener('click', stop)
-      document.body.removeChild(this.popperElm)
+      document.body.removeChild(popperElm.value)
     }
   })
 
   return {
     showPopper,
     currentPlacement,
+    referenceElm,
+    popperElm,
     popperJS,
     createPopper,
     updatePopper,

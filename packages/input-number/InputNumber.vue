@@ -249,7 +249,7 @@ export default {
               step.value) /
             precisionFactor
         }
-        if (precision !== undefined) {
+        if (precision.value !== undefined) {
           currentValue = currentValue.toFixed(precision.value)
         }
       }
@@ -335,7 +335,6 @@ export default {
 
     return {
       controlsAtRight,
-      controls,
       inputNumberSize,
       displayValue,
       minDisabled,

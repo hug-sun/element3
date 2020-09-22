@@ -454,7 +454,7 @@ export default {
     window.addEventListener('resize', this.resetSize)
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('resize', this.resetSize)
   }
 }

@@ -1,4 +1,4 @@
-import Select from './src/select'
+import Select from './Select'
 
 /* istanbul ignore next */
 Select.install = function (app) {
