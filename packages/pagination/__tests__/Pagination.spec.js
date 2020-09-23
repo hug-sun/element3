@@ -7,6 +7,7 @@ import Total from '../components/Total'
 import Pagination from '../Pagination'
 import Jumper from '../components/Jumper'
 import Input from 'element-ui/packages/input'
+import Sizes from '../components/Sizes'
 
 describe('components', () => {
   describe('Pager', () => {
@@ -197,7 +198,7 @@ describe('components', () => {
       const wrapper = mount(Jumper, {
         props: {
           currentPage,
-          handleChange(val) {
+          onChange(val) {
             currentPage.value = Number(val)
           }
         },
@@ -211,6 +212,21 @@ describe('components', () => {
       await wrapper.find('input').setValue(3)
       await wrapper.trigger('keydown', 13)
       expect(currentPage.value).toBe(3)
+    })
+  })
+
+  describe('Sizes', () => {
+    it('normal render', () => {
+      const wrapper = mount(Sizes, {
+        props: {
+          pageSizes: [10, 20, 30],
+          pageSize: 10,
+          handleChange() {},
+          watchHandler() {}
+        }
+      })
+
+      expect(wrapper.findAll('li').length).toBe(3)
     })
   })
 
@@ -233,11 +249,6 @@ describe('components', () => {
 
       expect(wrapper.find('.el-pagination__total').exists()).toBeFalsy()
     })
-  })
-
-  describe('Size', () => {
-    it.todo('normal render')
-    it.todo('popperClass')
   })
 })
 
@@ -315,8 +326,30 @@ describe('Pagination', () => {
       expect(wrapper.find('.el-pagination').exists()).toBeFalsy()
       expect(wrapper2.find('.el-pagination').exists()).toBeTruthy()
     })
-    it.todo('sizeChange')
-    it.todo('pageSizes')
+    it('sizeChange', async () => {
+      const pageSize = ref(10)
+      const onSizeChange = jest.fn()
+      const wrapper = mount(Pagination, {
+        props: {
+          layout: 'pager, sizes',
+          pageSize,
+          onSizeChange
+        }
+      })
+
+      await wrapper.findAll('.el-select-dropdown__item')[2].trigger('click')
+      expect(onSizeChange).toBeCalled()
+    })
+    it('pageSizes', () => {
+      const wrapper = mount(Pagination, {
+        props: {
+          layout: 'pager, sizes',
+          pageSizes: [10, 20]
+        }
+      })
+
+      expect(wrapper.findAll('.el-select-dropdown__item').length).toBe(2)
+    })
   })
 
   describe('ability', () => {

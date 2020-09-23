@@ -128,7 +128,7 @@ export default {
   },
 
   watch: {
-    src(val) {
+    src() {
       this.show && this.loadImage()
     },
     show(val) {
@@ -144,7 +144,7 @@ export default {
     }
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     this.lazy && this.removeLazyLoadListener()
   },
 

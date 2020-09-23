@@ -75,7 +75,7 @@ export default {
     status: String
   },
 
-  setup(props, context) {
+  setup(props) {
     const parentState = inject(stateSymbol)
     const steps = parentState.steps
     const stepOffset = parentState.stepOffset

@@ -20,11 +20,7 @@ export const useValidate = () => {
   return { validateState, validateIcon }
 }
 
-export const useTextarea = (
-  { autosize, type, resize },
-  textareaCalcStyle,
-  instance
-) => {
+export const useTextarea = ({ autosize, type, resize }, textareaCalcStyle) => {
   const textarea = ref(null)
 
   const textareaStyle = computed(() => {
@@ -155,7 +151,7 @@ export const useInput = (
   }
 
   return {
-    input: input || textarea,
+    input: input.value || textarea,
     inputSize,
     inputDisabled,
     nativeInputValue,
@@ -173,7 +169,7 @@ export const useInteractive = (
   instance,
   input,
   textarea,
-  { type, modelValue, validateEvent },
+  { modelValue, validateEvent },
   { focused, isComposing, passwordVisible },
   nativeInputValue,
   emit,
@@ -206,7 +202,7 @@ export const useInteractive = (
     focused.value = false
     emit('blur', event)
     if (unref(validateEvent)) {
-      instance.proxy.dispatch('ElFormItem', 'el.form.blur', [unref(modelValue)])
+      instance.proxy.dispatch('el.form.blur', [unref(modelValue)])
     }
   }
 

@@ -101,7 +101,7 @@ export default {
     }
   },
   emits: ['input', 'update:modelValue'],
-  setup(props, { attrs, emit, slots }) {
+  setup(props, { emit }) {
     const instance = getCurrentInstance()
 
     provide('elCalendar', instance)
@@ -167,8 +167,8 @@ export default {
         if (realSelectedDay.value) {
           const d = state.selectedDay.split('-')
           return new Date(d[0], d[1] - 1, d[2])
-        } else if (validatedRange.length) {
-          return validatedRange[0][0]
+        } else if (validatedRange.value.length) {
+          return validatedRange.value[0][0]
         }
         return state.now
       } else {

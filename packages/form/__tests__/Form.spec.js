@@ -179,7 +179,7 @@ describe('Form', () => {
 
     wrapper.vm.$refs.form.validate((valid) => {
       expect(valid).toBe(false)
-      wrapper.vm.$refs.form.$nextTick((_) => {
+      wrapper.vm.$refs.form.$nextTick(() => {
         expect(wrapper.find('.el-form-item__error').exists()).toBe(false)
         done()
       })
@@ -338,14 +338,14 @@ describe('Form', () => {
     })
 
     wrapper.vm.setValue('name', 'name')
-    wrapper.findComponent(FormItem).vm.$emit('el.form.change')
+    wrapper.findComponent(FormItem).vm.validate('change')
 
     setTimeout(() => {
       expect(wrapper.vm.valid.name).toEqual(true)
       expect(wrapper.vm.error.name).toEqual(null)
 
       wrapper.vm.setValue('name', '')
-      wrapper.findComponent(FormItem).vm.$emit('el.form.change')
+      wrapper.findComponent(FormItem).vm.validate('change')
       setTimeout(() => {
         expect(wrapper.vm.valid.name).toEqual(false)
         expect(wrapper.vm.error.name).toEqual('请输入活动名称')

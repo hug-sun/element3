@@ -25,6 +25,9 @@ async function main() {
   step('\nBuilding...')
   await execa('npm', ['run', 'build:next'])
 
+  step('\nRun Tests')
+  await execa('npm', ['run', 'test:unit'])
+
   step('\nUpdate version...')
   await execa('npm', [
     'version',
@@ -37,8 +40,8 @@ async function main() {
   await execa('npm', ['publish', '--registry', 'https://registry.npmjs.org'])
 
   step('\nPushing to GitHub...')
-  await execa('git', ['push', 'origin', 'master'])
-  await execa('git', ['push', 'origin', `v${targetVersion}`])
+  await execa('git', ['push', 'origin', 'master', '--no-verify'])
+  await execa('git', ['push', 'origin', `v${targetVersion}`, '--no-verify'])
 
   console.log()
   console.log(chalk.green(`Successfully published v${targetVersion}`))

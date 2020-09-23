@@ -247,10 +247,7 @@ export default {
           this.firstValue = val[0]
           this.secondValue = val[1]
           if (this.valueChanged()) {
-            this.dispatch('ElFormItem', 'el.form.change', [
-              this.minValue,
-              this.maxValue
-            ])
+            this.dispatch('el.form.change', [this.minValue, this.maxValue])
             this.oldValue = val.slice()
           }
         }
@@ -262,7 +259,7 @@ export default {
         } else {
           this.firstValue = val
           if (this.valueChanged()) {
-            this.dispatch('ElFormItem', 'el.form.change', val)
+            this.dispatch('el.form.change', val)
             this.oldValue = val
           }
         }
@@ -457,7 +454,7 @@ export default {
     window.addEventListener('resize', this.resetSize)
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('resize', this.resetSize)
   }
 }

@@ -14,7 +14,6 @@
 
 <script>
 import { t } from 'element-ui/src/locale'
-import { toRefs } from 'vue'
 export default {
   name: 'ElPageHeader',
   props: {
@@ -27,14 +26,11 @@ export default {
     content: String
   },
   setup(props, ctx) {
-    const { title, content } = toRefs(props)
     const handleClick = (evt) => {
       ctx.emit('back', evt)
     }
     return {
-      handleClick,
-      title,
-      content
+      handleClick
     }
   }
 }

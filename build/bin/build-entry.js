@@ -110,6 +110,7 @@ ComponentNames.forEach((name) => {
       'breadcrumb',
       'breadcrumb-item',
       'dialog',
+      'upload',
       'rate',
       'divider',
       'progress',
@@ -126,7 +127,15 @@ ComponentNames.forEach((name) => {
       'steps',
       'popconfirm',
       'drawer',
-      'transfer'
+      'transfer',
+      'select',
+      'option',
+      'option-group',
+      'dropdown',
+      'dropdown-item',
+      'dropdown-menu',
+      'collapse',
+      'collapse-item'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
@@ -157,7 +166,6 @@ ComponentNames.forEach((name) => {
     }
 
     listTemplate.push(`  ${componentName}`)
-  } else {
   }
 })
 

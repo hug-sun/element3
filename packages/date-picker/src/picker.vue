@@ -433,7 +433,7 @@ export default {
         this.emitChange(this.value)
         this.userInput = null
         if (this.validateEvent) {
-          this.dispatch('ElFormItem', 'el.form.blur')
+          this.dispatch('el.form.blur')
         }
         this.$emit('blur', this)
         this.blur()
@@ -459,7 +459,7 @@ export default {
         !this.pickerVisible &&
         this.validateEvent
       ) {
-        this.dispatch('ElFormItem', 'el.form.change', val)
+        this.dispatch('el.form.change', val)
       }
     }
   },
@@ -620,6 +620,8 @@ export default {
     }
     this.placement = PLACEMENT_MAP[this.align] || PLACEMENT_MAP.left
 
+    // TODO $on 废弃掉了
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('fieldReset', this.handleFieldReset)
   },
 
@@ -726,7 +728,7 @@ export default {
       }
     },
 
-    handleStartChange(event) {
+    handleStartChange() {
       const value = this.parseString(this.userInput && this.userInput[0])
       if (value) {
         this.userInput = [this.formatToString(value), this.displayValue[1]]
@@ -739,7 +741,7 @@ export default {
       }
     },
 
-    handleEndChange(event) {
+    handleEndChange() {
       const value = this.parseString(this.userInput && this.userInput[1])
       if (value) {
         this.userInput = [this.displayValue[0], this.formatToString(value)]
@@ -981,7 +983,7 @@ export default {
         this.$emit('change', val)
         this.valueOnOpen = val
         if (this.validateEvent) {
-          this.dispatch('ElFormItem', 'el.form.change', val)
+          this.dispatch('el.form.change', val)
         }
       }
     },
