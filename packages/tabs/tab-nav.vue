@@ -361,7 +361,7 @@ export default {
             role="tablist"
             on-keydown={changeTab}
           >
-            {!type ? <tab-bar   tabs={panes}></tab-bar> : null}
+            {!type ? <tab-bar   tabPosition={props.tabPosition} tabs={panes}></tab-bar> : null}
             {tabs}
           </div>
         </div>

@@ -14,21 +14,21 @@ export default {
   name: 'TabBar',
 
   props: {
-    tabs: Array
+    tabs: Array,
+    tabPosition:String,
   },
 
   // inject: ['rootTabs'],
 setup(props,ctx){
-
+  console.log(props);
   const {tabs}=toRefs(props);
 
-  const barStyle=useBarStyle(tabs);
+  const barStyle=useBarStyle(tabs,props.tabPosition);
 
-  const  tabPosition=ref(getTabPosition());
+  // const  tabPosition=ref(getTabPosition());
 
   return {
-      barStyle,
-      tabPosition
+      barStyle
     }
 }
 
@@ -42,10 +42,10 @@ function getTabPosition(){
    return tabPosition.default
 }
 
-const useBarStyle=(tabs)=>{
+const useBarStyle=(tabs,tabPosition)=>{
 
-   const tabPosition= getTabPosition()
-
+  //  const tabPosition= getTabPosition()
+  
   const barStyle=computed({
     get(){
        const style = {}
@@ -62,25 +62,29 @@ const useBarStyle=(tabs)=>{
             .toLowerCase()
             .replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
         }
-        
+        console.log('into tabs',tabs);
         tabs.value.every((tab, index) => {
-
+          console.log(tab,index)
           let { parent } = getCurrentInstance()
-         
+          console.log(parent);
           const $el = arrayFind(
             parent.refs.tabs || [],
 
-            (t) => t.id.replace('tab-', '') === tab.paneName
+            (t) => {
+              console.log(t);
+              t.id.replace('tab-', '') === tab.paneName
+            }
           )
-     
+           console.log($el);
           if (!$el) {
             return false
           }
-
+          console.log(tab);
           if (!tab.active) {
             offset += $el[`client${firstUpperCase(sizeName)}`]
             return true
           } else {
+        
             tabSize = $el[`client${firstUpperCase(sizeName)}`]
             const tabStyles = window.getComputedStyle($el)
             if (sizeName === 'width' && tabs.value.length > 1) {
@@ -94,7 +98,7 @@ const useBarStyle=(tabs)=>{
             return false
           }
         })
-
+        console.log(tabSize,sizeName)
         const transform = `translate${firstUpperCase(sizeDir)}(${offset}px)`
         style[sizeName] = tabSize + 'px'
         style.transform = transform
