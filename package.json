@@ -82,7 +82,6 @@
     "eslint-formatter-pretty": "^4.0.0",
     "normalize-wheel": "^1.0.1",
     "resize-observer-polyfill": "^1.5.0",
-    "rollup": "^2.26.9",
     "throttle-debounce": "^1.0.1"
   },
   "peerDependencies": {
@@ -159,6 +158,7 @@
     "prettier": "^2.0.5",
     "progress-bar-webpack-plugin": "^1.11.0",
     "rimraf": "^2.5.4",
+    "rollup": "^2.26.9",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.3",
     "rollup-plugin-scss": "^2.6.0",
