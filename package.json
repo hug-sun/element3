@@ -29,9 +29,7 @@
     "i18n": "node build/bin/i18n.js",
     "lint": "eslint --no-error-on-unmatched-pattern --ext .vue --ext .js --ext .jsx packages/**/ src/**/ --fix",
     "pub": "npm run bootstrap && sh build/git-release.sh && sh build/release.sh && node build/bin/gen-indices.js && sh build/deploy-faas.sh",
-    "test": "npm run lint && npm run build:theme && cross-env CI_ENV=/dev/ BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
-    "test:watch": "npm run build:theme && cross-env BABEL_ENV=test karma start test/unit/karma.conf.js",
-    "test:unit": "jest",
+    "test": "jest --runInBand",
     "build:next": "rollup -c",
     "release": "node scripts/release.js"
   },
@@ -71,8 +69,8 @@
   "style": "lib/theme-chalk/index.css",
   "gitHooks": {
     "pre-commit": "lint-staged",
-    "commit-msg": "node build/verifyCommit.js",
-    "pre-push": "npm run test:unit"
+    "commit-msg": "node scripts/verifyCommit.js",
+    "pre-push": "npm run test"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint"
@@ -85,7 +83,6 @@
     "eslint-formatter-pretty": "^4.0.0",
     "normalize-wheel": "^1.0.1",
     "resize-observer-polyfill": "^1.5.0",
-    "rollup": "^2.26.9",
     "throttle-debounce": "^1.0.1"
   },
   "peerDependencies": {
@@ -145,17 +142,9 @@
     "gulp-sass": "^4.0.2",
     "highlight.js": "^9.3.0",
     "html-webpack-plugin": "^3.2.0",
-    "jest": "^26.1.0",
+    "jest": "^26.4.2",
     "json-loader": "^0.5.7",
     "json-templater": "^1.0.4",
-    "karma": "^4.0.1",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-coverage": "^1.1.2",
-    "karma-mocha": "^1.3.0",
-    "karma-sinon-chai": "^2.0.2",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-spec-reporter": "^0.0.32",
-    "karma-webpack": "^3.0.5",
     "lint-staged": "^10.2.11",
     "markdown-it": "^8.4.1",
     "markdown-it-anchor": "^5.0.2",
@@ -164,13 +153,13 @@
     "mini-css-extract-plugin": "^0.4.1",
     "minimist": "^1.2.5",
     "mitt": "^2.1.0",
-    "mocha": "^6.0.2",
-    "node-sass": "^4.14.1",
+    "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss": "^7.0.14",
     "prettier": "^2.0.5",
     "progress-bar-webpack-plugin": "^1.11.0",
     "rimraf": "^2.5.4",
+    "rollup": "^2.26.9",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.3",
     "rollup-plugin-scss": "^2.6.0",
