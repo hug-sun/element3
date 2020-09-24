@@ -245,15 +245,15 @@ function useKeyDown() {
   const handleKeydown = (ev) => {
     const currentItem = ev.target
     if (currentItem.className.indexOf('el-tree-node') === -1) return
-    const keyCode = ev.keyCode
+    const { key } = ev
     const treeItems = ctx.$el.querySelectorAll('.is-focusable[role=TreeNode]')
     const treeItemArray = Array.prototype.slice.call(treeItems)
     const currentIndex = treeItemArray.indexOf(currentItem)
     let nextIndex
-    if ([38, 40].indexOf(keyCode) > -1) {
+    if (['ArrowUp', 'ArrowDown'].indexOf(key) > -1) {
       // up、down
       ev.preventDefault()
-      if (keyCode === 38) {
+      if (key === 'ArrowUp') {
         // up
         nextIndex = currentIndex !== 0 ? currentIndex - 1 : 0
       } else {
@@ -262,16 +262,16 @@ function useKeyDown() {
       }
       treeItemArray[nextIndex].focus() // 选中
     }
-    if ([37, 39].indexOf(keyCode) > -1) {
+    if (['ArrowLeft', 'ArrowRight'].indexOf(key) > -1) {
       // left、right 展开
-      ev.preventDefault()
       currentItem.click() // 选中
+      ev.preventDefault()
     }
     const hasInput = currentItem.querySelector('[type="checkbox"]')
-    if ([13, 32].indexOf(keyCode) > -1 && hasInput) {
+    if (['Enter', 'Space'].indexOf(key) > -1 && hasInput) {
       // space enter选中checkbox
-      ev.preventDefault()
       hasInput.click()
+      ev.preventDefault()
     }
   }
 
