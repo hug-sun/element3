@@ -1,5 +1,6 @@
 import { TreeNode } from './TreeNode'
 import { nodeMap, nodeEach, transitionObjectKey } from '../libs/util'
+import { createAction } from './Action'
 
 export class Tree {
   /**
@@ -10,7 +11,7 @@ export class Tree {
   constructor(list, defaultNodeKey = {}, defaultNodeValue = {}) {
     this.isUpdateRaw = true
     this.raw = list
-    this.injectAction = this.createAction() // The core method is injected with interceptor functions, the insert RowNode is automatically converted to TreeNode
+    this.injectAction = createAction(this) // The core method is injected with interceptor functions, the insert RowNode is automatically converted to TreeNode
     this.root = new TreeNode(
       Date.now(),
       'root',
@@ -77,34 +78,6 @@ export class Tree {
     this.root.childNodes = []
     this.root.append(...this.raw)
     this.isUpdateRaw = true
-  }
-
-  createAction() {
-    // this.root changed update this.raw
-    const that = this
-    const appendChild = function (node) {
-      if (TreeNode.isType(node)) {
-        that.appendRawNode(this, node.data.raw)
-        return [node]
-      }
-      that.appendRawNode(this, node)
-      return [that.rawNodeToTreeNode(node)]
-    }
-
-    const removeChild = function (index) {
-      that.removeChildRawNode(this, index)
-    }
-
-    const insertChild = function (index, node) {
-      if (TreeNode.isType(node)) {
-        that.insertRawNode(this, index, node.data.raw)
-        return [index, node]
-      }
-      that.insertRawNode(this, index, node)
-      return [index, that.rawNodeToTreeNode(node)]
-    }
-
-    return { appendChild, removeChild, insertChild }
   }
 
   rawNodeToTreeNode(rawNode) {

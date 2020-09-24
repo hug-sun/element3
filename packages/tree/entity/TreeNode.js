@@ -15,6 +15,7 @@ export class TreeNode {
     label,
     childNodes = [],
     {
+      /* 默认值 */
       parent = null,
       isAsync = false,
       isVisable = true,
@@ -27,7 +28,12 @@ export class TreeNode {
       data = {},
       asyncLoadFn = () => null
     } = {},
-    { insertChild = null, appendChild = null, removeChild = null } = {}
+    {
+      /* 拦截函数 */
+      insertChild = null,
+      appendChild = null,
+      removeChild = null
+    } = {}
   ) {
     this.id = id || label
     this.label = label
