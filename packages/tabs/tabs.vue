@@ -76,7 +76,6 @@
 <script>
 import TabNav from './tab-nav'
 import {
-  toRefs,
   ref,
   provide,
   watch,
