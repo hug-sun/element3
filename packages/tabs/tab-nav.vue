@@ -389,10 +389,8 @@ export default {
       handleKeydown,
       scrollPrev,
       scrollNext,
+      changeTab,
       scrollToActiveTab,
-      
-      
-
     }
   }
 
