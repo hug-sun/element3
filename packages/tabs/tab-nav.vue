@@ -1,11 +1,93 @@
+<template>
+ <div
+        :class="[
+          'el-tabs__nav-wrap',
+          scrollable ? 'is-scrollable' : '',
+          `is-${tabPosition}`
+        ]"
+      >
+      <template v-if="scrollable">
+         <span
+            :class="['el-tabs__nav-prev', scrollable.prev ? '' : 'is-disabled']"
+            on-click={scrollPrev}
+          >
+            <i class="el-icon-arrow-left"></i>
+          </span>,
+          <span
+            :class="['el-tabs__nav-next', scrollable.next ? '' : 'is-disabled']"
+            on-click={scrollNext}
+          >
+            <i class="el-icon-arrow-right"></i>
+          </span>
+      </template>
+        <!-- {scrollBtn} -->
+        <div class='el-tabs__nav-scroll' ref="navScroll">
+          <div
+            :class="[
+              'el-tabs__nav',
+              `is-${tabPosition}`,
+              stretch &&
+              ['top', 'bottom'].indexOf(tabPosition) !== -1
+                ? 'is-stretch'
+                : ''
+            ]"
+            ref="nav"
+            style={navStyle}
+            role="tablist"
+            on-keydown={changeTab}
+          >
+          <template v-if="!type">
+            <tab-bar   :tabPosition="tabPosition" :tabs="panes"></tab-bar>
+          </template>
+            <template v-for=" (pane,index) in panes" :key="`tab-${pane.name || pane.index || index}`">
+              
+               <div
+              :class="[
+               'el-tabs__item',
+                `is-${tabPosition }`,
+                {'is-active':pane.active},
+                {'is-disabled': pane.disabled},
+                {'is-closable':  pane.isClosable || editable},
+                {'is-focus': isFocus}
+              ]"
+              :id="`tab-${pane.name || pane.index || index}`"
+              :aria-controls="`pane-${pane.name || pane.index || index}`"
+              role="tab"
+              :aria-selected="pane.active"
+             
+              :ref="el => { tabs[index] = el }"
+              :tabindex="pane.active ? 0 : -1"
+              refInFor
+              @focus="setFocus"
+              @blur ="removeFocus"
+              @click="(ev)=>{onTabClick(pane, (pane.name || pane.index || index),ev)}"
+              @keydown="(ev)=>{handleKeydown(pane.isClosable || editable,pane,ev)}"
+            >
+              {{pane.labelContent || pane.label}}
+               <template v-if="pane.$slots.label">
+                
+                 <slot name="label">{pane.$slots.label()}</slot>
 
-<script lang='jsx'>
+                </template>
+              <template v-if="pane.isClosable || editable">
+                  <span class="el-icon-close" @click="(ev)=>{handleOnClose(pane,ev)}"></span>
+              </template>
+              <!-- {btnClose} -->
+          </div>
+            </template>
+            <!-- {tabs} -->
+          </div>
+        </div>
+      </div>
+  
+</template>
+<script >
 import TabBar from './tab-bar'
 import {
   addResizeListener,
   removeResizeListener
 } from 'element-ui/src/utils/resize-event'
-import { reactive, toRefs,onUpdated,onMounted,onBeforeUnmount, computed,getCurrentInstance } from 'vue'
+import { reactive, render,h,ref,toRefs,onUpdated,onMounted,onBeforeUnmount,onBeforeUpdate, computed,getCurrentInstance } from 'vue'
 
 const firstUpperCase = (str) => {
   return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
@@ -40,8 +122,12 @@ export default {
         focusable: true
 
     });
+    const tabs=ref([]);
 
-   
+    // make sure to reset the refs before each update
+      onBeforeUpdate(() => {
+        tabs.value = []
+      })
 
      const navStyle=computed(()=>{
 
@@ -234,11 +320,16 @@ export default {
     }
 
     onUpdated(()=>{
+       props.panes.map((pane, index)=>{
+        pane.state.index = `${index}` ;
+      });
       update()
     })
 
     onMounted(()=>{
-       let { ctx } = getCurrentInstance()
+     
+
+    let { ctx } = getCurrentInstance()
 
     addResizeListener(ctx.$el, update)
     document.addEventListener('visibilitychange', visibilityChangeHandler)
@@ -262,115 +353,47 @@ export default {
     });
 
     const onTabClick=(pane, tabName, ev)=>{
+    
+      removeFocus();
       let data={pane, tabName, ev}
  
       emit('TabClick',data);
     }
+
+    const handleKeydown=(closable,pane,ev)=>{
+
+      if (closable && (ev.keyCode === 46 || ev.keyCode === 8)){
+        onTabRemove(pane, ev);
+      }
+    }
     const onTabRemove=(pane, ev)=>{
     
        let data={pane, ev}
-    
+   
       emit('TabRemove',data);
     }
-
+    const handleOnClose=(pane,ev)=>{
+      onTabRemove(pane, ev);
+    }
+   
     
 
-    return () =>{
+    return {
+      ...toRefs(state),
+      tabs,
+      setFocus,
+      removeFocus,
+      onTabClick,
+      handleOnClose,
+      handleKeydown,
+      scrollToActiveTab,
+      
+      
 
-      const scrollBtn = state.scrollable
-      ? [
-          <span
-            class={['el-tabs__nav-prev', state.scrollable.prev ? '' : 'is-disabled']}
-            on-click={scrollPrev}
-          >
-            <i class="el-icon-arrow-left"></i>
-          </span>,
-          <span
-            class={['el-tabs__nav-next', state.scrollable.next ? '' : 'is-disabled']}
-            on-click={scrollNext}
-          >
-            <i class="el-icon-arrow-right"></i>
-          </span>
-        ]
-      : null
-      let panes=props.panes;
-      let type=props.type;
-       const tabs=panes.map((pane, index)=>{
-           
-          let tabName = pane.name || pane.index || index;
-          // 获取实例的isClosable;
-        const closable = pane.isClosable || editable.value;  
-        pane.state.index = `${index}` ;
-        const btnClose = closable
-          ? <span class="el-icon-close" onClick={(ev) => { onTabRemove(pane, ev); }}></span>
-          : null;
-        const tabLabelContent = pane.labelContent || pane.label||(pane.$slots.label&&pane.$slots.label());
-        const tabindex = pane.active ? 0 : -1;
-   
-        return (
-          <div
-            class={{
-              'el-tabs__item': true,
-              [`is-${ props.tabPosition }`]: true,
-              'is-active': pane.active,
-              'is-disabled': pane.disabled,
-              'is-closable': closable,
-              'is-focus': state.isFocus
-            }}
-            id={`tab-${tabName}`}
-            key={`tab-${tabName}`}
-            aria-controls={`pane-${tabName}`}
-            role="tab"
-            aria-selected={ pane.active }
-            ref="tabs"
-            tabindex={tabindex}
-            refInFor
-            on-focus={ ()=> { setFocus(); }}
-            on-blur ={ ()=> { removeFocus(); }}
-            onClick={(ev) => { removeFocus(); onTabClick(pane, tabName, ev); }}
-            on-keydown={(ev) => { if (closable && (ev.keyCode === 46 || ev.keyCode === 8)) { onTabRemove(pane, ev);} }}
-          >
-            {tabLabelContent}
-            {btnClose}
-          </div>
-        );
-       });
+    }
+  }
 
 
-    return (
-      <div
-        class={[
-          'el-tabs__nav-wrap',
-          state.scrollable ? 'is-scrollable' : '',
-          `is-${props.tabPosition}`
-        ]}
-      >
-        {scrollBtn}
-        <div class={['el-tabs__nav-scroll']} ref="navScroll">
-          <div
-            class={[
-              'el-tabs__nav',
-              `is-${props.tabPosition}`,
-              stretch.value &&
-              ['top', 'bottom'].indexOf(props.tabPosition) !== -1
-                ? 'is-stretch'
-                : ''
-            ]}
-            ref="nav"
-            style={navStyle}
-            role="tablist"
-            on-keydown={changeTab}
-          >
-            {!type ? <tab-bar   tabPosition={props.tabPosition} tabs={panes}></tab-bar> : null}
-            {tabs}
-          </div>
-        </div>
-      </div>
-    )
-
-     }
- 
- },
  
 }
 

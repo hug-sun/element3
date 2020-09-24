@@ -1,3 +1,26 @@
+<template>
+  <div
+    class="el-upload"
+    :class="{ [`el-upload--${listType}`]: true }"
+    @click="handleClick"
+    @keydown="handleKeydown"
+    tabindex="0"
+  >
+    <upload-dragger v-if="drag" :disabled="disabled" @file="uploadFiles">
+      <slot></slot>
+    </upload-dragger>
+    <slot v-else></slot>
+    <input
+      class="el-upload__input"
+      type="file"
+      ref="input"
+      :name="name"
+      @change="handleChange"
+      :multiple="multiple"
+      :accept="accept"
+    />
+  </div>
+</template>
 <script>
 import ajax from './ajax'
 import UploadDragger from './upload-dragger.vue'
@@ -178,51 +201,6 @@ export default {
         this.handleClick()
       }
     }
-  },
-
-  render(h) {
-    const {
-      handleClick,
-      drag,
-      name,
-      handleChange,
-      multiple,
-      accept,
-      listType,
-      uploadFiles,
-      disabled,
-      handleKeydown
-    } = this
-    const data = {
-      class: {
-        'el-upload': true
-      },
-      on: {
-        click: handleClick,
-        keydown: handleKeydown
-      }
-    }
-    data.class[`el-upload--${listType}`] = true
-    return (
-      <div {...data} tabindex="0">
-        {drag ? (
-          <upload-dragger disabled={disabled} on-file={uploadFiles}>
-            {this.$slots.default}
-          </upload-dragger>
-        ) : (
-          this.$slots.default
-        )}
-        <input
-          class="el-upload__input"
-          type="file"
-          ref="input"
-          name={name}
-          on-change={handleChange}
-          multiple={multiple}
-          accept={accept}
-        ></input>
-      </div>
-    )
   }
 }
 </script>

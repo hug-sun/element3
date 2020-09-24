@@ -57,7 +57,7 @@ const getSibling = (el, distance) => {
   return null
 }
 
-const getMenuIndex = (el, distance) => {
+const getMenuIndex = (el) => {
   if (!el) return
   const pieces = el.id.split('-')
   return Number(pieces[pieces.length - 2])
@@ -132,7 +132,7 @@ export default {
       return this.config.expandTrigger === 'hover'
     },
     renderLabelFn() {
-      return this.renderLabel || this.$scopedSlots.default
+      return this.renderLabel || this.$slots.default
     }
   },
 
@@ -230,15 +230,17 @@ export default {
       const { target, keyCode } = e
 
       switch (keyCode) {
-        case KeyCode.up:
+        case KeyCode.up: {
           const prev = getSibling(target, -1)
           focusNode(prev)
           break
-        case KeyCode.down:
+        }
+        case KeyCode.down: {
           const next = getSibling(target, 1)
           focusNode(next)
           break
-        case KeyCode.left:
+        }
+        case KeyCode.left: {
           const preMenu = this.$refs.menu[getMenuIndex(target) - 1]
           if (preMenu) {
             const expandedNode = preMenu.$el.querySelector(
@@ -247,7 +249,8 @@ export default {
             focusNode(expandedNode)
           }
           break
-        case KeyCode.right:
+        }
+        case KeyCode.right: {
           const nextMenu = this.$refs.menu[getMenuIndex(target) + 1]
           if (nextMenu) {
             const firstNode = nextMenu.$el.querySelector(
@@ -256,6 +259,7 @@ export default {
             focusNode(firstNode)
           }
           break
+        }
         case KeyCode.enter:
           checkNode(target)
           break

@@ -137,7 +137,7 @@
 
 :::demo
 ```html
-<el-tabs type="border-card">
+
 <template>
   <el-tabs type="border-card">
   <el-tab-pane>
@@ -161,6 +161,8 @@
 
 :::demo
 ```html
+<template>
+
 <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
   <el-tab-pane
     :key="item.name"
@@ -171,6 +173,8 @@
     {{item.content}}
   </el-tab-pane>
 </el-tabs>
+
+</template>
 <script>
   export default {
     data() {
@@ -227,6 +231,7 @@
 
 :::demo
 ```html
+<template>
 <div style="margin-bottom: 20px;">
   <el-button
     size="small"
@@ -245,6 +250,7 @@
     {{item.content}}
   </el-tab-pane>
 </el-tabs>
+</template>
 <script>
   export default {
     data() {

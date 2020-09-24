@@ -72,7 +72,7 @@ describe('ImageViewer.vue', () => {
     const wrapper = mount(ImageViewer, {
       props: {
         urlList: [IMAGE_SUCCESS, IMAGE_FAIL],
-        onSwitch(newIndex) {
+        onSwitch() {
           caller = true
         }
       }

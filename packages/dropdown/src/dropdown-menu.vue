@@ -47,7 +47,9 @@ export default {
       props,
       {
         emit,
-        slots,
+        slots
+      },
+      {
         popperElm,
         referenceElm
       }

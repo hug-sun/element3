@@ -15,21 +15,21 @@
       @focus="handleFocus"
       @blur="handleBlur"
       @clear="handleClear"
-      @keydown.up.native.prevent="highlight(highlightedIndex - 1)"
-      @keydown.down.native.prevent="highlight(highlightedIndex + 1)"
-      @keydown.enter.native="handleKeyEnter"
-      @keydown.native.tab="close"
+      @keydown.up.prevent="highlight(highlightedIndex - 1)"
+      @keydown.down.prevent="highlight(highlightedIndex + 1)"
+      @keydown.enter="handleKeyEnter"
+      @keydown.tab="close"
     >
-      <template slot="prepend" v-if="$slots.prepend">
+      <template v-slot:prepend v-if="$slots.prepend">
         <slot name="prepend"></slot>
       </template>
-      <template slot="append" v-if="$slots.append">
+      <template v-slot:append v-if="$slots.append">
         <slot name="append"></slot>
       </template>
-      <template slot="prefix" v-if="$slots.prefix">
+      <template v-slot:prefix v-if="$slots.prefix">
         <slot name="prefix"></slot>
       </template>
-      <template slot="suffix" v-if="$slots.suffix">
+      <template v-slot:suffix v-if="$slots.suffix">
         <slot name="suffix"></slot>
       </template>
     </el-input>
@@ -217,7 +217,7 @@ export default {
       this.activated = false
       this.$emit('clear')
     },
-    close(e) {
+    close() {
       this.activated = false
     },
     handleKeyEnter(e) {
@@ -230,7 +230,7 @@ export default {
         this.select(this.suggestions[this.highlightedIndex])
       } else if (this.selectWhenUnmatched) {
         this.$emit('select', { value: this.value })
-        this.$nextTick((_) => {
+        this.$nextTick(() => {
           this.suggestions = []
           this.highlightedIndex = -1
         })
@@ -239,7 +239,7 @@ export default {
     select(item) {
       this.$emit('input', item[this.valueKey])
       this.$emit('select', item)
-      this.$nextTick((_) => {
+      this.$nextTick(() => {
         this.suggestions = []
         this.highlightedIndex = -1
       })
@@ -288,6 +288,8 @@ export default {
   },
   mounted() {
     this.debouncedGetData = debounce(this.debounce, this.getData)
+    // TODO $on 已经废弃
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('item-click', (item) => {
       this.select(item)
     })
@@ -300,7 +302,7 @@ export default {
       `${this.id}-item-${this.highlightedIndex}`
     )
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.$refs.suggestions.$destroy()
   }
 }

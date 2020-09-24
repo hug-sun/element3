@@ -60,7 +60,7 @@ export default {
     )
     watch(
       () => state.steps,
-      (steps) => {
+      () => {
         state.steps.forEach((child, index) => {
           child.state.index = index
         })

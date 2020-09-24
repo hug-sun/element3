@@ -118,7 +118,7 @@ function useVuePopper(props, { emit, slots, referenceEl }) {
     options.offset = offset.value
     options.arrowOffset = arrowOffset.value
     popperJS.value = new PopperJS(referenceRef, popperRef, options)
-    popperJS.value.onCreate((_) => {
+    popperJS.value.onCreate(() => {
       emit('created', instance.proxy)
       resetTransformOrigin()
       nextTick(() => updatePopper())

@@ -50,7 +50,7 @@
           :options="options"
           :props="config"
           :border="false"
-          :render-label="$scopedSlots.default"
+          :render-label="$slots.default"
           @expand-change="handleExpandChange"
           @close="toggleDropDownVisible(false)"
         ></el-cascader-panel>
@@ -319,7 +319,7 @@ export default {
         this.$nextTick(this.updateStyle)
       }
     },
-    filtering(val) {
+    filtering() {
       this.$nextTick(this.updatePopper)
     }
   },
@@ -356,7 +356,7 @@ export default {
     addResizeListener(this.$el, this.updateStyle)
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     removeResizeListener(this.$el, this.updateStyle)
   },
 
@@ -559,14 +559,16 @@ export default {
         case KeyCode.enter:
           target.click()
           break
-        case KeyCode.up:
+        case KeyCode.up: {
           const prev = target.previousElementSibling
           prev && prev.focus()
           break
-        case KeyCode.down:
+        }
+        case KeyCode.down: {
           const next = target.nextElementSibling
           next && next.focus()
           break
+        }
         case KeyCode.esc:
         case KeyCode.tab:
           this.toggleDropDownVisible(false)

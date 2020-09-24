@@ -56,7 +56,7 @@ export default {
     name: String
   },
 
-  setup(props, ctx) {
+  setup(props) {
     const { label, disabled } = toRefs(props)
     const radio = ref()
     const focus = ref(false)
@@ -119,7 +119,7 @@ function useCheckGroup() {
   }
 }
 
-function useModel({ radioGroup, label, radio }) {
+function useModel({ radioGroup }) {
   const value = computed({
     get() {
       return radioGroup.props.modelValue

@@ -119,7 +119,7 @@ export default {
       return null
     },
 
-    renderCheckbox(h) {
+    renderCheckbox() {
       const { node, config, isDisabled } = this
       const events = {
         on: { change: this.handleMultiCheckChange },
@@ -141,7 +141,7 @@ export default {
       )
     },
 
-    renderRadio(h) {
+    renderRadio() {
       let { checkedValue, value, isDisabled } = this
 
       // to keep same reference if value cause radio's checked state is calculated by reference comparision;
@@ -163,19 +163,19 @@ export default {
       )
     },
 
-    renderCheckIcon(h) {
+    renderCheckIcon() {
       return <i class="el-icon-check el-cascader-node__prefix"></i>
     },
 
-    renderLoadingIcon(h) {
+    renderLoadingIcon() {
       return <i class="el-icon-loading el-cascader-node__postfix"></i>
     },
 
-    renderExpandIcon(h) {
+    renderExpandIcon() {
       return <i class="el-icon-arrow-right el-cascader-node__postfix"></i>
     },
 
-    renderContent(h) {
+    renderContent() {
       const { panel, node } = this
       const render = panel.renderLabelFn
       const vnode = render ? render({ node, data: node.data }) : null

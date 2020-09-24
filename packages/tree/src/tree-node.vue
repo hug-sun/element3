@@ -38,7 +38,6 @@
       </span>
       <el-checkbox
         v-if="showCheckbox"
-        v-model="node.checked"
         :indeterminate="node.indeterminate"
         :disabled="!!node.disabled"
         @click.stop
@@ -272,6 +271,8 @@ export default {
     }
 
     if(this.tree.accordion) {
+    // TODO $on 已经废弃了，需要重新实现这个逻辑
+    // eslint-disable-next-line vue/no-deprecated-events-api
       this.$on('tree-node-expand', node => {
         if(this.node !== node) {
           this.node.collapse();

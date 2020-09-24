@@ -153,7 +153,7 @@ export default {
       this.resetColor()
     },
     resetColor() {
-      this.$nextTick((_) => {
+      this.$nextTick(() => {
         if (this.value) {
           this.color.fromString(this.value)
         } else {

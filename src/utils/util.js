@@ -100,6 +100,7 @@ export const arrayFindIndex = function (arr, pred) {
 
 export const arrayFind = function (arr, pred) {
   const idx = arrayFindIndex(arr, pred)
+  console.log(idx);
   return idx !== -1 ? arr[idx] : undefined
 }
 
@@ -229,7 +230,7 @@ export function rafThrottle(fn) {
   return function (...args) {
     if (locked) return
     locked = true
-    window.requestAnimationFrame((_) => {
+    window.requestAnimationFrame(() => {
       fn.apply(this, args)
       locked = false
     })

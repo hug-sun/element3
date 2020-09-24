@@ -15,7 +15,7 @@ export default {
     isAutoWidth: Boolean,
     updateAll: Boolean
   },
-  setup(props, { emit, slots }) {
+  setup(props, { slots }) {
     const { labelStyle, labelRef } = useLabelWidth(props, slots)
 
     return () => {

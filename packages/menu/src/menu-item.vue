@@ -23,7 +23,9 @@
       effect="dark"
       placement="right"
     >
-      <div slot="content"><slot name="title"></slot></div>
+      <template v-slot:content>
+        <slot name="title"></slot>
+      </template>
       <div
         style="
           position: absolute;
@@ -123,7 +125,7 @@ export default {
     this.parentMenu.addItem(this)
     this.rootMenu.addItem(this)
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.parentMenu.removeItem(this)
     this.rootMenu.removeItem(this)
   }

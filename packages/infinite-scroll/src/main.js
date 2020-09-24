@@ -126,7 +126,7 @@ const handleScroll = function (cb) {
 export default {
   name: 'InfiniteScroll',
 
-  mounted(el, binding, vnode) {
+  mounted(el, binding) {
     const cb = binding.value
 
     // only include vertical scroll

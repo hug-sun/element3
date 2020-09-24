@@ -481,6 +481,8 @@ export default {
       if (this.selectionMode === 'range') {
         if (!this.rangeState.selecting) {
           this.$emit('pick', { minDate: newDate, maxDate: null })
+          // TODO 不可以直接修改 props 的值
+          // eslint-disable-next-line vue/no-mutating-props
           this.rangeState.selecting = true
         } else {
           if (newDate >= this.minDate) {
@@ -488,6 +490,8 @@ export default {
           } else {
             this.$emit('pick', { minDate: newDate, maxDate: this.minDate })
           }
+          // TODO 不可以直接修改 props 的值
+          // eslint-disable-next-line vue/no-mutating-props
           this.rangeState.selecting = false
         }
       } else if (this.selectionMode === 'day') {
