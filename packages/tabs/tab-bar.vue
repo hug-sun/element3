@@ -8,7 +8,7 @@
 <script>
 import { arrayFind } from 'element-ui/src/utils/util'
 
-import { computed, inject, toRefs, ref,getCurrentInstance } from 'vue'
+import { computed, toRefs,getCurrentInstance } from 'vue'
 
 export default {
   name: 'TabBar',
@@ -19,7 +19,7 @@ export default {
   },
 
   // inject: ['rootTabs'],
-setup(props,ctx){
+setup(props){
 
   const {tabs}=toRefs(props);
 
@@ -42,7 +42,7 @@ setup(props,ctx){
                   .replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
               }
        
-              tabs.value.every((tab, index) => {
+              tabs.value.every((tab) => {
                
                 let { parent } = getCurrentInstance()
              

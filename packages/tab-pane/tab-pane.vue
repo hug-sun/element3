@@ -39,9 +39,9 @@ export default {
   },
    emits:['tab-nav-update'],
 
-  setup(props,ctx){
+  setup(props){
    
-    const { label, labelContent, closable,disabled,lazy } = toRefs(props)
+    const {  closable } = toRefs(props)
     const state = reactive({
       index:null
     })
@@ -53,7 +53,7 @@ export default {
         parent.emit('tab-nav-update');
      })
 
-    useDispatchFiled(props)
+    useDispatchFiled()
 
     const isClosable=computed(()=>{
        
@@ -73,7 +73,7 @@ export default {
     });
 
     const  paneName =computed(()=>{
-      console.log(props.name,state.index)
+  
       return props.name || state.index
     });
      return {
@@ -82,19 +82,14 @@ export default {
        isClosable,
        paneName,
        loaded,
-       label, 
-       labelContent, 
-       closable,
-       disabled,
-       lazy
-
+  
      }
 
   }
   
 }
 
- function useDispatchFiled(props) {
+ function useDispatchFiled() {
   const { dispatch } = useEmitter()
   const { ctx } = getCurrentInstance()
 

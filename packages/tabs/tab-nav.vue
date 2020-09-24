@@ -9,13 +9,13 @@
       <template v-if="scrollable">
          <span
             :class="['el-tabs__nav-prev', scrollable.prev ? '' : 'is-disabled']"
-            on-click={scrollPrev}
+            @click="scrollPrev"
           >
             <i class="el-icon-arrow-left"></i>
           </span>,
           <span
             :class="['el-tabs__nav-next', scrollable.next ? '' : 'is-disabled']"
-            on-click={scrollNext}
+            @click="scrollNext"
           >
             <i class="el-icon-arrow-right"></i>
           </span>
@@ -32,9 +32,9 @@
                 : ''
             ]"
             ref="nav"
-            style={navStyle}
+            :style="navStyle"
             role="tablist"
-            on-keydown={changeTab}
+            @keydown="changeTab"
           >
           <template v-if="!type">
             <tab-bar   :tabPosition="tabPosition" :tabs="panes"></tab-bar>
@@ -87,7 +87,7 @@ import {
   addResizeListener,
   removeResizeListener
 } from 'element-ui/src/utils/resize-event'
-import { reactive, render,h,ref,toRefs,onUpdated,onMounted,onBeforeUnmount,onBeforeUpdate, computed,getCurrentInstance } from 'vue'
+import { reactive,ref,toRefs,onUpdated,onMounted,onBeforeUnmount,onBeforeUpdate, computed,getCurrentInstance } from 'vue'
 
 const firstUpperCase = (str) => {
   return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
@@ -110,9 +110,9 @@ export default {
     type: String,
     stretch: Boolean
   },
-  setup(props,{ attrs, emit, slots }){
+  setup(props,{ emit }){
     
-    const {editable,stretch } = toRefs(props)
+    
     const { refs }=getCurrentInstance();
     const $refs=refs;
      const state=reactive({
@@ -357,7 +357,7 @@ export default {
       removeFocus();
       let data={pane, tabName, ev}
  
-      emit('TabClick',data);
+      emit('tab-click',data);
     }
 
     const handleKeydown=(closable,pane,ev)=>{
@@ -370,7 +370,7 @@ export default {
     
        let data={pane, ev}
    
-      emit('TabRemove',data);
+      emit('tab-remove',data);
     }
     const handleOnClose=(pane,ev)=>{
       onTabRemove(pane, ev);
@@ -380,12 +380,15 @@ export default {
 
     return {
       ...toRefs(state),
+      navStyle,
       tabs,
       setFocus,
       removeFocus,
       onTabClick,
       handleOnClose,
       handleKeydown,
+      scrollPrev,
+      scrollNext,
       scrollToActiveTab,
       
       

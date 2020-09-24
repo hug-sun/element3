@@ -30,8 +30,8 @@
           :tabPosition='tabPosition'
           :panes="panesArr"
           :stretch="stretch"
-          @TabRemove="handleTabRemove"
-          @TabClick="handleTabClick"
+          @tab-remove="handleTabRemove"
+          @tab-click="handleTabClick"
         ></tab-nav>
       </div>
 
@@ -66,8 +66,8 @@
           :tabPosition='tabPosition'
           :panes="panesArr"
           :stretch="stretch"
-          @TabRemove="handleTabRemove"
-          @TabClick="handleTabClick"
+           @tab-remove="handleTabRemove"
+          @tab-click="handleTabClick"
         ></tab-nav>
       </div>
     </template>
@@ -118,9 +118,9 @@ export default {
   },
   emits: ['tab-click','update:modelValue', 'edit', 'tab-remove', 'tab-add', 'input'],
 
-  setup(props, { attrs, emit, slots }){
+  setup(props, {  emit, slots }){
  
-    const {  editable, stretch } = toRefs(props)
+   
     const currentName = ref(props.value || props.modelValue)
     
     const {panes} = usePanes();
@@ -133,23 +133,23 @@ export default {
 
  
    
-    watch(props.modelValue, (modelValue, prevModelValue) => {
+    watch(props.modelValue, (modelValue) => {
       setCurrentName(modelValue)
     })
-    watch(props.value, (value, prevValue) => {
+    watch(props.value, (value) => {
 
       setCurrentName(value)
 
     })
 
-    watch(currentName, (currentName, prevCurrentName) => {
+    watch(currentName, () => {
      
-      console.log(nav);
-      if (nav) {
+      console.log(nav.value);
+      if (nav.value) {
         nextTick(() => {
           // 获取dom 实例
-          nav.$nextTick((_) => {
-            nav.scrollToActiveTab()
+          nav.value.$nextTick(() => {
+            nav.value.scrollToActiveTab()
           })
         })
       }
@@ -160,6 +160,7 @@ export default {
        const slotsDefault = slots.default()
       if (slotsDefault.length) {
        //   
+       console.log(isForceUpdate);
       
       } else if (panesArr.value.length !== 0) {
         panesArr.value= []
@@ -243,13 +244,11 @@ export default {
       currentName,
       handleTabClick,
       handleTabRemove,
-      editable,
       handleTabAdd,
       panes,
       panesArr,
       nav,
       handleKeyDown,
-      stretch
     }
 
 
