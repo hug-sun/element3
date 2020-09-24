@@ -135,18 +135,11 @@ export default {
 
     useCheckbox(props, state)
 
+    useFocusNode(props)
+
     const { handleKeydown } = useKeyDown()
 
     const drag = useDrag(props)
-
-    onMounted(() => {
-      if (props.currentNodeKey) {
-        const node = document.getElementById('TreeNode' + props.currentNodeKey)
-        if (node) {
-          node.focus()
-        }
-      }
-    })
 
     return {
       ...drag,
@@ -364,5 +357,16 @@ function useDrag(props) {
     handleDragEnd,
     handleDrop
   }
+}
+
+function useFocusNode(props) {
+  onMounted(() => {
+    if (props.currentNodeKey) {
+      const node = document.getElementById('TreeNode' + props.currentNodeKey)
+      if (node) {
+        node.focus()
+      }
+    }
+  })
 }
 </script>
