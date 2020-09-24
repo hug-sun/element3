@@ -1,12 +1,5 @@
-export function isArray(value) {
-  return value instanceof Array
-}
-export function isObject(value) {
-  return value instanceof Object && !(value instanceof Array)
-}
-export function isFunction(value) {
-  return value instanceof Function
-}
+import { isArray, isObject } from 'element-ui/src/utils/types'
+
 /**
  * Deep traversal of the object
  * @param {object} target
@@ -47,9 +40,10 @@ export function nodeEach(
   { childKey = 'children', root = null } = {}
 ) {
   const dfs = (node) => {
-    if (!isObject(node)) {
+    if (!isObject(node) || isArray(node)) {
       return
     }
+
     const child = node[childKey] || []
 
     for (let i = 0; i < child.length; i++) {

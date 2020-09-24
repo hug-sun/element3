@@ -36,7 +36,8 @@
 import { Tree } from './entity/Tree'
 import ElTreeNode from './TreeNode.vue'
 import { t } from 'element-ui/src/locale'
-import { extractMethods, isFunction } from './libs/util'
+import { isFunction } from 'element-ui/src/utils/types'
+import { extractMethods } from './libs/util'
 
 import {
   reactive,
