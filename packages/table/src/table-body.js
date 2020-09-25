@@ -34,7 +34,7 @@ export default {
     highlight: Boolean
   },
 
-  render(h) {
+  render() {
     const data = this.data || []
     return (
       <table class="el-table__body" cellspacing="0" cellpadding="0" border="0">
@@ -365,7 +365,7 @@ export default {
           on-dblclick={($event) => this.handleDoubleClick($event, row)}
           on-click={($event) => this.handleClick($event, row)}
           on-contextmenu={($event) => this.handleContextMenu($event, row)}
-          on-mouseenter={(_) => this.handleMouseEnter($index)}
+          on-mouseenter={() => this.handleMouseEnter($index)}
           on-mouseleave={this.handleMouseLeave}
         >
           {columns.map((column, cellIndex) => {

@@ -155,7 +155,7 @@ export default {
       }
     }
 
-    watch(props.modelValue, (val, oldVal) => emit('update:modelValue', val))
+    watch(props.modelValue, (val) => emit('update:modelValue', val))
 
     provide(
       'defaultScopedSlots',

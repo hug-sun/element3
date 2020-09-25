@@ -244,14 +244,16 @@ export default {
       if (this.selectionMode === 'range') {
         if (!this.rangeState.selecting) {
           this.$emit('pick', { minDate: newDate, maxDate: null })
-          this.rangeState.selecting = true
+          // TODO 需要使用 emit 来修改 rangeState 的值
+          // this.rangeState.selecting = true
         } else {
           if (newDate >= this.minDate) {
             this.$emit('pick', { minDate: this.minDate, maxDate: newDate })
           } else {
             this.$emit('pick', { minDate: newDate, maxDate: this.minDate })
           }
-          this.rangeState.selecting = false
+          // TODO 需要使用 emit 来修改 rangeState 的值
+          // this.rangeState.selecting = false
         }
       } else {
         this.$emit('pick', month)

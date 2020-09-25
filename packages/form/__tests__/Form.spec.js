@@ -179,7 +179,7 @@ describe('Form', () => {
 
     wrapper.vm.$refs.form.validate((valid) => {
       expect(valid).toBe(false)
-      wrapper.vm.$refs.form.$nextTick((_) => {
+      wrapper.vm.$refs.form.$nextTick(() => {
         expect(wrapper.find('.el-form-item__error').exists()).toBe(false)
         done()
       })

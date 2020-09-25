@@ -20,7 +20,7 @@
         <span class="el-color-dropdown__value">
           <el-input
             v-model="customInput"
-            @keyup.native.enter="handleConfirm"
+            @keyup.enter="handleConfirm"
             @blur="handleConfirm"
             :validate-event="false"
             size="mini"

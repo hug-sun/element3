@@ -245,7 +245,6 @@ export default {
       items,
       activeIndex,
       hover,
-      loop,
       arrowDisplay,
       handleButtonEnter,
       handleButtonLeave,
@@ -383,7 +382,7 @@ const useIndicator = (props, initData) => {
       'el-carousel__indicators',
       'el-carousel__indicators--' + props.direction
     ]
-    if (hasLabel) {
+    if (hasLabel.value) {
       classes.push('el-carousel__indicators--labels')
     }
     if (props.indicatorPosition === 'outside' || props.type === 'card') {

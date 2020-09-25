@@ -231,12 +231,10 @@ export default {
 
     return {
       // state
-      modelValue,
       rateDisabled,
       classMap,
       classes,
       text,
-      max,
       hoverIndex,
       decimalStyle,
       decimalIconClass,
