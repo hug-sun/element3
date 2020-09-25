@@ -20,7 +20,7 @@ export default {
 
   // inject: ['rootTabs'],
 setup(props){
-
+  
   const {tabs}=toRefs(props);
 
 
@@ -41,14 +41,14 @@ setup(props){
                   .toLowerCase()
                   .replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
               }
-       
+         
+    
               tabs.value.every((tab) => {
                
                 let { parent } = getCurrentInstance()
              
-
                 const $el = arrayFind(
-                  parent.setupState.tabs || [],
+                  parent.ctx.tabsNav || [],
 
                   (t) => {
                    

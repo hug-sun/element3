@@ -48,7 +48,6 @@ export default {
     const loaded = ref(false)
   
     let {parent}=getCurrentInstance();
-     console.log(parent);
       onUpdated(()=>{
         parent.emit('tab-nav-update');
      })

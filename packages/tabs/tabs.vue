@@ -142,8 +142,6 @@ export default {
     })
 
     watch(currentName, () => {
-     
-      console.log(nav.value);
       if (nav.value) {
         nextTick(() => {
           // 获取dom 实例
