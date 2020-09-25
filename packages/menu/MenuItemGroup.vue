@@ -13,34 +13,34 @@
   </li>
 </template>
 <script>
+import { computed, getCurrentInstance, inject } from 'vue'
 export default {
   name: 'ElMenuItemGroup',
 
   componentName: 'ElMenuItemGroup',
 
-  inject: ['rootMenu'],
   props: {
     title: {
       type: String
     }
   },
-  data() {
-    return {
-      paddingLeft: 20
-    }
-  },
-  computed: {
-    levelPadding() {
+  setup() {
+    const instance = getCurrentInstance()
+    const rootMenu = inject('rootMenu')
+    const levelPadding = computed(() => {
       let padding = 20
-      let parent = this.$parent
-      if (this.rootMenu.collapse) return 20
-      while (parent && parent.$options.componentName !== 'ElMenu') {
-        if (parent.$options.componentName === 'ElSubmenu') {
+      let parent = instance.parent
+      if (rootMenu.ctx.collapse) return 20
+      while (parent && parent.type.name !== 'ElMenu') {
+        if (parent.type.name === 'ElSubmenu') {
           padding += 20
         }
-        parent = parent.$parent
+        parent = parent.parent
       }
       return padding
+    })
+    return {
+      levelPadding
     }
   }
 }
