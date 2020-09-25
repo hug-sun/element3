@@ -114,6 +114,7 @@ ComponentNames.forEach((name) => {
       'rate',
       'divider',
       'progress',
+      'tree',
       'form',
       'form-item',
       'message',
