@@ -24,9 +24,8 @@ export default {
     stretch: Boolean
   },
   emits:['tab-click','tab-remove'],
-  setup(props,{ attrs, emit, slots }){
+  setup(props,{  emit }){
     
-    const {editable,stretch } = toRefs(props)
     const { refs }=getCurrentInstance();
     const $refs=refs;
      const state=reactive({
@@ -247,6 +246,7 @@ export default {
     return {
 
        ...toRefs(state),
+           
             navStyle,
             sizeName,
             scrollPrev,
@@ -307,7 +307,7 @@ export default {
            
           let tabName = pane.name || pane.index || index;
           // 获取实例的isClosable;
-        const closable = pane.isClosable || editable.value;  
+        const closable = pane.isClosable || editable;  
         pane.state.index = `${index}` ;
         const btnClose = closable
           ? <span class="el-icon-close" onClick={(ev) => { onTabRemove(pane, ev); }}></span>
@@ -358,7 +358,7 @@ export default {
             class={[
               'el-tabs__nav',
               `is-${tabPosition}`,
-              stretch.value &&
+              stretch &&
               ['top', 'bottom'].indexOf(tabPosition) !== -1
                 ? 'is-stretch'
                 : ''
