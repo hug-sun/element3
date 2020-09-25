@@ -4,7 +4,6 @@ import { addClass, removeClass, hasClass } from 'element-ui/src/utils/dom';
 import { computed, getCurrentInstance, onMounted, provide, ref, toRefs, watch, h , Transition } from 'vue';
 import {useEmitter} from 'element-ui/src/use/emitter';
 import {useItems} from "./src/menu-use";
-import { Submenu } from '../../types';
 export default {
   name: 'ElMenu',
   componentName: 'ElMenu',
