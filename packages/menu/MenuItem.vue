@@ -143,7 +143,6 @@ export default {
       paddingStyle,
       itemStyle,
       active,
-      disabled,
       handleClick,
       onMouseEnter,
       onMouseLeave,

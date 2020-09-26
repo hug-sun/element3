@@ -274,7 +274,6 @@ export default {
       currentPlacement,
       menuTransitionName,
       mode,
-      disabled,
       isFirstLevel,
       isMenuPopup,
       handleTitleMouseleave,
