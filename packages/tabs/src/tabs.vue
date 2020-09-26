@@ -43,10 +43,10 @@ export default {
     value(value) {
       this.setCurrentName(value)
     },
-    currentName(value) {
+    currentName() {
       if (this.$refs.nav) {
         this.$nextTick(() => {
-          this.$refs.nav.$nextTick((_) => {
+          this.$refs.nav.$nextTick(() => {
             this.$refs.nav.scrollToActiveTab()
           })
         })
@@ -57,6 +57,8 @@ export default {
   methods: {
     calcPaneInstances(isForceUpdate = false) {
       if (this.$slots.default) {
+        // TODO this.$slots.default 变更为函数了，需要调用
+        // eslint-disable-next-line vue/require-slots-as-functions
         const paneSlots = this.$slots.default.filter(
           (vnode) =>
             vnode.tag &&
@@ -120,7 +122,7 @@ export default {
     }
   },
 
-  render(h) {
+  render() {
     const {
       type,
       handleTabClick,
@@ -189,6 +191,8 @@ export default {
       this.setCurrentName('0')
     }
 
+    // TODO $on 已经废弃了，需要重新实现这个逻辑
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('tab-nav-update', this.calcPaneInstances.bind(null, true))
   },
 

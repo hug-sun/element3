@@ -4,8 +4,8 @@
     :class="[selectSize ? 'el-select--' + selectSize : '']"
     @click.stop="toggleMenu"
     v-clickoutside="handleClose"
-    @mouseenter.native="inputHovering = true"
-    @mouseleave.native="inputHovering = false"
+    @mouseenter="inputHovering = true"
+    @mouseleave="inputHovering = false"
   >
     <div
       class="el-select__tags"
@@ -103,7 +103,7 @@
       @keydown.enter.prevent="selectOption"
       @keydown.esc.stop.prevent="visible = false"
       @keydown.tab="visible = false"
-      @paste.native="debouncedOnInputChange"
+      @paste="debouncedOnInputChange"
     >
       <template v-slot:prefix v-if="$slots.prefix">
         <slot name="prefix"></slot>
@@ -317,7 +317,7 @@ export default {
     /** @Deprecated in next major version */
     autoComplete: {
       type: String,
-      validator(val) {
+      validator() {
         process.env.NODE_ENV !== 'production' &&
           console.warn(
             "[Element Warn][Select]'auto-complete' property will be deprecated in next major version. please use 'autocomplete' instead."
@@ -533,7 +533,7 @@ export default {
       const text = event.target.value
       if (event.type === 'compositionend') {
         this.isOnComposition = false
-        this.$nextTick((_) => this.handleQueryChange(text))
+        this.$nextTick(() => this.handleQueryChange(text))
       } else {
         const lastCharacter = text[text.length - 1] || ''
         this.isOnComposition = !isKorean(lastCharacter)
@@ -1018,7 +1018,7 @@ export default {
     this.setSelected()
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.$el && this.handleResize)
       removeResizeListener(this.$el, this.handleResize)
   }

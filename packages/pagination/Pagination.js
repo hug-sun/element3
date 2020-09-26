@@ -266,8 +266,8 @@ export default {
         <Jumper
           currentPage={this.internalCurrentPage}
           pageCount={this.internalPageCount}
-          handleChange={this.handleChange}
           disabled={this.disabled}
+          onChange={this.handleChange}
         />
       ),
       pager: (

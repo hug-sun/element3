@@ -33,7 +33,7 @@ export default {
       const classes = [
         'el-tag',
         props.type ? `el-tag--${props.type}` : '',
-        tagSize ? `el-tag--${tagSize}` : '',
+        tagSize.value ? `el-tag--${tagSize.value}` : '',
         props.effect ? `el-tag--${props.effect}` : '',
         props.hit && 'is-hit'
       ]

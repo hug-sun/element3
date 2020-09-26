@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import { toRefs } from 'vue'
-
 export default {
   name: 'ElHeader',
 
@@ -15,12 +13,6 @@ export default {
       type: String,
       default: '60px'
     }
-  },
-
-  setup(props) {
-    const { height } = toRefs(props)
-
-    return { height }
   }
 }
 </script>

@@ -26,7 +26,7 @@ export default {
     firstDayOfWeek: Number
   },
 
-  setup(props, { attrs, emit, slots }) {
+  setup(props, { emit }) {
     const { selectedDay, date, hideHeader, firstDayOfWeek } = toRefs(props)
     const WEEK_DAYS = ref(getI18nSettings().dayNames)
 

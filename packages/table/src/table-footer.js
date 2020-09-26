@@ -6,7 +6,7 @@ export default {
 
   mixins: [LayoutObserver],
 
-  render(h) {
+  render() {
     let sums = []
     if (this.summaryMethod) {
       sums = this.summaryMethod({

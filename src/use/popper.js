@@ -46,6 +46,10 @@ const popperProps = {
         gpuAcceleration: false
       }
     }
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 }
 
@@ -108,7 +112,7 @@ function usePopper(props, { emit, slots }, { referenceElm, popperElm }) {
     options.offset = offset.value
     options.arrowOffset = arrowOffset.value
     popperJS.value = new PopperJS(referenceRef, popperRef, options)
-    popperJS.value.onCreate((_) => {
+    popperJS.value.onCreate(() => {
       emit('created', instance.proxy)
       resetTransformOrigin()
       nextTick(() => updatePopper())

@@ -73,6 +73,7 @@ export default {
     type: { type: String, default: '' }
   },
   setup(props) {
+    // eslint-disable-next-line vue/no-setup-props-destructure
     const { duration, onClose, onClick } = props
     const typeClass = computed(() => {
       return props.type && typeMap[props.type]
