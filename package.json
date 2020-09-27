@@ -1,6 +1,6 @@
 {
   "name": "element3",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A Component Library for Vue3",
   "main": "dist/element3-ui.esm.js",
   "module": "dist/element3-ui.esm.js",
