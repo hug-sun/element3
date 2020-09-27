@@ -130,6 +130,7 @@ ComponentNames.forEach((name) => {
       'input-number',
       'step',
       'steps',
+      'slider',
       'popconfirm',
       'drawer',
       'transfer',

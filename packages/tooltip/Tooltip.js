@@ -10,7 +10,8 @@ import {
   onMounted,
   onUnmounted,
   getCurrentInstance,
-  Transition
+  Transition,
+  onBeforeMount
 } from 'vue'
 
 export default {
@@ -225,7 +226,9 @@ export default {
         })
       }
     })
-
+    onBeforeMount(() => {
+      instance.ctx.updatePopper = updatePopper
+    })
     onUnmounted(() => {
       const reference = referenceElm.value
       if (reference.nodeType === 1) {
