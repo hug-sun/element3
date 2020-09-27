@@ -1,4 +1,4 @@
-import { vuePopperProps, useVuePopper } from 'packages/popover/vue-popper'
+import { vuePopperProps, useVuePopper } from '../popover/vue-popper'
 import debounce from 'throttle-debounce/debounce'
 import { addClass, removeClass, on, off } from 'element-ui/src/utils/dom'
 import { generateId } from 'element-ui/src/utils/util'
