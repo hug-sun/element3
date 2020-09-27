@@ -1,4 +1,5 @@
 // 用于构建时的入口
+import ElAlert from '../packages/alert'
 import ElContainer from '../packages/container'
 import ElButton from '../packages/button'
 import ElSwitch from '../packages/switch'
@@ -10,6 +11,7 @@ import ElBreadcrumbItem from '../packages/breadcrumb-item'
 import { version } from '../package.json'
 
 const components = [
+  ElAlert,
   ElContainer,
   ElButton,
   ElSwitch,
@@ -32,6 +34,7 @@ const elementUI = {
 }
 
 export {
+  ElAlert,
   ElContainer,
   ElButton,
   ElSwitch,

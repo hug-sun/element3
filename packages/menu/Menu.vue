@@ -4,6 +4,7 @@ import { addClass, removeClass, hasClass } from 'element-ui/src/utils/dom';
 import { computed, getCurrentInstance, onMounted, provide, ref, toRefs, watch, h , Transition } from 'vue';
 import {useEmitter} from 'element-ui/src/use/emitter';
 import {useItems} from "./src/menu-use";
+
 export default {
   name: 'ElMenu',
   componentName: 'ElMenu',
@@ -296,8 +297,6 @@ export default {
     });
     provide("rootMenu",instance);
     return {
-      collapse,
-      mode,
       addItem,
       removeItem,
       addSubmenu,
@@ -305,7 +304,6 @@ export default {
       openedMenus,
       activeIndex,
       hoverBackground,
-      backgroundColor,
       isMenuPopup,
       openMenu,
       closeMenu,
