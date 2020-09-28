@@ -272,9 +272,7 @@ describe('Menu.vue', () => {
     //    }
     //    const wrapper = mount(Comp)
     //    const submenu1 = wrapper.findAllComponents(Submenu)[0]
-    //   //  console.log("submenu1",submenu1)
     //      const submenu2 = wrapper.findAllComponents(Submenu)[1]
-    //     //  console.log("submenu2",submenu2)
     //    expect(submenu1.classes('is-opened')).toBe(true)
     //   expect(submenu2.classes('is-opened')).toBe(true)
     // })
