@@ -15,6 +15,8 @@ import UploadList from './upload-list.vue'
 import Upload from './upload.vue'
 import usePatch from './usePatch.js'
 
+function noop() {}
+
 export default defineComponent({
   name: 'ElUpload',
   components: {
@@ -61,12 +63,29 @@ export default defineComponent({
     },
     beforeUpload: Function,
     beforeRemove: Function,
-    onRemove: Function,
-    onChange: Function,
-    onPreview: Function,
-    onSuccess: Function,
-    onProgress: Function,
-    onError: Function,
+    onRemove: {
+      type: Function,
+      default: noop
+    },
+    onChange: {
+      type: Function,
+      default: noop
+    },
+    onPreview: {
+      type: Function
+    },
+    onSuccess: {
+      type: Function,
+      default: noop
+    },
+    onProgress: {
+      type: Function,
+      default: noop
+    },
+    onError: {
+      type: Function,
+      default: noop
+    },
     fileList: {
       type: Array,
       default: () => []
@@ -88,7 +107,10 @@ export default defineComponent({
       type: Number,
       default: null
     },
-    onExceed: Function
+    onExceed: {
+      type: Function,
+      default: noop
+    }
   },
   setup(props) {
     const elForm = inject('elForm', {})
