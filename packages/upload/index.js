@@ -1,8 +1,8 @@
-import Upload from './src'
+import ElUpload from './src/index.vue'
 
 /* istanbul ignore next */
-Upload.install = function (app) {
-  app.component(Upload.name, Upload)
+ElUpload.install = function (app) {
+  app.component(ElUpload.name, ElUpload)
 }
 
-export default Upload
+export default ElUpload
