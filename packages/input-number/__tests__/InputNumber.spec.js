@@ -264,4 +264,26 @@ describe('InputNumber.vue', () => {
     expect(modelValue.value).toEqual(5)
     expect(input.element.value).toEqual('5')
   })
+
+  describe('event', () => {
+    it('blur', async () => {
+      const modelValue = ref(5)
+      const wrapper = mount(InputNumber, {
+        props: {
+          step: 2,
+          stepStrictly: true,
+          modelValue,
+          'onUpdate:modelValue'(v) {
+            modelValue.value = v
+          }
+        }
+      })
+
+      const input = wrapper.find('input')
+      await input.trigger('blur')
+      await nextTick()
+      expect(modelValue.value).toEqual(6)
+      expect(input.element.value).toEqual('6')
+    })
+  })
 })
