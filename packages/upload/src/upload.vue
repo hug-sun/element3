@@ -105,7 +105,7 @@ export default defineComponent({
     const mouseover = ref(false)
     const inputRef = ref(null)
 
-    function uploadFiles(files) {
+    const uploadFiles = (files) => {
       if (props.limit && props.fileList.length + files.length > props.limit) {
         props.onExceed(files, props.fileList)
         return
@@ -123,7 +123,7 @@ export default defineComponent({
       })
     }
 
-    function upload(rawFile) {
+    const upload = (rawFile) => {
       inputRef.value.value = null
       if (!props.beforeUpload) {
         return post(rawFile)
@@ -158,7 +158,7 @@ export default defineComponent({
         props.onRemove(null, rawFile)
       }
     }
-    function abort(file) {
+    const abort = (file) => {
       const _reqs = reqs.value
       if (file) {
         let uid = file
@@ -174,7 +174,7 @@ export default defineComponent({
       }
     }
 
-    function post(rawFile) {
+    const post = (rawFile) => {
       const { uid } = rawFile
       const options = {
         headers: props.headers,
@@ -202,20 +202,20 @@ export default defineComponent({
       }
     }
 
-    function handleChange(e) {
+    const handleChange = (e) => {
       const files = e.target.files
       if (!files) return
       uploadFiles(files)
     }
 
-    function handleClick() {
+    const handleClick = () => {
       if (!props.disabled) {
         inputRef.value.value = null
         inputRef.value.click()
       }
     }
 
-    function handleKeydown() {
+    const handleKeydown = () => {
       handleClick()
     }
 

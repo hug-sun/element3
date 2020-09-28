@@ -14,15 +14,15 @@ export default (props) => {
 
   let tempIndex = 1
 
-  function abort(file) {
+  const abort = (file) => {
     uploadRef.value.abort(file)
   }
 
-  function clearFiles() {
+  const clearFiles = () => {
     uploadFiles.value = []
   }
 
-  function handleError(err, rawFile) {
+  const handleError = (err, rawFile) => {
     const file = getFile(rawFile, uploadFiles.value)
     file.status = 'fail'
     uploadFiles.value.splice(uploadFiles.value.indexOf(file), 1)
@@ -30,14 +30,14 @@ export default (props) => {
     props.onChange(file, uploadFiles.value)
   }
 
-  function handleProgress(ev, rawFile) {
+  const handleProgress = (ev, rawFile) => {
     const file = getFile(rawFile, uploadFiles.value)
     props.onProgress(ev, file, uploadFiles.value)
     file.status = 'uploading'
     file.percentage = ev.percent || 0
   }
 
-  function handleSuccess(res, rawFile) {
+  const handleSuccess = (res, rawFile) => {
     const file = getFile(rawFile, uploadFiles.value)
     if (file) {
       file.status = 'success'
@@ -47,7 +47,7 @@ export default (props) => {
     }
   }
 
-  function handleStart(rawFile) {
+  const handleStart = (rawFile) => {
     const uid = genUid(tempIndex++)
     rawFile.uid = uid
     const file = {
@@ -70,7 +70,7 @@ export default (props) => {
     props.onChange(file, uploadFiles.value)
   }
 
-  function handleRemove(file, raw) {
+  const handleRemove = (file, raw) => {
     if (raw) {
       file = getFile(raw, uploadFiles.value)
     }
@@ -96,7 +96,7 @@ export default (props) => {
     }
   }
 
-  function submit() {
+  const submit = () => {
     uploadFiles.value
       .filter((file) => file.status === 'ready')
       .forEach((file) => {

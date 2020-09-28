@@ -1,4 +1,4 @@
-function getError(action, option, xhr) {
+const getError = (action, option, xhr) => {
   let msg
   if (xhr.response) {
     msg = `${xhr.response.error || xhr.response}`
@@ -15,7 +15,7 @@ function getError(action, option, xhr) {
   return err
 }
 
-function getBody(xhr) {
+const getBody = (xhr) => {
   const text = xhr.responseText || xhr.response
   if (!text) {
     return text

@@ -1,21 +1,20 @@
 <script>
 import {
-  computed,
-  defineComponent,
   h,
-  getCurrentInstance,
-  inject,
   ref,
+  inject,
   provide,
-  onBeforeUnmount
+  computed,
+  onBeforeUnmount,
+  defineComponent,
+  getCurrentInstance
 } from 'vue'
-
 import ajax from './ajax'
 import UploadList from './upload-list.vue'
 import Upload from './upload.vue'
-import usePatch from './usePatch.js'
+import useHandleEvent from './useHandleEvent.js'
 
-function noop() {}
+const noop = () => {}
 
 export default defineComponent({
   name: 'ElUpload',
@@ -128,7 +127,7 @@ export default defineComponent({
       submit,
       uploadRef,
       uploadFiles
-    } = usePatch(props)
+    } = useHandleEvent(props)
 
     provide('uploader', getCurrentInstance())
 

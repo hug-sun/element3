@@ -11,6 +11,7 @@
     <slot></slot>
   </div>
 </template>
+
 <script>
 import { defineComponent, ref, inject } from 'vue'
 
@@ -27,7 +28,7 @@ export default defineComponent({
     const uploader = inject('uploader', {})
     const dragover = ref(false)
 
-    function onDrop(e) {
+    const onDrop = (e) => {
       if (props.disabled || !uploader) return
       const accept = uploader.accept
       dragover.value = false
@@ -63,7 +64,7 @@ export default defineComponent({
       )
     }
 
-    function onDragover() {
+    const onDragover = () => {
       if (!props.disabled) dragover.value = true
     }
 
