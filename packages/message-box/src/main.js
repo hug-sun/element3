@@ -47,18 +47,22 @@ let msgQueue = []
 
 const defaultCallback = (action) => {
   if (currentMsg) {
-    const callback = currentMsg.callback
-    if (typeof callback === 'function') {
-      if (instance.showInput) {
-        callback(instance.inputValue, action)
-      } else {
-        callback(action)
-      }
-    }
+    // const callback = currentMsg.callback
+    // debugger
+    // if (typeof callback === 'function') {
+    //   if (instance.component.ctx.showInput) {
+    //     callback(instance.component.ctx.inputValue, action)
+    //   } else {
+    //     callback(action)
+    //   }
+    // }
     if (currentMsg.resolve) {
       if (action === 'confirm') {
-        if (instance.showInput) {
-          currentMsg.resolve({ value: instance.inputValue, action })
+        if (instance.component.ctx.showInput) {
+          currentMsg.resolve({
+            value: instance.component.ctx.state.inputValue,
+            action
+          })
         } else {
           currentMsg.resolve(action)
         }
@@ -227,7 +231,6 @@ MessageBox.prompt = (message, title, options) => {
 
 MessageBox.close = () => {
   instance.doClose()
-  instance.visible = false
   msgQueue = []
   currentMsg = null
 }

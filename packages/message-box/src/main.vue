@@ -40,14 +40,14 @@
           <div class="el-message-box__container">
             <div
               :class="['el-message-box__status', icon]"
-              v-if="icon && !center && message !== ''"
+              v-if="icon && !center && changedMessage !== ''"
             ></div>
-            <div class="el-message-box__message" v-if="message !== ''">
+            <div class="el-message-box__message" v-if="changedMessage !== ''">
               <slot>
                 <p v-if="!dangerouslyUseHTMLString && state.isVnode !== true">
-                  {{ message }}
+                  {{ changedMessage }}
                 </p>
-                <p v-else v-html="message"></p>
+                <p v-else v-html="changedMessage"></p>
               </slot>
             </div>
           </div>
@@ -145,7 +145,7 @@ export default {
       default: null
     },
     message: {
-      type: Object,
+      type: [Object, String],
       default() {
         return {}
       }
@@ -267,51 +267,42 @@ export default {
     ElInput,
     ElButton
   },
-  setup(props, { attrs, slots, emit }) {
+  setup(props, { attrs }) {
     const confirmButtonText = ref(attrs.confirmButtonText || '确认')
     const cancelButtonText = ref(attrs.cancelButtonText || '取消')
-    const state = reactive({
-      visible: true,
-      action: null,
-      editorErrorMessage: null,
-      uid: 0,
-      inputValue: null,
-      isVnode: false
-    })
-    const { rendered, open, close, restoreBodyStyle } = usePopup({
-      ...toRefs(props),
-      visible: state.visible
-    })
 
     let messageBox = ''
     const instance = getCurrentInstance()
-
     const {
       closeOnClickModal,
       distinguishCancelAndClose,
       _type,
       beforeClose,
       callback,
-      customClass,
-      center,
-      title,
       type,
       iconClass,
       message,
       inputType,
-      inputPlaceholder,
-      cancelButtonLoading,
       cancelButtonClass,
-      showCancelButton,
-      roundButton,
       confirmButtonClass,
-      showConfirmButton,
       closeOnHashChange,
       lockScroll,
       inputPattern,
       inputValidator,
-      showInput
+      inputValue
     } = toRefs(props)
+    const state = reactive({
+      visible: true,
+      action: null,
+      editorErrorMessage: null,
+      uid: 0,
+      inputValue: unref(inputValue),
+      isVnode: false
+    })
+    const { rendered, open, close, restoreBodyStyle } = usePopup({
+      ...toRefs(props),
+      visible: state.visible
+    })
     const validate = () => {
       if (unref(_type) === 'prompt') {
         const _inputPattern = unref(inputPattern)
@@ -382,9 +373,6 @@ export default {
         doClose()
       }
     }
-    watch(confirmButtonLoading.value, (val) => {
-      console.log(val)
-    })
     const handleWrapperClick = () => {
       if (!unref(closeOnClickModal)) {
         handleAction(unref(distinguishCancelAndClose) ? 'close' : 'cancel')
@@ -423,9 +411,11 @@ export default {
       return inputRefs.input || inputRefs.textarea
     }
     onMounted(() => {
-      state.uid++
-      rendered.value = true
-      open()
+      nextTick(() => {
+        state.uid++
+        rendered.value = true
+        open()
+      })
       if (unref(_type) === 'alert' || unref(_type) === 'confirm') {
         nextTick(() => {
           instance.refs.confirm.$el.focus()
@@ -473,7 +463,7 @@ export default {
     watch(
       () => state.inputValue,
       (val) => {
-        nextTick((_) => {
+        nextTick(() => {
           if (unref(_type) === 'prompt' && val !== null) {
             validate()
           }
@@ -481,28 +471,19 @@ export default {
       }
     )
     return {
+      ...toRefs(props),
+      changedMessage: MessageToVNode(message),
       handleInputEnter,
-      message: MessageToVNode(message),
       handleAction,
-      distinguishCancelAndClose,
       state,
       handleWrapperClick,
-      customClass,
-      center,
-      title,
       icon,
-      inputPlaceholder,
-      cancelButtonLoading,
       cancelButtonClasses,
-      showCancelButton,
-      roundButton,
       cancelButtonText,
       t,
       confirmButtonLoading,
       confirmButtonClasses,
-      showConfirmButton,
-      confirmButtonText,
-      showInput
+      confirmButtonText
     }
   }
 }
