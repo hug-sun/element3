@@ -1,29 +1,27 @@
 <template>
   <div
     class="el-tabs__active-bar"
-    :class="`is-${tabPosition}`"
+    :class="`is-${rootTabs.props.tabPosition}`"
     :style="barStyle"
   ></div>
 </template>
 <script>
 import { arrayFind } from 'element-ui/src/utils/util'
 
-import { computed, toRefs,getCurrentInstance } from 'vue'
+import { computed, toRefs,inject,getCurrentInstance } from 'vue'
 
 export default {
   name: 'TabBar',
 
   props: {
-    tabs: Array,
-    tabPosition:String,
+    tabs: Array
   },
 
   // inject: ['rootTabs'],
 setup(props){
   
   const {tabs}=toRefs(props);
-
-
+  const rootTabs = inject('rootTabs')
      const barStyle=computed({
           get(){
             const style = {}
@@ -31,7 +29,7 @@ setup(props){
               let tabSize = 0
             
               const sizeName =
-                ['top', 'bottom'].indexOf( tabs._object.tabPosition ) !== -1
+                ['top', 'bottom'].indexOf( rootTabs.props.tabPosition ) !== -1
                   ? 'width'
                   : 'height'
                
@@ -92,7 +90,8 @@ setup(props){
   })
 
   return {
-      barStyle
+      barStyle,
+      rootTabs
     }
 }
 

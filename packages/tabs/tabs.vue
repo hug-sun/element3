@@ -79,6 +79,7 @@ import {
   ref,
   provide,
   watch,
+  reactive,
   getCurrentInstance,
   nextTick,
   onMounted,
@@ -128,7 +129,7 @@ export default {
     const { on } = useEmitter()
     const nav=ref(null);
 
-    provide('rootTabs', instance);
+    provide('rootTabs', reactive(instance));
 
  
    
