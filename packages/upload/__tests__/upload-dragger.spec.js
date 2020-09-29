@@ -1,5 +1,5 @@
 import { provide, h, defineComponent } from 'vue'
-import { useMount } from './lib/useHandler.js'
+import { useMount } from './libs/useHandler.js'
 import UploadDragger from '../src/upload-dragger.vue'
 
 const Arrow = 'Arrow will try his best'

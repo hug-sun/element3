@@ -1,5 +1,5 @@
 import { h } from 'vue'
-import { useMount } from './lib/useHandler.js'
+import { useMount } from './libs/useHandler.js'
 import UploadList from '../src/upload-list.vue'
 
 const TEST = 'TEST'

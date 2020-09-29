@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import { useMount, testFileGet } from './lib/useHandler.js'
+import { useMount, testFileGet } from './libs/useHandler.js'
 import Upload from '../src/upload.vue'
 
 const Arrow = 'Arrow will try his best'
