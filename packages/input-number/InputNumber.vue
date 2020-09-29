@@ -344,7 +344,8 @@ export default {
       decrease,
       handleInputChange,
       handleInput,
-      focus
+      focus,
+      setCurrentValue
     }
   },
 

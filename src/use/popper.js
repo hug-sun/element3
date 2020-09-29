@@ -46,6 +46,10 @@ const popperProps = {
         gpuAcceleration: false
       }
     }
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 }
 

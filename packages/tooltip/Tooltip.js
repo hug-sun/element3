@@ -1,4 +1,4 @@
-import { vuePopperProps, useVuePopper } from 'packages/popover/vue-popper'
+import { vuePopperProps, useVuePopper } from '../popover/vue-popper'
 import debounce from 'throttle-debounce/debounce'
 import { addClass, removeClass, on, off } from 'element-ui/src/utils/dom'
 import { generateId } from 'element-ui/src/utils/util'
@@ -10,7 +10,8 @@ import {
   onMounted,
   onUnmounted,
   getCurrentInstance,
-  Transition
+  Transition,
+  onBeforeMount
 } from 'vue'
 
 export default {
@@ -225,7 +226,9 @@ export default {
         })
       }
     })
-
+    onBeforeMount(() => {
+      instance.ctx.updatePopper = updatePopper
+    })
     onUnmounted(() => {
       const reference = referenceElm.value
       if (reference.nodeType === 1) {
