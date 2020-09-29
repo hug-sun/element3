@@ -8,7 +8,8 @@ module.exports = {
   },
   globals: {
     ga: true,
-    chrome: true
+    chrome: true,
+    __DEV__: true
   },
   extends: [
     'plugin:json/recommended',
