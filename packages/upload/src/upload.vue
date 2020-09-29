@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { noop } from 'lodash'
 import { defineComponent, ref } from 'vue'
 import ajax from './ajax'
 import UploadDragger from './upload-dragger.vue'
@@ -67,11 +68,26 @@ export default defineComponent({
       type: String,
       default: ''
     },
-    onStart: Function,
-    onProgress: Function,
-    onSuccess: Function,
-    onError: Function,
-    beforeUpload: Function,
+    onStart: {
+      type: Function,
+      default: noop
+    },
+    onProgress: {
+      type: Function,
+      default: noop
+    },
+    onSuccess: {
+      type: Function,
+      default: noop
+    },
+    onError: {
+      type: Function,
+      default: noop
+    },
+    beforeUpload: {
+      type: Function,
+      default: noop
+    },
     drag: {
       type: Boolean,
       default: false
@@ -91,6 +107,7 @@ export default defineComponent({
       default: 'text'
     },
     httpRequest: {
+      type: Function,
       default: () => ajax
     },
     disabled: Boolean,

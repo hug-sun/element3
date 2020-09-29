@@ -98,6 +98,7 @@
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@testing-library/jest-dom": "^5.11.2",
     "@types/jest": "^26.0.7",
+    "@types/lodash": "^4.14.161",
     "@vue/babel-plugin-jsx": "^1.0.0-rc.2",
     "@vue/compiler-dom": "^3.0.0-rc.5",
     "@vue/compiler-sfc": "^3.0.0-rc.5",
