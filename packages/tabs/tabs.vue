@@ -136,11 +136,6 @@ export default {
     watch(()=>props.modelValue, (modelValue) => {
       setCurrentName(modelValue)
     })
-    watch(()=>props.value, (value) => {
-
-      setCurrentName(value)
-
-    })
 
     watch(currentName, () => {
       if (nav.value) {
