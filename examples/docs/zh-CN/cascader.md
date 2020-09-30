@@ -8,27 +8,35 @@
 
 :::demo 只需为 Cascader 的`options`属性指定选项数组即可渲染出一个级联选择器。通过`props.expandTrigger`可以定义展开子级菜单的触发方式。
 ```html
-<div class="block">
-  <span class="demonstration">默认 click 触发子菜单</span>
-  <el-cascader
-    v-model="value"
-    :options="options"
-    @change="handleChange"></el-cascader>
-</div>
-<div class="block">
-  <span class="demonstration">hover 触发子菜单</span>
-  <el-cascader
-    v-model="value"
-    :options="options"
-    :props="{ expandTrigger: 'hover' }"
-    @change="handleChange"></el-cascader>
+<div>
+    <div class="block">
+      <span class="demonstration">默认 click 触发子菜单</span>
+      <el-cascader
+        v-model="value"
+        :options="options"
+        @change="handleChange"></el-cascader>
+    </div>
+    <div class="block">
+      <span class="demonstration">hover 触发子菜单</span>
+      <el-cascader
+        v-model="value"
+        :options="options"
+        :props="{ expandTrigger: 'hover' }"
+        @change="handleChange"></el-cascader>
+    </div>
 </div>
 
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup() {
+      const value = ref()
+      const handleChange = (value) => {
+        console.log(value);
+      }
       return {
-        value: [],
+        value,
+        handleChange,
         options: [{
           value: 'zhinan',
           label: '指南',
@@ -225,11 +233,6 @@
           }]
         }]
       };
-    },
-    methods: {
-      handleChange(value) {
-        console.log(value);
-      }
     }
   };
 </script>
@@ -246,7 +249,7 @@
 
 <script>
   export default {
-    data() {
+    setup() {
       return {
         options: [{
           value: 'zhinan',
@@ -461,7 +464,7 @@
 
 <script>
   export default {
-    data() {
+    setup() {
       return {
         options: [{
           value: 'zhinan',
@@ -675,7 +678,7 @@
 
 <script>
   export default {
-    data() {
+    setup() {
       return {
         options: [{
           value: 'zhinan',
@@ -885,25 +888,27 @@
 
 :::demo 在开启多选模式后，默认情况下会展示所有已选中的选项的Tag，你可以使用`collapse-tags`来折叠Tag
 ```html
-<div class="block">
-  <span class="demonstration">默认显示所有Tag</span>
-  <el-cascader
-    :options="options"
-    :props="props"
-    clearable></el-cascader>
-</div>
-<div class="block">
-  <span class="demonstration">折叠展示Tag</span>
-  <el-cascader
-    :options="options"
-    :props="props"
-    collapse-tags
-    clearable></el-cascader>
+<div>
+    <div class="block">
+      <span class="demonstration">默认显示所有Tag</span>
+      <el-cascader
+        :options="options"
+        :props="props"
+        clearable></el-cascader>
+    </div>
+    <div class="block">
+      <span class="demonstration">折叠展示Tag</span>
+      <el-cascader
+        :options="options"
+        :props="props"
+        collapse-tags
+        clearable></el-cascader>
+    </div>
 </div>
 
 <script>
   export default {
-    data() {
+    setup() {
       return {
         props: { multiple: true },
         options: [{
@@ -967,24 +972,26 @@
 
 :::demo 可通过 `props.checkStrictly = true` 来设置父子节点取消选中关联，从而达到选择任意一级选项的目的。
 ```html
-<div class="block">
-  <span class="demonstration">单选选择任意一级选项</span>
-  <el-cascader
-    :options="options"
-    :props="{ checkStrictly: true }"
-    clearable></el-cascader>
-</div>
-<div class="block">
-  <span class="demonstration">多选选择任意一级选项</span>
-  <el-cascader
-    :options="options"
-    :props="{ multiple: true, checkStrictly: true }"
-    clearable></el-cascader>
+<div>
+    <div class="block">
+      <span class="demonstration">单选选择任意一级选项</span>
+      <el-cascader
+        :options="options"
+        :props="{ checkStrictly: true }"
+        clearable></el-cascader>
+    </div>
+    <div class="block">
+      <span class="demonstration">多选选择任意一级选项</span>
+      <el-cascader
+        :options="options"
+        :props="{ multiple: true, checkStrictly: true }"
+        clearable></el-cascader>
+    </div>
 </div>
 
 <script>
   export default {
-    data() {
+    setup() {
       return {
         options: [{
           value: 'zhinan',
@@ -1200,23 +1207,24 @@
   let id = 0;
 
   export default {
-    data() {
+    setup() {
+      const lazyLoad = (node, resolve) => {
+       const { level } = node;
+       setTimeout(() => {
+         const nodes = Array.from({ length: level + 1 })
+           .map(item => ({
+             value: ++id,
+             label: `选项${id}`,
+             leaf: level >= 2
+           }));
+         // 通过调用resolve将子节点数据返回，通知组件数据加载完成
+         resolve(nodes);
+       }, 1000);
+     }
       return {
         props: {
           lazy: true,
-          lazyLoad (node, resolve) {
-            const { level } = node;
-            setTimeout(() => {
-              const nodes = Array.from({ length: level + 1 })
-                .map(item => ({
-                  value: ++id,
-                  label: `选项${id}`,
-                  leaf: level >= 2
-                }));
-              // 通过调用resolve将子节点数据返回，通知组件数据加载完成
-              resolve(nodes);
-            }, 1000);
-          }
+          lazyLoad
         }
       };
     }
@@ -1231,25 +1239,27 @@
 
 :::demo 将`filterable`赋值为`true`即可打开搜索功能，默认会匹配节点的`label`或所有父节点的`label`(由`show-all-levels`决定)中包含输入值的选项。你也可以用`filter-method`自定义搜索逻辑，接受一个函数，第一个参数是节点`node`，第二个参数是搜索关键词`keyword`，通过返回布尔值表示是否命中。
 ```html
-<div class="block">
-  <span class="demonstration">单选可搜索</span>
-  <el-cascader
-    placeholder="试试搜索：指南"
-    :options="options"
-    filterable></el-cascader>
-</div>
-<div class="block">
-  <span class="demonstration">多选可搜索</span>
-  <el-cascader
-    placeholder="试试搜索：指南"
-    :options="options"
-    :props="{ multiple: true }"
-    filterable></el-cascader>
+<div>
+  <div class="block">
+    <span class="demonstration">单选可搜索</span>
+    <el-cascader
+      placeholder="试试搜索：指南"
+      :options="options"
+      filterable></el-cascader>
+  </div>
+  <div class="block">
+    <span class="demonstration">多选可搜索</span>
+    <el-cascader
+      placeholder="试试搜索：指南"
+      :options="options"
+      :props="{ multiple: true }"
+      filterable></el-cascader>
+  </div>
 </div>
 
 <script>
   export default {
-    data() {
+    setup() {
       return {
         options: [{
           value: 'zhinan',
@@ -1457,10 +1467,10 @@
 
 可以自定义备选项的节点内容
 
-:::demo 可以通过`scoped slot`对级联选择器的备选项的节点内容进行自定义，scoped slot会传入两个字段 `node` 和 `data`，分别表示当前节点的 Node 对象和数据。
+:::demo 可以通过`v-slot:default`对级联选择器的备选项的节点内容进行自定义，v-slot:default会传入两个字段 `node` 和 `data`，分别表示当前节点的 Node 对象和数据。
 ```html
 <el-cascader :options="options">
-  <template slot-scope="{ node, data }">
+  <template v-slot:default="{ node, data }">
     <span>{{ data.label }}</span>
     <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
   </template>
@@ -1468,7 +1478,7 @@
 
 <script>
   export default {
-    data() {
+    setup() {
       return {
         options: [{
           value: 'zhinan',
@@ -1678,13 +1688,16 @@
 
 :::demo 和级联选择器一样，通过`options`来指定选项，也可通过`props`来设置多选、动态加载等功能，具体详情见下方API表格。
 ```html
-<el-cascader-panel :options="options"></el-cascader-panel>
+<div>
+    <el-cascader-panel :options="options"></el-cascader-panel>
+</div>
 
 <script>
   export default {
-    data() {
+    setup() {
       return {
-        options: [{
+        options: [
+        {
           value: 'zhinan',
           label: '指南',
           children: [{
@@ -1889,7 +1902,7 @@
 ### Cascader Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| value / v-model | 选中项绑定值 | - | — | — |
+| modelValue / v-model | 选中项绑定值 | - | — | — |
 | options | 可选项数据源，键名可通过 `Props` 属性配置 | array | — | — |
 | props | 配置选项，具体见下表 | object | — | — |
 | size | 尺寸 | string | medium / small / mini | — |
@@ -1929,7 +1942,7 @@
 ### CascaderPanel Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| value / v-model | 选中项绑定值 | - | — | — |
+| modelValue / v-model | 选中项绑定值 | - | — | — |
 | options | 可选项数据源，键名可通过 `Props` 属性配置 | array | — | — |
 | props | 配置选项，具体见下表 | object | — | — |
 
