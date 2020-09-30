@@ -122,7 +122,7 @@ export default {
  
    
     const currentName = ref(props.value || props.modelValue)
-    
+    console.log(currentName);
     const {panes} = usePanes();
     const panesArr=panes;
     const instance = getCurrentInstance()
@@ -133,10 +133,10 @@ export default {
 
  
    
-    watch(props.modelValue, (modelValue) => {
+    watch(()=>props.modelValue, (modelValue) => {
       setCurrentName(modelValue)
     })
-    watch(props.value, (value) => {
+    watch(()=>props.value, (value) => {
 
       setCurrentName(value)
 
