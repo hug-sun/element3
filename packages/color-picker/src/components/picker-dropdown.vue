@@ -6,7 +6,7 @@
           ref="hue"
           :color="color"
           vertical
-          style="float: right;"
+          style="float: right"
         ></hue-slider>
         <sv-panel ref="sl" :color="color"></sv-panel>
       </div>
