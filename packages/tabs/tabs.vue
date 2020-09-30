@@ -122,7 +122,6 @@ export default {
  
    
     const currentName = ref(props.value || props.modelValue)
-    console.log(currentName);
     const {panes} = usePanes();
     const panesArr=panes;
     const instance = getCurrentInstance()
