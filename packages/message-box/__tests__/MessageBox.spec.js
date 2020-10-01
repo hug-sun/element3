@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils'
+import { ref } from 'vue'
 import MessageBox from '../src/main.vue'
 describe('MessageBox.vue', () => {
   afterEach(() => {
@@ -22,6 +23,48 @@ describe('MessageBox.vue', () => {
         closeOnClickModal: false
       }
     })
+    const _messagebox = messagebox.find('.el-message-box__message')
+    expect(_messagebox.text()).toBe('message')
     expect(messagebox.find('.el-message-box__wrapper').exists()).toBe(true)
+  })
+
+  test('dangerouslyUseHTMLString', async () => {
+    const messagebox = await mount(MessageBox, {
+      props: {
+        title: 'title',
+        message: '<div>message</div>',
+        _type: 'alert',
+        closeOnPressEscape: false,
+        closeOnClickModal: false,
+        dangerouslyUseHTMLString: true
+      }
+    })
+    const _messagebox = messagebox.find('.el-message-box__message')
+    expect(_messagebox.text()).toBe('message')
+  })
+
+  test('test dome click', async () => {
+    const callBackAction = ref(null)
+    const messagebox = await mount(MessageBox, {
+      props: {
+        title: 'title',
+        message: '<div>message</div>',
+        _type: 'alert',
+        cancelButtonClass: 'el-cccc',
+        closeOnPressEscape: false,
+        closeOnClickModal: false,
+        showCancelButton: true,
+        dangerouslyUseHTMLString: true,
+        callback: (action) => {
+          callBackAction.value = action
+        }
+      }
+    })
+    await messagebox.find('.el-cccc').trigger('click')
+    const w = messagebox.find('.el-message-box__title span')
+    expect(w.text()).toBe('title')
+    setTimeout(() => {
+      expect(callBackAction.value).toBe('cancel')
+    })
   })
 })
