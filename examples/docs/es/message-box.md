@@ -125,6 +125,7 @@ Puede ser personalizado para mostrar diversos contenidos.
 </template>
 
 <script>
+  import { h } from 'vue'
   export default {
     methods: {
       open() {

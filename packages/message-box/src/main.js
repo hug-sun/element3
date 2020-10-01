@@ -1,9 +1,8 @@
 // #todo
-import { nextTick } from 'vue'
+import { render, defineComponent, h, isVNode } from 'vue'
 import msgboxVue from './main.vue'
 import merge from 'element-ui/src/utils/merge'
-import { isVNode } from 'element-ui/src/utils/vdom'
-
+const messageBoxConstructor = defineComponent(msgboxVue)
 const defaults = {
   title: null,
   message: '',
@@ -39,27 +38,31 @@ const defaults = {
   distinguishCancelAndClose: false
 }
 
-const MessageBoxConstructor = {
-  extends: msgboxVue
-}
+// const MessageBoxConstructor = {
+//   extends: msgboxVue
+// }
 
 let currentMsg, instance
 let msgQueue = []
 
 const defaultCallback = (action) => {
   if (currentMsg) {
-    const callback = currentMsg.callback
-    if (typeof callback === 'function') {
-      if (instance.showInput) {
-        callback(instance.inputValue, action)
-      } else {
-        callback(action)
-      }
-    }
+    // const callback = currentMsg.callback
+    // debugger
+    // if (typeof callback === 'function') {
+    //   if (instance.component.ctx.showInput) {
+    //     callback(instance.component.ctx.inputValue, action)
+    //   } else {
+    //     callback(action)
+    //   }
+    // }
     if (currentMsg.resolve) {
       if (action === 'confirm') {
-        if (instance.showInput) {
-          currentMsg.resolve({ value: instance.inputValue, action })
+        if (instance.component.ctx.showInput) {
+          currentMsg.resolve({
+            value: instance.component.ctx.state.inputValue,
+            action
+          })
         } else {
           currentMsg.resolve(action)
         }
@@ -73,63 +76,57 @@ const defaultCallback = (action) => {
   }
 }
 
-const initInstance = () => {
-  instance = new MessageBoxConstructor({
-    el: document.createElement('div')
-  })
-
-  instance.callback = defaultCallback
+const initInstance = (currentMsg, Vnode = null) => {
+  defaults.callback = defaultCallback
+  instance = h(messageBoxConstructor, currentMsg.options, Vnode)
+  render(instance, document.createElement('div'))
 }
 
 const showNextMsg = () => {
-  if (!instance) {
-    initInstance()
-  }
-  instance.action = ''
+  // if (!instance.visible || instance.closeTimer) {
+  if (msgQueue.length > 0) {
+    currentMsg = msgQueue.shift()
 
-  if (!instance.visible || instance.closeTimer) {
-    if (msgQueue.length > 0) {
-      currentMsg = msgQueue.shift()
+    const options = currentMsg.options
+    // for (const prop in options) {
+    //   if (Object.hasOwnProperty.call(options, prop)) {
+    //     instance[prop] = options[prop]
+    //   }
+    // }
 
-      const options = currentMsg.options
-      for (const prop in options) {
-        if (Object.hasOwnProperty.call(options, prop)) {
-          instance[prop] = options[prop]
-        }
-      }
-      if (options.callback === undefined) {
-        instance.callback = defaultCallback
-      }
-
-      const oldCb = instance.callback
-      instance.callback = (action, instance) => {
-        oldCb(action, instance)
-        showNextMsg()
-      }
-      if (isVNode(instance.message)) {
-        instance.$slots.default = [instance.message]
-        instance.message = null
-      } else {
-        delete instance.$slots.default
-      }
-      ;[
-        'modal',
-        'showClose',
-        'closeOnClickModal',
-        'closeOnPressEscape',
-        'closeOnHashChange'
-      ].forEach((prop) => {
-        if (instance[prop] === undefined) {
-          instance[prop] = true
-        }
-      })
-      document.body.appendChild(instance.$el)
-
-      nextTick(() => {
-        instance.visible = true
-      })
+    if (options.callback === undefined) {
+      options.callback = defaultCallback
     }
+
+    const oldCb = options.callback
+    options.callback = (action, instance) => {
+      oldCb(action, instance)
+      // showNextMsg()
+    }
+    // if (isVNode(instance.message)) {
+    //   instance.slots.default = [instance.message]
+    //   instance.message = null
+    // }
+    if (isVNode(currentMsg.message)) {
+      initInstance(currentMsg, { default: () => currentMsg.message })
+    }
+    // if (!instance) {
+    initInstance(currentMsg)
+    // }
+    ;[
+      'modal',
+      'showClose',
+      'closeOnClickModal',
+      'closeOnPressEscape',
+      'closeOnHashChange'
+    ].forEach((prop) => {
+      if (options[prop] === undefined) {
+        options[prop] = true
+      }
+    })
+    document.body.appendChild(instance.el)
   }
+  // }
 }
 
 const MessageBox = function (options, callback) {
@@ -182,7 +179,7 @@ MessageBox.alert = (message, title, options) => {
       {
         title: title,
         message: message,
-        $type: 'alert',
+        _type: 'alert',
         closeOnPressEscape: false,
         closeOnClickModal: false
       },
@@ -203,7 +200,7 @@ MessageBox.confirm = (message, title, options) => {
       {
         title: title,
         message: message,
-        $type: 'confirm',
+        _type: 'confirm',
         showCancelButton: true
       },
       options
@@ -225,7 +222,7 @@ MessageBox.prompt = (message, title, options) => {
         message: message,
         showCancelButton: true,
         showInput: true,
-        $type: 'prompt'
+        _type: 'prompt'
       },
       options
     )
@@ -234,7 +231,6 @@ MessageBox.prompt = (message, title, options) => {
 
 MessageBox.close = () => {
   instance.doClose()
-  instance.visible = false
   msgQueue = []
   currentMsg = null
 }
