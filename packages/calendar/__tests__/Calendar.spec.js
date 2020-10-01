@@ -2,13 +2,20 @@ import Calendar from '../Calendar.vue'
 import { mount } from '@vue/test-utils'
 describe('Calendar.vue', () => {
   describe('value', () => {
+    const currentDate = () => {
+      const date = new Date()
+      const year = date.getFullYear()
+      const month = date.getMonth() + 1
+      return `${year} 年 ${month} 月`
+    }
+
     it('value is exactyly Date should be current month', () => {
       const wrapper = mount(Calendar, {
         props: {
           value: new Date()
         }
       })
-      expect(wrapper.find('.el-calendar__title').text()).toBe('2020 年 9 月')
+      expect(wrapper.find('.el-calendar__title').text()).toBe(currentDate())
     })
 
     it('value is empty should be current month', () => {
@@ -17,7 +24,7 @@ describe('Calendar.vue', () => {
           value: ''
         }
       })
-      expect(wrapper.find('.el-calendar__title').text()).toBe('2020 年 9 月')
+      expect(wrapper.find('.el-calendar__title').text()).toBe(currentDate())
     })
   })
 
