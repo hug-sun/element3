@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
   <div class="custom-tree-container">
 

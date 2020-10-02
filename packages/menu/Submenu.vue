@@ -1,4 +1,3 @@
-/* eslint-disable */
 <script>
 import ElCollapseTransition from 'element-ui/src/transitions/collapse-transition'
 import { useMenu, useItems } from './src/menu-use'

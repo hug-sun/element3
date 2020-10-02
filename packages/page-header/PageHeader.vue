@@ -25,7 +25,6 @@ export default {
     },
     content: String
   },
-  emits: ['back'],
   setup(props, ctx) {
     const handleClick = (evt) => {
       ctx.emit('back', evt)

@@ -9,7 +9,6 @@ export default {
   name: 'ElMenu',
   componentName: 'ElMenu',
   render () {
-    /* eslint-disable */
     const component = (
       <ul
         role="menubar"

@@ -35,10 +35,10 @@ const install = function(app, opts = {}) {
   };
 
   app.config.globalProperties.$loading = Loading.service;
-  app.config.globalProperties.$msgbox = MessageBox;
-  app.config.globalProperties.$alert = MessageBox.alert;
-  app.config.globalProperties.$confirm = MessageBox.confirm;
-  app.config.globalProperties.$prompt = MessageBox.prompt;
+  // app.config.globalProperties.$msgbox = MessageBox;
+  // app.config.globalProperties.$alert = MessageBox.alert;
+  // app.config.globalProperties.$confirm = MessageBox.confirm;
+  // app.config.globalProperties.$prompt = MessageBox.prompt;
 
    app.config.globalProperties.$notify = Notification;
    app.config.globalProperties.$message = Message;
@@ -141,8 +141,7 @@ ComponentNames.forEach((name) => {
       'dropdown-item',
       'dropdown-menu',
       'collapse',
-      'collapse-item',
-      'message-box'
+      'collapse-item'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换

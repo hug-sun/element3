@@ -125,7 +125,6 @@ Il est possible d'afficher du contenu un peu plus varié et personnalisé.
 </template>
 
 <script>
-  import { h } from 'vue'
   export default {
     methods: {
       open() {

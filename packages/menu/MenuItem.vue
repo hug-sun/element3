@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
   <li
     class="el-menu-item"
