@@ -86,20 +86,6 @@ describe('Alert.vue', () => {
       expect(wrapperTrue.find('.el-alert__icon').exists()).toBe(true)
       expect(wrapperFalse.find('.el-alert__icon').exists()).toBe(false)
     })
-
-    const wrapperLight = mount(Alert, {
-      props: {
-        effect: 'light'
-      }
-    })
-    const wrapperDark = mount(Alert, {
-      props: {
-        effect: 'dark'
-      }
-    })
-
-    expect(wrapperLight.classes('is-light')).toBe(true)
-    expect(wrapperDark.classes('is-dark')).toBe(true)
   })
 })
 
