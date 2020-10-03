@@ -1,4 +1,4 @@
-import Cascader from './src/cascader'
+import Cascader from './Cascader'
 
 /* istanbul ignore next */
 Cascader.install = function (app) {
