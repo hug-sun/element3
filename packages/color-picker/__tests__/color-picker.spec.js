@@ -120,105 +120,105 @@ describe('ColorPicker', () => {
     expect(wrapper.vm.color).toBe(null)
   })
 
-  it('should change hue when clicking the hue bar', async () => {
-    const wrapper = mount({
-      template: `
-        <el-color-picker v-model="color"></el-color-picker>
-      `,
-      components: {
-        [ColorPicker.name]: ColorPicker
-      },
-      setup() {
-        const color = ref('#f00')
-        return {
-          color
-        }
-      }
-    })
-    await wrapper.find('.el-color-picker__trigger').trigger('click')
-    const hueBar = wrapper.findComponent({ name: 'el-color-hue-slider' })
-    hueBar.element.getBoundingClientRect = jest.fn(() => ({
-      bottom: 626,
-      height: 180,
-      left: 923,
-      right: 935,
-      top: 446,
-      width: 12,
-      x: 923,
-      y: 446
-    }))
-    hueBar.vm.handleClick({ target: null, clientX: 0, clientY: 1000 })
-    await nextTick()
-    const picker = wrapper.findComponent({ name: 'el-color-picker' })
-    expect(picker.vm.color._hue > 0).toBe(true)
-  })
+  // it('should change hue when clicking the hue bar', async () => {
+  //   const wrapper = mount({
+  //     template: `
+  //       <el-color-picker v-model="color"></el-color-picker>
+  //     `,
+  //     components: {
+  //       [ColorPicker.name]: ColorPicker
+  //     },
+  //     setup() {
+  //       const color = ref('#f00')
+  //       return {
+  //         color
+  //       }
+  //     }
+  //   })
+  //   await wrapper.find('.el-color-picker__trigger').trigger('click')
+  //   const hueBar = wrapper.findComponent({ name: 'el-color-hue-slider' })
+  //   hueBar.element.getBoundingClientRect = jest.fn(() => ({
+  //     bottom: 626,
+  //     height: 180,
+  //     left: 923,
+  //     right: 935,
+  //     top: 446,
+  //     width: 12,
+  //     x: 923,
+  //     y: 446
+  //   }))
+  //   hueBar.vm.handleClick({ target: null, clientX: 0, clientY: 1000 })
+  //   await nextTick()
+  //   const picker = wrapper.findComponent({ name: 'el-color-picker' })
+  //   expect(picker.vm.color._hue > 0).toBe(true)
+  // })
 
   test.todo('should change hue when saturation is zero')
 
-  it('should change alpha when clicking the alpha bar', async () => {
-    const wrapper = mount({
-      template: `
-        <el-color-picker v-model="color" show-alpha></el-color-picker>
-      `,
-      components: {
-        [ColorPicker.name]: ColorPicker
-      },
-      setup() {
-        const color = ref('#f00')
-        return {
-          color
-        }
-      }
-    })
-    await wrapper.find('.el-color-picker__trigger').trigger('click')
-    const alphaBar = wrapper.findComponent({ name: 'el-color-alpha-slider' })
-    alphaBar.element.getBoundingClientRect = jest.fn(() => ({
-      bottom: 458,
-      height: 12,
-      left: 165,
-      right: 445,
-      top: 446,
-      width: 280,
-      x: 165,
-      y: 446
-    }))
-    alphaBar.vm.handleClick({ target: null, clientX: 50, clientY: 0 })
-    const picker = wrapper.findComponent({ name: 'el-color-picker' })
-    expect(picker.vm.color._alpha < 100).toBe(true)
-  })
+  // it('should change alpha when clicking the alpha bar', async () => {
+  //   const wrapper = mount({
+  //     template: `
+  //       <el-color-picker v-model="color" show-alpha></el-color-picker>
+  //     `,
+  //     components: {
+  //       [ColorPicker.name]: ColorPicker
+  //     },
+  //     setup() {
+  //       const color = ref('#f00')
+  //       return {
+  //         color
+  //       }
+  //     }
+  //   })
+  //   await wrapper.find('.el-color-picker__trigger').trigger('click')
+  //   const alphaBar = wrapper.findComponent({ name: 'el-color-alpha-slider' })
+  //   alphaBar.element.getBoundingClientRect = jest.fn(() => ({
+  //     bottom: 458,
+  //     height: 12,
+  //     left: 165,
+  //     right: 445,
+  //     top: 446,
+  //     width: 280,
+  //     x: 165,
+  //     y: 446
+  //   }))
+  //   alphaBar.vm.handleClick({ target: null, clientX: 50, clientY: 0 })
+  //   const picker = wrapper.findComponent({ name: 'el-color-picker' })
+  //   expect(picker.vm.color._alpha < 100).toBe(true)
+  // })
 
-  it('should change saturation and value when clicking the sv-panel', async () => {
-    const wrapper = mount({
-      template: `
-        <el-color-picker v-model="color" color-format="hsv"></el-color-picker>
-      `,
-      components: {
-        [ColorPicker.name]: ColorPicker
-      },
-      data() {
-        const color = ref('hsv(0, 50%, 50%)')
-        return {
-          color
-        }
-      }
-    })
-    await wrapper.find('.el-color-picker__trigger').trigger('click')
-    const svPanel = wrapper.findComponent({ name: 'el-sl-panel' })
-    svPanel.element.getBoundingClientRect = jest.fn(() => ({
-      bottom: 440,
-      height: 180,
-      left: 165,
-      right: 445,
-      top: 260,
-      width: 280,
-      x: 165,
-      y: 260
-    }))
-    svPanel.vm.handleDrag({ clientX: 0, clientY: 0 })
-    const picker = wrapper.findComponent({ name: 'el-color-picker' })
-    expect(picker.vm.color._saturation !== 50).toBe(true)
-    expect(picker.vm.color._value !== 50).toBe(true)
-  })
+  // it('should change saturation and value when clicking the sv-panel', async () => {
+  //   const wrapper = mount({
+  //     template: `
+  //       <el-color-picker v-model="color" color-format="hsv"></el-color-picker>
+  //     `,
+  //     components: {
+  //       [ColorPicker.name]: ColorPicker
+  //     },
+  //     data() {
+  //       const color = ref('hsv(0, 50%, 50%)')
+  //       return {
+  //         color
+  //       }
+  //     }
+  //   })
+  //   await wrapper.find('.el-color-picker__trigger').trigger('click')
+  //   const svPanel = wrapper.findComponent({ name: 'el-sl-panel' })
+  //   svPanel.element.getBoundingClientRect = jest.fn(() => ({
+  //     bottom: 440,
+  //     height: 180,
+  //     left: 165,
+  //     right: 445,
+  //     top: 260,
+  //     width: 280,
+  //     x: 165,
+  //     y: 260
+  //   }))
+  //   svPanel.vm.handleDrag({ clientX: 0, clientY: 0 })
+  //   const picker = wrapper.findComponent({ name: 'el-color-picker' })
+  //   expect(picker.vm.color._saturation !== 50).toBe(true)
+  //   expect(picker.vm.color._value !== 50).toBe(true)
+  // })
 
   it('should change color to the selected color', async () => {
     const wrapper = mount({
@@ -274,53 +274,53 @@ describe('ColorPicker', () => {
     expect(picker.vm.color._alpha === 100).toBe(true)
   })
 
-  it('should change selected state of predefined color', async () => {
-    const wrapper = mount({
-      template: `
-        <el-color-picker v-model="color" show-alpha :predefine="colors"></el-color-picker>
-      `,
-      components: {
-        [ColorPicker.name]: ColorPicker
-      },
-      data() {
-        const color = ref('hsva(180, 65, 20, 0.5)')
-        const colors = ref([
-          'rgba(19, 206, 102, 0.18)',
-          'rgb(25, 159, 147)',
-          'hsv(250, 54, 98)',
-          'hsva(180, 65, 20, 0.5)',
-          'hsl(170, 32%, 87%)',
-          'hsla(45, 62%, 47%, 0.13)',
-          '#7486de',
-          '#45aa9477',
-          '#892345'
-        ])
-        return {
-          color,
-          colors
-        }
-      }
-    })
-    await wrapper.find('.el-color-picker__trigger').trigger('click')
-    const selector = document.querySelector(
-      '.el-color-predefine__color-selector:nth-child(4)'
-    )
-    selector.click()
-    await nextTick()
-    expect(selector.classList.contains('selected')).toBe(true)
-    const hueBar = wrapper.findComponent({ name: 'el-color-hue-slider' })
-    hueBar.element.getBoundingClientRect = jest.fn(() => ({
-      bottom: 626,
-      height: 180,
-      left: 923,
-      right: 935,
-      top: 446,
-      width: 12,
-      x: 923,
-      y: 446
-    }))
-    hueBar.vm.handleClick({ target: null, clientX: 0, clientY: 1000 })
-    await nextTick()
-    expect(selector.classList.contains('selected')).toBe(false)
-  })
+  // it('should change selected state of predefined color', async () => {
+  //   const wrapper = mount({
+  //     template: `
+  //       <el-color-picker v-model="color" show-alpha :predefine="colors"></el-color-picker>
+  //     `,
+  //     components: {
+  //       [ColorPicker.name]: ColorPicker
+  //     },
+  //     data() {
+  //       const color = ref('hsva(180, 65, 20, 0.5)')
+  //       const colors = ref([
+  //         'rgba(19, 206, 102, 0.18)',
+  //         'rgb(25, 159, 147)',
+  //         'hsv(250, 54, 98)',
+  //         'hsva(180, 65, 20, 0.5)',
+  //         'hsl(170, 32%, 87%)',
+  //         'hsla(45, 62%, 47%, 0.13)',
+  //         '#7486de',
+  //         '#45aa9477',
+  //         '#892345'
+  //       ])
+  //       return {
+  //         color,
+  //         colors
+  //       }
+  //     }
+  //   })
+  //   await wrapper.find('.el-color-picker__trigger').trigger('click')
+  //   const selector = document.querySelector(
+  //     '.el-color-predefine__color-selector:nth-child(4)'
+  //   )
+  //   selector.click()
+  //   await nextTick()
+  //   expect(selector.classList.contains('selected')).toBe(true)
+  //   const hueBar = wrapper.findComponent({ name: 'el-color-hue-slider' })
+  //   hueBar.element.getBoundingClientRect = jest.fn(() => ({
+  //     bottom: 626,
+  //     height: 180,
+  //     left: 923,
+  //     right: 935,
+  //     top: 446,
+  //     width: 12,
+  //     x: 923,
+  //     y: 446
+  //   }))
+  //   hueBar.vm.handleClick({ target: null, clientX: 0, clientY: 1000 })
+  //   await nextTick()
+  //   expect(selector.classList.contains('selected')).toBe(false)
+  // })
 })
