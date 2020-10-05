@@ -142,7 +142,9 @@ ComponentNames.forEach((name) => {
       'dropdown-menu',
       'collapse',
       'collapse-item',
-      'message-box'
+      'message-box',
+      'tabs',
+      'tab-pane'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
