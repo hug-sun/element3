@@ -1,4 +1,4 @@
-import ElMenuItemGroup from '../menu/src/menu-item-group'
+import ElMenuItemGroup from '../menu/MenuItemGroup'
 
 /* istanbul ignore next */
 ElMenuItemGroup.install = function (app) {

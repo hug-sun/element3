@@ -35,10 +35,10 @@ const install = function(app, opts = {}) {
   };
 
   app.config.globalProperties.$loading = Loading.service;
-  // app.config.globalProperties.$msgbox = MessageBox;
-  // app.config.globalProperties.$alert = MessageBox.alert;
-  // app.config.globalProperties.$confirm = MessageBox.confirm;
-  // app.config.globalProperties.$prompt = MessageBox.prompt;
+  app.config.globalProperties.$msgbox = MessageBox;
+  app.config.globalProperties.$alert = MessageBox.alert;
+  app.config.globalProperties.$confirm = MessageBox.confirm;
+  app.config.globalProperties.$prompt = MessageBox.prompt;
 
    app.config.globalProperties.$notify = Notification;
    app.config.globalProperties.$message = Message;
@@ -93,6 +93,10 @@ ComponentNames.forEach((name) => {
       'header',
       'footer',
       'main',
+      'menu',
+      'menu-item',
+      'menu-item-group',
+      'submenu',
       'aside',
       'radio-group',
       'radio-button',
@@ -126,6 +130,7 @@ ComponentNames.forEach((name) => {
       'input-number',
       'step',
       'steps',
+      'slider',
       'popconfirm',
       'drawer',
       'transfer',
@@ -136,7 +141,11 @@ ComponentNames.forEach((name) => {
       'dropdown-item',
       'dropdown-menu',
       'collapse',
-      'collapse-item'
+      'collapse-item',
+      'message-box',
+      'color-picker',
+      'cascader',
+      'cascader-panel'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换

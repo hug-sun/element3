@@ -124,6 +124,7 @@ Can be customized to show various content.
 </template>
 
 <script>
+  import { h } from 'vue'
   export default {
     methods: {
       open() {
