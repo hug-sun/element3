@@ -38,7 +38,7 @@ export default {
     })
 
     if (!elTabs) {
-      console.error('Element: not find ETabs')
+      console.error('Element: not find parent ETabs')
       return
     }
     index.value = elTabs.ctx.tabList.length
