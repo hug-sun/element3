@@ -36,12 +36,13 @@ export default {
       rendered: false,
       pane: instance
     })
+
     if (!elTabs) {
       console.error('Element: not find ETabs')
       return
     }
     index.value = elTabs.ctx.tabList.length
-    elTabs.ctx.tabList.push(tab)
+    elTabs.ctx.tabList[index.value] = tab
     return {
       elTabs,
       tab,

@@ -123,7 +123,7 @@
 ```html
 <el-tabs type="border-card">
   <el-tab-pane>
-    <span slot="label"><i class="el-icon-date"></i> 我的行程</span>
+    <template v-slot:label><i class="el-icon-date"></i> 我的行程</template>
     我的行程
   </el-tab-pane>
   <el-tab-pane label="消息中心">消息中心</el-tab-pane>
@@ -178,6 +178,7 @@
           this.editableTabsValue = newTabName;
         }
         if (action === 'remove') {
+        console.log(targetName, action)
           let tabs = this.editableTabs;
           let activeName = this.editableTabsValue;
           if (activeName === targetName) {
@@ -276,7 +277,7 @@
 ### Tabs Attributes
 | 参数       | 说明     | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| value / v-model  | 绑定值，选中选项卡的 name  | string   |  —  |  第一个选项卡的 name |
+| modelValue / v-model  | 绑定值，选中选项卡的 name  | string   |  —  |  第一个选项卡的 name |
 | type     | 风格类型   | string   | card/border-card  |     —    |
 | closable  | 标签是否可关闭   | boolean   | — |  false  |
 | addable  | 标签是否可增加   | boolean   | — |  false  |

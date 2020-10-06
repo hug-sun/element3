@@ -10,10 +10,7 @@
     ]"
     ref="tabs"
   >
-    <div v-if="tabPosition === 'bottom'" class="el-tabs__content">
-      <slot></slot>
-    </div>
-    <div class="el-tabs__header" :class="['is-' + tabPosition]">
+    <div ref="hander" class="el-tabs__header" :class="['is-' + tabPosition]">
       <span
         v-if="addable || editable"
         tabindex="0"
@@ -87,11 +84,13 @@
         </div>
       </div>
     </div>
-    <div v-if="tabPosition !== 'bottom'" class="el-tabs__content">
+
+    <div ref="content" class="el-tabs__content">
       <slot></slot>
     </div>
   </div>
 </template>
+
 <script>
 import {
   getCurrentInstance,
@@ -100,10 +99,10 @@ import {
   onUpdated,
   provide,
   reactive,
-  watchEffect,
   computed,
   ref,
-  watch
+  watch,
+  toRefs
 } from 'vue'
 
 export default {
@@ -138,7 +137,7 @@ export default {
       scrollToActive,
       handleClickLeft,
       handleClickRight
-    } = usScroll({
+    } = useTabScroll({
       tabElList
     })
 
@@ -148,7 +147,7 @@ export default {
       scrollToActive
     })
 
-    const { activeBarStyle } = useBarStyle({ tabList, state, direction })
+    const { activeBarStyle } = useTabBarStyle({ tabList, state, direction })
 
     return {
       activeBarStyle,
@@ -167,7 +166,7 @@ export default {
   }
 }
 
-function useBarStyle({ tabList, state, direction }) {
+function useTabBarStyle({ tabList, state, direction }) {
   const activeBarStyle = computed(() => {
     const { sizeName, textSizeName, posName, dirFlag } = direction.value
     return [
@@ -186,12 +185,10 @@ function useTabNav({ tabList, tabElList, scrollToActive }) {
   const instance = getCurrentInstance()
   const state = reactive({ activeName: '', activeIndex: -1 })
 
-  watchEffect(() => {
-    const tabIndex = tabList.findIndex(
-      (item) => item.name === instance.props.modelValue
-    )
+  watch(toRefs(instance.props).modelValue || ref(null), (v) => {
+    const tabIndex = tabList.findIndex((item) => item.name === v)
     if (tabIndex === -1) return
-    handleClick(tabList[tabIndex], tabIndex)
+    switchTab(tabList[tabIndex], tabIndex)
   })
 
   onMounted(async () => {
@@ -218,29 +215,38 @@ function useTabNav({ tabList, tabElList, scrollToActive }) {
     })
   })
 
-  const handleClick = async (item, index, e) => {
+  const switchTab = async (item, index) => {
     if (index === state.activeIndex) {
-      return
+      return false
     }
     if (item.disabled) {
-      return
+      return false
     }
     const isLeave = await instance.props.beforeLeave(
       item.name,
       state.activeName
     )
     if (!isLeave) {
-      return
+      return false
     }
     item.rendered = true
     state.activeName = item.name
     state.activeIndex = index
+    scrollToActive(item)
+    return true
+  }
+
+  const handleClick = async (item, index, e) => {
+    await switchTab(item, index)
     instance.emit('update:modelValue', state.activeName)
     instance.emit('tab-click', tabList[index], e)
-    scrollToActive(item)
   }
 
   const handleClose = (item, index, e) => {
+    tabList.splice(index, 1)
+    nextTick(() => {
+      tabElList.splice(index, 1)
+    })
     instance.emit('tab-remove', item.name, index, item, e)
     instance.emit('edit', item.name, 'remove')
   }
@@ -252,7 +258,7 @@ function useTabNav({ tabList, tabElList, scrollToActive }) {
   }
 }
 
-function usScroll({ tabElList }) {
+function useTabScroll({ tabElList }) {
   const instance = getCurrentInstance()
   const tabs = ref(null)
   const tabScroll = ref(null)
@@ -268,6 +274,15 @@ function usScroll({ tabElList }) {
     const offsetName = { X: 'offsetWidth', Y: 'offsetHeight' }[dirFlag]
     const scrollName = { X: 'scrollWidth', Y: 'scrollHeight' }[dirFlag]
     const posName = dirFlag.toLocaleLowerCase()
+
+    scrollSize.value = 0
+
+    dirFlag === 'X'
+      ? instance.refs.hander &&
+        instance.refs.hander.before(instance.refs.content)
+      : instance.refs.content &&
+        instance.refs.content.before(instance.refs.hander)
+
     return {
       dirFlag,
       sizeName,
