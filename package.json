@@ -1,10 +1,10 @@
 {
   "name": "element3",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A Component Library for Vue3",
   "main": "dist/element3-ui.cjs.js",
   "module": "dist/element3-ui.esm-bundler.js",
-  "unpkg": "dist/element3-ui.global.js",
+  "unpkg": "lib/index.js",
   "jsdelivr": "dist/element3-ui.global.js",
   "files": [
     "lib",
@@ -68,7 +68,6 @@
   "bugs": {
     "url": "https://github.com/kkbjs/element3/issues"
   },
-  "unpkg": "lib/index.js",
   "style": "lib/theme-chalk/index.css",
   "gitHooks": {
     "pre-commit": "lint-staged",
