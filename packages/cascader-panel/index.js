@@ -1,4 +1,4 @@
-import CascaderPanel from './src/cascader-panel'
+import CascaderPanel from './CascaderPanel'
 
 /* istanbul ignore next */
 CascaderPanel.install = function (app) {
