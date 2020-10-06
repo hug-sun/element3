@@ -20,13 +20,13 @@ describe('Calendar.vue', () => {
     // })
   })
   describe('range', () => {
-    it(' calendar is-range', () => {
-      // const wrapper = mount(Calendar, {
-      //   props: {
-      //     range: ['2019-03-04', '2019-03-24']
-      //   }
-      // })
-      // expect(wrapper.find('.is-range').exists())
-    })
+    // it(' calendar is-range', () => {
+    // const wrapper = mount(Calendar, {
+    //   props: {
+    //     range: ['2019-03-04', '2019-03-24']
+    //   }
+    // })
+    // expect(wrapper.find('.is-range').exists())
+    // })
   })
 })

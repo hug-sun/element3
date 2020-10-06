@@ -144,7 +144,10 @@ ComponentNames.forEach((name) => {
       'collapse-item',
       'message-box',
       'tabs',
-      'tab-pane'
+      'tab-pane',
+      'color-picker',
+      'cascader',
+      'cascader-panel'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
