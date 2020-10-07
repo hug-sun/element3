@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { ref } from 'vue'
-import MessageBox from '../src/main.vue'
+import MessageBox from '../src/MessageBox.vue'
 describe('MessageBox.vue', () => {
   afterEach(() => {
     const el = document.querySelector('.el-message-box__wrapper')
