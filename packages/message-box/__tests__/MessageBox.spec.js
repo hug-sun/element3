@@ -14,7 +14,7 @@ describe('MessageBox.vue', () => {
   })
 
   test('kind of alert', async () => {
-    const messagebox = await mount(MessageBox, {
+    const messagebox = mount(MessageBox, {
       props: {
         title: 'title',
         message: 'message',
@@ -29,7 +29,7 @@ describe('MessageBox.vue', () => {
   })
 
   test('dangerouslyUseHTMLString', async () => {
-    const messagebox = await mount(MessageBox, {
+    const messagebox = mount(MessageBox, {
       props: {
         title: 'title',
         message: '<div>message</div>',
@@ -45,7 +45,7 @@ describe('MessageBox.vue', () => {
 
   test('test dome click', async () => {
     const callBackAction = ref(null)
-    const messagebox = await mount(MessageBox, {
+    const messagebox = mount(MessageBox, {
       props: {
         title: 'title',
         message: '<div>message</div>',
