@@ -130,8 +130,6 @@ export default {
 
     provide('rootTabs', reactive(instance));
 
- 
-   
     watch(()=>props.modelValue, (modelValue) => {
       setCurrentName(modelValue)
     })
