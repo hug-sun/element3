@@ -1,6 +1,6 @@
 // #todo
 import { render, defineComponent, h, isVNode } from 'vue'
-import msgboxVue from './main.vue'
+import msgboxVue from './MessageBox.vue'
 import merge from 'element-ui/src/utils/merge'
 const messageBoxConstructor = defineComponent(msgboxVue)
 const defaults = {
