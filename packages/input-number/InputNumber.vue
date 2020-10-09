@@ -333,6 +333,13 @@ export default {
       }
     )
 
+    const handleBlur = (event) => {
+      emit('blur', event)
+    }
+    const handleFocus = (event) => {
+      emit('focus', event)
+    }
+    const select = () => {}
     return {
       controlsAtRight,
       inputNumberSize,
@@ -345,21 +352,10 @@ export default {
       handleInputChange,
       handleInput,
       focus,
-      setCurrentValue
-    }
-  },
-
-  methods: {
-    handleBlur(event) {
-      this.$emit('blur', event)
-    },
-
-    handleFocus(event) {
-      this.$emit('focus', event)
-    },
-
-    select() {
-      this.$refs.input.select()
+      setCurrentValue,
+      handleBlur,
+      handleFocus,
+      select
     }
   }
 }
