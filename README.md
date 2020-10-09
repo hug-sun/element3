@@ -43,26 +43,26 @@ A Vue.js 3.0 UI Toolkit for Web.
 ## Install
 
 ```shell
-npm install element-ui -S
+npm install element3 -S
 ```
 
 ## Quick Start
 
 ```js
 import Vue from 'vue'
-import Element from 'element-ui'
+import Element3 from 'element3'
 
-Vue.use(Element)
+Vue.use(Element3)
 
 // or
 import {
-  Select,
-  Button
+  ElLink,
+  ElButton
   // ...
-} from 'element-ui'
+} from 'element3'
 
-Vue.component(Select.name, Select)
-Vue.component(Button.name, Button)
+Vue.component(ElLink.name, ElLink)
+Vue.component(ElButton.name, ElButton)
 ```
 
 ## Documentation
