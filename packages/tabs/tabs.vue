@@ -120,7 +120,6 @@ export default {
 
   setup(props, {  emit, slots }){
  
-   
     const currentName = ref(props.value || props.modelValue)
     const {panes} = usePanes();
     const panesArr=panes;
