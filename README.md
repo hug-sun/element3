@@ -1,63 +1,3 @@
-# (wip) element for vue3
-
-1. 修改 build/bin/buld-entry.js 的 72 行。
-2. 组件加上白名单，比如加一个 'input'，执行 `npm run dev`。
-3. 访问文档(也可访问 http://localhost:8086/#/ )，在对应的组件页面调试报错即可，完成的记得标记。
-4. 提交代码前请先拉取代码，commit 时信息格式为 key: content，如 `refactor: refactor alert`，注意表达简洁易懂。
-
-## Install
-
-```js
-npm install element3 -S
-
-```
-
-## Quick Start
-
-```js
-import 'element3/lib/theme-chalk/index.css'
-import { createApp } from 'vue'
-import Element3 from 'element3'
-import App from './App.vue'
-
-const app = createApp(App)
-app.use(Element3)
-app.mount('#app')
-
-// or
-import {
-  ElButton
-  // ...
-} from 'element3'
-
-Vue.use(ElButton)
-```
-
-> 注意暂时不要在生产坏境使用
-
-## export components
-
-目前已经导出可以使用的组件列表
-
-- ElButton
-- ElSwitch
-- ElProgress
-- ElLink
-- ElIcon
-- ElBreadcrumb
-- ElBreadcrumbItem
-- ElContainer
-
-## Join Discussion Group
-
-Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in discussion group :
-
-<img alt="Join Discusion Group" src="https://pic4.zhimg.com/80/v2-73947edcba4cbfe52cd779a3b1b974b5_1440w.png" width="300">
-
-## Contribution
-
-[See Contributing Guide.](https://juejin.im/post/6864462363039531022)
-
 <p align="center">
   <img src="https://gitee.com/pandafe/element3/raw/master/element_logo.svg">
 </p>
@@ -69,10 +9,10 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
   <a href="https://coveralls.io/github/ElemeFE/element?branch=master">
     <img src="https://coveralls.io/repos/github/ElemeFE/element/badge.svg?branch=master">
   </a>
-  <a href="https://cdnjs.com/libraries/element-ui">
+  <a href="">
     <img src="https://img.shields.io/cdnjs/v/element-ui.svg">
   </a>
-  <a href="https://www.npmjs.org/package/element-ui">
+  <a href="https://www.npmjs.com/package/element3">
     <img src="https://img.shields.io/npm/v/element-ui.svg">
   </a>
   <a href="https://npmcharts.com/compare/element-ui?minimal=true">
@@ -96,85 +36,66 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
   </a>
 </p>
 
-<p align="center">
-  <b>Special thanks to the generous sponsorship by:</b>
-</p>
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="middle">
-        <a href="https://tipe.io/?ref=element" target="_blank">
-          <img width="150px" src="https://user-images.githubusercontent.com/1016365/34124854-48fafa06-e3e9-11e7-8c04-251055feebee.png">
-        </a>
-      </td>
-      <td align="center" valign="middle">
-        <a href="https://www.duohui.cn/?utm_source=element&utm_medium=web&utm_campaign=element-index" target="_blank">
-          <img width="150px" src="https://user-images.githubusercontent.com/10095631/35603534-bb24470c-0678-11e8-8bcc-17ceaef8cbef.png">
-        </a>
-      </td>
-      <td align="center" valign="middle">
-        <a href="https://bitsrc.io/" target="_blank">
-          <img width="150px" src="https://user-images.githubusercontent.com/10095631/41342907-e44e7196-6f2f-11e8-92f2-47702dc8f059.png">
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+## Introduction
 
-> A Vue.js 3.0 UI Toolkit for Web.（WIP）
-
-## Links
-
-- Homepage and documentation
-  - [International users](http://element.eleme.io/#/en-US)
-  - [Chinese users](http://element-cn.eleme.io/#/zh-CN)
-  - [Spanish users](http://element.eleme.io/#/es)
-  - [French users](http://element.eleme.io/#/fr-FR)
-- [awesome-element](https://github.com/ElementUI/awesome-element)
-- [FAQ](./FAQ.md)
-- [Customize theme](http://element.eleme.io/#/en-US/component/custom-theme)
-- [Preview and generate theme online](https://elementui.github.io/theme-chalk-preview)
-- [Element for React](https://github.com/elemefe/element-react)
-- [Element for Angular](https://github.com/ElemeFE/element-angular)
-- [Atom helper](https://github.com/ElemeFE/element-helper)
-- [Visual Studio Code helper](https://github.com/ElemeFE/vscode-element-helper)
-- Starter kit
-  - [element-starter](https://github.com/ElementUI/element-starter)
-  - [element-in-laravel-starter](https://github.com/ElementUI/element-in-laravel-starter)
-- [Design resources](https://github.com/ElementUI/Resources)
-- Gitter
-  - [International users](https://gitter.im/element-en/Lobby)
-  - [Chinese users](https://gitter.im/ElemeFE/element)
+A Vue.js 3.0 UI Toolkit for Web.
 
 ## Install
 
 ```shell
-npm install element-ui -S
+npm install element3 -S
 ```
 
 ## Quick Start
 
-```javascript
-import Vue from 'vue'
-import Element from 'element-ui'
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+import Element3 from 'element3'
 
-Vue.use(Element)
+// global import
+const app = createApp(App)
+app.use(Element3)
 
-// or
+// or according to the need to import
 import {
-  Select,
-  Button
+  ElLink,
+  ElButton
   // ...
-} from 'element-ui'
+} from 'element3'
 
-Vue.component(Select.name, Select)
-Vue.component(Button.name, Button)
+app.component(ElLink.name, ElLink)
+app.component(ElButton.name, ElButton)
 ```
 
-For more information, please refer to [Quick Start](http://element.eleme.io/#/en-US/component/quickstart) in our documentation.
+## Documentation
 
+TODO
 
+## Questions
 
-## LICENSE
+TODO
 
-[MIT](LICENSE)
+## Issues
+
+Please make sure to read the [Issue Reporting Checklist](TODO) before opening an issue. Issues not conforming to the guidelines may be closed immediately.
+
+## Changelog
+
+Detailed changes for each release are documented in the [CHANGELOG](https://github.com/kkbjs/element3/blob/master/CHANGELOG.md).
+
+## Contribution
+
+Please make sure to read the [Contributing Guide](https://juejin.im/post/6864462363039531022) before making a pull request. If you have a Element3-related project/component/tool, add it with a pull request to [this curated list](TODO)!
+
+Thank you to all the people who already contributed to Element3!
+
+## Join Discussion Group
+
+Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in discussion group :
+
+<img alt="Join Discusion Group" src="https://pic4.zhimg.com/80/v2-73947edcba4cbfe52cd779a3b1b974b5_1440w.png" width="300">
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT)

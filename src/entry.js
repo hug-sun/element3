@@ -8,6 +8,7 @@ import ElLink from '../packages/link'
 import ElIcon from '../packages/icon'
 import ElBreadcrumb from '../packages/breadcrumb'
 import ElBreadcrumbItem from '../packages/breadcrumb-item'
+import ElBacktop from '../packages/backtop'
 import { version } from '../package.json'
 
 const components = [
@@ -19,7 +20,8 @@ const components = [
   ElLink,
   ElIcon,
   ElBreadcrumb,
-  ElBreadcrumbItem
+  ElBreadcrumbItem,
+  ElBacktop
 ]
 
 const install = (app) => {
@@ -42,7 +44,8 @@ export {
   ElLink,
   ElIcon,
   ElBreadcrumb,
-  ElBreadcrumbItem
+  ElBreadcrumbItem,
+  ElBacktop
 }
 
 export default elementUI

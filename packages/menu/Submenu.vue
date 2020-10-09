@@ -260,6 +260,7 @@ export default {
       parentMenu.value.ctx.addSubmenu(instance)
       rootMenu.ctx.addSubmenu(instance)
       initPopper()
+      showPopper.value = rootMenu.ctx.openedMenus.indexOf(index.value) > -1
     })
 
     onBeforeUnmount(() => {
