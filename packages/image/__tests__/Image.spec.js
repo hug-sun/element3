@@ -1,4 +1,5 @@
 import { mount as $mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import Image from '../Image.vue'
 import { IMAGE_FAIL, IMAGE_SUCCESS as src } from './image'
 
@@ -8,7 +9,7 @@ const mount = async (Component, _options) => {
     options.data ||
     function () {
       return {
-        loading: false
+        loading: true
       }
     }
   const wrapper = await $mount(Component, options)
@@ -23,6 +24,8 @@ describe('Image.vue', () => {
           src
         }
       })
+      wrapper.componentVM.loading = false
+      await nextTick()
       expect(wrapper.find('.el-image__inner').attributes('src')).toBe(src)
     })
 
@@ -33,6 +36,8 @@ describe('Image.vue', () => {
           fit: 'fill'
         }
       })
+      wrapper.componentVM.loading = false
+      await nextTick()
       expect(wrapper.find('.el-image__inner').attributes('style')).toContain(
         'object-fit: fill;'
       )
@@ -45,6 +50,8 @@ describe('Image.vue', () => {
           alt: 'hello world!'
         }
       })
+      wrapper.componentVM.loading = false
+      await nextTick()
       expect(wrapper.find('.el-image__inner').attributes('alt')).toBe(
         'hello world!'
       )
@@ -57,13 +64,10 @@ describe('Image.vue', () => {
       const wrapper = await mount(Image, {
         props: {
           previewSrcList: [src, IMAGE_FAIL]
-        },
-        data() {
-          return {
-            showViewer: true
-          }
         }
       })
+      wrapper.componentVM.showViewer = true
+      await nextTick()
       expect(wrapper.find('.el-image-viewer__img').attributes('src')).toBe(src)
     })
 
@@ -72,13 +76,10 @@ describe('Image.vue', () => {
         props: {
           previewSrcList: [src, IMAGE_FAIL],
           zIndex: 2020
-        },
-        data() {
-          return {
-            showViewer: true
-          }
         }
       })
+      wrapper.componentVM.showViewer = true
+      await nextTick()
       expect(
         wrapper.find('.el-image-viewer__wrapper').attributes('style')
       ).toContain('z-index: 2020')
@@ -104,20 +105,17 @@ describe('Image.vue', () => {
     })
 
     it('error', async () => {
-      const wrapper = await $mount(Image, {
+      const wrapper = $mount(Image, {
         src: IMAGE_FAIL,
         slots: {
           error: () => {
             return 'error!'
           }
-        },
-        data() {
-          return {
-            loading: false,
-            error: true
-          }
         }
       })
+      wrapper.componentVM.loading = false
+      wrapper.componentVM.error = true
+      await nextTick()
       expect(wrapper.find('.el-image').text()).toBe('error!')
     })
   })
