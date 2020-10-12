@@ -106,7 +106,7 @@
     "@vue/compiler-sfc": "^3.0.0-rc.5",
     "@vue/component-compiler-utils": "^2.6.0",
     "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/test-utils": "^2.0.0-beta.0",
+    "@vue/test-utils": "^2.0.0-beta.6",
     "algoliasearch": "^3.24.5",
     "babel-cli": "^7.0.0-beta.3",
     "babel-core": "^7.0.0-beta.3",
