@@ -1,15 +1,14 @@
 <script type="text/jsx">
 import Menubar from 'element-ui/src/utils/menu/aria-menubar';
-import { addClass, removeClass, hasClass } from 'element-ui/src/utils/dom';
-import { computed, getCurrentInstance, onMounted, provide, ref, toRefs, watch, h , Transition } from 'vue';
+import { computed, getCurrentInstance, onMounted, provide, ref, toRefs, watch } from 'vue';
 import {useEmitter} from 'element-ui/src/use/emitter';
 import {useItems} from "./src/menu-use";
+import MenuCollapseTransition from './MenuCollapseTransition.vue'
 
 export default {
   name: 'ElMenu',
   componentName: 'ElMenu',
   render () {
-    /* eslint-disable */
     const component = (
       <ul
         role="menubar"
@@ -36,51 +35,7 @@ export default {
 
   },
   components: {
-    'el-menu-collapse-transition': {
-      render(ctx) {
-        const data = {
-          mode: 'out-in',
-          onBeforeEnter(el) {
-            el.style.opacity = 0.2;
-          },
-
-          onEnter(el) {
-            addClass(el, 'el-opacity-transition');
-            el.style.opacity = 1;
-          },
-
-          onAfterEnter(el) {
-            removeClass(el, 'el-opacity-transition');
-            el.style.opacity = '';
-          },
-
-          onBeforeLeave(el) {
-            if (!el.dataset) el.dataset = {};
-
-            if (hasClass(el, 'el-menu--collapse')) {
-              removeClass(el, 'el-menu--collapse');
-              el.dataset.oldOverflow = el.style.overflow;
-              el.dataset.scrollWidth = el.clientWidth;
-              addClass(el, 'el-menu--collapse');
-            } else {
-              addClass(el, 'el-menu--collapse');
-              el.dataset.oldOverflow = el.style.overflow;
-              el.dataset.scrollWidth = el.clientWidth;
-              removeClass(el, 'el-menu--collapse');
-            }
-
-            el.style.width = el.scrollWidth + 'px';
-            el.style.overflow = 'hidden';
-          },
-
-          onLeave(el) {
-            addClass(el, 'horizontal-collapse-transition');
-            el.style.width = el.dataset.scrollWidth + 'px';
-          }
-        };
-        return h(Transition, data, ctx.$slots);
-      }
-    }
+    'el-menu-collapse-transition': MenuCollapseTransition
   },
 
   props: {
@@ -291,7 +246,7 @@ export default {
         on('item-click', handleItemClick);
         on('submenu-click', handleSubmenuClick);
         if (mode.value === 'horizontal') {
-            new Menubar(instance.ctx.$el); // eslint-disable-line
+            new Menubar(instance.ctx.$el);
         }
         watch(items, updateActiveIndex);
     });
