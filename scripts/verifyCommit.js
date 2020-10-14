@@ -8,6 +8,7 @@ const commitRE = /^(revert: )?(feat|fix|docs|dx|style|refactor|perf|test|workflo
 const mergeRE = /^Merge pull request/
 if (!commitRE.test(msg)) {
   if (!mergeRE.test(msg)) {
+    console.log(msg)
     console.error(
       `  ${chalk.bgRed.white(' ERROR ')} ${chalk.red(
         `invalid commit message format.`
