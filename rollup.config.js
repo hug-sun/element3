@@ -5,8 +5,8 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
-import buble from '@rollup/plugin-buble'
 import replace from '@rollup/plugin-replace'
+import babel from '@rollup/plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 
 const name = 'Element3'
@@ -25,14 +25,14 @@ const createBaseConfig = () => {
     external: ['vue'],
     plugins: [
       peerDepsExternal(),
+      babel(),
       resolve(),
       commonjs(),
       json(),
       vuePlugin({
         css: true
       }),
-      scss(),
-      buble()
+      scss()
     ],
     output: {
       sourcemap: false,
