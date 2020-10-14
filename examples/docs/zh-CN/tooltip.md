@@ -130,7 +130,7 @@ Tooltip 组件提供了两个不同的主题：`dark`和`light`。
 
 事实上，这是基于 [Vue-popper](https://github.com/element-component/vue-popper) 的扩展，你可以自定义任意 Vue-popper 中允许定义的字段。
 当然 Tooltip 组件实际上十分强大，文末的API文档会做一一说明。
-
+I’m 
 :::demo
 ```html
 <template>
@@ -139,12 +139,14 @@ Tooltip 组件提供了两个不同的主题：`dark`和`light`。
   </el-tooltip>
 </template>
 <script>
+ import {ref} from 'vue'
   export default {
-    data() {
-      return {
-        disabled: false
-      };
-    }
+    setup() {
+      
+      const disabled = ref(false)
+      return {disabled}
+     }
+    
   };
 </script>
 ```

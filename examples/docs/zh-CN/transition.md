@@ -20,10 +20,13 @@ Element 内应用在部分组件的过渡动画，你也可以直接使用。在
 </div>
 
 <script>
+  import {ref} from 'vue'
     export default {
-    data: () => ({
-      show: true
-    })
+      setup(){
+        const show = ref(true)
+        return {show}
+      }
+    
   }
 </script>
 
@@ -67,10 +70,13 @@ Element 内应用在部分组件的过渡动画，你也可以直接使用。在
   </div>
 
 <script>
+  import {ref} from 'vue'
     export default {
-    data: () => ({
-      show2: true
-    })
+      setup(){
+        const show2 = ref(true)
+        return {show2}
+      }
+    
   }
 </script>
 
@@ -112,10 +118,12 @@ Element 内应用在部分组件的过渡动画，你也可以直接使用。在
   </div>
 
 <script>
+  import {ref} from 'vue'
     export default {
-    data: () => ({
-      show3: true
-    })
+      setup(){
+        const show3 = ref(true)
+         return {show3}
+      }
   }
 </script>
 
