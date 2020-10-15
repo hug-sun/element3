@@ -1,4 +1,6 @@
-import TabPane from './tab-pane.vue'
+
+import TabPane from './TabPane'
+
 
 /* istanbul ignore next */
 TabPane.install = function (app) {

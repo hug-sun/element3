@@ -1,3 +1,26 @@
+## [0.0.13](https://github.com/kkbjs/element3/compare/v0.0.12...v0.0.13) (2020-10-06)
+
+
+### Bug Fixes
+
+* add new topic ([8443273](https://github.com/kkbjs/element3/commit/84432738f983772932688884258d646394ff9c1e))
+* color-picker add todo and steps add skip ([ca24ad8](https://github.com/kkbjs/element3/commit/ca24ad8ad1c27d5292f3ee31b1447a09f2068e77))
+* color-picker add todo and steps add skip ([8153bb2](https://github.com/kkbjs/element3/commit/8153bb2fcb8d1e1dd147a6920d039a1c7d1a71f9))
+* eslint ([13055d5](https://github.com/kkbjs/element3/commit/13055d532407ced5ed0af321a984a1ed3053cee0))
+* fix eslint error ([afda242](https://github.com/kkbjs/element3/commit/afda24263bdfab7762fce9d6e7688568da5fec92))
+* fix eslint error ([b8a8abb](https://github.com/kkbjs/element3/commit/b8a8abb363535e7308d80071f3f3cbb7293f76a0))
+* remove cosole.log ([fd6a99b](https://github.com/kkbjs/element3/commit/fd6a99be3b5db153b2bdfbca1964885dcecddc56))
+* remove cosole.log ([ef65be6](https://github.com/kkbjs/element3/commit/ef65be65d5ededd70d59b4ba11e8893627e498f3))
+* 修复错误 ([1506ffa](https://github.com/kkbjs/element3/commit/1506ffaf6e36dd155a1881e34bf4ed6eb48a7f82))
+
+
+### Features
+
+* export the backtop component ([6f313d6](https://github.com/kkbjs/element3/commit/6f313d6c213425a905a86846565084373cc1b5ab))
+* finish message-box component ([d01403b](https://github.com/kkbjs/element3/commit/d01403b0c5452be93b564b44004ac1d494706076))
+
+
+
 ## [0.0.12](https://github.com/kkbjs/element3/compare/v0.0.11...v0.0.12) (2020-09-27)
 
 

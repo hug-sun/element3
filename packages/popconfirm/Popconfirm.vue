@@ -70,6 +70,7 @@ export default {
     ElPopover,
     ElButton
   },
+  emits: ['onConfirm', 'onCancel'],
   setup(props, { emit }) {
     const state = reactive({
       visible: false

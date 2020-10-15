@@ -1,3 +1,4 @@
+/* eslint-disable */
 <script>
 import ElCollapseTransition from 'element-ui/src/transitions/collapse-transition'
 import { useMenu, useItems } from './src/menu-use'
@@ -259,6 +260,7 @@ export default {
       parentMenu.value.ctx.addSubmenu(instance)
       rootMenu.ctx.addSubmenu(instance)
       initPopper()
+      showPopper.value = rootMenu.ctx.openedMenus.indexOf(index.value) > -1
     })
 
     onBeforeUnmount(() => {
