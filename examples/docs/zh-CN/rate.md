@@ -19,12 +19,18 @@
 </div>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
   export default {
-    data() {
-      return {
-        value1: null,
-        value2: null,
+    setup(){
+      const value1 = ref(null)
+      const value2 = ref(null)
+      const data = reactive({
         colors: ['#99A9BF', '#F7BA2A', '#FF9900']  // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
+      })
+      return {
+        value1,
+        value2,
+        ...toRefs(data)
       }
     }
   }
@@ -44,10 +50,12 @@
 </el-rate>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    data() {
+    setup(){
+      const value = ref(null)
       return {
-        value: null
+        value
       }
     }
   }
@@ -69,11 +77,16 @@
 </el-rate>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
   export default {
-    data() {
-      return {
-        value: null,
+    setup(){
+      const value = ref(null)
+      const data = reactive({
         iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'] // 等同于 { 2: 'icon-rate-face-1', 4: { value: 'icon-rate-face-2', excluded: true }, 5: 'icon-rate-face-3' }
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -96,10 +109,12 @@
 </el-rate>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    data() {
+    setup(){
+      const value = ref(3.7)
       return {
-        value: 3.7
+        value
       }
     }
   }
