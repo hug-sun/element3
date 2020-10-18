@@ -1,5 +1,4 @@
 <script>
-import Menubar from 'element-ui/src/utils/menu/aria-menubar'
 import {
   computed,
   getCurrentInstance,
@@ -9,7 +8,8 @@ import {
   toRefs,
   watch
 } from 'vue'
-import { useEmitter } from 'element-ui/src/use/emitter'
+import Menubar from '../../src/utils/menu/aria-menubar'
+import { useEmitter } from '../../src/use/emitter'
 import { useItems } from './src/menu-use'
 import MenuCollapseTransition from './MenuCollapseTransition.vue'
 

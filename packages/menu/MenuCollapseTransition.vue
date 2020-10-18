@@ -1,5 +1,5 @@
 <script>
-import { addClass, removeClass, hasClass } from 'element-ui/src/utils/dom'
+import { addClass, removeClass, hasClass } from '../../src/utils/dom'
 import { h, Transition } from 'vue'
 export default {
   render(ctx) {
