@@ -97,24 +97,10 @@ import {
   isDateObject,
   getWeekNumber
 } from 'element-ui/src/utils/date-util'
-import Popper from 'element-ui/src/utils/vue-popper'
-import Emitter from 'element-ui/src/mixins/emitter'
 import ElInput from 'element-ui/packages/input'
-import merge from 'element-ui/src/utils/merge'
-
-const NewPopper = {
-  props: {
-    appendToBody: Popper.props.appendToBody,
-    offset: Popper.props.offset,
-    boundariesPadding: Popper.props.boundariesPadding,
-    arrowOffset: Popper.props.arrowOffset
-  },
-  methods: Popper.methods,
-  data() {
-    return merge({ visibleArrow: true }, Popper.data)
-  },
-  beforeDestroy: Popper.beforeDestroy
-}
+import { useEmitter } from 'element-ui/src/use/emitter'
+import { popperProps, usePopper } from 'element-ui/src/use/popper'
+import { ref } from 'vue'
 
 const DEFAULT_FORMATS = {
   date: 'yyyy-MM-dd',
@@ -346,8 +332,6 @@ const validator = function (val) {
 }
 
 export default {
-  mixins: [Emitter, NewPopper],
-
   inject: {
     elForm: {
       default: ''
@@ -358,6 +342,10 @@ export default {
   },
 
   props: {
+    appendToBody: popperProps.appendToBody,
+    offset: popperProps.offset,
+    boundariesPadding: popperProps.boundariesPadding,
+    arrowOffset: popperProps.arrowOffset,
     size: String,
     format: String,
     valueFormat: String,
@@ -612,6 +600,32 @@ export default {
     }
   },
 
+  setup(props, ctx) {
+    const visibleArrow = ref(true)
+    const referenceElm = ref(null)
+    const popperElm = ref(null)
+
+    const { dispatch, on } = useEmitter()
+    const {
+      showPopper,
+      currentPlacement,
+      updatePopper,
+      doDestroy,
+      destroyPopper
+    } = usePopper(props, ctx, { referenceElm, popperElm })
+
+    return {
+      visibleArrow,
+      showPopper,
+      currentPlacement,
+      dispatch,
+      on,
+      updatePopper,
+      doDestroy,
+      destroyPopper
+    }
+  },
+
   created() {
     // vue-popper
     this.popperOptions = {
@@ -620,9 +634,7 @@ export default {
     }
     this.placement = PLACEMENT_MAP[this.align] || PLACEMENT_MAP.left
 
-    // TODO $on 废弃掉了
-    // eslint-disable-next-line vue/no-deprecated-events-api
-    this.$on('fieldReset', this.handleFieldReset)
+    this.on('fieldReset', this.handleFieldReset)
   },
 
   methods: {
