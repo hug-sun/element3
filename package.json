@@ -84,7 +84,7 @@
     "eslint-formatter-pretty": "^4.0.0",
     "normalize-wheel": "^1.0.1",
     "resize-observer-polyfill": "^1.5.0",
-    "throttle-debounce": "^1.0.1"
+    "throttle-debounce": "^2.3.0"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
