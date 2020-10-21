@@ -226,7 +226,7 @@ export default {
       if (props.arrowControl) return
       const el = ctx.$refs[type].wrap
       if (el) {
-        el.scrollTop = Math.max(0, value * typeItemHeight(type))
+        el.scrollTop = Math.max(0, value.value * typeItemHeight(type))
       }
     }
 
@@ -297,7 +297,7 @@ function useTime(state, props, emit) {
   const seconds = computed(() => props.date.getSeconds())
   const hoursList = computed(() => getRangeHours(state.selectableRange))
   const minutesList = computed(() => {
-    return getRangeMinutes(state.selectableRange, hours)
+    return getRangeMinutes(state.selectableRange, hours.value)
   })
 
   const arrowHourList = computed(() => {
@@ -420,15 +420,16 @@ function useScroll({
       step = step > 0 ? 1 : -1
       let length = unref(hoursList).length
       while (length-- && total) {
-        now = (now + step + unref(hoursList).length) % unref(hoursList).length
-        if (unref(hoursList)[now]) {
+        now =
+          (now.value + step + unref(hoursList).length) % unref(hoursList).length
+        if (unref(hoursList)[now.value]) {
           continue
         }
         total--
       }
-      if (unref(hoursList)[now]) return
+      if (unref(hoursList)[now.value]) return
     } else {
-      now = (now + step + 60) % 60
+      now = (now.value + step + 60) % 60
     }
 
     modifyDateField(label, now)

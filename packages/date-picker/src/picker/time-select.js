@@ -16,6 +16,9 @@ export default {
   },
 
   beforeCreate() {
+    debugger
     this.panel = Panel
-  }
+  },
+
+  setup: Picker.setup
 }

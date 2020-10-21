@@ -62,7 +62,7 @@ export default {
   },
 
   props: {
-    visible: Boolean,
+    // visible: Boolean,
     timeArrowControl: Boolean
   },
 
@@ -72,10 +72,10 @@ export default {
     const { ctx } = getCurrentInstance()
     const t = useLocale()
     const { visible, timeArrowControl } = toRefs(props)
-
     const state = reactive({
       popperClass: '',
       format: 'HH:mm:ss',
+      visible,
       value: '',
       defaultValue: null,
       date: new Date(),
@@ -92,7 +92,7 @@ export default {
     })
 
     const useArrow = computed(() => {
-      return state.arrowControl || timeArrowControl || false
+      return state.arrowControl || timeArrowControl.value || false
     })
 
     const amPmMode = computed(() => {
@@ -101,14 +101,17 @@ export default {
       return ''
     })
 
-    watch(visible, (newVal) => {
-      if (newVal) {
-        state.oldValue = state.value
-        ctx.$nextTick(() => ctx.$refs.spinner.emitSelectRange('hours'))
-      } else {
-        state.needInitAdjust = true
+    watch(
+      () => state.visible,
+      (newVal) => {
+        if (newVal) {
+          state.oldValue = state.value
+          ctx.$nextTick(() => ctx.$refs.spinner.emitSelectRange('hours'))
+        } else {
+          state.needInitAdjust = true
+        }
       }
-    })
+    )
 
     watch(
       () => state.value,
@@ -121,7 +124,7 @@ export default {
         }
 
         state.date = date
-        if (visible && state.needInitAdjust) {
+        if (state.visible && state.needInitAdjust) {
           ctx.$nextTick(() => adjustSpinners())
           state.needInitAdjust = false
         }
@@ -167,8 +170,9 @@ export default {
     }
 
     const handleChange = (date) => {
+      // debugger
       // this.visible avoids edge cases, when use scrolls during panel closing animation
-      if (visible) {
+      if (state.visible) {
         state.date = clearMilliseconds(date)
         // if date is out of range, do not emit
         if (isValidValue(state.date)) {

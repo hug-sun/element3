@@ -90,6 +90,7 @@
 </template>
 
 <script>
+import { createApp } from 'vue'
 import Clickoutside from 'element-ui/src/utils/clickoutside'
 import {
   formatDate,
@@ -342,10 +343,7 @@ export default {
   },
 
   props: {
-    appendToBody: popperProps.appendToBody,
-    offset: popperProps.offset,
-    boundariesPadding: popperProps.boundariesPadding,
-    arrowOffset: popperProps.arrowOffset,
+    ...popperProps,
     size: String,
     format: String,
     valueFormat: String,
@@ -380,7 +378,7 @@ export default {
       type: String,
       default: 'left'
     },
-    value: {},
+    modelValue: {},
     defaultValue: {},
     defaultTime: {},
     rangeSeparator: {
@@ -412,13 +410,14 @@ export default {
     pickerVisible(val) {
       if (this.readonly || this.pickerDisabled) return
       if (val) {
+        debugger
         this.showPicker()
-        this.valueOnOpen = Array.isArray(this.value)
-          ? [...this.value]
-          : this.value
+        this.valueOnOpen = Array.isArray(this.modelValue)
+          ? [...this.modelValue]
+          : this.modelValue
       } else {
         this.hidePicker()
-        this.emitChange(this.value)
+        this.emitChange(this.modelValue)
         this.userInput = null
         if (this.validateEvent) {
           this.dispatch('el.form.blur')
@@ -441,7 +440,7 @@ export default {
         this.picker.defaultValue = val
       }
     },
-    value(val, oldVal) {
+    modelValue(val, oldVal) {
       if (
         !valueEquals(val, oldVal) &&
         !this.pickerVisible &&
@@ -452,15 +451,20 @@ export default {
     }
   },
 
+  mounted() {
+    const reference = this.$refs.reference
+    this.referenceElm = reference.$el || reference
+  },
+
   computed: {
     ranged() {
       return this.type.indexOf('range') > -1
     },
 
-    reference() {
-      const reference = this.$refs.reference
-      return reference.$el || reference
-    },
+    // reference() {
+    //   const reference = this.$refs.reference
+    //   return reference.$el || reference
+    // },
 
     refInput() {
       if (this.reference) {
@@ -470,7 +474,7 @@ export default {
     },
 
     valueIsEmpty() {
-      const val = this.value
+      const val = this.modelValue
       if (Array.isArray(val)) {
         for (let i = 0, len = val.length; i < len; i++) {
           if (val[i]) {
@@ -537,32 +541,32 @@ export default {
     },
 
     parsedValue() {
-      if (!this.value) return this.value // component value is not set
-      if (this.type === 'time-select') return this.value // time-select does not require parsing, this might change in next major version
+      if (!this.modelValue) return this.modelValue // component value is not set
+      if (this.type === 'time-select') return this.modelValue // time-select does not require parsing, this might change in next major version
 
       const valueIsDateObject =
-        isDateObject(this.value) ||
-        (Array.isArray(this.value) && this.value.every(isDateObject))
+        isDateObject(this.modelValue) ||
+        (Array.isArray(this.modelValue) && this.modelValue.every(isDateObject))
       if (valueIsDateObject) {
-        return this.value
+        return this.modelValue
       }
 
       if (this.valueFormat) {
         return (
           parseAsFormatAndType(
-            this.value,
+            this.modelValue,
             this.valueFormat,
             this.type,
             this.rangeSeparator
-          ) || this.value
+          ) || this.modelValue
         )
       }
 
       // NOTE: deal with common but incorrect usage, should remove in next major version
       // user might provide string / timestamp without value-format, coerce them into date (or array of date)
-      return Array.isArray(this.value)
-        ? this.value.map((val) => new Date(val))
-        : new Date(this.value)
+      return Array.isArray(this.modelValue)
+        ? this.modelValue.map((val) => new Date(val))
+        : new Date(this.modelValue)
     },
 
     _elFormItemSize() {
@@ -601,20 +605,31 @@ export default {
   },
 
   setup(props, ctx) {
+    const { dispatch, on } = useEmitter()
+
+    // vue-popper
     const visibleArrow = ref(true)
     const referenceElm = ref(null)
     const popperElm = ref(null)
-
-    const { dispatch, on } = useEmitter()
+    const popperOptions = {
+      boundariesPadding: 0,
+      gpuAcceleration: false
+    }
+    const placement = PLACEMENT_MAP[props.align] || PLACEMENT_MAP.left
     const {
       showPopper,
       currentPlacement,
       updatePopper,
       doDestroy,
       destroyPopper
-    } = usePopper(props, ctx, { referenceElm, popperElm })
+    } = usePopper({ ...props, placement, popperOptions, visibleArrow }, ctx, {
+      referenceElm,
+      popperElm
+    })
 
     return {
+      popperElm,
+      referenceElm,
       visibleArrow,
       showPopper,
       currentPlacement,
@@ -627,14 +642,8 @@ export default {
   },
 
   created() {
-    // vue-popper
-    this.popperOptions = {
-      boundariesPadding: 0,
-      gpuAcceleration: false
-    }
-    this.placement = PLACEMENT_MAP[this.align] || PLACEMENT_MAP.left
-
-    this.on('fieldReset', this.handleFieldReset)
+    const { on } = useEmitter()
+    on('fieldReset', this.handleFieldReset)
   },
 
   methods: {
@@ -769,7 +778,7 @@ export default {
     handleClickIcon(event) {
       if (this.readonly || this.pickerDisabled) return
       if (this.showClose) {
-        this.valueOnOpen = this.value
+        this.valueOnOpen = this.modelValue
         event.stopPropagation()
         this.emitInput(null)
         this.emitChange(null)
@@ -778,6 +787,7 @@ export default {
           this.picker.handleClear()
         }
       } else {
+        debugger
         this.pickerVisible = !this.pickerVisible
       }
     },
@@ -891,7 +901,7 @@ export default {
         this.mountPicker()
       }
       this.pickerVisible = this.picker.visible = true
-
+      debugger
       this.updatePopper()
 
       this.picker.value = this.parsedValue
@@ -904,12 +914,35 @@ export default {
 
     mountPicker() {
       // eslint-disable-next-line no-undef
-      this.picker = new Vue(this.panel).$mount()
+      // this.picker = new Vue(this.panel).$mount()
+      const $el = document.createElement('div')
+      this.picker = createApp(this.panel, {
+        onPick: (date = '', visible = false) => {
+          this.userInput = null
+          this.pickerVisible = this.picker.visible = visible
+          this.emitInput(date)
+          this.picker.resetView && this.picker.resetView()
+        },
+        onDodestroy: this.doDestroy,
+        'onSelect-range': (start, end, pos) => {
+          if (this.refInput.length === 0) return
+          if (!pos || pos === 'min') {
+            this.refInput[0].setSelectionRange(start, end)
+            this.refInput[0].focus()
+          } else if (pos === 'max') {
+            this.refInput[1].setSelectionRange(start, end)
+            this.refInput[1].focus()
+          }
+        }
+      }).mount($el)
       this.picker.defaultValue = this.defaultValue
       this.picker.defaultTime = this.defaultTime
       this.picker.popperClass = this.popperClass
       this.popperElm = this.picker.$el
-      this.picker.width = this.reference.getBoundingClientRect().width
+      // this.setPopperElm(this.picker.$el)
+      // console.log(this.setPopperElm)
+      debugger
+      this.picker.width = this.referenceElm.getBoundingClientRect().width
       this.picker.showTime =
         this.type === 'datetime' || this.type === 'datetimerange'
       this.picker.selectionMode = this.selectionMode
@@ -957,25 +990,6 @@ export default {
       )
       this.$el.appendChild(this.picker.$el)
       this.picker.resetView && this.picker.resetView()
-
-      this.picker.$on('dodestroy', this.doDestroy)
-      this.picker.$on('pick', (date = '', visible = false) => {
-        this.userInput = null
-        this.pickerVisible = this.picker.visible = visible
-        this.emitInput(date)
-        this.picker.resetView && this.picker.resetView()
-      })
-
-      this.picker.$on('select-range', (start, end, pos) => {
-        if (this.refInput.length === 0) return
-        if (!pos || pos === 'min') {
-          this.refInput[0].setSelectionRange(start, end)
-          this.refInput[0].focus()
-        } else if (pos === 'max') {
-          this.refInput[1].setSelectionRange(start, end)
-          this.refInput[1].focus()
-        }
-      })
     },
 
     unmountPicker() {
@@ -1002,8 +1016,8 @@ export default {
 
     emitInput(val) {
       const formatted = this.formatToValue(val)
-      if (!valueEquals(this.value, formatted)) {
-        this.$emit('input', formatted)
+      if (!valueEquals(this.modelValue, formatted)) {
+        this.$emit('update:modelValue', formatted)
       }
     },
 

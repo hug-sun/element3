@@ -1,7 +1,6 @@
 import Picker from '../picker'
 import TimePanel from '../panel/time'
 import TimeRangePanel from '../panel/time-range'
-import { getCurrentInstance, ref, toRefs, watch } from 'vue'
 
 export default {
   mixins: [Picker],
@@ -13,24 +12,30 @@ export default {
     arrowControl: Boolean
   },
 
-  setup(props) {
-    const { ctx } = getCurrentInstance()
-    const { isRange } = toRefs(props)
-    const type = ref('')
+  data() {
+    return {
+      type: ''
+    }
+  },
 
-    watch(isRange, (isRange) => {
-      if (ctx.picker) {
-        ctx.unmountPicker()
-        type.value = isRange ? 'timerange' : 'time'
-        ctx.panel = isRange ? TimeRangePanel : TimePanel
-        ctx.mountPicker()
+  watch: {
+    isRange(isRange) {
+      if (this.picker) {
+        this.unmountPicker()
+        this.type = isRange ? 'timerange' : 'time'
+        this.panel = isRange ? TimeRangePanel : TimePanel
+        this.mountPicker()
       } else {
-        type.value = isRange ? 'timerange' : 'time'
-        ctx.panel = isRange ? TimeRangePanel : TimePanel
+        this.type = isRange ? 'timerange' : 'time'
+        this.panel = isRange ? TimeRangePanel : TimePanel
       }
-    })
+    }
+  },
 
-    type.value = isRange.value ? 'timerange' : 'time'
-    ctx.panel = isRange.value ? TimeRangePanel : TimePanel
-  }
+  created() {
+    this.type = this.isRange ? 'timerange' : 'time'
+    this.panel = this.isRange ? TimeRangePanel : TimePanel
+  },
+
+  setup: Picker.setup
 }
