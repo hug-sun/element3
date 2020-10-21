@@ -1,6 +1,6 @@
 import { vuePopperProps, useVuePopper } from '../popover/vue-popper'
 
-import debounce from 'throttle-debounce/debounce'
+import { debounce } from 'throttle-debounce'
 import { addClass, removeClass, on, off } from '../../src/utils/dom'
 import { generateId } from '../../src/utils/util'
 // eslint-disable-next-line

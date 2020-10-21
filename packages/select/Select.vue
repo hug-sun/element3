@@ -171,7 +171,7 @@ import ElSelectMenu from './SelectDropdown'
 import ElOption from 'element-ui/packages/option/Option'
 import ElTag from 'element-ui/packages/tag'
 import ElScrollbar from 'element-ui/packages/scrollbar'
-import debounce from 'throttle-debounce/debounce'
+import { debounce } from 'throttle-debounce'
 import Clickoutside from 'element-ui/src/directives/clickoutside'
 import {
   addResizeListener,

@@ -8,7 +8,7 @@ import {
 } from 'element-ui/src/utils/dom'
 import ElCheckbox from 'element-ui/packages/checkbox'
 import ElTooltip from 'element-ui/packages/tooltip'
-import debounce from 'throttle-debounce/debounce'
+import { debounce } from 'throttle-debounce'
 import LayoutObserver from './layout-observer'
 import { mapStates } from './store/helper'
 

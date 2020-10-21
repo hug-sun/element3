@@ -18,7 +18,7 @@
 
 <script>
 import { ref, toRefs, computed, onMounted, onUnmounted } from 'vue'
-import throttle from 'throttle-debounce/throttle'
+import { throttle } from 'throttle-debounce'
 import ElIcon from '../icon'
 const cubic = (value) => Math.pow(value, 3)
 const easeInOutCubic = (value) =>
