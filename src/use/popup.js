@@ -7,15 +7,10 @@ import {
   watch,
   toRefs
 } from 'vue'
-import PopupManager from 'element-ui/src/utils/popup/popup-manager'
-import getScrollBarWidth from 'element-ui/src/utils/scrollbar-width'
-import merge from 'element-ui/src/utils/merge'
-import {
-  getStyle,
-  addClass,
-  removeClass,
-  hasClass
-} from 'element-ui/src/utils/dom'
+import PopupManager from '../../src/utils/popup/popup-manager'
+import getScrollBarWidth from '../../src/utils/scrollbar-width'
+import merge from '../../src/utils/merge'
+import { getStyle, addClass, removeClass, hasClass } from '../../src/utils/dom'
 
 let idSeed = 1
 let scrollBarWidth

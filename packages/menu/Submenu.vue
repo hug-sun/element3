@@ -1,9 +1,8 @@
-/* eslint-disable */
 <script>
-import ElCollapseTransition from 'element-ui/src/transitions/collapse-transition'
+import ElCollapseTransition from '../../src/transitions/collapse-transition'
 import { useMenu, useItems } from './src/menu-use'
-import { useEmitter } from 'element-ui/src/use/emitter'
-import { usePopper, popperProps } from 'element-ui/src/use/popper'
+import { useEmitter } from '../../src/use/emitter'
+import { usePopper, popperProps } from '../../src/use/popper'
 import {
   computed,
   nextTick,
