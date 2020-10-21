@@ -15,7 +15,7 @@ describe('Tooltip', () => {
                 [Tooltip.name]: Tooltip
             }
         })
-        nextTick(_ => {
+        nextTick(() => {
             expect(wrapper.vm.$refs.tooltip.popperVM.$el).toHaveProperty('textContent', '提示文字')
             done()
         })
@@ -32,7 +32,7 @@ describe('Tooltip', () => {
                 [Tooltip.name]: Tooltip
             }
         })
-        nextTick(_ => {
+        nextTick(() => {
             expect(wrapper.vm.$refs.tooltip.popperVM.$el.classList.contains('custom-popper')).toBeTruthy()
             done()
         })
@@ -65,7 +65,7 @@ describe('Tooltip', () => {
         })
         it('show', done => {
             wrapper.vm.show = true
-            nextTick(_ => {
+            nextTick(() => {
                 expect(tooltip.popperVM.$el.getAttribute('aria-hidden')).toBe('false')
                 done()
             })
@@ -80,7 +80,7 @@ describe('Tooltip', () => {
         })
         it('hidden', done => {
             wrapper.vm.show = false
-            nextTick(_ => {
+            nextTick(() => {
                 expect(tooltip.popperVM.$el.getAttribute('aria-hidden')).toBe('true')
                 done()
             })
@@ -103,20 +103,20 @@ describe('Tooltip', () => {
         tooltip2.trigger('mouseenter')
 
         it('popperElm is exist', done => {
-            nextTick(_ => {
+            nextTick(() => {
                 expect(tooltip.$refs.popper).toBeTruthy()
                 done()
             })
         })
         it('aria-hidden is false', done => {
-            nextTick(_ => {
+            nextTick(() => {
                 expect(tooltip.popperVM.$el.getAttribute('aria-hidden')).toBe('false')
                 done()
             })
         })
         it('close popper', done => {
             tooltip2.trigger('mouseleave')
-            setTimeout(_ => {
+            setTimeout(() => {
                 expect(tooltip.popperVM.$el.getAttribute('aria-hidden')).toBe('true')
                 done()
             }, 300)
@@ -134,7 +134,7 @@ describe('Tooltip', () => {
                 [Tooltip.name]: Tooltip
             }
         })
-        nextTick(_ => {
+        nextTick(() => {
             expect(wrapper.vm.$refs.tooltip.popperVM.$el.classList.contains('is-light')).toBeTruthy()
             done()
         })
@@ -153,7 +153,7 @@ describe('Tooltip', () => {
         const tooltip = wrapper.vm.$refs.tooltip
         const tooltip2 = wrapper.getComponent({ name: 'ElTooltip' })
 
-        nextTick(_ => {
+        nextTick(() => {
             tooltip2.trigger('mouseenter')
             setTimeout(() => {
                 expect(tooltip.popperVM.$el.getAttribute('aria-hidden')).toBe('false')
@@ -178,7 +178,7 @@ describe('Tooltip', () => {
 
         const tooltip = wrapper.vm.$refs.tooltip
         const tooltip2 = wrapper.getComponent({ name: 'ElTooltip' })
-        nextTick(_ => {
+        nextTick(() => {
             tooltip2.trigger('focus')
             setTimeout(() => {
                 expect(tooltip.popperVM.$el.getAttribute('aria-hidden')).toBe('false')
