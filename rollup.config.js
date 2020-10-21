@@ -26,7 +26,9 @@ const createBaseConfig = () => {
     plugins: [
       peerDepsExternal(),
       babel(),
-      resolve(),
+      resolve({
+        extensions: ['.vue', '.jsx']
+      }),
       commonjs(),
       json(),
       vuePlugin({
