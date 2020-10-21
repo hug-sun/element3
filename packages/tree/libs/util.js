@@ -1,4 +1,4 @@
-import { isArray, isObject } from 'element-ui/src/utils/types'
+import { isArray, isObject } from '../../../src/utils/types'
 
 /**
  * Deep traversal of the object
