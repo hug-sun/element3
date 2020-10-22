@@ -127,6 +127,7 @@ ComponentNames.forEach((name) => {
       'page-header',
       'timeline',
       'timeline-item',
+      'time-picker',
       'input-number',
       'step',
       'steps',

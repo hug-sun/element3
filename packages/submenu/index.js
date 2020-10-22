@@ -1,4 +1,4 @@
-import ElSubmenu from '../menu/Submenu'
+import ElSubmenu from '../menu/Submenu.vue'
 
 /* istanbul ignore next */
 ElSubmenu.install = function (app) {

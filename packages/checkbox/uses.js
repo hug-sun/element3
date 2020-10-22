@@ -9,8 +9,8 @@ import {
   reactive,
   watchEffect
 } from 'vue'
-import { useEmitter } from 'element-ui/src/use/emitter'
-import { usePropUtils } from 'element-ui/src/use/prop-utils'
+import { useEmitter } from '../../src/use/emitter'
+import { usePropUtils } from '../../src/use/prop-utils'
 
 export function useModel() {
   // core
