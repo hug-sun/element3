@@ -9,6 +9,12 @@ import ElIcon from '../packages/icon'
 import ElBreadcrumb from '../packages/breadcrumb'
 import ElBreadcrumbItem from '../packages/breadcrumb-item'
 import ElBacktop from '../packages/backtop'
+import ElTree from '../packages/tree'
+import ElMenu from '../packages/menu'
+import ElMenuItem from '../packages/menu-item'
+import ElSubmenu from '../packages/submenu'
+import ElMenuItemGroup from '../packages/menu-item-group'
+import ElPagination from '../packages/pagination'
 import { version } from '../package.json'
 
 const components = [
@@ -21,7 +27,13 @@ const components = [
   ElIcon,
   ElBreadcrumb,
   ElBreadcrumbItem,
-  ElBacktop
+  ElBacktop,
+  ElTree,
+  ElMenu,
+  ElMenuItem,
+  ElSubmenu,
+  ElMenuItemGroup,
+  ElPagination
 ]
 
 const install = (app) => {
@@ -45,7 +57,13 @@ export {
   ElIcon,
   ElBreadcrumb,
   ElBreadcrumbItem,
-  ElBacktop
+  ElBacktop,
+  ElTree,
+  ElMenu,
+  ElMenuItem,
+  ElSubmenu,
+  ElMenuItemGroup,
+  ElPagination
 }
 
 export default elementUI
