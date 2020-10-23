@@ -1,5 +1,9 @@
 import pkg from './package.json'
-import vuePlugin from 'rollup-plugin-vue'
+// 等 rollup-plugin-vue 发版后在切换官方版
+// 暂时先用本地的 rollup-plugin-vue
+// 修复了 render 函数的编译问题，但是还没发版
+// import vuePlugin from 'rollup-plugin-vue'
+const vuePlugin = require('./rollup-plugin-vue/index')
 import scss from 'rollup-plugin-scss'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import resolve from '@rollup/plugin-node-resolve'
