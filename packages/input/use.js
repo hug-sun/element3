@@ -1,7 +1,6 @@
 import { computed, inject, ref, unref, nextTick, watch } from 'vue'
-import merge from 'element-ui/src/utils/merge'
-import { isKorean } from 'element-ui/src/utils/shared'
-
+import merge from '../../src/utils/merge'
+import { isKorean } from '../../src/utils/shared'
 import calcTextareaHeight from './calcTextareaHeight'
 
 export const useValidate = () => {

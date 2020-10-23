@@ -19,9 +19,9 @@
 </template>
 
 <script>
-import ElSelect from 'element-ui/packages/select'
-import ElOption from 'element-ui/packages/option'
-import { useLocale } from 'element-ui/src/use/locale'
+import ElSelect from '../../select'
+import ElOption from '../../option'
+import { useLocale } from '../../../src/use/locale'
 import { computed, watch, toRefs } from 'vue'
 
 export default {
