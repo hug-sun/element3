@@ -117,7 +117,7 @@ const generateMiscRoutes = function (lang) {
     component: load(lang, 'theme-nav'),
     children: [
       {
-        path: '/', // 主题管理
+        path: '', // 主题管理
         name: 'theme' + lang,
         meta: { lang },
         component: load(lang, 'theme')
