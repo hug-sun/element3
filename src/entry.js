@@ -21,6 +21,9 @@ import ElMenuItem from '../packages/menu-item'
 import ElSubmenu from '../packages/submenu'
 import ElMenuItemGroup from '../packages/menu-item-group'
 import ElPagination from '../packages/pagination'
+import ElTag from '../packages/tag'
+import ElBadge from '../packages/badge'
+import ElAvatar from '../packages/avatar'
 
 import { version } from '../package.json'
 
@@ -46,7 +49,10 @@ const components = [
   ElMenuItem,
   ElSubmenu,
   ElMenuItemGroup,
-  ElPagination
+  ElPagination,
+  ElTag,
+  ElBadge,
+  ElAvatar
 ]
 
 const install = (app) => {
@@ -82,7 +88,10 @@ export {
   ElMenuItem,
   ElSubmenu,
   ElMenuItemGroup,
-  ElPagination
+  ElPagination,
+  ElTag,
+  ElBadge,
+  ElAvatar
 }
 
 export default elementUI
