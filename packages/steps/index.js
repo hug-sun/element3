@@ -1,8 +1,8 @@
-import Steps from './src/steps'
+import ElSteps from './src/steps'
 
 /* istanbul ignore next */
-Steps.install = function (app) {
-  app.component(Steps.name, Steps)
+ElSteps.install = function (app) {
+  app.component(ElSteps.name, ElSteps)
 }
 
-export default Steps
+export default ElSteps
