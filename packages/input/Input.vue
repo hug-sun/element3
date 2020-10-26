@@ -124,8 +124,8 @@ import {
   watch,
   unref
 } from 'vue'
-import emitter from 'element-ui/src/mixins/emitter'
-import { useEmitter } from 'element-ui/src/use/emitter'
+import emitter from '../../src/mixins/emitter'
+import { useEmitter } from '../../src/use/emitter'
 import {
   useValidate,
   useTextarea,

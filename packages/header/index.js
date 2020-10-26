@@ -1,8 +1,8 @@
-import Header from './Header'
+import ElHeader from './Header'
 
 /* istanbul ignore next */
-Header.install = function (app) {
-  app.component(Header.name, Header)
+ElHeader.install = function (app) {
+  app.component(ElHeader.name, ElHeader)
 }
 
-export default Header
+export default ElHeader

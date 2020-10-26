@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import ElInput from 'element-ui/packages/input'
-import { useLocale } from 'element-ui/src/use/locale'
+import ElInput from '../../input'
+import { useLocale } from '../../../src/use/locale'
 import { ref, computed, toRefs } from 'vue'
 
 export default {

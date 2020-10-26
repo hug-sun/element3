@@ -1,8 +1,8 @@
-import Badge from './Badge.vue'
+import ElBadge from './Badge.vue'
 
 /* istanbul ignore next */
-Badge.install = function (app) {
-  app.component(Badge.name, Badge)
+ElBadge.install = function (app) {
+  app.component(ElBadge.name, ElBadge)
 }
 
-export default Badge
+export default ElBadge
