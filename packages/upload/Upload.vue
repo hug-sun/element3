@@ -14,7 +14,7 @@
     </UploadList>
 
     <div v-if="$slots.trigger">
-      <upload
+      <upload-inner
         :type="type"
         :drag="drag"
         :action="action"
@@ -41,10 +41,10 @@
         ref="uploadInner"
       >
         <slot name="trigger"></slot>
-      </upload>
+      </upload-inner>
       <slot></slot>
     </div>
-    <upload
+    <upload-inner
       :type="type"
       :drag="drag"
       :action="action"
@@ -73,7 +73,7 @@
     >
       <slot name="trigger"></slot>
       <slot></slot>
-    </upload>
+    </upload-inner>
 
     <slot name="tip"></slot>
 
@@ -93,8 +93,8 @@
 </template>
 
 <script>
-import UploadList from './upload-list'
-import Upload from './upload'
+import UploadList from './UploadList.vue'
+import UploadInner from './UploadInner.vue'
 import Migrating from 'element-ui/src/mixins/migrating'
 import {
   ref,
@@ -116,7 +116,7 @@ export default {
 
   components: {
     UploadList,
-    Upload
+    UploadInner
   },
 
   provide() {

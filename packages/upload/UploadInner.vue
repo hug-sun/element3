@@ -23,7 +23,7 @@
 </template>
 <script>
 import ajax from './ajax'
-import UploadDragger from './upload-dragger.vue'
+import UploadDragger from './UploadDragger.vue'
 import { ref, reactive, toRefs, unref } from 'vue'
 
 export default {
