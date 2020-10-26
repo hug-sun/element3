@@ -73,7 +73,7 @@ export default {
   },
 
   setup(props) {
-    const { limit, fileList, onExceed, multiple, autoUpload } = toRefs(props)
+    const { limit, fileList, multiple, autoUpload } = toRefs(props)
     const { headers, withCredentials, data, name, action } = toRefs(props)
     // eslint-disable-next-line vue/no-setup-props-destructure
     const {
@@ -84,6 +84,7 @@ export default {
       onSuccess,
       onError,
       disabled,
+      onExceed,
       onRemove
     } = props
     const mouseover = ref(false)
@@ -98,8 +99,8 @@ export default {
       uploadFiles(files)
     }
     const uploadFiles = (files) => {
-      if (limit.value && fileList.length + files.length > limit.value) {
-        onExceed && onExceed(files, fileList)
+      if (limit.value && fileList.value.length + files.length > limit.value) {
+        onExceed && onExceed(files, fileList.value)
         return
       }
 

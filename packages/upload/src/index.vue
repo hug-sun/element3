@@ -300,7 +300,7 @@ export default {
       const file = getFile(rawFile)
       onProgress(ev, file, uploadFiles)
       file.status = 'uploading'
-      file.percentage = ev.percent || 0
+      file.percentage = (ev && ev.percent) || 0
     }
 
     const handleSuccess = (res, rawFile) => {
@@ -360,7 +360,6 @@ export default {
       uploadFiles
         .filter((file) => file.status === 'ready')
         .forEach((file) => {
-          console.log('file.raw', file.raw)
           uploadInner.value.upload(file.raw)
         })
     }
