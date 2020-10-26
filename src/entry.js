@@ -24,6 +24,14 @@ import ElPagination from '../packages/pagination'
 import ElTag from '../packages/tag'
 import ElBadge from '../packages/badge'
 import ElAvatar from '../packages/avatar'
+import ElTabs from '../packages/tabs'
+import ElTabPane from '../packages/tab-pane'
+import ElPageHeader from '../packages/page-header'
+import ElDropdown from '../packages/dropdown'
+import ElDropdownItem from '../packages/dropdown-item'
+import ElDropdownMenu from '../packages/dropdown-menu'
+import ElSteps from '../packages/steps'
+import ElStep from '../packages/step'
 
 import { version } from '../package.json'
 
@@ -52,7 +60,15 @@ const components = [
   ElPagination,
   ElTag,
   ElBadge,
-  ElAvatar
+  ElAvatar,
+  ElTabs,
+  ElTabPane,
+  ElPageHeader,
+  ElDropdown,
+  ElDropdownItem,
+  ElDropdownMenu,
+  ElSteps,
+  ElStep
 ]
 
 const install = (app) => {
@@ -91,7 +107,15 @@ export {
   ElPagination,
   ElTag,
   ElBadge,
-  ElAvatar
+  ElAvatar,
+  ElTabs,
+  ElTabPane,
+  ElPageHeader,
+  ElDropdown,
+  ElDropdownItem,
+  ElDropdownMenu,
+  ElSteps,
+  ElStep
 }
 
 export default elementUI
