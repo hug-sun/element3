@@ -4,7 +4,7 @@ import { ref, nextTick } from 'vue'
 
 jest.spyOn(global.console, 'warn')
 
-fdescribe('Rate', () => {
+describe('Rate', () => {
   describe('props', () => {
     it('max', () => {
       const wrapper = mount(Rate, {
