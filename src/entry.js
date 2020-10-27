@@ -32,6 +32,15 @@ import ElDropdownItem from '../packages/dropdown-item'
 import ElDropdownMenu from '../packages/dropdown-menu'
 import ElSteps from '../packages/steps'
 import ElStep from '../packages/step'
+import ElLoading, { useLoading } from '../packages/loading'
+import { useMessage } from '../packages/message'
+import {
+  useMsgbox,
+  useAlert,
+  usePrompt,
+  useConfirm
+} from '../packages/message-box'
+import { useNotify } from '../packages/notification'
 
 import { version } from '../package.json'
 
@@ -68,12 +77,13 @@ const components = [
   ElDropdownItem,
   ElDropdownMenu,
   ElSteps,
-  ElStep
+  ElStep,
+  ElLoading
 ]
 
 const install = (app) => {
   components.forEach((component) => {
-    app.component(component.name, component)
+    app.use(component)
   })
 }
 
@@ -115,7 +125,15 @@ export {
   ElDropdownItem,
   ElDropdownMenu,
   ElSteps,
-  ElStep
+  ElStep,
+  ElLoading,
+  useMessage,
+  useLoading,
+  useMsgbox,
+  useAlert,
+  usePrompt,
+  useConfirm,
+  useNotify
 }
 
 export default elementUI
