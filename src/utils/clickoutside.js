@@ -1,4 +1,4 @@
-import { on } from 'element-ui/src/utils/dom'
+import { on } from '../../src/utils/dom'
 
 const nodeList = []
 const ctx = '@@clickoutsideContext'

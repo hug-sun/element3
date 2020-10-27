@@ -1,6 +1,6 @@
 {
   "name": "element3",
-  "version": "0.0.13",
+  "version": "0.0.17",
   "description": "A Component Library for Vue3",
   "main": "dist/element3-ui.cjs.js",
   "module": "dist/element3-ui.esm-bundler.js",
@@ -84,7 +84,7 @@
     "eslint-formatter-pretty": "^4.0.0",
     "normalize-wheel": "^1.0.1",
     "resize-observer-polyfill": "^1.5.0",
-    "throttle-debounce": "^1.0.1"
+    "throttle-debounce": "^2.3.0"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
@@ -94,19 +94,19 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "^7.10.4",
-    "@rollup/plugin-buble": "^0.21.3",
+    "@rollup/plugin-babel": "^5.2.1",
     "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@rollup/plugin-replace": "^2.3.3",
     "@testing-library/jest-dom": "^5.11.2",
     "@types/jest": "^26.0.7",
-    "@vue/babel-plugin-jsx": "^1.0.0-rc.2",
+    "@vue/babel-plugin-jsx": "^1.0.0-rc.3",
     "@vue/compiler-dom": "^3.0.0-rc.5",
     "@vue/compiler-sfc": "^3.0.0-rc.5",
     "@vue/component-compiler-utils": "^2.6.0",
     "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/test-utils": "^2.0.0-beta.6",
+    "@vue/test-utils": "2.0.0-beta.3",
     "algoliasearch": "^3.24.5",
     "babel-cli": "^7.0.0-beta.3",
     "babel-core": "^7.0.0-beta.3",

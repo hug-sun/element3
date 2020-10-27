@@ -67,7 +67,7 @@ import {
   getCurrentInstance,
   onUnmounted
 } from 'vue'
-import throttle from 'throttle-debounce/throttle'
+import { throttle } from 'throttle-debounce'
 import { useResizeEvent } from 'element-ui/src/utils/resize-event'
 
 export default {

@@ -1,4 +1,4 @@
-import { addClass, removeClass } from 'element-ui/src/utils/dom'
+import { addClass, removeClass } from '../../src/utils/dom'
 import { h, Transition } from 'vue'
 
 class TransitionFn {

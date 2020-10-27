@@ -187,6 +187,7 @@ import {
       return {dialogImageUrl,dialogVisible,handleRemove,handlePictureCardPreview}
     }
   }
+  
 </script>
 ```
 :::
@@ -367,7 +368,7 @@ import {
 :::
 
 ### 拖拽上传
-
+·
 :::demo
 ```html
 <el-upload

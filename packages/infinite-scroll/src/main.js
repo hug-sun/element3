@@ -1,4 +1,4 @@
-import throttle from 'throttle-debounce/debounce'
+import { throttle } from 'throttle-debounce'
 import {
   isHtmlElement,
   isFunction,
