@@ -17,7 +17,6 @@
     :colors="colors">
   </el-rate>
 </div>
-
 <script>
   import {ref, reactive, toRefs} from 'vue'
   export default {
@@ -38,6 +37,27 @@
 ```
 :::
 
+### 半星
+支持选中半星
+
+:::demo 为组件设置 `allow-half` 属性会支持选中半星。
+```html
+<el-rate v-model="value" :allow-half="true"></el-rate>
+<script>
+  import {ref} from 'vue'
+  export default {
+    setup(){
+      const value = ref(null)
+      return {
+        value
+      }
+    }
+  }
+</script>
+```
+:::
+
+
 ### 辅助文字
 
 用辅助文字直接地表达对应分数
@@ -56,6 +76,35 @@
       const value = ref(null)
       return {
         value
+      }
+    }
+  }
+</script>
+```
+:::
+
+### 清除
+支持允许或者禁用清除。
+
+:::demo 为组件设置 `allow-clear` 属性会允许或禁止清除选中的值。
+```html
+<div class="block">
+  <span class="demonstration">allowClear: true</span>
+  <el-rate v-model="value1" :allow-clear="true"></el-rate>
+</div>
+<div class="block">
+  <span class="demonstration">allowClear: false</span>
+  <el-rate v-model="value2" :allow-clear="false"></el-rate>
+</div>
+<script>
+  import {ref} from 'vue'
+  export default {
+    setup(){
+      const value1 = ref(3)
+      const value2 = ref(2)
+      return {
+        value1,
+        value2
       }
     }
   }

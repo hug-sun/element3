@@ -4,7 +4,7 @@ import { ref, nextTick } from 'vue'
 
 jest.spyOn(global.console, 'warn')
 
-describe('Rate', () => {
+fdescribe('Rate', () => {
   describe('props', () => {
     it('max', () => {
       const wrapper = mount(Rate, {
@@ -25,6 +25,7 @@ describe('Rate', () => {
         }
       })
       expect(value.value).toEqual(5)
+      await wrapper.findAll('.el-rate__item')[2].trigger('mousemove')
       await wrapper.findAll('.el-rate__item')[2].trigger('click')
       await nextTick()
       expect(value.value).toEqual(3)
@@ -45,11 +46,12 @@ describe('Rate', () => {
           ]
         }
       })
+      
       expect(wrapper.find('.icon-rate-face-1').exists()).toBeTruthy()
       expect(wrapper.find('.icon-rate-face-1').element.style.color).toBe(
         'rgb(153, 169, 191)'
       )
-
+      await wrapper.findAll('.el-rate__item')[2].trigger('mousemove')
       await wrapper.findAll('.el-rate__item')[2].trigger('click')
       await nextTick()
 
@@ -57,7 +59,7 @@ describe('Rate', () => {
       expect(wrapper.find('.icon-rate-face-2').element.style.color).toBe(
         'rgb(247, 186, 42)'
       )
-
+      await wrapper.findAll('.el-rate__item')[4].trigger('mousemove')
       await wrapper.findAll('.el-rate__item')[4].trigger('click')
       await nextTick()
 
@@ -92,7 +94,8 @@ describe('Rate', () => {
       })
       expect(wrapper.find('.el-icon-star-off').exists()).toBeTruthy()
       expect(wrapper.find('.el-icon-star-off').element.style.color).toBe('red')
-
+      
+      await wrapper.findAll('.el-rate__item')[2].trigger('mousemove')
       await wrapper.findAll('.el-rate__item')[2].trigger('click')
       await nextTick()
 

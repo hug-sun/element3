@@ -109,6 +109,10 @@ export default {
       type: Boolean,
       default: false
     },
+    allowClear: {
+      type: Boolean,
+      default: true
+    },
     showText: {
       type: Boolean,
       default: false
@@ -140,6 +144,7 @@ export default {
       modelValue,
       disabled,
       allowHalf,
+      allowClear,
       disabledVoidIconClass,
       voidIconClass,
       iconClasses,
@@ -154,7 +159,7 @@ export default {
       scoreTemplate,
       showText
     } = toRefs(props)
-
+    
     migrating({
       'text-template': 'text-template is renamed to score-template.'
     })
@@ -176,6 +181,7 @@ export default {
     } = useCurrentValue({
       modelValue,
       allowHalf,
+      allowClear,
       rateDisabled,
       max
     })
@@ -400,7 +406,7 @@ const useDecimal = ({
   }
 }
 
-const useCurrentValue = ({ modelValue, allowHalf, rateDisabled, max }) => {
+const useCurrentValue = ({ modelValue, allowHalf, allowClear, rateDisabled, max }) => {
   const { emit } = getCurrentInstance()
   const currentValue = ref(modelValue.value)
   const pointerAtLeftHalf = ref(false)
@@ -443,17 +449,19 @@ const useCurrentValue = ({ modelValue, allowHalf, rateDisabled, max }) => {
   }
 
   const selectValue = (value) => {
+    let isReset = false;
     if (rateDisabled.value) {
       return
     }
-    if (allowHalf.value && pointerAtLeftHalf.value) {
-      emit('update:modelValue', currentValue.value)
-      emit('change', currentValue.value)
-    } else {
-      emit('update:modelValue', value)
-      emit('change', value)
+    if (allowClear.value) {
+      isReset = modelValue.value === currentValue.value;
     }
+    let emitValue = isReset ? null : currentValue.value
+    emit('update:modelValue', emitValue)
+    emit('change', emitValue)
   }
+
+
 
   const handleKey = (e) => {
     if (rateDisabled.value) {
