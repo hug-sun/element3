@@ -1,7 +1,7 @@
 import { defineComponent, createVNode, render, isVNode } from 'vue'
 import Main from './Message.vue'
-import { PopupManager } from 'element-ui/src/utils/popup'
-import merge from 'element-ui/src/utils/merge'
+import { PopupManager } from '../../src/utils/popup'
+import merge from '../../src/utils/merge'
 
 const MessageConstructor = defineComponent(Main)
 
