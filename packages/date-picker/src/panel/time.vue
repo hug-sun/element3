@@ -170,7 +170,6 @@ export default {
     }
 
     const handleChange = (date) => {
-      // debugger
       // this.visible avoids edge cases, when use scrolls during panel closing animation
       if (state.visible) {
         state.date = clearMilliseconds(date)

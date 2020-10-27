@@ -115,13 +115,13 @@ import {
   ref,
   watch
 } from 'vue'
-import { popupProps, usePopup } from 'element-ui/src/use/popup'
-import Locale from 'element-ui/src/mixins/locale'
-import ElInput from 'element-ui/packages/input'
-import ElButton from 'element-ui/packages/button'
-import { addClass, removeClass } from 'element-ui/src/utils/dom'
-import { t } from 'element-ui/src/locale'
-import Dialog from 'element-ui/src/utils/aria-dialog'
+import { popupProps, usePopup } from '../../../src/use/popup'
+import Locale from '../../../src/mixins/locale'
+import ElInput from '../../input'
+import ElButton from '../../button'
+import { addClass, removeClass } from '../../../src/utils/dom'
+import { t } from '../../../src/locale'
+import Dialog from '../../../src/utils/aria-dialog'
 
 // let messageBox
 const typeMap = {

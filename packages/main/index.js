@@ -1,8 +1,8 @@
-import Main from './Main'
+import ElMain from './Main'
 
 /* istanbul ignore next */
-Main.install = function (app) {
-  app.component(Main.name, Main)
+ElMain.install = function (app) {
+  app.component(ElMain.name, ElMain)
 }
 
-export default Main
+export default ElMain

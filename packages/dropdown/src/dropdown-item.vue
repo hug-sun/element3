@@ -15,7 +15,7 @@
 </template>
 <script>
 import { toRefs, getCurrentInstance } from 'vue'
-import { useEmitter } from 'main/use/emitter'
+import { useEmitter } from '../../../src/use/emitter'
 
 export default {
   name: 'ElDropdownItem',

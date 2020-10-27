@@ -410,7 +410,6 @@ export default {
     pickerVisible(val) {
       if (this.readonly || this.pickerDisabled) return
       if (val) {
-        debugger
         this.showPicker()
         this.valueOnOpen = Array.isArray(this.modelValue)
           ? [...this.modelValue]
@@ -787,7 +786,6 @@ export default {
           this.picker.handleClear()
         }
       } else {
-        debugger
         this.pickerVisible = !this.pickerVisible
       }
     },
@@ -901,7 +899,6 @@ export default {
         this.mountPicker()
       }
       this.pickerVisible = this.picker.visible = true
-      debugger
       this.updatePopper()
 
       this.picker.value = this.parsedValue
@@ -939,9 +936,6 @@ export default {
       this.picker.defaultTime = this.defaultTime
       this.picker.popperClass = this.popperClass
       this.popperElm = this.picker.$el
-      // this.setPopperElm(this.picker.$el)
-      // console.log(this.setPopperElm)
-      debugger
       this.picker.width = this.referenceElm.getBoundingClientRect().width
       this.picker.showTime =
         this.type === 'datetime' || this.type === 'datetimerange'

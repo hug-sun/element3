@@ -16,7 +16,6 @@ export default {
   },
 
   beforeCreate() {
-    debugger
     this.panel = Panel
   },
 
