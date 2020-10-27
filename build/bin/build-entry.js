@@ -71,6 +71,7 @@ var listTemplate = []
 ComponentNames.forEach((name) => {
   if (
     [
+      'table',
       'infinite-scroll',
       'loading',
       'image',
