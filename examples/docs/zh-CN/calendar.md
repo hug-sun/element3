@@ -10,11 +10,13 @@
 </el-calendar>
 
 <script>
+import { reactive,toRefs } from 'vue'
   export default {
-    data() {
-      return {
-        value: new Date()
-      }
+    setup(){
+      const data=reactive({
+         value: new Date()
+      })
+      return {...toRefs(data)}
     }
   }
 </script>
