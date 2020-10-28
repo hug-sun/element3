@@ -14,7 +14,7 @@
       class="el-rate__item"
       @mousemove="setCurrentValue(item, $event)"
       @mouseleave="resetCurrentValue"
-      @click="selectValue(item)"
+      @click="selectValue()"
       :style="{ cursor: rateDisabled ? 'auto' : 'pointer' }"
       :key="key"
     >
@@ -159,7 +159,7 @@ export default {
       scoreTemplate,
       showText
     } = toRefs(props)
-    
+
     migrating({
       'text-template': 'text-template is renamed to score-template.'
     })
@@ -448,7 +448,7 @@ const useCurrentValue = ({ modelValue, allowHalf, allowClear, rateDisabled, max 
     hoverIndex.value = -1
   }
 
-  const selectValue = (value) => {
+  const selectValue = () => {
     let isReset = false;
     if (rateDisabled.value) {
       return
