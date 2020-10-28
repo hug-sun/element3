@@ -33,6 +33,26 @@ Used for rating
 ```
 :::
 
+### Half star
+Support selected half star
+
+:::Demo setting ʻallow-half` attribute for component will support selecting half star.
+```html
+<el-rate v-model="value" :allow-half="true"></el-rate>
+<script>
+  import {ref} from 'vue'
+  export default {
+    setup(){
+      const value = ref(null)
+      return {
+        value
+      }
+    }
+  }
+</script>
+```
+:::
+
 ### With text
 
 Using text to indicate rating score
@@ -51,6 +71,35 @@ Using text to indicate rating score
     data() {
       return {
         value: null
+      }
+    }
+  }
+</script>
+```
+:::
+
+### Clear
+Support to allow or disable to clear after clicking again.
+
+:::demo Setting the ʻallow-clear` attribute for the component will allow or prohibit clearing the selected value.
+```html
+<div class="block">
+  <span class="demonstration">allowClear: true</span>
+  <el-rate v-model="value1" :allow-clear="true"></el-rate>
+</div>
+<div class="block">
+  <span class="demonstration">allowClear: false</span>
+  <el-rate v-model="value2" :allow-clear="false"></el-rate>
+</div>
+<script>
+  import {ref} from 'vue'
+  export default {
+    setup(){
+      const value1 = ref(3)
+      const value2 = ref(2)
+      return {
+        value1,
+        value2
       }
     }
   }
@@ -119,6 +168,7 @@ Read-only Rate is for displaying rating score. Half star is supported.
 | max | max rating score | number | — | 5 |
 | disabled | whether Rate is read-only | boolean | — | false |
 | allow-half | whether picking half start is allowed | boolean | — | false |
+| allow-clear | whether to allow clear after clicking again | boolean | — | true |
 | low-threshold | threshold value between low and medium level. The value itself will be included in low level | number | — | 2 |
 | high-threshold | threshold value between medium and high level. The value itself will be included in high level | number | — | 4 |
 | colors | colors for icons. If array, it should have 3 elements, each of which corresponds with a score level, else if object, the key should be threshold value between two levels, and the value should be corresponding color | array/object | — | ['#F7BA2A', '#F7BA2A', '#F7BA2A'] |

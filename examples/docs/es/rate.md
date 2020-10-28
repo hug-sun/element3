@@ -34,6 +34,26 @@ Usado para la calificación
 ```
 :::
 
+### Media estrella
+Soporta media estrella seleccionada
+
+:::La configuración de demostración de la propiedad ʻallow-half` para el componente permitirá seleccionar medias estrellas.
+```html
+<el-rate v-model="value" :allow-half="true"></el-rate>
+<script>
+  import {ref} from 'vue'
+  export default {
+    setup(){
+      const value = ref(null)
+      return {
+        value
+      }
+    }
+  }
+</script>
+```
+:::
+
 ### Con texto
 
 Usa texto para indicar la puntuación
@@ -52,6 +72,35 @@ Usa texto para indicar la puntuación
     data() {
       return {
         value: null
+      }
+    }
+  }
+</script>
+```
+:::
+
+### Claro
+Soporte para permitir o deshabilitar borrar después de hacer clic nuevamente.
+
+:::demo Establecer el atributo ʻallow-clear` para el componente permitirá o prohibirá borrar el valor seleccionado.
+```html
+<div class="block">
+  <span class="demonstration">allowClear: true</span>
+  <el-rate v-model="value1" :allow-clear="true"></el-rate>
+</div>
+<div class="block">
+  <span class="demonstration">allowClear: false</span>
+  <el-rate v-model="value2" :allow-clear="false"></el-rate>
+</div>
+<script>
+  import {ref} from 'vue'
+  export default {
+    setup(){
+      const value1 = ref(3)
+      const value2 = ref(2)
+      return {
+        value1,
+        value2
       }
     }
   }
@@ -120,6 +169,7 @@ La calificación de solo lectura es para mostrar la puntuación. Soporta media e
 | max                      | puntuación máxima                        | number  | —                | 5                                        |
 | disabled                 | si la calificación es de solo lectura    | boolean | —                | false                                    |
 | allow-half               | si escoger media estrella está permitido | boolean | —                | false                                    |
+| allow-clear              | Si se permite borrar después de hacer clic de nuevo | boolean | - | true |
 | low-threshold            | valor del umbral entre nivel bajo y medio. El valor será incluido en el nivel bajo | number  | —                | 2                                        |
 | high-threshold           | valor del umbral entre nivel bajo y medio. El valor será incluido en el nivel alto | number  | —                | 4                                        |
 | colors                   | colores para los iconos. Si se trata de una matriz, debe tener 3 elementos, cada uno de los cuales corresponde a un nivel de puntuación, si se trata de un objeto, la clave debe ser el valor umbral entre dos niveles, y el valor debe ser el color correspondiente. | array/object   | —         | ['#F7BA2A', '#F7BA2A', '#F7BA2A']        |

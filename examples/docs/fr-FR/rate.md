@@ -33,6 +33,26 @@ Utilisé pour donner une note sur cinq étoiles.
 ```
 :::
 
+### Demi étoile
+Soutenir une demi-étoile sélectionnée
+
+:::Démo définissant la propriété «autoriser la moitié» pour le composant prendra en charge la sélection des demi-étoiles.
+```html
+<el-rate v-model="value" :allow-half="true"></el-rate>
+<script>
+  import {ref} from 'vue'
+  export default {
+    setup(){
+      const value = ref(null)
+      return {
+        value
+      }
+    }
+  }
+</script>
+```
+:::
+
 ### Avec du texte
 
 Vous pouvez ajouter du texte à chaque score.
@@ -85,6 +105,35 @@ Vous pouvez utiliser différentes icônes pour chaque
 ```
 :::
 
+### Clair
+Support pour autoriser ou désactiver pour effacer après avoir cliqué à nouveau.
+
+:::Démonstration de l'attribut ʻallow-clear` pour le composant autorisera ou interdira l'effacement de la valeur sélectionnée.
+```html
+<div class="block">
+  <span class="demonstration">allowClear: true</span>
+  <el-rate v-model="value1" :allow-clear="true"></el-rate>
+</div>
+<div class="block">
+  <span class="demonstration">allowClear: false</span>
+  <el-rate v-model="value2" :allow-clear="false"></el-rate>
+</div>
+<script>
+  import {ref} from 'vue'
+  export default {
+    setup(){
+      const value1 = ref(3)
+      const value2 = ref(2)
+      return {
+        value1,
+        value2
+      }
+    }
+  }
+</script>
+```
+:::
+
 ### Lecture seule
 
 Le score peut être en lecture seule. Les demi-étoiles sont supportées.
@@ -120,6 +169,7 @@ Le score peut être en lecture seule. Les demi-étoiles sont supportées.
 | max | Score maximum. | number | — | 5 |
 | disabled | Si le score est en lecture seule. | boolean | — | false |
 | allow-half | Si les demi-étoiles sont autorisées. | boolean | — | false |
+| allow-clear | Autoriser ou non à effacer après avoir cliqué à nouveau. | boolean | — | true |
 | low-threshold | Seuil entre les niveaux bas et moyen. La valeur sera incluse dans le niveau bas. | number | — | 2 |
 | high-threshold | Seuil entre les niveaux moyen et haut. La valeur sera incluse entre dans le niveau haut. | number | — | 4 |
 | colors | colors for icons. Si c'est un array, il doit avoir 3 élements, chacun correspondant à un niveau. Si c'est un objet, la clé est le seuil entre deux niveaux et la valeur est la couleur correspondante. | array/object | — | ['#F7BA2A', '#F7BA2A', '#F7BA2A'] |
