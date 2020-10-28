@@ -178,6 +178,7 @@
 | max | 最大分值 | number | — | 5 |
 | disabled | 是否为只读 | boolean | — | false |
 | allow-half | 是否允许半选 | boolean | — | false |
+| allow-clear | 是否允许再次点击后清除 | boolean | — | true |
 | low-threshold | 低分和中等分数的界限值，值本身被划分在低分中 | number | — | 2 |
 | high-threshold | 高分和中等分数的界限值，值本身被划分在高分中 | number | — | 4 |
 | colors | icon 的颜色。若传入数组，共有 3 个元素，为 3 个分段所对应的颜色；若传入对象，可自定义分段，键名为分段的界限值，键值为对应的颜色 | array/object | — | ['#F7BA2A', '#F7BA2A', '#F7BA2A'] |
