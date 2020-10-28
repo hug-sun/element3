@@ -9,26 +9,26 @@
     name="el-list"
   >
     <li
-      v-for="file in files"
+      v-for="(file, idx) in files"
+      :key="idx"
       :class="[
         'el-upload-list__item',
         'is-' + file.status,
         focusing ? 'focusing' : ''
       ]"
-      :key="file.uid"
       tabindex="0"
-      @keydown.delete="!disabled && $emit('remove', file)"
+      @keydown.delete="!disabled && handleRemove($event, file)"
       @focus="focusing = true"
       @blur="focusing = false"
-      @click="focusing = false"
+      @click="onFileClicked"
     >
       <slot :file="file">
         <img
-          class="el-upload-list__item-thumbnail"
           v-if="
             file.status !== 'uploading' &&
-            ['picture-card', 'picture'].indexOf(listType) > -1
+            ['picture-card', 'picture'].includes(listType)
           "
+          class="el-upload-list__item-thumbnail"
           :src="file.url"
           alt=""
         />
@@ -40,34 +40,30 @@
             :class="{
               'el-icon-upload-success': true,
               'el-icon-circle-check': listType === 'text',
-              'el-icon-check':
-                ['picture-card', 'picture'].indexOf(listType) > -1
+              'el-icon-check': ['picture-card', 'picture'].includes(listType)
             }"
           ></i>
         </label>
         <i
-          class="el-icon-close"
           v-if="!disabled"
-          @click="$emit('remove', file)"
+          class="el-icon-close"
+          @click="handleRemove($event, file)"
         ></i>
-        <i class="el-icon-close-tip" v-if="!disabled">{{
-          t('el.upload.deleteTip')
-        }}</i>
-        <!--因为close按钮只在li:focus的时候 display, li blur后就不存在了，所以键盘导航时永远无法 focus到 close按钮上-->
+        <i v-if="!disabled" class="el-icon-close-tip">
+          {{ t('el.upload.deleteTip') }}
+        </i>
         <el-progress
           v-if="file.status === 'uploading'"
           :type="listType === 'picture-card' ? 'circle' : 'line'"
           :stroke-width="listType === 'picture-card' ? 6 : 2"
           :percentage="parsePercentage(file.percentage)"
-        >
-        </el-progress>
+        />
         <span
-          class="el-upload-list__item-actions"
           v-if="listType === 'picture-card'"
+          class="el-upload-list__item-actions"
         >
           <span
             class="el-upload-list__item-preview"
-            v-if="handlePreview && listType === 'picture-card'"
             @click="handlePreview(file)"
           >
             <i class="el-icon-zoom-in"></i>
@@ -75,7 +71,7 @@
           <span
             v-if="!disabled"
             class="el-upload-list__item-delete"
-            @click="$emit('remove', file)"
+            @click="handleRemove($event, file)"
           >
             <i class="el-icon-delete"></i>
           </span>
@@ -84,46 +80,55 @@
     </li>
   </transition-group>
 </template>
+
 <script>
+import { defineComponent, ref } from 'vue'
 import Locale from 'element-ui/src/mixins/locale'
 import ElProgress from 'element-ui/packages/progress'
-import { ref } from 'vue'
 
-export default {
+export default defineComponent({
   name: 'ElUploadList',
-
-  mixins: [Locale],
-
   components: { ElProgress },
-  emits: ['remove'],
+  mixins: [Locale],
   props: {
     files: {
       type: Array,
-      default() {
-        return []
-      }
+      default: () => []
     },
     disabled: {
       type: Boolean,
       default: false
     },
     handlePreview: Function,
-    listType: String
+    listType: {
+      type: String,
+      default: 'text'
+    }
   },
+  emits: ['remove'],
   setup(props, { emit }) {
-    const focusing = ref(false)
     const parsePercentage = (val) => {
       return parseInt(val, 10)
     }
+
     const handleClick = (file) => {
-      props.handlePreview && props.handlePreview(file)
+      props.handlePreview(file)
+    }
+
+    const onFileClicked = (e) => {
+      e.target.focus()
+    }
+
+    const handleRemove = (e, file) => {
+      emit('remove', file)
     }
     return {
-      focusing,
+      focusing: ref(false),
       parsePercentage,
       handleClick,
-      emit
+      handleRemove,
+      onFileClicked
     }
   }
-}
+})
 </script>

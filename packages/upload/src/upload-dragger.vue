@@ -1,7 +1,7 @@
 <template>
   <div
-    class="el-upload-dragger"
     :class="{
+      'el-upload-dragger': true,
       'is-dragover': dragover
     }"
     @drop.prevent="onDrop"
@@ -11,28 +11,25 @@
     <slot></slot>
   </div>
 </template>
+
 <script>
-import { inject, toRefs, ref } from 'vue'
-export default {
+import { defineComponent, ref, inject } from 'vue'
+
+export default defineComponent({
   name: 'ElUploadDrag',
   props: {
-    disabled: Boolean
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
   emits: ['file'],
-  inject: ['uploader'],
   setup(props, { emit }) {
     const uploader = inject('uploader', {})
-    const { disabled } = toRefs(props)
     const dragover = ref(false)
 
-    const onDragover = () => {
-      if (!disabled.value) {
-        dragover.value = true
-      }
-    }
-
     const onDrop = (e) => {
-      if (disabled.value || !uploader) return
+      if (props.disabled || !uploader) return
       const accept = uploader.accept
       dragover.value = false
       if (!accept) {
@@ -41,7 +38,7 @@ export default {
       }
       emit(
         'file',
-        [].slice.call(e.dataTransfer.files).filter((file) => {
+        Array.from(e.dataTransfer.files).filter((file) => {
           const { type, name } = file
           const extension =
             name.indexOf('.') > -1 ? `.${name.split('.').pop()}` : ''
@@ -51,14 +48,14 @@ export default {
             .map((type) => type.trim())
             .filter((type) => type)
             .some((acceptedType) => {
-              if (/\..+$/.test(acceptedType)) {
+              if (acceptedType.startsWith('.')) {
                 return extension === acceptedType
               }
               if (/\/\*$/.test(acceptedType)) {
                 return baseType === acceptedType.replace(/\/\*$/, '')
               }
-              // eslint-disable-next-line no-useless-escape
-              if (/^[^\/]+\/[^\/]+$/.test(acceptedType)) {
+              // if (/^[^\/]+\/[^\/]+$/.test(acceptedType)) {
+              if (/^[^/]+\/[^/]+$/.test(acceptedType)) {
                 return type === acceptedType
               }
               return false
@@ -66,11 +63,16 @@ export default {
         })
       )
     }
+
+    const onDragover = () => {
+      if (!props.disabled) dragover.value = true
+    }
+
     return {
-      onDragover,
+      dragover,
       onDrop,
-      dragover
+      onDragover
     }
   }
-}
+})
 </script>

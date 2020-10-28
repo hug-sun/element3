@@ -1,38 +1,45 @@
 <template>
   <div
-    class="el-upload"
-    :class="{ [`el-upload--${listType}`]: true }"
-    @click="handleClick"
-    @keydown="handleKeydown"
+    :class="['el-upload', `el-upload--${listType}`]"
     tabindex="0"
+    @click="handleClick"
+    @keydown.self.enter.space="handleKeydown"
   >
-    <upload-dragger v-if="drag" :disabled="disabled" @file="uploadFiles">
+    <template v-if="drag">
+      <upload-dragger :disabled="disabled" @file="uploadFiles">
+        <slot></slot>
+      </upload-dragger>
+    </template>
+    <template v-else>
       <slot></slot>
-    </upload-dragger>
-    <slot v-else></slot>
+    </template>
     <input
+      ref="inputRef"
       class="el-upload__input"
       type="file"
-      ref="input"
       :name="name"
-      @change="handleChange"
       :multiple="multiple"
       :accept="accept"
+      @change="handleChange"
     />
   </div>
 </template>
+
 <script>
+import { noop } from 'lodash'
+import { defineComponent, ref } from 'vue'
 import ajax from './ajax'
 import UploadDragger from './upload-dragger.vue'
-import { ref, reactive, toRefs, unref } from 'vue'
 
-export default {
-  inject: ['uploader'],
+export default defineComponent({
   components: {
     UploadDragger
   },
   props: {
-    type: String,
+    type: {
+      type: String,
+      default: ''
+    },
     action: {
       type: String,
       required: true
@@ -41,95 +48,108 @@ export default {
       type: String,
       default: 'file'
     },
-    data: Object,
-    headers: Object,
-    withCredentials: Boolean,
-    multiple: Boolean,
-    accept: String,
-    onStart: Function,
-    onProgress: Function,
-    onSuccess: Function,
-    onError: Function,
-    beforeUpload: Function,
-    drag: Boolean,
-    onPreview: {
-      type: Function,
-      default: function () {}
+    data: {
+      type: Object,
+      default: () => null
     },
-    onRemove: {
-      type: Function,
-      default: function () {}
+    headers: {
+      type: Object,
+      default: () => null
     },
-    fileList: Array,
-    autoUpload: Boolean,
-    listType: String,
+    withCredentials: {
+      type: Boolean,
+      default: false
+    },
+    multiple: {
+      type: Boolean,
+      default: null
+    },
+    accept: {
+      type: String,
+      default: ''
+    },
+    onStart: {
+      type: Function,
+      default: noop
+    },
+    onProgress: {
+      type: Function,
+      default: noop
+    },
+    onSuccess: {
+      type: Function,
+      default: noop
+    },
+    onError: {
+      type: Function,
+      default: noop
+    },
+    beforeUpload: {
+      type: Function,
+      default: noop
+    },
+    drag: {
+      type: Boolean,
+      default: false
+    },
+    onPreview: Function,
+    onRemove: Function,
+    fileList: {
+      type: Array,
+      default: () => []
+    },
+    autoUpload: {
+      type: Boolean,
+      default: true
+    },
+    listType: {
+      type: String,
+      default: 'text'
+    },
     httpRequest: {
       type: Function,
-      default: ajax
+      default: () => ajax
     },
     disabled: Boolean,
-    limit: Number,
+    limit: {
+      type: Number,
+      default: null
+    },
     onExceed: Function
   },
-
   setup(props) {
-    const { limit, fileList, onExceed, multiple, autoUpload } = toRefs(props)
-    const { headers, withCredentials, data, name, action } = toRefs(props)
-    // eslint-disable-next-line vue/no-setup-props-destructure
-    const {
-      onStart,
-      beforeUpload,
-      httpRequest,
-      onProgress,
-      onSuccess,
-      onError,
-      disabled,
-      onRemove
-    } = props
+    const reqs = ref({})
     const mouseover = ref(false)
-    const reqs = reactive({})
-    const input = ref(null)
-    const isImage = (str) => {
-      return str.indexOf('image') !== -1
-    }
-    const handleChange = (ev) => {
-      const files = ev.target.files
-      if (!files) return
-      uploadFiles(files)
-    }
+    const inputRef = ref(null)
+
     const uploadFiles = (files) => {
-      if (limit.value && fileList.length + files.length > limit.value) {
-        onExceed && onExceed(files, fileList)
+      if (props.limit && props.fileList.length + files.length > props.limit) {
+        props.onExceed(files, props.fileList)
         return
       }
-
-      let postFiles = Array.prototype.slice.call(files)
-      if (!multiple.value) {
+      let postFiles = Array.from(files)
+      if (!props.multiple) {
         postFiles = postFiles.slice(0, 1)
       }
-
       if (postFiles.length === 0) {
         return
       }
-
       postFiles.forEach((rawFile) => {
-        onStart(rawFile)
-        if (autoUpload.value) upload(rawFile)
+        props.onStart(rawFile)
+        if (props.autoUpload) upload(rawFile)
       })
     }
-    const upload = (rawFile) => {
-      input.value.value = null
 
-      if (!beforeUpload) {
+    const upload = (rawFile) => {
+      inputRef.value.value = null
+      if (!props.beforeUpload) {
         return post(rawFile)
       }
-
-      const before = beforeUpload(rawFile)
-      if (before && before.then) {
-        before.then(
-          (processedFile) => {
+      const before = props.beforeUpload(rawFile)
+      if (before instanceof Promise) {
+        before
+          .then((processedFile) => {
             const fileType = Object.prototype.toString.call(processedFile)
-
             if (fileType === '[object File]' || fileType === '[object Blob]') {
               if (fileType === '[object Blob]') {
                 processedFile = new File([processedFile], rawFile.name, {
@@ -137,7 +157,7 @@ export default {
                 })
               }
               for (const p in rawFile) {
-                if (Object.hasOwnProperty.call(rawFile, p)) {
+                if (Object.prototype.hasOwnProperty.call(rawFile, p)) {
                   processedFile[p] = rawFile[p]
                 }
               }
@@ -145,83 +165,89 @@ export default {
             } else {
               post(rawFile)
             }
-          },
-          () => {
-            onRemove(null, rawFile)
-          }
-        )
+          })
+          .catch(() => {
+            props.onRemove(null, rawFile)
+          })
       } else if (before !== false) {
         post(rawFile)
       } else {
-        onRemove(null, rawFile)
+        props.onRemove(null, rawFile)
       }
     }
     const abort = (file) => {
+      const _reqs = reqs.value
       if (file) {
         let uid = file
         if (file.uid) uid = file.uid
-        if (reqs[uid]) {
-          reqs[uid].abort()
+        if (_reqs[uid]) {
+          _reqs[uid].abort()
         }
       } else {
-        Object.keys(reqs).forEach((uid) => {
-          if (reqs[uid]) reqs[uid].abort()
-          delete reqs[uid]
+        Object.keys(_reqs).forEach((uid) => {
+          if (_reqs[uid]) _reqs[uid].abort()
+          delete _reqs[uid]
         })
       }
     }
+
     const post = (rawFile) => {
       const { uid } = rawFile
       const options = {
-        headers,
-        withCredentials: withCredentials.value,
+        headers: props.headers,
+        withCredentials: props.withCredentials,
         file: rawFile,
-        data,
-        filename: name.value,
-        action: action.value,
+        data: props.data,
+        filename: props.name,
+        action: props.action,
         onProgress: (e) => {
-          onProgress(e, rawFile)
+          props.onProgress(e, rawFile)
         },
         onSuccess: (res) => {
-          onSuccess(res, rawFile)
-          delete reqs[uid]
+          props.onSuccess(res, rawFile)
+          delete reqs.value[uid]
         },
         onError: (err) => {
-          onError(err, rawFile)
-          delete reqs[uid]
+          props.onError(err, rawFile)
+          delete reqs.value[uid]
         }
       }
-      const req = httpRequest(options)
-      reqs[uid] = req
-      if (req && req.then) {
+      const req = props.httpRequest(options)
+      reqs.value[uid] = req
+      if (req instanceof Promise) {
         req.then(options.onSuccess, options.onError)
       }
     }
+
+    const handleChange = (e) => {
+      const files = e.target.files
+      if (!files) return
+      uploadFiles(files)
+    }
+
     const handleClick = () => {
-      if (!unref(disabled)) {
-        input.value.value = null
-        input.value.click()
+      if (!props.disabled) {
+        inputRef.value.value = null
+        inputRef.value.click()
       }
     }
-    const handleKeydown = (e) => {
-      if (e.target !== e.currentTarget) return
-      if (e.keyCode === 13 || e.keyCode === 32) {
-        handleClick()
-      }
+
+    const handleKeydown = () => {
+      handleClick()
     }
+
     return {
+      reqs,
       mouseover,
-      isImage,
+      inputRef,
+      abort,
+      post,
       handleChange,
-      uploadFiles,
       handleClick,
       handleKeydown,
-      post,
       upload,
-      input,
-      reqs,
-      abort
+      uploadFiles
     }
   }
-}
+})
 </script>

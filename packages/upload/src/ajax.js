@@ -1,4 +1,4 @@
-function getError(action, option, xhr) {
+const getError = (action, option, xhr) => {
   let msg
   if (xhr.response) {
     msg = `${xhr.response.error || xhr.response}`
@@ -15,7 +15,7 @@ function getError(action, option, xhr) {
   return err
 }
 
-function getBody(xhr) {
+const getBody = (xhr) => {
   const text = xhr.responseText || xhr.response
   if (!text) {
     return text
@@ -55,8 +55,8 @@ export default function upload(option) {
 
   formData.append(option.filename, option.file, option.file.name)
 
-  xhr.onerror = function error(e) {
-    option.onError(e)
+  xhr.onerror = function error() {
+    option.onError(getError(action, option, xhr))
   }
 
   xhr.onload = function onload() {
@@ -76,7 +76,10 @@ export default function upload(option) {
   const headers = option.headers || {}
 
   for (const item in headers) {
-    if (Object.hasOwnProperty.call(headers, item) && headers[item] !== null) {
+    if (
+      Object.prototype.hasOwnProperty.call(headers, item) &&
+      headers[item] !== null
+    ) {
       xhr.setRequestHeader(item, headers[item])
     }
   }

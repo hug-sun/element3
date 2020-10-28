@@ -1,136 +1,27 @@
-<template>
-  <div>
-    <UploadList
-      :disabled="uploadDisabled"
-      :listType="listType"
-      :files="uploadFiles"
-      @remove="handleRemove"
-      :handlePreview="onPreview"
-      v-if="listType === 'picture-card' && showFileList"
-    >
-      <template v-slot:file="props">
-        <slot name="file" :file="props.file"></slot>
-      </template>
-    </UploadList>
-
-    <div v-if="$slots.trigger">
-      <upload
-        :type="type"
-        :drag="drag"
-        :action="action"
-        :multiple="multiple"
-        :before-upload="beforeUpload"
-        :with-credentials="withCredentials"
-        :headers="headers"
-        :name="name"
-        :data="data"
-        :accept="accept"
-        :fileList="uploadFiles"
-        :autoUpload="autoUpload"
-        :listType="listType"
-        :disabled="uploadDisabled"
-        :limit="limit"
-        @exceed="onExceed"
-        @start="handleStart"
-        @progress="handleProgress"
-        @success="handleSuccess"
-        @error="handleError"
-        @preview="onPreview"
-        @remove="handleRemove"
-        :http-request="httpRequest"
-        ref="uploadInner"
-      >
-        <slot name="trigger"></slot>
-      </upload>
-      <slot></slot>
-    </div>
-    <upload
-      :type="type"
-      :drag="drag"
-      :action="action"
-      :multiple="multiple"
-      :before-upload="beforeUpload"
-      :with-credentials="withCredentials"
-      :headers="headers"
-      :name="name"
-      :data="data"
-      :accept="accept"
-      :fileList="uploadFiles"
-      :autoUpload="autoUpload"
-      :listType="listType"
-      :disabled="uploadDisabled"
-      :limit="limit"
-      @exceed="onExceed"
-      @start="handleStart"
-      @progress="handleProgress"
-      @success="handleSuccess"
-      @error="handleError"
-      @preview="onPreview"
-      @remove="handleRemove"
-      :http-request="httpRequest"
-      ref="uploadInner"
-      v-else
-    >
-      <slot name="trigger"></slot>
-      <slot></slot>
-    </upload>
-
-    <slot name="tip"></slot>
-
-    <UploadList
-      :disabled="uploadDisabled"
-      :listType="listType"
-      :files="uploadFiles"
-      @remove="handleRemove"
-      :handlePreview="onPreview"
-      v-if="listType !== 'picture-card' && showFileList"
-    >
-      <template v-slot:file="props">
-        <slot name="file" :file="props.file"></slot>
-      </template>
-    </UploadList>
-  </div>
-</template>
-
 <script>
-import UploadList from './upload-list'
-import Upload from './upload'
-import Migrating from 'element-ui/src/mixins/migrating'
 import {
+  h,
   ref,
-  unref,
-  reactive,
-  toRefs,
   inject,
+  provide,
   computed,
-  watch,
-  onUnmounted
+  onBeforeUnmount,
+  defineComponent,
+  getCurrentInstance
 } from 'vue'
+import ajax from './ajax'
+import UploadList from './upload-list.vue'
+import Upload from './upload.vue'
+import useHandleEvent from './useHandleEvent.js'
 
-function noop() {}
+const noop = () => {}
 
-export default {
+export default defineComponent({
   name: 'ElUpload',
-
-  mixins: [Migrating],
-
   components: {
-    UploadList,
-    Upload
+    Upload,
+    UploadList
   },
-
-  provide() {
-    return {
-      uploader: this
-    }
-  },
-
-  inject: {
-    elForm: {
-      default: ''
-    }
-  },
-
   props: {
     action: {
       type: String,
@@ -138,24 +29,33 @@ export default {
     },
     headers: {
       type: Object,
-      default() {
-        return {}
-      }
+      default: () => {}
     },
-    data: Object,
-    multiple: Boolean,
+    data: {
+      type: Object,
+      default: () => {}
+    },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
     name: {
       type: String,
       default: 'file'
     },
-    drag: Boolean,
-    dragger: Boolean,
+    drag: {
+      type: Boolean,
+      default: false
+    },
     withCredentials: Boolean,
     showFileList: {
       type: Boolean,
       default: true
     },
-    accept: String,
+    accept: {
+      type: String,
+      default: ''
+    },
     type: {
       type: String,
       default: 'select'
@@ -187,9 +87,7 @@ export default {
     },
     fileList: {
       type: Array,
-      default() {
-        return []
-      }
+      default: () => []
     },
     autoUpload: {
       type: Boolean,
@@ -197,201 +95,130 @@ export default {
     },
     listType: {
       type: String,
-      default: 'text' // text,picture,picture-card
+      default: 'text'
     },
-    httpRequest: Function,
+    httpRequest: {
+      type: Function,
+      default: ajax
+    },
     disabled: Boolean,
-    limit: Number,
+    limit: {
+      type: Number,
+      default: null
+    },
     onExceed: {
       type: Function,
       default: noop
     }
   },
-
   setup(props) {
-    const { disabled, listType, fileList } = toRefs(props)
-    // eslint-disable-next-line vue/no-setup-props-destructure
-    const {
-      onRemove,
-      beforeRemove,
-      onProgress,
-      onSuccess,
-      onError,
-      onChange
-    } = props
-    let tempIndex = 1
-    let uploadFiles = reactive(
-      fileList.value.map((item) => {
-        item.uid = item.uid || Date.now() + tempIndex++
-        item.status = item.status || 'success'
-        return item
-      })
-    )
-    const dragOver = ref(false)
-    const draging = ref(false)
-    const uploadInner = ref(null)
+    const elForm = inject('elForm', {})
     const uploadDisabled = computed(() => {
-      const elForm = inject('elForm', {})
-      return disabled.value || unref((elForm || {}).disabled)
+      return props.disabled || elForm.disabled
     })
 
-    watch(listType, (type) => {
-      if (type === 'picture-card' || type === 'picture') {
-        uploadFiles.forEach((file) => {
-          if (!file.url && file.raw) {
-            try {
-              file.url = URL.createObjectURL(file.raw)
-            } catch (err) {
-              console.error('[Element Error][Upload]', err)
-            }
-          }
-        })
-      }
-    })
+    const {
+      clearFiles,
+      handleError,
+      handleProgress,
+      handleStart,
+      handleSuccess,
+      handleRemove,
+      submit,
+      uploadRef,
+      uploadFiles
+    } = useHandleEvent(props)
 
-    onUnmounted(() => {
-      uploadFiles.forEach((file) => {
+    provide('uploader', getCurrentInstance())
+
+    onBeforeUnmount(() => {
+      uploadFiles.value.forEach((file) => {
         if (file.url && file.url.indexOf('blob:') === 0) {
           URL.revokeObjectURL(file.url)
         }
       })
     })
 
-    const abort = (file) => {
-      uploadInner.value.abort(file)
-    }
-
-    const getFile = (rawFile) => {
-      const fileList = uploadFiles
-      let target
-      fileList.every((item) => {
-        target = rawFile.uid === item.uid ? item : null
-        return !target
-      })
-      return target
-    }
-
-    const handleRemove = (file, raw) => {
-      if (raw) {
-        file = getFile(raw)
-      }
-      const doRemove = () => {
-        abort(file)
-        const fileList = uploadFiles
-        fileList.splice(fileList.indexOf(file), 1)
-        onRemove(file, fileList)
-      }
-
-      if (!beforeRemove) {
-        doRemove()
-      } else if (typeof beforeRemove === 'function') {
-        const before = beforeRemove(file, uploadFiles)
-        if (before && before.then) {
-          before.then(() => {
-            doRemove()
-          }, noop)
-        } else if (before !== false) {
-          doRemove()
-        }
-      }
-    }
-
-    const handleProgress = (ev, rawFile) => {
-      const file = getFile(rawFile)
-      onProgress(ev, file, uploadFiles)
-      file.status = 'uploading'
-      file.percentage = ev.percent || 0
-    }
-
-    const handleSuccess = (res, rawFile) => {
-      const file = getFile(rawFile)
-
-      if (file) {
-        file.status = 'success'
-        file.response = res
-
-        onSuccess(res, file, uploadFiles)
-        onChange(file, uploadFiles)
-      }
-    }
-
-    const handleError = (err, rawFile) => {
-      const file = getFile(rawFile)
-      const fileList = uploadFiles
-
-      file.status = 'fail'
-
-      fileList.splice(fileList.indexOf(file), 1)
-
-      onError(err, file, uploadFiles)
-      onChange(file, uploadFiles)
-    }
-
-    const handleStart = (rawFile) => {
-      rawFile.uid = Date.now() + tempIndex++
-
-      const file = {
-        status: 'ready',
-        name: rawFile.name,
-        size: rawFile.size,
-        percentage: 0,
-        uid: rawFile.uid,
-        raw: rawFile
-      }
-
-      if (listType === 'picture-card' || listType === 'picture') {
-        try {
-          file.url = URL.createObjectURL(rawFile)
-        } catch (err) {
-          console.error('[Element Error][Upload]', err)
-          return
-        }
-      }
-
-      uploadFiles.push(file)
-      onChange(file, uploadFiles)
-    }
-
-    const clearFiles = () => {
-      uploadFiles = []
-    }
-
-    const submit = () => {
-      uploadFiles
-        .filter((file) => file.status === 'ready')
-        .forEach((file) => {
-          console.log('file.raw', file.raw)
-          uploadInner.value.upload(file.raw)
-        })
-    }
-
-    const getMigratingConfig = () => {
-      return {
-        props: {
-          'default-file-list': 'default-file-list is renamed to file-list.',
-          'show-upload-list': 'show-upload-list is renamed to show-file-list.',
-          'thumbnail-mode':
-            'thumbnail-mode has been deprecated, you can implement the same effect according to this case: http://element.eleme.io/#/zh-CN/component/upload#yong-hu-tou-xiang-shang-chuan'
-        }
-      }
-    }
-
     return {
-      uploadFiles,
-      uploadInner,
-      dragOver,
-      draging,
-      uploadDisabled,
-      handleRemove,
-      abort,
-      handleStart,
-      handleProgress,
-      handleSuccess,
+      dragOver: ref(false),
+      draging: ref(false),
       handleError,
-      clearFiles,
+      handleProgress,
+      handleRemove,
+      handleStart,
+      handleSuccess,
+      uploadDisabled,
+      uploadFiles,
+      uploadRef,
       submit,
-      getMigratingConfig
+      clearFiles
     }
+  },
+  render() {
+    let uploadList
+    if (this.showFileList) {
+      uploadList = h(
+        UploadList,
+        {
+          disabled: this.uploadDisabled,
+          listType: this.listType,
+          files: this.uploadFiles,
+          onRemove: this.handleRemove,
+          handlePreview: this.onPreview
+        },
+        {
+          file: (props) => {
+            if (this.$slots.file) {
+              return this.$slots.file({
+                file: props.file
+              })
+            }
+            return null
+          }
+        }
+      )
+    } else {
+      uploadList = null
+    }
+
+    const uploadData = {
+      type: this.type,
+      drag: this.drag,
+      action: this.action,
+      multiple: this.multiple,
+      'before-upload': this.beforeUpload,
+      'with-credentials': this.withCredentials,
+      headers: this.headers,
+      name: this.name,
+      data: this.data,
+      accept: this.accept,
+      fileList: this.uploadFiles,
+      autoUpload: this.autoUpload,
+      listType: this.listType,
+      disabled: this.uploadDisabled,
+      limit: this.limit,
+      'on-exceed': this.onExceed,
+      'on-start': this.handleStart,
+      'on-progress': this.handleProgress,
+      'on-success': this.handleSuccess,
+      'on-error': this.handleError,
+      'on-preview': this.onPreview,
+      'on-remove': this.handleRemove,
+      'http-request': this.httpRequest,
+      ref: 'uploadRef'
+    }
+    const trigger = this.$slots.trigger || this.$slots.default
+    const uploadComponent = h(Upload, uploadData, {
+      default: () => trigger?.()
+    })
+    return h('div', [
+      this.listType === 'picture-card' ? uploadList : null,
+      this.$slots.trigger
+        ? [uploadComponent, this.$slots.default()]
+        : uploadComponent,
+      this.$slots.tip?.(),
+      this.listType !== 'picture-card' ? uploadList : null
+    ])
   }
-}
+})
 </script>
