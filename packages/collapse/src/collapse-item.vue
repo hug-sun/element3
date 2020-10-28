@@ -49,10 +49,9 @@
 </template>
 <script>
 import { computed, getCurrentInstance, inject, reactive, toRefs } from 'vue'
-import ElCollapseTransition from 'element-ui/src/transitions/collapse-transition'
-import { generateId } from 'element-ui/src/utils/util'
-
-import { useEmitter } from 'element-ui/src/use/emitter'
+import ElCollapseTransition from '../../../src/transitions/collapse-transition'
+import { generateId } from '../../../src/utils/util'
+import { useEmitter } from '../../../src/use/emitter'
 
 export default {
   name: 'ElCollapseItem',
