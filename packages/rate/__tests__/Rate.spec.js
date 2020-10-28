@@ -46,7 +46,7 @@ describe('Rate', () => {
           ]
         }
       })
-      
+
       expect(wrapper.find('.icon-rate-face-1').exists()).toBeTruthy()
       expect(wrapper.find('.icon-rate-face-1').element.style.color).toBe(
         'rgb(153, 169, 191)'
@@ -94,7 +94,7 @@ describe('Rate', () => {
       })
       expect(wrapper.find('.el-icon-star-off').exists()).toBeTruthy()
       expect(wrapper.find('.el-icon-star-off').element.style.color).toBe('red')
-      
+
       await wrapper.findAll('.el-rate__item')[2].trigger('mousemove')
       await wrapper.findAll('.el-rate__item')[2].trigger('click')
       await nextTick()
@@ -154,6 +154,38 @@ describe('Rate', () => {
       })
       expect(wrapper.find('.el-rate__text').exists()).toBeTruthy()
       expect(wrapper.find('.el-rate__text').text()).toBe('差劲')
+    })
+    it('allowClear is false', async () => {
+      const value = ref(5)
+      const wrapper = mount(Rate, {
+        props: {
+          modelValue: value,
+          'onUpdate:modelValue'(val) {
+            value.value = val
+          },
+          allowClear: false
+        }
+      })
+      await wrapper.findAll('.el-rate__item')[4].trigger('mousemove')
+      await wrapper.findAll('.el-rate__item')[4].trigger('click')
+      await nextTick()
+      expect(value.value).toEqual(5)
+    })
+    it('allowClear is true', async () => {
+      const value = ref(5)
+      const wrapper = mount(Rate, {
+        props: {
+          modelValue: value,
+          'onUpdate:modelValue'(val) {
+            value.value = val
+          },
+          allowClear: true
+        }
+      })
+      await wrapper.findAll('.el-rate__item')[4].trigger('mousemove')
+      await wrapper.findAll('.el-rate__item')[4].trigger('click')
+      await nextTick()
+      expect(value.value).toBeNull()
     })
   })
 })
