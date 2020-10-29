@@ -94,7 +94,7 @@ Thank you to all the people who already contributed to Element3!
 
 Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in discussion group :
 
-<img alt="Join Discusion Group" src="https://pic4.zhimg.com/80/v2-73947edcba4cbfe52cd779a3b1b974b5_1440w.png" width="300">
+<img alt="Join Discusion Group" src="https://pic2.zhimg.com/50/v2-1442930ab968582ef6b959902ff71712_r.jpg" width="300">
 
 ## License
 
