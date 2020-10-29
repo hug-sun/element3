@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import { popupProps, usePopup } from 'element-ui/src/use/popup'
-import { useEmitter } from 'element-ui/src/use/emitter'
+import { popupProps, usePopup } from '../../src/use/popup'
+import { useEmitter } from '../../src/use/emitter'
 import {
   toRefs,
   ref,

@@ -1,2 +1,15 @@
 import MessageBox from './src/MessageBox.js'
-export default MessageBox
+
+export function useMsgbox() {
+  return MessageBox
+}
+
+export function useAlert() {
+  return MessageBox.alert
+}
+export function useConfirm() {
+  return MessageBox.confirm
+}
+export function usePrompt() {
+  return MessageBox.prompt
+}

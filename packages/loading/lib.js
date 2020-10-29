@@ -1,5 +1,5 @@
-import { PopupManager } from 'element-ui/src/utils/popup'
-import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom'
+import { PopupManager } from '../../src/utils/popup'
+import { addClass, removeClass, getStyle } from '../../src/utils/dom'
 
 export const addStyle = (options, parent, ctx) => {
   const maskStyle = {}

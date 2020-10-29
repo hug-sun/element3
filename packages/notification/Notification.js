@@ -1,7 +1,7 @@
 import { defineComponent, createVNode, render, isVNode } from 'vue'
 import Main from './Notification.vue'
-import merge from 'element-ui/src/utils/merge'
-import { PopupManager } from 'element-ui/src/utils/popup'
+import merge from '../../src/utils/merge'
+import { PopupManager } from '../../src/utils/popup'
 
 const NotificationConstructor = defineComponent(Main)
 

@@ -1,2 +1,5 @@
 import Notification from './Notification.js'
-export default Notification
+
+export function useNotify() {
+  return Notification
+}

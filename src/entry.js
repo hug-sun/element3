@@ -24,6 +24,23 @@ import ElPagination from '../packages/pagination'
 import ElTag from '../packages/tag'
 import ElBadge from '../packages/badge'
 import ElAvatar from '../packages/avatar'
+import ElTabs from '../packages/tabs'
+import ElTabPane from '../packages/tab-pane'
+import ElPageHeader from '../packages/page-header'
+import ElDropdown from '../packages/dropdown'
+import ElDropdownItem from '../packages/dropdown-item'
+import ElDropdownMenu from '../packages/dropdown-menu'
+import ElSteps from '../packages/steps'
+import ElStep from '../packages/step'
+import ElLoading, { useLoading } from '../packages/loading'
+import { useMessage } from '../packages/message'
+import {
+  useMsgbox,
+  useAlert,
+  usePrompt,
+  useConfirm
+} from '../packages/message-box'
+import { useNotify } from '../packages/notification'
 
 import { version } from '../package.json'
 
@@ -52,12 +69,21 @@ const components = [
   ElPagination,
   ElTag,
   ElBadge,
-  ElAvatar
+  ElAvatar,
+  ElTabs,
+  ElTabPane,
+  ElPageHeader,
+  ElDropdown,
+  ElDropdownItem,
+  ElDropdownMenu,
+  ElSteps,
+  ElStep,
+  ElLoading
 ]
 
 const install = (app) => {
   components.forEach((component) => {
-    app.component(component.name, component)
+    app.use(component)
   })
 }
 
@@ -91,7 +117,23 @@ export {
   ElPagination,
   ElTag,
   ElBadge,
-  ElAvatar
+  ElAvatar,
+  ElTabs,
+  ElTabPane,
+  ElPageHeader,
+  ElDropdown,
+  ElDropdownItem,
+  ElDropdownMenu,
+  ElSteps,
+  ElStep,
+  ElLoading,
+  useMessage,
+  useLoading,
+  useMsgbox,
+  useAlert,
+  usePrompt,
+  useConfirm,
+  useNotify
 }
 
 export default elementUI

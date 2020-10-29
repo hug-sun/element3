@@ -39,9 +39,8 @@ import {
 } from 'vue'
 
 import { vuePopperProps, useVuePopper } from './vue-popper'
-import { on, off, addClass, removeClass } from 'element-ui/src/utils/dom'
-
-import { generateId } from 'element-ui/src/utils/util'
+import { on, off, addClass, removeClass } from '../../src/utils/dom'
+import { generateId } from '../../src/utils/util'
 
 export default {
   name: 'ElPopover',

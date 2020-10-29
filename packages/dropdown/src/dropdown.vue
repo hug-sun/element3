@@ -8,13 +8,12 @@ import {
   watch,
   h
 } from 'vue'
-import { useEmitter } from 'main/use/emitter'
-import { migrating } from 'main/use/migrating'
+import { useEmitter } from '../../../src/use/emitter.js'
+import Clickoutside from '../../../src/utils/clickoutside.js'
 
-import Clickoutside from 'element-ui/src/utils/clickoutside'
-import ElButton from 'element-ui/packages/button'
-import ElButtonGroup from 'element-ui/packages/button-group'
-import { generateId } from 'element-ui/src/utils/util'
+import ElButton from '../../button'
+import ElButtonGroup from '../../button-group'
+import { generateId } from '../../../src/utils/util.js'
 
 export default {
   name: 'ElDropdown',
@@ -86,10 +85,6 @@ export default {
     } = toRefs(props)
     const dropdownSize = computed(() => {
       return size.value || instance.proxy?.$ELEMENT?.size
-    })
-
-    migrating({
-      'menu-align': 'menu-align is renamed to placement.'
     })
 
     const timeout = ref(0)

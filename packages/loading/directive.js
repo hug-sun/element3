@@ -1,9 +1,9 @@
 import { nextTick } from 'vue'
 import Loading from './Loading.vue'
-import { removeClass } from 'element-ui/src/utils/dom'
+import { removeClass } from '../../src/utils/dom'
 
-import { createComponent } from 'element-ui/src/use/component'
-import merge from 'element-ui/src/utils/merge'
+import { createComponent } from '../../src/use/component'
+import merge from '../../src/utils/merge'
 import { addStyle } from './lib'
 
 const defaults = {
