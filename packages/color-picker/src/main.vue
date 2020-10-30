@@ -55,8 +55,8 @@ import {
 
 import Color from './color'
 import PickerDropdown from './components/picker-dropdown.vue'
-import Clickoutside from 'element-ui/src/directives/clickoutside'
-import { useEmitter } from 'element-ui/src/use/emitter'
+import Clickoutside from '../../../src/directives/clickoutside'
+import { useEmitter } from '../../../src/use/emitter'
 
 export default {
   name: 'ElColorPicker',

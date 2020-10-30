@@ -74,11 +74,11 @@
 </template>
 
 <script type="text/babel">
-import ElInputNumber from 'element-ui/packages/input-number'
+import ElInputNumber from '../input-number'
 import SliderButton from './src/button.vue'
 import SliderMarker from './src/marker'
-import { useEmitter } from 'element-ui/src/use/emitter'
-import { isUndefined } from 'element-ui/src/utils/types'
+import { useEmitter } from '../../src/use/emitter'
+import { isUndefined } from '../../src/utils/types'
 
 import {
   reactive,

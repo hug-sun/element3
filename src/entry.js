@@ -32,6 +32,28 @@ import ElDropdownItem from '../packages/dropdown-item'
 import ElDropdownMenu from '../packages/dropdown-menu'
 import ElSteps from '../packages/steps'
 import ElStep from '../packages/step'
+import ElForm from '../packages/form'
+import ElFormItem from '../packages/form-item'
+import ElRadio from '../packages/radio'
+import ElRadioButton from '../packages/radio-button'
+import ElRadioGroup from '../packages/radio-group'
+import ElCheckbox from '../packages/checkbox'
+import ElCheckboxButton from '../packages/checkbox-button'
+import ElCheckboxGroup from '../packages/checkbox-group'
+import ElInput from '../packages/input'
+import ElInputNumber from '../packages/input-number'
+import ElSelect from '../packages/select'
+import ElCascader from '../packages/calendar'
+import ElCascaderPanel from '../packages/cascader-panel'
+import ElSlider from '../packages/slider'
+import ElTimePicker from '../packages/time-picker'
+import ElTimeSelect from '../packages/time-select'
+import ElDatePicker from '../packages/date-picker'
+import ElUpload from '../packages/upload'
+import ElRate from '../packages/rate'
+import ElColorPicker from '../packages/color-picker'
+import ElTransfer from '../packages/transfer'
+
 import ElLoading, { useLoading } from '../packages/loading'
 import { useMessage } from '../packages/message'
 import {
@@ -78,7 +100,28 @@ const components = [
   ElDropdownMenu,
   ElSteps,
   ElStep,
-  ElLoading
+  ElLoading,
+  ElForm,
+  ElFormItem,
+  ElRadio,
+  ElRadioButton,
+  ElRadioGroup,
+  ElCheckbox,
+  ElCheckboxButton,
+  ElCheckboxGroup,
+  ElInput,
+  ElInputNumber,
+  ElSelect,
+  ElCascader,
+  ElCascaderPanel,
+  ElSlider,
+  ElTimePicker,
+  ElTimeSelect,
+  ElDatePicker,
+  ElUpload,
+  ElRate,
+  ElColorPicker,
+  ElTransfer
 ]
 
 const install = (app) => {
@@ -127,6 +170,27 @@ export {
   ElSteps,
   ElStep,
   ElLoading,
+  ElForm,
+  ElFormItem,
+  ElRadio,
+  ElRadioButton,
+  ElRadioGroup,
+  ElCheckbox,
+  ElCheckboxButton,
+  ElCheckboxGroup,
+  ElInput,
+  ElInputNumber,
+  ElSelect,
+  ElCascader,
+  ElCascaderPanel,
+  ElSlider,
+  ElTimePicker,
+  ElTimeSelect,
+  ElDatePicker,
+  ElUpload,
+  ElRate,
+  ElColorPicker,
+  ElTransfer,
   useMessage,
   useLoading,
   useMsgbox,

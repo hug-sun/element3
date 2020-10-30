@@ -66,9 +66,9 @@ import {
 } from 'vue'
 
 import AsyncValidator from 'async-validator'
-import { useEmitter } from 'element-ui/src/use/emitter'
-import objectAssign from 'element-ui/src/utils/merge'
-import { noop, getPropByPath } from 'element-ui/src/utils/util'
+import { useEmitter } from '../../src/use/emitter'
+import objectAssign from '../../src/utils/merge'
+import { noop, getPropByPath } from '../../src/utils/util'
 import LabelWrap from './LabelWrap.vue'
 export default {
   name: 'ElFormItem',

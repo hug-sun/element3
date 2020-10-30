@@ -32,15 +32,10 @@
 
 <script>
 import ImageViewer from './ImageViewer'
-import { t } from 'element-ui/src/locale'
+import { t } from '../../src/locale'
 import { throttle } from 'throttle-debounce'
-import { isString, isHtmlElement } from 'element-ui/src/utils/types'
-import {
-  on,
-  off,
-  getScrollContainer,
-  isInContainer
-} from 'element-ui/src/utils/dom'
+import { isString, isHtmlElement } from '../../src/utils/types'
+import { on, off, getScrollContainer, isInContainer } from '../../src/utils/dom'
 import {
   ref,
   computed,

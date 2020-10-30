@@ -65,11 +65,11 @@
 </template>
 
 <script>
-import ElCheckboxGroup from 'element-ui/packages/checkbox-group'
-import ElCheckbox from 'element-ui/packages/checkbox'
-import ElInput from 'element-ui/packages/input'
+import ElCheckboxGroup from '../../checkbox-group'
+import ElCheckbox from '../../checkbox'
+import ElInput from '../../input'
 import OptionContent from './OptionContent.vue'
-import { useLocale } from 'element-ui/src/use/locale'
+import { useLocale } from '../../../src/use/locale'
 import { reactive, toRefs, computed, watch } from 'vue'
 
 export default {

@@ -5,7 +5,7 @@ import {
   treeCellPrefix
 } from './config'
 import { mergeOptions, parseWidth, parseMinWidth, compose } from './util'
-import ElCheckbox from 'element-ui/packages/checkbox'
+import ElCheckbox from '../../checkbox'
 
 let columnIdSeed = 1
 

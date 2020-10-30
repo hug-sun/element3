@@ -1,4 +1,4 @@
-import { once, on } from 'element-ui/src/utils/dom'
+import { once, on } from '../utils/dom'
 
 const INTERVAL_TIME = 100
 export default {

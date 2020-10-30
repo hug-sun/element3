@@ -63,8 +63,8 @@ import {
   onMounted,
   onUnmounted
 } from 'vue'
-import { popupProps, usePopup } from 'element-ui/src/use/popup'
-import Utils from 'element-ui/src/utils/aria-utils'
+import { popupProps, usePopup } from '../../src/use/popup'
+import Utils from '../../src/utils/aria-utils'
 
 export default {
   name: 'ElDrawer',
