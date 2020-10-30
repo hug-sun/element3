@@ -53,6 +53,8 @@ import ElUpload from '../packages/upload'
 import ElRate from '../packages/rate'
 import ElColorPicker from '../packages/color-picker'
 import ElTransfer from '../packages/transfer'
+import ElOption from '../packages/option'
+import ElOptionGroup from '../packages/option-group'
 
 import ElLoading, { useLoading } from '../packages/loading'
 import { useMessage } from '../packages/message'
@@ -121,7 +123,9 @@ const components = [
   ElUpload,
   ElRate,
   ElColorPicker,
-  ElTransfer
+  ElTransfer,
+  ElOption,
+  ElOptionGroup
 ]
 
 const install = (app) => {
@@ -191,6 +195,8 @@ export {
   ElRate,
   ElColorPicker,
   ElTransfer,
+  ElOption,
+  ElOptionGroup,
   useMessage,
   useLoading,
   useMsgbox,
