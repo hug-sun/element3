@@ -1,5 +1,5 @@
-import fecha from 'element-ui/src/utils/date'
-import { t } from 'element-ui/src/locale'
+import fecha from '../../src/utils/date'
+import { t } from '../../src/locale'
 
 const weeks = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 const months = [
