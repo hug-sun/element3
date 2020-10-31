@@ -150,7 +150,7 @@ import { useLocale } from 'element-ui/src/use/locale'
 import {
   addResizeListener,
   removeResizeListener
-} from 'element-ui/src/utils/resize-event'
+} from '../../src/utils/resize-event'
 import { debounce } from 'throttle-debounce'
 
 const { keys: KeyCode } = AriaUtils
