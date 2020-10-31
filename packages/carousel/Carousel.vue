@@ -68,7 +68,7 @@ import {
   onUnmounted
 } from 'vue'
 import { throttle } from 'throttle-debounce'
-import { useResizeEvent } from 'element-ui/src/utils/resize-event'
+import { useResizeEvent } from '../../src/utils/resize-event'
 
 export default {
   name: 'ElCarousel',
