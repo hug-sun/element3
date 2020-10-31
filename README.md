@@ -51,11 +51,14 @@ npm install element3 -S
 ```js
 import { createApp } from 'vue'
 import App from './App.vue'
+// import style
+import "element3/lib/theme-chalk/index.css";
 import Element3 from 'element3'
 
 // global import
-const app = createApp(App)
-app.use(Element3)
+createApp(App)
+  .use(Element3)
+  .mount("#app")
 
 // or according to the need to import
 import {
@@ -64,8 +67,10 @@ import {
   // ...
 } from 'element3'
 
-app.component(ElLink.name, ElLink)
-app.component(ElButton.name, ElButton)
+
+createApp(App)
+  .use(ElLink)
+  .use(ElButton)
 ```
 
 ## Documentation
