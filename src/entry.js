@@ -66,6 +66,22 @@ import {
 } from '../packages/message-box'
 import { useNotify } from '../packages/notification'
 
+import ElDialog from '../packages/dialog'
+import ElTooltip from '../packages/tooltip'
+import ElPopover from '../packages/popover'
+import ElPopconfirm from '../packages/popconfirm'
+import ElCard from '../packages/card'
+import ElCarousel from '../packages/carousel'
+import ElCollapse from '../packages/collapse'
+import ElCollapseItem from '../packages/collapse-item'
+import ElTimeline from '../packages/timeline'
+import ElTimelineItem from '../packages/timeline-item'
+import ElDivider from '../packages/divider'
+import ElCalendar from '../packages/calendar'
+import ElImage from '../packages/image'
+import ElInfiniteScroll from '../packages/infinite-scroll'
+import ElDrawer from '../packages/drawer'
+
 import { version } from '../package.json'
 
 const components = [
@@ -125,7 +141,22 @@ const components = [
   ElColorPicker,
   ElTransfer,
   ElOption,
-  ElOptionGroup
+  ElOptionGroup,
+  ElDialog,
+  ElTooltip,
+  ElPopover,
+  ElPopconfirm,
+  ElCard,
+  ElCarousel,
+  ElCollapse,
+  ElCollapseItem,
+  ElTimeline,
+  ElTimelineItem,
+  ElDivider,
+  ElCalendar,
+  ElImage,
+  ElInfiniteScroll,
+  ElDrawer
 ]
 
 const install = (app) => {
@@ -197,6 +228,21 @@ export {
   ElTransfer,
   ElOption,
   ElOptionGroup,
+  ElDialog,
+  ElTooltip,
+  ElPopover,
+  ElPopconfirm,
+  ElCard,
+  ElCarousel,
+  ElCollapse,
+  ElCollapseItem,
+  ElTimeline,
+  ElTimelineItem,
+  ElDivider,
+  ElCalendar,
+  ElImage,
+  ElInfiniteScroll,
+  ElDrawer,
   useMessage,
   useLoading,
   useMsgbox,

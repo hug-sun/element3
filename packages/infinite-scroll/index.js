@@ -1,8 +1,8 @@
-import InfiniteScroll from './src/main.js'
+import ElInfiniteScroll from './src/main.js'
 
 /* istanbul ignore next */
-InfiniteScroll.install = function (app) {
-  app.directive(InfiniteScroll.name, InfiniteScroll)
+ElInfiniteScroll.install = function (app) {
+  app.directive(ElInfiniteScroll.name, ElInfiniteScroll)
 }
 
-export default InfiniteScroll
+export default ElInfiniteScroll
