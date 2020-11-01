@@ -16,22 +16,29 @@
 
 <script>
   import { h } from 'vue'
+  import { useMessage } from 'element3'
 
   export default {
-    methods: {
-      open() {
-        this.$message('这是一条消息提示')
-      },
+    setup() {
+      const message = useMessage()
+      function open() {
+        message('这是一条消息提示')
+      }
 
-      openVn() {
-        this.$message({
+      function openVn() {
+        message({
           message: h('p', null, [
             h('span', null, '内容可以是 '),
             h('i', { style: 'color: teal' }, 'VNode')
           ])
         })
       }
-    }
+
+      return {
+        open,
+        openVn
+      }
+    },
   }
 </script>
 ```
