@@ -35,10 +35,10 @@
 
 <script>
 import { ref, computed, toRefs, inject, getCurrentInstance } from 'vue'
-import ElScrollbar from 'element-ui/packages/scrollbar'
+import ElScrollbar from '../scrollbar'
 import CascaderNode from './CascaderNode'
-import { useLocale } from 'element-ui/src/use/locale'
-import { generateId } from 'element-ui/src/utils/util'
+import { useLocale } from '../../src/use/locale'
+import { generateId } from '../../src/utils/util'
 
 export default {
   name: 'ElCascaderMenu',

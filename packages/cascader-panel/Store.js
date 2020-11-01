@@ -1,8 +1,5 @@
 import Node from './Node'
-import {
-  coerceTruthyValueToArray,
-  valueEquals
-} from 'element-ui/src/utils/util'
+import { coerceTruthyValueToArray, valueEquals } from '../../src/utils/util'
 
 const flatNodes = (data, leafOnly) => {
   return data.reduce((res, node) => {

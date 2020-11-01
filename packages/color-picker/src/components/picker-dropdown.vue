@@ -72,16 +72,16 @@ import {
   watch
 } from 'vue'
 
-import { popperProps, usePopper } from 'element-ui/src/use/popper.js'
-import { useLocale } from 'element-ui/src/use/locale.js'
+import { popperProps, usePopper } from '../../../../src/use/popper.js'
+import { useLocale } from '../../../../src/use/locale.js'
 import SvPanel from './sv-panel'
 import HueSlider from './hue-slider'
 import AlphaSlider from './alpha-slider'
 import Predefine from './predefine'
-// import Popper from 'element-ui/src/utils/vue-popper'
-// import Locale from 'element-ui/src/mixins/locale'
-import ElInput from 'element-ui/packages/input'
-import ElButton from 'element-ui/packages/button'
+// import Popper from '../../../../src/utils/vue-popper'
+// import Locale from '../../../../src/mixins/locale'
+import ElInput from '../../../input'
+import ElButton from '../../../button'
 
 export default {
   name: 'el-color-picker-dropdown',

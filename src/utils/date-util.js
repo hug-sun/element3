@@ -1,5 +1,5 @@
-import fecha from '../../src/utils/date'
-import { t } from '../../src/locale'
+import fecha from './date'
+import { t } from '../locale'
 
 const weeks = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 const months = [

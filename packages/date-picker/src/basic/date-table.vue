@@ -42,13 +42,13 @@ import {
   nextDate,
   isDate,
   clearTime as _clearTime
-} from 'element-ui/src/utils/date-util'
-import Locale from 'element-ui/src/mixins/locale'
+} from '../../../../src/utils/date-util'
+import Locale from '../../../../src/mixins/locale'
 import {
   arrayFindIndex,
   arrayFind,
   coerceTruthyValueToArray
-} from 'element-ui/src/utils/util'
+} from '../../../../src/utils/util'
 
 const WEEKS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 const getDateTimestamp = function (time) {

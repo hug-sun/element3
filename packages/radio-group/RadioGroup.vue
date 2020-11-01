@@ -9,7 +9,7 @@
   </component>
 </template>
 <script>
-import { useEmitter } from 'element-ui/src/use/emitter'
+import { useEmitter } from '../../src/use/emitter'
 import {
   getCurrentInstance,
   onMounted,
