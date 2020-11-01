@@ -159,7 +159,12 @@ const components = [
   ElDrawer
 ]
 
-const install = (app) => {
+const install = (app, opts = {}) => {
+  app.config.globalProperties.$ELEMENT = {
+    size: opts.size || '',
+    zIndex: opts.zIndex || 2000
+  }
+
   components.forEach((component) => {
     app.use(component)
   })
