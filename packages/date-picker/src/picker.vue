@@ -113,7 +113,7 @@ const NewPopper = {
   data() {
     return merge({ visibleArrow: true }, Popper.data)
   },
-  beforeDestroy: Popper.beforeDestroy
+  beforeUnmount: Popper.beforeUnmount
 }
 
 const DEFAULT_FORMATS = {

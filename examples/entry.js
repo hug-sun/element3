@@ -1,8 +1,8 @@
 import { createApp, reactive } from 'vue'
-import entry from './app'
+import EntryApp from './app'
 
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Element from 'main/index.js'
+import Element3 from 'main/index.js'
 // import hljs from 'highlight.js'
 import routes from './route.config'
 import demoBlock from './components/demo-block'
@@ -17,10 +17,8 @@ import './assets/styles/common.css'
 import './assets/styles/fonts/style.css'
 import icon from './icon.json'
 
-const app = createApp({ // eslint-disable-line
-  ...entry
-})
-app.use(Element)
+const app = createApp(EntryApp)
+app.use(Element3)
 // app.use(VueRouter);
 app.component('demo-block', demoBlock)
 // app.component('main-footer', MainFooter);

@@ -394,7 +394,7 @@
         mainImgOffset: 0
       };
     },
-    beforeDestroy() {
+    beforeUnmount() {
       window.removeEventListener('scroll', this.throttledHandleScroll);
     },
     mounted() {

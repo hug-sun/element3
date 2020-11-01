@@ -187,7 +187,7 @@ const PopperMixin = {
   },
   methods: Popper.methods,
   data: Popper.data,
-  beforeDestroy: Popper.beforeDestroy
+  beforeUnmount: Popper.beforeUnmount
 }
 
 const InputSizeMap = {

@@ -231,10 +231,10 @@
       this.goAnchor();
       document.body.classList.add('is-component');
     },
-    destroyed() {
+    unmounted() {
       document.body.classList.remove('is-component');
     },
-    beforeDestroy() {
+    beforeUnmount() {
       this.componentScrollBox.removeEventListener('scroll', this.throttledScrollHandler);
     },
     beforeRouteUpdate(to, from, next) {

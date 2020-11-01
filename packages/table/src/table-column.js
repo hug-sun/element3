@@ -367,7 +367,7 @@ export default {
     )
   },
 
-  destroyed() {
+  unmounted() {
     if (!this.$parent) return
     const parent = this.$parent
     this.owner.store.commit(

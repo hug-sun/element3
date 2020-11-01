@@ -188,7 +188,7 @@ export default {
     }
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     this.doDestroy(true)
     if (this.popperElm && this.popperElm.parentNode === document.body) {
       this.popperElm.removeEventListener('click', stop)
@@ -198,6 +198,6 @@ export default {
 
   // call destroy in keep-alive mode
   deactivated() {
-    this.$options.beforeDestroy[0].call(this)
+    this.$options.beforeUnmount[0].call(this)
   }
 }

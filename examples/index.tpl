@@ -19,7 +19,6 @@
 
   </body>
   <script>
-<script>
 
 if(location.host==='element3.vercel.app'){
   var _hmt = _hmt || [];
