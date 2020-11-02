@@ -60,8 +60,7 @@ import {
   inject,
   reactive,
   toRefs,
-  onBeforeMount,
-  onMounted
+  onBeforeMount
 } from 'vue'
 import { propsSymbol, stateSymbol } from './constants'
 
@@ -103,9 +102,6 @@ export default {
     })
 
     const isLast = computed(() => {
-      // console.log(steps[steps.length - 1] === instance)
-      // steps[steps.length - 1] === instance
-      // console.log(state.index, steps.length -1, state.index === steps.length -1)
       return state.index === steps.length - 1
     })
 
@@ -206,10 +202,6 @@ export default {
 
     onBeforeMount(() => {
       steps.push(instance)
-    })
-
-    onMounted(() => {
-      // console.log(props, context, 222222)
     })
 
     onBeforeUnmount(() => {

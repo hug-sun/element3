@@ -49,9 +49,9 @@
   </div>
 </template>
 <script>
-import ElInput from 'element-ui/packages/input'
-import useFocus from 'element-ui/src/use/focus.js'
-import RepeatClick from 'element-ui/src/directives/repeatClick'
+import ElInput from '../input'
+import useFocus from '../../src/use/focus.js'
+import RepeatClick from '../../src/directives/repeatClick'
 import {
   computed,
   getCurrentInstance,

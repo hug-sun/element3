@@ -90,17 +90,17 @@
 </template>
 
 <script>
-import Clickoutside from 'element-ui/src/utils/clickoutside'
+import Clickoutside from '../../../src/utils/clickoutside'
 import {
   formatDate,
   parseDate,
   isDateObject,
   getWeekNumber
-} from 'element-ui/src/utils/date-util'
-import Popper from 'element-ui/src/utils/vue-popper'
-import Emitter from 'element-ui/src/mixins/emitter'
-import ElInput from 'element-ui/packages/input'
-import merge from 'element-ui/src/utils/merge'
+} from '../../../src/utils/date-util'
+import Popper from '../../../src/utils/vue-popper'
+import Emitter from '../../../src/mixins/emitter'
+import ElInput from '../../input'
+import merge from '../../../src/utils/merge'
 
 const NewPopper = {
   props: {
@@ -113,7 +113,7 @@ const NewPopper = {
   data() {
     return merge({ visibleArrow: true }, Popper.data)
   },
-  beforeDestroy: Popper.beforeDestroy
+  beforeUnmount: Popper.beforeUnmount
 }
 
 const DEFAULT_FORMATS = {

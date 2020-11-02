@@ -16,16 +16,12 @@
 </template>
 
 <script>
-import { provide, reactive, toRefs, watch, onMounted } from 'vue'
+import { provide, reactive, toRefs, watch } from 'vue'
 
-// import Migrating from 'element-ui/src/mixins/migrating'
 import { stateSymbol, propsSymbol } from './constants'
 
 export default {
   name: 'ElSteps',
-
-  // mixins: [Migrating],
-
   props: {
     space: [Number, String],
     active: Number,
@@ -70,18 +66,7 @@ export default {
       }
     )
 
-    function getMigratingConfig() {
-      return {
-        props: {
-          center: 'center is removed.'
-        }
-      }
-    }
-
-    onMounted(() => {
-      // console.log(state.steps)
-    })
-    return { ...toRefs(state), getMigratingConfig }
+    return { ...toRefs(state) }
   }
 }
 </script>

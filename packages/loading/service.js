@@ -1,7 +1,7 @@
 import loadingVue from './Loading.vue'
-import { createComponent, unmountComponent } from 'element-ui/src/use/component'
-import { removeClass } from 'element-ui/src/utils/dom'
-import merge from 'element-ui/src/utils/merge'
+import { createComponent, unmountComponent } from '../../src/use/component'
+import { removeClass } from '../../src/utils/dom'
+import merge from '../../src/utils/merge'
 import { addStyle } from './lib'
 
 const defaults = {

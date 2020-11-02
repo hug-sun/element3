@@ -1,4 +1,4 @@
-import { useEmitter } from 'element-ui/src/use/emitter'
+import { useEmitter } from '../use/emitter'
 
 /**
  * Bind after-leave event for vue instance. Make sure after-leave is called in any browsers.

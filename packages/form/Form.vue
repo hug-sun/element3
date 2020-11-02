@@ -11,8 +11,8 @@
 </template>
 <script>
 import { reactive, computed, watch, toRefs, unref, provide } from 'vue'
-import { useEmitter } from 'element-ui/src/use/emitter'
-import objectAssign from 'element-ui/src/utils/merge'
+import { useEmitter } from '../../src/use/emitter'
+import objectAssign from '../../src/utils/merge'
 
 export default {
   name: 'ElForm',
