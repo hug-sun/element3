@@ -24,6 +24,8 @@ import ElPagination from '../packages/pagination'
 import ElTag from '../packages/tag'
 import ElBadge from '../packages/badge'
 import ElAvatar from '../packages/avatar'
+import ElCarousel from '../packages/carousel'
+import ElCarouselItem from '../packages/carousel-item'
 import ElTabs from '../packages/tabs'
 import ElTabPane from '../packages/tab-pane'
 import ElPageHeader from '../packages/page-header'
@@ -71,7 +73,6 @@ import ElTooltip from '../packages/tooltip'
 import ElPopover from '../packages/popover'
 import ElPopconfirm from '../packages/popconfirm'
 import ElCard from '../packages/card'
-import ElCarousel from '../packages/carousel'
 import ElCollapse from '../packages/collapse'
 import ElCollapseItem from '../packages/collapse-item'
 import ElTimeline from '../packages/timeline'
@@ -110,6 +111,8 @@ const components = [
   ElTag,
   ElBadge,
   ElAvatar,
+  ElCarousel,
+  ElCarouselItem,
   ElTabs,
   ElTabPane,
   ElPageHeader,
@@ -201,6 +204,10 @@ export {
   ElTag,
   ElBadge,
   ElAvatar,
+  ElCarousel,
+  ElCarouselItem,
+  ElInfiniteScroll,
+  ElDrawer,
   ElTabs,
   ElTabPane,
   ElPageHeader,
@@ -238,7 +245,6 @@ export {
   ElPopover,
   ElPopconfirm,
   ElCard,
-  ElCarousel,
   ElCollapse,
   ElCollapseItem,
   ElTimeline,
@@ -246,8 +252,6 @@ export {
   ElDivider,
   ElCalendar,
   ElImage,
-  ElInfiniteScroll,
-  ElDrawer,
   useMessage,
   useLoading,
   useMsgbox,
