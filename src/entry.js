@@ -24,6 +24,10 @@ import ElPagination from '../packages/pagination'
 import ElTag from '../packages/tag'
 import ElBadge from '../packages/badge'
 import ElAvatar from '../packages/avatar'
+import ElCarousel from '../packages/carousel'
+import ElCarouselItem from '../packages/carousel-item'
+import ElInfiniteScroll from '../packages/infinite-scroll'
+import ElDrawer from '../packages/drawer'
 
 import { version } from '../package.json'
 
@@ -52,7 +56,11 @@ const components = [
   ElPagination,
   ElTag,
   ElBadge,
-  ElAvatar
+  ElAvatar,
+  ElCarousel,
+  ElCarouselItem,
+  ElInfiniteScroll,
+  ElDrawer
 ]
 
 const install = (app) => {
@@ -91,7 +99,11 @@ export {
   ElPagination,
   ElTag,
   ElBadge,
-  ElAvatar
+  ElAvatar,
+  ElCarousel,
+  ElCarouselItem,
+  ElInfiniteScroll,
+  ElDrawer
 }
 
 export default elementUI
