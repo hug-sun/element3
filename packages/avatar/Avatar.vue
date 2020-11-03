@@ -51,9 +51,9 @@ export default {
 
     const isImageExist = ref(true)
 
-    const handleError = () => {
-      const errorFlag = error ? error.value() : undefined
-      if (errorFlag !== false) {
+    const handleError = (e) => {
+      const errorFlag = error?.value(e)
+      if (!!errorFlag !== false) {
         isImageExist.value = false
       }
     }

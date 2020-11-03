@@ -5,12 +5,12 @@
 推荐使用 npm 的方式安装，它能更好地和 [webpack](https://webpack.js.org/) 打包工具配合使用。
 
 ```shell
-npm i element-ui -S
+npm i element3 -S
 ```
 
 ### CDN
 
-目前可以通过 [unpkg.com/element3](https://unpkg.com/element3/) 获取到最新版本的资源，在页面上引入 js 和 css 文件即可开始使用。
+目前可以通过 [unpkg.com/element3](https://unpkg.com/element3) 获取到最新版本的资源，在页面上引入 js 和 css 文件即可开始使用。
 
 ```html
 <!-- 引入样式 -->
@@ -27,9 +27,9 @@ npm i element-ui -S
 
 通过 CDN 的方式我们可以很容易地使用 Element 写出一个 Hello world 页面。[在线演示](https://codepen.io/ziyoung/pen/rRKYpd)
 
-<iframe height="265" style="width: 100%;" scrolling="no" title="Element demo" src="//codepen.io/ziyoung/embed/rRKYpd/?height=265&theme-id=light&default-tab=html" frameborder="no" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href='https://codepen.io/ziyoung/pen/rRKYpd/'>Element demo</a> by hetech
-  (<a href='https://codepen.io/ziyoung'>@ziyoung</a>) on <a href='https://codepen.io'>CodePen</a>.
+<iframe height="265" style="width: 100%;" scrolling="no" title="Element3 demo" src="https://codepen.io/uuoocckk-983/embed/abZGGwq?height=265&theme-id=light&default-tab=html,result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/uuoocckk-983/pen/abZGGwq'>Element3 demo</a> by uuoocckk-983
+  (<a href='https://codepen.io/uuoocckk-983'>@uuoocckk-983</a>) on <a href='https://codepen.io'>CodePen</a>.
 </iframe>
 
 如果是通过 npm 安装，并希望配合 webpack 使用，请阅读下一节：[快速上手](/#/zh-CN/component/quickstart)。
