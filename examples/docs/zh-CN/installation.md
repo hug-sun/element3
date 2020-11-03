@@ -10,17 +10,17 @@ npm i element3 -S
 
 ### CDN
 
-目前可以通过 [element3地址](https://kkbjs.com/element3) 获取到最新版本的资源，在页面上引入 js 和 css 文件即可开始使用。
+目前可以通过 [element3地址](https://unpkg.com/element3) 获取到最新版本的资源，在页面上引入 js 和 css 文件即可开始使用。
 
 ```html
 <!-- 引入样式 -->
-<link rel="stylesheet" href="https://kkbjs.com/element3/lib/theme-chalk/index.css">
+<link rel="stylesheet" href="https://unpkg.com/element3/lib/theme-chalk/index.css">
 <!-- 引入组件库 -->
-<script src="https://kkbjs.com/element3/lib/index.js"></script>
+<script src="https://unpkg.com/element3@0.0.18/dist/element3-ui.global.js"></script>
 ```
 
 :::tip
-我们建议使用 CDN 引入 Element 的用户在链接地址上锁定版本，以免将来 Element 升级时受到非兼容性更新的影响。锁定版本的方法请查看 [kkbjs.com](https://kkbjs.com)。
+我们建议使用 CDN 引入 Element 的用户在链接地址上锁定版本，以免将来 Element 升级时受到非兼容性更新的影响。锁定版本的方法请查看 [unpkg.com](https://unpkg.com)。
 :::
 
 ### Hello world

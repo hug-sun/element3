@@ -1,18 +1,6 @@
 {
   "zh-CN": [
     {
-      "name": "更新日志",
-      "path": "/changelog"
-    },
-    {
-      "name": "Element React",
-      "href": "https://elemefe.github.io/element-react/"
-    },
-    {
-      "name": "Element Angular",
-      "href": "https://element-angular.faas.ele.me/"
-    },
-    {
       "name": "开发指南",
       "children": [
         {
@@ -22,14 +10,6 @@
         {
           "path": "/quickstart",
           "name": "快速上手"
-        },
-        {
-          "path": "/i18n",
-          "name": "国际化"
-        },
-        {
-          "path": "/custom-theme",
-          "name": "自定义主题"
         },
         {
           "path": "/transition",
