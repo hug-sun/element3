@@ -10,7 +10,7 @@ npm i element3 -S
 
 ### CDN
 
-目前可以通过 [element3地址](https://unpkg.com/element3) 获取到最新版本的资源，在页面上引入 js 和 css 文件即可开始使用。
+目前可以通过 [unpkg.com/element3](https://unpkg.com/element3) 获取到最新版本的资源，在页面上引入 js 和 css 文件即可开始使用。
 
 ```html
 <!-- 引入样式 -->
