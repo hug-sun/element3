@@ -18,6 +18,7 @@ export default {
       }
     }
   },
+  emits: ['close', 'click'],
   setup(props, { emit, slots }) {
     const tagSize = computed(() => {
       return props.size || (getCurrentInstance().proxy.$ELEMENT || {}).size
