@@ -59,14 +59,14 @@
   </div>
 </template>
 <script>
-import debounce from 'throttle-debounce/debounce'
-import ElInput from 'element-ui/packages/input'
-import Clickoutside from 'element-ui/src/utils/clickoutside'
+import { debounce } from 'throttle-debounce'
+import ElInput from '../../input'
+import Clickoutside from '../../../src/utils/clickoutside'
 import ElAutocompleteSuggestions from './autocomplete-suggestions.vue'
-import Emitter from 'element-ui/src/mixins/emitter'
-import Migrating from 'element-ui/src/mixins/migrating'
-import { generateId } from 'element-ui/src/utils/util'
-import Focus from 'element-ui/src/mixins/focus'
+import Emitter from '../../../src/mixins/emitter'
+import Migrating from '../../../src/mixins/migrating'
+import { generateId } from '../../../src/utils/util'
+import Focus from '../../../src/mixins/focus'
 
 export default {
   name: 'ElAutocomplete',

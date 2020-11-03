@@ -1,3 +1,48 @@
+## [0.0.18](https://github.com/kkbjs/element3/compare/v0.0.17...v0.0.18) (2020-10-27)
+
+
+
+## [0.0.17](https://github.com/kkbjs/element3/compare/v0.0.16...v0.0.17) (2020-10-26)
+
+
+
+## [0.0.16](https://github.com/kkbjs/element3/compare/v0.0.15...v0.0.16) (2020-10-25)
+
+
+
+## [0.0.15](https://github.com/kkbjs/element3/compare/v0.0.14...v0.0.15) (2020-10-23)
+
+
+
+## [0.0.14](https://github.com/kkbjs/element3/compare/v0.0.13...v0.0.14) (2020-10-22)
+
+
+### Bug Fixes
+
+* build failed ([4ca7be8](https://github.com/kkbjs/element3/commit/4ca7be8c4eee72ea28f50ab7e26a2c1fefa13dea))
+* checkbox modelValue and change ([594a141](https://github.com/kkbjs/element3/commit/594a141cadd81287f63db39680c84ec2078d5f27))
+* comment calendar error test ([15b61d7](https://github.com/kkbjs/element3/commit/15b61d71e103b2d237d790199e3d6d304cb25a11))
+* comment test ([1f38c26](https://github.com/kkbjs/element3/commit/1f38c26a29586400de25a326bc98c161bf75d918))
+* fix bug of model and fix animation of transfer add test code ([d435460](https://github.com/kkbjs/element3/commit/d435460a2b0ed020baab1c01f14248435af8eb0d))
+* modify file name ([e88de8f](https://github.com/kkbjs/element3/commit/e88de8fffac57cd30feb7d6bd7fcf8d7420d83e1))
+* modify file path ([47b8682](https://github.com/kkbjs/element3/commit/47b86829a5f86d7c5032d39feb7013f6ffedce1b))
+* tabs many bug ([5bbf84f](https://github.com/kkbjs/element3/commit/5bbf84fb7dee773e82455a0e8dd53a40bdaa9883))
+* tabs test script ([8301b24](https://github.com/kkbjs/element3/commit/8301b246b288a1b959455e4c15763ad937ac1d0b))
+* update examples md ([9b0f08a](https://github.com/kkbjs/element3/commit/9b0f08af3319fff68e09e83aa6e6a799c18996e7))
+* update InputNumber and test ([e640cc5](https://github.com/kkbjs/element3/commit/e640cc5a4e38e1690ef4e474acd64394526d85db))
+* 修复menu 默认展开的问题 ([70fed6f](https://github.com/kkbjs/element3/commit/70fed6fee76978cdfa3c6d47d474b508c1c96132))
+* 修复test测试集 ([9ba3fa3](https://github.com/kkbjs/element3/commit/9ba3fa35ae7769486ef5b0d8ded5ffe218ab56e0))
+
+
+### Features
+
+* 修改lint ([7d0b309](https://github.com/kkbjs/element3/commit/7d0b3098a90ddbd3c79de5b48310c94d5b41c842))
+* 新增test ([7d81e93](https://github.com/kkbjs/element3/commit/7d81e93b3921e52a9cc24d6c0f7cbae4518c1e76))
+* 新增test ([8cd809e](https://github.com/kkbjs/element3/commit/8cd809ecb974dc89a9f72524c3d129085710d988))
+* 新增test ([4094ffa](https://github.com/kkbjs/element3/commit/4094ffad0f3a9221d8bdaf11e7090628ea2e4589))
+
+
+
 ## [0.0.13](https://github.com/kkbjs/element3/compare/v0.0.12...v0.0.13) (2020-10-06)
 
 

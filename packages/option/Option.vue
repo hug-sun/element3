@@ -17,8 +17,8 @@
 </template>
 
 <script type="text/babel">
-import { getValueByPath, escapeRegexpString } from 'element-ui/src/utils/util'
-import { useEmitter } from 'element-ui/src/use/emitter'
+import { getValueByPath, escapeRegexpString } from '../../src/utils/util'
+import { useEmitter } from '../../src/use/emitter'
 import {
   inject,
   getCurrentInstance,

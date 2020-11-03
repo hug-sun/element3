@@ -1,4 +1,4 @@
-import { on, off } from 'element-ui/src/utils/dom'
+import { on, off } from '../../src/utils/dom'
 import { renderThumbStyle, BAR_MAP } from './util'
 import {
   ref,

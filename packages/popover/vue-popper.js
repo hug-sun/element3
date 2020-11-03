@@ -6,9 +6,10 @@ import {
   watch,
   toRefs
 } from 'vue'
-import { PopupManager } from 'element-ui/src/utils/popup'
+import { PopupManager } from '../../src/utils/popup'
 
-const PopperJS = require('element-ui/src/utils/popper')
+// const PopperJS = require('element-ui/src/utils/popper')
+import PopperJS from '../../src/utils/new-popper'
 // const PopperJS = Vue.prototype.$isServer ? function() {} : require('./popper')
 const stop = (e) => e.stopPropagation()
 

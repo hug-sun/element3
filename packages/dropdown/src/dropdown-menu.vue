@@ -18,8 +18,8 @@ import {
   onMounted,
   nextTick
 } from 'vue'
-import { usePopper, popperProps } from 'main/use/popper'
-import { useEmitter } from 'main/use/emitter'
+import { usePopper, popperProps } from '../../../src/use/popper'
+import { useEmitter } from '../../../src/use/emitter'
 
 export default {
   name: 'ElDropdownMenu',
@@ -38,7 +38,7 @@ export default {
     }
   },
 
-  emits: ['updatePopper', 'visible', 'update:value', 'created'],
+  emits: ['updatePopper', 'visible', 'update:modelValue', 'created'],
 
   setup(props, { emit, slots }) {
     const popperElm = ref(null)

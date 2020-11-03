@@ -1,8 +1,8 @@
-import Divider from './Divider'
+import ElDivider from './Divider'
 
 /* istanbul ignore next */
-Divider.install = function (app) {
-  app.component(Divider.name, Divider)
+ElDivider.install = function (app) {
+  app.component(ElDivider.name, ElDivider)
 }
 
-export default Divider
+export default ElDivider

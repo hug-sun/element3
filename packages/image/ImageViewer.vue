@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import { on, off } from 'element-ui/src/utils/dom'
-import { rafThrottle, isFirefox } from 'element-ui/src/utils/util'
+import { on, off } from '../../src/utils/dom'
+import { rafThrottle, isFirefox } from '../../src/utils/util'
 import { reactive, computed, ref, watch, nextTick, onMounted } from 'vue'
 const Mode = {
   CONTAIN: {

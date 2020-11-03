@@ -84,7 +84,9 @@
       default-active="2"
       class="el-menu-vertical-demo"
       @open="handleOpen"
-      @close="handleClose">
+      @close="handleClose"
+      :default-openeds="defaultOpeneds"
+    >
       <el-submenu index="1">
         <template v-slot:title>
           <i class="el-icon-location"></i>
@@ -132,7 +134,8 @@
       @close="handleClose"
       background-color="#545c64"
       text-color="#fff"
-      active-text-color="#ffd04b">
+      active-text-color="#ffd04b"
+    >
       <el-submenu index="1">
         <template v-slot:title>
           <i class="el-icon-location"></i>
@@ -175,6 +178,11 @@
 
 <script>
   export default {
+    data(){
+      return {
+         defaultOpeneds: ["1","1-4"]
+      }
+    },
     methods: {
       handleOpen(key, keyPath) {
         console.log(key, keyPath);

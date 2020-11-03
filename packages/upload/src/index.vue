@@ -95,7 +95,7 @@
 <script>
 import UploadList from './upload-list'
 import Upload from './upload'
-import Migrating from 'element-ui/src/mixins/migrating'
+import Migrating from '../../../src/mixins/migrating'
 import {
   ref,
   unref,

@@ -134,24 +134,24 @@ import {
   onMounted,
   onUnmounted
 } from 'vue'
-import Popper from 'element-ui/src/utils/vue-popper'
-import { useEmitter } from 'element-ui/src/use/emitter'
-import { migrating } from 'element-ui/src/use/migrating'
-import Clickoutside from 'element-ui/src/directives/clickoutside'
-import ElInput from 'element-ui/packages/input'
-import ElTag from 'element-ui/packages/tag'
-import ElScrollbar from 'element-ui/packages/scrollbar'
-import ElCascaderPanel from 'element-ui/packages/cascader-panel'
-import AriaUtils from 'element-ui/src/utils/aria-utils'
-import { t } from 'element-ui/src/locale'
-import { isEqual, isEmpty, kebabCase } from 'element-ui/src/utils/util'
-import { isDef } from 'element-ui/src/utils/shared'
-import { useLocale } from 'element-ui/src/use/locale'
+import Popper from '../../src/utils/vue-popper'
+import { useEmitter } from '../../src/use/emitter'
+import { migrating } from '../../src/use/migrating'
+import Clickoutside from '../../src/directives/clickoutside'
+import ElInput from '../input'
+import ElTag from '../tag'
+import ElScrollbar from '../scrollbar'
+import ElCascaderPanel from '../cascader-panel'
+import AriaUtils from '../../src/utils/aria-utils'
+import { t } from '../../src/locale'
+import { isEqual, isEmpty, kebabCase } from '../../src/utils/util'
+import { isDef } from '../../src/utils/shared'
+import { useLocale } from '../../src/use/locale'
 import {
   addResizeListener,
   removeResizeListener
-} from 'element-ui/src/utils/resize-event'
-import debounce from 'throttle-debounce/debounce'
+} from '../../src/utils/resize-event'
+import { debounce } from 'throttle-debounce'
 
 const { keys: KeyCode } = AriaUtils
 const MigratingProps = {
@@ -187,7 +187,7 @@ const PopperMixin = {
   },
   methods: Popper.methods,
   data: Popper.data,
-  beforeDestroy: Popper.beforeDestroy
+  beforeUnmount: Popper.beforeUnmount
 }
 
 const InputSizeMap = {

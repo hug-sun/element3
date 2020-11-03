@@ -82,8 +82,8 @@
 </template>
 
 <script>
-import ElCollapseTransition from 'element-ui/src/transitions/collapse-transition'
-import ElCheckbox from 'element-ui/packages/checkbox'
+import ElCollapseTransition from '../../src/transitions/collapse-transition'
+import ElCheckbox from '../checkbox'
 import ElNodeContent from './NodeContent'
 import { TreeNode } from './entity/TreeNode'
 import { inject } from 'vue'

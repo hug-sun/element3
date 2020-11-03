@@ -1,4 +1,4 @@
-import merge from 'element-ui/src/utils/merge'
+import merge from '../../../../src/utils/merge'
 import {
   getKeysMap,
   getRowIdentity,

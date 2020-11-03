@@ -1,4 +1,4 @@
-import defaultLang from 'element-ui/src/locale/lang/zh-CN'
+import defaultLang from '../../src/locale/lang/zh-CN'
 // import deepmerge from 'deepmerge'
 import Format from './format'
 

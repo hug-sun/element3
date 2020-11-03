@@ -164,30 +164,25 @@
 </template>
 
 <script type="text/babel">
-import Focus from 'element-ui/src/mixins/focus'
-import Locale from 'element-ui/src/mixins/locale'
-import ElInput from 'element-ui/packages/input'
+import Focus from '../../src/mixins/focus'
+import Locale from '../../src/mixins/locale'
+import ElInput from '../input'
 import ElSelectMenu from './SelectDropdown'
-import ElOption from 'element-ui/packages/option/Option'
-import ElTag from 'element-ui/packages/tag'
-import ElScrollbar from 'element-ui/packages/scrollbar'
-import debounce from 'throttle-debounce/debounce'
-import Clickoutside from 'element-ui/src/directives/clickoutside'
+import ElOption from '../option/Option'
+import ElTag from '../tag'
+import ElScrollbar from '../scrollbar'
+import { debounce } from 'throttle-debounce'
+import Clickoutside from '../../src/directives/clickoutside'
 import {
   addResizeListener,
   removeResizeListener
-} from 'element-ui/src/utils/resize-event'
-import { t } from 'element-ui/src/locale'
-import scrollIntoView from 'element-ui/src/utils/scroll-into-view'
-import {
-  getValueByPath,
-  valueEquals,
-  isIE,
-  isEdge
-} from 'element-ui/src/utils/util'
+} from '../../src/utils/resize-event'
+import { t } from '../../src/locale'
+import scrollIntoView from '../../src/utils/scroll-into-view'
+import { getValueByPath, valueEquals, isIE, isEdge } from '../../src/utils/util'
 import NavigationMixin from './navigation-mixin'
-import { isKorean } from 'element-ui/src/utils/shared'
-import { useEmitter } from 'element-ui/src/use/emitter'
+import { isKorean } from '../../src/utils/shared'
+import { useEmitter } from '../../src/use/emitter'
 
 export default {
   mixins: [Locale, Focus('reference'), NavigationMixin],

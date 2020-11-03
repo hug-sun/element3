@@ -111,6 +111,7 @@ ComponentNames.forEach((name) => {
       'input',
       'alert',
       'carousel',
+      'carousel-item',
       'breadcrumb',
       'breadcrumb-item',
       'dialog',
@@ -143,6 +144,8 @@ ComponentNames.forEach((name) => {
       'collapse',
       'collapse-item',
       'message-box',
+      'tabs',
+      'tab-pane',
       'color-picker',
       'cascader',
       'cascader-panel'

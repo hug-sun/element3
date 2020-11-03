@@ -115,13 +115,13 @@ import {
   ref,
   watch
 } from 'vue'
-import { popupProps, usePopup } from 'element-ui/src/use/popup'
-import Locale from 'element-ui/src/mixins/locale'
-import ElInput from 'element-ui/packages/input'
-import ElButton from 'element-ui/packages/button'
-import { addClass, removeClass } from 'element-ui/src/utils/dom'
-import { t } from 'element-ui/src/locale'
-import Dialog from 'element-ui/src/utils/aria-dialog'
+import { popupProps, usePopup } from '../../../src/use/popup'
+import Locale from '../../../src/mixins/locale'
+import ElInput from '../../input'
+import ElButton from '../../button'
+import { addClass, removeClass } from '../../../src/utils/dom'
+import { t } from '../../../src/locale'
+import Dialog from '../../../src/utils/aria-dialog'
 
 // let messageBox
 const typeMap = {
@@ -179,7 +179,7 @@ export default {
     },
     beforeClose: {
       type: Function,
-      default: () => {}
+      default: null
     },
     distinguishCancelAndClose: {
       type: Boolean,
@@ -292,7 +292,7 @@ export default {
       inputValue
     } = toRefs(props)
     const state = reactive({
-      visible: true,
+      visible: false,
       action: null,
       editorErrorMessage: null,
       uid: 0,
@@ -365,7 +365,6 @@ export default {
         return
       }
       state.action = action
-
       if (typeof unref(beforeClose) === 'function') {
         const close = getSafeClose()
         unref(beforeClose)(action, instance.proxy, close)
@@ -374,7 +373,13 @@ export default {
       }
     }
     const handleWrapperClick = () => {
-      if (!unref(closeOnClickModal)) {
+      if (unref(closeOnClickModal)) {
+        handleAction(unref(distinguishCancelAndClose) ? 'close' : 'cancel')
+      }
+    }
+    const handleKeyup = (element = {}) => {
+      if (element.code !== 'Escape') return
+      if (unref(props.closeOnPressEscape)) {
         handleAction(unref(distinguishCancelAndClose) ? 'close' : 'cancel')
       }
     }
@@ -392,10 +397,10 @@ export default {
       )
     })
     const cancelButtonClasses = computed(() => {
-      return `${cancelButtonClass}`
+      return `el-button--primary ${unref(cancelButtonClass)}`
     })
     const confirmButtonClasses = computed(() => {
-      return `el-button--primary ${confirmButtonClass}`
+      return `el-button--primary ${unref(confirmButtonClass)}`
     })
     const getFirstFocus = () => {
       const btn = instance.ctx.$el.querySelector(
@@ -411,6 +416,7 @@ export default {
       return inputRefs.input || inputRefs.textarea
     }
     onMounted(() => {
+      state.visible = true
       nextTick(() => {
         state.uid++
         rendered.value = true
@@ -427,22 +433,22 @@ export default {
         focusAfterClosed,
         getFirstFocus()
       )
+      if (unref(closeOnHashChange)) {
+        window.addEventListener('hashchange', doClose)
+      }
+      window.addEventListener('keyup', handleKeyup)
       if (unref(_type) !== 'prompt') return
       setTimeout(() => {
         if (instance.refs.input && instance.refs.input.$el) {
           getInputElement().focus()
         }
       }, 500)
-      nextTick(() => {
-        if (unref(closeOnHashChange)) {
-          window.addEventListener('hashchange', () => {})
-        }
-      })
     })
     onUnmounted(() => {
       if (unref(closeOnHashChange)) {
-        window.removeEventListener('hashchange', () => {})
+        window.removeEventListener('hashchange', doClose)
       }
+      window.removeEventListener('keyup', handleKeyup)
       setTimeout(() => {
         messageBox.closeDialog()
       })

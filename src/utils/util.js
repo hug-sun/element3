@@ -1,4 +1,4 @@
-import { isString, isObject } from 'element-ui/src/utils/types'
+import { isString, isObject } from '../../src/utils/types'
 
 const hasOwnProperty = Object.prototype.hasOwnProperty
 

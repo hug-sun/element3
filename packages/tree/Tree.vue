@@ -35,8 +35,8 @@
 <script>
 import { Tree } from './entity/Tree'
 import ElTreeNode from './TreeNode.vue'
-import { t } from 'element-ui/src/locale'
-import { isFunction } from 'element-ui/src/utils/types'
+import { t } from '../../src/locale'
+import { isFunction } from '../../src/utils/types'
 import { extractMethods } from './libs/util'
 
 import {

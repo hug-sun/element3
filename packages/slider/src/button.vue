@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import ElTooltip from 'element-ui/packages/tooltip'
+import ElTooltip from '../../tooltip'
 import {
   computed,
   ref,
@@ -224,7 +224,7 @@ function useDragAndKeyDown(
   watch(dragging, (val) => (parent.ctx.dragging = val))
 
   // eslint-disable-next-line
-//#region drag methods: onButtonDown, onDragStart, onDragging, onDragEnd
+  //#region drag methods: onButtonDown, onDragStart, onDragging, onDragEnd
 
   function onButtonDown(event) {
     if (unref(disabled)) return
@@ -297,10 +297,10 @@ function useDragAndKeyDown(
     }
   }
   // eslint-disable-next-line
-//#endregion 
+  //#endregion
 
   // eslint-disable-next-line
-//#region KeyDown methods: onLeftKeyDown, onRightKeyDown
+  //#region KeyDown methods: onLeftKeyDown, onRightKeyDown
 
   function onLeftKeyDown() {
     if (unref(disabled)) return
@@ -320,7 +320,7 @@ function useDragAndKeyDown(
   }
 
   // eslint-disable-next-line
-//#endregion
+  //#endregion
 
   function setPosition(newPosition) {
     if (newPosition === null || isNaN(newPosition)) return

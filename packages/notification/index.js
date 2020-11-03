@@ -1,2 +1,8 @@
 import Notification from './Notification.js'
-export default Notification
+import NotificationComponent from './Notification.vue'
+
+export function useNotify() {
+  return Notification
+}
+
+export default NotificationComponent

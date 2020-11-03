@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
   <li
     class="el-menu-item"
@@ -50,8 +49,8 @@
 </template>
 <script>
 import { useMenu } from './src/menu-use'
-import ElTooltip from 'element-ui/packages/tooltip'
-import { useEmitter } from 'element-ui/src/use/emitter'
+import ElTooltip from '../tooltip'
+import { useEmitter } from '../../src/use/emitter'
 import {
   computed,
   getCurrentInstance,
