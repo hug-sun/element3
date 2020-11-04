@@ -92,7 +92,9 @@ Alert 组件提供了两个不同的主题：`light`和`dark`。
       const hello=()=>{
         alert('Hello World!');
       }
-      return {hello}
+      return {
+        hello
+      }
     }
   }
 </script>
