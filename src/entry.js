@@ -91,6 +91,7 @@ import ElImage from '../packages/image'
 import ElBacktop from '../packages/backtop'
 import ElInfiniteScroll from '../packages/infinite-scroll'
 import ElDrawer from '../packages/drawer'
+import ElScrollbar from '../packages/scrollbar'
 
 import { version } from '../package.json'
 
@@ -168,7 +169,8 @@ const components = [
   ElCalendar,
   ElImage,
   ElInfiniteScroll,
-  ElDrawer
+  ElDrawer,
+  ElScrollbar
 ]
 
 const install = (app, opts = {}) => {
@@ -261,6 +263,7 @@ export {
   ElDivider,
   ElCalendar,
   ElImage,
+  ElScrollbar,
   useMessage,
   useLoading,
   useMsgbox,
