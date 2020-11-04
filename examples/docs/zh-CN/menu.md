@@ -24,7 +24,7 @@
     </el-submenu>
   </el-submenu>
   <el-menu-item index="3" disabled>消息中心</el-menu-item>
-  <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+  <el-menu-item index="4"><a href="www.kaikeba.com" target="_blank">订单管理</a></el-menu-item>
 </el-menu>
 <div class="line"></div>
 <el-menu
@@ -49,21 +49,23 @@
     </el-submenu>
   </el-submenu>
   <el-menu-item index="3" disabled>消息中心</el-menu-item>
-  <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+  <el-menu-item index="4"><a href="www.kaikeba.com" target="_blank">订单管理</a></el-menu-item>
 </el-menu>
 
 <script>
+import {ref} from 'vue';
   export default {
-    data() {
-      return {
-        activeIndex: '1',
-        activeIndex2: '1'
-      };
-    },
-    methods: {
-      handleSelect(key, keyPath) {
+    setup() {
+      const activeIndex = ref('1');
+      const activeIndex2 = ref('1');
+      function handleSelect(key, keyPath) {
         console.log(key, keyPath);
-      }
+      };
+      return {
+        activeIndex,
+        activeIndex2,
+        handleSelect
+      };
     }
   }
 </script>
@@ -177,21 +179,25 @@
 </el-row>
 
 <script>
-  export default {
-    data(){
+import {ref} from 'vue';
+export default {
+    setup() {
+      const defaultOpeneds = ref(["1","1-4"]);
+      
+      function handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      };
+      function handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      };
       return {
-         defaultOpeneds: ["1","1-4"]
-      }
-    },
-    methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      }
+        defaultOpeneds,
+        handleOpen,
+        handleClose
+      };
     }
   }
+  
 </script>
 ```
 
@@ -257,19 +263,22 @@
 </style>
 
 <script>
-  export default {
-    data() {
-      return {
-        isCollapse: true
+import {ref} from 'vue';
+export default {
+    setup() {
+      const isCollapse = ref(true);
+      
+      function handleOpen(key, keyPath) {
+        console.log(key, keyPath);
       };
-    },
-    methods: {
-      handleOpen(key, keyPath) {
+      function handleClose(key, keyPath) {
         console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      }
+      };
+      return {
+        isCollapse,
+        handleOpen,
+        handleClose
+      };
     }
   }
 </script>

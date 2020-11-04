@@ -12,10 +12,11 @@
 </template>
 <script>
   export default {
-    methods: {
-      goBack() {
+    setup() {
+      function goBack() {
         console.log('go back');
       }
+      return{goBack}
     }
   }
 </script>

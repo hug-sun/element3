@@ -118,22 +118,21 @@
   </div>
 </template>
 <script>
+import {ref} from "vue"
   export default {
-    methods: {
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      }
-    },
-    data() {
-      return {
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4
+    
+    setup(){
+        const currentPage1=  ref(5);
+        const currentPage2=  ref(5);
+        const currentPage3=  ref(5);
+        const currentPage4=  ref(5);
+      function handleSizeChange(val) {
+        console.log(`每页 ${val.value} 条`);
       };
+      function handleCurrentChange(val) {
+        console.log(`当前页: ${val.value}`);
+      };
+      return{currentPage1,currentPage2,currentPage3,currentPage4,handleSizeChange,handleCurrentChange}
     }
   }
 </script>
@@ -157,10 +156,12 @@
 </div>
 
 <script>
+import {ref} from "vue";
   export default {
-    data() {
+    setup() {
+      const value = ref(false);
       return {
-        value: false
+        value,
       }
     }
   }

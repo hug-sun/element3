@@ -16,19 +16,25 @@
 </template>
 
 <script>
+  import { getCurrentInstance } from 'vue'
   export default {
-    methods: {
-      open() {
-        this.$alert('这是一段内容', '标题名称', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.$message({
-              type: 'info',
-              message: `action: ${ action }`
-            });
-          }
-        });
-      }
+    setup() {
+      const _this = getCurrentInstance().ctx;
+     
+      function open() {
+         console.log("getCurrentInstance",_this)
+        
+        // _this.$alert('这是一段内容', '标题名称', {
+        //   confirmButtonText: '确定',
+        //   callback: action => {
+        //     _this.$message({
+        //       type: 'info',
+        //       message: `action: ${ action }`
+        //     });
+        //   }
+        // });
+      };
+      return{_this,open}
     }
   }
 </script>
@@ -122,10 +128,10 @@
 </template>
 
 <script>
-  import { h } from 'vue'
   export default {
     methods: {
       open() {
+        const h = this.$createElement;
         this.$msgbox({
           title: '消息',
           message: h('p', null, [
