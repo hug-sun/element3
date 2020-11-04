@@ -245,7 +245,7 @@ export default {
     })
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     const panels = this.filterPanels
     for (const prop in panels) {
       if (Object.hasOwnProperty.call(panels, prop) && panels[prop]) {

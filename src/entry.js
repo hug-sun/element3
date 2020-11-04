@@ -1,4 +1,5 @@
 // 用于构建时的入口
+// Basic
 import ElRow from '../packages/row'
 import ElCol from '../packages/col'
 import ElContainer from '../packages/container'
@@ -6,34 +7,10 @@ import ElHeader from '../packages/header'
 import ElFooter from '../packages/footer'
 import ElAside from '../packages/aside'
 import ElMain from '../packages/main'
-import ElAlert from '../packages/alert'
-import ElButton from '../packages/button'
-import ElSwitch from '../packages/switch'
-import ElProgress from '../packages/progress'
-import ElLink from '../packages/link'
 import ElIcon from '../packages/icon'
-import ElBreadcrumb from '../packages/breadcrumb'
-import ElBreadcrumbItem from '../packages/breadcrumb-item'
-import ElBacktop from '../packages/backtop'
-import ElTree from '../packages/tree'
-import ElMenu from '../packages/menu'
-import ElMenuItem from '../packages/menu-item'
-import ElSubmenu from '../packages/submenu'
-import ElMenuItemGroup from '../packages/menu-item-group'
-import ElPagination from '../packages/pagination'
-import ElTag from '../packages/tag'
-import ElBadge from '../packages/badge'
-import ElAvatar from '../packages/avatar'
-import ElTabs from '../packages/tabs'
-import ElTabPane from '../packages/tab-pane'
-import ElPageHeader from '../packages/page-header'
-import ElDropdown from '../packages/dropdown'
-import ElDropdownItem from '../packages/dropdown-item'
-import ElDropdownMenu from '../packages/dropdown-menu'
-import ElSteps from '../packages/steps'
-import ElStep from '../packages/step'
-import ElForm from '../packages/form'
-import ElFormItem from '../packages/form-item'
+import ElButton from '../packages/button'
+import ElLink from '../packages/link'
+// Form
 import ElRadio from '../packages/radio'
 import ElRadioButton from '../packages/radio-button'
 import ElRadioGroup from '../packages/radio-group'
@@ -43,35 +20,67 @@ import ElCheckboxGroup from '../packages/checkbox-group'
 import ElInput from '../packages/input'
 import ElInputNumber from '../packages/input-number'
 import ElSelect from '../packages/select'
+import ElOption from '../packages/option'
+import ElOptionGroup from '../packages/option-group'
 import ElCascader from '../packages/cascader'
 import ElCascaderPanel from '../packages/cascader-panel'
+import ElSwitch from '../packages/switch'
 import ElSlider from '../packages/slider'
-import ElTimePicker from '../packages/time-picker'
-import ElTimeSelect from '../packages/time-select'
-import ElDatePicker from '../packages/date-picker'
+// import ElTimePicker from '../packages/time-picker'
+// import ElTimeSelect from '../packages/time-select'
+// import ElDatePicker from '../packages/date-picker'
 import ElUpload from '../packages/upload'
 import ElRate from '../packages/rate'
 import ElColorPicker from '../packages/color-picker'
 import ElTransfer from '../packages/transfer'
-import ElOption from '../packages/option'
-import ElOptionGroup from '../packages/option-group'
+import ElForm from '../packages/form'
+import ElFormItem from '../packages/form-item'
+// Data
+// import ElTable
+import ElTag from '../packages/tag'
+import ElProgress from '../packages/progress'
+import ElTree from '../packages/tree'
+import ElPagination from '../packages/pagination'
+import ElBadge from '../packages/badge'
+import ElAvatar from '../packages/avatar'
+// Notice
+import ElAlert from '../packages/alert'
 
 import ElLoading, { useLoading } from '../packages/loading'
+
 import { useMessage } from '../packages/message'
+
 import {
   useMsgbox,
   useAlert,
   usePrompt,
   useConfirm
 } from '../packages/message-box'
-import { useNotify } from '../packages/notification'
 
+import { useNotify } from '../packages/notification'
+// Navigation
+import ElMenu from '../packages/menu'
+import ElMenuItem from '../packages/menu-item'
+import ElSubmenu from '../packages/submenu'
+import ElMenuItemGroup from '../packages/menu-item-group'
+import ElTabs from '../packages/tabs'
+import ElTabPane from '../packages/tab-pane'
+import ElBreadcrumb from '../packages/breadcrumb'
+import ElBreadcrumbItem from '../packages/breadcrumb-item'
+import ElPageHeader from '../packages/page-header'
+import ElDropdown from '../packages/dropdown'
+import ElDropdownItem from '../packages/dropdown-item'
+import ElDropdownMenu from '../packages/dropdown-menu'
+import ElSteps from '../packages/steps'
+import ElStep from '../packages/step'
+// Others
 import ElDialog from '../packages/dialog'
 import ElTooltip from '../packages/tooltip'
 import ElPopover from '../packages/popover'
 import ElPopconfirm from '../packages/popconfirm'
 import ElCard from '../packages/card'
 import ElCarousel from '../packages/carousel'
+import ElCarouselItem from '../packages/carousel-item'
 import ElCollapse from '../packages/collapse'
 import ElCollapseItem from '../packages/collapse-item'
 import ElTimeline from '../packages/timeline'
@@ -79,6 +88,7 @@ import ElTimelineItem from '../packages/timeline-item'
 import ElDivider from '../packages/divider'
 import ElCalendar from '../packages/calendar'
 import ElImage from '../packages/image'
+import ElBacktop from '../packages/backtop'
 import ElInfiniteScroll from '../packages/infinite-scroll'
 import ElDrawer from '../packages/drawer'
 
@@ -110,6 +120,8 @@ const components = [
   ElTag,
   ElBadge,
   ElAvatar,
+  ElCarousel,
+  ElCarouselItem,
   ElTabs,
   ElTabPane,
   ElPageHeader,
@@ -133,9 +145,9 @@ const components = [
   ElCascader,
   ElCascaderPanel,
   ElSlider,
-  ElTimePicker,
-  ElTimeSelect,
-  ElDatePicker,
+  // ElTimePicker,
+  // ElTimeSelect,
+  // ElDatePicker,
   ElUpload,
   ElRate,
   ElColorPicker,
@@ -159,7 +171,12 @@ const components = [
   ElDrawer
 ]
 
-const install = (app) => {
+const install = (app, opts = {}) => {
+  app.config.globalProperties.$ELEMENT = {
+    size: opts.size || '',
+    zIndex: opts.zIndex || 2000
+  }
+
   components.forEach((component) => {
     app.use(component)
   })
@@ -196,6 +213,10 @@ export {
   ElTag,
   ElBadge,
   ElAvatar,
+  ElCarousel,
+  ElCarouselItem,
+  ElInfiniteScroll,
+  ElDrawer,
   ElTabs,
   ElTabPane,
   ElPageHeader,
@@ -219,9 +240,9 @@ export {
   ElCascader,
   ElCascaderPanel,
   ElSlider,
-  ElTimePicker,
-  ElTimeSelect,
-  ElDatePicker,
+  // ElTimePicker,
+  // ElTimeSelect,
+  // ElDatePicker,
   ElUpload,
   ElRate,
   ElColorPicker,
@@ -233,7 +254,6 @@ export {
   ElPopover,
   ElPopconfirm,
   ElCard,
-  ElCarousel,
   ElCollapse,
   ElCollapseItem,
   ElTimeline,
@@ -241,8 +261,6 @@ export {
   ElDivider,
   ElCalendar,
   ElImage,
-  ElInfiniteScroll,
-  ElDrawer,
   useMessage,
   useLoading,
   useMsgbox,

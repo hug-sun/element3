@@ -271,7 +271,7 @@ If the variable bound to `visible` is managed in Vuex store, the `.sync` can not
 | before-close | If set, closing procedure will be halted | function(done), done is function type that accepts a boolean as parameter, calling done with true or without parameter will abort the close procedure | — | — |
 | close-on-press-escape | Indicates whether Drawer can be closed by pressing ESC | boolean | — | true |
 | custom-class | Extra class names for Drawer | string | — | — |
-| destroy-on-close | Indicates whether children should be destroyed after Drawer closed | boolean | - | false |
+| destroy-on-close | Indicates whether children should be unmounted after Drawer closed | boolean | - | false |
 | modal | Should show shadowing layer | boolean | — | true |
 | modal-append-to-body | Indicates should shadowing layer be insert into DocumentBody element | boolean   | — | true |
 | direction | Drawer's opening direction | Direction | rtl / ltr / ttb / btt | rtl |

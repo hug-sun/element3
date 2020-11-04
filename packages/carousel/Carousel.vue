@@ -64,7 +64,6 @@ import {
   nextTick,
   provide,
   onMounted,
-  getCurrentInstance,
   onUnmounted
 } from 'vue'
 import { throttle } from 'throttle-debounce'
@@ -151,9 +150,6 @@ export default {
       startTimer
     } = useInitSlide(props, initData, loop)
 
-    // 组件逻辑处理
-    const _this = getCurrentInstance()
-
     const updateItems = (ElCarouselItem) => {
       initData.items.push(ElCarouselItem)
     }
@@ -162,7 +158,7 @@ export default {
 
     onMounted(() => {
       nextTick(() => {
-        addResizeListener(_this.vnode.el, resetItemPosition)
+        addResizeListener(resetItemPosition)
         if (
           props.initialIndex < initData.items.length &&
           props.initialIndex >= 0

@@ -3,7 +3,7 @@ export default {
     this.tableLayout.addObserver(this)
   },
 
-  destroyed() {
+  unmounted() {
     this.tableLayout.removeObserver(this)
   },
 
