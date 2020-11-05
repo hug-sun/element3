@@ -4,7 +4,7 @@
   "description": "A Component Library for Vue3",
   "main": "dist/element3-ui.cjs.js",
   "module": "dist/element3-ui.esm-bundler.js",
-  "unpkg": "lib/index.js",
+  "unpkg": "dist/element3-ui.global.js",
   "jsdelivr": "dist/element3-ui.global.js",
   "files": [
     "lib",
