@@ -1,3 +1,13 @@
+## [0.0.20](https://github.com/kkbjs/element3/compare/v0.0.19...v0.0.20) (2020-11-05)
+
+
+### Bug Fixes
+
+* avater ... md ([7fb82a2](https://github.com/kkbjs/element3/commit/7fb82a2cdee69c7f480eb1d12243538c83c517e5))
+* cascader export path ([1db3ca7](https://github.com/kkbjs/element3/commit/1db3ca725f5e182f98b3fb150b08e627fd7b42ae))
+
+
+
 ## [0.0.19](https://github.com/kkbjs/element3/compare/v0.0.18...v0.0.19) (2020-11-03)
 
 
