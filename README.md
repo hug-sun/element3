@@ -89,11 +89,14 @@ Please make sure to read the [Issue Reporting Checklist](TODO) before opening an
 
 Detailed changes for each release are documented in the [CHANGELOG](https://github.com/kkbjs/element3/blob/master/CHANGELOG.md).
 
-## Contribution
+## Contribution ✨
 
 Please make sure to read the [Contributing Guide](https://juejin.im/post/6864462363039531022) before making a pull request. If you have a Element3-related project/component/tool, add it with a pull request to [this curated list](TODO)!
 
 Thank you to all the people who already contributed to Element3!
+
+<table><tr><td align="center"><a href="https://github.com/cuixiaorui"><img src="https://user-gold-cdn.xitu.io/2019/12/8/16ee34c171e57baf?imageView2/1/w/180/h/180/q/85/format/webp/interlace/1"  style="width:50px; height:50px; border-radius:50%" alt=""/><br /><sub><b>cuixiaorui</b></sub></a><br /><a href="https://juejin.im/user/2101921961483374" title="Code" style="padding: 0 3px">💻</a></td><td align="center"><a href="https://juejin.im/user/2101921961483374"><img src="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/69ae92d51d8ba6b614b5509d9e43d84b~120x256.image"  style="width:50px; height:50px; border-radius:50%" alt=""/><br /><sub><b>大帅ezshine</b></sub></a><br /><a href="https://github.com/ezshine" title="Code" style="padding: 0 3px">🧩</a><a href="https://space.bilibili.com/422646817" title="Code" style="padding: 0 3px">📺</a></td><td align="center"><a href="https://juejin.im/user/3685218706268685"><img src="https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/4ac8f0e26656e6270e8585ef1eb62090~120x256.image"  style="width:50px; height:50px; border-radius:50%" alt=""/><br /><sub><b>blackNezha</b></sub></a><br /><a href="https://juejin.im/user/2101921961483374" title="Code" style="padding: 0 3px">💻</a></td></tr><table>
+
 
 ## Join Discussion Group
 
