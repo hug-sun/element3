@@ -4,7 +4,7 @@ const contributors = require('../contributors.json')
 function tdTemplate(info) {
   return `<td align="center"><a href="${info.avatar_link}"><img src="${
     info.avatar
-  }"  style="width:50px; height:50px; border-radius:50%" alt=""/><br /><sub><b>${
+  }"  width="60" alt=""/><br /><sub><b>${
     info.name
   }</b></sub></a><br />${iconsTemplate(info.icons)}</td>`
 }
