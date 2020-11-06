@@ -90,7 +90,7 @@ export default {
 }
 
 function useInject() {
-  const elForm = inject('elFrom', {})
+  const elForm = inject('elForm', {})
   const elFormItem = inject('elFormItem', {})
   return {
     elForm,
@@ -139,11 +139,10 @@ function useModel({ radioGroup }) {
 
 function useStyle({ radioGroup, disabled, value, label, elForm, elFormItem }) {
   const { ctx } = getCurrentInstance()
-  const elFormDisable = (elForm.props || {}).disabled
-  const elFormItemSize = (elFormItem.ctx || {}).elFormItemSize
+  const elFormDisable = elForm.disabled
 
   const size = computed(() => {
-    const temRadioSize = elFormItemSize || (ctx.$ELEMENT || {}).size
+    const temRadioSize = elFormItem.elFormItemSize || (ctx.$ELEMENT || {}).size
     return radioGroup.ctx.radioGroupSize || temRadioSize
   })
   const isDisabled = computed(() => {

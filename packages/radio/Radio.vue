@@ -110,7 +110,7 @@ export default {
 }
 
 function useInject() {
-  const elForm = inject('elFrom', {})
+  const elForm = inject('elForm', {})
   const elFormItem = inject('elFormItem', {})
   return {
     elForm,
@@ -173,7 +173,7 @@ function useStyle({
   elFormItem
 }) {
   const { ctx } = getCurrentInstance()
-  const elFormDisable = (elForm.props || {}).disabled
+  const elFormDisable = elForm.disabled
   const radioSize = computed(() => {
     const temRadioSize =
       unref(size) || elFormItem.elFormItemSize || (ctx.$ELEMENT || {}).size
