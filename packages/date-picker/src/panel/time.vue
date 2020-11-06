@@ -43,8 +43,8 @@ import {
   isDate,
   clearMilliseconds,
   timeWithinRange
-} from 'element-ui/src/utils/date-util'
-import { useLocale } from 'element-ui/src/use/locale'
+} from '../../../../src/utils/date-util'
+import { useLocale } from '../../../../src/use/locale'
 import TimeSpinner from '../basic/time-spinner'
 import {
   computed,

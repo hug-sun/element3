@@ -90,18 +90,17 @@
 </template>
 
 <script>
-import { createApp } from 'vue'
-import Clickoutside from 'element-ui/src/utils/clickoutside'
+import Clickoutside from '../../../src/utils/clickoutside'
 import {
   formatDate,
   parseDate,
   isDateObject,
   getWeekNumber
-} from 'element-ui/src/utils/date-util'
-import ElInput from 'element-ui/packages/input'
-import { useEmitter } from 'element-ui/src/use/emitter'
-import { popperProps, usePopper } from 'element-ui/src/use/popper'
-import { ref } from 'vue'
+} from '../../../src/utils/date-util'
+import ElInput from '../../input'
+import { useEmitter } from '../../../src/use/emitter'
+import { popperProps, usePopper } from '../../../src/use/popper'
+import { ref, createApp } from 'vue'
 
 const DEFAULT_FORMATS = {
   date: 'yyyy-MM-dd',

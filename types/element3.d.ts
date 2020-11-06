@@ -1,5 +1,9 @@
-import Vue, { PluginObject } from 'vue'
-import { ElementUIComponent, ElementUIComponentSize, ElementUIHorizontalAlignment } from './component'
+import { PluginObject, App } from 'vue'
+import {
+  ElementUIComponent,
+  ElementUIComponentSize,
+  ElementUIHorizontalAlignment
+} from './component'
 
 import { ElAlert } from './alert'
 import { ElAside } from './aside'
@@ -82,8 +86,8 @@ import { ElDrawer } from './drawer'
 import { ElPopconfirm } from './popconfirm'
 
 export interface InstallationOptions {
-  locale: any,
-  i18n: any,
+  locale: any
+  i18n: any
   size: string
 }
 
@@ -93,9 +97,9 @@ export const version: string
 /**
  * Install all element-ui components into Vue.
  * Please do not invoke this method directly.
- * Call `Vue.use(ElementUI)` to install.
+ * Call `app.use(ElementUI)` to install.
  */
-export function install (vue: typeof Vue, options: InstallationOptions): void
+export function install(app: App, options: any[]): any
 
 /** ElementUI component common definition */
 export type Component = ElementUIComponent
@@ -331,7 +335,7 @@ export class Calendar extends ElCalendar {}
 export class Backtop extends ElBacktop {}
 
 /** InfiniteScroll Directive */
-export const InfiniteScroll: PluginObject<ElInfiniteScroll>;
+export const InfiniteScroll: PluginObject<ElInfiniteScroll>
 
 /** PageHeader Component */
 export class PageHeader extends ElPageHeader {}

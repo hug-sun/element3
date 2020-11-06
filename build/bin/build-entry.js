@@ -111,6 +111,7 @@ ComponentNames.forEach((name) => {
       'input',
       'alert',
       'carousel',
+      'carousel-item',
       'breadcrumb',
       'breadcrumb-item',
       'dialog',

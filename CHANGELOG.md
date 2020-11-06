@@ -1,3 +1,30 @@
+## [0.0.20](https://github.com/kkbjs/element3/compare/v0.0.19...v0.0.20) (2020-11-05)
+
+
+### Bug Fixes
+
+* avater ... md ([7fb82a2](https://github.com/kkbjs/element3/commit/7fb82a2cdee69c7f480eb1d12243538c83c517e5))
+* cascader export path ([1db3ca7](https://github.com/kkbjs/element3/commit/1db3ca725f5e182f98b3fb150b08e627fd7b42ae))
+
+
+
+## [0.0.19](https://github.com/kkbjs/element3/compare/v0.0.18...v0.0.19) (2020-11-03)
+
+
+### Bug Fixes
+
+* change emits update:value to update:modelValue ([a957075](https://github.com/kkbjs/element3/commit/a95707549f2cb0f06a12bd2ea383ab65219ad05f))
+* change installation.md & deleted test file ([3b1c3ca](https://github.com/kkbjs/element3/commit/3b1c3ca494b93c68557a05a42d5aad492fd16996))
+* change slot to vue3 version ([0b4dcf1](https://github.com/kkbjs/element3/commit/0b4dcf168203868b4314fe25fc7941c0ca8327cb))
+* convert all absolute paths to relative paths ([aec723d](https://github.com/kkbjs/element3/commit/aec723df0b69af04631f0fcb3eb51f209d80c09b))
+* export carousel-item & add some comp in entry.js ([55b3a2a](https://github.com/kkbjs/element3/commit/55b3a2a4e76bff17bfc2e1a3e5b4771f74629939))
+* export option component ([33d676a](https://github.com/kkbjs/element3/commit/33d676a4ccb9fd9df8a2beec619e6670e5fe8765))
+* expose update in scrollbar.js to fix a error ([f83b723](https://github.com/kkbjs/element3/commit/f83b72376f886fa19c572ab98a892f337caac4be))
+* fix addResizeListener params wrong ([89f40b8](https://github.com/kkbjs/element3/commit/89f40b8f306ea3cdabc1497cb86b5dbbbc387fcd))
+* fix avatar error callback call way ([4ff9e33](https://github.com/kkbjs/element3/commit/4ff9e33465f67f304ec988e74097ae9ff4b43c34))
+
+
+
 ## [0.0.18](https://github.com/kkbjs/element3/compare/v0.0.17...v0.0.18) (2020-10-27)
 
 

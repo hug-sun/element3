@@ -51,8 +51,8 @@
 
 <script>
 import TransferPanel from './TransferPanel.vue'
-import ElButton from 'element-ui/packages/button'
-import { useLocale } from 'element-ui/src/use/locale'
+import ElButton from '../../button'
+import { useLocale } from '../../../src/use/locale'
 import { ref, computed, watch, provide } from 'vue'
 
 export default {

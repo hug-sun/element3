@@ -45,6 +45,7 @@ const useScroll = (wrap, native, resize, noresize) => {
 
   return {
     data,
+    update,
     handleScroll
   }
 }
@@ -89,7 +90,12 @@ export default {
       }
     }
 
-    const { data, handleScroll } = useScroll(wrap, native, resize, noresize)
+    const { data, handleScroll, update } = useScroll(
+      wrap,
+      native,
+      resize,
+      noresize
+    )
     return {
       // state
       data,
@@ -100,7 +106,8 @@ export default {
       resize,
       ComponentName,
       // methods
-      handleScroll
+      handleScroll,
+      update
     }
   },
   render() {

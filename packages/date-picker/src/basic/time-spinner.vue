@@ -149,9 +149,7 @@ import {
   getRangeHours,
   getRangeMinutes,
   modifyTime
-} from 'element-ui/src/utils/date-util'
-import ElScrollbar from 'element-ui/packages/scrollbar'
-import RepeatClick from 'element-ui/src/directives/repeatClick'
+} from '../../../../src/utils/date-util'
 import {
   computed,
   getCurrentInstance,
@@ -160,6 +158,8 @@ import {
   toRefs,
   unref
 } from 'vue'
+import ElScrollbar from '../../../scrollbar'
+import RepeatClick from '../../../../src/directives/repeatClick'
 
 export default {
   components: { ElScrollbar },

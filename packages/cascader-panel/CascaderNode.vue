@@ -59,9 +59,9 @@
 
 <script>
 import { h, computed, watch, inject, toRefs, Fragment } from 'vue'
-import ElCheckbox from 'element-ui/packages/checkbox'
-import ElRadio from 'element-ui/packages/radio'
-import { isEqual } from 'element-ui/src/utils/util'
+import ElCheckbox from '../checkbox'
+import ElRadio from '../radio'
+import { isEqual } from '../../src/utils/util'
 
 export default {
   components: {

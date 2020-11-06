@@ -1,11 +1,10 @@
-import Popover from './Popover'
+import ElPopover from './Popover'
 import directive from './directive'
 
 /* istanbul ignore next */
-Popover.install = function (app) {
+ElPopover.install = function (app) {
   app.directive('popover', directive)
-  app.component(Popover.name, Popover)
+  app.component(ElPopover.name, ElPopover)
 }
-Popover.directive = directive
 
-export default Popover
+export default ElPopover

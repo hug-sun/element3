@@ -1,10 +1,10 @@
 {
   "name": "element3",
-  "version": "0.0.18",
+  "version": "0.0.20",
   "description": "A Component Library for Vue3",
   "main": "dist/element3-ui.cjs.js",
   "module": "dist/element3-ui.esm-bundler.js",
-  "unpkg": "lib/index.js",
+  "unpkg": "dist/element3-ui.global.js",
   "jsdelivr": "dist/element3-ui.global.js",
   "files": [
     "lib",
@@ -78,7 +78,7 @@
     "*.{js,vue}": "eslint"
   },
   "dependencies": {
-    "async-validator": "~1.8.1",
+    "async-validator": "^3.4.0",
     "babel-helper-vue-jsx-merge-props": "^2.0.0",
     "deepmerge": "^1.2.0",
     "eslint-formatter-pretty": "^4.0.0",
