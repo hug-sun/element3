@@ -138,7 +138,8 @@ const cjsProdConfig = {
 const globalConfig = {
   plugins: [
     replace({
-      __DEV__: true
+      __DEV__: true,
+      'process.env.NODE_ENV': true
     })
   ],
   output: {
