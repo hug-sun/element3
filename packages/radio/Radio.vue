@@ -174,10 +174,9 @@ function useStyle({
 }) {
   const { ctx } = getCurrentInstance()
   const elFormDisable = (elForm.props || {}).disabled
-  const elFormItemSize = (elFormItem.ctx || {}).elFormItemSize
   const radioSize = computed(() => {
     const temRadioSize =
-      unref(size) || elFormItemSize || (ctx.$ELEMENT || {}).size
+      unref(size) || elFormItem.elFormItemSize || (ctx.$ELEMENT || {}).size
     return isGroup
       ? radioGroup.ctx.radioGroupSize || temRadioSize
       : temRadioSize
