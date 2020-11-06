@@ -1,4 +1,18 @@
-[{
+[
+  {
+    "name": "shengxinjing",
+    "avatar": "https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/232746a4fa00cc14150b1dec420018dd~120x256.image",
+    "avatar_link": "https://github.com/shengxinjing",
+    "icons": [{
+      "enjoy_img": "💻",
+      "link": "https://juejin.im/user/1556564194370270"
+    },{
+      "enjoy_img": "🎬",
+      "link": "https://space.bilibili.com/26995758"
+    }]
+  },
+
+  {
   "name": "cuixiaorui",
   "avatar": "https://user-gold-cdn.xitu.io/2019/12/8/16ee34c171e57baf?imageView2/1/w/180/h/180/q/85/format/webp/interlace/1",
   "avatar_link": "https://github.com/cuixiaorui",
