@@ -1,7 +1,6 @@
 import { ElementUIComponent } from './component'
 
-/** Badge Component */
-export declare class ElBadge extends ElementUIComponent {
+interface IBadge extends ElementUIComponent{
   /** Display value */
   value: string | number
 
@@ -14,3 +13,6 @@ export declare class ElBadge extends ElementUIComponent {
   /** Hidden badge */
   hidden: boolean
 }
+
+/** Badge Component */
+export const ElBadge: IBadge
