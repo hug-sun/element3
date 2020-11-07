@@ -106,7 +106,3 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)
-
-## Stargazers over time
-
-[![Stargazers over time](https://starchart.cc/kkbjs/element3.svg)](https://starchart.cc/kkbjs/element3)
