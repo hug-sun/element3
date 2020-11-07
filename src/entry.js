@@ -270,7 +270,8 @@ export {
   useAlert,
   usePrompt,
   useConfirm,
-  useNotify
+  useNotify,
+  install
 }
 
 export default elementUI
