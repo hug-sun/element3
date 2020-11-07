@@ -75,7 +75,7 @@ createApp(App)
 
 ## Documentation
 
-TODO
+To check out live  docs, visit [website](http://cui-xiaorui.gitee.io/element3) 
 
 ## Questions
 
