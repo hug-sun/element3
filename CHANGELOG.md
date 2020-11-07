@@ -1,3 +1,12 @@
+## [0.0.21](https://github.com/kkbjs/element3/compare/v0.0.20...v0.0.21) (2020-11-07)
+
+
+### Bug Fixes
+
+* update doc and test ([8c71671](https://github.com/kkbjs/element3/commit/8c7167127b9d1a327e66355752622263607365bc))
+
+
+
 ## [0.0.20](https://github.com/kkbjs/element3/compare/v0.0.19...v0.0.20) (2020-11-05)
 
 
