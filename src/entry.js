@@ -50,12 +50,7 @@ import ElLoading, { useLoading } from '../packages/loading'
 
 import { useMessage } from '../packages/message'
 
-import {
-  useMsgbox,
-  useAlert,
-  usePrompt,
-  useConfirm
-} from '../packages/message-box'
+import { useMsgbox } from '../packages/message-box'
 
 import { useNotify } from '../packages/notification'
 // Navigation
@@ -273,9 +268,6 @@ export {
   useMessage,
   useLoading,
   useMsgbox,
-  useAlert,
-  usePrompt,
-  useConfirm,
   useNotify,
   install,
   setupGlobalOptions
