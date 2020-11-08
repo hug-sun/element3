@@ -81,7 +81,6 @@
     "async-validator": "^3.4.0",
     "babel-helper-vue-jsx-merge-props": "^2.0.0",
     "deepmerge": "^1.2.0",
-    "eslint-formatter-pretty": "^4.0.0",
     "normalize-wheel": "^1.0.1",
     "resize-observer-polyfill": "^1.5.0",
     "throttle-debounce": "^2.3.0"
@@ -134,6 +133,7 @@
     "enquirer": "^2.3.6",
     "es6-promise": "^4.0.5",
     "eslint": "^7.7.0",
+    "eslint-formatter-pretty": "^4.0.0",
     "eslint-plugin-json": "^2.1.2",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^7.0.0-beta.3",
