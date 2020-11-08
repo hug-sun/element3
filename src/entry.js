@@ -174,14 +174,20 @@ const components = [
 ]
 
 const install = (app, opts = {}) => {
-  app.config.globalProperties.$ELEMENT = {
-    size: opts.size || '',
-    zIndex: opts.zIndex || 2000
-  }
+  app.use(setupGlobalOptions(opts))
 
   components.forEach((component) => {
     app.use(component)
   })
+}
+
+const setupGlobalOptions = (opts = {}) => {
+  return (app) => {
+    app.config.globalProperties.$ELEMENT = {
+      size: opts.size || '',
+      zIndex: opts.zIndex || 2000
+    }
+  }
 }
 
 const elementUI = {
@@ -271,7 +277,8 @@ export {
   usePrompt,
   useConfirm,
   useNotify,
-  install
+  install,
+  setupGlobalOptions
 }
 
 export default elementUI
