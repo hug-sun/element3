@@ -33,10 +33,10 @@
 
 <script>
 import {ref} from 'vue'
-  import {useConfirm} from 'element3'
+  import {useMegBox} from 'element3'
   export default {
     setup(){
-      let confirm = useConfirm()
+      let {confirm} = useMegBox()
       let drawer = ref(false)
       let direction = ref('rtl')
 
@@ -102,17 +102,6 @@ import {ref} from 'vue'
 <template>
   <el-button type="text" @click="table = true">打开嵌套表格的 Drawer</el-button>
   <el-button type="text" @click="dialog = true">打开嵌套 Form 的 Drawer</el-button>
-  <el-drawer
-    title="我嵌套了表格!"
-    v-model:visible="table"
-    direction="rtl"
-    size="50%">
-    <el-table :data="gridData">
-        <el-table-column property="date" label="日期" width="150"></el-table-column>
-        <el-table-column property="name" label="姓名" width="200"></el-table-column>
-        <el-table-column property="address" label="地址"></el-table-column>
-      </el-table>
-  </el-drawer>
 
   <el-drawer
     title="我嵌套了 Form !"
@@ -145,31 +134,12 @@ import {ref} from 'vue'
 
 <script>
 import {ref} from 'vue'
-  // import * as Element3 from 'element3'
+import {useMsgBox} from 'element3'
 export default {
   setup(){
-    console.log(Element3)
-    let comfirm = useComfirm()
-    let table = ref(false)
+    let {comfirm} = useMsgBox()
     let dialog = ref(false)
     let loading = ref(false)
-    let gridData = ref([{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }])
     let form = ref({
         name: '',
         region: '',
@@ -211,7 +181,7 @@ export default {
       clearTimeout(timer.value);
     }
 
-    return {table,dialog,loading,gridData,form,formLabelWidth,timer}
+    return {dialog,loading,form,formLabelWidth,timer}
   }
 }
 </script>
@@ -249,10 +219,10 @@ export default {
 
 <script>
 import {ref} from 'vue'
-  import {useConfirm} from 'element3'
+  import {useMsgBox} from 'element3'
   export default {
     setup(){
-      let confirm = handleClose()
+      let {confirm} = useMsgBox()
       let drawer = ref(false)
       let innerDrawer = ref(false)
 
