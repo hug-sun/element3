@@ -16,7 +16,7 @@ npm i element3 -S
 <!-- 引入样式 -->
 <link rel="stylesheet" href="https://unpkg.com/element3/lib/theme-chalk/index.css">
 <!-- 引入组件库 -->
-<script src="https://unpkg.com/element3@0.0.18/dist/element3-ui.global.js"></script>
+<script src="https://unpkg.com/element3"></script>
 ```
 
 :::tip
@@ -25,11 +25,11 @@ npm i element3 -S
 
 ### Hello world
 
-通过 CDN 的方式我们可以很容易地使用 Element 写出一个 Hello world 页面。[在线演示](https://codepen.io/ziyoung/pen/rRKYpd)
+通过 CDN 的方式我们可以很容易地使用 Element 写出一个 Hello world 页面。[在线演示](https://codepen.io/imjustaman/pen/abZajYg)
 
-<iframe height="265" style="width: 100%;" scrolling="no" title="Element3 demo" src="https://codepen.io/uuoocckk-983/embed/abZGGwq?height=265&theme-id=light&default-tab=html,result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href='https://codepen.io/uuoocckk-983/pen/abZGGwq'>Element3 demo</a> by uuoocckk-983
-  (<a href='https://codepen.io/uuoocckk-983'>@uuoocckk-983</a>) on <a href='https://codepen.io'>CodePen</a>.
+<iframe height="265" style="width: 100%;" scrolling="no" title="Element3 Demo" src="https://codepen.io/imjustaman/embed/abZajYg?height=265&theme-id=light&default-tab=html,result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/imjustaman/pen/abZajYg'>Element3 Demo</a> by ImJustAMan
+  (<a href='https://codepen.io/imjustaman'>@imjustaman</a>) on <a href='https://codepen.io'>CodePen</a>.
 </iframe>
 
 如果是通过 npm 安装，并希望配合 webpack 使用，请阅读下一节：[快速上手](/#/zh-CN/component/quickstart)。
