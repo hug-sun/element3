@@ -96,7 +96,7 @@ export default {
 ```html
 <template>
   <div class="demo-image__lazy">
-    <el-image v-for="url in state.urls" :key="url" :src="url" lazy></el-image>
+    <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image>
   </div>
 </template>
 <script>
