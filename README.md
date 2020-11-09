@@ -52,13 +52,11 @@ npm install element3 -S
 import { createApp } from 'vue'
 import App from './App.vue'
 // import style
-import "element3/lib/theme-chalk/index.css";
+import 'element3/lib/theme-chalk/index.css'
 import Element3 from 'element3'
 
 // global import
-createApp(App)
-  .use(Element3)
-  .mount("#app")
+createApp(App).use(Element3).mount('#app')
 
 // or according to the need to import
 import {
@@ -67,15 +65,12 @@ import {
   // ...
 } from 'element3'
 
-
-createApp(App)
-  .use(ElLink)
-  .use(ElButton)
+createApp(App).use(ElLink).use(ElButton)
 ```
 
 ## Documentation
 
-To check out live  docs, visit [website](https://element3.gitee.io/) 
+To check out live docs, visit [website](https://element3.gitee.io/)
 
 ## Questions
 
@@ -106,7 +101,3 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)
-
-## 影响力
-
-[![Stargazers over time](https://starchart.cc/kkbjs/element3.svg)](https://starchart.cc/kkbjs/element3)
