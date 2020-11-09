@@ -29,22 +29,25 @@
 </el-drawer>
 
 <script>
+import { ref, getCurrentInstance } from 'vue'
   export default {
-    data() {
-      return {
-        drawer: false,
-        direction: 'rtl',
-      };
-    },
-    methods: {
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
-      }
-    }
+     setup() {
+            const drawer = ref(false)
+            const direction = ref("rtl")
+            const handleClose = (done) => {
+                getCurrentInstance.ctx
+                    .$confirm('确认关闭？')
+                    .then((_) => {
+                        done()
+                    })
+                    .catch((_) => {})
+            }
+            return{
+              drawer,
+              direction,
+              handleClose
+            }
+        }
   };
 </script>
 ```
@@ -69,11 +72,13 @@
 </el-drawer>
 
 <script>
+import { ref } from 'vue'
   export default {
-    data() {
-      return {
-        drawer: false,
-      };
+    setup(){
+      const drawer = ref(false)
+      return{
+        drawer
+      }
     }
   };
 </script>
@@ -130,9 +135,10 @@
 </el-drawer>
 
 <script>
+import {reactive,getCurrentInstance,toRefs} from "vue"
 export default {
-  data() {
-    return {
+  setup(){
+    const data = reactive({
       table: false,
       dialog: false,
       loading: false,
@@ -165,30 +171,33 @@ export default {
       },
       formLabelWidth: '80px',
       timer: null,
-    };
-  },
-  methods: {
-    handleClose(done) {
-      if (this.loading) {
+    })
+    const handleClose = ()=>{
+      if (data.loading) {
         return;
       }
-      this.$confirm('确定要提交表单吗？')
+      getCurrentInstance.ctx.$confirm('确定要提交表单吗？')
         .then(_ => {
-          this.loading = true;
-          this.timer = setTimeout(() => {
+          data.loading = true;
+          data.timer = setTimeout(() => {
             done();
             // 动画关闭需要一定的时间
             setTimeout(() => {
-              this.loading = false;
+              data.loading = false;
             }, 400);
           }, 2000);
         })
         .catch(_ => {});
-    },
-    cancelForm() {
-      this.loading = false;
-      this.dialog = false;
-      clearTimeout(this.timer);
+    }
+    const cancelForm = (done)=>{
+      data.loading = false
+      data.dialog = false
+      clearTimeout(data.timer)
+    }
+    return {
+      ...toRefs(data),
+      handleClose,
+      cancelForm
     }
   }
 }
@@ -225,20 +234,23 @@ export default {
 </el-drawer>
 
 <script>
+import { ref, getCurrentInstance } from 'vue'
   export default {
-    data() {
-      return {
-        drawer: false,
-        innerDrawer: false,
-      };
-    },
-    methods: {
-      handleClose(done) {
-        this.$confirm('还有未保存的工作哦确定关闭吗？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
+    setup(){
+      const drawer = ref(false)
+      const innerDrawer = ref(false)
+      const handleClose = (done)=>{
+        getCurrentInstance.ctx
+            .$confirm('还有未保存的工作哦确定关闭吗？')
+            .then((_) => {
+                done()
+            })
+            .catch((_) => {})
+      }
+      return{
+        drawer,
+        innerDrawer,
+        handleClose
       }
     }
   };

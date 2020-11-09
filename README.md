@@ -75,7 +75,7 @@ createApp(App)
 
 ## Documentation
 
-TODO
+To check out live  docs, visit [website](https://element3.gitee.io/) 
 
 ## Questions
 

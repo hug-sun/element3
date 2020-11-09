@@ -29,19 +29,22 @@ Dialog 弹出一个对话框，适合需要定制性更大的场景。
 </el-dialog>
 
 <script>
+ import { ref, getCurrentInstance } from 'vue'
   export default {
-    data() {
-      return {
-        dialogVisible: false
-      };
-    },
-    methods: {
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
+    setup() {
+      const dialogVisible = ref(false)
+      const handleClose = (done) => {
+        getCurrentInstance.ctx
+          .$confirm('确认关闭？')
+          .then((_) => {
+            done()
           })
-          .catch(_ => {});
+          .catch((_) => {})
+      }
+      // 暴露给模板
+      return {
+        dialogVisible,
+        handleClose
       }
     }
   };
@@ -100,6 +103,8 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
 </el-dialog>
 
 <script>
+import { ref, getCurrentInstance } from 'vue'
+
   export default {
     data() {
       return {
@@ -165,12 +170,15 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
   </el-dialog>
 
 <script>
+ import { ref } from 'vue'
   export default {
-    data() {
+    setup() {
+      const outerVisible = ref(false)
+      const innerVisible = ref(false)
       return {
-        outerVisible: false,
-        innerVisible: false
-      };
+        outerVisible,
+        innerVisible
+      }
     }
   }
 </script>
@@ -204,13 +212,15 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
 </el-dialog>
 
 <script>
+ import { ref } from 'vue'
   export default {
-    data() {
+    setup() {
+      const centerDialogVisible = ref(false)
       return {
-        centerDialogVisible: false
-      };
+        centerDialogVisible
+      }
     }
-  };
+  }
 </script>
 ```
 :::

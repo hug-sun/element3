@@ -6,8 +6,8 @@ export type ButtonType = 'primary' | 'success' | 'warning' | 'danger' | 'info' |
 /** Same as native button's type */
 export type ButtonNativeType = 'button' | 'submit' | 'reset' | 'menu'
 
-/** Button Component */
-export declare class ElButton extends ElementUIComponent {
+
+interface IButton extends ElementUIComponent{
   /** Button size */
   size: ElementUIComponentSize
 
@@ -35,3 +35,6 @@ export declare class ElButton extends ElementUIComponent {
   /** Same as native button's type */
   nativeType: ButtonNativeType
 }
+
+/** Button Component */
+export const ElButton:IButton

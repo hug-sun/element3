@@ -3,7 +3,7 @@ import { ElementUIComponent } from './component'
 
 export interface CardSlots {
   /** Content of the card */
-  default: VNode[],
+  default: VNode[]
 
   /** Title of the card */
   header: VNode[]
@@ -11,8 +11,7 @@ export interface CardSlots {
   [key: string]: VNode[]
 }
 
-/** Integrate information in a card container */
-export declare class ElCard extends ElementUIComponent {
+interface ICard extends ElementUIComponent {
   /** Title of the card */
   header: string
 
@@ -23,4 +22,8 @@ export declare class ElCard extends ElementUIComponent {
   shadow: string
 
   $slots: CardSlots
+
 }
+
+/** Integrate information in a card container */
+export const ElCard: ICard 
