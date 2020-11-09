@@ -33,10 +33,10 @@
 
 <script>
 import {ref} from 'vue'
-  import {useMegBox} from 'element3'
+  import {useMsgBox} from 'element3'
   export default {
     setup(){
-      let {confirm} = useMegBox()
+      let {confirm} = useMsgBox()
       let drawer = ref(false)
       let direction = ref('rtl')
 
