@@ -32,7 +32,7 @@
 
 
 <script>
-  import {ref} from 'vue'
+import {ref} from 'vue'
   import {useConfirm} from 'element3'
   export default {
     setup(){
@@ -77,7 +77,7 @@
 
 
 <script>
-  import {ref} from 'vue'
+import {ref} from 'vue'
   export default {
     setup() {
       let drawer = ref(false)
@@ -144,7 +144,7 @@
 
 
 <script>
-  import {ref} from 'vue'
+import {ref} from 'vue'
   // import * as Element3 from 'element3'
 export default {
   setup(){
@@ -179,7 +179,7 @@ export default {
         type: [],
         resource: '',
         desc: ''
-      })  
+})  
     let formLabelWidth = ref('80px')
     let timer = ref(null)
 
@@ -199,6 +199,16 @@ export default {
           }, 2000);
         })
         .catch(_ => {});
+}
+    const cancelForm = (done)=>{
+      data.loading = false
+      data.dialog = false
+      clearTimeout(data.timer)
+    }
+    return {
+      ...toRefs(data),
+      handleClose,
+      cancelForm
     }
     function cancelForm() {
       loading.value = false;
@@ -243,7 +253,7 @@ export default {
 </template>
 
 <script>
-  import {ref} from 'vue'
+import {ref} from 'vue'
   import {useConfirm} from 'element3'
   export default {
     setup(){

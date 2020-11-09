@@ -1,9 +1,9 @@
-import Vue from 'vue'
+import { App } from 'vue'
 
 /** ElementUI component common definition */
-export declare class ElementUIComponent extends Vue {
+export interface ElementUIComponent {
   /** Install component into Vue */
-  static install (vue: typeof Vue): void
+  install: (app: App, ...options: any[]) => any
 }
 
 /** Component size definition for button, input, etc */

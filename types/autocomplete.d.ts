@@ -1,6 +1,12 @@
 import { ElementUIComponent } from './component'
 
-export type SuggestionPlacement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end'
+export type SuggestionPlacement =
+  | 'top'
+  | 'top-start'
+  | 'top-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'bottom-end'
 
 export interface FetchSuggestionsCallback {
   /**
@@ -20,9 +26,7 @@ export interface FetchSuggestions {
    */
   (queryString: string, callback: FetchSuggestionsCallback): void
 }
-
-/** Autocomplete Component */
-export declare class ElAutocomplete extends ElementUIComponent {
+interface IAutocomplete extends ElementUIComponent {
   /** The placeholder of Autocomplete */
   placeholder: string
 
@@ -74,5 +78,8 @@ export declare class ElAutocomplete extends ElementUIComponent {
   /**
    * Focus the Input component
    */
-  focus (): void
+  focus(): void
 }
+
+/** Autocomplete Component */
+export const ElAutocomplete: IAutocomplete

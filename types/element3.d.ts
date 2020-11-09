@@ -1,26 +1,26 @@
 import { PluginObject, App } from 'vue'
 import {
-  ElementUIComponent,
   ElementUIComponentSize,
   ElementUIHorizontalAlignment
 } from './component'
 
-import { ElAlert } from './alert'
-import { ElAside } from './aside'
-import { ElAutocomplete } from './autocomplete'
-import { ElBadge } from './badge'
-import { ElBreadcrumb } from './breadcrumb'
-import { ElBreadcrumbItem } from './breadcrumb-item'
-import { ElButton } from './button'
-import { ElButtonGroup } from './button-group'
-import { ElCard } from './card'
-import { ElCarousel } from './carousel'
-import { ElCarouselItem } from './carousel-item'
-import { ElCascader } from './cascader'
-import { ElCheckbox } from './checkbox'
-import { ElCheckboxButton } from './checkbox-button'
-import { ElCheckboxGroup } from './checkbox-group'
-import { ElCol } from './col'
+export { ElAlert } from './alert'
+export { ElAside } from './aside'
+export { ElAutocomplete } from './autocomplete'
+export { ElBadge } from './badge'
+export { ElBreadcrumb } from './breadcrumb'
+export { ElBreadcrumbItem } from './breadcrumb-item'
+export { ElButton } from './button'
+export { ElButtonGroup } from './button-group'
+export { ElCard } from './card'
+export { ElCarousel } from './carousel'
+export { ElCarouselItem } from './carousel-item'
+export { ElCascader } from './cascader'
+export { ElCheckbox } from './checkbox'
+export { ElCheckboxButton } from './checkbox-button'
+export { ElCheckboxGroup } from './checkbox-group'
+export { ElCol } from './col'
+
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
 import { ElColorPicker } from './color-picker'
@@ -99,10 +99,10 @@ export const version: string
  * Please do not invoke this method directly.
  * Call `app.use(ElementUI)` to install.
  */
-export function install(app: App, options: any[]): any
+export function install(app: App, ...options: any[]): any
 
 /** ElementUI component common definition */
-export type Component = ElementUIComponent
+export type Component = ElementUIComponen
 
 /** Component size definition for button, input, etc */
 export type ComponentSize = ElementUIComponentSize
@@ -121,56 +121,6 @@ export const MessageBox: ElMessageBox
 
 /** Displays a global notification message at the upper right corner of the page */
 export const Notification: ElNotification
-
-// TS cannot merge imported class with namespace, so declare subclasses instead
-
-/** Alert Component */
-export class Alert extends ElAlert {}
-
-/** Aside Component */
-export class Aside extends ElAside {}
-
-/** Autocomplete Component */
-export class Autocomplete extends ElAutocomplete {}
-
-/** Bagde Component */
-export class Badge extends ElBadge {}
-
-/** Breadcrumb Component */
-export class Breadcrumb extends ElBreadcrumb {}
-
-/** Breadcrumb Item Component */
-export class BreadcrumbItem extends ElBreadcrumbItem {}
-
-/** Button Component */
-export class Button extends ElButton {}
-
-/** Button Group Component */
-export class ButtonGroup extends ElButtonGroup {}
-
-/** Card Component */
-export class Card extends ElCard {}
-
-/** Cascader Component */
-export class Cascader extends ElCascader {}
-
-/** Carousel Component */
-export class Carousel extends ElCarousel {}
-
-/** Carousel Item Component */
-export class CarouselItem extends ElCarouselItem {}
-
-/** Checkbox Component */
-export class Checkbox extends ElCheckbox {}
-
-/** Checkbox Button Component */
-export class CheckboxButton extends ElCheckboxButton {}
-
-/** Checkbox Group Component */
-export class CheckboxGroup extends ElCheckboxGroup {}
-
-/** Colunm Layout Component */
-export class Col extends ElCol {}
 
 /** Collapse Component */
 export class Collapse extends ElCollapse {}

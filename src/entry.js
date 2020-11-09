@@ -50,12 +50,7 @@ import ElLoading, { useLoading } from '../packages/loading'
 
 import { useMessage } from '../packages/message'
 
-import {
-  useMsgbox,
-  useAlert,
-  usePrompt,
-  useConfirm
-} from '../packages/message-box'
+import { useMsgbox } from '../packages/message-box'
 
 import { useNotify } from '../packages/notification'
 // Navigation
@@ -174,14 +169,20 @@ const components = [
 ]
 
 const install = (app, opts = {}) => {
-  app.config.globalProperties.$ELEMENT = {
-    size: opts.size || '',
-    zIndex: opts.zIndex || 2000
-  }
+  app.use(setupGlobalOptions(opts))
 
   components.forEach((component) => {
     app.use(component)
   })
+}
+
+const setupGlobalOptions = (opts = {}) => {
+  return (app) => {
+    app.config.globalProperties.$ELEMENT = {
+      size: opts.size || '',
+      zIndex: opts.zIndex || 2000
+    }
+  }
 }
 
 const elementUI = {
@@ -267,10 +268,9 @@ export {
   useMessage,
   useLoading,
   useMsgbox,
-  useAlert,
-  usePrompt,
-  useConfirm,
-  useNotify
+  useNotify,
+  install,
+  setupGlobalOptions
 }
 
 export default elementUI

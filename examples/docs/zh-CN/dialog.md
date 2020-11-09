@@ -29,8 +29,8 @@ Dialog 弹出一个对话框，适合需要定制性更大的场景。
 </el-dialog>
 
 <script>
-  import {ref} from 'vue'
-  import {useConfirm} from 'element3'
+import { ref } from 'vue'
+  import { useConfirm } from 'element3'
   export default {
     setup(){
       let confirm = useConfirm()
@@ -41,10 +41,13 @@ Dialog 弹出一个对话框，适合需要定制性更大的场景。
           .then(_ => {
             done();
           })
-          .catch(_ => {});
+          .catch((_) => {})
       }
-
-      return {dialogVisible,handleClose}
+      // 暴露给模板
+      return {
+        dialogVisible,
+        handleClose
+      }
     }
   };
 </script>
@@ -102,7 +105,7 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
 </el-dialog>
 
 <script>
-  import {reactive,toRefs} from 'vue'
+import { reactive, toRefs } from 'vue'
   export default {
     setup(){
       const state = reactive({
@@ -170,13 +173,15 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
   </el-dialog>
 
 <script>
-  import {ref} from 'vue'
+import { ref } from 'vue'
   export default {
     setup() {
-        let outerVisible = ref(false)
-        let innerVisible = ref(false)
-
-        return {outerVisible,innerVisible}
+      const outerVisible = ref(false)
+      const innerVisible = ref(false)
+      return {
+        outerVisible,
+        innerVisible
+      }
     }
   }
 </script>
@@ -210,14 +215,15 @@ Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下�
 </el-dialog>
 
 <script>
-  import {ref} from 'vue'
+import { ref } from 'vue'
   export default {
     setup() {
-        let centerDialogVisible = ref(false)
-
-        return {centerDialogVisible}
+      const centerDialogVisible = ref(false)
+      return {
+        centerDialogVisible
+      }
     }
-  };
+  }
 </script>
 ```
 :::
