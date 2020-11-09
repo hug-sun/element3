@@ -293,9 +293,6 @@
 ```
 :::
 
-### 全局方法
-
-Element3 添加了全局方法 `useNotify`。因此在 vue instance 中可以采用本页面中的方式调用 Notification。
 
 ### 单独引用
 
