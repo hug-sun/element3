@@ -257,19 +257,19 @@
 </style>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    data() {
-      return {
-        isCollapse: true
-      };
-    },
-    methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
+    setup(){
+      let isCollapse = ref(true)
+
+      function handleOpen(key, keyPath) {
         console.log(key, keyPath);
       }
+      function handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
+      
+      return {isCollapse,handleOpen,handleClose}
     }
   }
 </script>

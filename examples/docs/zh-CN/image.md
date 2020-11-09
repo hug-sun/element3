@@ -96,11 +96,11 @@ export default {
 ```html
 <template>
   <div class="demo-image__lazy">
-    <el-image v-for="url in state.urls" :key="url" :src="url" lazy></el-image>
+    <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image>
   </div>
 </template>
 <script>
-import { reactive } from 'vue'
+import { reactive,toRefs } from 'vue'
 export default {
   setup(){
     let state = reactive({
@@ -114,7 +114,7 @@ export default {
         'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
       ]
     })
-    return { state }
+    return { ...toRefs(state) }
   }
 }
 </script>
