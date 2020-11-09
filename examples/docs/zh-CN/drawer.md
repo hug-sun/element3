@@ -200,11 +200,6 @@ export default {
         })
         .catch(_ => {});
 }
-    const cancelForm = (done)=>{
-      data.loading = false
-      data.dialog = false
-      clearTimeout(data.timer)
-    }
     return {
       ...toRefs(data),
       handleClose,
