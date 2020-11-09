@@ -60,25 +60,10 @@ import { ref } from 'vue'
 
 ### 自定义内容
 
-Dialog 组件的内容可以是任意的，甚至可以是表格或表单，下面是应用了 Element Table 和 Form 组件的两个样例。
+Dialog 组件的内容可以是任意的，甚至可以是表单，下面是应用了 Form 组件的样例。
 
 :::demo
 ```html
-<!-- Table -->
-<el-button type="text" @click="dialogTableVisible = true">打开嵌套表格的 Dialog</el-button>
-
-<el-dialog 
-  title="收货地址" 
-  :visible.sync="dialogTableVisible"
-  v-model:visible="dialogTableVisible"
->
-  <el-table :data="gridData">
-    <el-table-column property="date" label="日期" width="150"></el-table-column>
-    <el-table-column property="name" label="姓名" width="200"></el-table-column>
-    <el-table-column property="address" label="地址"></el-table-column>
-  </el-table>
-</el-dialog>
-
 <!-- Form -->
 <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
 
@@ -109,24 +94,6 @@ import { reactive, toRefs } from 'vue'
   export default {
     setup(){
       const state = reactive({
-        gridData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }],
-        dialogTableVisible: false,
         dialogFormVisible: false,
         form: {
           name: '',
