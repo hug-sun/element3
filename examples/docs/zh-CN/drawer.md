@@ -33,10 +33,11 @@
 
 <script>
 import {ref} from 'vue'
-  import {useMsgBox} from 'element3'
+  import {useMsgbox} from 'element3'
   export default {
     setup(){
-      let {confirm} = useMsgBox()
+      console.log(useMsgbox,111)
+      let {confirm} = useMsgbox()
       let drawer = ref(false)
       let direction = ref('rtl')
 
@@ -133,11 +134,11 @@ import {ref} from 'vue'
 
 
 <script>
-import {ref} from 'vue'
-import {useMsgBox} from 'element3'
+import {ref,toRefs} from 'vue'
+import {useMsgbox} from 'element3'
 export default {
   setup(){
-    let {comfirm} = useMsgBox()
+    let {comfirm} = useMsgbox()
     let dialog = ref(false)
     let loading = ref(false)
     let form = ref({
@@ -169,11 +170,6 @@ export default {
           }, 2000);
         })
         .catch(_ => {});
-}
-    return {
-      ...toRefs(data),
-      handleClose,
-      cancelForm
     }
     function cancelForm() {
       loading.value = false;
@@ -181,7 +177,7 @@ export default {
       clearTimeout(timer.value);
     }
 
-    return {dialog,loading,form,formLabelWidth,timer}
+    return {dialog,loading,form,formLabelWidth,handleClose,cancelForm}
   }
 }
 </script>
@@ -219,10 +215,10 @@ export default {
 
 <script>
 import {ref} from 'vue'
-  import {useMsgBox} from 'element3'
+  import {useMsgbox} from 'element3'
   export default {
     setup(){
-      let {confirm} = useMsgBox()
+      let {confirm} = useMsgbox()
       let drawer = ref(false)
       let innerDrawer = ref(false)
 
