@@ -1,3 +1,13 @@
+## [0.0.22](https://github.com/kkbjs/element3/compare/v0.0.21...v0.0.22) (2020-11-08)
+
+
+### Features
+
+* add setupGlobalOptions api for set global options ([26ad5cb](https://github.com/kkbjs/element3/commit/26ad5cba75a216d6adef8520aaa92ec55efcadcf))
+* change useMsgbox api ([2b55fc8](https://github.com/kkbjs/element3/commit/2b55fc88d31330a3621ac9ab3b5fe57243707872))
+
+
+
 ## [0.0.21](https://github.com/kkbjs/element3/compare/v0.0.20...v0.0.21) (2020-11-07)
 
 
