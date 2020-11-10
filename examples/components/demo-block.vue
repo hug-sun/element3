@@ -187,9 +187,9 @@
 <script type="text/babel">
 import { nextTick } from 'vue'
 import compoLang from '../i18n/component.json'
-import Element from 'main/index.js'
+// import Element from 'main/index.js'
 import { stripScript, stripStyle, stripTemplate } from '../util'
-const { version } = Element
+// const { version } = Element
 
 export default {
   data() {
@@ -207,29 +207,59 @@ export default {
   },
 
   methods: {
-    goCodepen() {
+    generateDemoCode() {
       // since 2.6.2 use code rather than jsfiddle https://blog.codepen.io/documentation/api/prefill/
       const { script, html, style } = this.codepen
       const resourcesTpl =
         '<scr' +
-        'ipt src="//unpkg.com/vue/dist/vue.js"></scr' +
+        'ipt src="https://unpkg.com/vue@next"></scr' +
         'ipt>' +
         '\n<scr' +
-        `ipt src="//unpkg.com/element-ui@${version}/lib/index.js"></scr` +
+        `ipt src="https://unpkg.com/element3"></scr` +
         'ipt>'
-      let jsTpl = (script || '').replace(/export default/, 'var Main =').trim()
       let htmlTpl = `${resourcesTpl}\n<div id="app">\n${html.trim()}\n</div>`
-      let cssTpl = `@import url("//unpkg.com/element-ui@${version}/lib/theme-chalk/index.css");\n${(
+      let cssTpl = `@import url("https://unpkg.com/element3/lib/theme-chalk/index.css");\n${(
         style || ''
       ).trim()}\n`
+
+      console.log(jsTpl)
+
+      // 1. 需要解析把之前的 import 方式改为全局获取的方式
+      // 2. 需要在原有的组件内部添加 template 字段，把 html 的内容嵌入进去
+      // todo - 尝试用 ast 来实现
+      let jsTpl = (script || '').replace(/export default/, 'var Main =').trim()
       jsTpl = jsTpl
         ? jsTpl + "\nvar Ctor = Vue.extend(Main)\nnew Ctor().$mount('#app')"
-        : "new Vue().$mount('#app')"
-      const data = {
-        js: jsTpl,
-        css: cssTpl,
-        html: htmlTpl
+        : "new Vue().$mount('#app');"
+      // const { script = '', html = '', style = '' } = this.codepen
+      // console.log(script)
+
+      // let cssTpl = `@import url("https://unpkg.com/element3/lib/theme-chalk/index.css");\n${style}\n`
+
+      // const jsTpl = `
+      //   const {createApp} = Vue
+      //   const App = {
+      //     template:\`\n${html}\n\`
+      //   }
+      //   createApp(App).use(Element3).mount("#app")
+      // `
+
+      // const resourcesTpl =
+      //   '<scr' +
+      //   'ipt src="https://unpkg.com/vue@next"></scr' +
+      //   'ipt>' +
+      //   '\n<scr' +
+      //   `ipt src="https://unpkg.com/element3"></scr` +
+      //   'ipt>'
+      // let htmlTpl = `${resourcesTpl}\n<div id="app"></div>`
+
+      return {
+        js: jsTpl.trim(),
+        css: cssTpl.trim(),
+        html: htmlTpl.trim()
       }
+    },
+    sendToCodepen(code) {
       const form =
         document.getElementById('fiddle-form') || document.createElement('form')
       while (form.firstChild) {
@@ -243,12 +273,17 @@ export default {
       const input = document.createElement('input')
       input.setAttribute('name', 'data')
       input.setAttribute('type', 'hidden')
-      input.setAttribute('value', JSON.stringify(data))
+      input.setAttribute('value', JSON.stringify(code))
 
       form.appendChild(input)
       document.body.appendChild(form)
 
       form.submit()
+    },
+
+    goCodepen() {
+      alert('敬请期待')
+      // this.sendToCodepen(this.generateDemoCode())
     },
 
     scrollHandler() {
@@ -330,14 +365,14 @@ export default {
 
   created() {
     // eslint-disable-next-line vue/require-slots-as-functions
-    const highlight = this.$slots.highlight
+    const highlight = this.$slots.highlight()
     if (highlight && highlight[0]) {
       let code = ''
       let cur = highlight[0]
-      if (cur.tag === 'pre' && cur.children && cur.children[0]) {
+      if (cur.type === 'pre' && cur.children && cur.children[0]) {
         cur = cur.children[0]
-        if (cur.tag === 'code') {
-          code = cur.children[0].text
+        if (cur.type === 'code') {
+          code = Array.isArray(cur.children) ? cur.children[0] : cur.children
         }
       }
       if (code) {
