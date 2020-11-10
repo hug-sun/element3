@@ -3,10 +3,10 @@ import MessageBoxComponent from './src/MessageBox.vue'
 
 export function useMsgbox() {
   return {
-    msgbox: MessageBox,
-    alert: MessageBox.alert,
-    confirm: MessageBox.confirm,
-    prompt: MessageBox.prompt
+    $msgbox: MessageBox,
+    $alert: MessageBox.alert,
+    $confirm: MessageBox.confirm,
+    $prompt: MessageBox.prompt
   }
 }
 
