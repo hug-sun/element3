@@ -7,7 +7,8 @@ export type HorizontalAlignment = 'start' | 'end' | 'center' | 'space-around' | 
 export type VertialAlignment = 'top' | 'middle' | 'bottom'
 
 /** Row Layout Component */
-export declare class ElRow extends ElementUIComponent {
+export const ElRow: IRow
+interface IRow extends ElementUIComponent {
   /** Grid spacing */
   gutter: number
 
