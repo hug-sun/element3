@@ -136,7 +136,6 @@ import {ref,toRefs} from 'vue'
 import {useMsgbox} from 'element3'
 export default {
   setup(){
-console.log()
     let {$confirm} = useMsgbox()
     let dialog = ref(false)
     let loading = ref(false)
