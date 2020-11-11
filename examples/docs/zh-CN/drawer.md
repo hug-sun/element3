@@ -36,13 +36,12 @@ import {ref} from 'vue'
   import {useMsgbox} from 'element3'
   export default {
     setup(){
-      console.log(useMsgbox,111)
-      let {confirm} = useMsgbox()
+      let {$confirm} = useMsgbox()
       let drawer = ref(false)
       let direction = ref('rtl')
 
       function handleClose(done) {
-        confirm('确认关闭？')
+        $confirm('确认关闭？')
           .then(_ => {
             done();
           })
@@ -101,7 +100,6 @@ import {ref} from 'vue'
 
 ```html
 <template>
-  <el-button type="text" @click="table = true">打开嵌套表格的 Drawer</el-button>
   <el-button type="text" @click="dialog = true">打开嵌套 Form 的 Drawer</el-button>
 
   <el-drawer
@@ -134,11 +132,11 @@ import {ref} from 'vue'
 
 
 <script>
-import {ref,toRefs} from 'vue'
+import {ref} from 'vue'
 import {useMsgbox} from 'element3'
 export default {
   setup(){
-    let {comfirm} = useMsgbox()
+    let {$confirm} = useMsgbox()
     let dialog = ref(false)
     let loading = ref(false)
     let form = ref({
@@ -158,7 +156,7 @@ export default {
       if (loading.value) {
         return;
       }
-      confirm('确定要提交表单吗？')
+      $confirm('确定要提交表单吗？')
         .then(_ => {
           loading.value = true;
           timer.value = setTimeout(() => {
@@ -218,12 +216,12 @@ import {ref} from 'vue'
   import {useMsgbox} from 'element3'
   export default {
     setup(){
-      let {confirm} = useMsgbox()
+      let {$confirm} = useMsgbox()
       let drawer = ref(false)
       let innerDrawer = ref(false)
 
       function handleClose(done) {
-        confirm('还有未保存的工作哦确定关闭吗？')
+        $confirm('还有未保存的工作哦确定关闭吗？')
           .then(_ => {
             done();
           })

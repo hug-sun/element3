@@ -4,7 +4,7 @@ export type MenuDisplayMode = 'horizontal' | 'vertical'
 export type MenuTheme = 'light' | 'dark'
 
 /** Menu that provides navigation for your website */
-export declare class ElMenu extends ElementUIComponent {
+interface IMenu extends ElementUIComponent {
   /** Menu display mode */
   mode: MenuDisplayMode
 
@@ -44,3 +44,6 @@ export declare class ElMenu extends ElementUIComponent {
   /** Close the specified sub-menu */
   close (index: string): void
 }
+
+/** Tabs Component */
+export const ElMenu: IMenu
