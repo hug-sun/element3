@@ -4,7 +4,7 @@ export type TabType = 'card' | 'border-card'
 export type TabPosition = 'top' | 'right' | 'bottom' | 'left'
 
 /** Divide data collections which are related yet belong to different types */
-export declare class ElTabs extends ElementUIComponent {
+interface ITabs extends ElementUIComponent {
   /** Type of Tab */
   type: TabType
 
@@ -29,3 +29,6 @@ export declare class ElTabs extends ElementUIComponent {
   /** Hook function before switching tab. If false or a Promise is returned and then is rejected, switching will be prevented */
   beforeLeave: (activeName: string, oldActiveName: string) => boolean | Promise<any>
 }
+
+/** Tabs Component */
+export const ElTabs: ITabs

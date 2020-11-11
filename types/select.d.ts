@@ -7,8 +7,10 @@ export interface QueryChangeHandler {
   (queryString: string): void
 }
 
+export const ElSelect: IElSelect
+
 /** Dropdown Select Component */
-export declare class ElSelect extends ElementUIComponent {
+interface IElSelect extends ElementUIComponent {
   /** The form input value */
   value: any
 
