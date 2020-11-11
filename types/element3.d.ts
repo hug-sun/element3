@@ -1,5 +1,6 @@
 import { PluginObject, App } from 'vue'
 import {
+  ElementUIComponent,
   ElementUIComponentSize,
   ElementUIHorizontalAlignment
 } from './component'
@@ -102,7 +103,7 @@ export const version: string
 export function install(app: App, ...options: any[]): any
 
 /** ElementUI component common definition */
-export type Component = ElementUIComponen
+export type Component = ElementUIComponent
 
 /** Component size definition for button, input, etc */
 export type ComponentSize = ElementUIComponentSize
