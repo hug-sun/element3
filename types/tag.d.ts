@@ -4,7 +4,7 @@ export type TagType = 'primary' | 'gray' | 'success' | 'warning' | 'danger'
 export type TagTheme = 'dark' | 'light' | 'plain'
 
 /** Tag Component */
-export declare class ElTag extends ElementUIComponent {
+interface ITag extends ElementUIComponent {
   /** Tag type */
   type: TagType
 
@@ -26,3 +26,5 @@ export declare class ElTag extends ElementUIComponent {
   /** Tag theme */
   effect: TagTheme
 }
+
+export const ElTag: ITag
