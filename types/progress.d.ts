@@ -4,7 +4,8 @@ export type ProgressType = 'line' | 'circle'
 export type ProgressStatus = 'success' | 'exception'
 
 /** Progress Component */
-export declare class ElProgress extends ElementUIComponent {
+export const ElProgress: IProgress
+interface IProgress extends ElementUIComponent {
   /** Percentage, required */
   percentage: number
 

@@ -21,6 +21,7 @@ export { ElCheckboxButton } from './checkbox-button'
 export { ElCheckboxGroup } from './checkbox-group'
 export { ElRow } from './row'
 export { ElCol } from './col'
+export { ElProgress } from './progress'
 export { ElPagination } from './pagination'
 export { ElSelect } from './select'
 export { ElRadioButton } from './radio-button'
@@ -55,7 +56,6 @@ import { ElNotification } from './notification'
 import { ElOption } from './option'
 import { ElOptionGroup } from './option-group'
 import { ElPopover } from './popover'
-import { ElProgress } from './progress'
 import { ElRate } from './rate'
 import { ElStep } from './step'
 import { ElSteps } from './steps'
@@ -181,9 +181,6 @@ export class OptionGroup extends ElOptionGroup {}
 
 /** Popover Component */
 export class Popover extends ElPopover {}
-
-/** Progress Component */
-export class Progress extends ElProgress {}
 
 /** Rate Component */
 export class Rate extends ElRate {}
