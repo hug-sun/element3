@@ -60,27 +60,32 @@
 </template>
 
 <script>
+  import { useMessage } from 'element3'
   export default {
-    methods: {
-      open1() {
-        this.$message('这是一条消息提示')
-      },
-      open2() {
-        this.$message({
-          message: '恭喜你，这是一条成功消息',
-          type: 'success'
-        })
-      },
+    setup() {
+      const message = useMessage()
+      return {
+        open1() {
+          message('这是一条消息提示')
+        },
 
-      open3() {
-        this.$message({
-          message: '警告哦，这是一条警告消息',
-          type: 'warning'
-        })
-      },
+        open2() {
+          message({
+            message: '恭喜你，这是一条成功消息',
+            type: 'success'
+          })
+        },
 
-      open4() {
-        this.$message.error('错了哦，这是一条错误消息')
+        open3() {
+          message({
+            message: '警告哦，这是一条警告消息',
+            type: 'warning'
+          })
+        },
+
+        open4() {
+          message.error('错了哦，这是一条错误消息')
+        }
       }
     }
   }
@@ -104,37 +109,42 @@
 </template>
 
 <script>
+  import { useMessage } from 'element3'
   export default {
-    methods: {
-      open1() {
-        this.$message({
-          showClose: true,
-          message: '这是一条消息提示'
-        })
-      },
+    setup() {
+      const message = useMessage()
 
-      open2() {
-        this.$message({
-          showClose: true,
-          message: '恭喜你，这是一条成功消息',
-          type: 'success'
-        })
-      },
+      return {
+        open1() {
+          message({
+            showClose: true,
+            message: '这是一条消息提示'
+          })
+        },
 
-      open3() {
-        this.$message({
-          showClose: true,
-          message: '警告哦，这是一条警告消息',
-          type: 'warning'
-        })
-      },
+        open2() {
+          message({
+            showClose: true,
+            message: '恭喜你，这是一条成功消息',
+            type: 'success'
+          })
+        },
 
-      open4() {
-        this.$message({
-          showClose: true,
-          message: '错了哦，这是一条错误消息',
-          type: 'error'
-        })
+        open3() {
+          message({
+            showClose: true,
+            message: '警告哦，这是一条警告消息',
+            type: 'warning'
+          })
+        },
+
+        open4() {
+          message({
+            showClose: true,
+            message: '错了哦，这是一条错误消息',
+            type: 'error'
+          })
+        }
       }
     }
   }
@@ -155,13 +165,18 @@
 </template>
 
 <script>
+  import { useMessage } from 'element3'
   export default {
-    methods: {
-      openCenter() {
-        this.$message({
-          message: '居中的文字',
-          center: true
-        })
+    setup() {
+      const message = useMessage()
+
+      return {
+        openCenter() {
+          message({
+            message: '居中的文字',
+            center: true
+          })
+        }
       }
     }
   }
@@ -182,13 +197,18 @@
 </template>
 
 <script>
+  import { Message } from 'element3'
   export default {
-    methods: {
-      openHTML() {
-        this.$message({
-          dangerouslyUseHTMLString: true,
-          message: '<strong>这是 <i>HTML</i> 片段</strong>'
-        })
+    setup() {
+
+      return {
+        openHTML() {
+          Message({
+            dangerouslyUseHTMLString: true,
+            verticalOffset: 100,
+            message: '<strong>这是 <i>HTML</i> 片段</strong>'
+          })
+        }
       }
     }
   }
@@ -201,16 +221,12 @@
 `message` 属性虽然支持传入 HTML 片段，但是在网站上动态渲染任意 HTML 是非常危险的，因为容易导致 [XSS 攻击](https://en.wikipedia.org/wiki/Cross-site_scripting)。因此在 `dangerouslyUseHTMLString` 打开的情况下，请确保 `message` 的内容是可信的，**永远不要**将用户提交的内容赋值给 `message` 属性。
 :::
 
-### 全局方法
-
-Element 为 Vue.prototype 添加了全局方法 \$message。因此在 vue instance 中可以采用本页面中的方式调用 `Message`。
-
 ### 单独引用
 
 单独引入 `Message`：
 
 ```javascript
-import { Message } from 'element-ui'
+import { Message } from 'element3'
 ```
 
 此时调用方法为 `Message(options)`。我们也为每个 type 定义了各自的方法，如 `Message.success(options)`。并且可以调用 `Message.closeAll()` 手动关闭所有实例。
@@ -228,11 +244,11 @@ import { Message } from 'element-ui'
 | showClose                | 是否显示关闭按钮                              | boolean        | —                          | false  |
 | center                   | 文字是否居中                                  | boolean        | —                          | false  |
 | onClose                  | 关闭时的回调函数, 参数为被关闭的 message 实例 | function       | —                          | —      |
-| offset                   | Message 距离窗口顶部的偏移量                  | number         | —                          | 20     |
+| verticalOffset           | Message 距离窗口顶部的偏移量                  | number         | —                          | 20     |
 
 ### 方法
 
-调用 `Message` 或 `this.$message` 会返回当前 Message 的实例。如果需要手动关闭实例，可以调用它的 `close` 方法。
+调用 `Message` 会返回当前 Message 的实例。如果需要手动关闭实例，可以调用它的 `close` 方法。
 | 方法名 | 说明 |
 | ---- | ---- |
 | close | 关闭当前的 Message |

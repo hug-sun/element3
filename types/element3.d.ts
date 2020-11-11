@@ -33,6 +33,7 @@ export { ElRadioGroup } from './radio-group'
 export { ElSlider } from './slider'
 export { ElSwitch } from './switch'
 export { ElMessageBox } from './message-box'
+export { ElMessage } from './message'
 
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
@@ -52,7 +53,6 @@ import { ElMain } from './main'
 import { ElMenu } from './menu'
 import { ElMenuItem } from './menu-item'
 import { ElMenuItemGroup } from './menu-item-group'
-import { ElMessage } from './message'
 import { ElNotification } from './notification'
 import { ElOption } from './option'
 import { ElOptionGroup } from './option-group'
@@ -113,9 +113,6 @@ export type HorizontalAlignment = ElementUIHorizontalAlignment
 
 /** Show animation while loading data */
 export const Loading: ElLoading
-
-/** Used to show feedback after an activity. The difference with Notification is that the latter is often used to show a system level passive notification. */
-export const Message: ElMessage
 
 /** Displays a global notification message at the upper right corner of the page */
 export const Notification: ElNotification
