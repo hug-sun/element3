@@ -21,6 +21,7 @@ export { ElCheckboxButton } from './checkbox-button'
 export { ElCheckboxGroup } from './checkbox-group'
 export { ElCol } from './col'
 export { ElPagination } from './pagination'
+export { ElSelect } from './select'
 export { ElRadioButton } from './radio-button'
 export { ElInput } from './input'
 export { ElInputNumber } from './input-number'
@@ -28,7 +29,6 @@ export { ElRadio } from './radio'
 export { ElRadioGroup } from './radio-group'
 export { ElSlider } from './slider'
 export { ElSwitch } from './switch'
-
 
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
@@ -57,7 +57,6 @@ import { ElPopover } from './popover'
 import { ElProgress } from './progress'
 import { ElRate } from './rate'
 import { ElRow } from './row'
-import { ElSelect } from './select'
 import { ElStep } from './step'
 import { ElSteps } from './steps'
 import { ElSubmenu } from './submenu'
@@ -192,8 +191,8 @@ export class Rate extends ElRate {}
 /** Row Layout Component */
 export class Row extends ElRow {}
 
-/** Dropdown Select Component */
-export class Select extends ElSelect {}
+/** Slider Component */
+export class Slider extends ElSlider {}
 
 /** Step Component */
 export class Step extends ElStep {}
