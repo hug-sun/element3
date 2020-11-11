@@ -13,7 +13,8 @@ export interface MessageBoxInputValidator {
   (value: string): boolean | string
 }
 
-export declare class ElMessageBoxComponent extends Vue {
+export const ElMessageBox: IMessageBox
+interface IMessageBox extends Vue {
   title: string
   message: string
   type: MessageType
@@ -59,10 +60,10 @@ export interface ElMessageBoxOptions {
   customClass?: string
 
   /** MessageBox closing callback if you don't prefer Promise */
-  callback?: (action: MessageBoxCloseAction, instance: ElMessageBoxComponent) => void
+  callback?: (action: MessageBoxCloseAction, instance: ElMessageBox) => void
 
   /** Callback before MessageBox closes, and it will prevent MessageBox from closing */
-  beforeClose?: (action: MessageBoxCloseAction, instance: ElMessageBoxComponent, done: (() => void)) => void
+  beforeClose?: (action: MessageBoxCloseAction, instance: ElMessageBox, done: (() => void)) => void
 
   /** Whether to lock body scroll when MessageBox prompts */
   lockScroll?: boolean

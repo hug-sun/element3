@@ -32,6 +32,7 @@ export { ElRadio } from './radio'
 export { ElRadioGroup } from './radio-group'
 export { ElSlider } from './slider'
 export { ElSwitch } from './switch'
+export { ElMessageBox } from './message-box'
 
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
@@ -52,7 +53,6 @@ import { ElMenu } from './menu'
 import { ElMenuItem } from './menu-item'
 import { ElMenuItemGroup } from './menu-item-group'
 import { ElMessage } from './message'
-import { ElMessageBox } from './message-box'
 import { ElNotification } from './notification'
 import { ElOption } from './option'
 import { ElOptionGroup } from './option-group'
@@ -116,9 +116,6 @@ export const Loading: ElLoading
 
 /** Used to show feedback after an activity. The difference with Notification is that the latter is often used to show a system level passive notification. */
 export const Message: ElMessage
-
-/** A set of modal boxes simulating system message box, mainly for message prompt, success tips, error messages and query information */
-export const MessageBox: ElMessageBox
 
 /** Displays a global notification message at the upper right corner of the page */
 export const Notification: ElNotification

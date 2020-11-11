@@ -76,9 +76,9 @@ const defaultCallback = (action) => {
   }
 }
 
-const initInstance = (currentMsg, Vnode = null) => {
+const initInstance = (currentMsg, VNode = null) => {
   defaults.callback = defaultCallback
-  instance = h(messageBoxConstructor, currentMsg.options, Vnode)
+  instance = h(messageBoxConstructor, currentMsg.options, VNode)
   render(instance, document.createElement('div'))
 }
 
