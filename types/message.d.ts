@@ -3,7 +3,8 @@ import Vue, {VNode} from 'vue'
 export type MessageType = 'success' | 'warning' | 'info' | 'error'
 
 /** Message Component */
-export declare class ElMessageComponent extends Vue {
+export const ElMesasge: IMessage
+interface IMessage extends Vue {
   /** Close the Loading instance */
   close (): void
 }
