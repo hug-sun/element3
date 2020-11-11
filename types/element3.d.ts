@@ -19,6 +19,7 @@ export { ElCascader } from './cascader'
 export { ElCheckbox } from './checkbox'
 export { ElCheckboxButton } from './checkbox-button'
 export { ElCheckboxGroup } from './checkbox-group'
+export { ElRow } from './row'
 export { ElCol } from './col'
 export { ElSelect } from './select'
 export { ElRadioButton } from './radio-button'
@@ -56,7 +57,6 @@ import { ElPagination } from './pagination'
 import { ElPopover } from './popover'
 import { ElProgress } from './progress'
 import { ElRate } from './rate'
-import { ElRow } from './row'
 import { ElStep } from './step'
 import { ElSteps } from './steps'
 import { ElSubmenu } from './submenu'
@@ -190,9 +190,6 @@ export class Progress extends ElProgress {}
 
 /** Rate Component */
 export class Rate extends ElRate {}
-
-/** Row Layout Component */
-export class Row extends ElRow {}
 
 /** Slider Component */
 export class Slider extends ElSlider {}
