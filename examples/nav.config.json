@@ -97,18 +97,6 @@
               "title": "Slider 滑块"
             },
             {
-              "path": "/time-picker",
-              "title": "TimePicker 时间选择器"
-            },
-            {
-              "path": "/date-picker",
-              "title": "DatePicker 日期选择器"
-            },
-            {
-              "path": "/datetime-picker",
-              "title": "DateTimePicker 日期时间选择器"
-            },
-            {
               "path": "/upload",
               "title": "Upload 上传"
             },
@@ -133,10 +121,6 @@
         {
           "groupName": "Data",
           "list": [
-            {
-              "path": "/table",
-              "title": "Table 表格"
-            },
             {
               "path": "/tag",
               "title": "Tag 标签"
