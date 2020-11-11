@@ -1,5 +1,6 @@
 import { PluginObject, App } from 'vue'
 import {
+  ElementUIComponent,
   ElementUIComponentSize,
   ElementUIHorizontalAlignment
 } from './component'
@@ -19,7 +20,11 @@ export { ElCascader } from './cascader'
 export { ElCheckbox } from './checkbox'
 export { ElCheckboxButton } from './checkbox-button'
 export { ElCheckboxGroup } from './checkbox-group'
+export { ElRow } from './row'
 export { ElCol } from './col'
+export { ElProgress } from './progress'
+export { ElPagination } from './pagination'
+export { ElSelect } from './select'
 export { ElRadioButton } from './radio-button'
 export { ElInput } from './input'
 export { ElInputNumber } from './input-number'
@@ -28,7 +33,6 @@ export { ElRadioGroup } from './radio-group'
 export { ElSlider } from './slider'
 export { ElSwitch } from './switch'
 export { ElMessage } from './message'
-
 
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
@@ -52,12 +56,8 @@ import { ElMessageBox } from './message-box'
 import { ElNotification } from './notification'
 import { ElOption } from './option'
 import { ElOptionGroup } from './option-group'
-import { ElPagination } from './pagination'
 import { ElPopover } from './popover'
-import { ElProgress } from './progress'
 import { ElRate } from './rate'
-import { ElRow } from './row'
-import { ElSelect } from './select'
 import { ElStep } from './step'
 import { ElSteps } from './steps'
 import { ElSubmenu } from './submenu'
@@ -103,7 +103,7 @@ export const version: string
 export function install(app: App, ...options: any[]): any
 
 /** ElementUI component common definition */
-export type Component = ElementUIComponen
+export type Component = ElementUIComponent
 
 /** Component size definition for button, input, etc */
 export type ComponentSize = ElementUIComponentSize
@@ -177,23 +177,14 @@ export class Option extends ElOption {}
 /** Dropdown Select Option Group Component */
 export class OptionGroup extends ElOptionGroup {}
 
-/** Pagination Component */
-export class Pagination extends ElPagination {}
-
 /** Popover Component */
 export class Popover extends ElPopover {}
-
-/** Progress Component */
-export class Progress extends ElProgress {}
 
 /** Rate Component */
 export class Rate extends ElRate {}
 
-/** Row Layout Component */
-export class Row extends ElRow {}
-
-/** Dropdown Select Component */
-export class Select extends ElSelect {}
+/** Slider Component */
+export class Slider extends ElSlider {}
 
 /** Step Component */
 export class Step extends ElStep {}
