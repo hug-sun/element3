@@ -20,6 +20,14 @@ export { ElCheckbox } from './checkbox'
 export { ElCheckboxButton } from './checkbox-button'
 export { ElCheckboxGroup } from './checkbox-group'
 export { ElCol } from './col'
+export { ElRadioButton } from './radio-button'
+export { ElInput } from './input'
+export { ElInputNumber } from './input-number'
+export { ElRadio } from './radio'
+export { ElRadioGroup } from './radio-group'
+export { ElSlider } from './slider'
+export { ElSwitch } from './switch'
+
 
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
@@ -34,8 +42,6 @@ import { ElFooter } from './footer'
 import { ElForm } from './form'
 import { ElFormItem } from './form-item'
 import { ElHeader } from './header'
-import { ElInput } from './input'
-import { ElInputNumber } from './input-number'
 import { ElLoading } from './loading'
 import { ElMain } from './main'
 import { ElMenu } from './menu'
@@ -50,16 +56,11 @@ import { ElPagination } from './pagination'
 import { ElPopover } from './popover'
 import { ElProgress } from './progress'
 import { ElRate } from './rate'
-import { ElRadio } from './radio'
-import { ElRadioButton } from './radio-button'
-import { ElRadioGroup } from './radio-group'
 import { ElRow } from './row'
 import { ElSelect } from './select'
-import { ElSlider } from './slider'
 import { ElStep } from './step'
 import { ElSteps } from './steps'
 import { ElSubmenu } from './submenu'
-import { ElSwitch } from './switch'
 import { ElTable } from './table'
 import { ElTableColumn } from './table-column'
 import { ElTag } from './tag'
@@ -161,12 +162,6 @@ export class FormItem extends ElFormItem {}
 /** Header Component */
 export class Header extends ElHeader {}
 
-/** Input Component */
-export class Input extends ElInput {}
-
-/** Input Number Component */
-export class InputNumber extends ElInputNumber {}
-
 /** Main Component */
 export class Main extends ElMain {}
 
@@ -197,23 +192,11 @@ export class Progress extends ElProgress {}
 /** Rate Component */
 export class Rate extends ElRate {}
 
-/** Radio Component */
-export class Radio extends ElRadio {}
-
-/** Radio Button Component */
-export class RadioButton extends ElRadioButton {}
-
-/** Radio Group Component */
-export class RadioGroup extends ElRadioGroup {}
-
 /** Row Layout Component */
 export class Row extends ElRow {}
 
 /** Dropdown Select Component */
 export class Select extends ElSelect {}
-
-/** Slider Component */
-export class Slider extends ElSlider {}
 
 /** Step Component */
 export class Step extends ElStep {}
@@ -223,9 +206,6 @@ export class Steps extends ElSteps {}
 
 /** Submenu Component */
 export class Submenu extends ElSubmenu {}
-
-/** Switch Component */
-export class Switch extends ElSwitch {}
 
 /** Table Component */
 export class Table extends ElTable {}
