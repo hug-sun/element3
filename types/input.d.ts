@@ -12,9 +12,9 @@ export interface AutoSize {
   /** Maximum rows to show */
   maxRows: number
 }
-
+export const ElInput: IInput
 /** Input Component */
-export declare class ElInput extends ElementUIComponent {
+interface IInput extends ElementUIComponent {
   /** Type of input */
   type: InputType
 
