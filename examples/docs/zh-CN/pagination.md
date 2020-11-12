@@ -118,22 +118,30 @@
   </div>
 </template>
 <script>
+  import { ref } from 'vue'
   export default {
-    methods: {
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+    setup() {
+      const currentPage1 = ref(5)
+      const currentPage2 = ref(5)
+      const currentPage3 = ref(5)
+      const currentPage4 = ref(4)
+
+      const handleSizeChange = (size) => {
+        console.log(`每页 ${size} 条`)
       }
-    },
-    data() {
+
+      const handleCurrentChange = (page) => {
+        console.log(`当前页: ${page}`)
+      }
+
       return {
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4
-      };
+        handleSizeChange,
+        handleCurrentChange,
+        currentPage1,
+        currentPage2,
+        currentPage3,
+        currentPage4
+      }
     }
   }
 </script>
@@ -157,10 +165,13 @@
 </div>
 
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup() {
+      const value = ref(false)
+
       return {
-        value: false
+        value
       }
     }
   }
@@ -184,7 +195,7 @@
 | prev-text | 替代图标显示的上一页文字 | string | — | — |
 | next-text | 替代图标显示的下一页文字 | string | — | — |
 | disabled | 是否禁用 | boolean | — | false |
-| hide-on-single-page | 只有一页时是否隐藏 | boolean | — | - |
+| hide-on-single-page | 只有一页时是否隐藏 | boolean | — | false |
 
 ### Events
 | 事件名称 | 说明 | 回调参数 |

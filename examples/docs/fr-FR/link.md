@@ -10,7 +10,7 @@ Lien texte basique.
 
 ```html
 <div>
-  <el-link href="https://element.eleme.io" target="_blank">défaut</el-link>
+  <el-link href="https://element3.gitee.io" target="_blank">défaut</el-link>
   <el-link type="primary">primaire</el-link>
   <el-link type="success">succès</el-link>
   <el-link type="warning">avertissement</el-link>

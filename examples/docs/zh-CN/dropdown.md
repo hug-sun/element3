@@ -209,12 +209,12 @@
 </style>
 
 <script>
-  import {useMessage} from 'vue'
+  import {useMessage} from 'element3'
   export default {
     setup(){
-      let message = useMessage()
+      let $message = useMessage()
       function handleCommand(command) {
-        message('click on item ' + command);
+        $message('click on item ' + command);
       }
 
       return {handleCommand}

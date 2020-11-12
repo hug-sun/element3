@@ -10,9 +10,9 @@ export interface SliderTooltipFormat {
    */
   (value: number): string
 }
-
+export const ElSlider: ISlider
 /** Slider Component */
-export declare class ElSlider extends ElementUIComponent {
+interface ISlider extends ElementUIComponent {
   /** Current value of the slider */
   value: number | number[]
 

@@ -9,7 +9,7 @@ Basic text link
 
 ```html
 <div>
-  <el-link href="https://element.eleme.io" target="_blank">default</el-link>
+  <el-link href="https://element3.gitee.io" target="_blank">default</el-link>
   <el-link type="primary">primary</el-link>
   <el-link type="success">success</el-link>
   <el-link type="warning">warning</el-link>

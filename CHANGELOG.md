@@ -1,3 +1,34 @@
+## [0.0.24](https://github.com/kkbjs/element3/compare/v0.0.23...v0.0.24) (2020-11-12)
+
+
+
+## [0.0.23](https://github.com/kkbjs/element3/compare/v0.0.22...v0.0.23) (2020-11-12)
+
+
+### Bug Fixes
+
+* fix element3.d.ts ([05b0e60](https://github.com/kkbjs/element3/commit/05b0e6015d0bac7610d716a58dd84bd21114e457))
+* Radio.vue and RadioButton.vue get elForm disabled attribute error ([ae29201](https://github.com/kkbjs/element3/commit/ae292019620195f880db90b7953845c89312cce5))
+* Radio.vue getting elFormItemSize error ([e778c71](https://github.com/kkbjs/element3/commit/e778c7168a5a1b08d7d81b91aadca85a7435867f))
+* RadioGroup.vue get injection value error ([1f6696c](https://github.com/kkbjs/element3/commit/1f6696c8a0db511ff32a4177b32c749ff3184ba4))
+* refine user default language zh-CN ([2adda01](https://github.com/kkbjs/element3/commit/2adda01e825d5e8358187039d6474144c0f94f7d))
+* refine user default language zh-CN ([4fa3602](https://github.com/kkbjs/element3/commit/4fa3602fb0d1c4ad00479dfeb1e15f6efb7e6442))
+* update Avatar and test ([417b505](https://github.com/kkbjs/element3/commit/417b505cbfac4c6ed59a16ea1f7d5bb63de8d675))
+* update input.md ([f0493e3](https://github.com/kkbjs/element3/commit/f0493e3c0e59ab81a6d15016980908e7af95b8ba))
+* update link and test ([bf4db91](https://github.com/kkbjs/element3/commit/bf4db919f0dd76834fe6b3c2e76c8e9355f69371))
+* update Notification and test ([0045efb](https://github.com/kkbjs/element3/commit/0045efb68e9295ce5ce8d34b9773b49804d23607))
+* update rate and check ([7afa77f](https://github.com/kkbjs/element3/commit/7afa77f3fb3f53db589b31a17693c94e7000a0ff))
+* user language default zh-CN ([d5145cb](https://github.com/kkbjs/element3/commit/d5145cb4a1d93f199224b6cbb78deb3fec35eaac))
+
+
+### Features
+
+*  check button and breadcrumb and  NavMenu  and Tabs component ([ea59038](https://github.com/kkbjs/element3/commit/ea590386ce7868871b8386b9c5ea17612bd90be1))
+* change messagebox api ([034f432](https://github.com/kkbjs/element3/commit/034f43207fbc3375783214fbe60e6e964b978aac))
+* messageBox api add $ prefix ([a558746](https://github.com/kkbjs/element3/commit/a5587468afd72b8ff39da91e2caa133e29a6ec67))
+
+
+
 ## [0.0.22](https://github.com/kkbjs/element3/compare/v0.0.21...v0.0.22) (2020-11-08)
 
 

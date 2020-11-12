@@ -157,19 +157,20 @@ route.push({
   name: 'play',
   component: require('./play/index.vue')
 })
-
-const userLanguage =
-  localStorage.getItem('ELEMENT_LANGUAGE') ||
-  window.navigator.language ||
-  'en-US'
-let defaultPath = '/en-US'
-if (userLanguage.indexOf('zh-') !== -1) {
-  defaultPath = '/zh-CN'
-} else if (userLanguage.indexOf('es') !== -1) {
-  defaultPath = '/es'
-} else if (userLanguage.indexOf('fr') !== -1) {
-  defaultPath = '/fr-FR'
-}
+//To-do:目前只支持中文环境，所以设置中文为默认值
+let defaultPath = '/zh-CN'
+// const userLanguage =
+//   localStorage.getItem('ELEMENT_LANGUAGE') ||
+//   window.navigator.language ||
+//   'zh-CN'
+// let defaultPath = '/zh-CN'
+// if (userLanguage.indexOf('zh-') !== -1) {
+//   defaultPath = '/zh-CN'
+// } else if (userLanguage.indexOf('es') !== -1) {
+//   defaultPath = '/es'
+// } else if (userLanguage.indexOf('fr') !== -1) {
+//   defaultPath = '/fr-FR'
+// }
 
 route = route.concat([
   {

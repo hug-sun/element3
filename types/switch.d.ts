@@ -1,7 +1,7 @@
 import { ElementUIComponent } from './component'
-
+export const ElSwitch: ISwitch
 /** Switch Component */
-export declare class ElSwitch extends ElementUIComponent {
+interface ISwitch extends ElementUIComponent {
   /** Whether Switch is on */
   value: boolean
 
