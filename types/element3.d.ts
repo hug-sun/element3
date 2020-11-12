@@ -34,6 +34,7 @@ export { ElSlider } from './slider'
 export { ElSwitch } from './switch'
 export { ElLink } from './link'
 export { ElAvatar } from './avatar'
+export { ElTag } from './tag'
 
 export { ElMessage } from './message'
 export { ElNotification } from './notification'
@@ -65,7 +66,6 @@ import { ElSteps } from './steps'
 import { ElSubmenu } from './submenu'
 import { ElTable } from './table'
 import { ElTableColumn } from './table-column'
-import { ElTag } from './tag'
 import { ElTabs } from './tabs'
 import { ElTabPane } from './tab-pane'
 import { ElTimeline } from './timeline'
@@ -203,9 +203,6 @@ export class Tabs extends ElTabs {}
 
 /** Tab Pane Component */
 export class TabPane extends ElTabPane {}
-
-/** Tag Component */
-export class Tag extends ElTag {}
 
 /** Timeline Component */
 export class Timeline extends ElTimeline {}
