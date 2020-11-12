@@ -26,10 +26,9 @@
   import {useNotify} from 'element3'
   export default {
     setup(){
-console.log(useNotify,11)
-      let {$notify} = useNotify()
+      let notify = useNotify()
       function open1() {
-        $notify({
+        notify({
           title: '标题名称',
           message: h('i', { style: 'color: teal'}, '这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案')
         });
@@ -83,10 +82,10 @@ console.log(useNotify,11)
   import {useNotify} from 'element3'
   export default {
     setup(){
-      let $notify = useNotify()
+      let notify = useNotify()
 
       function open1() {
-        $notify({
+        notify({
           title: '成功',
           message: '这是一条成功的提示消息',
           type: 'success'
@@ -152,34 +151,35 @@ console.log(useNotify,11)
   import {useNotify} from 'element3'
   export default {
     setup(){
-      let $notify = useNotify()
+      let notify = useNotify()
       function open1() {
-        $notify({
+        notify({
           title: '自定义位置',
           message: '右上角弹出的消息'
         });
       }
       function open2() {
-        $notify({
+        notify({
           title: '自定义位置',
           message: '右下角弹出的消息',
           position: 'bottom-right'
         });
       }
       function open3() {
-        $notify({
+        notify({
           title: '自定义位置',
           message: '左下角弹出的消息',
           position: 'bottom-left'
         });
       }
       function open4() {
-        $notify({
+        notify({
           title: '自定义位置',
           message: '左上角弹出的消息',
           position: 'top-left'
         });
       }
+      return {open1,open2,open3,open4}
     }
   }
 </script>
@@ -204,10 +204,10 @@ console.log(useNotify,11)
   import {useNotify} from 'element3'
   export default {
     setup(){
-      let $notify = useNotify()
+      let notify = useNotify()
 
       function open() {
-        $notify({
+        notify({
           title: '偏移',
           message: '这是一条带有偏移的提示消息',
           offset: 100
