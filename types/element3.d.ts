@@ -33,8 +33,13 @@ export { ElRadioGroup } from './radio-group'
 export { ElSlider } from './slider'
 export { ElSwitch } from './switch'
 export { ElMessageBox } from './message-box'
-export { ElMessage } from './message'
+export { ElLink } from './link'
+export { ElAvatar } from './avatar'
+export { ElTag } from './tag'
+export { ElRate } from './rate'
 
+export { ElMessage } from './message'
+export { ElNotification } from './notification'
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
 import { ElColorPicker } from './color-picker'
@@ -57,13 +62,12 @@ import { ElNotification } from './notification'
 import { ElOption } from './option'
 import { ElOptionGroup } from './option-group'
 import { ElPopover } from './popover'
-import { ElRate } from './rate'
+
 import { ElStep } from './step'
 import { ElSteps } from './steps'
 import { ElSubmenu } from './submenu'
 import { ElTable } from './table'
 import { ElTableColumn } from './table-column'
-import { ElTag } from './tag'
 import { ElTabs } from './tabs'
 import { ElTabPane } from './tab-pane'
 import { ElTimeline } from './timeline'
@@ -74,7 +78,6 @@ import { ElTooltip } from './tooltip'
 import { ElTransfer } from './transfer'
 import { ElTree, TreeData } from './tree'
 import { ElUpload } from './upload'
-import { ElLink } from './link'
 import { ElDivider } from './divider'
 import { ElIcon } from './icon'
 import { ElCalendar } from './calendar'
@@ -82,7 +85,6 @@ import { ElImage } from './image'
 import { ElBacktop } from './backtop'
 import { ElInfiniteScroll } from './infinite-scroll'
 import { ElPageHeader } from './page-header'
-import { ElAvatar } from './avatar'
 import { ElDrawer } from './drawer'
 import { ElPopconfirm } from './popconfirm'
 
@@ -204,9 +206,6 @@ export class Tabs extends ElTabs {}
 /** Tab Pane Component */
 export class TabPane extends ElTabPane {}
 
-/** Tag Component */
-export class Tag extends ElTag {}
-
 /** Timeline Component */
 export class Timeline extends ElTimeline {}
 
@@ -234,9 +233,6 @@ export class Upload extends ElUpload {}
 /** Divider Component */
 export class Divider extends ElDivider {}
 
-/** Link Component */
-export class Link extends ElLink {}
-
 /** Image Component */
 export class Image extends ElImage {}
 
@@ -254,9 +250,6 @@ export const InfiniteScroll: PluginObject<ElInfiniteScroll>
 
 /** PageHeader Component */
 export class PageHeader extends ElPageHeader {}
-
-/** Avatar Component */
-export class Avatar extends ElAvatar {}
 
 /** Drawer Component */
 export class Drawer extends ElDrawer {}
