@@ -5,7 +5,7 @@ export type MessageBoxCloseAction = 'confirm' | 'cancel' | 'close'
 export type MessageBoxData = MessageBoxInputData | MessageBoxCloseAction
 
 export interface MessageBoxInputData {
-  value: string,
+  value: string
   action: MessageBoxCloseAction
 }
 
@@ -13,7 +13,9 @@ export interface MessageBoxInputValidator {
   (value: string): boolean | string
 }
 
-export declare class ElMessageBoxComponent extends Vue {
+export const useMsgbox: () => ElMessageBox
+
+interface IMessageBox {
   title: string
   message: string
   type: MessageType
@@ -59,10 +61,14 @@ export interface ElMessageBoxOptions {
   customClass?: string
 
   /** MessageBox closing callback if you don't prefer Promise */
-  callback?: (action: MessageBoxCloseAction, instance: ElMessageBoxComponent) => void
+  callback?: (action: MessageBoxCloseAction, instance: ElMessageBox) => void
 
   /** Callback before MessageBox closes, and it will prevent MessageBox from closing */
-  beforeClose?: (action: MessageBoxCloseAction, instance: ElMessageBoxComponent, done: (() => void)) => void
+  beforeClose?: (
+    action: MessageBoxCloseAction,
+    instance: ElMessageBox,
+    done: () => void
+  ) => void
 
   /** Whether to lock body scroll when MessageBox prompts */
   lockScroll?: boolean
@@ -132,7 +138,9 @@ export interface ElMessageBoxOptions {
 }
 
 export interface ElMessageBoxShortcutMethod {
-  (message: string, title: string, options?: ElMessageBoxOptions): Promise<MessageBoxData>
+  (message: string, title: string, options?: ElMessageBoxOptions): Promise<
+    MessageBoxData
+  >
   (message: string, options?: ElMessageBoxOptions): Promise<MessageBoxData>
 }
 
@@ -153,24 +161,8 @@ export interface ElMessageBox {
   prompt: ElMessageBoxShortcutMethod
 
   /** Set default options of message boxes */
-  setDefaults (defaults: ElMessageBoxOptions): void
+  setDefaults(defaults: ElMessageBoxOptions): void
 
   /** Close current message box */
-  close (): void
-}
-
-declare module 'vue/types/vue' {
-  interface Vue {
-    /** Show a message box */
-    $msgbox: ElMessageBox
-
-    /** Show an alert message box */
-    $alert: ElMessageBoxShortcutMethod
-
-    /** Show a confirm message box */
-    $confirm: ElMessageBoxShortcutMethod
-
-    /** Show a prompt message box */
-    $prompt: ElMessageBoxShortcutMethod
-  }
+  close(): void
 }

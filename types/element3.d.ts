@@ -32,6 +32,14 @@ export { ElRadio } from './radio'
 export { ElRadioGroup } from './radio-group'
 export { ElSlider } from './slider'
 export { ElSwitch } from './switch'
+export { ElLink } from './link'
+export { ElAvatar } from './avatar'
+export { ElTag } from './tag'
+export { ElRate } from './rate'
+export { useMessage } from './message'
+export { useNotify } from './notification'
+export { useLoading } from './loading'
+export { useMsgbox } from './message-box'
 
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
@@ -51,19 +59,16 @@ import { ElMain } from './main'
 import { ElMenu } from './menu'
 import { ElMenuItem } from './menu-item'
 import { ElMenuItemGroup } from './menu-item-group'
-import { ElMessage } from './message'
-import { ElMessageBox } from './message-box'
 import { ElNotification } from './notification'
 import { ElOption } from './option'
 import { ElOptionGroup } from './option-group'
 import { ElPopover } from './popover'
-import { ElRate } from './rate'
+
 import { ElStep } from './step'
 import { ElSteps } from './steps'
 import { ElSubmenu } from './submenu'
 import { ElTable } from './table'
 import { ElTableColumn } from './table-column'
-import { ElTag } from './tag'
 import { ElTabs } from './tabs'
 import { ElTabPane } from './tab-pane'
 import { ElTimeline } from './timeline'
@@ -74,7 +79,6 @@ import { ElTooltip } from './tooltip'
 import { ElTransfer } from './transfer'
 import { ElTree, TreeData } from './tree'
 import { ElUpload } from './upload'
-import { ElLink } from './link'
 import { ElDivider } from './divider'
 import { ElIcon } from './icon'
 import { ElCalendar } from './calendar'
@@ -82,7 +86,6 @@ import { ElImage } from './image'
 import { ElBacktop } from './backtop'
 import { ElInfiniteScroll } from './infinite-scroll'
 import { ElPageHeader } from './page-header'
-import { ElAvatar } from './avatar'
 import { ElDrawer } from './drawer'
 import { ElPopconfirm } from './popconfirm'
 
@@ -113,12 +116,6 @@ export type HorizontalAlignment = ElementUIHorizontalAlignment
 
 /** Show animation while loading data */
 export const Loading: ElLoading
-
-/** Used to show feedback after an activity. The difference with Notification is that the latter is often used to show a system level passive notification. */
-export const Message: ElMessage
-
-/** A set of modal boxes simulating system message box, mainly for message prompt, success tips, error messages and query information */
-export const MessageBox: ElMessageBox
 
 /** Displays a global notification message at the upper right corner of the page */
 export const Notification: ElNotification
@@ -210,9 +207,6 @@ export class Tabs extends ElTabs {}
 /** Tab Pane Component */
 export class TabPane extends ElTabPane {}
 
-/** Tag Component */
-export class Tag extends ElTag {}
-
 /** Timeline Component */
 export class Timeline extends ElTimeline {}
 
@@ -240,9 +234,6 @@ export class Upload extends ElUpload {}
 /** Divider Component */
 export class Divider extends ElDivider {}
 
-/** Link Component */
-export class Link extends ElLink {}
-
 /** Image Component */
 export class Image extends ElImage {}
 
@@ -260,9 +251,6 @@ export const InfiniteScroll: PluginObject<ElInfiniteScroll>
 
 /** PageHeader Component */
 export class PageHeader extends ElPageHeader {}
-
-/** Avatar Component */
-export class Avatar extends ElAvatar {}
 
 /** Drawer Component */
 export class Drawer extends ElDrawer {}

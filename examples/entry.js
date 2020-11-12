@@ -36,6 +36,9 @@ const globalEle = reactive({
 // 后面需要都替换成新的element3 导出的方法
 Element3.useMessage = NewElement3.useMessage
 Element3.useMsgbox = NewElement3.useMsgbox
+Element3.useLoading = NewElement3.useLoading
+Element3.useNotify = NewElement3.useNotify
+
 // 方便在 demo 里面全局导入 element3
 window.Element3 = Element3
 
