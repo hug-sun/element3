@@ -3,7 +3,7 @@ import { VNode } from 'vue'
 export type MessageType = 'success' | 'warning' | 'info' | 'error'
 
 /** Message Component */
-export const useMessage: () => (ElMessageOptions) => ElMessage
+export const useMessage: () => ElMessage
 
 interface IMessage {
   /** Close the Loading instance */
