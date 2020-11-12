@@ -1,4 +1,6 @@
 import { ElementUIComponent } from './component'
 
 /** Main Component */
-export declare class ElMain extends ElementUIComponent {}
+interface IMain extends ElementUIComponent {}
+
+export const ElMain: IMain

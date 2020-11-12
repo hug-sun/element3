@@ -20,24 +20,24 @@ export { ElCheckbox } from './checkbox'
 export { ElCheckboxButton } from './checkbox-button'
 export { ElCheckboxGroup } from './checkbox-group'
 export { ElCol } from './col'
+export { ElMain } from './main'
+export { ElContainer } from './container'
+export { ElHeader } from './header'
+export { ElFooter } from './footer'
 
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
 import { ElColorPicker } from './color-picker'
-import { ElContainer } from './container'
 import { ElDatePicker } from './date-picker'
 import { ElDialog } from './dialog'
 import { ElDropdown } from './dropdown'
 import { ElDropdownItem } from './dropdown-item'
 import { ElDropdownMenu } from './dropdown-menu'
-import { ElFooter } from './footer'
 import { ElForm } from './form'
 import { ElFormItem } from './form-item'
-import { ElHeader } from './header'
 import { ElInput } from './input'
 import { ElInputNumber } from './input-number'
 import { ElLoading } from './loading'
-import { ElMain } from './main'
 import { ElMenu } from './menu'
 import { ElMenuItem } from './menu-item'
 import { ElMenuItemGroup } from './menu-item-group'
@@ -131,9 +131,6 @@ export class CollapseItem extends ElCollapseItem {}
 /** Color Picker Component */
 export class ColorPicker extends ElColorPicker {}
 
-/** Container Component */
-export class Container extends ElContainer {}
-
 /** Date Picker Component */
 export class DatePicker extends ElDatePicker {}
 
@@ -149,26 +146,17 @@ export class DropdownItem extends ElDropdownItem {}
 /** Dropdown Menu Component */
 export class DropdownMenu extends ElDropdownMenu {}
 
-/** Footer Component */
-export class Footer extends ElFooter {}
-
 /** Form Component */
 export class Form extends ElForm {}
 
 /** Form Item Component */
 export class FormItem extends ElFormItem {}
 
-/** Header Component */
-export class Header extends ElHeader {}
-
 /** Input Component */
 export class Input extends ElInput {}
 
 /** Input Number Component */
 export class InputNumber extends ElInputNumber {}
-
-/** Main Component */
-export class Main extends ElMain {}
 
 /** Menu that provides navigation for your website */
 export class Menu extends ElMenu {}
