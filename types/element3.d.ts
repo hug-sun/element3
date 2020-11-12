@@ -32,6 +32,7 @@ export { ElRadio } from './radio'
 export { ElRadioGroup } from './radio-group'
 export { ElSlider } from './slider'
 export { ElSwitch } from './switch'
+export { ElMessageBox } from './message-box'
 export { ElLink } from './link'
 export { ElAvatar } from './avatar'
 export { ElTag } from './tag'
@@ -57,7 +58,7 @@ import { ElMain } from './main'
 import { ElMenu } from './menu'
 import { ElMenuItem } from './menu-item'
 import { ElMenuItemGroup } from './menu-item-group'
-import { ElMessageBox } from './message-box'
+import { ElNotification } from './notification'
 import { ElOption } from './option'
 import { ElOptionGroup } from './option-group'
 import { ElPopover } from './popover'
@@ -115,8 +116,8 @@ export type HorizontalAlignment = ElementUIHorizontalAlignment
 /** Show animation while loading data */
 export const Loading: ElLoading
 
-/** A set of modal boxes simulating system message box, mainly for message prompt, success tips, error messages and query information */
-export const MessageBox: ElMessageBox
+/** Displays a global notification message at the upper right corner of the page */
+export const Notification: ElNotification
 
 /** Collapse Component */
 export class Collapse extends ElCollapse {}
