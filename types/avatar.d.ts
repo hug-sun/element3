@@ -1,7 +1,7 @@
 import { ElementUIComponent } from './component'
 
 /** Avatar Component */
-export declare class ElAvatar extends ElementUIComponent {
+interface IAvatar extends ElementUIComponent {
   icon: string;
 
   size: string | number;
@@ -18,3 +18,5 @@ export declare class ElAvatar extends ElementUIComponent {
 
   fit: string;
 }
+
+export const ElAvatar: IAvatar

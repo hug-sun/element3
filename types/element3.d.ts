@@ -34,6 +34,7 @@ export { ElSlider } from './slider'
 export { ElSwitch } from './switch'
 export { ElLink } from './link'
 export { ElMessage } from './message'
+export { ElAvatar } from './avatar'
 
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
@@ -82,7 +83,6 @@ import { ElImage } from './image'
 import { ElBacktop } from './backtop'
 import { ElInfiniteScroll } from './infinite-scroll'
 import { ElPageHeader } from './page-header'
-import { ElAvatar } from './avatar'
 import { ElDrawer } from './drawer'
 import { ElPopconfirm } from './popconfirm'
 
@@ -254,9 +254,6 @@ export const InfiniteScroll: PluginObject<ElInfiniteScroll>
 
 /** PageHeader Component */
 export class PageHeader extends ElPageHeader { }
-
-/** Avatar Component */
-export class Avatar extends ElAvatar { }
 
 /** Drawer Component */
 export class Drawer extends ElDrawer { }
