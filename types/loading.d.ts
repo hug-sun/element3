@@ -2,7 +2,8 @@ import Vue, { VNodeDirective, PluginObject } from 'vue'
 
 import { ElementUIComponent } from './component'
 
-export const useLoading = () => ElLoadingService
+export const useLoading = () => (options: LoadingServiceOptions) =>
+  ILoadingComponent
 
 /** Options used in Loading service */
 export interface LoadingServiceOptions {
@@ -45,10 +46,6 @@ export interface ElLoadingDirective extends VNodeDirective {
     body: boolean
     fullscreen: boolean
   }
-}
-
-export interface ElLoadingService {
-  (options: LoadingServiceOptions): ILoadingComponent
 }
 
 /** Show animation while loading data */
