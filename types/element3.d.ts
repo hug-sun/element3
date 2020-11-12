@@ -34,7 +34,7 @@ export { ElSlider } from './slider'
 export { ElSwitch } from './switch'
 export { ElLink } from './link'
 export { ElMessage } from './message'
-
+export { ElNotification } from './notification'
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
 import { ElColorPicker } from './color-picker'
@@ -54,7 +54,6 @@ import { ElMenu } from './menu'
 import { ElMenuItem } from './menu-item'
 import { ElMenuItemGroup } from './menu-item-group'
 import { ElMessageBox } from './message-box'
-import { ElNotification } from './notification'
 import { ElOption } from './option'
 import { ElOptionGroup } from './option-group'
 import { ElPopover } from './popover'
@@ -116,9 +115,6 @@ export const Loading: ElLoading
 
 /** A set of modal boxes simulating system message box, mainly for message prompt, success tips, error messages and query information */
 export const MessageBox: ElMessageBox
-
-/** Displays a global notification message at the upper right corner of the page */
-export const Notification: ElNotification
 
 /** Collapse Component */
 export class Collapse extends ElCollapse { }
