@@ -1,3 +1,7 @@
+## [0.0.24](https://github.com/kkbjs/element3/compare/v0.0.23...v0.0.24) (2020-11-12)
+
+
+
 ## [0.0.23](https://github.com/kkbjs/element3/compare/v0.0.22...v0.0.23) (2020-11-12)
 
 
