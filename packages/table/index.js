@@ -1,8 +1,9 @@
-import ElTable from './src/table'
+import Table from './src/table.vue'
+import TableColumn from './src/table-column'
 
-/* istanbul ignore next */
-ElTable.install = function (app) {
-  app.component(ElTable.name, ElTable)
+export default (app) => {
+  app.component(Table.name, Table)
+  app.component(TableColumn.name, TableColumn)
 }
 
-export default ElTable
+export { Table, TableColumn }
