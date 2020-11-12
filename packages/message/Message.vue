@@ -48,7 +48,7 @@ export default {
       default: ''
     },
     message: {
-      type: String,
+      type: [String, Object],
       default: ''
     },
     duration: {

@@ -1,8 +1,8 @@
 import { PluginObject, App } from 'vue'
 import {
-    ElementUIComponent,
-    ElementUIComponentSize,
-    ElementUIHorizontalAlignment
+  ElementUIComponent,
+  ElementUIComponentSize,
+  ElementUIHorizontalAlignment
 } from './component'
 
 export { ElAlert } from './alert'
@@ -33,7 +33,7 @@ export { ElRadioGroup } from './radio-group'
 export { ElSlider } from './slider'
 export { ElSwitch } from './switch'
 export { ElLink } from './link'
-
+export { ElMessage } from './message'
 
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
@@ -53,7 +53,6 @@ import { ElMain } from './main'
 import { ElMenu } from './menu'
 import { ElMenuItem } from './menu-item'
 import { ElMenuItemGroup } from './menu-item-group'
-import { ElMessage } from './message'
 import { ElMessageBox } from './message-box'
 import { ElNotification } from './notification'
 import { ElOption } from './option'
@@ -88,9 +87,9 @@ import { ElDrawer } from './drawer'
 import { ElPopconfirm } from './popconfirm'
 
 export interface InstallationOptions {
-    locale: any
-    i18n: any
-    size: string
+  locale: any
+  i18n: any
+  size: string
 }
 
 /** The version of element-ui */
@@ -114,9 +113,6 @@ export type HorizontalAlignment = ElementUIHorizontalAlignment
 
 /** Show animation while loading data */
 export const Loading: ElLoading
-
-/** Used to show feedback after an activity. The difference with Notification is that the latter is often used to show a system level passive notification. */
-export const Message: ElMessage
 
 /** A set of modal boxes simulating system message box, mainly for message prompt, success tips, error messages and query information */
 export const MessageBox: ElMessageBox
