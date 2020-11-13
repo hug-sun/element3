@@ -1,66 +1,76 @@
 <script>
   import bus from '../../bus';
   import { ACTION_USER_CONFIG_UPDATE } from '../../components/theme/constant.js';
-  const varMap = [
-    '$--font-size-extra-large',
-    '$--font-size-large',
-    '$--font-size-medium',
-    '$--font-size-base',
-    '$--font-size-small',
-    '$--font-size-extra-small'
-  ];
-  const original = {
-    'font_size_extra_large': '20px',
-    'font_size_large': '18px',
-    'font_size_medium': '16px',
-    'font_size_base': '14px',
-    'font_size_small': '13px',
-    'font_size_extra_small': '12px'
-  }
+  import { reactive, toRefs, ref, getCurrentInstance, onMounted, watch } from 'vue'
   export default {
-    created() {
-      bus.$on(ACTION_USER_CONFIG_UPDATE, this.setGlobal);
-    },
-    mounted() {
-      this.setGlobal();
-    },
-    methods: {
-      tintColor(color, tint) {
-        return tintColor(color, tint);
-      },
-      setGlobal() {
+    setup(){
+      const original=reactive({
+         'font_size_extra_large': '20px',
+         'font_size_large': '18px',
+         'font_size_medium': '16px',
+         'font_size_base': '14px',
+         'font_size_small': '13px',
+         'font_size_extra_small': '12px'
+      })
+      const varMap=[
+         '$--font-size-extra-large',
+         '$--font-size-large',
+         '$--font-size-medium',
+         '$--font-size-base',
+         '$--font-size-small',
+        '$--font-size-extra-small'
+      ]
+      const global=reactive({})
+      const font_size_extra_large=ref
+      ('')
+      const font_size_large=ref('')
+      const font_size_medium=ref('')
+      const font_size_base=ref('')
+      const font_size_small=ref('')
+      const font_size_extra_small=ref('')
+
+      const tintColor=(color, tint)=>{
+        return tintColor(color, tint)
+      }
+
+      const setGlobal=()=>{
         if (window.userThemeConfig) {
-          this.global = window.userThemeConfig.global;
+          self.global = window.userThemeConfig.global;
         }
       }
-    },
-    data() {
-      return {
-        global: {},
-        'font_size_extra_large': '',
-        'font_size_large': '',
-        'font_size_medium': '',
-        'font_size_base': '',
-        'font_size_small': '',
-        'font_size_extra_small': ''
-      }
-    },
-    watch: {
-      global: {
-        immediate: true,
-        handler(value) {
+      bus.$on(ACTION_USER_CONFIG_UPDATE, self.setGlobal);
+
+      onMounted(()=>{
+        setGlobal()
+      })
+
+      watch(global, value =>{
           varMap.forEach((v) => {
             const key = v.replace('$--', '').replace(/-/g, '_')
             if (value[v]) {
-              this[key] = value[v]
+              self[key] = value[v]
             } else {
-              this[key] = original[key]
+              self[key] = original[key]
             }
           });
-        }
+      },{
+        immediate: true,
       }
-    },
+      )
+  return{
+    ...toRefs(global),
+    font_size_extra_large,
+    font_size_large,
+    font_size_medium,
+    font_size_base,
+    font_size_small,
+    font_size_extra_small,
+    tintColor,
+    setGlobal,
+    varMap,
+    ...toRefs(original)
   }
+}}
 </script>
 
 ## Typography 字体
@@ -92,42 +102,42 @@
     >
       <td>辅助文字</td>
       <td class="color-dark-light">{{font_size_extra_small}} Extra Small</td>
-      <td>用 Element 快速搭建页面</td>
+      <td>用 Element3 快速搭建页面</td>
     </tr>
     <tr
     :style="{ fontSize: font_size_small }"
     >
       <td>正文（小）</td>
       <td class="color-dark-light">{{font_size_small}} Small</td>
-      <td>用 Element 快速搭建页面</td>
+      <td>用 Element3 快速搭建页面</td>
     </tr>
     <tr
     :style="{ fontSize: font_size_base }"
     >
       <td>正文</td>
       <td class="color-dark-light">{{font_size_base}} Base</td>
-      <td>用 Element 快速搭建页面</td>
+      <td>用 Element3 快速搭建页面</td>
     </tr>
     <tr
     :style="{ fontSize: font_size_medium }"
     >
       <td>小标题</td>
       <td class="color-dark-light">{{font_size_medium}} Medium</td>
-      <td>用 Element 快速搭建页面</td>
+      <td>用 Element3 快速搭建页面</td>
     </tr>
     <tr
     :style="{ fontSize: font_size_large }"
     >
       <td>标题</td>
       <td class="color-dark-light">{{font_size_large}} large</td>
-      <td>用 Element 快速搭建页面</td>
+      <td>用 Element3 快速搭建页面</td>
     </tr>
     <tr
     :style="{ fontSize: font_size_extra_large }"
     >
       <td>主标题</td>
       <td class="color-dark-light">{{font_size_extra_large}} Extra large</td>
-      <td>用 Element 快速搭建页面</td>
+      <td>用 Element3 快速搭建页面</td>
     </tr>
   </tbody>
 </table>
