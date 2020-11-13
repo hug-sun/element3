@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref } from 'vue';
 export default {
   setup(){
-    const active = ref(0)
-    function next(){
+    const active = ref(0);
+    const next = () => {
       if (active.value++ > 2) {
         active.value = 0
       }
