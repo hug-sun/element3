@@ -25,34 +25,36 @@
     title="我是标题"
     v-model:visible="drawer"
     :direction="direction"
-    :before-close="handleClose">
+    :before-close="handleClose"
+  >
     <span>我来啦!</span>
   </el-drawer>
 </template>
 
-
 <script>
-import {ref} from 'vue'
-  import {useMsgbox} from 'element3'
+  import { ref } from 'vue'
+  import { useMsgbox } from 'element3'
   export default {
-    setup(){
-      let {$confirm} = useMsgbox()
+    setup() {
+      let msgbox = useMsgbox()
       let drawer = ref(false)
       let direction = ref('rtl')
 
       function handleClose(done) {
-        $confirm('确认关闭？')
-          .then(_ => {
-            done();
+        msgbox
+          .confirm('确认关闭？')
+          .then((_) => {
+            done()
           })
-          .catch(_ => {});
+          .catch((_) => {})
       }
 
-      return {drawer,direction,handleClose}
+      return { drawer, direction, handleClose }
     }
-  };
+  }
 </script>
 ```
+
 :::
 
 ### 不添加 Title
@@ -67,30 +69,26 @@ import {ref} from 'vue'
     点我打开
   </el-button>
 
-  <el-drawer
-    title="我是标题"
-    v-model:visible="drawer"
-    :with-header="false">
+  <el-drawer title="我是标题" v-model:visible="drawer" :with-header="false">
     <span>我来啦!</span>
   </el-drawer>
 </template>
 
-
 <script>
-import {ref} from 'vue'
+  import { ref } from 'vue'
   export default {
     setup() {
       let drawer = ref(false)
 
       return {
         drawer
-      };
+      }
     }
-  };
+  }
 </script>
 ```
-:::
 
+:::
 
 ### 自定义内容
 
@@ -100,7 +98,9 @@ import {ref} from 'vue'
 
 ```html
 <template>
-  <el-button type="text" @click="dialog = true">打开嵌套 Form 的 Drawer</el-button>
+  <el-button type="text" @click="dialog = true"
+    >打开嵌套 Form 的 Drawer</el-button
+  >
 
   <el-drawer
     title="我嵌套了 Form !"
@@ -109,7 +109,7 @@ import {ref} from 'vue'
     direction="ltr"
     custom-class="demo-drawer"
     ref="drawer"
-    >
+  >
     <div class="demo-drawer__content">
       <el-form :model="form">
         <el-form-item label="活动名称" :label-width="formLabelWidth">
@@ -124,22 +124,26 @@ import {ref} from 'vue'
       </el-form>
       <div class="demo-drawer__footer">
         <el-button @click="cancelForm">取 消</el-button>
-        <el-button type="primary" @click="$refs.drawer.closeDrawer()" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
+        <el-button
+          type="primary"
+          @click="$refs.drawer.closeDrawer()"
+          :loading="loading"
+          >{{ loading ? '提交中 ...' : '确 定' }}</el-button
+        >
       </div>
     </div>
   </el-drawer>
 </template>
 
-
 <script>
-import {ref} from 'vue'
-import {useMsgbox} from 'element3'
-export default {
-  setup(){
-    let {$confirm} = useMsgbox()
-    let dialog = ref(false)
-    let loading = ref(false)
-    let form = ref({
+  import { ref } from 'vue'
+  import { useMsgbox } from 'element3'
+  export default {
+    setup() {
+      let msgbox = useMsgbox()
+      let dialog = ref(false)
+      let loading = ref(false)
+      let form = ref({
         name: '',
         region: '',
         date1: '',
@@ -148,38 +152,39 @@ export default {
         type: [],
         resource: '',
         desc: ''
-})  
-    let formLabelWidth = ref('80px')
-    let timer = ref(null)
+      })
+      let formLabelWidth = ref('80px')
+      let timer = ref(null)
 
-    function handleClose(done) {
-      if (loading.value) {
-        return;
+      function handleClose(done) {
+        if (loading.value) {
+          return
+        }
+        msgbox.confirm('确定要提交表单吗？')
+          .then((_) => {
+            loading.value = true
+            timer.value = setTimeout(() => {
+              done()
+              // 动画关闭需要一定的时间
+              setTimeout(() => {
+                loading.value = false
+              }, 400)
+            }, 2000)
+          })
+          .catch((_) => {})
       }
-      $confirm('确定要提交表单吗？')
-        .then(_ => {
-          loading.value = true;
-          timer.value = setTimeout(() => {
-            done();
-            // 动画关闭需要一定的时间
-            setTimeout(() => {
-              loading.value = false;
-            }, 400);
-          }, 2000);
-        })
-        .catch(_ => {});
-    }
-    function cancelForm() {
-      loading.value = false;
-      dialog.value = false;
-      clearTimeout(timer.value);
-    }
+      function cancelForm() {
+        loading.value = false
+        dialog.value = false
+        clearTimeout(timer.value)
+      }
 
-    return {dialog,loading,form,formLabelWidth,handleClose,cancelForm}
+      return { dialog, loading, form, formLabelWidth, handleClose, cancelForm }
+    }
   }
-}
 </script>
 ```
+
 :::
 
 ### 多层嵌套
@@ -194,46 +199,44 @@ export default {
     点我打开
   </el-button>
 
-  <el-drawer
-    title="我是外面的 Drawer"
-    v-model:visible="drawer"
-    size="50%">
+  <el-drawer title="我是外面的 Drawer" v-model:visible="drawer" size="50%">
     <div>
-    <el-button @click="innerDrawer = true">打开里面的!</el-button>
-    <el-drawer
-      title="我是里面的"
-      :append-to-body="true"
-      :before-close="handleClose"
-      v-model:visible="innerDrawer">
-      <p>_(:зゝ∠)_</p>
-    </el-drawer>
+      <el-button @click="innerDrawer = true">打开里面的!</el-button>
+      <el-drawer
+        title="我是里面的"
+        :append-to-body="true"
+        :before-close="handleClose"
+        v-model:visible="innerDrawer"
+      >
+        <p>_(:зゝ∠)_</p>
+      </el-drawer>
     </div>
   </el-drawer>
 </template>
 
 <script>
-import {ref} from 'vue'
-  import {useMsgbox} from 'element3'
+  import { ref } from 'vue'
+  import { useMsgbox } from 'element3'
   export default {
-    setup(){
-      let {$confirm} = useMsgbox()
+    setup() {
+      let msgbox = useMsgbox()
       let drawer = ref(false)
       let innerDrawer = ref(false)
 
       function handleClose(done) {
-        $confirm('还有未保存的工作哦确定关闭吗？')
-          .then(_ => {
-            done();
+        msgbox.confirm('还有未保存的工作哦确定关闭吗？')
+          .then((_) => {
+            done()
           })
-          .catch(_ => {});
+          .catch((_) => {})
       }
 
-      return {drawer,innerDrawer,handleClose}
+      return { drawer, innerDrawer, handleClose }
     }
-  };
+  }
 </script>
-
 ```
+
 :::
 
 :::tip
@@ -256,41 +259,41 @@ Drawer 提供一个 `destroyOnClose` API, 用来在关闭 Drawer 时销毁子组
 
 ### Drawer Attributes
 
-| 参数      | 说明          | 类型      | 可选值                           | 默认值  |
-|---------- |-------------- |---------- |--------------------------------  |-------- |
-| append-to-body     | Drawer 自身是否插入至 body 元素上。嵌套的 Drawer 必须指定该属性并赋值为 true   | boolean   | — | false |
-| before-close | 关闭前的回调，会暂停 Drawer 的关闭 | function(done)，done 用于关闭 Drawer | — | — |
-| close-on-press-escape | 是否可以通过按下 ESC 关闭 Drawer | boolean    | — | true |
-| custom-class      | Drawer 的自定义类名 | string    | — | — |
-| destroy-on-close | 控制是否在关闭 Drawer 之后将子元素全部销毁 | boolean | - | false |
-| modal     | 是否需要遮罩层   | boolean   | — | true |
-| modal-append-to-body     | 遮罩层是否插入至 body 元素上，若为 false，则遮罩层会插入至 Drawer 的父元素上   | boolean   | — | true |
-| direction | Drawer 打开的方向 | Direction | rtl / ltr / ttb / btt | rtl |
-| show-close | 是否显示关闭按钮 | boolean    | — | true |
-| size | Drawer 窗体的大小, 当使用 `number` 类型时, 以像素为单位, 当使用 `string` 类型时, 请传入 'x%', 否则便会以 `number` 类型解释 | number / string | - | '30%' |
-| title     | Drawer 的标题，也可通过具名 slot （见下表）传入 | string    | — | — |
-| visible   | 是否显示 Drawer，支持 .sync 修饰符 | boolean | — | false |
-| wrapperClosable | 点击遮罩层是否可以关闭 Drawer | boolean | - | true |
-| withHeader | 控制是否显示 header 栏, 默认为 true, 当此项为 false 时, title attribute 和 title slot 均不生效 | boolean | - | true |
+| 参数                  | 说明                                                                                                                       | 类型                                 | 可选值                | 默认值 |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | --------------------- | ------ |
+| append-to-body        | Drawer 自身是否插入至 body 元素上。嵌套的 Drawer 必须指定该属性并赋值为 true                                               | boolean                              | —                     | false  |
+| before-close          | 关闭前的回调，会暂停 Drawer 的关闭                                                                                         | function(done)，done 用于关闭 Drawer | —                     | —      |
+| close-on-press-escape | 是否可以通过按下 ESC 关闭 Drawer                                                                                           | boolean                              | —                     | true   |
+| custom-class          | Drawer 的自定义类名                                                                                                        | string                               | —                     | —      |
+| destroy-on-close      | 控制是否在关闭 Drawer 之后将子元素全部销毁                                                                                 | boolean                              | -                     | false  |
+| modal                 | 是否需要遮罩层                                                                                                             | boolean                              | —                     | true   |
+| modal-append-to-body  | 遮罩层是否插入至 body 元素上，若为 false，则遮罩层会插入至 Drawer 的父元素上                                               | boolean                              | —                     | true   |
+| direction             | Drawer 打开的方向                                                                                                          | Direction                            | rtl / ltr / ttb / btt | rtl    |
+| show-close            | 是否显示关闭按钮                                                                                                           | boolean                              | —                     | true   |
+| size                  | Drawer 窗体的大小, 当使用 `number` 类型时, 以像素为单位, 当使用 `string` 类型时, 请传入 'x%', 否则便会以 `number` 类型解释 | number / string                      | -                     | '30%'  |
+| title                 | Drawer 的标题，也可通过具名 slot （见下表）传入                                                                            | string                               | —                     | —      |
+| visible               | 是否显示 Drawer，支持 .sync 修饰符                                                                                         | boolean                              | —                     | false  |
+| wrapperClosable       | 点击遮罩层是否可以关闭 Drawer                                                                                              | boolean                              | -                     | true   |
+| withHeader            | 控制是否显示 header 栏, 默认为 true, 当此项为 false 时, title attribute 和 title slot 均不生效                             | boolean                              | -                     | true   |
 
 ### Drawer Slot
 
-| name | 说明 |
-|------|--------|
-| — | Drawer 的内容 |
+| name  | 说明                |
+| ----- | ------------------- |
+| —     | Drawer 的内容       |
 | title | Drawer 标题区的内容 |
 
 ### Drawer Methods
 
-| name | 说明 |
-| ---- | ---  |
+| name        | 说明                                                    |
+| ----------- | ------------------------------------------------------- |
 | closeDrawer | 用于关闭 Drawer, 该方法会调用传入的 `before-close` 方法 |
 
 ### Drawer Events
 
-| 事件名称      | 说明    | 回调参数      |
-|---------- |-------- |---------- |
-| open  | Drawer 打开的回调 | — |
-| opened  | Drawer 打开动画结束时的回调 | — |
-| close  | Drawer 关闭的回调 | — |
-| closed | Drawer 关闭动画结束时的回调 | — |
+| 事件名称 | 说明                        | 回调参数 |
+| -------- | --------------------------- | -------- |
+| open     | Drawer 打开的回调           | —        |
+| opened   | Drawer 打开动画结束时的回调 | —        |
+| close    | Drawer 关闭的回调           | —        |
+| closed   | Drawer 关闭动画结束时的回调 | —        |

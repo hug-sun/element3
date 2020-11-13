@@ -9,5 +9,6 @@ export default {
   install(app) {
     app.use(directive)
   },
-  service
+  service,
+  directive
 }

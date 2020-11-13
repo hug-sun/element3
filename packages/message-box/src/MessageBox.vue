@@ -179,7 +179,7 @@ export default {
     },
     beforeClose: {
       type: Function,
-      default: null
+      default: () => {}
     },
     distinguishCancelAndClose: {
       type: Boolean,
@@ -223,15 +223,15 @@ export default {
     },
     inputPlaceholder: {
       type: String,
-      default: null
+      default: ''
     },
     inputType: {
       type: String,
-      default: null
+      default: 'text'
     },
     inputValue: {
       type: String,
-      default: null
+      default: ''
     },
     inputPattern: {
       type: RegExp,
@@ -243,7 +243,7 @@ export default {
     },
     inputErrorMessage: {
       type: String,
-      default: null
+      default: ''
     },
     center: {
       type: Boolean,
@@ -255,7 +255,7 @@ export default {
     },
     _type: {
       type: String,
-      default: null
+      default: ''
     },
     cancelButtonLoading: {
       type: Boolean,
