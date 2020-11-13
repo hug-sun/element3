@@ -1,4 +1,6 @@
 import { getPropByPath } from '../../../src/utils/util'
+import ElCheckbox from '../../checkbox'
+import { h } from 'vue'
 
 export const cellStarts = {
   default: {
@@ -28,72 +30,73 @@ export const cellStarts = {
 // 这些选项不应该被覆盖
 export const cellForced = {
   selection: {
-    renderHeader: function (h, { store }) {
-      return (
-        <el-checkbox
-          disabled={store.states.data && store.states.data.length === 0}
-          indeterminate={
-            store.states.selection.length > 0 && !this.isAllSelected
-          }
-          nativeOn-click={this.toggleAllSelection}
-          value={this.isAllSelected}
-        />
-      )
+    renderHeader: function ({ store }) {
+      return h(ElCheckbox, {
+        disabled:
+          store.states.data.value && store.states.data.value.length === 0,
+        indeterminate:
+          store.states.selection.value.length > 0 &&
+          !store.states.isAllSelected.value,
+        onClick: store.toggleAllSelection,
+        modelValue: store.states.isAllSelected.value
+      })
     },
-    renderCell: function (h, { row, column, store, $index }) {
-      return (
-        <el-checkbox
-          nativeOn-click={(event) => event.stopPropagation()}
-          value={store.isSelected(row)}
-          disabled={
-            column.selectable
-              ? !column.selectable.call(null, row, $index)
-              : false
-          }
-          on-input={() => {
-            store.commit('rowSelectedChanged', row)
-          }}
-        />
-      )
+    renderCell: function ({ row, column, store, index_ }) {
+      return h(ElCheckbox, {
+        disabled: column.selectable
+          ? !column.selectable.call(null, row, index_)
+          : false,
+        onInput: () => {
+          store.commit('rowSelectedChanged', row)
+        },
+        nativeOnClick: (event) => event.stopPropagation(),
+        modelValue: store.isSelected(row)
+      })
     },
     sortable: false,
     resizable: false
   },
   index: {
-    renderHeader: function (h, { column }) {
+    renderHeader: function ({ column }) {
       return column.label || '#'
     },
-    renderCell: function (h, { $index, column }) {
-      let i = $index + 1
+    renderCell: function ({ index_, column }) {
+      let i = index_ + 1
       const index = column.index
 
       if (typeof index === 'number') {
-        i = $index + index
+        i = index_ + index
       } else if (typeof index === 'function') {
-        i = index($index)
+        i = index(index_)
       }
-
-      return <div>{i}</div>
+      return h('div', {}, [i])
     },
     sortable: false
   },
   expand: {
-    renderHeader: function (h, { column }) {
+    renderHeader: function ({ column }) {
       return column.label || ''
     },
-    renderCell: function (h, { row, store }) {
+    renderCell: function ({ row, store }) {
       const classes = ['el-table__expand-icon']
-      if (store.states.expandRows.indexOf(row) > -1) {
+      if (store.states.expandRows.value.indexOf(row) > -1) {
         classes.push('el-table__expand-icon--expanded')
       }
       const callback = function (e) {
         e.stopPropagation()
         store.toggleRowExpansion(row)
       }
-      return (
-        <div class={classes} on-click={callback}>
-          <i class="el-icon el-icon-arrow-right"></i>
-        </div>
+      return h(
+        'div',
+        {
+          class: classes,
+          onClick: callback
+        },
+        [
+          h('i', {
+            class: 'el-icon el-icon-arrow-right'
+          })
+        ]
       )
     },
     sortable: false,
@@ -102,16 +105,16 @@ export const cellForced = {
   }
 }
 
-export function defaultRenderCell(h, { row, column, $index }) {
+export function defaultRenderCell({ row, column, index_ }) {
   const property = column.property
-  const value = property && getPropByPath(row, property).v
+  const value = property && getPropByPath(row, property, false).v
   if (column && column.formatter) {
-    return column.formatter(row, column, value, $index)
+    return column.formatter(row, column, value, index_)
   }
   return value
 }
 
-export function treeCellPrefix(h, { row, treeNode, store }) {
+export function treeCellPrefix({ row, treeNode, store }) {
   if (!treeNode) return null
   const ele = []
   const callback = function (e) {
@@ -120,10 +123,10 @@ export function treeCellPrefix(h, { row, treeNode, store }) {
   }
   if (treeNode.indent) {
     ele.push(
-      <span
-        class="el-table__indent"
-        style={{ 'padding-left': treeNode.indent + 'px' }}
-      ></span>
+      h('span', {
+        class: 'el-table__indent',
+        style: { 'padding-left': treeNode.indent + 'px' }
+      })
     )
   }
   if (typeof treeNode.expanded === 'boolean' && !treeNode.noLazyChildren) {
@@ -135,13 +138,27 @@ export function treeCellPrefix(h, { row, treeNode, store }) {
     if (treeNode.loading) {
       iconClasses = ['el-icon-loading']
     }
+
     ele.push(
-      <div class={expandClasses} on-click={callback}>
-        <i class={iconClasses}></i>
-      </div>
+      h(
+        'div',
+        {
+          class: expandClasses,
+          onClick: callback
+        },
+        [
+          h('i', {
+            class: iconClasses
+          })
+        ]
+      )
     )
   } else {
-    ele.push(<span class="el-table__placeholder"></span>)
+    ele.push(
+      h('span', {
+        class: 'el-table__placeholder'
+      })
+    )
   }
   return ele
 }
