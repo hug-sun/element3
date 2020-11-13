@@ -64,8 +64,16 @@ function genInlineComponentText(template, script) {
   if (script) {
     script = script
       .replace(/export\s+default/, 'const democomponentExport =')
-      .replace(/import ([,{}\w\s]+) from ['"\w]+/g, function (s0, s1) {
-        return `const ${s1} = Vue`
+      .replace(/import ([,{}\w\s]+) from (['"\w]+)/g, function (s0, s1, s2) {
+        if (s2 === `'vue'`) {
+          return `
+        const ${s1} = Vue
+        `
+        } else if (s2 === `'element3'`) {
+          return `
+            const ${s1} = Element3
+          `
+        }
       })
   } else {
     script = 'const democomponentExport = {}'

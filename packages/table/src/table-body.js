@@ -1,13 +1,13 @@
-import { arrayFindIndex } from 'element-ui/src/utils/util'
+import { arrayFindIndex } from '../../../src/utils/util'
 import { getCell, getColumnByCell, getRowIdentity } from './util'
 import {
   getStyle,
   hasClass,
   removeClass,
   addClass
-} from 'element-ui/src/utils/dom'
-import ElCheckbox from 'element-ui/packages/checkbox'
-import ElTooltip from 'element-ui/packages/tooltip'
+} from '../../../src/utils/dom'
+import ElCheckbox from '../../checkbox'
+import ElTooltip from '../../tooltip'
 import { debounce } from 'throttle-debounce'
 import LayoutObserver from './layout-observer'
 import { mapStates } from './store/helper'

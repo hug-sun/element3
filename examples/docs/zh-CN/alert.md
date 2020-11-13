@@ -88,10 +88,11 @@ Alert 组件提供了两个不同的主题：`light`和`dark`。
 
 <script>
   export default {
-    methods: {
-      hello() {
+    setup(){
+      function hello(){
         alert('Hello World!');
       }
+      return {hello}
     }
   }
 </script>

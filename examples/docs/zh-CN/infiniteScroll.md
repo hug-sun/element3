@@ -18,16 +18,14 @@
 </template>
 
 <script>
+import { ref } from 'vue'
   export default {
-    data () {
-      return {
-        count: 0
+    setup(){
+      const count = ref(0)
+      const load=()=>{
+        count.value += 2
       }
-    },
-    methods: {
-      load () {
-        this.count += 2
-      }
+      return {count,load}
     }
   }
 </script>
@@ -53,30 +51,38 @@
 </template>
 
 <script>
+import { ref, computed, getCurrentInstance } from 'vue'
   export default {
-    data () {
-      return {
-        count: 10,
-        loading: false
-      }
-    },
-    computed: {
-      noMore () {
-        return this.count >= 20
-      },
-      disabled () {
-        return this.loading || this.noMore
-      }
-    },
-    methods: {
-      load () {
-        this.loading = true
+    setup(){
+      const count = ref(10)
+      const loading = ref(false)
+      const self = getCurrentInstance().ctx
+
+      const noMore = computed(()=> {
+        // console.log(self.count == count.value)
+        return self.count >= 20
+      })
+
+      const disabled = computed(()=>{
+        return self.loading || noMore.value
+      })
+      const load = ()=>{
+        loading.value = true
         setTimeout(() => {
-          this.count += 2
-          this.loading = false
+          count.value += 2
+          loading.value = false
         }, 2000)
       }
+
+      return {
+        count,
+        loading,
+        noMore,
+        disabled,
+        load
+      }
     }
+    
   }
 </script>
 ```

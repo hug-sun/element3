@@ -31,9 +31,10 @@
 </template>
 
 <script>
+import {reactive,toRefs} from "vue"
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
@@ -61,8 +62,11 @@
         },
         value1: '',
         value2: '',
-      };
-    }
+      })
+      return{
+          ...toRefs(data)
+      }
+    }   
   };
 </script>
 ```
@@ -113,14 +117,18 @@
 </div>
 
 <script>
+import {reactive,toRefs} from "vue"
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         value1: '',
         value2: '',
         value3: '',
         value4: ''
-      };
+      })
+      return{
+        ...toRefs(data)
+      }
     }
   };
 </script>
@@ -160,9 +168,10 @@
 </template>
 
 <script>
+import {reactive,toRefs} from "vue"
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         pickerOptions: {
           shortcuts: [{
             text: '最近一周',
@@ -192,7 +201,10 @@
         },
         value1: '',
         value2: ''
-      };
+      })
+      return{
+        ...toRefs(data)
+      }
     }
   };
 </script>
@@ -233,9 +245,10 @@
 </template>
 
 <script>
+import {reactive,toRefs} from "vue"
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         pickerOptions: {
           shortcuts: [{
             text: '本月',
@@ -261,7 +274,10 @@
         },
         value1: '',
         value2: ''
-      };
+      })
+      return{
+        ...toRefs(data)
+      }
     }
   };
 </script>
@@ -339,13 +355,17 @@
 </template>
 
 <script>
+import {reactive,toRefs} from "vue"
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         value1: '',
         value2: '',
         value3: ''
-      };
+      })
+      return {
+        ...toRefs(data)
+      }
     }
   };
 </script>
@@ -372,11 +392,15 @@
 </template>
 
 <script>
+import {reactive,toRefs} from "vue"
   export default {
-    data() {
-      return {
-        value: ''
-      };
+    setup(){
+      const data = reactive({
+          value: ''
+      })
+      return{
+        ...toRefs(data)
+      }
     }
   };
 </script>

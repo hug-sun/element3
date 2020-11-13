@@ -136,7 +136,10 @@ export default {
       default: 7
     },
 
-    currentPage: Number,
+    currentPage: {
+      type: Number,
+      default: 1
+    },
 
     layout: {
       default: 'prev, pager, next, jumper, ->, total'

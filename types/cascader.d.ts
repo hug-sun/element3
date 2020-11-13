@@ -1,12 +1,12 @@
-import { VNode } from 'vue';
+import { VNode } from 'vue'
 import { ElementUIComponent, ElementUIComponentSize } from './component'
-import { CascaderOption, CascaderProps, CascaderNode } from './cascader-panel';
+import { CascaderOption, CascaderProps, CascaderNode } from './cascader-panel'
 
-export { CascaderOption, CascaderProps, CascaderNode };
+export { CascaderOption, CascaderProps, CascaderNode }
 
 export interface CascaderSlots {
   /** Custom label content */
-  default: VNode[],
+  default: VNode[]
 
   /** Empty content when no option matches */
   empty: VNode[]
@@ -14,8 +14,7 @@ export interface CascaderSlots {
   [key: string]: VNode[]
 }
 
-/** Cascader Component */
-export declare class ElCascader<V = any, D = CascaderOption> extends ElementUIComponent {
+interface ICascader<V = any, D = CascaderOption> extends ElementUIComponent {
   /** Data of the options */
   options: CascaderOption[]
 
@@ -63,3 +62,6 @@ export declare class ElCascader<V = any, D = CascaderOption> extends ElementUICo
 
   $slots: CascaderSlots
 }
+
+/** Cascader Component */
+export const ElCascader: ICascader

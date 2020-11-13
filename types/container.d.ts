@@ -1,7 +1,9 @@
 import { ElementUIComponent } from './component'
 
 /** Container Component */
-export declare class ElContainer extends ElementUIComponent {
+interface IContainer extends ElementUIComponent {
   /** Layout direction for child elements */
   direction: 'horizontal' | 'vertical'
 }
+
+export const ElContainer: IContainer

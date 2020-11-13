@@ -91,15 +91,13 @@ describe('Message', () => {
   })
 
   it('center', () => {
-    Message({
+    const wrapper = Message({
       message: '夏天',
       center: true,
       duration: 0
     })
     nextTick(() => {
-      expect(document.querySelector('.el-message').classList).toContain(
-        'is-center'
-      )
+      expect(wrapper.classes()).toContain('is-center')
     })
   })
 

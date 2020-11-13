@@ -1,6 +1,6 @@
 import { nextTick } from 'vue'
 import Watcher from './watcher'
-import { arrayFind } from 'element-ui/src/utils/util'
+import { arrayFind } from '../../../../src/utils/util'
 console.log(Watcher)
 Watcher.prototype.mutations = {
   setData(states, data) {
