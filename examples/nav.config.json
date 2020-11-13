@@ -65,6 +65,10 @@
           "groupName": "Form",
           "list": [
             {
+              "path": "/table",
+              "title": "Table表格"
+            },
+            {
               "path": "/radio",
               "title": "Radio 单选框"
             },

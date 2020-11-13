@@ -1,9 +1,7 @@
 import Table from './src/table.vue'
-import TableColumn from './src/table-column'
 
-export default (app) => {
+Table.install = function (app) {
   app.component(Table.name, Table)
-  app.component(TableColumn.name, TableColumn)
 }
 
-export { Table, TableColumn }
+export default Table

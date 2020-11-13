@@ -203,6 +203,7 @@ export default {
                           ),
                         column.filterable &&
                           h(FilterPanel, {
+                            table: this.$parent,
                             store: this.$parent.store,
                             placement: column.filterPlacement || 'bottom-start',
                             column: column,

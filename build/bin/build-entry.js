@@ -149,7 +149,8 @@ ComponentNames.forEach((name) => {
       'color-picker',
       'cascader',
       'cascader-panel',
-      'table'
+      'table',
+      'table-column'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换
