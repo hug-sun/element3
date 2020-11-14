@@ -18,8 +18,10 @@ interface DrawerSlots {
 
     [key: string]: VNode[]
 }
+
+export const ElDrawer:IDrawer 
 /** Drawer Component */
-export declare class ElDrawer extends ElementUIComponent {
+interface IDrawer extends ElementUIComponent {
     /* Equivalent to `Dialog`'s append to body attribute, when applying nested drawer, make sure this one is set to true */
     appendToBody: boolean
 

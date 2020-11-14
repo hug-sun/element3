@@ -1,7 +1,8 @@
 import { ElementUIComponent } from './component'
 
+export const ElTabPane:ITabPane
 /** Tab Pane Component */
-export declare class ElTabPane extends ElementUIComponent {
+interface ITabPane extends ElementUIComponent {
   /** Title of the tab */
   label: string
 
