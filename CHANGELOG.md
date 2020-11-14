@@ -1,3 +1,22 @@
+## [0.0.25](https://github.com/kkbjs/element3/compare/v0.0.24...v0.0.25) (2020-11-14)
+
+
+### Bug Fixes
+
+* add contributor ([569910e](https://github.com/kkbjs/element3/commit/569910e867a057d71549effbfcdc7c559ab2c6f3))
+* component export default was not found ([852fbe0](https://github.com/kkbjs/element3/commit/852fbe0448a1f8f2be3202d7283c67c3834c518f))
+* updata border/typography and test ([268456d](https://github.com/kkbjs/element3/commit/268456d9d00afce108eaf82e6aae870a9c628e76))
+* updata upload/steps and test ([9bd14af](https://github.com/kkbjs/element3/commit/9bd14afccf7551fa3818f5a2d184e787984f94d8))
+* update Container and test ([c550a9f](https://github.com/kkbjs/element3/commit/c550a9f91ef89a39efcf8944273460585b708eb1))
+* update Container and test ([676fca8](https://github.com/kkbjs/element3/commit/676fca8e421d7b1ad920623aec0ec2eeeec8225b))
+
+
+### Features
+
+* **icon.d.ts:** check icon docs  [#348](https://github.com/kkbjs/element3/issues/348) ([3d3866e](https://github.com/kkbjs/element3/commit/3d3866e66ab6a8d7f0f8ede42a944ff935b40427))
+
+
+
 ## [0.0.24](https://github.com/kkbjs/element3/compare/v0.0.23...v0.0.24) (2020-11-12)
 
 
