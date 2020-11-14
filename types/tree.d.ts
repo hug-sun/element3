@@ -44,8 +44,9 @@ export interface TreeStore<K, D> {
   _getAllNodes: () => TreeNode<K, D>[];
 }
 
+export const ElTree:ITree
 /** Tree Component */
-export declare class ElTree<K, D extends TreeData> extends ElementUIComponent {
+interface ITree<K, D extends TreeData> extends ElementUIComponent {
   /** TreeStore */
   store: TreeStore<K, D>;
 

@@ -12,7 +12,7 @@ export interface CollapseItemSlots {
 }
 
 /** Collapse Item Component */
-export declare class ElCollapseItem extends ElementUIComponent {
+interface ICollapseItem extends ElementUIComponent {
   /** Unique identification of the panel */
   name: string | number
 
@@ -24,3 +24,5 @@ export declare class ElCollapseItem extends ElementUIComponent {
   /** Disable the collapse item */
   disabled: boolean
 }
+
+export const ElCollapseItem:ICollapseItem

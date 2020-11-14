@@ -3,7 +3,7 @@ import { ElementUIComponent, ElementUIComponentSize } from './component'
 export type ColorFormat = 'hsl' | 'hsv' | 'hex' | 'rgb'
 
 /** ColorPicker Component */
-export declare class ElColorPicker extends ElementUIComponent {
+interface IColorPicker extends ElementUIComponent {
   /** Whether to display the alpha slider */
   showAlpha: boolean
 
@@ -19,3 +19,5 @@ export declare class ElColorPicker extends ElementUIComponent {
   /** Custom class name for ColorPicker's dropdown */
   colorFormat: ColorFormat
 }
+
+export const ElColorPicker:IColorPicker

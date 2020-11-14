@@ -92,8 +92,10 @@ describe('${ComponentName}', () => {
     content: `import { ElementUIComponent } from './component'
 
 /** ${ComponentName} Component */
-export declare class El${ComponentName} extends ElementUIComponent {
-}`
+interface I${ComponentName} extends ElementUIComponent {
+}
+
+export const El${ComponentName}:I${ComponentName}`
   }
 ]
 

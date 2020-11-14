@@ -22,7 +22,7 @@ export interface ValidateFieldCallback {
 }
 
 /** Form Component */
-export declare class ElForm extends ElementUIComponent {
+interface IForm extends ElementUIComponent {
   /** Data of form component */
   model: object
 
@@ -80,3 +80,5 @@ export declare class ElForm extends ElementUIComponent {
   /** clear validation message for certain fields */
   clearValidate (props?: string | string[]): void
 }
+
+export const ElForm:IForm
