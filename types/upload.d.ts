@@ -38,9 +38,9 @@ export interface HttpRequestOptions {
   onSuccess: (response: any) => void,
   onError: (err: ErrorEvent) => void
 }
-
+export const ElUpload : IUpload;
 /** Upload Component */
-export declare class ElUpload extends ElementUIComponent {
+interface IUpload extends ElementUIComponent {
   /** Request URL (required) */
   action: string
 

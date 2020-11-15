@@ -62,7 +62,7 @@ export interface DatePickerOptions {
 }
 
 /** DatePicker Component */
-export declare class ElDatePicker extends ElementUIComponent {
+interface IDatePicker extends ElementUIComponent {
   /** The value of the date picker */
   value: Date | string | Date[] | string[]
 
@@ -122,3 +122,5 @@ export declare class ElDatePicker extends ElementUIComponent {
    */
   focus (): void
 }
+
+export const ElDatePicker:IDatePicker

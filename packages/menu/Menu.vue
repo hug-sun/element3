@@ -220,7 +220,7 @@ export default {
       })
     }
     const routeToItem = (item, onError) => {
-      const route = item.route || item.index
+      const route = item.ctx.route || item.ctx.index
       try {
         instance.ctx.$router.push(route, () => {}, onError)
       } catch (e) {

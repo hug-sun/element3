@@ -1,7 +1,8 @@
 import { ElementUIComponent } from './component'
 
+export const ElBacktop:IBacktop 
 /** Backtop Component */
-export declare class ElBacktop extends ElementUIComponent {
+interface IBacktop extends ElementUIComponent {
   /** Backtop target */
   target: string
   

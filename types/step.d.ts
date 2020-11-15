@@ -16,8 +16,9 @@ export interface StepRenderSlots {
   [key: string]: VNode[]
 }
 
+export const ElStep:IStep
 /** Step Component */
-export declare class ElStep extends ElementUIComponent {
+interface IStep extends ElementUIComponent {
   /** Step title */
   title: string
 
