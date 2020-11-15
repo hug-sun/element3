@@ -136,7 +136,10 @@ export default {
       default: 7
     },
 
-    currentPage: Number,
+    currentPage: {
+      type: Number,
+      default: 1
+    },
 
     layout: {
       default: 'prev, pager, next, jumper, ->, total'
@@ -266,8 +269,8 @@ export default {
         <Jumper
           currentPage={this.internalCurrentPage}
           pageCount={this.internalPageCount}
-          handleChange={this.handleChange}
           disabled={this.disabled}
+          onChange={this.handleChange}
         />
       ),
       pager: (

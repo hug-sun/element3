@@ -151,7 +151,7 @@
 <script>
   import bus from '../../bus';
   import navsData from '../../nav.config.json';
-  import throttle from 'throttle-debounce/throttle';
+  import {throttle} from 'throttle-debounce';
 
   export default {
     data() {
@@ -231,10 +231,10 @@
       this.goAnchor();
       document.body.classList.add('is-component');
     },
-    destroyed() {
+    unmounted() {
       document.body.classList.remove('is-component');
     },
-    beforeDestroy() {
+    beforeUnmount() {
       this.componentScrollBox.removeEventListener('scroll', this.throttledScrollHandler);
     },
     beforeRouteUpdate(to, from, next) {

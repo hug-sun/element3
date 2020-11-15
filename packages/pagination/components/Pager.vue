@@ -86,7 +86,6 @@ export default {
       pagers,
       showMore,
       quickClass,
-      disabled,
       // method
       onMouseEnter,
       onPagerClick

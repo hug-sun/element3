@@ -198,7 +198,7 @@ describe('components', () => {
       const wrapper = mount(Jumper, {
         props: {
           currentPage,
-          handleChange(val) {
+          onChange(val) {
             currentPage.value = Number(val)
           }
         },

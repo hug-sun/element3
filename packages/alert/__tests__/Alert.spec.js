@@ -42,34 +42,6 @@ describe('Alert.vue', () => {
       )
     })
 
-    it('type', () => {
-      const wrapperInfo = mount(Alert, {
-        props: {
-          type: 'info'
-        }
-      })
-      const wrapperSuccess = mount(Alert, {
-        props: {
-          type: 'success'
-        }
-      })
-      const wrapperWarning = mount(Alert, {
-        props: {
-          type: 'warning'
-        }
-      })
-      const wrapperError = mount(Alert, {
-        props: {
-          type: 'error'
-        }
-      })
-
-      expect(wrapperInfo.classes()).toContain('el-alert--info')
-      expect(wrapperSuccess.classes()).toContain('el-alert--success')
-      expect(wrapperWarning.classes()).toContain('el-alert--warning')
-      expect(wrapperError.classes()).toContain('el-alert--error')
-    })
-
     it('closable', () => {
       const wrapperTrue = mount(Alert, {
         props: {
@@ -114,45 +86,13 @@ describe('Alert.vue', () => {
       expect(wrapperTrue.find('.el-alert__icon').exists()).toBe(true)
       expect(wrapperFalse.find('.el-alert__icon').exists()).toBe(false)
     })
-
-    it('center', () => {
-      const wrapperTrue = mount(Alert, {
-        props: {
-          center: true
-        }
-      })
-      const wrapperFalse = mount(Alert, {
-        props: {
-          center: false
-        }
-      })
-
-      expect(wrapperTrue.classes('is-center')).toBe(true)
-      expect(wrapperFalse.classes('is-center')).toBe(false)
-    })
-
-    it('effect', () => {
-      const wrapperLight = mount(Alert, {
-        props: {
-          effect: 'light'
-        }
-      })
-      const wrapperDark = mount(Alert, {
-        props: {
-          effect: 'dark'
-        }
-      })
-
-      expect(wrapperLight.classes('is-light')).toBe(true)
-      expect(wrapperDark.classes('is-dark')).toBe(true)
-    })
   })
+})
 
-  describe('event', () => {
-    it('close', () => {
-      const wrapper = mount(Alert)
-      wrapper.find('.el-alert__closebtn').trigger('click')
-      expect(wrapper.emitted('close')).toBeTruthy()
-    })
+describe('event', () => {
+  it('close', () => {
+    const wrapper = mount(Alert)
+    wrapper.find('.el-alert__closebtn').trigger('click')
+    expect(wrapper.emitted('close')).toBeTruthy()
   })
 })

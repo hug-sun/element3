@@ -3,9 +3,9 @@ import { nextTick, reactive, ref, toRefs, onMounted, onUnmounted } from 'vue'
 import {
   addResizeListener,
   removeResizeListener
-} from 'element-ui/src/utils/resize-event'
-import scrollbarWidth from 'element-ui/src/utils/scrollbar-width'
-import { toObject } from 'element-ui/src/utils/util'
+} from '../../src/utils/resize-event'
+import scrollbarWidth from '../../src/utils/scrollbar-width'
+import { toObject } from '../../src/utils/util'
 import Bar from './Bar'
 
 const useScroll = (wrap, native, resize, noresize) => {
@@ -45,6 +45,7 @@ const useScroll = (wrap, native, resize, noresize) => {
 
   return {
     data,
+    update,
     handleScroll
   }
 }
@@ -89,7 +90,12 @@ export default {
       }
     }
 
-    const { data, handleScroll } = useScroll(wrap, native, resize, noresize)
+    const { data, handleScroll, update } = useScroll(
+      wrap,
+      native,
+      resize,
+      noresize
+    )
     return {
       // state
       data,
@@ -100,7 +106,8 @@ export default {
       resize,
       ComponentName,
       // methods
-      handleScroll
+      handleScroll,
+      update
     }
   },
   render() {

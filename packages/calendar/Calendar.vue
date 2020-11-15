@@ -46,12 +46,12 @@
 </template>
 
 <script>
-import { useLocale } from 'element-ui/src/use/locale'
-import fecha from 'element-ui/src/utils/date'
-import ElButton from 'element-ui/packages/button'
-import ElButtonGroup from 'element-ui/packages/button-group'
+import { useLocale } from '../../src/use/locale'
+import fecha from '../../src/utils/date'
+import ElButton from '../button'
+import ElButtonGroup from '../button-group'
 import DateTable from './DateTable'
-import { validateRangeInOneMonth } from 'element-ui/src/utils/date-util'
+import { validateRangeInOneMonth } from '../../src/utils/date-util'
 import { reactive, provide, computed, toRefs, getCurrentInstance } from 'vue'
 
 const validTypes = ['prev-month', 'today', 'next-month']
@@ -101,7 +101,7 @@ export default {
     }
   },
   emits: ['input', 'update:modelValue'],
-  setup(props, { attrs, emit, slots }) {
+  setup(props, { emit }) {
     const instance = getCurrentInstance()
 
     provide('elCalendar', instance)
@@ -167,8 +167,8 @@ export default {
         if (realSelectedDay.value) {
           const d = state.selectedDay.split('-')
           return new Date(d[0], d[1] - 1, d[2])
-        } else if (validatedRange.length) {
-          return validatedRange[0][0]
+        } else if (validatedRange.value.length) {
+          return validatedRange.value[0][0]
         }
         return state.now
       } else {

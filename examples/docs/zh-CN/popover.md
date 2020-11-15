@@ -35,8 +35,8 @@ Popover 的属性与 Tooltip 很类似，它们都是基于`Vue-popper`开发的
     width="200"
     trigger="focus"
     content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-  </el-popover> -->
-  <!-- <el-button v-popover>focus 激活</el-button> -->
+  </el-popover>
+  <el-button v-popover>focus 激活</el-button> -->
 
   <el-popover
     placement="bottom"
@@ -52,11 +52,13 @@ Popover 的属性与 Tooltip 很类似，它们都是基于`Vue-popper`开发的
 </template>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    data() {
+    setup(){
+      const visible = ref(false)
       return {
-        visible: false
-      };
+        visible
+      }
     }
   };
 </script>
@@ -84,27 +86,31 @@ Popover 的属性与 Tooltip 很类似，它们都是基于`Vue-popper`开发的
 </el-popover>
 
 <script>
+  import {reactive, toRefs} from 'vue'
   export default {
-    data() {
+    setup(){
+      const data = reactive({
+          gridData: [{
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }, {
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }, {
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }, {
+            date: '2016-05-03',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }]
+        })
       return {
-        gridData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
-      };
+        ...toRefs(data)
+      }
     }
   };
 </script>
@@ -132,13 +138,15 @@ Popover 的属性与 Tooltip 很类似，它们都是基于`Vue-popper`开发的
 </el-popover>
 
 <script>
-  export default {
-    data() {
-      return {
-        visible: false,
-      };
-    }
-  }
+  import {ref} from 'vue'
+    export default {
+      setup(){
+        const visible = ref(false)
+        return {
+          visible
+        }
+      }
+    };
 </script>
 ```
 :::

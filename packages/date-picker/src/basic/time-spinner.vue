@@ -2,8 +2,8 @@
   <div class="el-time-spinner" :class="{ 'has-seconds': showSeconds }">
     <template v-if="!arrowControl">
       <el-scrollbar
-        @mouseenter.native="emitSelectRange('hours')"
-        @mousemove.native="adjustCurrentSpinner('hours')"
+        @mouseenter="emitSelectRange('hours')"
+        @mousemove="adjustCurrentSpinner('hours')"
         class="el-time-spinner__wrapper"
         wrap-style="max-height: inherit;"
         view-class="el-time-spinner__list"
@@ -23,8 +23,8 @@
         </li>
       </el-scrollbar>
       <el-scrollbar
-        @mouseenter.native="emitSelectRange('minutes')"
-        @mousemove.native="adjustCurrentSpinner('minutes')"
+        @mouseenter="emitSelectRange('minutes')"
+        @mousemove="adjustCurrentSpinner('minutes')"
         class="el-time-spinner__wrapper"
         wrap-style="max-height: inherit;"
         view-class="el-time-spinner__list"
@@ -44,8 +44,8 @@
       </el-scrollbar>
       <el-scrollbar
         v-show="showSeconds"
-        @mouseenter.native="emitSelectRange('seconds')"
-        @mousemove.native="adjustCurrentSpinner('seconds')"
+        @mouseenter="emitSelectRange('seconds')"
+        @mousemove="adjustCurrentSpinner('seconds')"
         class="el-time-spinner__wrapper"
         wrap-style="max-height: inherit;"
         view-class="el-time-spinner__list"
@@ -149,9 +149,9 @@ import {
   getRangeHours,
   getRangeMinutes,
   modifyTime
-} from 'element-ui/src/utils/date-util'
-import ElScrollbar from 'element-ui/packages/scrollbar'
-import RepeatClick from 'element-ui/src/directives/repeatClick'
+} from '../../../../src/utils/date-util'
+import ElScrollbar from '../../../scrollbar'
+import RepeatClick from '../../../../src/directives/repeatClick'
 
 export default {
   components: { ElScrollbar },

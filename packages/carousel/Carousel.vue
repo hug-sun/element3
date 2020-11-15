@@ -64,11 +64,10 @@ import {
   nextTick,
   provide,
   onMounted,
-  getCurrentInstance,
   onUnmounted
 } from 'vue'
-import throttle from 'throttle-debounce/throttle'
-import { useResizeEvent } from 'element-ui/src/utils/resize-event'
+import { throttle } from 'throttle-debounce'
+import { useResizeEvent } from '../../src/utils/resize-event'
 
 export default {
   name: 'ElCarousel',
@@ -151,9 +150,6 @@ export default {
       startTimer
     } = useInitSlide(props, initData, loop)
 
-    // 组件逻辑处理
-    const _this = getCurrentInstance()
-
     const updateItems = (ElCarouselItem) => {
       initData.items.push(ElCarouselItem)
     }
@@ -162,7 +158,7 @@ export default {
 
     onMounted(() => {
       nextTick(() => {
-        addResizeListener(_this.vnode.el, resetItemPosition)
+        addResizeListener(resetItemPosition)
         if (
           props.initialIndex < initData.items.length &&
           props.initialIndex >= 0
@@ -245,7 +241,6 @@ export default {
       items,
       activeIndex,
       hover,
-      loop,
       arrowDisplay,
       handleButtonEnter,
       handleButtonLeave,
@@ -383,7 +378,7 @@ const useIndicator = (props, initData) => {
       'el-carousel__indicators',
       'el-carousel__indicators--' + props.direction
     ]
-    if (hasLabel) {
+    if (hasLabel.value) {
       classes.push('el-carousel__indicators--labels')
     }
     if (props.indicatorPosition === 'outside' || props.type === 'card') {

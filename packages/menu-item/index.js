@@ -1,4 +1,4 @@
-import ElMenuItem from '../menu/src/menu-item'
+import ElMenuItem from '../menu/MenuItem.vue'
 
 /* istanbul ignore next */
 ElMenuItem.install = function (app) {

@@ -32,15 +32,18 @@
 
 <script>
 import ImageViewer from './ImageViewer'
-import { t } from 'element-ui/src/locale'
-import throttle from 'throttle-debounce/throttle'
-import { isString, isHtmlElement } from 'element-ui/src/utils/types'
+import { t } from '../../src/locale'
+import { throttle } from 'throttle-debounce'
+import { isString, isHtmlElement } from '../../src/utils/types'
+import { on, off, getScrollContainer, isInContainer } from '../../src/utils/dom'
 import {
-  on,
-  off,
-  getScrollContainer,
-  isInContainer
-} from 'element-ui/src/utils/dom'
+  ref,
+  computed,
+  watch,
+  onMounted,
+  onBeforeUnmount,
+  getCurrentInstance
+} from 'vue'
 
 const isSupportObjectFit = () =>
   document.documentElement.style.objectFit !== undefined
@@ -79,116 +82,104 @@ export default {
     }
   },
 
-  setup() {
-    return { t }
-  },
+  setup(props, ctx) {
+    const instance = getCurrentInstance()
+    const loading = ref(true)
+    const error = ref(false)
+    const show = ref(!props.lazy)
+    const showViewer = ref(false)
+    const imageWidth = ref(0)
+    const imageHeight = ref(0)
 
-  data() {
-    return {
-      loading: true,
-      error: false,
-      show: !this.lazy,
-      imageWidth: 0,
-      imageHeight: 0,
-      showViewer: false
-    }
-  },
-
-  computed: {
-    imageStyle() {
-      const { fit } = this
+    // computed
+    const imageStyle = computed(() => {
+      const { fit } = props
       if (
         //! this.$isServer &&
         fit
       ) {
-        return isSupportObjectFit()
-          ? { 'object-fit': fit }
-          : this.getImageStyle(fit)
+        return isSupportObjectFit() ? { 'object-fit': fit } : getImageStyle(fit)
       }
       return {}
-    },
-    alignCenter() {
+    })
+    const alignCenter = computed(() => {
       return (
         // !this.$isServer &&
-        !isSupportObjectFit() && this.fit !== ObjectFit.FILL
+        !isSupportObjectFit() && props.fit !== ObjectFit.FILL
       )
-    },
-    preview() {
-      const { previewSrcList } = this
+    })
+    const preview = computed(() => {
+      const { previewSrcList } = props
       return Array.isArray(previewSrcList) && previewSrcList.length > 0
-    },
-    imageIndex() {
+    })
+    const imageIndex = computed(() => {
       let previewIndex = 0
-      const srcIndex = this.previewSrcList.indexOf(this.src)
+      const srcIndex = props.previewSrcList.indexOf(props.src)
       if (srcIndex >= 0) {
         previewIndex = srcIndex
       }
       return previewIndex
-    }
-  },
+    })
+    // watch
+    watch(props.src, () => {
+      show.value && loadImage()
+    })
+    watch(show, (val) => {
+      val && loadImage()
+    })
 
-  watch: {
-    src(val) {
-      this.show && this.loadImage()
-    },
-    show(val) {
-      val && this.loadImage()
-    }
-  },
+    // lifecycle
+    onMounted(() => {
+      if (props.lazy) {
+        addLazyLoadListener()
+      } else {
+        loadImage()
+      }
+    })
+    onBeforeUnmount(() => {
+      props.lazy && removeLazyLoadListener()
+    })
 
-  mounted() {
-    if (this.lazy) {
-      this.addLazyLoadListener()
-    } else {
-      this.loadImage()
-    }
-  },
-
-  beforeDestroy() {
-    this.lazy && this.removeLazyLoadListener()
-  },
-
-  methods: {
-    loadImage() {
+    // methods
+    const loadImage = () => {
       // if (this.$isServer) return
 
       // reset status
-      this.loading = true
-      this.error = false
-
+      loading.value = true
+      error.value = false
       const img = new Image()
-      img.onload = (e) => this.handleLoad(e, img)
-      img.onerror = this.handleError.bind(this)
+      img.onload = (e) => handleLoad(e, img)
+      img.onerror = handleError.bind(this)
 
       // bind html attrs
       // so it can behave consistently
-      Object.keys(this.$attrs).forEach((key) => {
-        const value = this.$attrs[key]
+      Object.keys(instance.ctx.$attrs).forEach((key) => {
+        const value = instance.ctx.$attrs[key]
         img.setAttribute(key, value)
       })
-      img.src = this.src
-    },
-    handleLoad(e, img) {
-      this.imageWidth = img.width
-      this.imageHeight = img.height
-      this.loading = false
-      this.error = false
-    },
-    handleError(e) {
-      this.loading = false
-      this.error = true
-      this.$emit('error', e)
-    },
-    handleLazyLoad() {
-      if (isInContainer(this.$el, this._scrollContainer)) {
-        this.show = true
-        this.removeLazyLoadListener()
+      img.src = props.src
+    }
+    const handleLoad = (e, img) => {
+      imageWidth.value = img.width
+      imageHeight.value = img.height
+      loading.value = false
+      error.value = false
+    }
+    const handleError = (e) => {
+      loading.value = false
+      error.value = true
+      ctx.emit('error', e)
+    }
+    const handleLazyLoad = () => {
+      if (isInContainer(instance.ctx.$el, instance.ctx._scrollContainer)) {
+        show.value = true
+        removeLazyLoadListener()
       }
-    },
-    addLazyLoadListener() {
+    }
+    const addLazyLoadListener = () => {
       // if (this.$isServer) return
 
-      const { scrollContainer } = this
+      const { scrollContainer } = props
       let _scrollContainer = null
 
       if (isHtmlElement(scrollContainer)) {
@@ -196,18 +187,18 @@ export default {
       } else if (isString(scrollContainer)) {
         _scrollContainer = document.querySelector(scrollContainer)
       } else {
-        _scrollContainer = getScrollContainer(this.$el)
+        _scrollContainer = getScrollContainer(instance.ctx.$el)
       }
 
       if (_scrollContainer) {
-        this._scrollContainer = _scrollContainer
-        this._lazyLoadHandler = throttle(200, this.handleLazyLoad)
-        on(_scrollContainer, 'scroll', this._lazyLoadHandler)
-        this.handleLazyLoad()
+        instance.ctx._scrollContainer = _scrollContainer
+        instance.ctx._lazyLoadHandler = throttle(200, handleLazyLoad)
+        on(_scrollContainer, 'scroll', instance.ctx._lazyLoadHandler)
+        handleLazyLoad()
       }
-    },
-    removeLazyLoadListener() {
-      const { _scrollContainer, _lazyLoadHandler } = this
+    }
+    const removeLazyLoadListener = () => {
+      const { _scrollContainer, _lazyLoadHandler } = instance.ctx
 
       if (
         // this.$isServer ||
@@ -217,27 +208,32 @@ export default {
         return
 
       off(_scrollContainer, 'scroll', _lazyLoadHandler)
-      this._scrollContainer = null
-      this._lazyLoadHandler = null
-    },
+      instance.ctx._scrollContainer = null
+      instance.ctx._lazyLoadHandler = null
+    }
     /**
      * simulate object-fit behavior to compatible with IE11 and other browsers which not support object-fit
      */
-    getImageStyle(fit) {
-      const { imageWidth, imageHeight } = this
+    const getImageStyle = (fit) => {
       const {
         clientWidth: containerWidth,
         clientHeight: containerHeight
-      } = this.$el
+      } = instance.ctx.$el
 
-      if (!imageWidth || !imageHeight || !containerWidth || !containerHeight)
+      if (
+        !imageWidth.value ||
+        !imageHeight.value ||
+        !containerWidth ||
+        !containerHeight
+      )
         return {}
 
-      const vertical = imageWidth / imageHeight < 1
+      const vertical = imageWidth.value / imageHeight.value < 1
 
       if (fit === ObjectFit.SCALE_DOWN) {
         const isSmaller =
-          imageWidth < containerWidth && imageHeight < containerHeight
+          imageWidth.value < containerWidth &&
+          imageHeight.value < containerHeight
         fit = isSmaller ? ObjectFit.NONE : ObjectFit.CONTAIN
       }
 
@@ -251,20 +247,44 @@ export default {
         default:
           return {}
       }
-    },
-    clickHandler() {
+    }
+
+    const clickHandler = () => {
       // don't show viewer when preview is false
-      if (!this.preview) {
+      if (!preview.value) {
         return
       }
       // prevent body scroll
       prevOverflow = document.body.style.overflow
       document.body.style.overflow = 'hidden'
-      this.showViewer = true
-    },
-    closeViewer() {
+      showViewer.value = true
+    }
+    const closeViewer = () => {
       document.body.style.overflow = prevOverflow
-      this.showViewer = false
+      showViewer.value = false
+    }
+
+    return {
+      loading,
+      error,
+      show,
+      showViewer,
+      imageWidth,
+      imageHeight,
+      imageStyle,
+      alignCenter,
+      preview,
+      imageIndex,
+      loadImage,
+      handleLoad,
+      handleError,
+      handleLazyLoad,
+      getImageStyle,
+      addLazyLoadListener,
+      removeLazyLoadListener,
+      clickHandler,
+      closeViewer,
+      t
     }
   }
 }

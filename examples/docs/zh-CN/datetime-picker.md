@@ -41,9 +41,10 @@ DateTimePicker 由 DatePicker 和 TimePicker 派生，`Picker Options` 或者其
 </template>
 
 <script>
+import {reactive,toRefs} from "vue"
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         pickerOptions: {
           shortcuts: [{
             text: '今天',
@@ -69,7 +70,10 @@ DateTimePicker 由 DatePicker 和 TimePicker 派生，`Picker Options` 或者其
         value1: '',
         value2: '',
         value3: ''
-      };
+      })
+      return{
+        ...toRefs(data)
+      }
     }
   };
 </script>
@@ -106,9 +110,10 @@ DateTimePicker 由 DatePicker 和 TimePicker 派生，`Picker Options` 或者其
 </template>
 
 <script>
+import {reactive,toRefs} from "vue"
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         pickerOptions: {
           shortcuts: [{
             text: '最近一周',
@@ -138,7 +143,10 @@ DateTimePicker 由 DatePicker 和 TimePicker 派生，`Picker Options` 或者其
         },
         value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
         value2: ''
-      };
+      })
+      return{
+        ...toRefs(data)
+      }
     }
   };
 </script>
@@ -174,12 +182,16 @@ DateTimePicker 由 DatePicker 和 TimePicker 派生，`Picker Options` 或者其
 </template>
 
 <script>
+import {reactive,toRefs} from "vue"
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         value1: '',
         value2: ''
-      };
+      })
+      return{
+        ...toRefs(data)
+      }
     }
   };
 </script>

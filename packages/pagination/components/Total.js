@@ -1,4 +1,4 @@
-import { useLocale } from 'element-ui/src/use/locale'
+import { useLocale } from '../../../src/use/locale'
 import { h } from 'vue'
 
 const Total = (props) => {

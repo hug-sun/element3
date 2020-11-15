@@ -1,5 +1,5 @@
 <script lang="jsx">
-import fecha from 'element-ui/src/utils/date'
+import fecha from '../../src/utils/date'
 import {
   range as rangeArr,
   getFirstDayOfMonth,
@@ -7,7 +7,7 @@ import {
   getMonthDays,
   getI18nSettings,
   validateRangeInOneMonth
-} from 'element-ui/src/utils/date-util'
+} from '../../src/utils/date-util'
 import { ref, computed, inject, getCurrentInstance, toRefs } from 'vue'
 
 export default {
@@ -26,7 +26,7 @@ export default {
     firstDayOfWeek: Number
   },
 
-  setup(props, { attrs, emit, slots }) {
+  setup(props, { emit }) {
     const { selectedDay, date, hideHeader, firstDayOfWeek } = toRefs(props)
     const WEEK_DAYS = ref(getI18nSettings().dayNames)
 

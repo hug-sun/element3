@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import { on, off } from 'element-ui/src/utils/dom'
-import { rafThrottle, isFirefox } from 'element-ui/src/utils/util'
+import { on, off } from '../../src/utils/dom'
+import { rafThrottle, isFirefox } from '../../src/utils/util'
 import { reactive, computed, ref, watch, nextTick, onMounted } from 'vue'
 const Mode = {
   CONTAIN: {
@@ -104,7 +104,7 @@ export default {
       default: 0
     }
   },
-  setup(props, ctx) {
+  setup(props) {
     const img = ref(null)
     const imageWrapper = ref(null)
     // data
@@ -153,7 +153,7 @@ export default {
       reset()
       props.onSwitch(val)
     })
-    watch(currentImg, (val) => {
+    watch(currentImg, () => {
       nextTick(() => {
         if (img.value.complete) {
           loading = true
@@ -202,7 +202,7 @@ export default {
     }
 
     const toggleMode = () => {
-      if (loading) return
+      if (loading.value) return
       const modeNames = Object.keys(Mode)
       const modeValues = Object.values(Mode)
 
@@ -215,12 +215,12 @@ export default {
       reset()
     }
     const prev = () => {
-      if (isFirst && !infinite.value) return
+      if (isFirst.value && !infinite.value) return
       const len = props.urlList.length
       index.value = (index.value - 1 + len) % len
     }
     const next = () => {
-      if (isLast && !infinite.value) return
+      if (isLast.value && !infinite.value) return
       const len = props.urlList.length
       index.value = (index.value + 1) % len
     }
@@ -281,7 +281,7 @@ export default {
       deviceSupportUninstall()
       props.onClose()
     }
-    const handleImgLoad = (e) => {
+    const handleImgLoad = () => {
       loading = false
     }
     const handleImgError = (e) => {
@@ -299,7 +299,7 @@ export default {
         state.transform.offsetY = offsetY + ev.pageY - startY
       })
       on(document, 'mousemove', _dragHandler)
-      on(document, 'mouseup', (ev) => {
+      on(document, 'mouseup', () => {
         off(document, 'mousemove', _dragHandler)
       })
 

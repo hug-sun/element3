@@ -4,8 +4,8 @@
     :class="[selectSize ? 'el-select--' + selectSize : '']"
     @click.stop="toggleMenu"
     v-clickoutside="handleClose"
-    @mouseenter.native="inputHovering = true"
-    @mouseleave.native="inputHovering = false"
+    @mouseenter="inputHovering = true"
+    @mouseleave="inputHovering = false"
   >
     <div
       class="el-select__tags"
@@ -103,7 +103,7 @@
       @keydown.enter.prevent="selectOption"
       @keydown.esc.stop.prevent="visible = false"
       @keydown.tab="visible = false"
-      @paste.native="debouncedOnInputChange"
+      @paste="debouncedOnInputChange"
     >
       <template v-slot:prefix v-if="$slots.prefix">
         <slot name="prefix"></slot>
@@ -164,30 +164,25 @@
 </template>
 
 <script type="text/babel">
-import Focus from 'element-ui/src/mixins/focus'
-import Locale from 'element-ui/src/mixins/locale'
-import ElInput from 'element-ui/packages/input'
+import Focus from '../../src/mixins/focus'
+import Locale from '../../src/mixins/locale'
+import ElInput from '../input'
 import ElSelectMenu from './SelectDropdown'
-import ElOption from 'element-ui/packages/option/Option'
-import ElTag from 'element-ui/packages/tag'
-import ElScrollbar from 'element-ui/packages/scrollbar'
-import debounce from 'throttle-debounce/debounce'
-import Clickoutside from 'element-ui/src/directives/clickoutside'
+import ElOption from '../option/Option'
+import ElTag from '../tag'
+import ElScrollbar from '../scrollbar'
+import { debounce } from 'throttle-debounce'
+import Clickoutside from '../../src/directives/clickoutside'
 import {
   addResizeListener,
   removeResizeListener
-} from 'element-ui/src/utils/resize-event'
-import { t } from 'element-ui/src/locale'
-import scrollIntoView from 'element-ui/src/utils/scroll-into-view'
-import {
-  getValueByPath,
-  valueEquals,
-  isIE,
-  isEdge
-} from 'element-ui/src/utils/util'
+} from '../../src/utils/resize-event'
+import { t } from '../../src/locale'
+import scrollIntoView from '../../src/utils/scroll-into-view'
+import { getValueByPath, valueEquals, isIE, isEdge } from '../../src/utils/util'
 import NavigationMixin from './navigation-mixin'
-import { isKorean } from 'element-ui/src/utils/shared'
-import { useEmitter } from 'element-ui/src/use/emitter'
+import { isKorean } from '../../src/utils/shared'
+import { useEmitter } from '../../src/use/emitter'
 
 export default {
   mixins: [Locale, Focus('reference'), NavigationMixin],
@@ -317,7 +312,7 @@ export default {
     /** @Deprecated in next major version */
     autoComplete: {
       type: String,
-      validator(val) {
+      validator() {
         process.env.NODE_ENV !== 'production' &&
           console.warn(
             "[Element Warn][Select]'auto-complete' property will be deprecated in next major version. please use 'autocomplete' instead."
@@ -533,7 +528,7 @@ export default {
       const text = event.target.value
       if (event.type === 'compositionend') {
         this.isOnComposition = false
-        this.$nextTick((_) => this.handleQueryChange(text))
+        this.$nextTick(() => this.handleQueryChange(text))
       } else {
         const lastCharacter = text[text.length - 1] || ''
         this.isOnComposition = !isKorean(lastCharacter)
@@ -1018,7 +1013,7 @@ export default {
     this.setSelected()
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.$el && this.handleResize)
       removeResizeListener(this.$el, this.handleResize)
   }

@@ -1,4 +1,4 @@
-import { on, off } from 'element-ui/src/utils/dom'
+import { on, off } from '../../src/utils/dom'
 import { renderThumbStyle, BAR_MAP } from './util'
 import {
   ref,
@@ -40,7 +40,7 @@ const useDrag = ({ bar, state, thumb, cursorDown }) => {
       (thumbPositionPercentage * wrap.value[bar.value.scrollSize]) / 100
   }
 
-  const mouseUpDocumentHandler = (e) => {
+  const mouseUpDocumentHandler = () => {
     cursorDown.value = false
     state[bar.value.axis] = 0
     off(document, 'mousemove', mouseMoveDocumentHandler)

@@ -63,8 +63,8 @@ import {
   onMounted,
   onUnmounted
 } from 'vue'
-import { popupProps, usePopup } from 'element-ui/src/use/popup'
-import Utils from 'element-ui/src/utils/aria-utils'
+import { popupProps, usePopup } from '../../src/use/popup'
+import Utils from '../../src/utils/aria-utils'
 
 export default {
   name: 'ElDrawer',
@@ -134,15 +134,10 @@ export default {
     const {
       appendToBody,
       beforeClose,
-      customClass,
       destroyOnClose,
       direction,
-      showClose,
-      size,
-      title,
       visible,
-      wrapperClosable,
-      withHeader
+      wrapperClosable
     } = toRefs(props)
 
     const closed = ref(false)
@@ -232,12 +227,6 @@ export default {
     })
 
     return {
-      customClass,
-      direction,
-      showClose,
-      size,
-      title,
-      withHeader,
       isHorizontal,
       drawer,
       rendered,

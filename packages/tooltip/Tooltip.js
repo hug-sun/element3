@@ -1,9 +1,19 @@
-import { vuePopperProps, useVuePopper } from 'packages/popover/vue-popper'
-import debounce from 'throttle-debounce/debounce'
-import { addClass, removeClass, on, off } from 'element-ui/src/utils/dom'
-import { generateId } from 'element-ui/src/utils/util'
+import { vuePopperProps, useVuePopper } from '../popover/vue-popper'
+
+import { debounce } from 'throttle-debounce'
+import { addClass, removeClass, on, off } from '../../src/utils/dom'
+import { generateId } from '../../src/utils/util'
 // eslint-disable-next-line
-import { createApp, ref, watch, onMounted, onUnmounted, getCurrentInstance, Transition } from 'vue'
+import {
+  createApp,
+  ref,
+  watch,
+  onMounted,
+  onUnmounted,
+  getCurrentInstance,
+  Transition,
+  onBeforeMount
+} from 'vue'
 
 export default {
   name: 'ElTooltip',
@@ -177,7 +187,7 @@ export default {
       return element
     }
 
-    watch(focusing, (val, old) => {
+    watch(focusing, (val) => {
       if (val) {
         addClass(referenceElm.value, 'focusing')
       } else {
@@ -217,7 +227,9 @@ export default {
         })
       }
     })
-
+    onBeforeMount(() => {
+      instance.ctx.updatePopper = updatePopper
+    })
     onUnmounted(() => {
       const reference = referenceElm.value
       if (reference.nodeType === 1) {

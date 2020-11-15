@@ -27,9 +27,9 @@
 
 <script>
 import { reactive, toRefs } from 'vue'
-import ElPopover from 'element-ui/packages/popover'
-import ElButton from 'element-ui/packages/button'
-import { t } from 'element-ui/src/locale'
+import ElPopover from '../popover'
+import ElButton from '../button'
+import { t } from '../../src/locale'
 
 export default {
   name: 'ElPopconfirm',
@@ -77,10 +77,14 @@ export default {
     })
     const confirm = () => {
       state.visible = false
+      // TODO 如果把 onConfirm 修改成 on-confirm 的话就涉及到 api 的变更了
+      // 不过在发版之前可以讨论一波
+      // eslint-disable-next-line vue/custom-event-name-casing
       emit('onConfirm')
     }
     const cancel = () => {
       state.visible = false
+      // eslint-disable-next-line vue/custom-event-name-casing
       emit('onCancel')
     }
     return {

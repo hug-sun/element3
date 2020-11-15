@@ -8,25 +8,21 @@ module.exports = {
   },
   globals: {
     ga: true,
-    chrome: true
+    chrome: true,
+    __DEV__: true
   },
   extends: [
-    'plugin:vue/essential',
-    'standard',
-    'prettier',
-    'plugin:json/recommended'
+    'plugin:json/recommended',
+    'plugin:vue/vue3-essential',
+    'eslint:recommended',
+    '@vue/prettier'
   ],
   parserOptions: {
-    ecmaVersion: 12,
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true
-    }
+    parser: 'babel-eslint'
   },
-  plugins: ['vue', 'prettier'],
   rules: {
-    'prettier/prettier': ['error'],
-    'no-case-declarations': ['off'],
-    'vue/no-use-v-if-with-v-for': ['off']
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'prettier/prettier': 'error'
   }
 }

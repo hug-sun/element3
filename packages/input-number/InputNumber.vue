@@ -49,9 +49,9 @@
   </div>
 </template>
 <script>
-import ElInput from 'element-ui/packages/input'
-import useFocus from 'element-ui/src/use/focus.js'
-import RepeatClick from 'element-ui/src/directives/repeatClick'
+import ElInput from '../input'
+import useFocus from '../../src/use/focus.js'
+import RepeatClick from '../../src/directives/repeatClick'
 import {
   computed,
   getCurrentInstance,
@@ -333,9 +333,15 @@ export default {
       }
     )
 
+    const handleBlur = (event) => {
+      emit('blur', event)
+    }
+    const handleFocus = (event) => {
+      emit('focus', event)
+    }
+    const select = () => {}
     return {
       controlsAtRight,
-      controls,
       inputNumberSize,
       displayValue,
       minDisabled,
@@ -345,21 +351,11 @@ export default {
       decrease,
       handleInputChange,
       handleInput,
-      focus
-    }
-  },
-
-  methods: {
-    handleBlur(event) {
-      this.$emit('blur', event)
-    },
-
-    handleFocus(event) {
-      this.$emit('focus', event)
-    },
-
-    select() {
-      this.$refs.input.select()
+      focus,
+      setCurrentValue,
+      handleBlur,
+      handleFocus,
+      select
     }
   }
 }

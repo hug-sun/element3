@@ -56,7 +56,7 @@ export default {
     name: String
   },
 
-  setup(props, ctx) {
+  setup(props) {
     const { label, disabled } = toRefs(props)
     const radio = ref()
     const focus = ref(false)
@@ -90,7 +90,7 @@ export default {
 }
 
 function useInject() {
-  const elForm = inject('elFrom', {})
+  const elForm = inject('elForm', {})
   const elFormItem = inject('elFormItem', {})
   return {
     elForm,
@@ -119,7 +119,7 @@ function useCheckGroup() {
   }
 }
 
-function useModel({ radioGroup, label, radio }) {
+function useModel({ radioGroup }) {
   const value = computed({
     get() {
       return radioGroup.props.modelValue
@@ -139,11 +139,10 @@ function useModel({ radioGroup, label, radio }) {
 
 function useStyle({ radioGroup, disabled, value, label, elForm, elFormItem }) {
   const { ctx } = getCurrentInstance()
-  const elFormDisable = (elForm.props || {}).disabled
-  const elFormItemSize = (elFormItem.ctx || {}).elFormItemSize
+  const elFormDisable = elForm.disabled
 
   const size = computed(() => {
-    const temRadioSize = elFormItemSize || (ctx.$ELEMENT || {}).size
+    const temRadioSize = elFormItem.elFormItemSize || (ctx.$ELEMENT || {}).size
     return radioGroup.ctx.radioGroupSize || temRadioSize
   })
   const isDisabled = computed(() => {

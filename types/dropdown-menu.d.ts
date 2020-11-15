@@ -1,4 +1,6 @@
 import { ElementUIComponent } from './component'
 
 /** Dropdown Menu Component */
-export declare class ElDropdownMenu extends ElementUIComponent {}
+interface IDropdownMenu extends ElementUIComponent {}
+
+export const ElDropdownMenu:IDropdownMenu

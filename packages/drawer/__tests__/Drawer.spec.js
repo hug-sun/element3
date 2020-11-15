@@ -55,17 +55,6 @@ describe('Drawer.vue', () => {
     expect(footerBtns[1].find('span').text()).toBe('确定')
   })
 
-  it('should open and close drawer properly', async () => {
-    const wrapper = mount(Drawer, {
-      props: {
-        title,
-        visible: false
-      }
-    })
-
-    expect(wrapper.attributes().style).toBe('display: none;')
-  })
-
   it('should destroy every child after drawer was closed when destroy-on-close flag is true', async () => {
     const Comp = {
       template: `

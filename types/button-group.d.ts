@@ -1,4 +1,6 @@
 import { ElementUIComponent } from './component'
 
+interface IButtonGroup extends ElementUIComponent {}
+
 /** Button Group Component */
-export declare class ElButtonGroup extends ElementUIComponent {}
+export const ElButtonGroup: IButtonGroup

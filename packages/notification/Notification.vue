@@ -72,7 +72,9 @@ export default {
     title: { type: String, default: '' },
     type: { type: String, default: '' }
   },
+  emits: ['close'],
   setup(props) {
+    // eslint-disable-next-line vue/no-setup-props-destructure
     const { duration, onClose, onClick } = props
     const typeClass = computed(() => {
       return props.type && typeMap[props.type]
@@ -81,10 +83,12 @@ export default {
     })
 
     const horizontalClass = computed(() => {
+      console.log(props.position.indexOf('right') > -1 ? 'right' : 'left')
       return props.position.indexOf('right') > -1 ? 'right' : 'left'
     })
 
     const verticalProperty = computed(() => {
+      console.log(props.position.startsWith('top') ? 'top' : 'bottom')
       return props.position.startsWith('top') ? 'top' : 'bottom'
     })
 

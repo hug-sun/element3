@@ -1,7 +1,8 @@
 import { ElementUIComponent } from './component'
 
+export const ElMenuItemGroup:IMenuItemGroup 
 /** Menu Item Group Component */
-export declare class ElMenuItemGroup extends ElementUIComponent {
+interface IMenuItemGroup extends ElementUIComponent {
   /** Group title */
   title: string
 }

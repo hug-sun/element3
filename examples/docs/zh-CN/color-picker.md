@@ -6,23 +6,25 @@
 
 :::demo 使用 v-model 与 Vue 实例中的一个变量进行双向绑定，绑定的变量需要是字符串类型。
 ```html
-<div class="block">
-  <span class="demonstration">有默认值</span>
-  <el-color-picker v-model="color1"></el-color-picker>
-</div>
-<div class="block">
-  <span class="demonstration">无默认值</span>
-  <el-color-picker v-model="color2"></el-color-picker>
-</div>
-
+<template>
+  <div class="block">
+    <span class="demonstration">有默认值</span>
+    <el-color-picker v-model="color1"></el-color-picker>
+  </div>
+  <div class="block">
+    <span class="demonstration">无默认值</span>
+    <el-color-picker v-model="color2"></el-color-picker>
+  </div>
+</template>
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
-      return {
-        color1: '#409EFF',
-        color2: null
-      }
+    setup () {
+      const color1 = ref('#409EFF')
+      const color2 = ref(null)
+      return { color1, color2 }
     }
+    
   };
 </script>
 ```
@@ -32,13 +34,16 @@
 
 :::demo ColorPicker 支持普通颜色，也支持带 Alpha 通道的颜色，通过`show-alpha`属性即可控制是否支持透明度的选择。
 ```html
-<el-color-picker v-model="color" show-alpha></el-color-picker>
-
+<template>
+  <el-color-picker v-model="color" show-alpha></el-color-picker>
+</template>
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup() {
+      const color = ref('rgba(19, 206, 102, 0.8)')
       return {
-        color: 'rgba(19, 206, 102, 0.8)'
+        color
       }
     }
   };
@@ -50,18 +55,19 @@
 
 :::demo ColorPicker 支持预定义颜色
 ```html
-<el-color-picker
-  v-model="color"
-  show-alpha
-  :predefine="predefineColors">
-</el-color-picker>
-
+<template>
+  <el-color-picker
+    v-model="color"
+    show-alpha
+    :predefine="predefineColors">
+  </el-color-picker>
+</template>
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
-      return {
-        color: 'rgba(255, 69, 0, 0.68)',
-        predefineColors: [
+    setup() {
+      const color = ref('rgba(255, 69, 0, 0.68)')
+      const predefineColors = ref([
           '#ff4500',
           '#ff8c00',
           '#ffd700',
@@ -76,7 +82,10 @@
           'hsl(181, 100%, 37%)',
           'hsla(209, 100%, 56%, 0.73)',
           '#c7158577'
-        ]
+        ])
+      return {
+        color,
+        predefineColors
       }
     }
   };
@@ -88,16 +97,19 @@
 
 :::demo
 ```html
-<el-color-picker v-model="color"></el-color-picker>
-<el-color-picker v-model="color" size="medium"></el-color-picker>
-<el-color-picker v-model="color" size="small"></el-color-picker>
-<el-color-picker v-model="color" size="mini"></el-color-picker>
-
+<template>
+  <el-color-picker v-model="color"></el-color-picker>
+  <el-color-picker v-model="color" size="medium"></el-color-picker>
+  <el-color-picker v-model="color" size="small"></el-color-picker>
+  <el-color-picker v-model="color" size="mini"></el-color-picker>
+</template>
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup() {
+      const color = ref('#409EFF')
       return {
-        color: '#409EFF'
+        color
       }
     }
   };
@@ -108,7 +120,7 @@
 ### Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| value / v-model | 绑定值 | string | — | — |
+| modelValue / v-model | 绑定值 | string | — | — |
 | disabled | 是否禁用 | boolean | — | false |
 | size | 尺寸 | string | — | medium / small / mini |
 | show-alpha | 是否支持透明度选择 | boolean | — | false |

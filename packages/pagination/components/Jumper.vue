@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import ElInput from 'element-ui/packages/input'
-import { useLocale } from 'element-ui/src/use/locale'
+import ElInput from '../../input'
+import { useLocale } from '../../../src/use/locale'
 import { ref, computed, toRefs } from 'vue'
 
 export default {
@@ -38,13 +38,13 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    },
-    handleChange: Function
+    }
   },
+  emits: ['change'],
 
-  setup(props) {
+  setup(props, { emit }) {
     const userInput = ref(null)
-    const { disabled, currentPage, pageCount } = toRefs(props)
+    const { currentPage } = toRefs(props)
     const t = useLocale()
     const showValue = computed(() => userInput.value ?? currentPage.value)
 
@@ -52,14 +52,12 @@ export default {
       userInput.value = val
     }
     const handleChange = (val) => {
-      props.handleChange?.(val)
+      emit('change', val)
       userInput.value = null
     }
     return {
       // state
-      disabled,
       showValue,
-      pageCount,
       // method
       t,
       handleInput,

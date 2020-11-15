@@ -19,9 +19,12 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -37,8 +40,11 @@
         }, {
           value: '选项5',
           label: '北京烤鸭'
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -60,14 +66,15 @@
       :disabled="item.disabled">
     </el-option>
   </el-select>
-    <p>value: {{value}}</p>
 </template>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
-        value:'',
+    setup(){
+      const value = ref('')
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -84,8 +91,11 @@
         }, {
           value: '选项5',
           label: '北京烤鸭'
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -111,9 +121,12 @@
 </template>
   
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -129,8 +142,11 @@
         }, {
           value: '选项5',
           label: '北京烤鸭'
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -156,9 +172,12 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -174,8 +193,11 @@
         }, {
           value: '选项5',
           label: '北京烤鸭'
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -215,9 +237,11 @@
 </template>
 
 <script>
+  import {reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -236,6 +260,9 @@
         }],
         value1: [],
         value2: []
+      })
+      return {
+        ...toRefs(data)
       }
     }
   }
@@ -267,9 +294,12 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         options: [{
           label: '热门城市',
           options: [{
@@ -294,8 +324,11 @@
             value: 'Dalian',
             label: '大连'
           }]
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -323,9 +356,12 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         cities: [{
           value: 'Beijing',
           label: '北京'
@@ -344,8 +380,11 @@
         }, {
           value: 'Guangzhou',
           label: '广州'
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -371,9 +410,12 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -389,8 +431,11 @@
         }, {
           value: '选项5',
           label: '北京烤鸭'
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -423,51 +468,59 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs, getCurrentInstance, onMounted} from 'vue'
   export default {
-    data() {
-      return {
-        options: [],
-        value: [],
-        list: [],
-        loading: false,
-        states: ["Alabama", "Alaska", "Arizona",
-        "Arkansas", "California", "Colorado",
-        "Connecticut", "Delaware", "Florida",
-        "Georgia", "Hawaii", "Idaho", "Illinois",
-        "Indiana", "Iowa", "Kansas", "Kentucky",
-        "Louisiana", "Maine", "Maryland",
-        "Massachusetts", "Michigan", "Minnesota",
-        "Mississippi", "Missouri", "Montana",
-        "Nebraska", "Nevada", "New Hampshire",
-        "New Jersey", "New Mexico", "New York",
-        "North Carolina", "North Dakota", "Ohio",
-        "Oklahoma", "Oregon", "Pennsylvania",
-        "Rhode Island", "South Carolina",
-        "South Dakota", "Tennessee", "Texas",
-        "Utah", "Vermont", "Virginia",
-        "Washington", "West Virginia", "Wisconsin",
-        "Wyoming"]
-      }
-    },
-    mounted() {
-      this.list = this.states.map(item => {
-        return { value: `value:${item}`, label: `label:${item}` };
-      });
-    },
-    methods: {
-      remoteMethod(query) {
+    setup(){
+      const self = getCurrentInstance().ctx
+      const loading = ref(false)
+      const data = reactive({
+          options: [],
+          value: [],
+          list: [],
+          states: ["Alabama", "Alaska", "Arizona",
+          "Arkansas", "California", "Colorado",
+          "Connecticut", "Delaware", "Florida",
+          "Georgia", "Hawaii", "Idaho", "Illinois",
+          "Indiana", "Iowa", "Kansas", "Kentucky",
+          "Louisiana", "Maine", "Maryland",
+          "Massachusetts", "Michigan", "Minnesota",
+          "Mississippi", "Missouri", "Montana",
+          "Nebraska", "Nevada", "New Hampshire",
+          "New Jersey", "New Mexico", "New York",
+          "North Carolina", "North Dakota", "Ohio",
+          "Oklahoma", "Oregon", "Pennsylvania",
+          "Rhode Island", "South Carolina",
+          "South Dakota", "Tennessee", "Texas",
+          "Utah", "Vermont", "Virginia",
+          "Washington", "West Virginia", "Wisconsin",
+          "Wyoming"]
+      })
+
+      const remoteMethod = query => {
         if (query !== '') {
-          this.loading = true;
+          loading.value = true;
           setTimeout(() => {
-            this.loading = false;
-            this.options = this.list.filter(item => {
+            loading.value = false;
+            data.options = data.list.filter(item => {
               return item.label.toLowerCase()
                 .indexOf(query.toLowerCase()) > -1;
             });
           }, 200);
         } else {
-          this.options = [];
+          data.options = [];
         }
+      }
+
+      onMounted(()=>{
+        data.list = data.states.map(item => {
+        return { value: `value:${item}`, label: `label:${item}` };
+        })
+      })
+
+      return {
+        loading,
+        ...toRefs(data),
+        remoteMethod
       }
     }
   }
@@ -497,9 +550,11 @@
 </template>
 
 <script>
+  import {reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         options: [{
           value: 'HTML',
           label: 'HTML'
@@ -511,6 +566,9 @@
           label: 'JavaScript'
         }],
         value: []
+      })
+      return {
+        ...toRefs(data)
       }
     }
   }

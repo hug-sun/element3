@@ -63,72 +63,60 @@
   </transition>
 </template>
 
-<script type="text/babel">
-import Popper from 'element-ui/src/utils/vue-popper'
-import { PopupManager } from 'element-ui/src/utils/popup'
-import Locale from 'element-ui/src/mixins/locale'
-import Clickoutside from 'element-ui/src/utils/clickoutside'
+<script>
+import Popper from '../../../src/utils/vue-popper'
+import { PopupManager } from '../../../src/utils/popup'
+import Locale from '../../../src/mixins/locale'
+import Clickoutside from '../../../src/utils/clickoutside'
 import Dropdown from './dropdown'
-import ElCheckbox from 'element-ui/packages/checkbox'
-import ElCheckboxGroup from 'element-ui/packages/checkbox-group'
-import ElScrollbar from 'element-ui/packages/scrollbar'
+import ElCheckbox from '../../../packages/checkbox'
+import ElCheckboxGroup from '../../../packages/checkbox-group'
+import ElScrollbar from '../../../packages/scrollbar'
 
 export default {
   name: 'ElTableFilterPanel',
-
   mixins: [Popper, Locale],
-
   directives: {
     Clickoutside
   },
-
   components: {
     ElCheckbox,
     ElCheckboxGroup,
     ElScrollbar
   },
-
   props: {
     placement: {
       type: String,
       default: 'bottom-end'
     }
   },
-
   methods: {
     isActive(filter) {
       return filter.value === this.filterValue
     },
-
     handleOutsideClick() {
       setTimeout(() => {
         this.showPopper = false
       }, 16)
     },
-
     handleConfirm() {
       this.confirmFilter(this.filteredValue)
       this.handleOutsideClick()
     },
-
     handleReset() {
       this.filteredValue = []
       this.confirmFilter(this.filteredValue)
       this.handleOutsideClick()
     },
-
     handleSelect(filterValue) {
       this.filterValue = filterValue
-
       if (typeof filterValue !== 'undefined' && filterValue !== null) {
         this.confirmFilter(this.filteredValue)
       } else {
         this.confirmFilter([])
       }
-
       this.handleOutsideClick()
     },
-
     confirmFilter(filteredValue) {
       this.table.store.commit('filterChange', {
         column: this.column,
@@ -137,7 +125,6 @@ export default {
       this.table.store.updateAllSelected()
     }
   },
-
   data() {
     return {
       table: null,
@@ -145,12 +132,10 @@ export default {
       column: null
     }
   },
-
   computed: {
     filters() {
       return this.column && this.column.filters
     },
-
     filterValue: {
       get() {
         return (this.column.filteredValue || [])[0]
@@ -165,7 +150,6 @@ export default {
         }
       }
     },
-
     filteredValue: {
       get() {
         if (this.column) {
@@ -179,7 +163,6 @@ export default {
         }
       }
     },
-
     multiple() {
       if (this.column) {
         return this.column.filterMultiple
@@ -187,14 +170,12 @@ export default {
       return true
     }
   },
-
   mounted() {
     this.popperElm = this.$el
     this.referenceElm = this.cell
     this.table.bodyWrapper.addEventListener('scroll', () => {
       this.updatePopper()
     })
-
     this.$watch('showPopper', (value) => {
       if (this.column) this.column.filterOpened = value
       if (value) {

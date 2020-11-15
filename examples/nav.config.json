@@ -5,14 +5,6 @@
       "path": "/changelog"
     },
     {
-      "name": "Element React",
-      "href": "https://elemefe.github.io/element-react/"
-    },
-    {
-      "name": "Element Angular",
-      "href": "https://element-angular.faas.ele.me/"
-    },
-    {
       "name": "开发指南",
       "children": [
         {
@@ -22,14 +14,6 @@
         {
           "path": "/quickstart",
           "name": "快速上手"
-        },
-        {
-          "path": "/i18n",
-          "name": "国际化"
-        },
-        {
-          "path": "/custom-theme",
-          "name": "自定义主题"
         },
         {
           "path": "/transition",
@@ -81,6 +65,10 @@
           "groupName": "Form",
           "list": [
             {
+              "path": "/table",
+              "title": "Table表格"
+            },
+            {
               "path": "/radio",
               "title": "Radio 单选框"
             },
@@ -113,18 +101,6 @@
               "title": "Slider 滑块"
             },
             {
-              "path": "/time-picker",
-              "title": "TimePicker 时间选择器"
-            },
-            {
-              "path": "/date-picker",
-              "title": "DatePicker 日期选择器"
-            },
-            {
-              "path": "/datetime-picker",
-              "title": "DateTimePicker 日期时间选择器"
-            },
-            {
               "path": "/upload",
               "title": "Upload 上传"
             },
@@ -149,10 +125,6 @@
         {
           "groupName": "Data",
           "list": [
-            {
-              "path": "/table",
-              "title": "Table 表格"
-            },
             {
               "path": "/tag",
               "title": "Tag 标签"

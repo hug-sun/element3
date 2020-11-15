@@ -12,24 +12,6 @@ describe('Tag.vue', () => {
       expect(wrapper.text().length).toBeGreaterThanOrEqual(2)
     })
 
-    it('text', () => {
-      const wrapper = mount(Tag, {
-        props: {
-          type: 'primary'
-        }
-      })
-      expect(wrapper.classes()).toContain('el-tag--primary')
-    })
-
-    it('hit', () => {
-      const wrapper = mount(Tag, {
-        props: {
-          hit: true
-        }
-      })
-      expect(wrapper.classes()).toContain('is-hit')
-    })
-
     it('closeTransition', () => {
       const wrapper = mount(Tag, {
         props: {
@@ -38,28 +20,6 @@ describe('Tag.vue', () => {
         }
       })
       expect(wrapper.find('.md-fade-center').exists()).toBeFalsy()
-    })
-
-    it('color', () => {
-      const wrapper = mount(Tag, {
-        props: {
-          color: 'rgb(0, 0, 0)'
-        }
-      })
-      expect(wrapper.attributes('style')).toBe(
-        'background-color: rgb(0, 0, 0);'
-      )
-    })
-
-    it('theme', () => {
-      const wrapper = mount(Tag, {
-        props: {
-          effect: 'dark'
-        }
-      })
-      expect(wrapper.classes()).toContain('el-tag--dark')
-      expect(wrapper.find('.el-tag--light').exists()).toBeFalsy()
-      expect(wrapper.find('.el-tag--plain').exists()).toBeFalsy()
     })
   })
   describe('event', () => {

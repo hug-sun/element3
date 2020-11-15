@@ -11,7 +11,7 @@ export default {
   props: {
     direction: String
   },
-  setup(props, { attrs, emit, slots }) {
+  setup(props, { slots }) {
     const { direction } = toRefs(props)
 
     const isVertical = computed(() => {
