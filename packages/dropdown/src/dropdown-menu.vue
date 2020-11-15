@@ -10,16 +10,24 @@
   </transition>
 </template>
 <script>
-import Popper from 'element-ui/src/utils/vue-popper'
+import {
+  ref,
+  watch,
+  inject,
+  getCurrentInstance,
+  onMounted,
+  nextTick
+} from 'vue'
+import { usePopper, popperProps } from '../../../src/use/popper'
+import { useEmitter } from '../../../src/use/emitter'
 
 export default {
   name: 'ElDropdownMenu',
 
   componentName: 'ElDropdownMenu',
 
-  mixins: [Popper],
-
   props: {
+    ...popperProps,
     visibleArrow: {
       type: Boolean,
       default: true
@@ -30,37 +38,61 @@ export default {
     }
   },
 
-  data() {
-    return {
-      size: this.dropdown.dropdownSize
-    }
-  },
+  emits: ['updatePopper', 'visible', 'update:modelValue', 'created'],
 
-  inject: ['dropdown'],
-
-  created() {
-    // this.$on('updatePopper', () => {
-    //   if (this.showPopper) this.updatePopper();
-    // });
-    // this.$on('visible', val => {
-    //   this.showPopper = val;
-    // });
-  },
-
-  mounted() {
-    this.dropdown.popperElm = this.popperElm = this.$el
-    this.referenceElm = this.dropdown.$el
-    // compatible with 2.6 new v-slot syntax
-    // issue link https://github.com/ElemeFE/element/issues/14345
-    this.dropdown.initDomOperation()
-  },
-
-  watch: {
-    'dropdown.placement': {
-      immediate: true,
-      handler(val) {
-        this.currentPlacement = val
+  setup(props, { emit, slots }) {
+    const popperElm = ref(null)
+    const referenceElm = ref(null)
+    const { doDestroy, showPopper, currentPlacement, updatePopper } = usePopper(
+      props,
+      {
+        emit,
+        slots
+      },
+      {
+        popperElm,
+        referenceElm
       }
+    )
+    const dropdown = inject('dropdown')
+    const size = dropdown.dropdownSize
+    const instance = getCurrentInstance()
+
+    const { on } = useEmitter(instance)
+    on('updatePopper', () => {
+      if (showPopper.value) updatePopper()
+    })
+
+    on('visible', (val) => {
+      showPopper.value = val
+    })
+
+    onMounted(() => {
+      dropdown.popperElm = popperElm.value = instance.proxy.$el
+      referenceElm.value = dropdown.$el
+
+      nextTick(() => dropdown.initDomOperation())
+    })
+
+    watch(
+      () => dropdown.placement,
+      (val) => {
+        currentPlacement.value = val
+      },
+      { immediate: true }
+    )
+
+    watch(
+      () => dropdown.visible.value,
+      (val) => {
+        showPopper.value = val
+      }
+    )
+
+    return {
+      showPopper,
+      size,
+      doDestroy
     }
   }
 }

@@ -48,21 +48,31 @@
   </div>
 </template>
 <script>
-import ElCollapseTransition from 'element-ui/src/transitions/collapse-transition'
-import Emitter from 'element-ui/src/mixins/emitter'
-import { generateId } from 'element-ui/src/utils/util'
+import { computed, getCurrentInstance, inject, reactive, toRefs } from 'vue'
+import ElCollapseTransition from '../../../src/transitions/collapse-transition'
+import { generateId } from '../../../src/utils/util'
+import { useEmitter } from '../../../src/use/emitter'
 
 export default {
   name: 'ElCollapseItem',
 
   componentName: 'ElCollapseItem',
 
-  mixins: [Emitter],
-
   components: { ElCollapseTransition },
 
-  data() {
-    return {
+  props: {
+    title: String,
+    name: {
+      type: [String, Number],
+      default() {
+        return ''
+      }
+    },
+    disabled: Boolean
+  },
+
+  setup(props) {
+    const state = reactive({
       contentWrapStyle: {
         height: 'auto',
         display: 'block'
@@ -71,46 +81,45 @@ export default {
       focusing: false,
       isClick: false,
       id: generateId()
-    }
-  },
+    })
 
-  inject: ['collapse'],
+    const instance = getCurrentInstance()
+    const collapse = inject('collapse')
 
-  props: {
-    title: String,
-    name: {
-      type: [String, Number],
-      default() {
-        return this._uid
-      }
-    },
-    disabled: Boolean
-  },
+    const { dispatch } = useEmitter()
+    const isActive = computed(() => {
+      const name = props.name || props.name === 0 ? props.name : instance.uid
+      return collapse.ctx.activeNames.indexOf(name) > -1
+    })
 
-  computed: {
-    isActive() {
-      return this.collapse.activeNames.indexOf(this.name) > -1
-    }
-  },
-
-  methods: {
-    handleFocus() {
+    function handleFocus() {
       setTimeout(() => {
-        if (!this.isClick) {
-          this.focusing = true
+        if (!state.isClick) {
+          state.focusing = true
         } else {
-          this.isClick = false
+          state.isClick = false
         }
       }, 50)
-    },
-    handleHeaderClick() {
-      if (this.disabled) return
-      this.dispatch('ElCollapse', 'item-click', this)
-      this.focusing = false
-      this.isClick = true
-    },
-    handleEnterClick() {
-      this.dispatch('ElCollapse', 'item-click', this)
+    }
+
+    function handleHeaderClick() {
+      if (props.disabled) return
+      const name = props.name || props.name === 0 ? props.name : instance.uid
+      dispatch('item-click', { name })
+      state.focusing = false
+      state.isClick = true
+    }
+
+    function handleEnterClick() {
+      const name = props.name || props.name === 0 ? props.name : instance.uid
+      dispatch('item-click', { name })
+    }
+    return {
+      ...toRefs(state),
+      isActive,
+      handleFocus,
+      handleHeaderClick,
+      handleEnterClick
     }
   }
 }

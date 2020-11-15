@@ -1,305 +1,170 @@
 import { useEmitter } from '../../../../src/use/emitter'
 import { mount } from '@vue/test-utils'
 import { onMounted } from 'vue'
-describe('emitter', () => {
-  describe('on', () => {
-    it('parent to child', () => {
-      const handleChild = jest.fn()
 
-      const Child = {
-        name: 'Child',
-        template: '<div></div>',
-        setup(props, { emit }) {
-          const { on } = useEmitter()
-
-          on('child', handleChild)
-        }
+describe('useEmitter', () => {
+  it('父组件使用 broadcast 给子组件发消息，子组件应该可以接受到消息', () => {
+    const handleFoo = jest.fn()
+    const Foo = {
+      template: '<div></div>',
+      setup() {
+        const { on } = useEmitter()
+        on('foo', handleFoo)
       }
-
-      const Parent = {
-        components: {
-          Child
-        },
-
-        template: '<div><child></child></div>',
-        setup() {
-          const { broadcast } = useEmitter()
-          onMounted(() => {
-            broadcast('Child', 'child', 1, 2)
-          })
-        }
+    }
+    const Comp = {
+      components: {
+        Foo
+      },
+      template: '<div><Foo></Foo></div>',
+      setup() {
+        const { broadcast } = useEmitter()
+        onMounted(() => {
+          broadcast('foo', 1, 2)
+        })
       }
+    }
+    mount(Comp)
 
-      mount(Parent)
-
-      expect(handleChild).toBeCalledWith(1, 2)
-    })
-
-    it('child to parent', () => {
-      const handleFoo1 = jest.fn()
-      const handleFoo2 = jest.fn()
-
-      const Child = {
-        template: '<div></div>',
-        setup() {
-          const { dispatch } = useEmitter()
-          dispatch('Parent', 'foo', 1, 2)
-        }
-      }
-
-      const Parent = {
-        name: 'Parent',
-        template: '<div><child></child></div>',
-        components: {
-          Child
-        },
-        setup() {
-          const { on } = useEmitter()
-          on('foo', handleFoo1)
-          on('foo', handleFoo2)
-        }
-      }
-
-      mount(Parent)
-
-      expect(handleFoo1).toBeCalledWith(1, 2)
-      expect(handleFoo2).toBeCalledWith(1, 2)
-    })
+    expect(handleFoo).toBeCalledWith(1, 2)
   })
 
-  describe('off', () => {
-    it('off all', () => {
-      const handleFoo = jest.fn()
-      const handleBar = jest.fn()
-
-      const Foo = {
-        template: '<div></div>',
-        setup(props, { emit }) {
-          const { on, off } = useEmitter()
-          on('foo', handleFoo)
-          on('bar', handleBar)
-
-          off()
-          emit('foo')
-          emit('bar')
-        }
+  it('当使用 broadcast 时，如果 a 组件不是 b 组件的子组件的话，那么不会触发事件', () => {
+    const handleFoo = jest.fn()
+    const Foo = {
+      template: '<div></div>',
+      setup() {
+        const { broadcast } = useEmitter()
+        broadcast('foo')
       }
+    }
 
-      mount(Foo)
-
-      expect(handleFoo).toBeCalledTimes(0)
-      expect(handleBar).toBeCalledTimes(0)
-    })
-
-    it('off special event', () => {
-      const handleFoo1 = jest.fn()
-      const handleFoo2 = jest.fn()
-      const handleBar = jest.fn()
-
-      const Foo = {
-        template: '<div></div>',
-        setup(props, { emit }) {
-          const { on, off } = useEmitter()
-          on('foo', handleFoo1)
-          on('foo', handleFoo1)
-          on('bar', handleBar)
-
-          off('foo')
-          emit('foo')
-          emit('bar')
-        }
+    const Bar = {
+      template: '<div></div>',
+      setup() {
+        const { on } = useEmitter()
+        on('foo', handleFoo)
       }
+    }
+    const Comp = {
+      components: {
+        Foo,
+        Bar
+      },
+      template: '<div><Foo></Foo><Bar></Bar></div>'
+    }
+    mount(Comp)
 
-      mount(Foo)
-
-      expect(handleFoo1).toBeCalledTimes(0)
-      expect(handleFoo2).toBeCalledTimes(0)
-      expect(handleBar).toBeCalledTimes(1)
-    })
-
-    it('off special handler', () => {
-      const handleFoo1 = jest.fn()
-      const handleFoo2 = jest.fn()
-      const handleBar = jest.fn()
-
-      const Foo = {
-        template: '<div></div>',
-        setup(props, { emit }) {
-          const { on, off } = useEmitter()
-          on('foo', handleFoo1)
-          on('foo', handleFoo2)
-          on('bar', handleBar)
-
-          off('foo', handleFoo1)
-          emit('foo')
-          emit('bar')
-        }
-      }
-
-      mount(Foo)
-
-      expect(handleFoo1).toBeCalledTimes(0)
-      expect(handleFoo2).toBeCalledTimes(1)
-      expect(handleBar).toBeCalledTimes(1)
-    })
+    expect(handleFoo).toBeCalledTimes(0)
   })
 
-  describe('dispatch', () => {
-    it('Parent component can capture event when Child component called dispatch', () => {
-      const Child = {
-        template: '<div></div>',
-        setup() {
-          const { dispatch } = useEmitter()
-          dispatch('Parent', 'foo', 1, 2)
-        }
+  it('子组件使用 dispatch 给父组件发消息，父组件应该可以接受到消息', () => {
+    const handleFoo = jest.fn()
+    const Foo = {
+      template: '<div></div>',
+      setup() {
+        const { dispatch } = useEmitter()
+        dispatch('foo', 1, 2)
       }
-
-      const Parent = {
-        name: 'Parent',
-        template: '<div><child></child></div>',
-        components: {
-          Child
-        }
+    }
+    const Comp = {
+      components: {
+        Foo
+      },
+      template: '<div><Foo></Foo></div>',
+      setup() {
+        const { on } = useEmitter()
+        on('foo', handleFoo)
       }
+    }
+    mount(Comp)
 
-      const wrapper = mount(Parent)
-
-      expect(wrapper.emitted('foo')).toEqual([[1, 2]])
-    })
-
-    it('should can not capture event when can not find target parent component', () => {
-      const Child = {
-        template: '<div></div>',
-        setup() {
-          const { dispatch } = useEmitter()
-          dispatch('Parent', 'foo', [1, 2])
-        }
-      }
-
-      const Parent = {
-        template: '<div><child></child></div>',
-        components: {
-          Child
-        }
-      }
-
-      const wrapper = mount(Parent)
-
-      expect(wrapper.emitted('foo')).toBeFalsy()
-    })
-
-    it('multilayer nested ', () => {
-      const Foo = {
-        template: '<div>foo</div>',
-        setup() {
-          const { dispatch } = useEmitter()
-          dispatch('Parent', 'foo', 1, 2)
-        }
-      }
-
-      const Child = {
-        template: '<div><foo></foo></div>',
-        components: { Foo }
-      }
-
-      const Parent = {
-        name: 'Parent',
-        template: '<div><child></child></div>',
-        components: {
-          Child
-        }
-      }
-
-      const wrapper = mount(Parent)
-
-      expect(wrapper.emitted('foo')).toEqual([[1, 2]])
-    })
+    expect(handleFoo).toBeCalledWith(1, 2)
   })
 
-  describe('useBroadcast', () => {
-    it('Child component can capture event when the parent component called useBroadcast', () => {
-      const Child = {
-        name: 'Child',
-        template: '<div></div>'
+  it('当使用 dispatch 时，如果 a 组件不是 b 组件的父组件的话，那么不会触发事件', () => {
+    const handleFoo = jest.fn()
+    const Foo = {
+      template: '<div></div>',
+      setup() {
+        const { dispatch } = useEmitter()
+        dispatch('foo')
       }
+    }
 
-      const Parent = {
-        components: {
-          Child
-        },
-        template: '<div><child></child></div>',
-        setup() {
-          const { broadcast } = useEmitter()
-          onMounted(() => {
-            broadcast('Child', 'child', 1, 2)
-          })
+    const Bar = {
+      template: '<div></div>',
+      setup() {
+        const { on } = useEmitter()
+        on('foo', handleFoo)
+      }
+    }
+    const Comp = {
+      components: {
+        Foo,
+        Bar
+      },
+      template: '<div><Foo></Foo><Bar></Bar></div>'
+    }
+    mount(Comp)
+
+    expect(handleFoo).toBeCalledTimes(0)
+  })
+
+  it('使用 off 可以删除对应的事件监听', () => {
+    const Foo = {
+      template: '<div></div>',
+      setup() {
+        const { dispatch } = useEmitter()
+        dispatch('foo')
+        dispatch('foo')
+      }
+    }
+
+    let count = 0
+    const Comp = {
+      components: {
+        Foo
+      },
+      template: '<div><Foo></Foo></div>',
+      setup() {
+        const { on, off } = useEmitter()
+        const handleFoo = () => {
+          // eslint-disable-next-line no-unused-vars
+          count++
+          off('foo', handleFoo)
         }
+
+        on('foo', handleFoo)
       }
+    }
+    mount(Comp)
 
-      const wrapper = mount(Parent)
+    expect(count).toBe(1)
+  })
 
-      expect(
-        wrapper.findComponent({ name: 'Child' }).emitted('child')
-      ).toEqual([[1, 2]])
-    })
-
-    it('should can not capture event when can not find target child component', () => {
-      const Child = {
-        name: 'Child',
-        template: '<div></div>'
+  it('once ', () => {
+    const handleFoo = jest.fn()
+    const Foo = {
+      template: '<div></div>',
+      setup() {
+        const { dispatch } = useEmitter()
+        dispatch('foo')
+        dispatch('foo')
       }
-
-      const Parent = {
-        components: {
-          Child
-        },
-        template: '<div><child></child></div>',
-        setup() {
-          const { broadcast } = useEmitter()
-          onMounted(() => {
-            broadcast('Foo', 'child', 1, 2)
-          })
-        }
+    }
+    const Comp = {
+      components: {
+        Foo
+      },
+      template: '<div><Foo></Foo></div>',
+      setup() {
+        const { once } = useEmitter()
+        once('foo', handleFoo)
       }
+    }
+    mount(Comp)
 
-      const wrapper = mount(Parent)
-
-      expect(
-        wrapper.findComponent({ name: 'Child' }).emitted('child')
-      ).toBeFalsy()
-    })
-
-    it('multilayer nested ', () => {
-      const Foo = {
-        name: 'Foo',
-        template: '<div>foo</div>'
-      }
-
-      const Child = {
-        name: 'Child',
-        template: '<div><foo></foo></div>',
-        components: { Foo }
-      }
-
-      const Parent = {
-        name: 'Parent',
-        template: '<div><child></child></div>',
-        components: {
-          Child
-        },
-        setup() {
-          onMounted(() => {
-            const { broadcast } = useEmitter()
-            broadcast('Foo', 'foo', 1, 2)
-          })
-        }
-      }
-
-      const wrapper = mount(Parent)
-
-      expect(wrapper.findComponent({ name: 'Foo' }).emitted('foo')).toEqual([
-        [1, 2]
-      ])
-    })
+    expect(handleFoo).toHaveBeenCalledTimes(1)
   })
 })

@@ -1,11 +1,6 @@
-import throttle from 'throttle-debounce/debounce'
-import {
-  isHtmlElement,
-  isFunction,
-  isUndefined,
-  isDefined
-} from 'element-ui/src/utils/types'
-import { getScrollContainer } from 'element-ui/src/utils/dom'
+import { throttle } from 'throttle-debounce'
+import { isHtmlElement, isFunction, isDefined } from '../../../src/utils/types'
+import { getScrollContainer } from '../../../src/utils/dom'
 
 const getStyleComputedProperty = (element, property) => {
   if (element === window) {
@@ -58,13 +53,17 @@ const attributes = {
   }
 }
 
-const getScrollOptions = (el, vm) => {
+const getScrollOptions = (el) => {
   if (!isHtmlElement(el)) return {}
 
   return entries(attributes).reduce((map, [key, option]) => {
     const { type, default: defaultValue } = option
-    let value = el.getAttribute(`infinite-scroll-${key}`)
-    value = isUndefined(vm[value]) ? value : vm[value]
+    const attributeName = `infinite-scroll-${key}`
+
+    let value = el.hasAttribute(attributeName)
+      ? el.getAttribute(attributeName)
+      : defaultValue
+
     switch (type) {
       case Number:
         value = Number(value)
@@ -88,8 +87,8 @@ const getScrollOptions = (el, vm) => {
 const getElementTop = (el) => el.getBoundingClientRect().top
 
 const handleScroll = function (cb) {
-  const { el, vm, container, observer } = this[scope]
-  const { distance, disabled } = getScrollOptions(el, vm)
+  const { el, container, observer } = this[scope]
+  const { distance, disabled } = getScrollOptions(el)
 
   if (disabled) return
 
@@ -113,7 +112,7 @@ const handleScroll = function (cb) {
   }
 
   if (shouldTrigger && isFunction(cb)) {
-    cb.call(vm)
+    cb.call()
   } else if (observer) {
     observer.disconnect()
     this[scope].observer = null
@@ -122,16 +121,16 @@ const handleScroll = function (cb) {
 
 export default {
   name: 'InfiniteScroll',
-  inserted(el, binding, vnode) {
+
+  mounted(el, binding) {
     const cb = binding.value
 
-    const vm = vnode.context
     // only include vertical scroll
     const container = getScrollContainer(el, true)
-    const { delay, immediate } = getScrollOptions(el, vm)
+    const { delay, immediate } = getScrollOptions(el)
     const onScroll = throttle(delay, handleScroll.bind(el, cb))
 
-    el[scope] = { el, vm, container, onScroll }
+    el[scope] = { el, container, onScroll }
 
     if (container) {
       container.addEventListener('scroll', onScroll)
@@ -143,7 +142,8 @@ export default {
       }
     }
   },
-  unbind(el) {
+
+  unmounted(el) {
     const { container, onScroll } = el[scope]
     if (container) {
       container.removeEventListener('scroll', onScroll)

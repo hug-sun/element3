@@ -1,6 +1,6 @@
-import { PopupManager } from 'element-ui/src/utils/popup'
+import { PopupManager } from '../../src/utils/popup'
 
-const PopperJS = require('./popper')
+import * as PopperJS from './popper'
 // const PopperJS = Vue.prototype.$isServer ? function() {} : require('./popper')
 const stop = (e) => e.stopPropagation()
 
@@ -105,7 +105,7 @@ export default {
       options.offset = this.offset
       options.arrowOffset = this.arrowOffset
       this.popperJS = new PopperJS(reference, popper, options)
-      this.popperJS.onCreate((_) => {
+      this.popperJS.onCreate(() => {
         this.$emit('created', this)
         this.resetTransformOrigin()
         this.$nextTick(this.updatePopper)
@@ -188,7 +188,7 @@ export default {
     }
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     this.doDestroy(true)
     if (this.popperElm && this.popperElm.parentNode === document.body) {
       this.popperElm.removeEventListener('click', stop)
@@ -198,6 +198,6 @@ export default {
 
   // call destroy in keep-alive mode
   deactivated() {
-    this.$options.beforeDestroy[0].call(this)
+    this.$options.beforeUnmount[0].call(this)
   }
 }

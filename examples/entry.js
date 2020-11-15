@@ -1,8 +1,9 @@
 import { createApp, reactive } from 'vue'
-import entry from './app'
+import EntryApp from './app'
 
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Element from 'main/index.js'
+import Element3 from 'main/index.js'
+import * as NewElement3 from 'main/entry.js'
 // import hljs from 'highlight.js'
 import routes from './route.config'
 import demoBlock from './components/demo-block'
@@ -17,10 +18,8 @@ import './assets/styles/common.css'
 import './assets/styles/fonts/style.css'
 import icon from './icon.json'
 
-const app = createApp({ // eslint-disable-line
-  ...entry
-})
-app.use(Element)
+const app = createApp(EntryApp)
+app.use(Element3)
 // app.use(VueRouter);
 app.component('demo-block', demoBlock)
 // app.component('main-footer', MainFooter);
@@ -31,6 +30,17 @@ app.component('footer-nav', FooterNav)
 const globalEle = reactive({
   data: { $isEle: false } // 是否 ele 用户
 })
+
+// 小步替换
+// 先把新的element3入口导出部分方法
+// 后面需要都替换成新的element3 导出的方法
+Element3.useMessage = NewElement3.useMessage
+Element3.useMsgbox = NewElement3.useMsgbox
+Element3.useLoading = NewElement3.useLoading
+Element3.useNotify = NewElement3.useNotify
+
+// 方便在 demo 里面全局导入 element3
+window.Element3 = Element3
 
 app.mixin({
   computed: {

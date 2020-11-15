@@ -15,10 +15,11 @@
 
 <script>
   export default {
-    methods: {
-      format(percentage) {
-        return percentage === 100 ? '满' : `${percentage}%`;
+    setup(){
+      const format = percentage => {
+        return percentage === 100 ? '满' : `${percentage}%`
       }
+      return {format}
     }
   };
 </script>
@@ -59,11 +60,13 @@
 </div>
 
 <script>
+  import {ref, reactive, getCurrentInstance, toRefs} from 'vue'
   export default {
-    data() {
-      return {
-        percentage: 20,
-        customColor: '#409eff',
+    setup(){
+      const self = getCurrentInstance().ctx
+      const percentage = ref(20)
+      const customColor = ref('#409eff')
+      const data = reactive({
         customColors: [
           {color: '#f56c6c', percentage: 20},
           {color: '#e6a23c', percentage: 40},
@@ -71,10 +74,9 @@
           {color: '#1989fa', percentage: 80},
           {color: '#6f7ad3', percentage: 100}
         ]
-      };
-    },
-    methods: {
-      customColorMethod(percentage) {
+      })
+
+      const customColorMethod = percentage => {
         if (percentage < 30) {
           return '#909399';
         } else if (percentage < 70) {
@@ -82,18 +84,29 @@
         } else {
           return '#67c23a';
         }
-      },
-      increase() {
-        this.percentage += 10;
-        if (this.percentage > 100) {
-          this.percentage = 100;
+      }
+      
+      const increase = () => {
+        percentage.value += 10;
+        if (percentage.value > 100) {
+          percentage.value = 100;
         }
-      },
-      decrease() {
-        this.percentage -= 10;
-        if (this.percentage < 0) {
-          this.percentage = 0;
+      }
+
+      const decrease = () => {
+        percentage.value -= 10;
+        if (percentage.value < 0) {
+          percentage.value = 0;
         }
+      }
+      
+      return {
+        percentage,
+        customColor,
+        ...toRefs(data),
+        customColorMethod,
+        increase,
+        decrease
       }
     }
   }
@@ -131,10 +144,12 @@ Progress 组件可通过 `type` 属性来指定使用环形进度条，在环形
 </div>
 
 <script>
+  import {ref, reactive, getCurrentInstance, toRefs} from 'vue'
   export default {
-    data() {
-      return {
-        percentage: 10,
+    setup(){
+      const self = getCurrentInstance().ctx
+      const percentage = ref(10)
+      const data = reactive({
         colors: [
           {color: '#f56c6c', percentage: 20},
           {color: '#e6a23c', percentage: 40},
@@ -142,20 +157,27 @@ Progress 组件可通过 `type` 属性来指定使用环形进度条，在环形
           {color: '#1989fa', percentage: 80},
           {color: '#6f7ad3', percentage: 100}
         ]
-      };
-    },
-    methods: {
-      increase() {
-        this.percentage += 10;
-        if (this.percentage > 100) {
-          this.percentage = 100;
+      })
+      
+      const increase = () => {
+        percentage.value += 10;
+        if (percentage.value > 100) {
+          percentage.value = 100;
         }
-      },
-      decrease() {
-        this.percentage -= 10;
-        if (this.percentage < 0) {
-          this.percentage = 0;
+      }
+
+      const decrease = () => {
+        percentage.value -= 10;
+        if (percentage.value < 0) {
+          percentage.value = 0;
         }
+      }
+      
+      return {
+        percentage,
+        ...toRefs(data),
+        increase,
+        decrease
       }
     }
   }

@@ -1,12 +1,18 @@
-import Vue, { VNode } from 'vue'
+import { VNode } from 'vue'
 import { MessageType } from './message'
 
-export type NotificationPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+export type NotificationPosition =
+  | 'top-right'
+  | 'top-left'
+  | 'bottom-right'
+  | 'bottom-left'
+
+export const useNotify: () => ElNotification
 
 /** Notification Component */
-export declare class ElNotificationComponent extends Vue {
+interface INotificationComponent {
   /** Close the Notification instance */
-  close (): void
+  close(): void
 }
 
 export interface ElNotificationOptions {
@@ -49,36 +55,29 @@ export interface ElNotificationOptions {
 
 export interface ElNotification {
   /** Show a notification */
-  (options: ElNotificationOptions): ElNotificationComponent
+  (options: ElNotificationOptions): INotificationComponent
 
   /** Show a success notification */
-  success (message: string | VNode): ElNotificationComponent
+  success(message: string | VNode): INotificationComponent
 
   /** Show a success notification */
-  success (options: ElNotificationOptions): ElNotificationComponent
+  success(options: ElNotificationOptions): INotificationComponent
 
   /** Show a warning notification */
-  warning (message: string | VNode): ElNotificationComponent
+  warning(message: string | VNode): INotificationComponent
 
   /** Show a warning notification */
-  warning (options: ElNotificationOptions): ElNotificationComponent
+  warning(options: ElNotificationOptions): INotificationComponent
 
   /** Show an info notification */
-  info (message: string | VNode): ElNotificationComponent
+  info(message: string | VNode): INotificationComponent
 
   /** Show an info notification */
-  info (options: ElNotificationOptions): ElNotificationComponent
+  info(options: ElNotificationOptions): INotificationComponent
 
   /** Show an error notification */
-  error (message: string | VNode): ElNotificationComponent
+  error(message: string | VNode): INotificationComponent
 
   /** Show an error notification */
-  error (options: ElNotificationOptions): ElNotificationComponent
-}
-
-declare module 'vue/types/vue' {
-  interface Vue {
-    /** Displays a global notification message at the upper right corner of the page */
-    $notify: ElNotification
-  }
+  error(options: ElNotificationOptions): INotificationComponent
 }

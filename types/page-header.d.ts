@@ -1,7 +1,8 @@
 import { ElementUIComponent } from './component'
 
+export const ElPageHeader:IPageHeader
 /** PageHeader Component */
-export declare class ElPageHeader extends ElementUIComponent {
+interface IPageHeader extends ElementUIComponent {
   /** title */
   title: String
 

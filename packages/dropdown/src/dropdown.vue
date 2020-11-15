@@ -1,19 +1,28 @@
-<script>
-import Clickoutside from 'element-ui/src/utils/clickoutside'
-import Emitter from 'element-ui/src/mixins/emitter'
-import Migrating from 'element-ui/src/mixins/migrating'
-import ElButton from 'element-ui/packages/button'
-import ElButtonGroup from 'element-ui/packages/button-group'
-import { generateId } from 'element-ui/src/utils/util'
+<script lang="jsx">
+import {
+  provide,
+  toRefs,
+  getCurrentInstance,
+  ref,
+  computed,
+  watch,
+  h
+} from 'vue'
+import { useEmitter } from '../../../src/use/emitter.js'
+import Clickoutside from '../../../src/utils/clickoutside.js'
+
+import ElButton from '../../button'
+import ElButtonGroup from '../../button-group'
+import { generateId } from '../../../src/utils/util.js'
 
 export default {
   name: 'ElDropdown',
 
   componentName: 'ElDropdown',
 
-  mixins: [Emitter, Migrating],
-
   directives: { Clickoutside },
+
+  emits: ['menu-item-click', 'visible-change', 'command'],
 
   components: {
     ElButton,
@@ -62,38 +71,205 @@ export default {
     }
   },
 
-  data() {
-    return {
-      timeout: null,
-      visible: false,
-      triggerElm: null,
-      menuItems: null,
-      menuItemsArray: null,
-      dropdownElm: null,
-      focusing: false,
-      listId: `dropdown-menu-${generateId()}`
-    }
-  },
+  setup(props, { emit, slots }) {
+    const instance = getCurrentInstance()
+    const {
+      size,
+      trigger,
+      showTimeout,
+      tabindex,
+      hideTimeout,
+      hideOnClick,
+      splitButton,
+      type
+    } = toRefs(props)
+    const dropdownSize = computed(() => {
+      return size.value || instance.proxy?.$ELEMENT?.size
+    })
 
-  computed: {
-    dropdownSize() {
-      return this.size || (this.$ELEMENT || {}).size
+    const timeout = ref(0)
+    const visible = ref(false)
+    const triggerElm = ref(null)
+    const show = () => {
+      if (triggerElm.value?.disabled) return
+      clearTimeout(timeout.value)
+      timeout.value = setTimeout(
+        () => {
+          visible.value = true
+        },
+        trigger.value === 'click' ? 0 : showTimeout.value
+      )
     }
-  },
-  emits: {
-    // 'menu-item-click':this.handleMenuItemClick
-  },
-  mounted() {
-    // this.$on('menu-item-click', this.handleMenuItemClick);
-  },
 
-  watch: {
-    visible(val) {
-      this.broadcast('ElDropdownMenu', 'visible', val)
-      this.$emit('visible-change', val)
-    },
-    focusing(val) {
-      const selfDefine = this.$el.querySelector('.el-dropdown-selfdefine')
+    const hide = () => {
+      if (triggerElm.value?.disabled) return
+      removeTabindex()
+      if (tabindex.value >= 0) {
+        resetTabindex(triggerElm.value)
+      }
+      clearTimeout(timeout.value)
+      timeout.value = setTimeout(
+        () => {
+          visible.value = false
+        },
+        trigger.value === 'click' ? 0 : hideTimeout.value
+      )
+    }
+
+    const handleClick = () => {
+      if (triggerElm.value?.disabled) return
+      if (visible.value) {
+        hide()
+      } else {
+        show()
+      }
+    }
+
+    const menuItems = ref(null)
+    const handleTriggerKeyDown = (ev) => {
+      const _keyCode = ev.keyCode
+      if ([38, 40].indexOf(_keyCode) > -1) {
+        // up/down
+        removeTabindex()
+        resetTabindex(menuItems.value[0])
+        menuItems.value[0].focus()
+        ev.preventDefault()
+        ev.stopPropagation()
+      } else if (_keyCode === 13) {
+        // space enter选中
+        handleClick()
+      } else if ([9, 27].indexOf(_keyCode) > -1) {
+        // tab || esc
+        hide()
+      }
+    }
+
+    const menuItemsArray = ref(null)
+
+    const handleItemKeyDown = (ev) => {
+      const _keyCode = ev.keyCode
+      const _target = ev.target
+      const _currentIndex = menuItemsArray.value.indexOf(_target)
+      const _max = menuItemsArray.value.length - 1
+      let _nextIndex
+      if ([38, 40].indexOf(_keyCode) > -1) {
+        // up/down
+        if (_keyCode === 38) {
+          // up
+          _nextIndex = _currentIndex !== 0 ? _currentIndex - 1 : 0
+        } else {
+          // down
+          _nextIndex = _currentIndex < _max ? _currentIndex + 1 : _max
+        }
+        removeTabindex()
+        resetTabindex(menuItems.value[_nextIndex])
+        menuItems.value[_nextIndex].focus()
+        ev.preventDefault()
+        ev.stopPropagation()
+      } else if (_keyCode === 13) {
+        // enter选中
+        triggerElmFocus()
+        _target.click()
+        if (hideOnClick.value) {
+          // click关闭
+          visible.value = false
+        }
+      } else if ([9, 27].indexOf(_keyCode) > -1) {
+        // tab // esc
+        hide()
+        triggerElmFocus()
+      }
+    }
+
+    const resetTabindex = (ele) => {
+      // 下次tab时组件聚焦元素
+      removeTabindex()
+      ele.setAttribute('tabindex', '0') // 下次期望的聚焦元素
+    }
+    const removeTabindex = () => {
+      triggerElm.value.setAttribute('tabindex', '-1')
+      menuItemsArray.value.forEach((item) => {
+        item.setAttribute('tabindex', '-1')
+      })
+    }
+
+    const dropdownElm = ref(null)
+    const listId = ref(`dropdown-menu-${generateId()}`)
+    const initAria = () => {
+      dropdownElm.value.setAttribute('id', listId.value)
+      triggerElm.value.setAttribute('aria-haspopup', 'list')
+      triggerElm.value.setAttribute('aria-controls', listId.value)
+
+      if (!splitButton.value) {
+        // 自定义
+        triggerElm.value.setAttribute('role', 'button')
+        triggerElm.value.setAttribute('tabindex', tabindex.value)
+        triggerElm.value.setAttribute(
+          'class',
+          (triggerElm.value.getAttribute('class') || '') +
+            ' el-dropdown-selfdefine'
+        ) // 控制
+      }
+    }
+
+    const focusing = ref(false)
+    const initEvent = () => {
+      triggerElm.value = splitButton.value
+        ? instance.proxy.$refs.trigger.$el
+        : instance.proxy.$el.children[0]
+      triggerElm.value.addEventListener('keydown', handleTriggerKeyDown) // triggerElm keydown
+      dropdownElm.value.addEventListener('keydown', handleItemKeyDown, true) // item keydown
+      // 控制自定义元素的样式
+      if (!splitButton.value) {
+        triggerElm.value.addEventListener('focus', () => {
+          focusing.value = true
+        })
+        triggerElm.value.addEventListener('blur', () => {
+          focusing.value = false
+        })
+        triggerElm.value.addEventListener('click', () => {
+          focusing.value = false
+        })
+      }
+      if (trigger.value === 'hover') {
+        triggerElm.value.addEventListener('mouseenter', show)
+        triggerElm.value.addEventListener('mouseleave', hide)
+        dropdownElm.value.addEventListener('mouseenter', show)
+        dropdownElm.value.addEventListener('mouseleave', hide)
+      } else if (trigger.value === 'click') {
+        triggerElm.value.addEventListener('click', handleClick)
+      }
+    }
+    const handleMenuItemClick = (command, instance) => {
+      if (hideOnClick.value) {
+        visible.value = false
+      }
+      emit('command', command, instance)
+    }
+    const triggerElmFocus = () => {
+      triggerElm.value.focus && triggerElm.value.focus()
+    }
+    const initDomOperation = () => {
+      dropdownElm.value = instance.proxy.popperElm
+      menuItems.value = dropdownElm.value.querySelectorAll("[tabindex='-1']")
+      menuItemsArray.value = [].slice.call(menuItems.value)
+
+      initEvent()
+      initAria()
+    }
+
+    const { broadcast, on } = useEmitter(instance)
+    watch(visible, (val) => {
+      broadcast('visible', val)
+      emit('visible-change', val)
+    })
+
+    on('menu-item-click', handleMenuItemClick)
+
+    watch(focusing, (val) => {
+      const selfDefine = instance.proxy.$el.querySelector(
+        '.el-dropdown-selfdefine'
+      )
       if (selfDefine) {
         // 自定义
         if (val) {
@@ -102,221 +278,56 @@ export default {
           selfDefine.className = selfDefine.className.replace('focusing', '')
         }
       }
-    }
-  },
+    })
 
-  methods: {
-    getMigratingConfig() {
-      return {
-        props: {
-          'menu-align': 'menu-align is renamed to placement.'
-        }
-      }
-    },
-    show() {
-      if (this.triggerElm.disabled) return
-      clearTimeout(this.timeout)
-      this.timeout = setTimeout(
-        () => {
-          this.visible = true
-        },
-        this.trigger === 'click' ? 0 : this.showTimeout
-      )
-    },
-    hide() {
-      if (this.triggerElm.disabled) return
-      this.removeTabindex()
-      if (this.tabindex >= 0) {
-        this.resetTabindex(this.triggerElm)
-      }
-      clearTimeout(this.timeout)
-      this.timeout = setTimeout(
-        () => {
-          this.visible = false
-        },
-        this.trigger === 'click' ? 0 : this.hideTimeout
-      )
-    },
-    handleClick() {
-      if (this.triggerElm.disabled) return
-      if (this.visible) {
-        this.hide()
-      } else {
-        this.show()
-      }
-    },
-    handleTriggerKeyDown(ev) {
-      const keyCode = ev.keyCode
-      if ([38, 40].indexOf(keyCode) > -1) {
-        // up/down
-        this.removeTabindex()
-        this.resetTabindex(this.menuItems[0])
-        this.menuItems[0].focus()
-        ev.preventDefault()
-        ev.stopPropagation()
-      } else if (keyCode === 13) {
-        // space enter选中
-        this.handleClick()
-      } else if ([9, 27].indexOf(keyCode) > -1) {
-        // tab || esc
-        this.hide()
-      }
-    },
-    handleItemKeyDown(ev) {
-      const keyCode = ev.keyCode
-      const target = ev.target
-      const currentIndex = this.menuItemsArray.indexOf(target)
-      const max = this.menuItemsArray.length - 1
-      let nextIndex
-      if ([38, 40].indexOf(keyCode) > -1) {
-        // up/down
-        if (keyCode === 38) {
-          // up
-          nextIndex = currentIndex !== 0 ? currentIndex - 1 : 0
-        } else {
-          // down
-          nextIndex = currentIndex < max ? currentIndex + 1 : max
-        }
-        this.removeTabindex()
-        this.resetTabindex(this.menuItems[nextIndex])
-        this.menuItems[nextIndex].focus()
-        ev.preventDefault()
-        ev.stopPropagation()
-      } else if (keyCode === 13) {
-        // enter选中
-        this.triggerElmFocus()
-        target.click()
-        if (this.hideOnClick) {
-          // click关闭
-          this.visible = false
-        }
-      } else if ([9, 27].indexOf(keyCode) > -1) {
-        // tab // esc
-        this.hide()
-        this.triggerElmFocus()
-      }
-    },
-    resetTabindex(ele) {
-      // 下次tab时组件聚焦元素
-      this.removeTabindex()
-      ele.setAttribute('tabindex', '0') // 下次期望的聚焦元素
-    },
-    removeTabindex() {
-      this.triggerElm.setAttribute('tabindex', '-1')
-      this.menuItemsArray.forEach((item) => {
-        item.setAttribute('tabindex', '-1')
-      })
-    },
-    initAria() {
-      this.dropdownElm.setAttribute('id', this.listId)
-      this.triggerElm.setAttribute('aria-haspopup', 'list')
-      this.triggerElm.setAttribute('aria-controls', this.listId)
+    instance.proxy.initDomOperation = initDomOperation
+    instance.proxy.dropdownSize = dropdownSize.value
+    instance.proxy.visible = visible.value
+    instance.proxy.broadcast = broadcast
 
-      if (!this.splitButton) {
-        // 自定义
-        this.triggerElm.setAttribute('role', 'button')
-        this.triggerElm.setAttribute('tabindex', this.tabindex)
-        this.triggerElm.setAttribute(
-          'class',
-          (this.triggerElm.getAttribute('class') || '') +
-            ' el-dropdown-selfdefine'
-        ) // 控制
-      }
-    },
-    initEvent() {
-      const {
-        trigger,
-        show,
-        hide,
-        handleClick,
-        splitButton,
-        handleTriggerKeyDown,
-        handleItemKeyDown
-      } = this
-      this.triggerElm = splitButton
-        ? this.$refs.trigger.$el
-        : this.$slots.default[0].elm
-
-      const dropdownElm = this.dropdownElm
-
-      this.triggerElm.addEventListener('keydown', handleTriggerKeyDown) // triggerElm keydown
-      dropdownElm.addEventListener('keydown', handleItemKeyDown, true) // item keydown
-      // 控制自定义元素的样式
-      if (!splitButton) {
-        this.triggerElm.addEventListener('focus', () => {
-          this.focusing = true
-        })
-        this.triggerElm.addEventListener('blur', () => {
-          this.focusing = false
-        })
-        this.triggerElm.addEventListener('click', () => {
-          this.focusing = false
-        })
-      }
-      if (trigger === 'hover') {
-        this.triggerElm.addEventListener('mouseenter', show)
-        this.triggerElm.addEventListener('mouseleave', hide)
-        dropdownElm.addEventListener('mouseenter', show)
-        dropdownElm.addEventListener('mouseleave', hide)
-      } else if (trigger === 'click') {
-        this.triggerElm.addEventListener('click', handleClick)
-      }
-    },
-    handleMenuItemClick(command, instance) {
-      if (this.hideOnClick) {
-        this.visible = false
-      }
-      this.$emit('command', command, instance)
-    },
-    triggerElmFocus() {
-      this.triggerElm.focus && this.triggerElm.focus()
-    },
-    initDomOperation() {
-      this.dropdownElm = this.popperElm
-      this.menuItems = this.dropdownElm.querySelectorAll("[tabindex='-1']")
-      this.menuItemsArray = [].slice.call(this.menuItems)
-
-      this.initEvent()
-      this.initAria()
-    }
-  },
-
-  render() {
-    const { hide, splitButton, type, dropdownSize } = this
+    provide('dropdown', instance)
 
     const handleMainButtonClick = (event) => {
-      this.$emit('click', event)
+      emit('click', event)
       hide()
     }
 
-    const triggerElm = !splitButton ? (
-      this.$slots.default()
-    ) : (
-      <el-button-group>
-        <el-button
-          type={type}
-          size={dropdownSize}
-          nativeOn-click={handleMainButtonClick}
-        >
-          {this.$slots.default}
-        </el-button>
-        <el-button
-          ref="trigger"
-          type={type}
-          size={dropdownSize}
-          class="el-dropdown__caret-button"
-        >
-          <i class="el-dropdown__icon el-icon-arrow-down"></i>
-        </el-button>
-      </el-button-group>
-    )
+    return () => {
+      const defaultNode = slots.default() ? slots.default()[0] : h('span')
+      const dropdownNode = slots.default() ? slots.default()[1] : h('ul')
 
-    return (
-      <div class="el-dropdown" v-clickoutside={hide}>
-        {triggerElm}
-        {this.$slots.dropdown}
-      </div>
-    )
+      const triggerElm = !splitButton.value ? (
+        defaultNode
+      ) : (
+        <el-button-group>
+          <el-button
+            type={type.value}
+            size={dropdownSize.value}
+            nativeOn-click={handleMainButtonClick}
+          >
+            {defaultNode}
+          </el-button>
+          <el-button
+            ref="trigger"
+            type={type.value}
+            size={dropdownSize.value}
+            class="el-dropdown__caret-button"
+          >
+            <i class="el-dropdown__icon el-icon-arrow-down"></i>
+          </el-button>
+        </el-button-group>
+      )
+
+      // fixme: directive api not work
+      // const vClickoutside = resolveDirective('clickoutside')
+      //
+      // return withDirectives(
+      //   h('div', { class: 'el-dropdown' }, [triggerElm, slots.dropdown]),
+      //   [vClickoutside, hide]
+      // )
+
+      return h('div', { class: 'el-dropdown' }, [triggerElm, dropdownNode])
+    }
   }
 }
 </script>

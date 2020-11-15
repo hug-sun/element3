@@ -1,8 +1,8 @@
-import Drawer from './src/main'
+import ElDrawer from './Drawer'
 
 /* istanbul ignore next */
-Drawer.install = function (app) {
-  app.component(Drawer.name, Drawer)
+ElDrawer.install = function (app) {
+  app.component(ElDrawer.name, ElDrawer)
 }
 
-export default Drawer
+export default ElDrawer

@@ -32,7 +32,7 @@
 
 <script>
 import { computed, toRefs, onMounted } from 'vue'
-import SwitchLabel from './SwitchLabel'
+import SwitchLabel from './SwitchLabel.vue'
 export default {
   name: 'ElSwitch',
   components: {
@@ -85,11 +85,6 @@ export default {
       inactiveValue,
       modelValue,
       disabled,
-      width,
-      activeText,
-      inactiveText,
-      activeIconClass,
-      inactiveIconClass,
       activeColor,
       inactiveColor
     } = toRefs(props)
@@ -119,12 +114,6 @@ export default {
 
     return {
       isChecked,
-      disabled,
-      width,
-      activeText,
-      inactiveText,
-      inactiveIconClass,
-      activeIconClass,
       backgroundColor,
       handleClick
     }

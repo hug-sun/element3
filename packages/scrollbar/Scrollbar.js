@@ -3,9 +3,9 @@ import { nextTick, reactive, ref, toRefs, onMounted, onUnmounted } from 'vue'
 import {
   addResizeListener,
   removeResizeListener
-} from 'element-ui/src/utils/resize-event'
-import scrollbarWidth from 'element-ui/src/utils/scrollbar-width'
-import { toObject } from 'element-ui/src/utils/util'
+} from '../../src/utils/resize-event'
+import scrollbarWidth from '../../src/utils/scrollbar-width'
+import { toObject } from '../../src/utils/util'
 import Bar from './Bar'
 
 const useScroll = (wrap, native, resize, noresize) => {
@@ -22,7 +22,7 @@ const useScroll = (wrap, native, resize, noresize) => {
   }
 
   const update = () => {
-    if (!wrap) return
+    if (!wrap?.value) return
 
     const heightPercentage =
       (wrap.value.clientHeight * 100) / wrap.value.scrollHeight
@@ -45,6 +45,7 @@ const useScroll = (wrap, native, resize, noresize) => {
 
   return {
     data,
+    update,
     handleScroll
   }
 }
@@ -68,32 +69,19 @@ export default {
     }
   },
 
-  setup(props, { slots }) {
+  setup(props) {
     const wrap = ref(null)
     const resize = ref(null)
-    let {
-      wrapStyle,
-      wrapClass,
-      tag,
-      viewClass,
-      viewStyle,
-      native,
-      noresize
-    } = toRefs(props)
-    wrapStyle = ref(wrapStyle)
-    wrapClass = ref(wrapClass)
-    viewClass = ref(viewClass)
-    viewStyle = ref(viewStyle)
+    const { wrapStyle, tag, native, noresize } = toRefs(props)
     const gutter = scrollbarWidth()
-    let style = wrapStyle.value
-    // eslint-disable-next-line no-unused-vars
+    let style = wrapStyle?.value
     const ComponentName = tag.value
     if (gutter) {
       const gutterWith = `-${gutter}px`
       const gutterStyle = `margin-bottom: ${gutterWith}; margin-right: ${gutterWith};`
 
-      if (Array.isArray(wrapStyle.value)) {
-        style = toObject(wrapStyle.value)
+      if (Array.isArray(wrapStyle?.value)) {
+        style = toObject(wrapStyle?.value)
         style.marginRight = style.marginBottom = gutterWith
       } else if (typeof wrapStyle === 'string') {
         style += gutterStyle
@@ -102,32 +90,55 @@ export default {
       }
     }
 
-    const { data, handleScroll } = useScroll(wrap, native, resize, noresize)
-    return () => (
+    const { data, handleScroll, update } = useScroll(
+      wrap,
+      native,
+      resize,
+      noresize
+    )
+    return {
+      // state
+      data,
+      style,
+      native,
+      gutter,
+      wrap,
+      resize,
+      ComponentName,
+      // methods
+      handleScroll,
+      update
+    }
+  },
+  render() {
+    const ComponentName = this.ComponentName
+    return (
       <div class="el-scrollbar">
         <div
-          ref={wrap}
+          ref="wrap"
           class={[
-            wrapClass.value,
+            this.wrapClass,
             'el-scrollbar__wrap',
-            { 'el-scrollbar__wrap--hidden-default': !native.value && !gutter }
+            {
+              'el-scrollbar__wrap--hidden-default': !this.native && !this.gutter
+            }
           ]}
           onScroll={() => {
-            !native.value && handleScroll()
+            !this.native && this.handleScroll()
           }}
-          style={style}
+          style={this.style}
         >
           <ComponentName
-            ref={resize}
-            class={['el-scrollbar__view', viewClass.value]}
-            style={viewStyle.value}
+            ref="resize"
+            class={['el-scrollbar__view', this.viewClass]}
+            style={this.viewStyle}
           >
-            {slots.default()}
+            {this.$slots.default()}
           </ComponentName>
         </div>
-        {!native.value && [
-          <Bar move={data.moveX} size={data.sizeWidth} />,
-          <Bar vertical move={data.moveY} size={data.sizeHeight} />
+        {!this.native.value && [
+          <Bar move={this.data.moveX} size={this.data.sizeWidth} />,
+          <Bar vertical move={this.data.moveY} size={this.data.sizeHeight} />
         ]}
       </div>
     )

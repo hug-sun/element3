@@ -10,15 +10,16 @@
   <el-input-number v-model="num" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number>
 </template>
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
-      return {
-        num: 1
-      };
-    },
-    methods: {
-      handleChange(value) {
+    setup(){
+      const num = ref(1)
+      const handleChange = (value)=>{
         console.log(value);
+      }
+      return {
+        num,
+        handleChange
       }
     }
   };
@@ -35,10 +36,13 @@
   <el-input-number v-model="num" :disabled="true"></el-input-number>
 </template>
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup(){
+      const num = ref(1)
+      
       return {
-        num: 1
+        num
       }
     }
   };
@@ -57,10 +61,13 @@
   <el-input-number v-model="num" :step="2"></el-input-number>
 </template>
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup(){
+      const num = ref(5)
+      
       return {
-        num: 5
+        num
       }
     }
   };
@@ -77,10 +84,13 @@
   <el-input-number v-model="num" :step="2" step-strictly></el-input-number>
 </template>
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup(){
+      const num = ref(2)
+      
       return {
-        num: 2
+        num
       }
     }
   };
@@ -97,10 +107,13 @@
   <el-input-number v-model="num" :precision="2" :step="0.1" :max="10"></el-input-number>
 </template>
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup(){
+      const num = ref(1)
+      
       return {
-        num: 1
+        num
       }
     }
   };
@@ -127,13 +140,19 @@
   <el-input-number size="mini" v-model="num4"></el-input-number>
 </template>
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup(){
+      const num1 = ref(1)
+      const num2 = ref(1)
+      const num3 = ref(1)
+      const num4 = ref(1)
+      
       return {
-        num1: 1,
-        num2: 1,
-        num3: 1,
-        num4: 1
+        num1,
+        num2,
+        num3,
+        num4
       }
     }
   };
@@ -149,15 +168,17 @@
   <el-input-number v-model="num" controls-position="right" @change="handleChange" :min="1" :max="10"></el-input-number>
 </template>
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
-      return {
-        num: 1
-      };
-    },
-    methods: {
-      handleChange(value) {
+    setup(){
+      const num = ref(1)
+      const handleChange = (value)=>{
         console.log(value);
+      }
+
+      return {
+        num,
+        handleChange
       }
     }
   };
@@ -168,7 +189,7 @@
 ### Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |----------|-------------- |----------|--------------------------------  |-------- |
-| value / v-model    | 绑定值         | number | — | 0 |
+| modelValue / v-model    | 绑定值         | number | — | 0 |
 | min      | 设置计数器允许的最小值 | number | — | -Infinity |
 | max      | 设置计数器允许的最大值 | number | — | Infinity |
 | step     | 计数器步长           | number   | — | 1 |

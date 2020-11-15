@@ -1,8 +1,8 @@
-import PageHeader from './src/main'
+import ElPageHeader from './PageHeader.vue'
 
 /* istanbul ignore next */
-PageHeader.install = function (app) {
-  app.component(PageHeader.name, PageHeader)
+ElPageHeader.install = function (app) {
+  app.component(ElPageHeader.name, ElPageHeader)
 }
 
-export default PageHeader
+export default ElPageHeader

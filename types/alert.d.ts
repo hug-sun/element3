@@ -3,8 +3,7 @@ import { ElementUIComponent } from './component'
 export type AlertType = 'success' | 'warning' | 'info' | 'error'
 export type AlertEffect = 'dark' | 'light'
 
-/** Alert Component */
-export declare class ElAlert extends ElementUIComponent {
+interface IAlert {
   /** Title */
   title: string
 
@@ -29,3 +28,6 @@ export declare class ElAlert extends ElementUIComponent {
   /** Choose effect */
   effect: AlertEffect
 }
+
+/** Alert Component */
+export const ElAlert: IAlert

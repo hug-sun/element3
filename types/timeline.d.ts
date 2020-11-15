@@ -1,6 +1,7 @@
 import { ElementUIComponent } from './component'
 
+export const ElTimeline:ITimeline
 /** Timeline Component */
-export declare class ElTimeline extends ElementUIComponent {
+interface ITimeline extends ElementUIComponent {
   reverse: boolean
 }

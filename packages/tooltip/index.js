@@ -1,8 +1,8 @@
-import Tooltip from './src/main'
+import ElTooltip from './Tooltip'
 
 /* istanbul ignore next */
-Tooltip.install = function (app) {
-  app.component(Tooltip.name, Tooltip)
+ElTooltip.install = function (app) {
+  app.component(ElTooltip.name, ElTooltip)
 }
 
-export default Tooltip
+export default ElTooltip

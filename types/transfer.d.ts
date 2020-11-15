@@ -30,8 +30,9 @@ export interface TransferRenderContent {
   (h: CreateElement, option: TransferData): VNode
 }
 
+export const ElTransfer:ITransfer
 /** Transfer Component */
-export declare class ElTransfer extends ElementUIComponent {
+interface ITransfer extends ElementUIComponent {
   /** Data source */
   data: TransferData[]
 

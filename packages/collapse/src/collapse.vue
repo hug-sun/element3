@@ -1,9 +1,27 @@
+<!--
+ * @Author: Mr Chang
+ * @Date: 2020-09-21 01:09:39
+ * @LastEditTime: 2020-09-21 15:00:28
+ * @LastEditors: Mr Chang
+ * @Description: 
+ * @FilePath: \element3\packages\collapse\src\collapse.vue
+-->
 <template>
   <div class="el-collapse" role="tablist" aria-multiselectable="true">
     <slot></slot>
   </div>
 </template>
 <script>
+import {
+  getCurrentInstance,
+  onBeforeMount,
+  provide,
+  reactive,
+  toRefs,
+  watch
+} from 'vue'
+import { useEmitter } from '../../../src/use/emitter'
+
 export default {
   name: 'ElCollapse',
 
@@ -11,7 +29,7 @@ export default {
 
   props: {
     accordion: Boolean,
-    value: {
+    modelValue: {
       type: [Array, String, Number],
       default() {
         return []
@@ -19,56 +37,58 @@ export default {
     }
   },
 
-  data() {
-    return {
-      activeNames: [].concat(this.value)
-    }
-  },
+  emits: ['update:modelValue', 'change'],
 
-  provide() {
-    return {
-      collapse: this
-    }
-  },
+  setup(props, context) {
+    const instance = getCurrentInstance()
+    const state = reactive({
+      activeNames: [].concat(props.modelValue)
+    })
 
-  watch: {
-    value(value) {
-      this.activeNames = [].concat(value)
-    }
-  },
+    provide('collapse', instance)
 
-  methods: {
-    setActiveNames(activeNames) {
+    const { on } = useEmitter()
+
+    watch(
+      () => props.modelValue,
+      (value) => {
+        state.activeNames = [].concat(value)
+      }
+    )
+
+    onBeforeMount(() => {
+      on('item-click', handleItemClick)
+    })
+    function setActiveNames(activeNames) {
       activeNames = [].concat(activeNames)
-      const value = this.accordion ? activeNames[0] : activeNames
-      this.activeNames = activeNames
-      this.$emit('input', value)
-      this.$emit('change', value)
-    },
-    handleItemClick(item) {
-      if (this.accordion) {
-        this.setActiveNames(
-          (this.activeNames[0] || this.activeNames[0] === 0) &&
-            this.activeNames[0] === item.name
+      const value = props.accordion ? activeNames[0] : activeNames
+      state.activeNames = activeNames
+      context.emit('update:modelValue', value)
+      context.emit('change', value)
+    }
+
+    function handleItemClick(item) {
+      const { name } = item
+      if (props.accordion) {
+        setActiveNames(
+          (state.activeNames[0] || state.activeNames[0] === 0) &&
+            state.activeNames[0] === name
             ? ''
-            : item.name
+            : name
         )
       } else {
-        const activeNames = this.activeNames.slice(0)
-        const index = activeNames.indexOf(item.name)
+        const activeNames = state.activeNames.slice(0)
+        const index = activeNames.indexOf(name)
 
         if (index > -1) {
           activeNames.splice(index, 1)
         } else {
-          activeNames.push(item.name)
+          activeNames.push(name)
         }
-        this.setActiveNames(activeNames)
+        setActiveNames(activeNames)
       }
     }
-  },
-
-  created() {
-    this.$on('item-click', this.handleItemClick)
+    return { ...toRefs(state), setActiveNames, handleItemClick }
   }
 }
 </script>

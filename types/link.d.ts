@@ -1,25 +1,26 @@
 import { ElementUIComponent } from './component'
 
 /** Button type */
-export type LinkType = 'primary' | 'success' | 'warning' | 'danger' | 'info' 
+export type LinkType = 'primary' | 'success' | 'warning' | 'danger' | 'info'
 
 /** Link Component */
-export declare class ElLink extends ElementUIComponent {
-  /** Link type */
-  type: LinkType
-  
-  /** Disable the link */
-  disabled: boolean
+interface ILink extends ElementUIComponent {
+    /** Link type */
+    type: LinkType
 
-  /** Link underline */
-  underline: boolean
+    /** Disable the link */
+    disabled: boolean
 
-  /** Link icon, accepts an icon name of Element icon component */
-  icon: string
+    /** Link underline */
+    underline: boolean
 
-  /** Link href */
-  href: string
+    /** Link icon, accepts an icon name of Element icon component */
+    icon: string
 
-  /** Link target */
-  target: string
+    /** Link href */
+    href: string
+
+    /** Link target */
+    target: string
 }
+export const ElLink: ILink

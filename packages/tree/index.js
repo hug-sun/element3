@@ -1,8 +1,8 @@
-import Tree from './src/tree.vue'
+import ElTree from './Tree.vue'
 
 /* istanbul ignore next */
-Tree.install = function (app) {
-  app.component(Tree.name, Tree)
+ElTree.install = function (app) {
+  app.component(ElTree.name, ElTree)
 }
 
-export default Tree
+export default ElTree

@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { getCurrentInstance, onMounted, reactive, toRefs, watch } from 'vue'
 import draggable from '../draggable'
 
 export default {
@@ -32,36 +33,53 @@ export default {
     vertical: Boolean
   },
 
-  watch: {
-    'color._alpha'() {
-      this.update()
-    },
+  setup(props) {
+    const state = reactive({
+      thumbLeft: 0,
+      thumbTop: 0,
+      background: null
+    })
+    const instance = getCurrentInstance()
 
-    'color.value'() {
-      this.update()
-    }
-  },
+    watch(props.color, update)
 
-  methods: {
-    handleClick(event) {
-      const thumb = this.$refs.thumb
+    // watch(() => props.color.value, update)
+
+    onMounted(() => {
+      const { bar, thumb } = instance.refs
+
+      const dragConfig = {
+        drag: (event) => {
+          handleDrag(event)
+        },
+        end: (event) => {
+          handleDrag(event)
+        }
+      }
+
+      draggable(bar, dragConfig)
+      draggable(thumb, dragConfig)
+      update()
+    })
+    function handleClick(event) {
+      const thumb = instance.refs.thumb
       const target = event.target
 
       if (target !== thumb) {
-        this.handleDrag(event)
+        handleDrag(event)
       }
-    },
+    }
 
-    handleDrag(event) {
-      const rect = this.$el.getBoundingClientRect()
-      const { thumb } = this.$refs
+    function handleDrag(event) {
+      const rect = instance.ctx.$el.getBoundingClientRect()
+      const { thumb } = instance.refs
 
-      if (!this.vertical) {
+      if (!props.vertical) {
         let left = event.clientX - rect.left
         left = Math.max(thumb.offsetWidth / 2, left)
         left = Math.min(left, rect.width - thumb.offsetWidth / 2)
 
-        this.color.set(
+        props.color.set(
           'alpha',
           Math.round(
             ((left - thumb.offsetWidth / 2) /
@@ -74,7 +92,7 @@ export default {
         top = Math.max(thumb.offsetHeight / 2, top)
         top = Math.min(top, rect.height - thumb.offsetHeight / 2)
 
-        this.color.set(
+        props.color.set(
           'alpha',
           Math.round(
             ((top - thumb.offsetHeight / 2) /
@@ -83,70 +101,47 @@ export default {
           )
         )
       }
-    },
+    }
 
-    getThumbLeft() {
-      if (this.vertical) return 0
-      const el = this.$el
-      const alpha = this.color._alpha
+    function getThumbLeft() {
+      if (props.vertical) return 0
+      const el = instance.ctx.$el
+      const alpha = props.color._alpha
 
       if (!el) return 0
-      const thumb = this.$refs.thumb
+      const thumb = instance.refs.thumb
       return Math.round(
         (alpha * (el.offsetWidth - thumb.offsetWidth / 2)) / 100
       )
-    },
+    }
 
-    getThumbTop() {
-      if (!this.vertical) return 0
-      const el = this.$el
-      const alpha = this.color._alpha
+    function getThumbTop() {
+      if (!props.vertical) return 0
+      const el = instance.ctx.$el
+      const alpha = props.color._alpha
 
       if (!el) return 0
-      const thumb = this.$refs.thumb
+      const thumb = instance.refs.thumb
       return Math.round(
         (alpha * (el.offsetHeight - thumb.offsetHeight / 2)) / 100
       )
-    },
+    }
 
-    getBackground() {
-      if (this.color && this.color.value) {
-        const { r, g, b } = this.color.toRgb()
+    function getBackground() {
+      if (props.color && props.color.value) {
+        const { r, g, b } = props.color.toRgb()
         return `linear-gradient(to right, rgba(${r}, ${g}, ${b}, 0) 0%, rgba(${r}, ${g}, ${b}, 1) 100%)`
       }
       return null
-    },
-
-    update() {
-      this.thumbLeft = this.getThumbLeft()
-      this.thumbTop = this.getThumbTop()
-      this.background = this.getBackground()
-    }
-  },
-
-  data() {
-    return {
-      thumbLeft: 0,
-      thumbTop: 0,
-      background: null
-    }
-  },
-
-  mounted() {
-    const { bar, thumb } = this.$refs
-
-    const dragConfig = {
-      drag: (event) => {
-        this.handleDrag(event)
-      },
-      end: (event) => {
-        this.handleDrag(event)
-      }
     }
 
-    draggable(bar, dragConfig)
-    draggable(thumb, dragConfig)
-    this.update()
+    function update() {
+      state.thumbLeft = getThumbLeft()
+      state.thumbTop = getThumbTop()
+      state.background = getBackground()
+    }
+
+    return { ...toRefs(state), handleClick, update }
   }
 }
 </script>

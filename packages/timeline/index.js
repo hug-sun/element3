@@ -1,8 +1,8 @@
-import Timeline from './src/main'
+import ElTimeline from './Timeline'
 
 /* istanbul ignore next */
-Timeline.install = function (app) {
-  app.component(Timeline.name, Timeline)
+ElTimeline.install = function (app) {
+  app.component(ElTimeline.name, ElTimeline)
 }
 
-export default Timeline
+export default ElTimeline

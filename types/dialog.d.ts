@@ -15,7 +15,7 @@ export interface DialogSlots {
 }
 
 /** Informs users while preserving the current page state */
-export declare class ElDialog extends ElementUIComponent {
+interface IDialog extends ElementUIComponent {
   /** Title of Dialog */
   title: string
 
@@ -60,3 +60,5 @@ export declare class ElDialog extends ElementUIComponent {
 
   $slots: DialogSlots
 }
+
+export const ElDialog:IDialog

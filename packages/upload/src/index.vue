@@ -1,8 +1,111 @@
+<template>
+  <div>
+    <UploadList
+      :disabled="uploadDisabled"
+      :listType="listType"
+      :files="uploadFiles"
+      @remove="handleRemove"
+      :handlePreview="onPreview"
+      v-if="listType === 'picture-card' && showFileList"
+    >
+      <template v-slot:file="props">
+        <slot name="file" :file="props.file"></slot>
+      </template>
+    </UploadList>
+
+    <div v-if="$slots.trigger">
+      <upload
+        :type="type"
+        :drag="drag"
+        :action="action"
+        :multiple="multiple"
+        :before-upload="beforeUpload"
+        :with-credentials="withCredentials"
+        :headers="headers"
+        :name="name"
+        :data="data"
+        :accept="accept"
+        :fileList="uploadFiles"
+        :autoUpload="autoUpload"
+        :listType="listType"
+        :disabled="uploadDisabled"
+        :limit="limit"
+        @exceed="onExceed"
+        @start="handleStart"
+        @progress="handleProgress"
+        @success="handleSuccess"
+        @error="handleError"
+        @preview="onPreview"
+        @remove="handleRemove"
+        :http-request="httpRequest"
+        ref="uploadInner"
+      >
+        <slot name="trigger"></slot>
+      </upload>
+      <slot></slot>
+    </div>
+    <upload
+      :type="type"
+      :drag="drag"
+      :action="action"
+      :multiple="multiple"
+      :before-upload="beforeUpload"
+      :with-credentials="withCredentials"
+      :headers="headers"
+      :name="name"
+      :data="data"
+      :accept="accept"
+      :fileList="uploadFiles"
+      :autoUpload="autoUpload"
+      :listType="listType"
+      :disabled="uploadDisabled"
+      :limit="limit"
+      @exceed="onExceed"
+      @start="handleStart"
+      @progress="handleProgress"
+      @success="handleSuccess"
+      @error="handleError"
+      @preview="onPreview"
+      @remove="handleRemove"
+      :http-request="httpRequest"
+      ref="uploadInner"
+      v-else
+    >
+      <slot name="trigger"></slot>
+      <slot></slot>
+    </upload>
+
+    <slot name="tip"></slot>
+
+    <UploadList
+      :disabled="uploadDisabled"
+      :listType="listType"
+      :files="uploadFiles"
+      @remove="handleRemove"
+      :handlePreview="onPreview"
+      v-if="listType !== 'picture-card' && showFileList"
+    >
+      <template v-slot:file="props">
+        <slot name="file" :file="props.file"></slot>
+      </template>
+    </UploadList>
+  </div>
+</template>
+
 <script>
 import UploadList from './upload-list'
 import Upload from './upload'
-import ElProgress from 'element-ui/packages/progress'
-import Migrating from 'element-ui/src/mixins/migrating'
+import Migrating from '../../../src/mixins/migrating'
+import {
+  ref,
+  unref,
+  reactive,
+  toRefs,
+  inject,
+  computed,
+  watch,
+  onUnmounted
+} from 'vue'
 
 function noop() {}
 
@@ -12,7 +115,6 @@ export default {
   mixins: [Migrating],
 
   components: {
-    ElProgress,
     UploadList,
     Upload
   },
@@ -106,25 +208,36 @@ export default {
     }
   },
 
-  data() {
-    return {
-      uploadFiles: [],
-      dragOver: false,
-      draging: false,
-      tempIndex: 1
-    }
-  },
+  setup(props) {
+    const { disabled, listType, fileList } = toRefs(props)
+    // eslint-disable-next-line vue/no-setup-props-destructure
+    const {
+      onRemove,
+      beforeRemove,
+      onProgress,
+      onSuccess,
+      onError,
+      onChange
+    } = props
+    let tempIndex = 1
+    let uploadFiles = reactive(
+      fileList.value.map((item) => {
+        item.uid = item.uid || Date.now() + tempIndex++
+        item.status = item.status || 'success'
+        return item
+      })
+    )
+    const dragOver = ref(false)
+    const draging = ref(false)
+    const uploadInner = ref(null)
+    const uploadDisabled = computed(() => {
+      const elForm = inject('elForm', {})
+      return disabled.value || unref((elForm || {}).disabled)
+    })
 
-  computed: {
-    uploadDisabled() {
-      return this.disabled || (this.elForm || {}).disabled
-    }
-  },
-
-  watch: {
-    listType(type) {
+    watch(listType, (type) => {
       if (type === 'picture-card' || type === 'picture') {
-        this.uploadFiles = this.uploadFiles.map((file) => {
+        uploadFiles.forEach((file) => {
           if (!file.url && file.raw) {
             try {
               file.url = URL.createObjectURL(file.raw)
@@ -132,25 +245,91 @@ export default {
               console.error('[Element Error][Upload]', err)
             }
           }
-          return file
         })
       }
-    },
-    fileList: {
-      immediate: true,
-      handler(fileList) {
-        this.uploadFiles = fileList.map((item) => {
-          item.uid = item.uid || Date.now() + this.tempIndex++
-          item.status = item.status || 'success'
-          return item
-        })
+    })
+
+    onUnmounted(() => {
+      uploadFiles.forEach((file) => {
+        if (file.url && file.url.indexOf('blob:') === 0) {
+          URL.revokeObjectURL(file.url)
+        }
+      })
+    })
+
+    const abort = (file) => {
+      uploadInner.value.abort(file)
+    }
+
+    const getFile = (rawFile) => {
+      const fileList = uploadFiles
+      let target
+      fileList.every((item) => {
+        target = rawFile.uid === item.uid ? item : null
+        return !target
+      })
+      return target
+    }
+
+    const handleRemove = (file, raw) => {
+      if (raw) {
+        file = getFile(raw)
+      }
+      const doRemove = () => {
+        abort(file)
+        const fileList = uploadFiles
+        fileList.splice(fileList.indexOf(file), 1)
+        onRemove(file, fileList)
+      }
+
+      if (!beforeRemove) {
+        doRemove()
+      } else if (typeof beforeRemove === 'function') {
+        const before = beforeRemove(file, uploadFiles)
+        if (before && before.then) {
+          before.then(() => {
+            doRemove()
+          }, noop)
+        } else if (before !== false) {
+          doRemove()
+        }
       }
     }
-  },
 
-  methods: {
-    handleStart(rawFile) {
-      rawFile.uid = Date.now() + this.tempIndex++
+    const handleProgress = (ev, rawFile) => {
+      const file = getFile(rawFile)
+      onProgress(ev, file, uploadFiles)
+      file.status = 'uploading'
+      file.percentage = ev.percent || 0
+    }
+
+    const handleSuccess = (res, rawFile) => {
+      const file = getFile(rawFile)
+
+      if (file) {
+        file.status = 'success'
+        file.response = res
+
+        onSuccess(res, file, uploadFiles)
+        onChange(file, uploadFiles)
+      }
+    }
+
+    const handleError = (err, rawFile) => {
+      const file = getFile(rawFile)
+      const fileList = uploadFiles
+
+      file.status = 'fail'
+
+      fileList.splice(fileList.indexOf(file), 1)
+
+      onError(err, file, uploadFiles)
+      onChange(file, uploadFiles)
+    }
+
+    const handleStart = (rawFile) => {
+      rawFile.uid = Date.now() + tempIndex++
+
       const file = {
         status: 'ready',
         name: rawFile.name,
@@ -160,7 +339,7 @@ export default {
         raw: rawFile
       }
 
-      if (this.listType === 'picture-card' || this.listType === 'picture') {
+      if (listType === 'picture-card' || listType === 'picture') {
         try {
           file.url = URL.createObjectURL(rawFile)
         } catch (err) {
@@ -169,84 +348,24 @@ export default {
         }
       }
 
-      this.uploadFiles.push(file)
-      this.onChange(file, this.uploadFiles)
-    },
-    handleProgress(ev, rawFile) {
-      const file = this.getFile(rawFile)
-      this.onProgress(ev, file, this.uploadFiles)
-      file.status = 'uploading'
-      file.percentage = ev.percent || 0
-    },
-    handleSuccess(res, rawFile) {
-      const file = this.getFile(rawFile)
+      uploadFiles.push(file)
+      onChange(file, uploadFiles)
+    }
 
-      if (file) {
-        file.status = 'success'
-        file.response = res
+    const clearFiles = () => {
+      uploadFiles = []
+    }
 
-        this.onSuccess(res, file, this.uploadFiles)
-        this.onChange(file, this.uploadFiles)
-      }
-    },
-    handleError(err, rawFile) {
-      const file = this.getFile(rawFile)
-      const fileList = this.uploadFiles
-
-      file.status = 'fail'
-
-      fileList.splice(fileList.indexOf(file), 1)
-
-      this.onError(err, file, this.uploadFiles)
-      this.onChange(file, this.uploadFiles)
-    },
-    handleRemove(file, raw) {
-      if (raw) {
-        file = this.getFile(raw)
-      }
-      const doRemove = () => {
-        this.abort(file)
-        const fileList = this.uploadFiles
-        fileList.splice(fileList.indexOf(file), 1)
-        this.onRemove(file, fileList)
-      }
-
-      if (!this.beforeRemove) {
-        doRemove()
-      } else if (typeof this.beforeRemove === 'function') {
-        const before = this.beforeRemove(file, this.uploadFiles)
-        if (before && before.then) {
-          before.then(() => {
-            doRemove()
-          }, noop)
-        } else if (before !== false) {
-          doRemove()
-        }
-      }
-    },
-    getFile(rawFile) {
-      const fileList = this.uploadFiles
-      let target
-      fileList.every((item) => {
-        target = rawFile.uid === item.uid ? item : null
-        return !target
-      })
-      return target
-    },
-    abort(file) {
-      this.$refs['upload-inner'].abort(file)
-    },
-    clearFiles() {
-      this.uploadFiles = []
-    },
-    submit() {
-      this.uploadFiles
+    const submit = () => {
+      uploadFiles
         .filter((file) => file.status === 'ready')
         .forEach((file) => {
-          this.$refs['upload-inner'].upload(file.raw)
+          console.log('file.raw', file.raw)
+          uploadInner.value.upload(file.raw)
         })
-    },
-    getMigratingConfig() {
+    }
+
+    const getMigratingConfig = () => {
       return {
         props: {
           'default-file-list': 'default-file-list is renamed to file-list.',
@@ -256,81 +375,23 @@ export default {
         }
       }
     }
-  },
 
-  beforeDestroy() {
-    this.uploadFiles.forEach((file) => {
-      if (file.url && file.url.indexOf('blob:') === 0) {
-        URL.revokeObjectURL(file.url)
-      }
-    })
-  },
-
-  render(h) {
-    let uploadList
-
-    if (this.showFileList) {
-      uploadList = (
-        <UploadList
-          disabled={this.uploadDisabled}
-          listType={this.listType}
-          files={this.uploadFiles}
-          on-remove={this.handleRemove}
-          handlePreview={this.onPreview}
-        >
-          {(props) => {
-            if (this.$scopedSlots.file) {
-              return this.$scopedSlots.file({
-                file: props.file
-              })
-            }
-          }}
-        </UploadList>
-      )
+    return {
+      uploadFiles,
+      uploadInner,
+      dragOver,
+      draging,
+      uploadDisabled,
+      handleRemove,
+      abort,
+      handleStart,
+      handleProgress,
+      handleSuccess,
+      handleError,
+      clearFiles,
+      submit,
+      getMigratingConfig
     }
-
-    const uploadData = {
-      props: {
-        type: this.type,
-        drag: this.drag,
-        action: this.action,
-        multiple: this.multiple,
-        'before-upload': this.beforeUpload,
-        'with-credentials': this.withCredentials,
-        headers: this.headers,
-        name: this.name,
-        data: this.data,
-        accept: this.accept,
-        fileList: this.uploadFiles,
-        autoUpload: this.autoUpload,
-        listType: this.listType,
-        disabled: this.uploadDisabled,
-        limit: this.limit,
-        'on-exceed': this.onExceed,
-        'on-start': this.handleStart,
-        'on-progress': this.handleProgress,
-        'on-success': this.handleSuccess,
-        'on-error': this.handleError,
-        'on-preview': this.onPreview,
-        'on-remove': this.handleRemove,
-        'http-request': this.httpRequest
-      },
-      ref: 'upload-inner'
-    }
-
-    const trigger = this.$slots.trigger || this.$slots.default
-    const uploadComponent = <upload {...uploadData}>{trigger}</upload>
-
-    return (
-      <div>
-        {this.listType === 'picture-card' ? uploadList : ''}
-        {this.$slots.trigger
-          ? [uploadComponent, this.$slots.default]
-          : uploadComponent}
-        {this.$slots.tip}
-        {this.listType !== 'picture-card' ? uploadList : ''}
-      </div>
-    )
   }
 }
 </script>

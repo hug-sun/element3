@@ -1,8 +1,8 @@
-import Card from './src/main'
+import ElCard from './Card'
 
 /* istanbul ignore next */
-Card.install = function (app) {
-  app.component(Card.name, Card)
+ElCard.install = function (app) {
+  app.component(ElCard.name, ElCard)
 }
 
-export default Card
+export default ElCard

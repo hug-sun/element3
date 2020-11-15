@@ -1,154 +1,193 @@
 import Button from '../Button.vue'
 import { mount } from '@vue/test-utils'
-describe('Button.vue', () => {
-  describe('props', () => {
-    it('type', () => {
-      const wrapper = mount(Button, {
-        props: {
-          type: 'primary'
-        }
-      })
 
-      expect(wrapper.classes()).toContain('el-button--primary')
+it('content', () => {
+  const Comp = {
+    template: `<div><Button>默认按钮</Button></div>`
+  }
+
+  const wrapper = mount(Comp, {
+    global: {
+      components: {
+        Button
+      }
+    }
+  })
+
+  expect(wrapper.findComponent({ name: 'ElButton' }).text()).toContain(
+    '默认按钮'
+  )
+})
+
+describe('size', () => {
+  it('should have a el-button--mini class when set size prop value equal to mini', () => {
+    const wrapper = mount(Button, {
+      props: {
+        size: 'mini'
+      }
     })
 
-    it('icon', () => {
-      const wrapper = mount(Button, {
-        props: {
-          icon: 'el-icon-search'
-        }
-      })
+    expect(wrapper.classes()).toContain('el-button--mini')
+  })
 
-      expect(wrapper.classes()).toContain('el-button--default')
+  it('should have a el-button--mini class by elFormItem ', () => {
+    const wrapper = mount(Button, {
+      global: {
+        provide: {
+          elFormItem: {
+            elFormItemSize: 'mini'
+          }
+        }
+      }
     })
 
-    it('nativeType', () => {
-      const wrapper = mount(Button, {
-        props: {
-          nativeType: 'submit'
-        }
-      })
-
-      expect(wrapper.attributes('type')).toBe('submit')
-    })
-
-    it('loading', () => {
-      const wrapper = mount(Button, {
-        props: {
-          loading: true
-        }
-      })
-
-      expect(wrapper.classes()).toContain('is-loading')
-      expect(wrapper.find('.el-icon-loading').exists()).toBe(true)
-    })
-
-    it('disabled', () => {
-      const wrapper = mount(Button, {
-        props: {
-          disabled: true
-        }
-      })
-
-      expect(wrapper.classes()).toContain('is-disabled')
-    })
-
-    it('size', () => {
-      const wrapper = mount(Button, {
-        props: {
-          size: 'medium'
-        }
-      })
-
-      expect(wrapper.classes()).toContain('el-button--medium')
-    })
-
-    it('size by $ELEMENT options', () => {
-      const wrapper = mount(Button, {
-        global: {
-          config: {
-            globalProperties: {
-              $ELEMENT: {
-                size: 'heihei'
-              }
+    expect(wrapper.classes()).toContain('el-button--mini')
+  })
+  it('should have a el-button--mini class by $ELEMENT value ', () => {
+    const wrapper = mount(Button, {
+      global: {
+        config: {
+          globalProperties: {
+            $ELEMENT: {
+              size: 'mini'
             }
           }
         }
-      })
-
-      expect(wrapper.classes()).toContain('el-button--heihei')
+      }
     })
 
-    it('plain', () => {
-      const wrapper = mount(Button, {
-        props: {
-          plain: true
-        }
-      })
+    expect(wrapper.classes()).toContain('el-button--mini')
+  })
+})
 
-      expect(wrapper.classes()).toContain('is-plain')
-    })
-
-    it('round', () => {
-      const wrapper = mount(Button, {
-        props: {
-          round: true
-        }
-      })
-
-      expect(wrapper.classes()).toContain('is-round')
-    })
-
-    it('circle', () => {
-      const wrapper = mount(Button, {
-        props: {
-          circle: true
-        }
-      })
-
-      expect(wrapper.classes()).toContain('is-circle')
-    })
+it('type', () => {
+  const wrapper = mount(Button, {
+    props: {
+      type: 'primary'
+    }
   })
 
-  it('captures click events emitted via click', () => {
+  expect(wrapper.classes()).toContain('el-button--primary')
+})
+
+it('plain', () => {
+  const wrapper = mount(Button, {
+    props: {
+      plain: true
+    }
+  })
+
+  expect(wrapper.classes()).toContain('is-plain')
+})
+it('round', () => {
+  const wrapper = mount(Button, {
+    props: {
+      round: true
+    }
+  })
+
+  expect(wrapper.classes()).toContain('is-round')
+})
+
+it('circle', () => {
+  const wrapper = mount(Button, {
+    props: {
+      circle: true
+    }
+  })
+
+  expect(wrapper.classes()).toContain('is-circle')
+})
+it('loading', () => {
+  const wrapper = mount(Button, {
+    props: {
+      loading: true
+    }
+  })
+
+  expect(wrapper.find('.el-icon-loading').exists()).toBe(true)
+  expect(wrapper.classes()).toContain('is-loading')
+})
+
+describe('icon', () => {
+  it('should show icon element', () => {
+    const wrapper = mount(Button, {
+      props: {
+        icon: 'el-icon-edit'
+      }
+    })
+
+    expect(wrapper.find('.el-icon-edit').exists()).toBe(true)
+  })
+
+  it('should not show icon element when set loading prop equal to true', () => {
+    const wrapper = mount(Button, {
+      props: {
+        loading: true,
+        icon: 'el-icon-edit'
+      }
+    })
+
+    expect(wrapper.find('.el-icon-edit').exists()).toBe(false)
+  })
+})
+
+describe('click', () => {
+  it('should emit click event ', () => {
     const wrapper = mount(Button)
+
     wrapper.trigger('click')
 
     expect(wrapper.emitted('click')).toBeTruthy()
-    expect(wrapper.emitted('click').length).toBe(1)
   })
 
-  it('should only will trigger a click event', async () => {
-    let count = 0
-    const Comp = {
-      template: '<div><el-button @click="handleClick"></el-button></div>',
-      setup() {
-        const handleClick = () => count++
-        return { handleClick }
+  it('should not emit click event when disabled equal to true', () => {
+    const wrapper = mount(Button, {
+      props: {
+        disabled: true
       }
-    }
+    })
 
-    const wrapper = mount(Comp, {
+    wrapper.trigger('click')
+
+    expect(wrapper.emitted('click')).toBeFalsy()
+  })
+
+  it('should not emit click event when elForm disabled equal to true', () => {
+    const wrapper = mount(Button, {
       global: {
-        components: {
-          'el-button': Button
+        provide: {
+          elForm: {
+            disabled: true
+          }
         }
       }
     })
 
-    await wrapper.findComponent({ name: 'ElButton' }).trigger('click')
+    wrapper.trigger('click')
 
-    expect(count).toBe(1)
+    expect(wrapper.emitted('click')).toBeFalsy()
   })
 
-  it("can't captures click events emitted via click when loading ", () => {
+  it('should not emit click event when loading prop equal to true', () => {
     const wrapper = mount(Button, {
       props: {
         loading: true
       }
     })
+
     wrapper.trigger('click')
 
     expect(wrapper.emitted('click')).toBeFalsy()
   })
+})
+
+it('native-type', () => {
+  const wrapper = mount(Button, {
+    props: {
+      nativeType: 'button'
+    }
+  })
+
+  expect(wrapper.attributes('type')).toBe('button')
 })

@@ -1,8 +1,8 @@
-import Calendar from './src/main'
+import ElCalendar from './Calendar'
 
 /* istanbul ignore next */
-Calendar.install = function (app) {
-  app.component(Calendar.name, Calendar)
+ElCalendar.install = function (app) {
+  app.component(ElCalendar.name, ElCalendar)
 }
 
-export default Calendar
+export default ElCalendar

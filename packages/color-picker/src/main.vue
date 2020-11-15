@@ -5,6 +5,7 @@
       colorDisabled ? 'is-disabled' : '',
       colorSize ? `el-color-picker--${colorSize}` : ''
     ]"
+    ref="referenceElm"
     v-clickoutside="hide"
   >
     <div class="el-color-picker__mask" v-if="colorDisabled"></div>
@@ -18,17 +19,17 @@
         ></span>
         <span
           class="el-color-picker__empty el-icon-close"
-          v-if="!value && !showPanelColor"
+          v-if="!modelValue && !showPanelColor"
         ></span>
       </span>
       <span
         class="el-color-picker__icon el-icon-arrow-down"
-        v-show="value || showPanelColor"
+        v-show="modelValue || showPanelColor"
       ></span>
     </div>
     <picker-dropdown
       ref="dropdown"
-      :class="['el-color-picker__panel', popperClass || '']"
+      :popperClass="popperClass"
       v-model="showPicker"
       @pick="confirmValue"
       @clear="clearValue"
@@ -41,18 +42,27 @@
 </template>
 
 <script>
+import {
+  reactive,
+  inject,
+  toRefs,
+  onMounted,
+  computed,
+  watch,
+  nextTick,
+  provide
+} from 'vue'
+
 import Color from './color'
 import PickerDropdown from './components/picker-dropdown.vue'
-import Clickoutside from 'element-ui/src/utils/clickoutside'
-import Emitter from 'element-ui/src/mixins/emitter'
+import Clickoutside from '../../../src/directives/clickoutside'
+import { useEmitter } from '../../../src/use/emitter'
 
 export default {
   name: 'ElColorPicker',
 
-  mixins: [Emitter],
-
   props: {
-    value: String,
+    modelValue: String,
     showAlpha: Boolean,
     colorFormat: String,
     disabled: Boolean,
@@ -60,108 +70,81 @@ export default {
     popperClass: String,
     predefine: Array
   },
+  emits: ['active-change', 'input', 'change', 'update:modelValue'],
+  setup(props, context) {
+    const color = new Color({
+      enableAlpha: props.showAlpha,
+      format: props.colorFormat
+    })
+    const state = reactive({
+      color,
+      showPicker: false,
+      showPanelColor: false,
+      popperElm: null,
+      referenceElm: null
+    })
 
-  inject: {
-    elForm: {
-      default: ''
-    },
-    elFormItem: {
-      default: ''
-    }
-  },
+    provide('referenceState', state)
 
-  directives: { Clickoutside },
+    inject('elForm', {})
+    const { dispatch } = useEmitter()
+    const elFormItem = inject('elFormItem', {})
+    const elForm = inject('elForm', {})
 
-  computed: {
-    displayedColor() {
-      if (!this.value && !this.showPanelColor) {
+    const displayedColor = computed(() => {
+      if (!props.modelValue && !state.showPanelColor) {
         return 'transparent'
       }
+      return displayedRgb(state.color, props.showAlpha)
+    })
 
-      return this.displayedRgb(this.color, this.showAlpha)
-    },
+    const _elFormItemSize = computed(() => {
+      return (elFormItem || {}).elFormItemSize
+    })
 
-    _elFormItemSize() {
-      return (this.elFormItem || {}).elFormItemSize
-    },
-
-    colorSize() {
-      return this.size || this._elFormItemSize || (this.$ELEMENT || {}).size
-    },
-
-    colorDisabled() {
-      return this.disabled || (this.elForm || {}).disabled
-    }
-  },
-
-  watch: {
-    value(val) {
-      if (!val) {
-        this.showPanelColor = false
-      } else if (val && val !== this.color.value) {
-        this.color.fromString(val)
-      }
-    },
-    color: {
-      deep: true,
-      handler() {
-        this.showPanelColor = true
-      }
-    },
-    displayedColor(val) {
-      if (!this.showPicker) return
-      const currentValueColor = new Color({
-        enableAlpha: this.showAlpha,
-        format: this.colorFormat
-      })
-      currentValueColor.fromString(this.value)
-
-      const currentValueColorRgb = this.displayedRgb(
-        currentValueColor,
-        this.showAlpha
+    const colorSize = computed(() => {
+      return (
+        props.size || _elFormItemSize.value || (context.$ELEMENT || {}).size
       )
-      if (val !== currentValueColorRgb) {
-        this.$emit('active-change', val)
-      }
-    }
-  },
+    })
 
-  methods: {
-    handleTrigger() {
-      if (this.colorDisabled) return
-      this.showPicker = !this.showPicker
-    },
-    confirmValue() {
-      const value = this.color.value
-      this.$emit('input', value)
-      this.$emit('change', value)
-      this.dispatch('ElFormItem', 'el.form.change', value)
-      this.showPicker = false
-    },
-    clearValue() {
-      this.$emit('input', null)
-      this.$emit('change', null)
-      if (this.value !== null) {
-        this.dispatch('ElFormItem', 'el.form.change', null)
-      }
-      this.showPanelColor = false
-      this.showPicker = false
-      this.resetColor()
-    },
-    hide() {
-      this.showPicker = false
-      this.resetColor()
-    },
-    resetColor() {
-      this.$nextTick((_) => {
-        if (this.value) {
-          this.color.fromString(this.value)
-        } else {
-          this.showPanelColor = false
+    const colorDisabled = computed(() => {
+      return props.disabled || (elForm || {}).disabled
+    })
+
+    watch(
+      () => props.modelValue,
+      (val) => {
+        if (!val) {
+          state.showPanelColor = false
+        } else if (val && val !== state.color.value) {
+          state.color.fromString(val)
         }
+      }
+    )
+
+    watch(state.color, () => (state.showPanelColor = true), {
+      deep: true
+    })
+
+    watch(displayedColor, (val) => {
+      if (!state.showPicker) return
+      const currentValueColor = new Color({
+        enableAlpha: props.showAlpha,
+        format: props.colorFormat
       })
-    },
-    displayedRgb(color, showAlpha) {
+      if (val !== currentValueColor) {
+        context.emit('active-change', val)
+      }
+    })
+    onMounted(() => {
+      const value = props.modelValue
+      if (value) {
+        state.color.fromString(value)
+      }
+    })
+
+    function displayedRgb(color, showAlpha) {
       if (!(color instanceof Color)) {
         throw Error('color should be instance of Color Class')
       }
@@ -171,28 +154,57 @@ export default {
         ? `rgba(${r}, ${g}, ${b}, ${color.get('alpha') / 100})`
         : `rgb(${r}, ${g}, ${b})`
     }
-  },
-
-  mounted() {
-    const value = this.value
-    if (value) {
-      this.color.fromString(value)
+    const handleTrigger = () => {
+      if (colorDisabled.value) return
+      state.showPicker = !state.showPicker
     }
-    this.popperElm = this.$refs.dropdown.$el
-  },
 
-  data() {
-    const color = new Color({
-      enableAlpha: this.showAlpha,
-      format: this.colorFormat
-    })
+    const confirmValue = () => {
+      const value = state.color.value
+      context.emit('update:modelValue', value)
+      context.emit('change', value)
+      dispatch('ElFormItem', 'el.form.change', value)
+      state.showPicker = false
+    }
 
+    const clearValue = () => {
+      context.emit('update:modelValue', null)
+      context.emit('change', null)
+      if (props.modelValue !== null) {
+        dispatch('ElFormItem', 'el.form.change', null)
+      }
+      state.showPanelColor = false
+      state.showPicker = false
+      resetColor()
+    }
+
+    const hide = () => {
+      state.showPicker = false
+      resetColor()
+    }
+    const resetColor = () => {
+      nextTick(() => {
+        if (props.modelValue) {
+          state.color.fromString(props.modelValue)
+        } else {
+          state.showPanelColor = false
+        }
+      })
+    }
     return {
-      color,
-      showPicker: false,
-      showPanelColor: false
+      ...toRefs(state),
+      handleTrigger,
+      confirmValue,
+      clearValue,
+      hide,
+      displayedRgb,
+      colorSize,
+      colorDisabled,
+      displayedColor
     }
   },
+
+  directives: { Clickoutside },
 
   components: {
     PickerDropdown

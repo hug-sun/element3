@@ -10,3 +10,4 @@ coverage
 *.woff
 *.ttf
 src/index.js
+dist

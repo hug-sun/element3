@@ -1,8 +1,8 @@
-import Pagination from './src/pagination'
+import ElPagination from './Pagination'
 
 /* istanbul ignore next */
-Pagination.install = function (app) {
-  app.component(Pagination.name, Pagination)
+ElPagination.install = function (app) {
+  app.component(ElPagination.name, ElPagination)
 }
 
-export default Pagination
+export default ElPagination

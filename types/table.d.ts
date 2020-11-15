@@ -37,8 +37,9 @@ export interface treeNode {
   loaded: boolean
 }
 
+export const ElTable:ITable
 /** Table Component */
-export declare class ElTable extends ElementUIComponent {
+interface ITable extends ElementUIComponent {
   /** Table data */
   data: object[]
 

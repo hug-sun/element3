@@ -1,4 +1,4 @@
-import { on, off } from 'element-ui/src/utils/dom'
+import { on, off } from '../../src/utils/dom'
 import { renderThumbStyle, BAR_MAP } from './util'
 import {
   ref,
@@ -12,7 +12,7 @@ import {
 const useDrag = ({ bar, state, thumb, cursorDown }) => {
   const instance = getCurrentInstance()
   const { ctx } = instance
-  const wrap = instance.parent.ctx.wrap
+  const wrap = computed(() => instance.parent.ctx.wrap)
   const startDrag = (e) => {
     e.stopImmediatePropagation()
     cursorDown.value = true
@@ -36,11 +36,11 @@ const useDrag = ({ bar, state, thumb, cursorDown }) => {
     const thumbPositionPercentage =
       ((offset - thumbClickPosition) * 100) / ctx.$el[bar.value.offset]
 
-    wrap[bar.value.scroll] =
-      (thumbPositionPercentage * wrap[bar.value.scrollSize]) / 100
+    wrap.value[bar.value.scroll] =
+      (thumbPositionPercentage * wrap.value[bar.value.scrollSize]) / 100
   }
 
-  const mouseUpDocumentHandler = (e) => {
+  const mouseUpDocumentHandler = () => {
     cursorDown.value = false
     state[bar.value.axis] = 0
     off(document, 'mousemove', mouseMoveDocumentHandler)
@@ -68,8 +68,8 @@ const useDrag = ({ bar, state, thumb, cursorDown }) => {
     const thumbPositionPercentage =
       ((offset - thumbHalf) * 100) / ctx.$el[bar.value.offset]
 
-    wrap[bar.value.scroll] =
-      (thumbPositionPercentage * wrap[bar.value.scrollSize]) / 100
+    wrap.value[bar.value.scroll] =
+      (thumbPositionPercentage * wrap.value[bar.value.scrollSize]) / 100
   }
 
   onUnmounted(() => {

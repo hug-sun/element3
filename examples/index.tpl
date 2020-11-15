@@ -16,29 +16,23 @@
       }
     </script>
     <div id="app"></div>
-    <% if (process.env.NODE_ENV === 'production') { %>
-      <script src="//shadow.elemecdn.com/npm/vue@2.5.21/dist/vue.runtime.min.js"></script>
-      <script src="//shadow.elemecdn.com/npm/vue-router@3.0.1/dist/vue-router.min.js"></script>
-      <script src="//shadow.elemecdn.com/app/element/highlight.pack.b1f71b31-3c07-11e9-ba1a-55bba1877129.js"></script>
-    <% } %>
+
   </body>
-  <% if (process.env.NODE_ENV === 'production') { %><script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <script>
 
-    ga('create', 'UA-84335471-1', 'auto');
-    ga('send', 'pageview');
+if(location.host==='element3.vercel.app'){
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?6a0d9f308914e36537ea58cf79904414";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+}
 
-    window.addEventListener('hashchange', function () {
-      ga('set', 'page', window.location.href);
-      ga('send', 'pageview');
-    });
-  </script><% } %>
-  <% if (process.env.NODE_ENV !== 'production') { %><script>
-    var ga = function() {
-      console.log(arguments)
-    };
-  </script><% } %>
+</script>
+
+
+
+
 </html>
