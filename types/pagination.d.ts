@@ -1,7 +1,8 @@
 import { ElementUIComponent } from './component'
 
 /** Pagination Component */
-export declare class ElPagination extends ElementUIComponent {
+export const ElPagination: IPagination
+export declare class IPagination extends ElementUIComponent {
   /** Whether to use small pagination */
   small: boolean
 

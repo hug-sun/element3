@@ -1,7 +1,8 @@
 import { ElementUIComponent } from './component'
 
+export const ElRadio: IRadio
 /** Radio Component */
-export declare class ElRadio extends ElementUIComponent {
+interface IRadio extends ElementUIComponent {
   /** The form input value */
   value: string
 

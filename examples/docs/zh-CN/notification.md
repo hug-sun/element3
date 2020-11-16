@@ -6,7 +6,7 @@
 
 适用性广泛的通知栏
 
-:::demo Notification 组件提供通知功能，Element3 注册了`useNotify`方法，接收一个`options`字面量参数，在最简单的情况下，你可以设置`title`字段和`message`字段，用于设置通知的标题和正文。默认情况下，经过一段时间后 Notification 组件会自动关闭，但是通过设置`duration`，可以控制关闭的时间间隔，特别的是，如果设置为`0`，则不会自动关闭。注意：`duration`接收一个`Number`，单位为毫秒，默认为`4500`。
+:::demo Notification 组件提供通知功能，Element3 注册了`$Notify`方法，接收一个`options`字面量参数，在最简单的情况下，你可以设置`title`字段和`message`字段，用于设置通知的标题和正文。默认情况下，经过一段时间后 Notification 组件会自动关闭，但是通过设置`duration`，可以控制关闭的时间间隔，特别的是，如果设置为`0`，则不会自动关闭。注意：`duration`接收一个`Number`，单位为毫秒，默认为`4500`。
 ```html
 <template>
   <el-button
@@ -179,6 +179,7 @@
           position: 'top-left'
         });
       }
+      return {open1,open2,open3,open4}
     }
   }
 </script>
@@ -237,10 +238,10 @@
   import {useNotify} from 'element3'
   export default {
     setup(){
-      let notify = useNotify()
+      let $notify = useNotify()
 
       function open() {
-        notify({
+        $notify({
           title: 'HTML 片段',
           dangerouslyUseHTMLString: true,
           message: '<strong>这是 <i>HTML</i> 片段</strong>'
@@ -276,10 +277,10 @@
   import {useNotify} from 'element3'
   export default {
     setup(){
-      let notify = useNotify()
+      let $notify = useNotify()
 
       function open() {
-        notify.success({
+        $notify.success({
           title: 'Info',
           message: '这是一条没有关闭按钮的消息',
           showClose: false

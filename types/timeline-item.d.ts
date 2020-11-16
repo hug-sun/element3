@@ -4,8 +4,9 @@ export type TimelineItemPlacement = 'top' | 'bottom'
 export type TimelineItemType = 'primary' | 'success' | 'warning' | 'danger' | 'info'
 export type TimelineItemSize = 'normal' | 'large'
 
+export const ElTimelineItem:ITimelineItem
 /** TimelineItem Component */
-export declare class ElTimelineItem extends ElementUIComponent {
+interface ITimelineItem extends ElementUIComponent {
   timestamp: string
 
   hideTimestamp: boolean

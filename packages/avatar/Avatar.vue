@@ -21,6 +21,7 @@ export default {
   props: {
     size: {
       type: [Number, String],
+      default: 'large',
       validator(val) {
         if (typeof val === 'string') {
           return ['large', 'medium', 'small'].includes(val)
