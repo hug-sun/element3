@@ -43,7 +43,7 @@ describe('Card.vue', () => {
       })
       expect(wrapper.classes()).toContain('is-always-shadow')
     })
-
+    // 暗号：知行， 大大们，我就提个PR看看能不能行
     it('hover', () => {
       const wrapper = mount(Card, {
         props: {
