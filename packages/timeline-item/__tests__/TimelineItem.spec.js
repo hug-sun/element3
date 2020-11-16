@@ -1,99 +1,158 @@
 import TimelineItem from '../TimelineItem.vue'
 import { mount } from '@vue/test-utils'
-describe('TimelineItem.vue', () => {
-  it('should timeline works', () => {
+import { ref, nextTick } from 'vue'
+
+describe('TimelineItem Test', () => {
+  it('slots', async () => {
     const wrapper = mount(TimelineItem, {
       props: {
-        timestamp: '2018-04-15'
+        timestamp: '2020-11-16'
       },
       slots: {
-        default: '吃饭饭'
+        default: '创建流程'
       }
     })
+    expect(wrapper.find('.el-timeline-item__content').text()).toBe('创建流程')
+  })
 
+  it('timestamp', async () => {
+    const itemTimestamp = ref('2020-11-16')
+    const wrapper = mount(TimelineItem, {
+      props: {
+        timestamp: itemTimestamp
+      },
+      slots: {
+        default: '创建流程'
+      }
+    })
     expect(wrapper.find('.el-timeline-item__timestamp').text()).toBe(
-      '2018-04-15'
+      '2020-11-16'
     )
-    expect(wrapper.find('.el-timeline-item__content').text()).toBe('吃饭饭')
+    itemTimestamp.value = '2020-11-17'
+    await nextTick()
+    expect(wrapper.find('.el-timeline-item__timestamp').text()).toBe(
+      '2020-11-17'
+    )
   })
-})
 
-describe('TimelineItem.vue', () => {
-  it('should timeline works', () => {
+  it('hideTimestamp', async () => {
+    const hideTimestampRef = ref(false)
     const wrapper = mount(TimelineItem, {
       props: {
-        hideTimestamp: true
+        hideTimestamp: hideTimestampRef
       },
       slots: {
-        default: 'aaa'
+        default: '创建流程'
       }
     })
-
-    expect(wrapper.exists()).toBe(true)
-    expect(wrapper.find('.el-timeline-item__content').text()).toBe('aaa')
+    expect(wrapper.findAll('.el-timeline-item__timestamp').length).toBe(1)
+    hideTimestampRef.value = true
+    await nextTick()
+    expect(wrapper.findAll('.el-timeline-item__timestamp').length).toBe(0)
   })
-})
 
-describe('TimelineItem.vue', () => {
-  it('should timeline works', () => {
+  it('placement', async () => {
+    const placementRef = ref() // default 'bottom'
     const wrapper = mount(TimelineItem, {
       props: {
-        placement: 'top'
+        placement: placementRef
+      },
+      slots: {
+        default: '创建流程'
       }
     })
+    expect(wrapper.find('.el-timeline-item__timestamp').classes()).toContain(
+      'is-bottom'
+    )
+    placementRef.value = 'top'
+    await nextTick()
     expect(wrapper.find('.el-timeline-item__timestamp').classes()).toContain(
       'is-top'
     )
   })
-})
 
-describe('TimelineItem.vue', () => {
-  it('should timeline works', () => {
+  it('type', async () => {
+    const typeRef = ref('primary')
     const wrapper = mount(TimelineItem, {
       props: {
-        type: 'primary'
+        type: typeRef
+      },
+      slots: {
+        default: '创建流程'
       }
     })
     expect(wrapper.find('.el-timeline-item__node').classes()).toContain(
       'el-timeline-item__node--primary'
     )
+    typeRef.value = 'success'
+    await nextTick()
+    expect(wrapper.find('.el-timeline-item__node').classes()).toContain(
+      'el-timeline-item__node--success'
+    )
   })
-})
-describe('TimelineItem.vue', () => {
-  it('should timeline works', () => {
+
+  it('color', async () => {
+    const colorRef = ref('red')
     const wrapper = mount(TimelineItem, {
       props: {
-        color: 'red'
+        color: colorRef
+      },
+      slots: {
+        default: '创建流程'
       }
     })
-
     expect(wrapper.find('.el-timeline-item__node').attributes().style).toBe(
       'background-color: red;'
     )
+    colorRef.value = 'blue'
+    await nextTick()
+    expect(wrapper.find('.el-timeline-item__node').attributes().style).toBe(
+      'background-color: blue;'
+    )
   })
-})
 
-describe('TimelineItem.vue', () => {
-  it('should timeline works', () => {
+  it('size', async () => {
+    const sizeRef = ref() // default normal
     const wrapper = mount(TimelineItem, {
       props: {
-        size: 'large'
+        size: sizeRef
+      },
+      slots: {
+        default: '创建流程'
       }
     })
-
+    expect(wrapper.find('.el-timeline-item__node').classes()).toContain(
+      'el-timeline-item__node--normal'
+    )
+    sizeRef.value = 'large'
+    await nextTick()
     expect(wrapper.find('.el-timeline-item__node').classes()).toContain(
       'el-timeline-item__node--large'
     )
+    sizeRef.value = 'small'
+    await nextTick()
+    expect(wrapper.find('.el-timeline-item__node').classes()).toContain(
+      'el-timeline-item__node--small'
+    )
   })
-})
 
-describe('TimelineItem.vue', () => {
-  it('should timeline works', () => {
+  it('icon', async () => {
+    const iconRef = ref('el-icon-more') // default normal
     const wrapper = mount(TimelineItem, {
       props: {
-        icon: 'ccc'
+        icon: iconRef
+      },
+      slots: {
+        default: '创建流程'
       }
     })
-    expect(wrapper.find('.el-timeline-item__icon').classes()).toContain('ccc')
+    expect(wrapper.find('.el-timeline-item__icon').classes()).toContain(
+      'el-icon-more'
+    )
+    iconRef.value = 'el-icon-share'
+    await nextTick()
+    expect(wrapper.find('.el-timeline-item__icon').classes()).toContain(
+      'el-icon-share'
+    )
   })
 })
