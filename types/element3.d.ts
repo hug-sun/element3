@@ -58,7 +58,6 @@ import { ElForm } from './form'
 import { ElFormItem } from './form-item'
 
 import { ElInput } from './input'
-import { ElInputNumber } from './input-number'
 import { ElLoading } from './loading'
 import { ElMenu } from './menu'
 import { ElMenuItem } from './menu-item'
@@ -129,9 +128,6 @@ export class Collapse extends ElCollapse {}
 /** Collapse Item Component */
 export class CollapseItem extends ElCollapseItem {}
 
-/** Color Picker Component */
-export class ColorPicker extends ElColorPicker {}
-
 /** Date Picker Component */
 export class DatePicker extends ElDatePicker {}
 
@@ -156,9 +152,6 @@ export class FormItem extends ElFormItem {}
 /** Input Component */
 export class Input extends ElInput {}
 
-/** Input Number Component */
-export class InputNumber extends ElInputNumber {}
-
 /** Menu that provides navigation for your website */
 export class Menu extends ElMenu {}
 
@@ -176,12 +169,6 @@ export class OptionGroup extends ElOptionGroup {}
 
 /** Popover Component */
 export class Popover extends ElPopover {}
-
-/** Rate Component */
-export class Rate extends ElRate {}
-
-/** Slider Component */
-export class Slider extends ElSlider {}
 
 /** Step Component */
 export class Step extends ElStep {}
@@ -215,9 +202,6 @@ export class TimeSelect extends ElTimeSelect {}
 
 /** Tooltip Component */
 export class Tooltip extends ElTooltip {}
-
-/** Transfer Component */
-export class Transfer extends ElTransfer {}
 
 /** Tree Component */
 export class Tree<K = any, D = TreeData> extends ElTree<K, D> {}
