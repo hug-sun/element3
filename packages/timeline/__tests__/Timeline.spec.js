@@ -35,4 +35,16 @@ describe('Timeline.vue', () => {
     })
     expect(wrapper.find('.el-timeline').text()).toBe('')
   })
+
+  // 暗号：知行
+  it('when props reverse works should className contains is-reverse', () => {
+    const wrapper = mount(Timeline, {
+      props: {
+        reverse: true
+      }
+    })
+    expect(wrapper.find('.el-timeline').attributes('class')).toContain(
+      'is-reverse'
+    )
+  })
 })
