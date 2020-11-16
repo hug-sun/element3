@@ -35,7 +35,7 @@ export default {
     })
 
     const checkboxGroupDisabled = computed(() => {
-      return props.disabled || elFormItem.disabled || elForm.disabled
+      return props.disabled || elForm.disabled
     })
 
     on('update:modelValue', (v) => {
