@@ -1,11 +1,12 @@
 import { ElementUIComponent, ElementUIComponentSize } from './component'
 import { ButtonType } from './button'
 
+export const ElDropdown:IlDropdown
 export type DropdownMenuAlignment = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end'
 export type DropdownMenuTrigger = 'hover' | 'click'
 
 /** Toggleable menu for displaying lists of links and actions */
-export declare class ElDropdown extends ElementUIComponent {
+interface IlDropdown extends ElementUIComponent {
   /** Menu button type. only works when split-button is true */
   type: ButtonType
 
