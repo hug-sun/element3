@@ -327,4 +327,56 @@ describe('TimeLine Test', () => {
     let nodeElm = wrapper.find('.el-timeline-item__icon')
     expect(nodeElm.classes()).toContain('el-icon-more')
   })
+  it('push data', async () => {
+    const activities = ref([
+      {
+        content: '创建成功',
+        timestamp: '2020-11-11'
+      },
+      {
+        content: '通过审核',
+        timestamp: '2020-11-12'
+      },
+      {
+        content: '活动按期开始',
+        timestamp: '2020-11-15'
+      }
+    ])
+    const wrapper = mount(Timeline, {
+      data() {
+        return {
+          activities: activities
+        }
+      },
+      props: {
+        reverse: false
+      },
+      slots: {
+        default: activities.value.map((activity, index) => {
+          return h(
+            TimelineItem,
+            {
+              key: index,
+              timestamp: activities.value[index].timestamp
+            },
+            () => {
+              return activities.value[index].content
+            }
+          )
+        })
+      }
+    })
+    let vm = wrapper.vm
+    vm.$data.activities.value.push({
+      content: '活动结束',
+      timestamp: '2020-11-18'
+    })
+    setTimeout(() => {
+      let contentElms = wrapper.findAll('.el-timeline-item__content')
+      expect(contentElms.length).toEqual(activities.value.length)
+      contentElms.forEach(({ element: elm }, index) => {
+        expect(elm.textContent).toEqual(vm.activities.value[index].content)
+      })
+    }, 100)
+  })
 })
