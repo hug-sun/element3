@@ -284,7 +284,7 @@ function useDrag(props) {
     start: null /* TreeNode */,
     current: null /* TreeNode */,
     last: null /* TreeNode */,
-    drop: '' /* String > inner | top | bottom */
+    drop: '' /* String => inner | top | bottom */
   })
   const handleDragStart = (node, e) => {
     if (typeof props.allowDrag === 'function' && !props.allowDrag(node, e)) {
