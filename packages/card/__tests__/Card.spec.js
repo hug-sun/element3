@@ -5,11 +5,11 @@ describe('Card.vue', () => {
     it('text', () => {
       const wrapper = mount(Card, {
         props: {
-          header: 'Header1'
+          header: 'Header2'
         }
       })
 
-      expect(wrapper.find('.el-card__header').text()).toBe('Header1')
+      expect(wrapper.find('.el-card__header').text()).toBe('Header2')
     })
 
     it('slot', () => {
