@@ -25,21 +25,17 @@ export default {
 
   setup(props, { emit }) {
     const elForm = inject('elForm', { props: {}, ctx: {} })
-    const elFormItem = inject('elFormItem', {
-      props: {},
-      ctx: {},
-      emit: () => {}
-    })
+    const elFormItem = inject('elFormItem', {})
     provide('elCheckboxGroup', getCurrentInstance())
 
     const { dispatch, on } = useEmitter()
 
     const checkboxGroupSize = computed(() => {
-      return props.size || elFormItem.ctx.elFormItemSize
+      return props.size || elFormItem.elFormItemSize
     })
 
     const checkboxGroupDisabled = computed(() => {
-      return props.disabled || elFormItem.disabled || elForm.disabled
+      return props.disabled || elForm.disabled
     })
 
     on('update:modelValue', (v) => {
