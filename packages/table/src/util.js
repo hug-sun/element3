@@ -126,7 +126,7 @@ export const getRowIdentity = (row, rowKey) => {
     }
     return current
   } else if (typeof rowKey === 'function') {
-    return rowKey(row)
+    return rowKey.call(null, row)
   }
 }
 

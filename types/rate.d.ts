@@ -12,8 +12,8 @@ interface Options {
 export type RateColors = Options
 export type RateIconClasses = Options
 
-/** Rate Component */
-export declare class ElRate extends ElementUIComponent {
+
+interface IRate extends ElementUIComponent {
   /** Max rating score */
   max: number
 
@@ -62,3 +62,5 @@ export declare class ElRate extends ElementUIComponent {
   /** Text template when the component is read-only */
   scoreTemplate: string
 }
+/** Rate Component */
+export const ElRate:IRate

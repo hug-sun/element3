@@ -2,8 +2,9 @@ import { ElementUIComponent } from './component'
 
 export type DateType = Date | String | Number
 
+export const ElCalendar:ICalendar 
 /** Calendar Component */
-export declare class ElCalendar extends ElementUIComponent {
+interface ICalendar extends ElementUIComponent {
   /** Binding value */
   value: DateType
 

@@ -1,5 +1,3 @@
-import { isGreatGrandfather } from '../libs/util'
-
 const typeFlag = Symbol('TREE_NODE')
 
 /**
@@ -427,11 +425,7 @@ export class TreeNode {
    * @param {string} relative top, bottom, inner
    */
   isAllowMove(target) {
-    if (
-      target === this ||
-      target === this.parent ||
-      isGreatGrandfather(target, this)
-    ) {
+    if (target === this) {
       return false
     }
 

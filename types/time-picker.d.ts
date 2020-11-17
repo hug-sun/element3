@@ -12,8 +12,9 @@ export interface TimePickerOptions {
   format?: string
 }
 
+export const ElTimePicker:ITimePicker
 /** TimePicker Component */
-export declare class ElTimePicker extends ElementUIComponent {
+interface ITimePicker extends ElementUIComponent {
   /** Whether DatePicker is read only */
   readonly: boolean
 

@@ -35,11 +35,11 @@
           { name: '标签二', type: 'success' },
           { name: '标签三', type: 'info' },
           { name: '标签四', type: 'warning' },
-          { name: '标签五', type: 'danger' },
-        ],
+          { name: '标签五', type: 'danger' }
+        ]
       })
       return { ...toRefs(state) }
-    },
+    }
   }
 </script>
 ```
@@ -101,7 +101,7 @@
       const state = reactive({
         dynamicTags: ['标签一', '标签二', '标签三'],
         inputVisible: false,
-        inputValue: '',
+        inputValue: ''
       })
       const saveTagInput = ref(null)
       const handleClose = (tag) => {
@@ -128,9 +128,9 @@
         handleClose,
         showInput,
         handleInputConfirm,
-        saveTagInput,
+        saveTagInput
       }
-    },
+    }
   }
 </script>
 ```
@@ -192,11 +192,11 @@ Tag 组件提供了三个不同的主题：`dark`、`light` 和 `plain`
           { type: 'success', label: '标签二' },
           { type: 'info', label: '标签三' },
           { type: 'danger', label: '标签四' },
-          { type: 'warning', label: '标签五' },
-        ],
+          { type: 'warning', label: '标签五' }
+        ]
       })
       return { ...toRefs(state) }
-    },
+    }
   }
 </script>
 ```

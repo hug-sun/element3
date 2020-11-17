@@ -36,7 +36,8 @@ import ElTransfer from '../packages/transfer'
 import ElForm from '../packages/form'
 import ElFormItem from '../packages/form-item'
 // Data
-// import ElTable
+import ElTable from '../packages/table'
+import ElTableColumn from '../packages/table-column'
 import ElTag from '../packages/tag'
 import ElProgress from '../packages/progress'
 import ElTree from '../packages/tree'
@@ -50,12 +51,7 @@ import ElLoading, { useLoading } from '../packages/loading'
 
 import { useMessage } from '../packages/message'
 
-import {
-  useMsgbox,
-  useAlert,
-  usePrompt,
-  useConfirm
-} from '../packages/message-box'
+import { useMsgbox } from '../packages/message-box'
 
 import { useNotify } from '../packages/notification'
 // Navigation
@@ -134,6 +130,8 @@ const components = [
   ElLoading,
   ElForm,
   ElFormItem,
+  ElTable,
+  ElTableColumn,
   ElRadio,
   ElRadioButton,
   ElRadioGroup,
@@ -174,14 +172,20 @@ const components = [
 ]
 
 const install = (app, opts = {}) => {
-  app.config.globalProperties.$ELEMENT = {
-    size: opts.size || '',
-    zIndex: opts.zIndex || 2000
-  }
+  app.use(setupGlobalOptions(opts))
 
   components.forEach((component) => {
     app.use(component)
   })
+}
+
+const setupGlobalOptions = (opts = {}) => {
+  return (app) => {
+    app.config.globalProperties.$ELEMENT = {
+      size: opts.size || '',
+      zIndex: opts.zIndex || 2000
+    }
+  }
 }
 
 const elementUI = {
@@ -230,6 +234,8 @@ export {
   ElLoading,
   ElForm,
   ElFormItem,
+  ElTable,
+  ElTableColumn,
   ElRadio,
   ElRadioButton,
   ElRadioGroup,
@@ -267,10 +273,9 @@ export {
   useMessage,
   useLoading,
   useMsgbox,
-  useAlert,
-  usePrompt,
-  useConfirm,
-  useNotify
+  useNotify,
+  install,
+  setupGlobalOptions
 }
 
 export default elementUI

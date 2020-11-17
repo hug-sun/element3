@@ -25,11 +25,11 @@ describe('Link', () => {
     it('href', () => {
       const wrapper = mount(Link, {
         props: {
-          href: 'https://element.eleme.io/'
+          href: 'https://element3-ui.com/'
         }
       })
 
-      expect(wrapper.attributes('href')).toBe('https://element.eleme.io/')
+      expect(wrapper.attributes('href')).toBe('https://element3-ui.com/')
     })
 
     it('should get target attr value', () => {

@@ -150,7 +150,9 @@ ComponentNames.forEach((name) => {
       'cascader',
       'cascader-panel',
       'time-picker',
-      'time-select'
+      'time-select',
+      'table',
+      'table-column'
     ].indexOf(name) > -1
   ) {
     // 白名单 挨个替换

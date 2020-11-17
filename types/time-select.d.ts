@@ -17,8 +17,9 @@ export interface TimeSelectOptions {
   maxTime?: string
 }
 
+export const ElTimeSelect:ITimeSelect
 /** TimeSelect Component */
-export declare class ElTimeSelect extends ElementUIComponent {
+interface ITimeSelect extends ElementUIComponent {
   /** Whether DatePicker is read only */
   readonly: boolean
 

@@ -1,7 +1,8 @@
 import { ElementUIComponent } from './component'
 
+export const ElMenuItem:IMenuItem 
 /** Menu Item Component */
-export declare class ElMenuItem extends ElementUIComponent {
+interface IMenuItem extends ElementUIComponent {
   /** Unique identification */
   index: string
 

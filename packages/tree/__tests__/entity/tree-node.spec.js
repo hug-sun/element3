@@ -161,8 +161,6 @@ describe('TreeNode.js', () => {
     ])
     const node11 = treeNode.findOne(11)
 
-    expect(node11.move(treeNode.findOne(111), 'top')).toBeFalsy()
-    expect(node11.move(treeNode.findOne(1), 'top')).toBeFalsy()
     expect(node11.move(treeNode.findOne(12), 'bottom')).toBeTruthy()
     expect(node11.move(treeNode.findOne(12), 'inner')).toBeTruthy()
     expect(treeNode.childNodes).toHaveLength(1)

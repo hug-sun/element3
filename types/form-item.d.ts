@@ -1,7 +1,7 @@
 import { ElementUIComponent, ElementUIComponentSize } from './component'
 
 /** FormItem Component */
-export declare class ElFormItem extends ElementUIComponent {
+interface IFormItem extends ElementUIComponent {
   /** A key of `model` of the enclosing `el-form` component */
   prop: string
 
@@ -35,3 +35,5 @@ export declare class ElFormItem extends ElementUIComponent {
   /** Remove validation status of the field */
   clearValidate (): void
 }
+
+export const ElFormItem:IFormItem
