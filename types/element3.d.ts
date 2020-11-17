@@ -44,7 +44,8 @@ export { useMessage } from './message'
 export { useNotify } from './notification'
 export { useLoading } from './loading'
 export { useMsgbox } from './message-box'
-
+export { ElSteps } from './steps'
+export { ElUpload } from './upload'
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
 import { ElColorPicker } from './color-picker'
@@ -55,6 +56,7 @@ import { ElDropdownItem } from './dropdown-item'
 import { ElDropdownMenu } from './dropdown-menu'
 import { ElForm } from './form'
 import { ElFormItem } from './form-item'
+
 import { ElInput } from './input'
 import { ElInputNumber } from './input-number'
 import { ElLoading } from './loading'
@@ -67,7 +69,7 @@ import { ElOptionGroup } from './option-group'
 import { ElPopover } from './popover'
 
 import { ElStep } from './step'
-import { ElSteps } from './steps'
+
 import { ElSubmenu } from './submenu'
 import { ElTable } from './table'
 import { ElTableColumn } from './table-column'
@@ -80,7 +82,6 @@ import { ElTimeSelect } from './time-select'
 import { ElTooltip } from './tooltip'
 import { ElTransfer } from './transfer'
 import { ElTree, TreeData } from './tree'
-import { ElUpload } from './upload'
 import { ElDivider } from './divider'
 import { ElIcon } from './icon'
 import { ElCalendar } from './calendar'
@@ -185,9 +186,6 @@ export class Slider extends ElSlider {}
 /** Step Component */
 export class Step extends ElStep {}
 
-/** Steps Component */
-export class Steps extends ElSteps {}
-
 /** Submenu Component */
 export class Submenu extends ElSubmenu {}
 
@@ -223,9 +221,6 @@ export class Transfer extends ElTransfer {}
 
 /** Tree Component */
 export class Tree<K = any, D = TreeData> extends ElTree<K, D> {}
-
-/** Upload Component */
-export class Upload extends ElUpload {}
 
 /** Divider Component */
 export class Divider extends ElDivider {}
