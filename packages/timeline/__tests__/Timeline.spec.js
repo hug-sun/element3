@@ -1,56 +1,59 @@
 import Timeline from '../Timeline.vue'
 import TimelineItem from '../../timeline-item/TimelineItem'
 import { mount } from '@vue/test-utils'
-import { ref, h } from 'vue'
-describe('TimeLine Test', () => {
-  it('create', () => {
-    const activities = ref([
-      {
-        content: '创建成功',
-        timestamp: '2020-11-11'
-      },
-      {
-        content: '通过审核',
-        timestamp: '2020-11-12'
-      },
-      {
-        content: '活动按期开始',
-        timestamp: '2020-11-15'
-      }
-    ])
-    const wrapper = mount(Timeline, {
-      data() {
-        return {
-          activities: activities
-        }
-      },
-      slots: {
-        default: activities.value.map((activity, index) => {
-          return h(
-            TimelineItem,
-            {
-              key: index,
-              timestamp: activities.value[index].timestamp
-            },
-            () => {
-              return activities.value[index].content
-            }
-          )
-        })
-      }
-    })
-    const vm = wrapper.vm
-    let contentElms = wrapper.findAll('.el-timeline-item__content')
-    contentElms.forEach(({ element: elm }, index) => {
-      expect(elm.textContent).toEqual(vm.activities.value[index].content)
-    })
-    let timestampElms = wrapper.findAll('.el-timeline-item__timestamp')
-    timestampElms.forEach(({ element: elm }, index) => {
-      expect(elm.textContent).toEqual(vm.activities.value[index].timestamp)
-    })
+import { h } from 'vue'
+
+function createTimelineItem({ key, props, content }) {
+  return h(
+    TimelineItem,
+    {
+      key,
+      ...props
+    },
+    () => content
+  )
+}
+
+function createTimelineItems(items) {
+  return items.map((item, index) => {
+    const { content, ...props } = item
+    return createTimelineItem({ key: index, props, content })
   })
-  it('reverse', async () => {
-    const activities = ref([
+}
+
+const activities = {
+  _values: [],
+  replace(val) {
+    this._values = val
+  },
+  _normalizeIndex(index) {
+    const start = index >= 0 ? 0 : this._values.length
+    return start + index
+  },
+  elementAt(index) {
+    return this._values[this._normalizeIndex(index)]
+  },
+  contentAt(index) {
+    return this.elementAt(index).content
+  },
+  timestampAt(index) {
+    return this.elementAt(index).timestamp
+  },
+  update(index, patch) {
+    const normalizedIndex = this._normalizeIndex(index)
+    this._values[normalizedIndex] = {
+      ...this._values[normalizedIndex],
+      ...patch
+    }
+  },
+  map(cb) {
+    return this._values.map(cb)
+  }
+}
+
+describe('TimeLine Test', () => {
+  beforeEach(() => {
+    activities.replace([
       {
         content: '创建成功',
         timestamp: '2020-11-11'
@@ -64,267 +67,171 @@ describe('TimeLine Test', () => {
         timestamp: '2020-11-15'
       }
     ])
+  })
+
+  it('should render empty list given no slots', () => {
+    const wrapper = mount(Timeline)
+    expect(wrapper.element.children.length).toBe(0)
+  })
+
+  it('create', () => {
     const wrapper = mount(Timeline, {
-      data() {
-        return {
-          activities: activities
-        }
-      },
+      slots: {
+        default: createTimelineItems(activities)
+      }
+    })
+
+    wrapper
+      .findAll('.el-timeline-item__content')
+      .forEach((contentWrapper, index) => {
+        expect(contentWrapper.text()).toEqual(activities.contentAt(index))
+      })
+
+    wrapper
+      .findAll('.el-timeline-item__timestamp')
+      .forEach((timestampWrapper, index) => {
+        expect(timestampWrapper.text()).toEqual(activities.timestampAt(index))
+      })
+  })
+
+  it('reverse', async () => {
+    const wrapper = mount(Timeline, {
       props: {
         reverse: true
       },
       slots: {
-        default: activities.value.map((activity, index) => {
-          return h(
-            TimelineItem,
-            {
-              key: index,
-              timestamp: activities.value[index].timestamp
-            },
-            () => {
-              return activities.value[index].content
-            }
-          )
-        })
+        default: createTimelineItems(activities)
       }
     })
-    const vm = wrapper.vm
-    let contentElms = wrapper.findAll('.el-timeline-item__content')
-    contentElms.forEach(({ element: elm }, index) => {
-      expect(elm.textContent).toEqual(
-        vm.activities.value[vm.activities.value.length - index - 1].content
-      )
-    })
+
+    wrapper
+      .findAll('.el-timeline-item__content')
+      .forEach((contentWrapper, index) => {
+        expect(contentWrapper.text()).toEqual(activities.contentAt(-index - 1))
+      })
+
     await wrapper.setProps({
       reverse: false
     })
-    contentElms = wrapper.findAll('.el-timeline-item__content')
-    contentElms.forEach(({ element: elm }, index) => {
-      expect(elm.textContent).toEqual(vm.activities.value[index].content)
-    })
+
+    wrapper
+      .findAll('.el-timeline-item__content')
+      .forEach((contentWrapper, index) => {
+        expect(contentWrapper.text()).toEqual(activities.contentAt(index))
+      })
   })
+
+  it('should reverse fragment slots', async () => {
+    const wrapper = mount(
+      {
+        template: `
+        <timeline :reverse="reverse">
+          <timeline-item
+            v-for="(item, index) in items"
+            :key="index"
+            :timestamp="item.timestamp"
+          >
+            {{ item.content }}
+          </timeline-item>
+        </timeline>
+      `,
+        props: ['items', 'reverse'],
+        components: { Timeline, TimelineItem }
+      },
+      {
+        props: {
+          reverse: true,
+          items: activities._values
+        }
+      }
+    )
+
+    wrapper
+      .findAll('.el-timeline-item__content')
+      .forEach((contentWrapper, index) => {
+        expect(contentWrapper.text()).toEqual(activities.contentAt(-index - 1))
+      })
+
+    await wrapper.setProps({
+      reverse: false
+    })
+
+    wrapper
+      .findAll('.el-timeline-item__content')
+      .forEach((contentWrapper, index) => {
+        expect(contentWrapper.text()).toEqual(activities.contentAt(index))
+      })
+  })
+
   it('placement', async () => {
-    const activities = ref([
-      {
-        content: '创建成功',
-        timestamp: '2020-11-11',
-        placement: 'top'
-      },
-      {
-        content: '通过审核',
-        timestamp: '2020-11-12'
-      },
-      {
-        content: '活动按期开始',
-        timestamp: '2020-11-15'
-      }
-    ])
+    activities.update(0, { placement: 'top' })
+
     const wrapper = mount(Timeline, {
-      data() {
-        return {
-          activities: activities
-        }
-      },
       slots: {
-        default: activities.value.map((activity, index) => {
-          return h(
-            TimelineItem,
-            {
-              key: index,
-              timestamp: activities.value[index].timestamp,
-              placement: activities.value[index].placement
-            },
-            () => {
-              return activities.value[index].content
-            }
-          )
-        })
+        default: createTimelineItems(activities)
       }
     })
-    let timestampElm = wrapper.find('.el-timeline-item__timestamp')
-    expect(timestampElm.classes('is-top')).toBe(true)
+    const timestampWrapper = wrapper.find('.el-timeline-item__timestamp')
+    expect(timestampWrapper.classes('is-top')).toBe(true)
   })
+
   it('hide-timestamp', async () => {
-    const activities = ref([
-      {
-        content: '创建成功',
-        timestamp: '2020-11-11',
-        hideTimestamp: true
-      },
-      {
-        content: '通过审核',
-        timestamp: '2020-11-12'
-      },
-      {
-        content: '活动按期开始',
-        timestamp: '2020-11-15'
-      }
-    ])
+    activities.update(0, { hideTimestamp: true })
+
     const wrapper = mount(Timeline, {
-      data() {
-        return {
-          activities: activities
-        }
-      },
       slots: {
-        default: activities.value.map((activity, index) => {
-          return h(
-            TimelineItem,
-            {
-              key: index,
-              timestamp: activities.value[index].timestamp,
-              hideTimestamp: activities.value[index].hideTimestamp
-            },
-            () => {
-              return activities.value[index].content
-            }
-          )
-        })
+        default: createTimelineItems(activities)
       }
     })
-    let timestampElms = wrapper.findAll('.el-timeline-item__timestamp')
-    expect(timestampElms.length).toEqual(2)
+    const timestampWrapper = wrapper.findAll('.el-timeline-item__timestamp')
+    expect(timestampWrapper.length).toEqual(2)
   })
+
   it('color', async () => {
-    const activities = ref([
-      {
-        content: '创建成功',
-        timestamp: '2020-11-11',
-        color: '#f00'
-      },
-      {
-        content: '通过审核',
-        timestamp: '2020-11-12'
-      },
-      {
-        content: '活动按期开始',
-        timestamp: '2020-11-15'
-      }
-    ])
+    activities.update(0, { color: '#f00' })
+
     const wrapper = mount(Timeline, {
-      data() {
-        return {
-          activities: activities
-        }
-      },
       slots: {
-        default: activities.value.map((activity, index) => {
-          return h(
-            TimelineItem,
-            {
-              key: index,
-              timestamp: activities.value[index].timestamp,
-              color: activities.value[index].color
-            },
-            () => {
-              return activities.value[index].content
-            }
-          )
-        })
+        default: createTimelineItems(activities)
       }
     })
-    let nodeElm = wrapper.find('.el-timeline-item__node').element
+    const nodeElm = wrapper.find('.el-timeline-item__node').element
     expect(nodeElm.style.backgroundColor).toEqual('rgb(255, 0, 0)')
   })
+
   it('type', () => {
-    const activities = ref([
-      {
-        content: '创建成功',
-        timestamp: '2020-11-11',
-        type: 'primary'
-      }
-    ])
+    activities.update(0, { type: 'primary' })
+
     const wrapper = mount(Timeline, {
-      data() {
-        return {
-          activities: activities
-        }
-      },
       slots: {
-        default: activities.value.map((activity, index) => {
-          return h(
-            TimelineItem,
-            {
-              key: index,
-              timestamp: activities.value[index].timestamp,
-              type: activities.value[index].type
-            },
-            () => {
-              return activities.value[index].content
-            }
-          )
-        })
+        default: createTimelineItems(activities)
       }
     })
-    let nodeElm = wrapper.find('.el-timeline-item__node')
-    expect(nodeElm.classes()).toContain('el-timeline-item__node--primary')
+    const nodeWrapper = wrapper.find('.el-timeline-item__node')
+    expect(nodeWrapper.classes()).toContain('el-timeline-item__node--primary')
   })
 
   it('size', () => {
-    const activities = ref([
-      {
-        content: '创建成功',
-        timestamp: '2020-11-11',
-        type: 'large'
-      }
-    ])
+    activities.update(0, { type: 'large' })
+
     const wrapper = mount(Timeline, {
-      data() {
-        return {
-          activities: activities
-        }
-      },
       slots: {
-        default: activities.value.map((activity, index) => {
-          return h(
-            TimelineItem,
-            {
-              key: index,
-              timestamp: activities.value[index].timestamp,
-              type: activities.value[index].type
-            },
-            () => {
-              return activities.value[index].content
-            }
-          )
-        })
+        default: createTimelineItems(activities)
       }
     })
-    let nodeElm = wrapper.find('.el-timeline-item__node')
-    expect(nodeElm.classes()).toContain('el-timeline-item__node--large')
+    const nodeWrapper = wrapper.find('.el-timeline-item__node')
+    expect(nodeWrapper.classes()).toContain('el-timeline-item__node--large')
   })
 
   it('icon', () => {
-    const activities = ref([
-      {
-        content: '创建成功',
-        timestamp: '2020-11-11',
-        icon: 'el-icon-more'
-      }
-    ])
+    activities.update(0, { icon: 'el-icon-more' })
+
     const wrapper = mount(Timeline, {
-      data() {
-        return {
-          activities: activities
-        }
-      },
       slots: {
-        default: activities.value.map((activity, index) => {
-          return h(
-            TimelineItem,
-            {
-              key: index,
-              timestamp: activities.value[index].timestamp,
-              icon: activities.value[index].icon
-            },
-            () => {
-              return activities.value[index].content
-            }
-          )
-        })
+        default: createTimelineItems(activities)
       }
     })
-    let nodeElm = wrapper.find('.el-timeline-item__icon')
-    expect(nodeElm.classes()).toContain('el-icon-more')
+    const nodeWrapper = wrapper.find('.el-timeline-item__icon')
+    expect(nodeWrapper.classes()).toContain('el-icon-more')
   })
 })
