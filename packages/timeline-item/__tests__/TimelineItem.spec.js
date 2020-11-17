@@ -22,6 +22,7 @@ describe('TimelineItem.vue', () => {
   it('should timeline works', () => {
     const wrapper = mount(TimelineItem, {
       props: {
+        timestamp: '2018-04-11',
         hideTimestamp: true
       },
       slots: {
@@ -30,7 +31,7 @@ describe('TimelineItem.vue', () => {
     })
 
     expect(wrapper.exists()).toBe(true)
-    expect(wrapper.find('.el-timeline-item__content').text()).toBe('aaa')
+    expect(wrapper.find('.el-timeline-item__wrapper').text()).not.toContain('2018-04-11')
   })
 })
 
