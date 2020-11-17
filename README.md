@@ -70,7 +70,7 @@ createApp(App).use(ElLink).use(ElButton)
 
 ## Documentation
 
-To check out live docs, visit [website](https://element3.gitee.io/)
+To check out live docs, visit [website](https://element3-ui.com/)
 
 ## Questions
 

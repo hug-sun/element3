@@ -32,18 +32,16 @@ describe('Link', () => {
     vm = createTest(
       Link,
       {
-        href: 'https://element3.gitee.io/'
+        href: 'https://element3-ui.com/'
       },
       true
     )
     let linkElm = vm.$el
-    expect(linkElm.getAttribute('href')).to.be.equal(
-      'https://element3.gitee.io/'
-    )
+    expect(linkElm.getAttribute('href')).to.be.equal('https://element3-ui.com/')
   })
   it('target', () => {
     vm = createVue(`
-    <el-link href="https://element3.gitee.io" target="_blank">
+    <el-link href="https://element3-ui.com" target="_blank">
       default
     </el-link>
     `)
