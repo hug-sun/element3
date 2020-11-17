@@ -46,17 +46,20 @@ export { useLoading } from './loading'
 export { useMsgbox } from './message-box'
 export { ElSteps } from './steps'
 export { ElUpload } from './upload'
+export { ElTabs } from './tabs'
+export { ElPageHeader } from './page-header'
+export { ElDropdown } from './dropdown'
+
 import { ElCollapse } from './collapse'
 import { ElCollapseItem } from './collapse-item'
 import { ElColorPicker } from './color-picker'
 import { ElDatePicker } from './date-picker'
 import { ElDialog } from './dialog'
-import { ElDropdown } from './dropdown'
+
 import { ElDropdownItem } from './dropdown-item'
 import { ElDropdownMenu } from './dropdown-menu'
 import { ElForm } from './form'
 import { ElFormItem } from './form-item'
-
 import { ElInput } from './input'
 import { ElLoading } from './loading'
 import { ElMenu } from './menu'
@@ -66,13 +69,10 @@ import { ElNotification } from './notification'
 import { ElOption } from './option'
 import { ElOptionGroup } from './option-group'
 import { ElPopover } from './popover'
-
 import { ElStep } from './step'
-
 import { ElSubmenu } from './submenu'
 import { ElTable } from './table'
 import { ElTableColumn } from './table-column'
-import { ElTabs } from './tabs'
 import { ElTabPane } from './tab-pane'
 import { ElTimeline } from './timeline'
 import { ElTimelineItem } from './timeline-item'
@@ -87,7 +87,6 @@ import { ElCalendar } from './calendar'
 import { ElImage } from './image'
 import { ElBacktop } from './backtop'
 import { ElInfiniteScroll } from './infinite-scroll'
-import { ElPageHeader } from './page-header'
 import { ElDrawer } from './drawer'
 import { ElPopconfirm } from './popconfirm'
 
@@ -134,9 +133,6 @@ export class DatePicker extends ElDatePicker {}
 /** Dialog Component */
 export class Dialog extends ElDialog {}
 
-/** Dropdown Component */
-export class Dropdown extends ElDropdown {}
-
 /** Dropdown Item Component */
 export class DropdownItem extends ElDropdownItem {}
 
@@ -182,9 +178,6 @@ export class Table extends ElTable {}
 /** Table Column Component */
 export class TableColumn extends ElTableColumn {}
 
-/** Tabs Component */
-export class Tabs extends ElTabs {}
-
 /** Tab Pane Component */
 export class TabPane extends ElTabPane {}
 
@@ -223,9 +216,6 @@ export class Backtop extends ElBacktop {}
 
 /** InfiniteScroll Directive */
 export const InfiniteScroll: PluginObject<ElInfiniteScroll>
-
-/** PageHeader Component */
-export class PageHeader extends ElPageHeader {}
 
 /** Drawer Component */
 export class Drawer extends ElDrawer {}
