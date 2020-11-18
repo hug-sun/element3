@@ -149,16 +149,7 @@ export class TreeNode {
     if (childrenNodeLen === 0) {
       return
     }
-    if (checkedNodeLen === childrenNodeLen) {
-      // full select
-      this.setCheckedState(1)
-    } else if (checkedNodeLen === 0) {
-      // not full select
-      this.setCheckedState(0)
-    } else {
-      // Half select
-      this.setCheckedState(2)
-    }
+    this.setCheckedState(checkedNodeLen, childrenNodeLen)
   }
 
   updateExpandedState() {
@@ -313,21 +304,35 @@ export class TreeNode {
 
   /**
    *
-   * @param {number} state 0:not checked, 1:checked, 2:indeterminate
+   * @param {number} checkedNodeLen (the number of selected child nodes of the current node)
+   * @param childrenNodeLen (the number of all child nodes of the current node)
    */
-  setCheckedState(state) {
-    const eunmState = [
-      { isChecked: false, isIndeterminate: false },
-      { isChecked: true, isIndeterminate: false },
-      { isChecked: true, isIndeterminate: true }
-    ]
-    if (!eunmState[state]) {
-      return false
+  setCheckedState(checkedNodeLen, childrenNodeLen) {
+    const enumState = {
+      0: { isChecked: true, isIndeterminate: false },
+      1: { isChecked: false, isIndeterminate: false },
+      2: { isChecked: true, isIndeterminate: true }
+    }
+    const update = ({ isChecked, isIndeterminate }) => {
+      this.isChecked = isChecked
+      this.isIndeterminate = isIndeterminate
     }
 
-    this.isChecked = eunmState[state].isChecked
-    this.isIndeterminate = eunmState[state].isIndeterminate
-    return true
+    const fullSelect = () => {
+      if (checkedNodeLen === childrenNodeLen) update(enumState[0])
+      else notFullSelect()
+    }
+
+    const notFullSelect = () => {
+      if (checkedNodeLen === 0) update(enumState[1])
+      else halfSelect()
+    }
+
+    const halfSelect = () => {
+      update(enumState[2])
+    }
+
+    fullSelect()
   }
 
   /**
