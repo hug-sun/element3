@@ -102,7 +102,7 @@ export interface RenderContentFnArgs {
 }
 
 /** Tree Component */
-export declare class ElTree<R extends RawNode> {
+export interface ElTree<R extends RawNode> {
 
   /** Tree raw data */
   data: R[];
