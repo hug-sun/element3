@@ -305,7 +305,7 @@ export class TreeNode {
   /**
    *
    * @param {number} checkedNodeLen (the number of selected child nodes of the current node)
-   * @param childrenNodeLen (the number of all child nodes of the current node)
+   * @param {number} childrenNodeLen (the number of all child nodes of the current node)
    */
   setCheckedState(checkedNodeLen, childrenNodeLen) {
     const enumState = {
@@ -427,18 +427,13 @@ export class TreeNode {
   /**
    * is allow move to target
    * @param {TreeNode} target
-   * @param {string} relative top, bottom, inner
    */
   isAllowMove(target) {
     if (target === this) {
       return false
     }
 
-    if (this.findOne(target)) {
-      return false
-    }
-
-    return true
+    return !this.findOne(target)
   }
 
   /**
@@ -447,7 +442,7 @@ export class TreeNode {
    * @param {string} relative top, bottom, inner
    */
   move(target, relative) {
-    if (!this.isAllowMove(target, relative)) {
+    if (!this.isAllowMove(target)) {
       return false
     }
 
