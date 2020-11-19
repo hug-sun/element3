@@ -84,6 +84,7 @@ export { ElInfiniteScroll } from './infinite-scroll'
 export { ElDrawer } from './drawer'
 export { ElTree, TreeData } from './tree'
 export {ElPopconfirm} from './popconfirm'
+export {ElCascaderPanel} from './cascader-panel'
 
 export interface InstallationOptions {
   locale: any
