@@ -1,3 +1,27 @@
+## [0.0.26](https://github.com/kkbjs/element3/compare/v0.0.25...v0.0.26) (2020-11-19)
+
+
+### Bug Fixes
+
+* change d.ts ([bacf2ae](https://github.com/kkbjs/element3/commit/bacf2ae50bae3d7810e9ab2e34e7593a46988578))
+* CheckboxGroup.vue runtime error ([81355d7](https://github.com/kkbjs/element3/commit/81355d754c5390be04d14467fcc721d9c19a71cf))
+* error test script ([2d0c3cf](https://github.com/kkbjs/element3/commit/2d0c3cfc5c49098b455ad690d189f346f9ef1997))
+* fix mode is route cannot make ([0d3e5b1](https://github.com/kkbjs/element3/commit/0d3e5b1dd0fe63d33f6f4833029202d60fa611a1))
+* slider fixbug ([2b02135](https://github.com/kkbjs/element3/commit/2b021355021581c48bff10b7367714e9524e4795))
+* syntax code simplified ([d9140fc](https://github.com/kkbjs/element3/commit/d9140fc2053572c2cc80fd713ef0834f96abb704))
+* the disabled attribute should not be obtained from the parent component formItem ([03b0aa1](https://github.com/kkbjs/element3/commit/03b0aa1750aabca9a89137be9bb442c2388717fe))
+* tree doc ([75890ed](https://github.com/kkbjs/element3/commit/75890edbcbf210a91f64eaa0d5c5d902ace2af5f))
+* tree move api error ([aa852bc](https://github.com/kkbjs/element3/commit/aa852bc8c2c5d367d28dc7152411a3d2520b6eb3))
+* tree types file ([f71d9c8](https://github.com/kkbjs/element3/commit/f71d9c8ed6c663fafe18227e1b0d89f04187b9fd))
+* updata eltabs/elpageheader... and test ([df080e9](https://github.com/kkbjs/element3/commit/df080e9532ed956697bb67ce91b5710fa4c4fbac))
+* update Cascader error ([fb1487f](https://github.com/kkbjs/element3/commit/fb1487f29bf13915e9ae31dcd8baf3ed53741fca))
+* update element3.d.ts and test ([9c3c334](https://github.com/kkbjs/element3/commit/9c3c33443b31a5f3ca53198b94c90e7ee109e688))
+* update some From components ([363a37d](https://github.com/kkbjs/element3/commit/363a37df59499113c2b2f170e22d25190b88d2e0))
+* update Timeline test ([3828f66](https://github.com/kkbjs/element3/commit/3828f665b77efdc13ad1fdfe859c8429ae03ce8f))
+* update tree and test ([4007154](https://github.com/kkbjs/element3/commit/4007154d0be28ee911c0959888f4bd5ab1634c19))
+
+
+
 ## [0.0.25](https://github.com/kkbjs/element3/compare/v0.0.24...v0.0.25) (2020-11-14)
 
 
