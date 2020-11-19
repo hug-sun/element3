@@ -1,6 +1,6 @@
 const Config = require('markdown-it-chain')
-const anchorPlugin = require('markdown-it-anchor')
-const slugify = require('transliteration').slugify
+// const anchorPlugin = require('markdown-it-anchor')
+// const slugify = require('transliteration').slugify
 const hljs = require('highlight.js')
 
 const containers = require('./containers')
@@ -22,20 +22,23 @@ config.options
   .highlight(highlight)
   .end()
 
-  .plugin('anchor')
-  .use(anchorPlugin, [
-    {
-      level: 2,
-      slugify: slugify,
-      permalink: true,
-      permalinkBefore: true
-    }
-  ])
-  .end()
-
   .plugin('containers')
   .use(containers)
   .end()
+
+// 这个插件生成的 href 没有带前缀，导致报错，
+// 例如：http://0.0.0.0:8086/#/npm-an-zhuang
+// http://0.0.0.0:8086/#/zh-CN/component/installation#npm-an-zhuang
+// .plugin('anchor')
+// .use(anchorPlugin, [
+//   {
+//     level: 2,
+//     slugify: slugify,
+//     permalink: true,
+//     permalinkBefore: true
+//   }
+// ])
+// .end()
 
 const md = config.toMd()
 overWriteFenceRule(md)
