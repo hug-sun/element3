@@ -74,7 +74,6 @@ export default {
 
   setup(props) {
     const { limit, fileList, onExceed, multiple, autoUpload } = toRefs(props)
-    const { headers, withCredentials, data, name, action } = toRefs(props)
     // eslint-disable-next-line vue/no-setup-props-destructure
     const {
       onStart,
@@ -173,12 +172,12 @@ export default {
     const post = (rawFile) => {
       const { uid } = rawFile
       const options = {
-        headers,
-        withCredentials: withCredentials.value,
+        headers: props.headers,
+        withCredentials: props.withCredentials,
         file: rawFile,
-        data,
-        filename: name.value,
-        action: action.value,
+        data: props.data,
+        filename: props.name,
+        action: props.action,
         onProgress: (e) => {
           onProgress(e, rawFile)
         },

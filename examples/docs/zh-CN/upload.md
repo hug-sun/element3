@@ -67,8 +67,8 @@
   :show-file-list="false"
   :on-success="handleAvatarSuccess"
   :before-upload="beforeAvatarUpload">
-  <img v-if="imageUrl" :src="imageUrl" class="avatar">
-  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+<img v-if="imageUrl" :src="imageUrl" class="avatar">
+<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 </el-upload>
 
 <style>
@@ -82,7 +82,7 @@
   .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
   }
-  .avatar-uploader-icon {
+  .avatar-uploader .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
     width: 178px;
@@ -98,14 +98,13 @@
 </style>
 
 <script>
-  import { ref , getCurrentInstance } from 'vue';
+  import { ref } from 'vue';
   export default {
     setup(){
       const imageUrl = ref('');
 
-      const self = getCurrentInstance().ctx;
       const handleAvatarSuccess = (res, file) => {
-        self.imageUrl = URL.createObjectURL(file.raw);
+        imageUrl.value = URL.createObjectURL(file.raw);
       }
       const beforeAvatarUpload = (file) => {
         const isJPG = file.type === 'image/jpeg';
@@ -144,23 +143,22 @@
   :on-remove="handleRemove">
   <i class="el-icon-plus"></i>
 </el-upload>
-<el-dialog :visible.sync="dialogVisible">
-  <img width="100%" :src="dialogImageUrl" alt="">
+<el-dialog :visible.sync="dialogVisible" v-model:visible="dialogVisible">
+  <img :src="dialogImageUrl" alt="" style="width: 100%;">
 </el-dialog>
 <script>
-  import { ref , getCurrentInstance } from 'vue';
+  import { ref, unref } from 'vue';
   export default {
     setup(){
       const dialogImageUrl = ref('');
       const dialogVisible = ref(false);
 
-      const self = getCurrentInstance().ctx;
       const handleRemove = (file, fileList) => {
         console.log(file, fileList);
       }
       const handlePictureCardPreview = (file) => {
-        self.dialogImageUrl = file.url;
-        self.dialogVisible = true;
+        dialogImageUrl.value = unref(file).url;
+        dialogVisible.value = true;
       }
 
       return {
