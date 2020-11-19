@@ -2,7 +2,7 @@ import { ElementUIComponent } from './component'
 
 /** Pagination Component */
 export const ElPagination: IPagination
-export declare class IPagination extends ElementUIComponent {
+interface IPagination extends ElementUIComponent {
   /** Whether to use small pagination */
   small: boolean
 
