@@ -1,8 +1,9 @@
-import { /*CreateElement,*/ VNode } from 'vue';
+import { /*CreateElement,*/ VNode } from 'vue'
+import { ElementUIComponent } from './component'
 
-export type RawNode = DefaultNodeKey;
+export type RawNode = DefaultNodeKey
 
-export type ID = string | number | symbol;
+export type ID = string | number | symbol
 
 export enum AsyncState {
   NOLOAD = 'noload',
@@ -17,79 +18,92 @@ export enum Relative {
 }
 
 export interface DefaultNodeKey {
-  id: ID,
-  label: string,
-  childNodes: DefaultNodeKey[],
-  isDisabled: boolean,
-  isAsync: boolean,
-  isChecked: boolean,
-  isVisable: boolean,
-  isExpanded: boolean,
+  id: ID
+  label: string
+  childNodes: DefaultNodeKey[]
+  isDisabled: boolean
+  isAsync: boolean
+  isChecked: boolean
+  isVisable: boolean
+  isExpanded: boolean
   isLeaf: boolean
 }
 
 export interface TreeNode {
-  id: ID;
+  id: ID
 
-  label: string;
+  label: string
 
-  parent: TreeNode;
+  parent: TreeNode
 
-  childNodes: TreeNode[];
+  childNodes: TreeNode[]
 
-  isVisable: boolean;
+  isVisable: boolean
 
-  isChecked: boolean;
+  isChecked: boolean
 
-  isIndeterminate: boolean;
+  isIndeterminate: boolean
 
-  isExpanded: boolean;
+  isExpanded: boolean
 
-  isDisabled: boolean;
+  isDisabled: boolean
 
-  isDraggable: boolean;
+  isDraggable: boolean
 
-  isRendered: boolean;
+  isRendered: boolean
 
-  data: { raw: RawNode }; // Additional data carried by the node
+  data: { raw: RawNode } // Additional data carried by the node
 
-  isLeaf: boolean;
+  isLeaf: boolean
 
-  isAsync: boolean; // Load child only at expand time
+  isAsync: boolean // Load child only at expand time
 
-  asyncState: AsyncState; // notload || loaded || loading
+  asyncState: AsyncState // notload || loaded || loading
 
-  asyncLoadFn: (currentNode: TreeNode, resolveFn: ResolveFn) => void; // (currentNode, resolveFn) async load child node
+  asyncLoadFn: (currentNode: TreeNode, resolveFn: ResolveFn) => void // (currentNode, resolveFn) async load child node
 
-  append: (node: TreeNode | RawNode) => void;
+  append: (node: TreeNode | RawNode) => void
 
-  remove: () => void;
+  remove: () => void
 
-  insert: (index: number, node: TreeNode | RawNode) => void;
+  insert: (index: number, node: TreeNode | RawNode) => void
 
-  removeChild: (index: number) => void;
+  removeChild: (index: number) => void
 
-  setChecked: (value?: boolean, strictly?: boolean) => void;
+  setChecked: (value?: boolean, strictly?: boolean) => void
 
-  setChildChildren: (value: boolean) => void;
+  setChildChildren: (value: boolean) => void
 
-  upwardEach: (callback: Function, opt: { isSkipSelf: boolean }) => void;
+  upwardEach: (callback: Function, opt: { isSkipSelf: boolean }) => void
 
-  depthEach: (upToDownCallBack: (node: TreeNode, parentNode: TreeNode, deep: number) => boolean, downToUpCallBack?: (node: TreeNode, parentNode: TreeNode, deep: number) => boolean) => void;
+  depthEach: (
+    upToDownCallBack: (
+      node: TreeNode,
+      parentNode: TreeNode,
+      deep: number
+    ) => boolean,
+    downToUpCallBack?: (
+      node: TreeNode,
+      parentNode: TreeNode,
+      deep: number
+    ) => boolean
+  ) => void
 
-  findOne: (target: TreeNode | ID) => TreeNode;
+  findOne: (target: TreeNode | ID) => TreeNode
 
-  findMany: (label: string) => TreeNode;
+  findMany: (label: string) => TreeNode
 
-  findChildIndex: (target: TreeNode) => number;
+  findChildIndex: (target: TreeNode) => number
 
-  expand: (value: boolean, ...extraNodes: TreeNode[] | RawNode[]) => void;
+  expand: (value: boolean, ...extraNodes: TreeNode[] | RawNode[]) => void
 
-  setVsiable: (value: boolean) => void;
+  setVsiable: (value: boolean) => void
 
-  move: (target: TreeNode, relative: Relative) => boolean;
+  move: (target: TreeNode, relative: Relative) => boolean
 
-  filter: (callback: (node: TreeNode, parentNode: TreeNode, deep: number) => boolean) => boolean;
+  filter: (
+    callback: (node: TreeNode, parentNode: TreeNode, deep: number) => boolean
+  ) => boolean
 }
 
 export interface ResolveFn {
@@ -97,92 +111,109 @@ export interface ResolveFn {
 }
 
 export interface RenderContentFnArgs {
-  treeNode: TreeNode;
-  rawNode: RawNode;
+  treeNode: TreeNode
+  rawNode: RawNode
 }
 
 /** Tree Component */
-export interface ElTree<R extends RawNode> {
-
+export const ElTree: ITree
+interface ITree extends ElementUIComponent{
   /** Tree raw data */
-  data: R[];
+  data: RawNode[]
 
   /** Text displayed when data is void */
-  emptyText: string;
+  emptyText: string
 
-  defaultNodeKey: DefaultNodeKey;
+  defaultNodeKey: DefaultNodeKey
 
-  renderAfterExpand: boolean;
+  renderAfterExpand: boolean
 
-  asyncLoadFn: (node: TreeNode, resolve: ResolveFn) => void;
+  asyncLoadFn: (node: TreeNode, resolve: ResolveFn) => void
 
-  renderContent: (renderContentFnArgs: RenderContentFnArgs) => void;
+  renderContent: (renderContentFnArgs: RenderContentFnArgs) => void
 
-  highlightCurrent: boolean;
+  highlightCurrent: boolean
 
-  defaultExpandAll: boolean;
+  defaultExpandAll: boolean
 
-  expandOnClickNode: boolean;
+  expandOnClickNode: boolean
 
-  checkOnClickNode: boolean;
+  checkOnClickNode: boolean
 
   expanded: ID[]
 
-  showCheckbox: boolean;
+  showCheckbox: boolean
 
-  checkStrictly: boolean;
+  checkStrictly: boolean
 
-  checked: ID[];
+  checked: ID[]
 
-  currentNodeKey: ID[];
+  currentNodeKey: ID[]
 
-  accordion: boolean;
+  accordion: boolean
 
-  indent: number;
+  indent: number
 
-  iconClass: string;
+  iconClass: string
 
-  async: boolean;
+  async: boolean
 
-  draggable: boolean;
+  draggable: boolean
 
-  allowDrag: (treeNode: TreeNode, event: Event) => void;
+  allowDrag: (treeNode: TreeNode, event: Event) => void
 
-  allowDrop: (draggingNode: TreeNode, dropNode: TreeNode, type: Relative) => void;
+  allowDrop: (
+    draggingNode: TreeNode,
+    dropNode: TreeNode,
+    type: Relative
+  ) => void
 
-  initRoot: () => void;
+  initRoot: () => void
 
-  getParentRawNode: (rawNode: RawNode) => RawNode;
+  getParentRawNode: (rawNode: RawNode) => RawNode
 
-  showAll: () => void;
+  showAll: () => void
 
-  checkedAll: () => boolean;
+  checkedAll: () => boolean
 
-  expandAll: () => boolean;
+  expandAll: () => boolean
 
-  onNodeClick: (treeNode: TreeNode, event: Event) => void;
+  onNodeClick: (treeNode: TreeNode, event: Event) => void
 
-  onNodeContextmenu: (treeNode: TreeNode, event: Event) => void;
+  onNodeContextmenu: (treeNode: TreeNode, event: Event) => void
 
-  onCheckChange: (treeNode: TreeNode, event: Event) => void;
+  onCheckChange: (treeNode: TreeNode, event: Event) => void
 
-  onCheck: (treeNode: TreeNode, checked: boolean, event: Event) => void;
+  onCheck: (treeNode: TreeNode, checked: boolean, event: Event) => void
 
-  onCurrentChange: (treeNode: TreeNode, event: Event) => void;
+  onCurrentChange: (treeNode: TreeNode, event: Event) => void
 
-  onNodeExpand: (treeNode: TreeNode, event: Event) => void;
+  onNodeExpand: (treeNode: TreeNode, event: Event) => void
 
-  onNodeCollapse: (treeNode: TreeNode, event: Event) => void;
+  onNodeCollapse: (treeNode: TreeNode, event: Event) => void
 
-  onNodeDragStart: (treeNode: TreeNode, event: Event) => void;
+  onNodeDragStart: (treeNode: TreeNode, event: Event) => void
 
-  onNodeDragEnter: (treeNode: TreeNode, enterNode: TreeNode, event: Event) => void;
+  onNodeDragEnter: (
+    treeNode: TreeNode,
+    enterNode: TreeNode,
+    event: Event
+  ) => void
 
-  onNodeDragLeave: (treeNode: TreeNode, leaveNode: TreeNode, event: Event) => void;
+  onNodeDragLeave: (
+    treeNode: TreeNode,
+    leaveNode: TreeNode,
+    event: Event
+  ) => void
 
-  onNodeDragOver: (treeNode: TreeNode, overNode: TreeNode, event: Event) => void;
+  onNodeDragOver: (treeNode: TreeNode, overNode: TreeNode, event: Event) => void
 
-  onNodeDragEnd: (treeNode: TreeNode, endNode: TreeNode, event: Event) => void;
+  onNodeDragEnd: (treeNode: TreeNode, endNode: TreeNode, event: Event) => void
 
-  onNodeDrop: (treeNode: TreeNode, endNode: TreeNode, relative: Relative, event: Event) => void;
+  onNodeDrop: (
+    treeNode: TreeNode,
+    endNode: TreeNode,
+    relative: Relative,
+    event: Event
+  ) => void
 }

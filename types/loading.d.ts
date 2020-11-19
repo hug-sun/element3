@@ -47,7 +47,7 @@ export interface ElLoadingDirective extends VNodeDirective {
     fullscreen: boolean
   }
 }
-export const ElLoading:IlLoading
+export const ElLoading: IlLoading
 /** Show animation while loading data */
 interface IlLoading extends ElementUIComponent {
   /** If you do not have a specific DOM node to attach the Loading directive, or if you simply prefer not to use Loading as a directive, you can call this service with some configs to open a Loading instance. */

@@ -1,4 +1,4 @@
-import { PluginObject, App } from 'vue'
+import { App } from 'vue'
 import {
   ElementUIComponent,
   ElementUIComponentSize,
@@ -42,7 +42,7 @@ export { ElTag } from './tag'
 export { ElRate } from './rate'
 export { useMessage } from './message'
 export { useNotify } from './notification'
-export { useLoading } from './loading'
+export { useLoading,ElLoading } from './loading'
 export { useMsgbox } from './message-box'
 export { ElSteps } from './steps'
 export { ElUpload } from './upload'
@@ -72,7 +72,7 @@ export { ElTabPane } from './tab-pane'
 export { ElTimeline } from './timeline'
 export { ElTimelineItem } from './timeline-item'
 export { ElTimePicker } from './time-picker'
-export  { ElTimeSelect } from './time-select'
+export { ElTimeSelect } from './time-select'
 export { ElTooltip } from './tooltip'
 export { ElTransfer } from './transfer'
 export { ElDivider } from './divider'
@@ -82,9 +82,10 @@ export { ElImage } from './image'
 export { ElBacktop } from './backtop'
 export { ElInfiniteScroll } from './infinite-scroll'
 export { ElDrawer } from './drawer'
-export { ElTree, TreeData } from './tree'
-export {ElPopconfirm} from './popconfirm'
-export {ElCascaderPanel} from './cascader-panel'
+export { ElTree } from './tree'
+export { ElPopconfirm } from './popconfirm'
+export { ElCascaderPanel } from './cascader-panel'
+export { ElScrollbar } from './scrollbar'
 
 export interface InstallationOptions {
   locale: any
@@ -92,17 +93,17 @@ export interface InstallationOptions {
   size: string
 }
 
-/** The version of element-ui */
+/** The version of element3 */
 export const version: string
 
 /**
- * Install all element-ui components into Vue.
+ * Install all element3 components into Vue.
  * Please do not invoke this method directly.
  * Call `app.use(ElementUI)` to install.
  */
 export function install(app: App, ...options: any[]): any
 
-/** ElementUI component common definition */
+/** Element3 component common definition */
 export type Component = ElementUIComponent
 
 /** Component size definition for button, input, etc */

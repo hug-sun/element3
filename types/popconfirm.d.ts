@@ -2,8 +2,10 @@ import { ElementUIComponent } from './component'
 import { ElPopover } from './popover'
 
 export const ElPopconfirm:IPopconfirm
+
+type IPopover = typeof ElPopover
 /** Popconfirm Component */
-interface IPopconfirm extends ElPopover {
+interface IPopconfirm extends IPopover {
   /** Popconfirm title */
   title: string
 
