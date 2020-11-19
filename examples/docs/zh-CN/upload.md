@@ -143,23 +143,22 @@
   :on-remove="handleRemove">
   <i class="el-icon-plus"></i>
 </el-upload>
-<el-dialog :visible.sync="dialogVisible">
-  <img width="100%" :src="dialogImageUrl" alt="">
+<el-dialog :visible.sync="dialogVisible" v-model:visible="dialogVisible">
+  <img :src="dialogImageUrl" alt="" style="width: 100%;">
 </el-dialog>
 <script>
-  import { ref , getCurrentInstance } from 'vue';
+  import { ref, unref } from 'vue';
   export default {
     setup(){
       const dialogImageUrl = ref('');
       const dialogVisible = ref(false);
 
-      const self = getCurrentInstance().ctx;
       const handleRemove = (file, fileList) => {
         console.log(file, fileList);
       }
       const handlePictureCardPreview = (file) => {
-        self.dialogImageUrl = file.url;
-        self.dialogVisible = true;
+        dialogImageUrl.value = unref(file).url;
+        dialogVisible.value = true;
       }
 
       return {

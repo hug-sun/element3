@@ -339,7 +339,7 @@ export default {
         raw: rawFile
       }
 
-      if (listType === 'picture-card' || listType === 'picture') {
+      if (unref(listType) === 'picture-card' || unref(listType) === 'picture') {
         try {
           file.url = URL.createObjectURL(rawFile)
         } catch (err) {
