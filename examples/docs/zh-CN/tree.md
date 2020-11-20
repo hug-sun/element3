@@ -20,10 +20,10 @@
 ></el-tree>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    data() {
-      return {
-        data: [
+    setup(){
+      let data = ref([
           {
             label: '一级 1',
             children: [
@@ -79,17 +79,16 @@
               }
             ]
           }
-        ],
-        defaultNodeKey: {
+        ])
+      let defaultNodeKey = ref({
           childNodes: 'children',
           label: 'label'
-        }
-      }
-    },
-    methods: {
-      handleNodeClick(node) {
+        })
+      function handleNodeClick(node) {
         console.log(node)
       }
+
+      return {data,defaultNodeKey,handleNodeClick}
     }
   }
 </script>
@@ -114,24 +113,21 @@
 </el-tree>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    data() {
-      return {
-        defaultNodeKey: {
-          label: 'name',
-          childNodes: 'zones'
-        },
-        count: 1
-      }
-    },
-    methods: {
-      handleCheckChange(node, e) {
+    setup(){
+      let defaultNodeKey = ref({
+        label: 'name',
+        childNodes: 'zones'
+      })
+      let count = ref(1)
+      function handleCheckChange(node, e) {
         console.log(node, e)
-      },
-      handleNodeClick(node) {
+      }
+      function handleNodeClick(node) {
         console.log(node)
-      },
-      loadNode(node, resolve) {
+      }
+      function loadNode(node, resolve) {
         if (node.level === 0) {
           return resolve([{ name: 'region1' }, { name: 'region2' }])
         }
@@ -164,6 +160,8 @@
           resolve(data)
         }, 500)
       }
+
+      return {defaultNodeKey,count,handleCheckChange,handleNodeClick,loadNode}
     }
   }
 </script>
@@ -185,18 +183,15 @@
 </el-tree>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    data() {
-      return {
-        defaultNodeKey: {
-          label: 'name',
-          childNodes: 'zones',
-          isLeaf: 'leaf'
-        }
-      }
-    },
-    methods: {
-      loadNode(node, resolve) {
+    setup(){
+      let defaultNodeKey= ref({
+        label: 'name',
+        childNodes: 'zones',
+        isLeaf: 'leaf'
+      })
+      function loadNode(node, resolve) {
         if (node.level === 0) {
           return resolve([{ name: 'region' }])
         }
@@ -216,6 +211,8 @@
           resolve(data)
         }, 500)
       }
+
+      return {defaultNodeKey,loadNode}
     }
   }
 </script>
@@ -240,12 +237,12 @@
 </el-tree>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    data() {
-      return {
-        expandedList: [4, 5],
-        checkedList: [5],
-        data: [
+    setup(){
+      let expandedList = ref([4, 5])
+      let checkedList = ref([5])
+      let data = ref([
           {
             id: 1,
             label: '一级 1',
@@ -294,12 +291,13 @@
               }
             ]
           }
-        ],
-        defaultNodeKey: {
+        ])
+      let defaultNodeKey = ref({
           childNodes: 'children',
           label: 'label'
-        }
-      }
+        })
+
+      return {expandedList,checkedList,data,defaultNodeKey}
     }
   }
 </script>
@@ -324,12 +322,12 @@
 </el-tree>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    data() {
-      return {
-        expandedList: [4, 5],
-        checkedList: [5],
-        data: [
+    setup(){
+      let expandedList = ref([4, 5])
+      let checkedList = ref([5])
+      let data = ref([
           {
             id: 1,
             label: '一级 1',
@@ -380,13 +378,14 @@
               }
             ]
           }
-        ],
-        defaultNodeKey: {
+        ])
+        let defaultNodeKey = ref({
           childNodes: 'children',
           isDisabled: 'disabled',
           label: 'label'
-        }
-      }
+        })
+
+      return {data,defaultNodeKey}
     }
   }
 </script>
@@ -415,23 +414,11 @@
 </div>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    methods: {
-      findNodes() {
-        console.log(this.$refs.tree.findMany((node) => node.isChecked))
-      },
-      findNode() {
-        console.log(this.$refs.tree.findOne(10))
-      },
-      setCheckedNodes() {
-        this.$refs.tree.findOne(10).setChecked(true)
-        this.$refs.tree.findOne(10).expand(true)
-      }
-    },
-
-    data() {
-      return {
-        data: [
+    setup(){
+      let tree = ref(null)
+      let data = ref([
           {
             id: 1,
             label: '一级 1',
@@ -480,12 +467,23 @@
               }
             ]
           }
-        ],
-        defaultNodeKey: {
+        ])
+      let defaultNodeKey = ref({
           childNodes: 'children',
           label: 'label'
-        }
+        })
+      function findNodes() {
+        console.log(tree.value.findMany((node) => node.isChecked))
       }
+      function findNode() {
+        console.log(tree.value.findOne(10))
+      }
+      function setCheckedNodes() {
+        tree.value.findOne(10).setChecked(true)
+        tree.value.findOne(10).expand(true)
+      }
+
+      return {tree,data,defaultNodeKey,findNodes,findNode,setCheckedNodes}
     }
   }
 </script>
@@ -539,10 +537,10 @@
 
 <script>
   let id = 1000
-
+  import {ref} from 'vue'
   export default {
-    data() {
-      const data = [
+    setup(){
+      let data = ref([
         {
           id: 1,
           label: '一级 1',
@@ -591,24 +589,17 @@
             }
           ]
         }
-      ]
-      return {
-        data1: JSON.parse(JSON.stringify(data)),
-        data2: JSON.parse(JSON.stringify(data))
-      }
-    },
-
-    methods: {
-      append(node, data) {
+      ])
+      let data1 = ref(JSON.parse(JSON.stringify(data.value)))
+      let data2 = ref(JSON.parse(JSON.stringify(data.value)))
+      function append(node, data) {
         const newChild = { id: id++, label: 'testtest', childNodes: [] }
         node.append(newChild)
-      },
-
-      remove(node, data) {
+      }
+      function remove(node, data) {
         node.remove()
-      },
-
-      renderContent({ node, data }) {
+      }
+      function renderContent({ node, data }) {
         return (
           <span class="custom-tree-node">
             <span>{data.label}</span>
@@ -631,6 +622,7 @@
           </span>
         )
       }
+      return {data,data1,data2,append,remove,renderContent}
     }
   }
 </script>
@@ -668,26 +660,12 @@
 </el-tree>
 
 <script>
+  import {ref,onMounted,watchEffect} from 'vue'
   export default {
-    watch: {
-      filterText(val) {
-        this.$refs.tree.filter((node) => {
-          return this.filterNode(val, node)
-        })
-      }
-    },
-
-    methods: {
-      filterNode(value, data) {
-        if (!value) return true
-        return data.label.indexOf(value) !== -1
-      }
-    },
-
-    data() {
-      return {
-        filterText: '',
-        data: [
+    setup(){
+      let tree = ref(null);
+      let filterText = ref('')
+      let data = ref([
           {
             id: 1,
             label: '一级 1',
@@ -736,12 +714,25 @@
               }
             ]
           }
-        ],
-        defaultNodeKey: {
+        ])
+      let defaultNodeKey = ref({
           childNodes: 'children',
           label: 'label'
-        }
+        })
+      onMounted(()=>{
+        watchEffect((filterText)=>{
+          tree.value.filter((node) => {
+            return filterNode(filterText)
+          })
+        })
+      })
+      function filterNode(value) {
+        if (!value) return true
+        console.log(data.value,value)
+        return data.value.indexOf(value) !== -1
       }
+
+      return {tree,filterText,data,defaultNodeKey,filterText,filterNode}
     }
   }
 </script>
@@ -765,10 +756,10 @@
 </el-tree>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    data() {
-      return {
-        data: [
+    setup(){
+      let data = ref([
           {
             label: '一级 1',
             children: [
@@ -824,17 +815,16 @@
               }
             ]
           }
-        ],
-        defaultNodeKey: {
+        ])
+      let defaultNodeKey = ref({
           childNodes: 'children',
           label: 'label'
-        }
-      }
-    },
-    methods: {
-      handleNodeClick(node, data) {
+        })
+      function handleNodeClick(node, data) {
         console.log(node, data)
       }
+
+      return {data,defaultNodeKey,handleNodeClick}
     }
   }
 </script>
@@ -864,10 +854,10 @@
 </el-tree>
 
 <script>
+  import {ref} from 'vue'
   export default {
-    data() {
-      return {
-        data: [
+    setup(){
+      let data = ref([
           {
             id: 1,
             label: '一级 1',
@@ -930,42 +920,40 @@
               }
             ]
           }
-        ],
-        defaultNodeKey: {
+        ])
+      let defaultNodeKey = ref({
           childNodes: 'children',
           label: 'label'
-        }
-      }
-    },
-    methods: {
-      handleDragStart(node, ev) {
+        })
+      function handleDragStart(node, ev) {
         console.log('drag start', node)
-      },
-      handleDragEnter(draggingNode, dropNode, ev) {
+      }
+      function handleDragEnter(draggingNode, dropNode, ev) {
         console.log('tree drag enter: ', dropNode)
-      },
-      handleDragLeave(draggingNode, dropNode, ev) {
+      }
+      function handleDragLeave(draggingNode, dropNode, ev) {
         console.log('tree drag leave: ', dropNode)
-      },
-      handleDragOver(draggingNode, dropNode, ev) {
+      }
+      function handleDragOver(draggingNode, dropNode, ev) {
         console.log('tree drag over: ', dropNode)
-      },
-      handleDragEnd(draggingNode, dropNode, ev) {
+      }
+      function handleDragEnd(draggingNode, dropNode, ev) {
         console.log('tree drag end: ', dropNode)
-      },
-      handleDrop(draggingNode, dropNode, dropType, ev) {
+      }
+      function handleDrop(draggingNode, dropNode, dropType, ev) {
         console.log('tree drop: ', dropNode, dropType)
-      },
-      allowDrop(draggingNode, dropNode, type) {
+      }
+      function allowDrop(draggingNode, dropNode, type) {
         if (dropNode.data.raw.label === '二级 3-1') {
           return type !== 'inner'
         } else {
           return true
         }
-      },
-      allowDrag(draggingNode) {
+      }
+      function allowDrag(draggingNode) {
         return draggingNode.data.raw.label.indexOf('三级 3-2-2') === -1
       }
+      return {data,defaultNodeKey,handleDragStart,handleDragEnter,handleDragLeave,handleDragOver,handleDragEnd,handleDrop,allowDrop}
     }
   }
 </script>
