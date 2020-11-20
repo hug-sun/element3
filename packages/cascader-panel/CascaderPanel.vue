@@ -311,6 +311,7 @@ export default {
       getNodeByValue(val) {
         return state.store.getNodeByValue(val)
       },
+      lazyLoad,
       getCheckedNodes,
       handleCheckChange,
       handleExpand,

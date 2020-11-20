@@ -25,7 +25,7 @@
         :indeterminate="node.indeterminate"
         :disabled="isDisabled"
         @update:modelValue="handleMultiCheckChange"
-        @click="
+        @click.stop="
           () => {
             config.checkStrictly && strictlyEvent()
           }
@@ -176,9 +176,7 @@ export default {
       checkedValue,
       inCheckedPath,
       // methods
-      strictlyEvent(e) {
-        e.stopPropagation()
-      },
+      strictlyEvent() {},
       handleClick,
       handleMouseenter,
       handleCheckChange,

@@ -22,24 +22,32 @@
   </template>
 </el-upload>
 <script>
+  import { reactive , toRefs , getCurrentInstance } from 'vue';
   export default {
-    data() {
-      return {
+    setup(){
+      let state = reactive({
         fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-      };
-    },
-    methods: {
-      handleRemove(file, fileList) {
+      });
+      const self = getCurrentInstance().ctx;
+      const handleRemove = (file, fileList) => {
         console.log(file, fileList);
-      },
-      handlePreview(file) {
+      }
+      const handlePreview = (file) => {
         console.log(file);
-      },
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
-      beforeRemove(file, fileList) {
-        // return this.$confirm(`确定移除 ${ file.name }？`);
+      }
+      const handleExceed = (files, fileList) => {
+        self.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      }
+      const beforeRemove = (file, fileList) => {
+        // return self.$confirm(`确定移除 ${ file.name }？`);
+      }
+
+      return {
+        ...toRefs(state),
+        handleRemove,
+        handlePreview,
+        handleExceed,
+        beforeRemove
       }
     }
   }
@@ -59,8 +67,8 @@
   :show-file-list="false"
   :on-success="handleAvatarSuccess"
   :before-upload="beforeAvatarUpload">
-  <img v-if="imageUrl" :src="imageUrl" class="avatar">
-  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+<img v-if="imageUrl" :src="imageUrl" class="avatar">
+<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 </el-upload>
 
 <style>
@@ -74,7 +82,7 @@
   .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
   }
-  .avatar-uploader-icon {
+  .avatar-uploader .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
     width: 178px;
@@ -90,27 +98,31 @@
 </style>
 
 <script>
+  import { ref } from 'vue';
   export default {
-    data() {
-      return {
-        imageUrl: ''
-      };
-    },
-    methods: {
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
+    setup(){
+      const imageUrl = ref('');
+
+      const handleAvatarSuccess = (res, file) => {
+        imageUrl.value = URL.createObjectURL(file.raw);
+      }
+      const beforeAvatarUpload = (file) => {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
 
         if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
+          self.$message.error('上传头像图片只能是 JPG 格式!');
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+          self.$message.error('上传头像图片大小不能超过 2MB!');
         }
         return isJPG && isLt2M;
+      }
+
+      return {
+        imageUrl,
+        handleAvatarSuccess,
+        beforeAvatarUpload
       }
     }
   }
@@ -131,24 +143,29 @@
   :on-remove="handleRemove">
   <i class="el-icon-plus"></i>
 </el-upload>
-<el-dialog :visible.sync="dialogVisible">
-  <img width="100%" :src="dialogImageUrl" alt="">
+<el-dialog :visible.sync="dialogVisible" v-model:visible="dialogVisible">
+  <img :src="dialogImageUrl" alt="" style="width: 100%;">
 </el-dialog>
 <script>
+  import { ref, unref } from 'vue';
   export default {
-    data() {
-      return {
-        dialogImageUrl: '',
-        dialogVisible: false
-      };
-    },
-    methods: {
-      handleRemove(file, fileList) {
+    setup(){
+      const dialogImageUrl = ref('');
+      const dialogVisible = ref(false);
+
+      const handleRemove = (file, fileList) => {
         console.log(file, fileList);
-      },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
+      }
+      const handlePictureCardPreview = (file) => {
+        dialogImageUrl.value = unref(file).url;
+        dialogVisible.value = true;
+      }
+
+      return {
+        dialogImageUrl,
+        dialogVisible,
+        handleRemove,
+        handlePictureCardPreview
       }
     }
   }
@@ -203,24 +220,32 @@
   <img width="100%" :src="dialogImageUrl" alt="">
 </el-dialog>
 <script>
+  import { ref , getCurrentInstance } from 'vue';
   export default {
-    data() {
+    setup(){
+      const dialogImageUrl = ref('');
+      const dialogVisible = ref(false);
+      const disables = ref(false);
+
+      const self = getCurrentInstance().ctx;
+      const handleRemove = (file) => {
+        console.log(file);
+      }
+      const handlePictureCardPreview = (file) => {
+        self.dialogImageUrl = file.url;
+        self.dialogVisible = true;
+      }
+      const handleDownload = (file) => {
+        console.log(file);
+      }
+
       return {
-        dialogImageUrl: '',
-        dialogVisible: false,
-        disabled: false
-      };
-    },
-    methods: {
-      handleRemove(file) {
-        console.log(file);
-      },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
-      },
-      handleDownload(file) {
-        console.log(file);
+        dialogImageUrl,
+        dialogVisible,
+        disables,
+        handleRemove,
+        handlePictureCardPreview,
+        handleDownload
       }
     }
   }
@@ -245,18 +270,23 @@
   </template>
 </el-upload>
 <script>
+  import { reactive , toRefs } from 'vue';
   export default {
-    data() {
-      return {
+    setup(){
+      const state = reactive({
         fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-      };
-    },
-    methods: {
-      handleRemove(file, fileList) {
+      })
+      const handleRemove = (file, fileList) => {
         console.log(file, fileList);
-      },
-      handlePreview(file) {
+      }
+      const handlePreview = (file) => {
         console.log(file);
+      }
+
+      return {
+        ...toRefs(state),
+        handleRemove,
+        handlePreview
       }
     }
   }
@@ -281,9 +311,10 @@
   </template>
 </el-upload>
 <script>
+  import { reactive , toRefs , getCurrentInstance } from 'vue';
   export default {
-    data() {
-      return {
+    setup(){
+      const state = reactive({
         fileList: [{
           name: 'food.jpeg',
           url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
@@ -291,11 +322,16 @@
           name: 'food2.jpeg',
           url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
         }]
-      };
-    },
-    methods: {
-      handleChange(file, fileList) {
-        this.fileList = fileList.slice(-3);
+      })
+
+      const self = getCurrentInstance().ctx;
+      const handleChange = (file, fileList) => {
+        self.fileList = fileList.slice(-3);
+      }
+
+      return {
+        ...toRefs(state),
+        handleChange
       }
     }
   }
@@ -340,21 +376,29 @@
   </template>
 </el-upload>
 <script>
+  import { reactive , toRefs , getCurrentInstance} from 'vue';
   export default {
-    data() {
-      return {
+    setup(){
+      const state = reactive({
         fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-      };
-    },
-    methods: {
-      submitUpload() {
-        this.$refs.upload.submit();
-      },
-      handleRemove(file, fileList) {
+      })
+
+      const self = getCurrentInstance().ctx;
+      const submitUpload = () => {
+        self.$refs.upload.submit();
+      }
+      const handleRemove = (file, fileList) => {
         console.log(file, fileList);
-      },
-      handlePreview(file) {
+      }
+      const handlePreview = (file) => {
         console.log(file);
+      }
+
+      return {
+        ...toRefs(state),
+        submitUpload,
+        handleRemove,
+        handlePreview
       }
     }
   }

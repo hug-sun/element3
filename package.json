@@ -1,6 +1,6 @@
 {
   "name": "element3",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "A Component Library for Vue3",
   "main": "dist/element3-ui.cjs.js",
   "module": "dist/element3-ui.esm-bundler.js",
@@ -54,7 +54,7 @@
     "type": "git",
     "url": "git@github.com:kkbjs/element3.git"
   },
-  "homepage": "https://element3.gitee.io/",
+  "homepage": "https://element3-ui.com/",
   "keywords": [
     "eleme",
     "vue",

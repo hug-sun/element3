@@ -20,9 +20,9 @@ export interface ElPopoverDirective extends VNodeDirective {
   arg: string
 }
 
-export const ElPopover:IPopover
 /** Popover Component */
-interface IPopover extends ElementUIComponent {
+export const ElPopover:IPopover
+ interface IPopover extends ElementUIComponent {
   /** How the popover is triggered */
   trigger: PopoverTrigger
 
