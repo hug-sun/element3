@@ -10,13 +10,13 @@
 ```html
 <el-form ref="form" :model="form" label-width="auto">
   <el-form-item label="活动名称">
-    <el-input v-model="form.name"></el-input>
+    <el-input v-model="name"></el-input>
   </el-form-item>
   <el-form-item label="即时配送">
-    <el-switch v-model="form.delivery"></el-switch>
+    <el-switch v-model="delivery"></el-switch>
   </el-form-item>
   <el-form-item label="活动性质">
-    <el-checkbox-group v-model="form.type">
+    <el-checkbox-group v-model="type">
       <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
       <el-checkbox label="地推活动" name="type"></el-checkbox>
       <el-checkbox label="线下主题活动" name="type"></el-checkbox>
@@ -24,23 +24,25 @@
     </el-checkbox-group>
   </el-form-item>
   <el-form-item label="特殊资源">
-    <el-radio-group v-model="form.resource">
+    <el-radio-group v-model="resource">
       <el-radio label="线上品牌商赞助"></el-radio>
       <el-radio label="线下场地免费"></el-radio>
     </el-radio-group>
   </el-form-item>
   <el-form-item label="活动形式">
-    <el-input type="textarea" v-model="form.desc"></el-input>
+    <el-input type="textarea" v-model="desc"></el-input>
   </el-form-item>
   <el-form-item>
     <el-button type="primary" @click="onSubmit">立即创建</el-button>
     <el-button>取消</el-button>
   </el-form-item>
 </el-form>
+
 <script>
-  export default {
-    data() {
-      return {
+import { reactive , toRefs} from 'vue'
+export default {
+    setup(){
+      const data = reactive({
         form: {
           name: '',
           region: '',
@@ -51,11 +53,14 @@
           resource: '',
           desc: ''
         }
+      })
+      const onSubmit = () => {
+        console.log('submit!')
       }
-    },
-    methods: {
-      onSubmit() {
-        console.log('submit!', this.form);
+      
+      return {
+        ...toRefs(data.form),
+        onSubmit
       }
     }
   }
@@ -72,28 +77,32 @@
 ```html
 <el-form :inline="true" :model="formInline" class="demo-form-inline">
   <el-form-item label="审批人">
-    <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+    <el-input v-model="user" placeholder="审批人"></el-input>
   </el-form-item>
   <el-form-item label="发送通知">
-    <el-switch v-model="formInline.delivery"></el-switch>
+    <el-switch v-model="delivery"></el-switch>
   </el-form-item>
   <el-form-item>
     <el-button type="primary" @click="onSubmit">查询</el-button>
   </el-form-item>
 </el-form>
 <script>
+  import { reactive , toRefs} from 'vue'
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         formInline: {
-          user: '',
-          delivery: false
-        }
-      }
-    },
-    methods: {
-      onSubmit() {
+            user: '',
+            delivery: false
+          }
+      })
+      const onSubmit = () => {
         console.log('submit!');
+      }
+
+      return {
+        ...toRefs(data.formInline),
+        onSubmit
       }
     }
   }
@@ -115,33 +124,38 @@
 <div style="margin: 20px;"></div>
 <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
   <el-form-item label="名称">
-    <el-input v-model="formLabelAlign.name"></el-input>
+    <el-input v-model="name"></el-input>
   </el-form-item>
   <el-form-item label="活动区域">
-    <el-input v-model="formLabelAlign.region"></el-input>
+    <el-input v-model="region"></el-input>
   </el-form-item>
   <el-form-item label="活动形式">
-    <el-input v-model="formLabelAlign.type"></el-input>
+    <el-input v-model="type"></el-input>
   </el-form-item>
 </el-form>
 <script>
+  import { reactive , toRefs , ref } from 'vue'
   export default {
-    data() {
-      return {
-        labelPosition: 'right',
+    setup(){
+      const labelPosition = ref('right');
+      const data = reactive({
         formLabelAlign: {
           name: '',
           region: '',
           type: ''
         }
-      };
+      })
+       return {
+        labelPosition,
+        ...toRefs(data.formLabelAlign)
+       }
     }
   }
 </script>
 ```
 :::
 
-### 表单验证
+<!-- ### 表单验证
 
 在防止用户犯错的前提下，尽可能让用户更早地发现并纠正错误。
 
@@ -149,13 +163,13 @@
 ```html
 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <el-form-item label="活动名称" prop="name">
-    <el-input v-model="ruleForm.name"></el-input>
+    <el-input v-model="name"></el-input>
   </el-form-item>
   <el-form-item label="即时配送" prop="delivery">
-    <el-switch v-model="ruleForm.delivery"></el-switch>
+    <el-switch v-model="delivery"></el-switch>
   </el-form-item>
   <el-form-item label="活动性质" prop="type">
-    <el-checkbox-group v-model="ruleForm.type">
+    <el-checkbox-group v-model="type">
       <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
       <el-checkbox label="地推活动" name="type"></el-checkbox>
       <el-checkbox label="线下主题活动" name="type"></el-checkbox>
@@ -163,13 +177,13 @@
     </el-checkbox-group>
   </el-form-item>
   <el-form-item label="特殊资源" prop="resource">
-    <el-radio-group v-model="ruleForm.resource">
+    <el-radio-group v-model="resource">
       <el-radio label="线上品牌商赞助"></el-radio>
       <el-radio label="线下场地免费"></el-radio>
     </el-radio-group>
   </el-form-item>
   <el-form-item label="活动形式" prop="desc">
-    <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+    <el-input type="textarea" v-model="desc"></el-input>
   </el-form-item>
   <el-form-item>
     <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -177,11 +191,12 @@
   </el-form-item>
 </el-form>
 <script>
+  import { reactive , toRefs , getCurrentInstance } from 'vue' 
   export default {
-    data() {
-      return {
+    setup(){
+      const ruleForm = reactive({
         ruleForm: {
-          name: 'aaa',
+          name: '',
           region: '',
           date1: '',
           date2: '',
@@ -189,7 +204,9 @@
           type: [],
           resource: '',
           desc: ''
-        },
+        }
+      })
+      const rules = reactive({
         rules: {
           name: [
             { required: true, message: '请输入活动名称', trigger: 'blur' },
@@ -205,11 +222,10 @@
             { required: true, message: '请填写活动形式', trigger: 'blur' }
           ]
         }
-      };
-    },
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+      })
+      const self = getCurrentInstance().ctx;
+      function submitForm(formName) {
+        self.$refs[formName].validate((valid) => {
           if (valid) {
             alert('submit!');
           } else {
@@ -217,17 +233,24 @@
             return false;
           }
         });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+      }
+      function resetForm(formName) {
+        self.$refs[formName].resetFields();
+      }
+
+      return {
+        ...toRefs(ruleForm.ruleForm),
+        ...toRefs(rules),
+        submitForm,
+        resetForm
       }
     }
   }
 </script>
 ```
-:::
+::: -->
 
-### 自定义校验规则
+<!-- ### 自定义校验规则
 
 这个例子中展示了如何使用自定义验证规则来完成密码的二次验证。
 
@@ -323,11 +346,11 @@
   }
 </script>
 ```
-:::
+::: -->
 
-:::tip
+<!-- :::tip
 自定义校验 callback 必须被调用。 更多高级用法可参考 [async-validator](https://github.com/yiminghe/async-validator)。
-:::
+::: -->
 
 ### Form Attributes
 

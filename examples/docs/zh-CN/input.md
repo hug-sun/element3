@@ -17,11 +17,12 @@ Input 为受控组件，它**总会显示 Vue 绑定值**。
 <el-input v-model="input" placeholder="请输入内容"></el-input>
 
 <script>
+import { ref } from 'vue';
 export default {
-  data() {
-    return {
-      input: ''
-    }
+  setup(){
+    const input = ref('');
+
+    return { input }
   }
 }
 </script>
@@ -40,11 +41,12 @@ export default {
 </el-input>
 
 <script>
+import { ref } from 'vue';
 export default {
-  data() {
-    return {
-      input: ''
-    }
+  setup(){
+    const input = ref('');
+
+    return { input }
   }
 }
 </script>
@@ -63,13 +65,14 @@ export default {
 </el-input>
 
 <script>
-  export default {
-    data() {
-      return {
-        input: ''
-      }
-    }
+import { ref } from 'vue';
+export default {
+  setup(){
+    const input = ref('');
+
+    return { input }
   }
+}
 </script>
 ```
 :::
@@ -82,13 +85,14 @@ export default {
 <el-input placeholder="请输入密码" v-model="input" show-password></el-input>
 
 <script>
-  export default {
-    data() {
-      return {
-        input: ''
-      }
-    }
+import { ref } from 'vue';
+export default {
+  setup(){
+    const input = ref('');
+
+    return { input }
   }
+}
 </script>
 ```
 :::
@@ -117,12 +121,16 @@ export default {
   <el-input
     placeholder="请选择日期"
     v-model="input3">
-    <i slot="suffix" class="el-input__icon el-icon-date"></i>
+    <template v-slot:suffix>
+     <i class="el-input__icon el-icon-date"></i>
+    </template>
   </el-input>
   <el-input
     placeholder="请输入内容"
     v-model="input4">
-    <i slot="prefix" class="el-input__icon el-icon-search"></i>
+    <template v-slot:prefix>
+     <i class="el-input__icon el-icon-search"></i>
+    </template>
   </el-input>
 </div>
 
@@ -155,11 +163,12 @@ export default {
 </el-input>
 
 <script>
+import { ref } from 'vue';
 export default {
-  data() {
-    return {
-      textarea: ''
-    }
+  setup(){
+    const textarea = ref('');
+
+    return { textarea }
   }
 }
 </script>
@@ -187,11 +196,15 @@ export default {
 </el-input>
 
 <script>
+import { ref } from 'vue';
 export default {
-  data() {
+  setup(){
+    const textarea1 = ref('');
+    const textarea2 = ref('');
+
     return {
-      textarea1: '',
-      textarea2: ''
+      textarea1,
+      textarea2
     }
   }
 }
@@ -207,22 +220,26 @@ export default {
 ```html
 <div>
   <el-input placeholder="请输入内容" v-model="input1">
-    <template slot="prepend">Http://</template>
+    <template v-slot:prepend>Http://</template>
   </el-input>
 </div>
 <div style="margin-top: 15px;">
   <el-input placeholder="请输入内容" v-model="input2">
-    <template slot="append">.com</template>
+    <template v-slot:append>.com</template>
   </el-input>
 </div>
 <div style="margin-top: 15px;">
   <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-    <el-select v-model="select" slot="prepend" placeholder="请选择">
-      <el-option label="餐厅名" value="1"></el-option>
-      <el-option label="订单号" value="2"></el-option>
-      <el-option label="用户电话" value="3"></el-option>
-    </el-select>
-    <el-button slot="append" icon="el-icon-search"></el-button>
+    <template v-slot:prepend>
+      <el-select v-model="select"  placeholder="请选择">
+        <el-option label="餐厅名" value="1"></el-option>
+        <el-option label="订单号" value="2"></el-option>
+        <el-option label="用户电话" value="3"></el-option>
+      </el-select>
+    </template>
+    <template v-slot:append>
+      <el-button icon="el-icon-search"></el-button>
+    </template>
   </el-input>
 </div>
 <style>
@@ -234,13 +251,19 @@ export default {
   }
 </style>
 <script>
+import { ref } from 'vue';
 export default {
-  data() {
+  setup(){
+    const input1 = ref('');
+    const input2 = ref('');
+    const input3 = ref('');
+    const select = ref('');
+
     return {
-      input1: '',
-      input2: '',
-      input3: '',
-      select: ''
+      input1,
+      input2,
+      input3,
+      select,
     }
   }
 }
@@ -279,13 +302,19 @@ export default {
 </div>
 
 <script>
+import { ref } from 'vue';
 export default {
-  data() {
+  setup(){
+    const input1 = ref('');
+    const input2 = ref('');
+    const input3 = ref('');
+    const input4 = ref('');
+
     return {
-      input1: '',
-      input2: '',
-      input3: '',
-      input4: ''
+      input1,
+      input2,
+      input3,
+      input4,
     }
   }
 }
@@ -293,7 +322,7 @@ export default {
 ```
 :::
 
-### 带输入建议
+<!-- ### 带输入建议
 
 根据输入内容提供对应的输入建议
 
@@ -638,7 +667,7 @@ export default {
   };
 </script>
 ```
-:::
+::: -->
 
 ### 输入长度限制
 
@@ -663,11 +692,15 @@ export default {
 </el-input>
 
 <script>
+import { ref } from 'vue';
 export default {
-  data() {
+  setup(){
+    const text = ref('');
+    const textarea = ref('');
+
     return {
-      text: '',
-      textarea: ''
+      text,
+      textarea
     }
   }
 }
@@ -731,7 +764,7 @@ export default {
 | blur | 使 input 失去焦点 | — |
 | select | 选中 input 中的文字 | — |
 
-### Autocomplete Attributes
+<!-- ### Autocomplete Attributes
 
 | 参数          | 说明            | 类型            | 可选值                 | 默认值   |
 |-------------  |---------------- |---------------- |---------------------- |-------- |
@@ -775,4 +808,4 @@ export default {
 ### Autocomplete Methods
 | 方法名 | 说明 | 参数 |
 | ---- | ---- | ---- |
-| focus | 使 input 获取焦点 | - |
+| focus | 使 input 获取焦点 | - | -->
