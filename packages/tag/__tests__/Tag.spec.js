@@ -21,6 +21,24 @@ describe('Tag.vue', () => {
       })
       expect(wrapper.find('.md-fade-center').exists()).toBeFalsy()
     })
+
+    it('color type hit effect size', () => {
+      const wrapper = mount(Tag, {
+        props: {
+          color: 'rgb(238, 238, 238)',
+          type: 'success',
+          hit: true,
+          effect: 'light',
+          size: 'medium'
+        }
+      })
+      const classList = wrapper.classes()
+      expect(classList).toContain('el-tag--success')
+      expect(classList).toContain('is-hit')
+      expect(classList).toContain('el-tag--light')
+      expect(classList).toContain('el-tag--medium')
+      expect(wrapper.element.style.backgroundColor).toBe('rgb(238, 238, 238)')
+    })
   })
   describe('event', () => {
     it('closable', () => {
