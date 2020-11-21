@@ -179,76 +179,65 @@
 
 :::demo
 ```html
-<el-upload
-  action="#"
-  list-type="picture-card"
-  :auto-upload="false">
-    <template v-slot:default>
+  <el-upload
+    action="https://jsonplaceholder.typicode.com/posts/"
+    list-type="picture-card"
+    ref="uploadRef"
+    :auto-upload="false">
+    <template #default>
       <i class="el-icon-plus"></i>
     </template>
-    <template v-slot:file="{file}">
-        <img
-        class="el-upload-list__item-thumbnail"
-        :src="file.url" alt=""
-      >
+    <template #file="{file}">
+      <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
       <span class="el-upload-list__item-actions">
-        <span
-          class="el-upload-list__item-preview"
-          @click="handlePictureCardPreview(file)"
-        >
+        <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
           <i class="el-icon-zoom-in"></i>
         </span>
-        <span
-          v-if="!disabled"
-          class="el-upload-list__item-delete"
-          @click="handleDownload(file)"
-        >
+        <span class="el-upload-list__item-delete" @click="handleDownload(file)">
           <i class="el-icon-download"></i>
         </span>
-        <span
-          v-if="!disabled"
-          class="el-upload-list__item-delete"
-          @click="handleRemove(file)"
-        >
+        <span class="el-upload-list__item-delete" @click="handleRemove(file)">
           <i class="el-icon-delete"></i>
         </span>
       </span>
-      
     </template>
-</el-upload>
-<el-dialog :visible.sync="dialogVisible">
-  <img width="100%" :src="dialogImageUrl" alt="">
-</el-dialog>
+  </el-upload>
+  <el-dialog :visible.sync="dialogVisible" v-model:visible="dialogVisible">
+    <img width="100%" :src="dialogImageUrl" style="width: 100%">
+  </el-dialog>
 <script>
-  import { ref , getCurrentInstance } from 'vue';
-  export default {
-    setup(){
-      const dialogImageUrl = ref('');
-      const dialogVisible = ref(false);
-      const disables = ref(false);
+import { ref, unref } from 'vue'
 
-      const self = getCurrentInstance().ctx;
-      const handleRemove = (file) => {
-        console.log(file);
-      }
-      const handlePictureCardPreview = (file) => {
-        self.dialogImageUrl = file.url;
-        self.dialogVisible = true;
-      }
-      const handleDownload = (file) => {
-        console.log(file);
-      }
+export default {
+  setup() {
+    const dialogImageUrl = ref('')
+    const dialogVisible = ref(false)
+    const uploadRef = ref(null)
 
-      return {
-        dialogImageUrl,
-        dialogVisible,
-        disables,
-        handleRemove,
-        handlePictureCardPreview,
-        handleDownload
-      }
+    const handleRemove = (file) => {
+      console.log('remove')
+      uploadRef.value.handleRemove(file)
+    }
+
+    const handlePictureCardPreview = (file) => {
+      dialogImageUrl.value = unref(file).url
+      dialogVisible.value = true
+    }
+
+    const handleDownload = (file) => {
+      console.log('DownLoad')
+    }
+
+    return {
+      dialogImageUrl,
+      dialogVisible,
+      uploadRef,
+      handleRemove,
+      handlePictureCardPreview,
+      handleDownload
     }
   }
+}
 </script>
 ```
 :::
