@@ -88,6 +88,7 @@ import ElBacktop from '../packages/backtop'
 import ElInfiniteScroll from '../packages/infinite-scroll'
 import ElDrawer from '../packages/drawer'
 import ElScrollbar from '../packages/scrollbar'
+import ElAutocomplete from '../packages/autocomplete'
 
 import { version } from '../package.json'
 
@@ -168,7 +169,8 @@ const components = [
   ElImage,
   ElInfiniteScroll,
   ElDrawer,
-  ElScrollbar
+  ElScrollbar,
+  ElAutocomplete
 ]
 
 const install = (app, opts = {}) => {
@@ -270,6 +272,7 @@ export {
   ElCalendar,
   ElImage,
   ElScrollbar,
+  ElAutocomplete,
   useMessage,
   useLoading,
   useMsgbox,
