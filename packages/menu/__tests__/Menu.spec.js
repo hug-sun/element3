@@ -4,6 +4,18 @@ import Submenu from '../Submenu.vue'
 import MenuItemGroup from '../MenuItemGroup.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
+const Home = { template: '<div>Home</div>' }
+const About = { template: '<div>About</div>' }
+const routes = [
+  { path: '/', component: Home },
+  { path: '/about', component: About }
+]
+const router = createRouter({
+  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
+  history: createWebHistory(),
+  routes // short for `routes: routes`
+})
 
 const components = {
   ElMenu: Menu,
@@ -410,6 +422,32 @@ describe('Menu.vue', () => {
       expect(wrapper.find('.el-menu-item.is-active').text()).toContain('new')
       await wrapper.setProps({ defaultActive: '3' })
       expect(wrapper.find('.el-menu-item.is-active').text()).toContain('year')
+    })
+    it('mode is route', async () => {
+      const C = {
+        template: `
+          <el-menu router>
+            <el-menu-item index="/">处理中心</el-menu-item>
+            <el-menu-item index="/about">消息中心</el-menu-item>
+          </el-menu>
+          <div class="example">
+            <router-view />
+          </div>
+          
+        `,
+        components
+      }
+      router.push('/')
+      await router.isReady()
+      const wrapper = mount(C, {
+        global: {
+          plugins: [router]
+        }
+      })
+      await wrapper.find('.el-menu-item').trigger('click')
+      expect(wrapper.find('.example').html()).toContain(
+        '<div class="example"><div>Home</div></div>'
+      )
     })
   })
 })

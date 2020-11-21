@@ -1,5 +1,5 @@
 <script lang="jsx">
-import { computed, getCurrentInstance, Transition } from 'vue'
+import { computed, getCurrentInstance, Transition, reactive } from 'vue'
 export default {
   name: 'ElTag',
   props: {
@@ -20,11 +20,13 @@ export default {
   },
   emits: ['close', 'click'],
   setup(props, { emit, slots }) {
+    const state = reactive({ show: true })
     const tagSize = computed(() => {
       return props.size || (getCurrentInstance().proxy.$ELEMENT || {}).size
     })
     const handleClose = (event) => {
       event.stopPropagation()
+      state.show = false
       emit('close', event)
     }
     const handleClick = (event) => {
@@ -53,7 +55,9 @@ export default {
       return props.disableTransitions ? (
         tagEl
       ) : (
-        <Transition name="el-zoom-in-center">{tagEl}</Transition>
+        <Transition appear name="el-zoom-in-center">
+          {state.show === true ? tagEl : ''}
+        </Transition>
       )
     }
   }
