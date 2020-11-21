@@ -360,7 +360,6 @@ export default {
       uploadFiles
         .filter((file) => file.status === 'ready')
         .forEach((file) => {
-          console.log('file.raw', file.raw)
           uploadInner.value.upload(file.raw)
         })
     }
