@@ -55,8 +55,8 @@ export default {
       return props.disableTransitions ? (
         tagEl
       ) : (
-        <Transition name="el-zoom-in-center">
-          {state.show ? tagEl : ''}
+        <Transition appear name="el-zoom-in-center">
+          {state.show === true ? tagEl : ''}
         </Transition>
       )
     }
