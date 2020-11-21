@@ -8,7 +8,7 @@
       :handlePreview="onPreview"
       v-if="listType === 'picture-card' && showFileList"
     >
-      <template v-slot:file="props">
+      <template v-if="$slots.file" #default="props">
         <slot name="file" :file="props.file"></slot>
       </template>
     </UploadList>
@@ -85,7 +85,7 @@
       :handlePreview="onPreview"
       v-if="listType !== 'picture-card' && showFileList"
     >
-      <template v-slot:file="props">
+      <template v-if="$slots.file" #default="props">
         <slot name="file" :file="props.file"></slot>
       </template>
     </UploadList>
