@@ -26,7 +26,6 @@
         :tabindex="tabindex"
         v-if="type !== 'textarea'"
         class="el-input__inner"
-        v-bind="$attrs"
         :type="showPassword ? (passwordVisible ? 'text' : 'password') : type"
         :disabled="inputDisabled"
         :readonly="readonly"
@@ -140,7 +139,7 @@ export default {
 
   mixins: [emitter],
 
-  inheritAttrs: false,
+  inheritAttrs: true,
 
   inject: {
     elForm: {
