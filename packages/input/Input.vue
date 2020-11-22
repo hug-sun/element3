@@ -27,7 +27,7 @@
         :tabindex="tabindex"
         v-if="type !== 'textarea'"
         class="el-input__inner"
-        v-bind="$attrs"
+        v-bind="omitStyleProps"
         :type="showPassword ? (passwordVisible ? 'text' : 'password') : type"
         :disabled="inputDisabled"
         :readonly="readonly"
@@ -91,7 +91,7 @@
       @compositionend="handleCompositionEnd"
       @input="handleInput"
       ref="textarea"
-      v-bind="$attrs"
+      v-bind="omitStyleProps"
       :disabled="inputDisabled"
       :readonly="readonly"
       :autocomplete="autocomplete"
@@ -122,7 +122,8 @@ import {
   onUpdated,
   nextTick,
   watch,
-  unref
+  unref,
+  computed
 } from 'vue'
 import emitter from '../../src/mixins/emitter'
 import { useEmitter } from '../../src/use/emitter'
@@ -141,7 +142,7 @@ export default {
 
   mixins: [emitter],
 
-  inheritAttrs: false,
+  inheritAttrs: true,
 
   inject: {
     elForm: {
@@ -247,6 +248,10 @@ export default {
       }
     )
 
+    const omitStyleProps = computed(() => {
+        return {...attrs, style: null, class: null}
+    })
+
     onMounted(() => {
       setNativeInputValue()
       resizeTextarea()
@@ -290,7 +295,8 @@ export default {
       clear,
       handlePasswordVisible,
       updateIconOffset,
-      needStatusIcon
+      needStatusIcon,
+      omitStyleProps
     }
   },
 
