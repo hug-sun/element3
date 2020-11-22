@@ -8,7 +8,7 @@ import {
 } from 'vue'
 import { PopupManager } from '../../src/utils/popup'
 // const PopperJS = require('element-ui/src/utils/popper')
-import PopperJS from '../../src/utils/new-popper'
+import { Popper } from '../../src/utils/new-popper'
 const stop = (e) => e.stopPropagation()
 
 const popperProps = {
@@ -111,7 +111,7 @@ function usePopper(props, { emit, slots }, { referenceElm, popperElm }) {
     options.placement = currentPlacement.value
     options.offset = offset.value
     options.arrowOffset = arrowOffset.value
-    popperJS.value = new PopperJS(referenceRef, popperRef, options)
+    popperJS.value = new Popper(referenceRef, popperRef, options)
     popperJS.value.onCreate(() => {
       emit('created', instance.proxy)
       resetTransformOrigin()

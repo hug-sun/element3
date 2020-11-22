@@ -215,7 +215,9 @@ export default {
     'change',
     'expand-change',
     'active-item-change',
-    'visible-change'
+    'visible-change',
+    'focus',
+    'blur'
   ],
 
   props: {
