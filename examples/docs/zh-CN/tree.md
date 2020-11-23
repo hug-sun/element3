@@ -660,7 +660,7 @@
 </el-tree>
 
 <script>
-  import {ref,onMounted,watchEffect} from 'vue'
+  import {ref,onMounted,watch} from 'vue'
   export default {
     setup(){
       let tree = ref(null);
@@ -720,16 +720,15 @@
           label: 'label'
         })
       onMounted(()=>{
-        watchEffect((filterText)=>{
+        watch(filterText,(val)=>{
           tree.value.filter((node) => {
-            return filterNode(filterText)
+            return filterNode(val,node)
           })
         })
       })
-      function filterNode(value) {
+      function filterNode(value,data) {
         if (!value) return true
-        console.log(data.value,value)
-        return data.value.indexOf(value) !== -1
+        return data.label.indexOf(value) !== -1
       }
 
       return {tree,filterText,data,defaultNodeKey,filterText,filterNode}
