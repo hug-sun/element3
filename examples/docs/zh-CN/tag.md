@@ -105,7 +105,7 @@
       })
       const saveTagInput = ref(null)
       const handleClose = (tag) => {
-        state.dynamicTags.splice(state.dynamicTags.indexOf(tag), 1)
+        // state.dynamicTags.splice(state.dynamicTags.indexOf(tag), 1)
       }
       const showInput = () => {
         state.inputVisible = true

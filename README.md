@@ -35,6 +35,11 @@ import {
 createApp(App).use(ElLink).use(ElButton)
 ```
 
+## About
+* base on [element-ui](https://github.com/ElemeFE/element)
+* Table Component base on [element-plus](https://github.com/element-plus/element-plus)
+  - rewrite Table is WIP
+
 ## Documentation
 
 To check out live docs, visit [website](https://element3-ui.com/)
