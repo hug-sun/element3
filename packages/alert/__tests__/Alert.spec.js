@@ -70,7 +70,6 @@ describe('Alert.vue', () => {
       expect(wrapperType.find('.el-alert--success').exists()).toBe(true)
     })
 
-
     it('closable', () => {
       const wrapperTrue = mount(Alert, {
         props: {
