@@ -224,7 +224,7 @@ export default {
       const len = props.urlList.length
       index.value = (index.value + 1) % len
     }
-    let _keyDownHandler = rafThrottle((e) => {
+    let keyDownHandler = rafThrottle((e) => {
       const keyCode = e.keyCode
       switch (keyCode) {
         // ESC
@@ -253,7 +253,7 @@ export default {
           break
       }
     })
-    let _mouseWheelHandler = rafThrottle((e) => {
+    let mouseWheelHandler = rafThrottle((e) => {
       const delta = e.wheelDelta ? e.wheelDelta : -e.detail
       if (delta > 0) {
         handleActions('zoomIn', {
@@ -268,14 +268,14 @@ export default {
       }
     })
     const deviceSupportInstall = () => {
-      on(document, 'keydown', _keyDownHandler)
-      on(document, mousewheelEventName, _mouseWheelHandler)
+      on(document, 'keydown', keyDownHandler)
+      on(document, mousewheelEventName, mouseWheelHandler)
     }
     const deviceSupportUninstall = () => {
-      off(document, 'keydown', _keyDownHandler)
-      off(document, mousewheelEventName, _mouseWheelHandler)
-      _keyDownHandler = null
-      _mouseWheelHandler = null
+      off(document, 'keydown', keyDownHandler)
+      off(document, mousewheelEventName, mouseWheelHandler)
+      keyDownHandler = null
+      mouseWheelHandler = null
     }
     const hide = () => {
       deviceSupportUninstall()
@@ -325,8 +325,8 @@ export default {
       toggleMode,
       handleActions,
       hide,
-      _keyDownHandler,
-      _mouseWheelHandler,
+      keyDownHandler,
+      mouseWheelHandler,
       deviceSupportInstall,
       deviceSupportUninstall,
       handleImgLoad,
