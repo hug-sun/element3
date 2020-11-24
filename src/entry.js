@@ -9,6 +9,7 @@ import ElAside from '../packages/aside'
 import ElMain from '../packages/main'
 import ElIcon from '../packages/icon'
 import ElButton from '../packages/button'
+import ElButtonGroup from '../packages/button-group'
 import ElLink from '../packages/link'
 // Form
 import ElRadio from '../packages/radio'
@@ -102,6 +103,7 @@ const components = [
   ElAlert,
   ElContainer,
   ElButton,
+  ElButtonGroup,
   ElSwitch,
   ElProgress,
   ElLink,
@@ -205,6 +207,7 @@ export {
   ElMain,
   ElAlert,
   ElButton,
+  ElButtonGroup,
   ElSwitch,
   ElProgress,
   ElLink,
