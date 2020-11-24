@@ -42,7 +42,8 @@ import {
   watch,
   onMounted,
   onBeforeUnmount,
-  getCurrentInstance
+  getCurrentInstance,
+  toRef
 } from 'vue'
 
 const isSupportObjectFit = () =>
@@ -81,6 +82,8 @@ export default {
       default: 2000
     }
   },
+
+  emits: ['error'],
 
   setup(props, ctx) {
     const instance = getCurrentInstance()
@@ -121,7 +124,7 @@ export default {
       return previewIndex
     })
     // watch
-    watch(props.src, () => {
+    watch(toRef(props, 'src'), () => {
       show.value && loadImage()
     })
     watch(show, (val) => {
