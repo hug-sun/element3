@@ -47,7 +47,7 @@ export default {
       default: 40
     }
   },
-
+  emits: ['click'],
   setup(props, { emit }) {
     const el = ref(null)
     const container = ref(null)
