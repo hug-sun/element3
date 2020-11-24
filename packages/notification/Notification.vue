@@ -61,7 +61,7 @@ export default {
     iconClass: { type: String, default: '' },
     id: { type: String, default: '' },
     verticalOffset: { type: Number, default: 0 },
-    message: { type: String, default: '' },
+    message: [String, Object],
     position: {
       type: String,
       default: 'top-right'
@@ -83,12 +83,10 @@ export default {
     })
 
     const horizontalClass = computed(() => {
-      console.log(props.position.indexOf('right') > -1 ? 'right' : 'left')
       return props.position.indexOf('right') > -1 ? 'right' : 'left'
     })
 
     const verticalProperty = computed(() => {
-      console.log(props.position.startsWith('top') ? 'top' : 'bottom')
       return props.position.startsWith('top') ? 'top' : 'bottom'
     })
 
@@ -103,7 +101,7 @@ export default {
     const closed = ref(false)
     const timer = ref(0)
     const destroyElement = () => {
-      instance.ctx.$el.parentNode.removeChild(instance.ctx.$el)
+      instance.ctx.$el.parentNode && instance.ctx.$el.parentNode.removeChild(instance.ctx.$el)
     }
     const clearTimer = () => {
       clearTimeout(timer.value)
