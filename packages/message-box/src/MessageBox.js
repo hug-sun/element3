@@ -179,7 +179,7 @@ MessageBox.alert = (message, title, options) => {
       {
         title: title,
         message: message,
-        _type: 'alert',
+        msgButtonType: 'alert',
         closeOnPressEscape: false,
         closeOnClickModal: false
       },
@@ -200,7 +200,7 @@ MessageBox.confirm = (message, title, options) => {
       {
         title: title,
         message: message,
-        _type: 'confirm',
+        msgButtonType: 'confirm',
         showCancelButton: true
       },
       options
@@ -222,7 +222,7 @@ MessageBox.prompt = (message, title, options) => {
         message: message,
         showCancelButton: true,
         showInput: true,
-        _type: 'prompt'
+        msgButtonType: 'prompt'
       },
       options
     )

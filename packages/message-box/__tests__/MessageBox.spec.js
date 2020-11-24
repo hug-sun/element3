@@ -18,7 +18,7 @@ describe('MessageBox.vue', () => {
       props: {
         title: 'title',
         message: 'message',
-        _type: 'alert',
+        msgButtonType: 'alert',
         closeOnPressEscape: false,
         closeOnClickModal: false
       }
@@ -33,7 +33,7 @@ describe('MessageBox.vue', () => {
       props: {
         title: 'title',
         message: '<div>message</div>',
-        _type: 'alert',
+        msgButtonType: 'alert',
         closeOnPressEscape: false,
         closeOnClickModal: false,
         dangerouslyUseHTMLString: true
@@ -49,7 +49,7 @@ describe('MessageBox.vue', () => {
       props: {
         title: 'title',
         message: '<div>message</div>',
-        _type: 'alert',
+        msgButtonType: 'alert',
         cancelButtonClass: 'el-cccc',
         closeOnPressEscape: false,
         closeOnClickModal: false,
