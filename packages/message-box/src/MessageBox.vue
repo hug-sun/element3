@@ -253,7 +253,7 @@ export default {
       type: Boolean,
       default: false
     },
-    _type: {
+    msgButtonType: {
       type: String,
       default: ''
     },
@@ -276,7 +276,7 @@ export default {
     const {
       closeOnClickModal,
       distinguishCancelAndClose,
-      _type,
+      msgButtonType,
       beforeClose,
       callback,
       type,
@@ -304,7 +304,7 @@ export default {
       visible: state.visible
     })
     const validate = () => {
-      if (unref(_type) === 'prompt') {
+      if (unref(msgButtonType) === 'prompt') {
         const _inputPattern = unref(inputPattern)
         if (_inputPattern && !_inputPattern.test(state.inputValue || '')) {
           state.editorErrorMessage =
@@ -358,7 +358,7 @@ export default {
     const confirmButtonLoading = ref(false)
     const handleAction = (action) => {
       if (
-        unref(_type) === 'prompt' &&
+        unref(msgButtonType) === 'prompt' &&
         state.action === 'confirm' &&
         !validate()
       ) {
@@ -422,7 +422,10 @@ export default {
         rendered.value = true
         open()
       })
-      if (unref(_type) === 'alert' || unref(_type) === 'confirm') {
+      if (
+        unref(msgButtonType) === 'alert' ||
+        unref(msgButtonType) === 'confirm'
+      ) {
         nextTick(() => {
           instance.refs.confirm.$el.focus()
         })
@@ -437,7 +440,7 @@ export default {
         window.addEventListener('hashchange', doClose)
       }
       window.addEventListener('keyup', handleKeyup)
-      if (unref(_type) !== 'prompt') return
+      if (unref(msgButtonType) !== 'prompt') return
       setTimeout(() => {
         if (instance.refs.input && instance.refs.input.$el) {
           getInputElement().focus()
@@ -470,7 +473,7 @@ export default {
       () => state.inputValue,
       (val) => {
         nextTick(() => {
-          if (unref(_type) === 'prompt' && val !== null) {
+          if (unref(msgButtonType) === 'prompt' && val !== null) {
             validate()
           }
         })
