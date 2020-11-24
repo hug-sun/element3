@@ -159,10 +159,7 @@ route = route.concat([
     path: '/',
     redirect: { path: defaultPath }
   },
-  {
-    path: '',
-    redirect: { path: defaultPath }
-  }
+  { path: '/:pathMatch(.*)*', redirect: { path: defaultPath } }
 ])
 console.log(route)
 export default route
