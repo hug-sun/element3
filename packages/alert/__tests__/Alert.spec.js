@@ -34,13 +34,42 @@ describe('Alert.vue', () => {
         }
       })
 
+      const wrapperBoth = mount(Alert, {
+        props: {
+          description: 'test description'
+        },
+        slots: {
+          default: () => {
+            return 'description slot'
+          }
+        }
+      })
+
       expect(wrapper.find('.el-alert__description').text()).toBe(
         'test description'
       )
+
+      expect(wrapper.find('.el-alert__description').text()).toBe(
+        'test description'
+      )
+      
       expect(wrapperSlot.find('.el-alert__description').text()).toBe(
         'description slot'
       )
+      expect(wrapperBoth.find('.el-alert__description').exists()).toBe(false)
     })
+
+    it('type', () => {
+      const wrapperType = mount(Alert, {
+        props: {
+          title: 'test',
+          type: 'success',
+          showIcon: true
+        }
+      })
+      expect(wrapperType.find('.el-alert--success').exists()).toBe(true)
+    })
+
 
     it('closable', () => {
       const wrapperTrue = mount(Alert, {
@@ -85,6 +114,38 @@ describe('Alert.vue', () => {
 
       expect(wrapperTrue.find('.el-alert__icon').exists()).toBe(true)
       expect(wrapperFalse.find('.el-alert__icon').exists()).toBe(false)
+    })
+
+    it('center', () => {
+      const wrapperTrue = mount(Alert, {
+        props: {
+          center: true
+        }
+      })
+      const wrapperFalse = mount(Alert, {
+        props: {
+          center: false
+        }
+      })
+
+      expect(wrapperTrue.find('.is-center').exists()).toBe(true)
+      expect(wrapperFalse.find('.is-center').exists()).toBe(false)
+    })
+
+    it('effect', () => {
+      const wrapperLight = mount(Alert, {
+        props: {
+          effect: "light"
+        }
+      })
+      const wrapperDark = mount(Alert, {
+        props: {
+          effect: "dark"
+        }
+      })
+
+      expect(wrapperLight.find('.is-light').exists()).toBe(true)
+      expect(wrapperDark.find('.is-dark').exists()).toBe(true)
     })
   })
 })
