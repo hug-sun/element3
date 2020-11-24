@@ -257,7 +257,7 @@ export default {
 
         return currentValue
       },
-      set: (val)=> {
+      set: ()=> {
          return state.currentValue
       }
     })
