@@ -83,12 +83,10 @@ export default {
     })
 
     const horizontalClass = computed(() => {
-      console.log(props.position.indexOf('right') > -1 ? 'right' : 'left')
       return props.position.indexOf('right') > -1 ? 'right' : 'left'
     })
 
     const verticalProperty = computed(() => {
-      console.log(props.position.startsWith('top') ? 'top' : 'bottom')
       return props.position.startsWith('top') ? 'top' : 'bottom'
     })
 
