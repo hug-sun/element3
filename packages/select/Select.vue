@@ -206,7 +206,6 @@ export default {
       select: this
     }
   },
-  emits: ['change'],
   computed: {
     _elFormItemSize() {
       return (this.elFormItem || {}).elFormItemSize
@@ -357,7 +356,6 @@ export default {
       default: true
     }
   },
-
   emits: [
     'update:modelValue',
     'input',
