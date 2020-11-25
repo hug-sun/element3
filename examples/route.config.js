@@ -99,7 +99,7 @@ const generateMiscRoutes = function (lang) {
     component: load(lang, 'theme-nav'),
     children: [
       {
-        path: '/', // 主题管理
+        path: '', // 主题管理
         name: 'theme' + lang,
         meta: { lang },
         component: load(lang, 'theme')
@@ -156,7 +156,7 @@ let defaultPath = '/zh-CN'
 
 route = route.concat([
   {
-    path: '/',
+    path: '',
     redirect: { path: defaultPath }
   },
   { path: '/:pathMatch(.*)*', redirect: { path: defaultPath } }
