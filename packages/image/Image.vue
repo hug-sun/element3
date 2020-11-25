@@ -124,7 +124,7 @@ export default {
       return previewIndex
     })
     // watch
-    watch(toRef(props, 'src'), () => {
+    watch(() => props.src, () => {
       show.value && loadImage()
     })
     watch(show, (val) => {
