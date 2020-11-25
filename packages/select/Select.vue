@@ -206,7 +206,7 @@ export default {
       select: this
     }
   },
-
+  emits: ['change'],
   computed: {
     _elFormItemSize() {
       return (this.elFormItem || {}).elFormItemSize
@@ -751,15 +751,18 @@ export default {
         )[0]
         const tags = this.$refs.tags
         const sizeInMap = this.initialInputHeight || 40
-        input.style.height =
-          this.selected.length === 0
-            ? sizeInMap + 'px'
-            : Math.max(
-                tags
-                  ? tags.clientHeight + (tags.clientHeight > sizeInMap ? 6 : 0)
-                  : 0,
-                sizeInMap
-              ) + 'px'
+        if (input) {
+          input.style.height =
+            this.selected.length === 0
+              ? sizeInMap + 'px'
+              : Math.max(
+                  tags
+                    ? tags.clientHeight +
+                        (tags.clientHeight > sizeInMap ? 6 : 0)
+                    : 0,
+                  sizeInMap
+                ) + 'px'
+        }
         if (this.visible && this.emptyText !== false) {
           this.broadcast('updatePopper')
         }

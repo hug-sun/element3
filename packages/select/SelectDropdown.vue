@@ -54,6 +54,7 @@ export default {
       default: true
     }
   },
+  emits: ['update:blur', 'update:modelValue', 'created'],
 
   setup(props, ctx) {
     const elSelect = inject('select')

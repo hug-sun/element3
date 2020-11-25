@@ -110,7 +110,10 @@ export default {
   ],
 
   props: {
-    modelValue: {},
+    modelValue: {
+      type: Object,
+      default: () => {}
+    },
     options: Array,
     props: Object,
     border: {
@@ -285,6 +288,8 @@ export default {
       checkStrictly.value && calculateCheckedNodePaths()
     })
     watch(checkedValue, (val) => {
+      console.log('checkedValue', checkedValue)
+
       if (!isEqual(val, modelValue?.value)) {
         checkStrictly.value && calculateCheckedNodePaths()
         emit('update:modelValue', val)
