@@ -5,10 +5,10 @@
   export default {
     setup(){
     const varMap = reactive({
-      '$--box-shadow-light': 'boxShadowLight',
-      '$--box-shadow-base': 'boxShadowBase',
-      '$--border-radius-base': 'borderRadiusBase',
-      '$--border-radius-small': 'borderRadiusSmall'
+      'box-shadow-light': 'boxShadowLight',
+      'box-shadow-base': 'boxShadowBase',
+      'border-radius-base': 'borderRadiusBase',
+      'border-radius-small': 'borderRadiusSmall'
     });
   const original = reactive({
     boxShadowLight: '0 2px 12px 0 rgba(0, 0, 0, 0.1)',
