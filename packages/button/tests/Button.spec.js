@@ -121,7 +121,6 @@ describe('Button.vue', () => {
     })
 
     expect(wrapper.classes()).toContain(`is-loading`)
-    // expect(wrapper.attributes()).toHaveProperty('disabled')
   })
 
   it('set button loading by prop loading', async () => {
@@ -132,7 +131,6 @@ describe('Button.vue', () => {
     })
 
     expect(wrapper.classes()).toContain(`is-loading`)
-    // expect(wrapper.attributes()).toHaveProperty('disabled')
   })
 
   describe('set button disabled', () => {
