@@ -60,7 +60,7 @@ export default {
   componentName: 'ElRadio',
 
   props: {
-    modelValue: [String, Number, Symbol, Boolean],
+    modelValue: [String, Number, Symbol, Boolean, Array],
     label: [String, Number, Symbol, Boolean],
     disabled: Boolean,
     name: String,

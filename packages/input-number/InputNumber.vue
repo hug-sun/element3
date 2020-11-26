@@ -254,14 +254,12 @@ export default {
             currentValue = currentValue.toFixed(precision.value)
           }
         }
-
         return currentValue
       },
-      set: ()=> {
-         return state.currentValue
+      set: () => {
+        return state.currentValue
       }
     })
-
     const increase = () => {
       if (inputNumberDisabled.value || maxDisabled.value) return
 

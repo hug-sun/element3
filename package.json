@@ -29,7 +29,6 @@
     "dist": "npm run clean && npm run build:file && npm run lint && webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js && npm run build:utils && npm run build:umd && npm run build:theme",
     "i18n": "node build/bin/i18n.js",
     "pub": "npm run bootstrap && sh build/git-release.sh && sh build/release.sh && node build/bin/gen-indices.js && sh build/deploy-faas.sh",
-
     "build:docs": "npm run build:file && cross-env NODE_ENV=development webpack --config build/webpack.demo.js",
     "lint": "eslint --no-error-on-unmatched-pattern --ext .vue --ext .js --ext .jsx packages/**/ src/**/ --fix",
     "test": "jest --runInBand",
@@ -99,7 +98,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@rollup/plugin-replace": "^2.3.3",
-    "@testing-library/jest-dom": "^5.11.2",
+    "@testing-library/jest-dom": "^5.11.6",
     "@types/jest": "^26.0.7",
     "@vue/babel-plugin-jsx": "^1.0.0-rc.3",
     "@vue/compiler-dom": "^3.0.0-rc.5",
