@@ -16,7 +16,7 @@
 以上组件采用了 flex 布局，使用前请确定目标浏览器是否兼容。此外，`<el-container>` 的子元素只能是后四者，后四者的父元素也只能是 `<el-container>`。
 :::
 
-<h3 id="chang-jian-ye-mian-bu-ju">常见页面布局</h3>
+### 常见页面布局
 
 :::demo
 
