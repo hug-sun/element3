@@ -1,4 +1,5 @@
 ## Container 布局容器
+
 用于布局的容器组件，方便快速搭建页面的基本结构：
 
 `<el-container>`：外层容器。当子元素中包含 `<el-header>` 或 `<el-footer>` 时，全部子元素会垂直上下排列，否则会水平左右排列。
@@ -18,6 +19,7 @@
 ### 常见页面布局
 
 :::demo
+
 ```html
 <el-container>
   <el-header>Header</el-header>
@@ -72,49 +74,52 @@
 </el-container>
 
 <style>
-  .el-header, .el-footer {
-    background-color: #B3C0D1;
+  .el-header,
+  .el-footer {
+    background-color: #b3c0d1;
     color: #333;
     text-align: center;
     line-height: 60px;
   }
-  
+
   .el-aside {
-    background-color: #D3DCE6;
+    background-color: #d3dce6;
     color: #333;
     text-align: center;
     line-height: 200px;
   }
-  
+
   .el-main {
-    background-color: #E9EEF3;
+    background-color: #e9eef3;
     color: #333;
     text-align: center;
     line-height: 160px;
   }
-  
+
   body > .el-container {
     margin-bottom: 40px;
   }
-  
+
   .el-container:nth-child(5) .el-aside,
   .el-container:nth-child(6) .el-aside {
     line-height: 260px;
   }
-  
+
   .el-container:nth-child(7) .el-aside {
     line-height: 320px;
   }
 </style>
 ```
+
 :::
 
 ### 实例
 
 :::demo
+
 ```html
 <el-container style="height: 500px; border: 1px solid #eee">
-  <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+  <el-aside width="250px" style="background-color: rgb(238, 241, 246)">
     <el-menu :default-openeds="['1', '3']">
       <el-submenu index="1">
         <template v-slot:title><i class="el-icon-message"></i>导航一</template>
@@ -163,7 +168,7 @@
       </el-submenu>
     </el-menu>
   </el-aside>
-  
+
   <el-container>
     <el-header style="text-align: right; font-size: 12px">
       <el-dropdown>
@@ -178,15 +183,14 @@
       </el-dropdown>
       <span>王小虎</span>
     </el-header>
-    
+
     <el-main>
       <el-table :data="tableData">
         <el-table-column prop="date" label="日期" width="140">
         </el-table-column>
         <el-table-column prop="name" label="姓名" width="120">
         </el-table-column>
-        <el-table-column prop="address" label="地址">
-        </el-table-column>
+        <el-table-column prop="address" label="地址"> </el-table-column>
       </el-table>
     </el-main>
   </el-container>
@@ -194,11 +198,11 @@
 
 <style>
   .el-header {
-    background-color: #B3C0D1;
+    background-color: #b3c0d1;
     color: #333;
     line-height: 60px;
   }
-  
+
   .el-aside {
     color: #333;
   }
@@ -211,32 +215,37 @@
         date: '2016-05-02',
         name: '王小虎',
         address: '上海市普陀区金沙江路 1518 弄'
-      };
+      }
       return {
         tableData: Array(20).fill(item)
       }
     }
-  };
+  }
 </script>
 ```
+
 :::
 
 ### Container Attributes
-| 参数    | 说明     | 类型    | 可选值      | 默认值 |
-|---------|----------|---------|-------------|--------|
+
+| 参数      | 说明             | 类型   | 可选值                | 默认值                                                                 |
+| --------- | ---------------- | ------ | --------------------- | ---------------------------------------------------------------------- |
 | direction | 子元素的排列方向 | string | horizontal / vertical | 子元素中有 `el-header` 或 `el-footer` 时为 vertical，否则为 horizontal |
 
 ### Header Attributes
-| 参数    | 说明     | 类型    | 可选值      | 默认值 |
-|---------|----------|---------|-------------|--------|
-| height | 顶栏高度 | string | — | 60px |
+
+| 参数   | 说明     | 类型   | 可选值 | 默认值 |
+| ------ | -------- | ------ | ------ | ------ |
+| height | 顶栏高度 | string | —      | 60px   |
 
 ### Aside Attributes
-| 参数    | 说明     | 类型    | 可选值      | 默认值 |
-|---------|----------|---------|-------------|--------|
-| width | 侧边栏宽度 | string | — | 300px |
+
+| 参数  | 说明       | 类型   | 可选值 | 默认值 |
+| ----- | ---------- | ------ | ------ | ------ |
+| width | 侧边栏宽度 | string | —      | 300px  |
 
 ### Footer Attributes
-| 参数    | 说明     | 类型    | 可选值      | 默认值 |
-|---------|----------|---------|-------------|--------|
-| height | 底栏高度 | string | — | 60px |
+
+| 参数   | 说明     | 类型   | 可选值 | 默认值 |
+| ------ | -------- | ------ | ------ | ------ |
+| height | 底栏高度 | string | —      | 60px   |

@@ -2,9 +2,8 @@ import { createApp, reactive } from 'vue'
 import EntryApp from './app'
 
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Element3 from 'main/index.js'
-import * as NewElement3 from 'main/entry.js'
-// import hljs from 'highlight.js'
+// import * as Element3 from '../dist/element3-ui.esm-bundler'
+import * as Element3 from 'main/entry.js'
 import routes from './route.config'
 import demoBlock from './components/demo-block'
 import MainHeader from './components/header'
@@ -30,14 +29,6 @@ app.component('footer-nav', FooterNav)
 const globalEle = reactive({
   data: { $isEle: false } // 是否 ele 用户
 })
-
-// 小步替换
-// 先把新的element3入口导出部分方法
-// 后面需要都替换成新的element3 导出的方法
-Element3.useMessage = NewElement3.useMessage
-Element3.useMsgbox = NewElement3.useMsgbox
-Element3.useLoading = NewElement3.useLoading
-Element3.useNotify = NewElement3.useNotify
 
 // 方便在 demo 里面全局导入 element3
 window.Element3 = Element3

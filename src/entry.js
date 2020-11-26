@@ -1,4 +1,5 @@
 // 用于构建时的入口
+import ElCollapseTransition from './transitions/collapse-transition'
 // Basic
 import ElRow from '../packages/row'
 import ElCol from '../packages/col'
@@ -9,6 +10,7 @@ import ElAside from '../packages/aside'
 import ElMain from '../packages/main'
 import ElIcon from '../packages/icon'
 import ElButton from '../packages/button'
+import ElButtonGroup from '../packages/button-group'
 import ElLink from '../packages/link'
 // Form
 import ElRadio from '../packages/radio'
@@ -102,6 +104,7 @@ const components = [
   ElAlert,
   ElContainer,
   ElButton,
+  ElButtonGroup,
   ElSwitch,
   ElProgress,
   ElLink,
@@ -159,7 +162,6 @@ const components = [
   ElPopover,
   ElPopconfirm,
   ElCard,
-  ElCarousel,
   ElCollapse,
   ElCollapseItem,
   ElTimeline,
@@ -170,7 +172,8 @@ const components = [
   ElInfiniteScroll,
   ElDrawer,
   ElScrollbar,
-  ElAutocomplete
+  ElAutocomplete,
+  ElCollapseTransition
 ]
 
 const install = (app, opts = {}) => {
@@ -205,6 +208,7 @@ export {
   ElMain,
   ElAlert,
   ElButton,
+  ElButtonGroup,
   ElSwitch,
   ElProgress,
   ElLink,
@@ -266,6 +270,7 @@ export {
   ElCard,
   ElCollapse,
   ElCollapseItem,
+  ElCollapseTransition,
   ElTimeline,
   ElTimelineItem,
   ElDivider,

@@ -385,11 +385,9 @@ export default {
       verDropdownVisible: true,
       langDropdownVisible: true,
       langs: {
-        'zh-CN': '中文',
-        'en-US': 'English',
-        es: 'Español',
-        'fr-FR': 'Français'
-      }
+        'zh-CN': '中文'
+      },
+      lang: 'zh-CN'
     }
   },
 
@@ -402,9 +400,6 @@ export default {
   },
 
   computed: {
-    lang() {
-      return this.$route.path.split('/')[1] || 'zh-CN'
-    },
     displayedLang() {
       return this.langs[this.lang] || '中文'
     },

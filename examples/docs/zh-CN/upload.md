@@ -179,162 +179,166 @@
 
 :::demo
 ```html
-<el-upload
-  action="#"
-  list-type="picture-card"
-  :auto-upload="false">
-    <template v-slot:default>
+  <el-upload
+    action="https://jsonplaceholder.typicode.com/posts/"
+    list-type="picture-card"
+    ref="uploadRef"
+    :auto-upload="false">
+    <template #default>
       <i class="el-icon-plus"></i>
     </template>
-    <template v-slot:file="{file}">
-        <img
-        class="el-upload-list__item-thumbnail"
-        :src="file.url" alt=""
-      >
+    <template #file="{file}">
+      <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
       <span class="el-upload-list__item-actions">
-        <span
-          class="el-upload-list__item-preview"
-          @click="handlePictureCardPreview(file)"
-        >
+        <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
           <i class="el-icon-zoom-in"></i>
         </span>
-        <span
-          v-if="!disabled"
-          class="el-upload-list__item-delete"
-          @click="handleDownload(file)"
-        >
+        <span class="el-upload-list__item-delete" @click="handleDownload(file)">
           <i class="el-icon-download"></i>
         </span>
-        <span
-          v-if="!disabled"
-          class="el-upload-list__item-delete"
-          @click="handleRemove(file)"
-        >
+        <span class="el-upload-list__item-delete" @click="handleRemove(file)">
           <i class="el-icon-delete"></i>
         </span>
       </span>
-      
     </template>
-</el-upload>
-<el-dialog :visible.sync="dialogVisible">
-  <img width="100%" :src="dialogImageUrl" alt="">
-</el-dialog>
+  </el-upload>
+  <el-dialog :visible.sync="dialogVisible" v-model:visible="dialogVisible">
+    <img width="100%" :src="dialogImageUrl" style="width: 100%">
+  </el-dialog>
 <script>
-  import { ref , getCurrentInstance } from 'vue';
-  export default {
-    setup(){
-      const dialogImageUrl = ref('');
-      const dialogVisible = ref(false);
-      const disables = ref(false);
+import { ref, unref } from 'vue'
 
-      const self = getCurrentInstance().ctx;
-      const handleRemove = (file) => {
-        console.log(file);
-      }
-      const handlePictureCardPreview = (file) => {
-        self.dialogImageUrl = file.url;
-        self.dialogVisible = true;
-      }
-      const handleDownload = (file) => {
-        console.log(file);
-      }
+export default {
+  setup() {
+    const dialogImageUrl = ref('')
+    const dialogVisible = ref(false)
+    const uploadRef = ref(null)
 
-      return {
-        dialogImageUrl,
-        dialogVisible,
-        disables,
-        handleRemove,
-        handlePictureCardPreview,
-        handleDownload
-      }
+    const handleRemove = (file) => {
+      console.log('remove')
+      uploadRef.value.handleRemove(file)
+    }
+
+    const handlePictureCardPreview = (file) => {
+      dialogImageUrl.value = unref(file).url
+      dialogVisible.value = true
+    }
+
+    const handleDownload = (file) => {
+      console.log('DownLoad')
+    }
+
+    return {
+      dialogImageUrl,
+      dialogVisible,
+      uploadRef,
+      handleRemove,
+      handlePictureCardPreview,
+      handleDownload
     }
   }
+}
 </script>
 ```
 :::
 
 ### 图片列表缩略图
+上传图片文件, 点击已上传的图片列表可查看缩略图
 
 :::demo
 ```html
-<el-upload
-  class="upload-demo"
-  action="https://jsonplaceholder.typicode.com/posts/"
-  :on-preview="handlePreview"
-  :on-remove="handleRemove"
-  :file-list="fileList"
-  list-type="picture">
-  <el-button size="small" type="primary">点击上传</el-button>
-  <template v-slot:tip>
-     <div  class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-  </template>
-</el-upload>
+  <el-upload
+    action="https://jsonplaceholder.typicode.com/posts/"
+    :on-preview="handlePreview"
+    :on-remove="handleRemove"
+    :file-list="fileList"
+    list-type="picture">
+    <el-button size="small" type="primary">选择文件</el-button>
+  </el-upload>
+  <el-dialog :visible.sync="dialogVisible" v-model:visible="dialogVisible">
+    <img width="100%" :src="dialogImageUrl" style="width: 100%">
+  </el-dialog>
 <script>
-  import { reactive , toRefs } from 'vue';
-  export default {
-    setup(){
-      const state = reactive({
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-      })
-      const handleRemove = (file, fileList) => {
-        console.log(file, fileList);
-      }
-      const handlePreview = (file) => {
-        console.log(file);
-      }
+import { reactive, ref, unref, toRefs } from 'vue'
 
-      return {
-        ...toRefs(state),
-        handleRemove,
-        handlePreview
-      }
+export default {
+  setup() {
+    const state = reactive({
+      fileList: [
+        {
+          name: 'food.jpeg',
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        },
+        {
+          name: 'food2.jpeg',
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }]
+    })
+    const dialogImageUrl = ref('');
+    const dialogVisible = ref(false)
+
+    const handleRemove = (file, fileList) => {
+      console.log(file, fileList)
+    }
+
+    const handlePreview = (file) => {
+      dialogImageUrl.value = unref(file).url
+      dialogVisible.value = true
+    }
+
+    return {
+      ...toRefs(state),
+      dialogVisible,
+      dialogImageUrl,
+      handleRemove,
+      handlePreview,
     }
   }
+}
 </script>
 ```
 :::
 
 ### 上传文件列表控制
 
-通过 `on-change` 钩子函数来对列表进行控制
+上传文件之前、上传成功、失败都触发 `on-change` 钩子, 可通过该钩子函数来对列表进行控制, 
 
 :::demo
 ```html
-<el-upload
-  class="upload-demo"
-  action="https://jsonplaceholder.typicode.com/posts/"
-  :on-change="handleChange"
-  :file-list="fileList">
-  <el-button size="small" type="primary">点击上传</el-button>
-  <template v-slot:tip>
-  <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-  </template>
-</el-upload>
+  <el-upload
+    action="https://jsonplaceholder.typicode.com/posts/"
+    :on-change="handleChange"
+    :file-list="fileList">
+    <el-button size="small" type="primary">点击上传</el-button>
+  </el-upload>
 <script>
-  import { reactive , toRefs , getCurrentInstance } from 'vue';
-  export default {
-    setup(){
-      const state = reactive({
-        fileList: [{
+import { reactive, toRefs } from 'vue'
+
+export default {
+  setup() {
+    const state = reactive({
+      fileList: [
+        {
           name: 'food.jpeg',
           url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        }, {
+        },
+        {
           name: 'food2.jpeg',
           url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
         }]
-      })
+    })
 
-      const self = getCurrentInstance().ctx;
-      const handleChange = (file, fileList) => {
-        self.fileList = fileList.slice(-3);
-      }
+    const handleChange = (file, fileList) => {
+      console.log(file)
+      console.log(fileList)
+    }
 
-      return {
-        ...toRefs(state),
-        handleChange
-      }
+    return {
+      ...toRefs(state),
+      handleChange
     }
   }
+}
 </script>
 ```
 :::
@@ -356,52 +360,62 @@
 :::
 
 ### 手动上传
+可控制已选择文件列表上传的时机，调用 `upload` 实例的 `submit` 方法
 
 :::demo
 ```html
-<el-upload
-  class="upload-demo"
-  ref="upload"
-  action="https://jsonplaceholder.typicode.com/posts/"
-  :on-preview="handlePreview"
-  :on-remove="handleRemove"
-  :file-list="fileList"
-  :auto-upload="false">
-  <template v-slot:trigger>
-  <el-button size="small" type="primary">选取文件</el-button>
-  </template>
-  <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-  <template v-slot:tip>
-    <div class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-  </template>
-</el-upload>
+<template>
+  <el-upload
+    ref="upload"
+    action="https://jsonplaceholder.typicode.com/posts/"
+    :on-preview="handlePreview"
+    :on-remove="handleRemove"
+    :file-list="fileList"
+    :auto-upload="false">
+    <template v-slot:trigger>
+      <el-button size="small" type="primary">选取文件</el-button>
+    </template>
+    <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">开始上传至服务器</el-button>
+  </el-upload>
+</template>
 <script>
-  import { reactive , toRefs , getCurrentInstance} from 'vue';
-  export default {
-    setup(){
-      const state = reactive({
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-      })
+import { reactive, ref, toRefs } from 'vue'
 
-      const self = getCurrentInstance().ctx;
-      const submitUpload = () => {
-        self.$refs.upload.submit();
-      }
-      const handleRemove = (file, fileList) => {
-        console.log(file, fileList);
-      }
-      const handlePreview = (file) => {
-        console.log(file);
-      }
+export default {
+  setup() {
+    const state = reactive({
+      fileList: [
+        {
+          name: 'food.jpeg',
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        },
+        {
+          name: 'food2.jpeg',
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }]
+    })
 
-      return {
-        ...toRefs(state),
-        submitUpload,
-        handleRemove,
-        handlePreview
-      }
+    const upload = ref(null)
+
+    const submitUpload = () => {
+      upload.value.submit()
+    }
+    const handleRemove = (file, fileList) => {
+      console.log(file, fileList)
+    }
+    const handlePreview = (file) => {
+      console.log(file)
+    }
+
+    return {
+      ...toRefs(state),
+      submitUpload,
+      handleRemove,
+      handlePreview,
+      upload
     }
   }
+}
 </script>
 ```
 :::

@@ -14,10 +14,14 @@ const getModal = function () {
     modalDom = document.createElement('div')
     PopupManager.modalDom = modalDom
 
-    modalDom.addEventListener('touchmove', function (event) {
-      event.preventDefault()
-      event.stopPropagation()
-    })
+    modalDom.addEventListener(
+      'touchmove',
+      function (event) {
+        event.preventDefault()
+        event.stopPropagation()
+      },
+      { passive: true }
+    )
 
     modalDom.addEventListener('click', function () {
       PopupManager.doOnModalClick && PopupManager.doOnModalClick()

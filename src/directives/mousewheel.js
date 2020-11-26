@@ -5,10 +5,14 @@ const mousewheelEventName = isFirefox() ? 'DOMMouseScroll' : 'mousewheel'
 
 const mousewheel = function (element, callback) {
   if (element && element.addEventListener) {
-    element.addEventListener(mousewheelEventName, function (event) {
-      const normalized = normalizeWheel(event)
-      callback && callback(event, normalized)
-    })
+    element.addEventListener(
+      mousewheelEventName,
+      function (event) {
+        const normalized = normalizeWheel(event)
+        callback && callback(event, normalized)
+      },
+      { passive: true }
+    )
   }
 }
 

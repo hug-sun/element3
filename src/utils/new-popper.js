@@ -111,7 +111,7 @@ var DEFAULTS = {
  * @param {Boolean} [options.removeOnDestroy=false]
  *      Set to true if you want to automatically remove the popper when you call the `destroy` method.
  */
-export default function Popper(reference, popper, options) {
+export function Popper(reference, popper, options) {
   this._reference = reference.jquery ? reference[0] : reference
   this.state = {}
 

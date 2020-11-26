@@ -5,15 +5,6 @@ import langs from './i18n/route'
 const LOAD_MAP = {
   'zh-CN': (name) => {
     return defineAsyncComponent(() => import(`./pages/zh-CN/${name}.vue`))
-  },
-  'en-US': (name) => {
-    return defineAsyncComponent(() => import(`./pages/en-US/${name}.vue`))
-  },
-  es: (name) => {
-    return defineAsyncComponent(() => import(`./pages/es/${name}.vue`))
-  },
-  'fr-FR': (name) => {
-    return defineAsyncComponent(() => import(`./pages/fr-FR/${name}.vue`))
   }
 }
 
@@ -24,15 +15,6 @@ const load = function (lang, path) {
 const LOAD_DOCS_MAP = {
   'zh-CN': (path) => {
     return defineAsyncComponent(() => import(`./docs/zh-CN${path}.md`))
-  },
-  'en-US': (path) => {
-    return defineAsyncComponent(() => import(`./docs/en-US${path}.md`))
-  },
-  es: (path) => {
-    return defineAsyncComponent(() => import(`./docs/es${path}.md`))
-  },
-  'fr-FR': (path) => {
-    return defineAsyncComponent(() => import(`./docs/fr-FR${path}.md`))
   }
 }
 
@@ -117,7 +99,7 @@ const generateMiscRoutes = function (lang) {
     component: load(lang, 'theme-nav'),
     children: [
       {
-        path: '/', // 主题管理
+        path: '', // 主题管理
         name: 'theme' + lang,
         meta: { lang },
         component: load(lang, 'theme')
@@ -174,13 +156,10 @@ let defaultPath = '/zh-CN'
 
 route = route.concat([
   {
-    path: '/',
-    redirect: { path: defaultPath }
-  },
-  {
     path: '',
     redirect: { path: defaultPath }
-  }
+  },
+  { path: '/:pathMatch(.*)*', redirect: { path: defaultPath } }
 ])
 console.log(route)
 export default route
