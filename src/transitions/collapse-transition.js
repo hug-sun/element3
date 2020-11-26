@@ -66,7 +66,6 @@ class TransitionFn {
 }
 
 const ElCollapseTransition = (props, context) => {
-  console.log(context)
   const transitions = new TransitionFn()
   const data = {
     onBeforeEnter: transitions.beforeEnter,
