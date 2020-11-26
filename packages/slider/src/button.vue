@@ -230,11 +230,11 @@ function useDragAndKeyDown(
     if (unref(disabled)) return
     event.preventDefault()
     onDragStart(event)
-    window.addEventListener('mousemove', onDragging, true)
-    window.addEventListener('touchmove', onDragging, true)
-    window.addEventListener('mouseup', onDragEnd, true)
-    window.addEventListener('touchend', onDragEnd, true)
-    window.addEventListener('contextmenu', onDragEnd, true)
+    window.addEventListener('mousemove', onDragging)
+    window.addEventListener('touchmove', onDragging)
+    window.addEventListener('mouseup', onDragEnd)
+    window.addEventListener('touchend', onDragEnd)
+    window.addEventListener('contextmenu', onDragEnd)
   }
 
   function onDragStart(event) {
@@ -289,11 +289,11 @@ function useDragAndKeyDown(
           emitChange()
         }
       }, 0)
-      window.removeEventListener('mousemove', onDragging, true)
-      window.removeEventListener('touchmove', onDragging, true)
-      window.removeEventListener('mouseup', onDragEnd, true)
-      window.removeEventListener('touchend', onDragEnd, true)
-      window.removeEventListener('contextmenu', onDragEnd, true)
+      window.removeEventListener('mousemove', onDragging)
+      window.removeEventListener('touchmove', onDragging)
+      window.removeEventListener('mouseup', onDragEnd)
+      window.removeEventListener('touchend', onDragEnd)
+      window.removeEventListener('contextmenu', onDragEnd)
     }
   }
   // eslint-disable-next-line
