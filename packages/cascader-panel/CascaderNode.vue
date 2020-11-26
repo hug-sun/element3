@@ -34,7 +34,7 @@
       <el-radio
         v-else-if="config.checkStrictly"
         :modelValue="checkedValue"
-        :label="radioLabel"
+        :label="value"
         :disabled="isDisabled"
         @change="handleCheckChange"
         @click="strictlyEvent"
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { h, computed, watch, inject, toRefs, Fragment } from 'vue'
+import { h, computed, watch, inject, toRefs, Fragment, watchEffect } from 'vue'
 import ElCheckbox from '../checkbox'
 import ElRadio from '../radio'
 import { isEqual } from '../../src/utils/util'
@@ -99,17 +99,15 @@ export default {
       checkedValue
     )
     const nodeLabel = computed(() => ({
-      render: panel.renderLabelFn,
       node
     }))
     const disabled = computed(
       () => !config.value.checkStrictly && isDisabled.value
     )
-    const radioLabel = computed(() =>
-      isEqual(value.value, checkedValue.value)
-        ? checkedValue.value
-        : value.value
-    )
+    watchEffect(() => {
+      if (isEqual(value.value, checkedValue.value))
+        value.value = checkedValue.value
+    })
 
     const handleMultiCheckChange = (checked) => {
       node.value.doCheck(checked)
@@ -163,7 +161,6 @@ export default {
       // state
       // data
       nodeLabel,
-      radioLabel,
       disabled,
       // useNode
       value,

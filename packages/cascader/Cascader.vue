@@ -239,7 +239,10 @@ export default {
     },
     clearable: Boolean,
     filterable: Boolean,
-    filterMethod: Function,
+    filterMethod: {
+      type: Function,
+      default: undefined
+    },
     separator: {
       type: String,
       default: ' / '
@@ -737,16 +740,17 @@ const useSuggestion = ({
   const instance = getCurrentInstance()
   const suggestions = ref([])
   const getSuggestions = () => {
-    if (!(filterMethod.value instanceof Function)) {
-      filterMethod.value = (node, keyword) => node.text.includes(keyword)
+    let internalFilterMethod = filterMethod.value
+    if (!(internalFilterMethod instanceof Function)) {
+      internalFilterMethod = (node, keyword) => node.text.includes(keyword)
     }
 
-    const internalSuggestions = panel
+    const internalSuggestions = panel.value
       .getFlattedNodes(leafOnly.value)
       .filter((node) => {
         if (node.isDisabled) return false
         node.text = node.getText(showAllLevels.value, separator.value) || ''
-        return filterMethod.value(node, inputState.value)
+        return internalFilterMethod(node, inputState.value)
       })
 
     if (multiple) {
@@ -769,7 +773,7 @@ const useSuggestion = ({
     if (multiple?.value) {
       const { checked } = targetNode
       targetNode.doCheck(!checked)
-      panel.calculateMultiCheckedValue()
+      panel.value.calculateMultiCheckedValue()
     } else {
       checkedState.value = targetNode.getValueByOption()
       toggleDropDownVisible(false)

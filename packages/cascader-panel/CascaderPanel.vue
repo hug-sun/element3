@@ -316,6 +316,7 @@ export default {
       },
       lazyLoad,
       getCheckedNodes,
+      getFlattedNodes,
       handleCheckChange,
       handleExpand,
       renderLabelFn,
