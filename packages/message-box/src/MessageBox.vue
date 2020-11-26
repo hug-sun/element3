@@ -343,7 +343,7 @@ export default {
       }
       nextTick(() => {
         if (state.action) {
-          unref(callback)(state.action, instance.ctx)
+          unref(callback)(state.action, instance.proxy)
         }
       })
     }
@@ -403,10 +403,10 @@ export default {
       return `el-button--primary ${unref(confirmButtonClass)}`
     })
     const getFirstFocus = () => {
-      const btn = instance.ctx.$el.querySelector(
+      const btn = instance.proxy.$el.querySelector(
         '.el-message-box__btns .el-button'
       )
-      const title = instance.ctx.$el.querySelector(
+      const title = instance.proxy.$el.querySelector(
         '.el-message-box__btns .el-message-box__title'
       )
       return btn || title
@@ -429,7 +429,7 @@ export default {
       }
       const focusAfterClosed = document.activeElement
       messageBox = new Dialog(
-        instance.ctx.$el,
+        instance.proxy.$el,
         focusAfterClosed,
         getFirstFocus()
       )
