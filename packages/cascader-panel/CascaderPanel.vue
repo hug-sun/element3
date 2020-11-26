@@ -110,7 +110,10 @@ export default {
   ],
 
   props: {
-    modelValue: {},
+    modelValue: {
+      type: Object,
+      default: () => {}
+    },
     options: Array,
     props: Object,
     border: {
@@ -313,6 +316,7 @@ export default {
       },
       lazyLoad,
       getCheckedNodes,
+      getFlattedNodes,
       handleCheckChange,
       handleExpand,
       renderLabelFn,

@@ -75,7 +75,9 @@ export default {
       default: 2000
     }
   },
+
   emits: ['error'],
+  
   setup(props, ctx) {
     const instance = getCurrentInstance()
     const loading = ref(true)

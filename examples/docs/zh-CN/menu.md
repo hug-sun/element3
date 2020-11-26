@@ -24,7 +24,7 @@
     </el-submenu>
   </el-submenu>
   <el-menu-item index="3" disabled>消息中心</el-menu-item>
-  <el-menu-item index="4"><a href="#">订单管理</a></el-menu-item>
+  <el-menu-item index="4"><a href="https://element3-ui.com" target="_blank">订单管理</a></el-menu-item>
 </el-menu>
 <div class="line"></div>
 <el-menu
@@ -49,7 +49,7 @@
     </el-submenu>
   </el-submenu>
   <el-menu-item index="3" disabled>消息中心</el-menu-item>
-  <el-menu-item index="4"><a href="#">订单管理</a></el-menu-item>
+  <el-menu-item index="4"><a  href="https://element3-ui.com" target="_blank">订单管理</a></el-menu-item>
 </el-menu>
 
 <script>

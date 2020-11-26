@@ -1,4 +1,5 @@
 // 用于构建时的入口
+import ElCollapseTransition from './transitions/collapse-transition'
 // Basic
 import ElRow from '../packages/row'
 import ElCol from '../packages/col'
@@ -161,7 +162,6 @@ const components = [
   ElPopover,
   ElPopconfirm,
   ElCard,
-  ElCarousel,
   ElCollapse,
   ElCollapseItem,
   ElTimeline,
@@ -172,7 +172,8 @@ const components = [
   ElInfiniteScroll,
   ElDrawer,
   ElScrollbar,
-  ElAutocomplete
+  ElAutocomplete,
+  ElCollapseTransition
 ]
 
 const install = (app, opts = {}) => {
@@ -269,6 +270,7 @@ export {
   ElCard,
   ElCollapse,
   ElCollapseItem,
+  ElCollapseTransition,
   ElTimeline,
   ElTimelineItem,
   ElDivider,
