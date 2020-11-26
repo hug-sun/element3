@@ -1,103 +1,101 @@
 <template>
   <button
     class="el-button"
-    @click="handleClick"
-    :disabled="buttonDisabled || loading"
-    :autofocus="autofocus"
+    :class="classes"
     :type="nativeType"
-    :class="[
-      type ? 'el-button--' + type : '',
-      buttonSize ? 'el-button--' + buttonSize : '',
-      {
-        'is-disabled': buttonDisabled,
-        'is-loading': loading,
-        'is-plain': plain,
-        'is-round': round,
-        'is-circle': circle
-      }
-    ]"
+    :disabled="buttonDisabled || loading"
   >
     <i class="el-icon-loading" v-if="loading"></i>
-    <i :class="icon" v-if="icon && !loading"></i>
+    <i :class="icon" v-else-if="icon"></i>
     <span v-if="$slots.default">
       <slot></slot>
     </span>
   </button>
 </template>
-<script>
-import { computed, inject, toRefs, unref, getCurrentInstance } from 'vue'
 
+<script>
+import { toRefs, inject, computed, getCurrentInstance } from 'vue'
 export default {
   name: 'ElButton',
-
   props: {
-    type: {
-      type: String,
-      default: 'default'
-    },
     size: {
       type: String,
-      default: ''
+      validator(val) {
+        if (val === '') return true
+        return ['medium', 'small', 'mini'].indexOf(val) !== -1
+      }
     },
-    icon: {
+    type: {
       type: String,
-      default: ''
+      validator(val) {
+        return (
+          ['primary', 'success', 'warning', 'danger', 'info', 'text'].indexOf(
+            val
+          ) !== -1
+        )
+      }
     },
     nativeType: {
       type: String,
       default: 'button'
     },
+    plain: Boolean,
+    round: Boolean,
+    circle: Boolean,
     loading: Boolean,
     disabled: Boolean,
-    plain: Boolean,
-    autofocus: Boolean,
-    round: Boolean,
-    circle: Boolean
+    icon: String
   },
-  emits: ['click'],
-  setup(props, ctx) {
+  setup(props) {
     const { size, disabled } = toRefs(props)
 
     const buttonSize = useButtonSize(size)
     const buttonDisabled = useButtonDisabled(disabled)
-
-    const handleClick = (evt) => {
-      ctx.emit('click', evt)
-    }
+    const classes = useClasses({
+      props,
+      size: buttonSize,
+      disabled: buttonDisabled
+    })
 
     return {
-      handleClick,
-      buttonSize,
-      buttonDisabled
+      buttonDisabled,
+      classes
     }
   }
 }
 
-const useButtonSize = (size) => {
-  const elFormItem = inject('elFormItem', {})
-
-  const _elFormItemSize = computed(() => {
-    return unref(elFormItem.elFormItemSize)
+const useClasses = ({ props, size, disabled }) => {
+  return computed(() => {
+    return [
+      size.value ? `el-button--${size.value}` : '',
+      props.type ? `el-button--${props.type}` : '',
+      {
+        'is-plain': props.plain,
+        'is-round': props.round,
+        'is-circle': props.circle,
+        'is-loading': props.loading,
+        'is-disabled': disabled.value
+      }
+    ]
   })
-
-  const buttonSize = computed(() => {
-    return (
-      size.value ||
-      _elFormItemSize.value ||
-      (getCurrentInstance().proxy.$ELEMENT || {}).size
-    )
-  })
-
-  return buttonSize
 }
 
 const useButtonDisabled = (disabled) => {
-  const elForm = inject('elForm', {})
+  return computed(() => {
+    const elForm = inject('elForm', {})
 
-  const buttonDisabled = computed(() => {
-    return disabled.value || unref(elForm.disabled)
+    return disabled?.value || elForm.disabled
   })
+}
 
-  return buttonDisabled
+const useButtonSize = (size) => {
+  return computed(() => {
+    const elFormItem = inject('elFormItem', {})
+    return (
+      size?.value ||
+      elFormItem.elFormItemSize ||
+      getCurrentInstance().ctx.$ELEMENT?.size
+    )
+  })
 }
 </script>
