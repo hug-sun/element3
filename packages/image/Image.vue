@@ -42,8 +42,7 @@ import {
   watch,
   onMounted,
   onBeforeUnmount,
-  getCurrentInstance,
-  toRef
+  getCurrentInstance
 } from 'vue'
 const isSupportObjectFit = () =>
   document.documentElement.style.objectFit !== undefined
