@@ -206,7 +206,6 @@ export default {
       select: this
     }
   },
-
   computed: {
     _elFormItemSize() {
       return (this.elFormItem || {}).elFormItemSize
@@ -357,7 +356,6 @@ export default {
       default: true
     }
   },
-
   emits: [
     'update:modelValue',
     'input',
@@ -751,15 +749,18 @@ export default {
         )[0]
         const tags = this.$refs.tags
         const sizeInMap = this.initialInputHeight || 40
-        input.style.height =
-          this.selected.length === 0
-            ? sizeInMap + 'px'
-            : Math.max(
-                tags
-                  ? tags.clientHeight + (tags.clientHeight > sizeInMap ? 6 : 0)
-                  : 0,
-                sizeInMap
-              ) + 'px'
+        if (input) {
+          input.style.height =
+            this.selected.length === 0
+              ? sizeInMap + 'px'
+              : Math.max(
+                  tags
+                    ? tags.clientHeight +
+                        (tags.clientHeight > sizeInMap ? 6 : 0)
+                    : 0,
+                  sizeInMap
+                ) + 'px'
+        }
         if (this.visible && this.emptyText !== false) {
           this.broadcast('updatePopper')
         }

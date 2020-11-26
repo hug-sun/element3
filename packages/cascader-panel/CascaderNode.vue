@@ -76,6 +76,7 @@ export default {
       return h(Fragment, {}, [res])
     }
   },
+  emits: ['created', 'expand'],
 
   props: {
     node: {

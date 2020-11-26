@@ -217,12 +217,16 @@ export default {
     'active-item-change',
     'visible-change',
     'focus',
-    'blur'
+    'blur',
+    'created',
+    'remove-tag'
   ],
-
   props: {
     modelValue: {},
-    options: Array,
+    options: {
+      type: Array,
+      default: () => []
+    },
     props: Object,
     size: String,
     placeholder: {
@@ -305,8 +309,8 @@ export default {
       nodes: []
     })
 
-    const elForm = inject('elForm')
-    const elFormItem = inject('elFormItem')
+    const elForm = inject('elForm', {})
+    const elFormItem = inject('elFormItem', {})
 
     const isDisabled = computed(() => disabled.value || elForm?.disabled)
 
