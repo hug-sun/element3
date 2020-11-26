@@ -127,19 +127,7 @@ export default {
     const isFirst = computed(() => props.index === 0)
     const isLast = computed(() => props.index === props.urlList.length - 1)
     const currentImg = computed(() => props.urlList[index.value])
-    const imgStyle = computed(() => {
-      const { scale, deg, offsetX, offsetY, enableTransition } = state.transform
-      const style = {
-        transform: `scale(${scale}) rotate(${deg}deg)`,
-        transition: enableTransition ? 'transform .3s' : '',
-        'margin-left': `${offsetX}px`,
-        'margin-top': `${offsetY}px`
-      }
-      if (state.mode.name === Mode.CONTAIN.name) {
-        style.maxWidth = style.maxHeight = '100%'
-      }
-      return style
-    })
+    const imgStyle = useImgStyle(state);
     // lifeC
     onMounted(() => {
       deviceSupportInstall()
@@ -160,7 +148,7 @@ export default {
         }
       })
     })
-    // methods
+    
     const handleActions = (action, options = {}) => {
       if (loading.value) return
       const { zoomRate, rotateDeg, enableTransition } = {
@@ -224,34 +212,19 @@ export default {
       const len = props.urlList.length
       index.value = (index.value + 1) % len
     }
+
     let keyDownHandler = rafThrottle((e) => {
       const keyCode = e.keyCode
-      switch (keyCode) {
-        // ESC
-        case 27:
-          hide()
-          break
-        // SPACE
-        case 32:
-          toggleMode()
-          break
-        // LEFT_ARROW
-        case 37:
-          prev()
-          break
-        // UP_ARROW
-        case 38:
-          handleActions('zoomIn')
-          break
-        // RIGHT_ARROW
-        case 39:
-          next()
-          break
-        // DOWN_ARROW
-        case 40:
-          handleActions('zoomOut')
-          break
+      const actions  = {
+         "27": () => hide(), // ESC
+         "32": () => toggleMode(), // SPACE
+         "37": () => prev(), // LEFT_ARROW
+         "38": () => handleActions('zoomIn'), // UP_ARROW
+         "39": () => next(),  // RIGHT_ARROW
+         "40": () => handleActions('zoomOut'),  // DOWN_ARROW
       }
+
+      actions[keyCode] && actions[keyCode]()
     })
     let mouseWheelHandler = rafThrottle((e) => {
       const delta = e.wheelDelta ? e.wheelDelta : -e.detail
@@ -288,9 +261,9 @@ export default {
       loading = false
       e.target.alt = '加载失败'
     }
-    const handleMouseDown = (e) => {
+    const handleMouseDown = (e) => { 
       if (loading || e.button !== 0) return
-
+      
       const { offsetX, offsetY } = state.transform
       const startX = e.pageX
       const startY = e.pageY
@@ -335,4 +308,26 @@ export default {
     }
   }
 }
+
+const useImgStyle = (state) => {
+
+   return computed(() => {
+
+      const { scale, deg, offsetX, offsetY, enableTransition } = state.transform
+      
+      const style = {
+        transform: `scale(${scale}) rotate(${deg}deg)`,
+        transition: enableTransition ? 'transform .3s' : '',
+        'margin-left': `${offsetX}px`,
+        'margin-top': `${offsetY}px`
+      }
+
+      if (state.mode.name === Mode.CONTAIN.name) {
+        style.maxWidth = style.maxHeight = '100%'
+      }
+
+      return style
+  })
+}
+
 </script>

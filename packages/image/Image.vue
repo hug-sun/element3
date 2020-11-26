@@ -11,8 +11,8 @@
       class="el-image__inner"
       v-bind="$attrs"
       @click="clickHandler"
-      :src="src"
       :style="imageStyle"
+      :src="src"
       :class="{
         'el-image__inner--center': alignCenter,
         'el-image__preview': preview
@@ -32,6 +32,8 @@
 
 <script>
 import ImageViewer from './ImageViewer'
+import {loadImage, objectFit} from './uitls/utils'
+import {useImageStyle} from './use/useImageStyle';
 import { t } from '../../src/locale'
 import { throttle } from 'throttle-debounce'
 import { isString, isHtmlElement } from '../../src/utils/types'
@@ -43,19 +45,12 @@ import {
   onMounted,
   onBeforeUnmount,
   getCurrentInstance,
-  toRef
+  toRef,
+  toRefs,
+  toRaw
 } from 'vue'
 
-const isSupportObjectFit = () =>
-  document.documentElement.style.objectFit !== undefined
-
-const ObjectFit = {
-  NONE: 'none',
-  CONTAIN: 'contain',
-  COVER: 'cover',
-  FILL: 'fill',
-  SCALE_DOWN: 'scale-down'
-}
+const isSupportObjectFit = () => document.documentElement.style.objectFit !== undefined
 
 let prevOverflow = ''
 
@@ -83,7 +78,7 @@ export default {
     }
   },
 
-  emits: ['error'],
+  emits: ['error', 'load'],
 
   setup(props, ctx) {
     const instance = getCurrentInstance()
@@ -91,80 +86,49 @@ export default {
     const error = ref(false)
     const show = ref(!props.lazy)
     const showViewer = ref(false)
-    const imageWidth = ref(0)
-    const imageHeight = ref(0)
-
+ 
+    
     // computed
     const imageStyle = computed(() => {
       const { fit } = props
-      if (
-        //! this.$isServer &&
-        fit
-      ) {
-        return isSupportObjectFit() ? { 'object-fit': fit } : getImageStyle(fit)
+      if (fit) {
+        return isSupportObjectFit() ? { 'object-fit': fit } : useImageStyle(instance.ctx.$el, fit)
       }
       return {}
     })
+
     const alignCenter = computed(() => {
-      return (
-        // !this.$isServer &&
-        !isSupportObjectFit() && props.fit !== ObjectFit.FILL
-      )
+       return (!isSupportObjectFit() && props.fit !== objectFit.FILL)
     })
     const preview = computed(() => {
-      const { previewSrcList } = props
+      const { previewSrcList } =  props
       return Array.isArray(previewSrcList) && previewSrcList.length > 0
     })
     const imageIndex = computed(() => {
-      let previewIndex = 0
-      const srcIndex = props.previewSrcList.indexOf(props.src)
-      if (srcIndex >= 0) {
-        previewIndex = srcIndex
-      }
-      return previewIndex
+       const {previewSrcList, src} = toRaw(props)
+       return  previewSrcList.indexOf(src) >= 0 ? previewSrcList.indexOf(src) : 0
     })
-    // watch
-    watch(toRef(props, 'src'), () => {
-      show.value && loadImage()
-    })
-    watch(show, (val) => {
-      val && loadImage()
+  
+    watch(([() => props.src, show]) , ([src, show]) => {
+      (show.value || src) && loadImage(props.src, instance.ctx.$attrs, handleLoad, handleError.bind(this))
     })
 
     // lifecycle
     onMounted(() => {
       if (props.lazy) {
         addLazyLoadListener()
+        onBeforeUnmount(() => {
+          console.log(8888)
+        })
       } else {
-        loadImage()
+        loadImage(props.src, instance.ctx.$attrs, handleLoad, handleError.bind(this))
       }
     })
     onBeforeUnmount(() => {
       props.lazy && removeLazyLoadListener()
     })
 
-    // methods
-    const loadImage = () => {
-      // if (this.$isServer) return
-
-      // reset status
-      loading.value = true
-      error.value = false
-      const img = new Image()
-      img.onload = (e) => handleLoad(e, img)
-      img.onerror = handleError.bind(this)
-
-      // bind html attrs
-      // so it can behave consistently
-      Object.keys(instance.ctx.$attrs).forEach((key) => {
-        const value = instance.ctx.$attrs[key]
-        img.setAttribute(key, value)
-      })
-      img.src = props.src
-    }
     const handleLoad = (e, img) => {
-      imageWidth.value = img.width
-      imageHeight.value = img.height
       loading.value = false
       error.value = false
     }
@@ -180,8 +144,7 @@ export default {
       }
     }
     const addLazyLoadListener = () => {
-      // if (this.$isServer) return
-
+      
       const { scrollContainer } = props
       let _scrollContainer = null
 
@@ -203,55 +166,15 @@ export default {
     const removeLazyLoadListener = () => {
       const { _scrollContainer, _lazyLoadHandler } = instance.ctx
 
-      if (
-        // this.$isServer ||
-        !_scrollContainer ||
-        !_lazyLoadHandler
-      )
-        return
-
+      if (!_scrollContainer || !_lazyLoadHandler) {
+         return
+      }
+        
       off(_scrollContainer, 'scroll', _lazyLoadHandler)
       instance.ctx._scrollContainer = null
       instance.ctx._lazyLoadHandler = null
     }
-    /**
-     * simulate object-fit behavior to compatible with IE11 and other browsers which not support object-fit
-     */
-    const getImageStyle = (fit) => {
-      const {
-        clientWidth: containerWidth,
-        clientHeight: containerHeight
-      } = instance.ctx.$el
-
-      if (
-        !imageWidth.value ||
-        !imageHeight.value ||
-        !containerWidth ||
-        !containerHeight
-      )
-        return {}
-
-      const vertical = imageWidth.value / imageHeight.value < 1
-
-      if (fit === ObjectFit.SCALE_DOWN) {
-        const isSmaller =
-          imageWidth.value < containerWidth &&
-          imageHeight.value < containerHeight
-        fit = isSmaller ? ObjectFit.NONE : ObjectFit.CONTAIN
-      }
-
-      switch (fit) {
-        case ObjectFit.NONE:
-          return { width: 'auto', height: 'auto' }
-        case ObjectFit.CONTAIN:
-          return vertical ? { width: 'auto' } : { height: 'auto' }
-        case ObjectFit.COVER:
-          return vertical ? { height: 'auto' } : { width: 'auto' }
-        default:
-          return {}
-      }
-    }
-
+    
     const clickHandler = () => {
       // don't show viewer when preview is false
       if (!preview.value) {
@@ -272,17 +195,13 @@ export default {
       error,
       show,
       showViewer,
-      imageWidth,
-      imageHeight,
       imageStyle,
       alignCenter,
       preview,
       imageIndex,
-      loadImage,
       handleLoad,
       handleError,
       handleLazyLoad,
-      getImageStyle,
       addLazyLoadListener,
       removeLazyLoadListener,
       clickHandler,
