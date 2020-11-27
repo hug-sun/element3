@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import Clickoutside from '../../../src/utils/clickoutside'
+import Clickoutside from '../../../src/directives/clickoutside'
 import {
   formatDate,
   parseDate,
