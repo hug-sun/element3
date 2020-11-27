@@ -22,7 +22,7 @@ export default {
   setup(props, { emit, slots }) {
     const state = reactive({ show: true })
     const tagSize = computed(() => {
-      return props.size || (getCurrentInstance().proxy.$ELEMENT || {}).size
+      return props.size || (getCurrentInstance().ctx.$ELEMENT || {}).size
     })
     const handleClose = (event) => {
       event.stopPropagation()
