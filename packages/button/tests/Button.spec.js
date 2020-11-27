@@ -135,7 +135,7 @@ describe('Button.vue', () => {
       expect(wrapper.attributes()).toHaveProperty('disabled')
     })
 
-    it('by elForm.disable', () => {
+    it('by elForm.disabled', () => {
       const wrapper = mount(Button, {
         global: {
           provide: {
