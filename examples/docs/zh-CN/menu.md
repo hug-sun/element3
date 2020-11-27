@@ -60,7 +60,7 @@
       let activeIndex2 = ref('1')
 
       function handleSelect(key, keyPath) {
-       
+        console.log(key, keyPath);
       }
 
       return {activeIndex,activeIndex2,handleSelect}
@@ -183,10 +183,10 @@
       let defaultOpeneds = ref(["1","1-4"])
 
       function handleOpen(key, keyPath) {
-       
+        console.log(key, keyPath);
       }
       function handleClose(key, keyPath) {
-       
+       console.log(key, keyPath);
       }
 
       return {defaultOpeneds,handleOpen,handleClose}
@@ -263,10 +263,10 @@
       let isCollapse = ref(true)
 
       function handleOpen(key, keyPath) {
-       
+        console.log(key, keyPath);
       }
       function handleClose(key, keyPath) {
-       
+        console.log(key, keyPath);
       }
       
       return {isCollapse,handleOpen,handleClose}

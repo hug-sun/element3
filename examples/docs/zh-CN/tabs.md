@@ -23,6 +23,7 @@
     setup() {
       const activeName = ref('second')
       const handleClick = (tab, event) => {
+         console.log(tab, event)
       }
       return { activeName, handleClick }
     },
@@ -53,7 +54,7 @@
     setup() {
       const activeName = ref('first')
       const handleClick = (tab, event) => {
-       
+       console.log(tab, event)
       }
       return { activeName, handleClick }
     },
