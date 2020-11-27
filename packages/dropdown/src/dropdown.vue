@@ -9,7 +9,7 @@ import {
   h
 } from 'vue'
 import { useEmitter } from '../../../src/use/emitter.js'
-import Clickoutside from '../../../src/utils/clickoutside.js'
+import Clickoutside from '../../../src/directives/clickoutside.js'
 
 import ElButton from '../../button'
 import ElButtonGroup from '../../button-group'
