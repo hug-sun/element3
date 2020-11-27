@@ -357,16 +357,13 @@ export default {
     }
     const confirmButtonLoading = ref(false)
     const handleAction = (action) => {
-      if (
-        unref(_type) === 'prompt' &&
-        state.action === 'confirm' &&
-        !validate()
-      ) {
+      if (unref(_type) === 'prompt' && action === 'confirm' && !validate()) {
         return
       }
       state.action = action
       if (typeof unref(beforeClose) === 'function') {
         const close = getSafeClose()
+        console.log(instance.vnode)
         unref(beforeClose)(action, instance.vnode, close)
       } else {
         doClose()

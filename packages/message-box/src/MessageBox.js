@@ -47,20 +47,11 @@ let msgQueue = []
 
 const defaultCallback = (action) => {
   if (currentMsg) {
-    // const callback = currentMsg.callback
-    // debugger
-    // if (typeof callback === 'function') {
-    //   if (instance.component.ctx.showInput) {
-    //     callback(instance.component.ctx.inputValue, action)
-    //   } else {
-    //     callback(action)
-    //   }
-    // }
     if (currentMsg.resolve) {
       if (action === 'confirm') {
-        if (instance.component.vnode.showInput) {
+        if (instance.component.vnode.props.showInput) {
           currentMsg.resolve({
-            value: instance.component.vnode.state.inputValue,
+            value: instance.component.setupState.state.inputValue,
             action
           })
         } else {
@@ -83,16 +74,10 @@ const initInstance = (currentMsg, VNode = null) => {
 }
 
 const showNextMsg = () => {
-  // if (!instance.visible || instance.closeTimer) {
   if (msgQueue.length > 0) {
     currentMsg = msgQueue.shift()
 
     const options = currentMsg.options
-    // for (const prop in options) {
-    //   if (Object.hasOwnProperty.call(options, prop)) {
-    //     instance[prop] = options[prop]
-    //   }
-    // }
 
     if (options.callback === undefined) {
       options.callback = defaultCallback
@@ -101,18 +86,11 @@ const showNextMsg = () => {
     const oldCb = options.callback
     options.callback = (action, instance) => {
       oldCb(action, instance)
-      // showNextMsg()
     }
-    // if (isVNode(instance.message)) {
-    //   instance.slots.default = [instance.message]
-    //   instance.message = null
-    // }
     if (isVNode(currentMsg.message)) {
       initInstance(currentMsg, { default: () => currentMsg.message })
     }
-    // if (!instance) {
     initInstance(currentMsg)
-    // }
     ;[
       'modal',
       'showClose',
