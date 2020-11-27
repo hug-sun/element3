@@ -343,7 +343,7 @@ export default {
       }
       nextTick(() => {
         if (state.action) {
-          unref(callback)(state.action, instance.proxy)
+          unref(callback)(state.action, instance.vnode)
         }
       })
     }
@@ -367,7 +367,7 @@ export default {
       state.action = action
       if (typeof unref(beforeClose) === 'function') {
         const close = getSafeClose()
-        unref(beforeClose)(action, instance.proxy, close)
+        unref(beforeClose)(action, instance.vnode, close)
       } else {
         doClose()
       }
@@ -403,10 +403,10 @@ export default {
       return `el-button--primary ${unref(confirmButtonClass)}`
     })
     const getFirstFocus = () => {
-      const btn = instance.proxy.$el.querySelector(
+      const btn = instance.vnode.el.querySelector(
         '.el-message-box__btns .el-button'
       )
-      const title = instance.proxy.$el.querySelector(
+      const title = instance.vnode.el.querySelector(
         '.el-message-box__btns .el-message-box__title'
       )
       return btn || title
@@ -428,8 +428,9 @@ export default {
         })
       }
       const focusAfterClosed = document.activeElement
+      console.log(instance)
       messageBox = new Dialog(
-        instance.proxy.$el,
+        instance.vnode.el,
         focusAfterClosed,
         getFirstFocus()
       )

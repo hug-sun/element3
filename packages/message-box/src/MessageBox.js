@@ -58,9 +58,9 @@ const defaultCallback = (action) => {
     // }
     if (currentMsg.resolve) {
       if (action === 'confirm') {
-        if (instance.component.proxy.showInput) {
+        if (instance.component.vnode.showInput) {
           currentMsg.resolve({
-            value: instance.component.proxy.state.inputValue,
+            value: instance.component.vnode.state.inputValue,
             action
           })
         } else {
