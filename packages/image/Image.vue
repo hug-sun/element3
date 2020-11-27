@@ -40,28 +40,26 @@ import { isString, isHtmlElement } from '../../src/utils/types'
 import { on, off, getScrollContainer, isInContainer } from '../../src/utils/dom'
 import {
   ref,
+  toRaw,
   computed,
   watch,
   onMounted,
   onBeforeUnmount,
-  getCurrentInstance,
-  toRaw
+  getCurrentInstance
 } from 'vue'
+
+import useRef from './use/useRef'
 
 const isSupportObjectFit = () =>
   document.documentElement.style.objectFit !== undefined
 
 let prevOverflow = ''
-
 export default {
   name: 'ElImage',
-
   inheritAttrs: false,
-
   components: {
     ImageViewer
   },
-
   props: {
     src: String,
     fit: String,
@@ -76,15 +74,13 @@ export default {
       default: 2000
     }
   },
-
-  emits: ['error', 'load'],
-
+  emits: ['error'],
   setup(props, ctx) {
     const instance = getCurrentInstance()
-    const loading = ref(true)
-    const error = ref(false)
+    const [loading, setLoading] = useRef(true)
+    const [error, setError] = useRef(false)
     const show = ref(!props.lazy)
-    const showViewer = ref(false)
+    const [showViewer, setShowViewer] = useRef(false)
 
     // computed
     const imageStyle = computed(() => {
@@ -100,14 +96,9 @@ export default {
     const alignCenter = computed(() => {
       return !isSupportObjectFit() && props.fit !== objectFit.FILL
     })
-    const preview = computed(() => {
-      const { previewSrcList } = props
-      return Array.isArray(previewSrcList) && previewSrcList.length > 0
-    })
-    const imageIndex = computed(() => {
-      const { previewSrcList, src } = toRaw(props)
-      return previewSrcList.indexOf(src) >= 0 ? previewSrcList.indexOf(src) : 0
-    })
+    const preview = usePreviewStatus(props.previewSrcList)
+
+    const imageIndex = useImageIndex(props)
 
     watch([() => props.src, show], ([src, show]) => {
       ;(show.value || src) &&
@@ -118,7 +109,6 @@ export default {
           handleError.bind(this)
         )
     })
-
     // lifecycle
     onMounted(() => {
       if (props.lazy) {
@@ -140,12 +130,12 @@ export default {
     })
 
     const handleLoad = () => {
-      loading.value = false
-      error.value = false
+      setLoading(false)
+      setError(false)
     }
     const handleError = (e) => {
-      loading.value = false
-      error.value = true
+      setLoading(false)
+      setError(true)
       ctx.emit('error', e)
     }
     const handleLazyLoad = () => {
@@ -155,9 +145,9 @@ export default {
       }
     }
     const addLazyLoadListener = () => {
+      // if (this.$isServer) return
       const { scrollContainer } = props
       let _scrollContainer = null
-
       if (isHtmlElement(scrollContainer)) {
         _scrollContainer = scrollContainer
       } else if (isString(scrollContainer)) {
@@ -165,7 +155,6 @@ export default {
       } else {
         _scrollContainer = getScrollContainer(instance.ctx.$el)
       }
-
       if (_scrollContainer) {
         instance.ctx._scrollContainer = _scrollContainer
         instance.ctx._lazyLoadHandler = throttle(200, handleLazyLoad)
@@ -175,11 +164,12 @@ export default {
     }
     const removeLazyLoadListener = () => {
       const { _scrollContainer, _lazyLoadHandler } = instance.ctx
-
-      if (!_scrollContainer || !_lazyLoadHandler) {
+      if (
+        // this.$isServer ||
+        !_scrollContainer ||
+        !_lazyLoadHandler
+      )
         return
-      }
-
       off(_scrollContainer, 'scroll', _lazyLoadHandler)
       instance.ctx._scrollContainer = null
       instance.ctx._lazyLoadHandler = null
@@ -193,13 +183,12 @@ export default {
       // prevent body scroll
       prevOverflow = document.body.style.overflow
       document.body.style.overflow = 'hidden'
-      showViewer.value = true
+      setShowViewer(true)
     }
     const closeViewer = () => {
       document.body.style.overflow = prevOverflow
-      showViewer.value = false
+      setShowViewer(false)
     }
-
     return {
       loading,
       error,
@@ -219,5 +208,18 @@ export default {
       t
     }
   }
+}
+
+const usePreviewStatus = (previewSrcList) => {
+  return computed(() => {
+    return Array.isArray(previewSrcList) && previewSrcList.length > 0
+  })
+}
+
+const useImageIndex = (props) => {
+  return computed(() => {
+    const { previewSrcList, src } = toRaw(props)
+    return previewSrcList.indexOf(src) >= 0 ? previewSrcList.indexOf(src) : 0
+  })
 }
 </script>

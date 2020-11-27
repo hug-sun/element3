@@ -4,7 +4,7 @@
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
     @mousedown="onButtonDown"
-    @touchstart="onButtonDown"
+    @touchstart.passive="onButtonDown"
     :class="{ hover: hovering, dragging: dragging }"
     :style="wrapperStyle"
     ref="button"

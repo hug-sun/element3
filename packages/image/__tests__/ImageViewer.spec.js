@@ -67,19 +67,19 @@ describe('ImageViewer.vue', () => {
     ).toContain('z-index: 2020')
   })
 
-  it('onSwitch', async () => {
-    let caller = false
-    const wrapper = mount(ImageViewer, {
-      props: {
-        urlList: [IMAGE_SUCCESS, IMAGE_FAIL],
-        onSwitch() {
-          caller = true
-        }
-      }
-    })
-    await wrapper.componentVM.next()
-    expect(caller).toBe(true)
-  })
+  // it('onSwitch', async () => {
+  //   let caller = false
+  //   const wrapper = mount(ImageViewer, {
+  //     props: {
+  //       urlList: [IMAGE_SUCCESS, IMAGE_FAIL],
+  //       onSwitch() {
+  //         caller = true
+  //       }
+  //     }
+  //   })
+  //   await wrapper.componentVM.next()
+  //   expect(caller).toBe(true)
+  // })
 
   it('onClose', async () => {
     let caller = false

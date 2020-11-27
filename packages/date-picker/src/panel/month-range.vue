@@ -102,7 +102,7 @@ import {
   nextYear,
   nextMonth
 } from '../../../../src/utils/date-util'
-import Clickoutside from '../../../../src/utils/clickoutside'
+import Clickoutside from '../../../../src/directives/clickoutside'
 import Locale from '../../../../src/mixins/locale'
 import MonthTable from '../basic/month-table'
 import ElInput from '../../../input'

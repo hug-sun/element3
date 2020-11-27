@@ -15,14 +15,14 @@
       <template v-if="!isSingle">
         <span
           class="el-image-viewer__btn el-image-viewer__prev"
-          :class="{ 'is-disabled': !infinite && isFirst }"
+          :class="{ 'is-disabled': isFirst }"
           @click="prev"
         >
           <i class="el-icon-arrow-left" />
         </span>
         <span
           class="el-image-viewer__btn el-image-viewer__next"
-          :class="{ 'is-disabled': !infinite && isLast }"
+          :class="{ 'is-disabled': isLast }"
           @click="next"
         >
           <i class="el-icon-arrow-right" />
@@ -49,7 +49,6 @@
       <!-- CANVAS -->
       <div class="el-image-viewer__canvas">
         <img
-          ref="img"
           class="el-image-viewer__img"
           :src="currentImg"
           :style="imgStyle"
@@ -65,7 +64,9 @@
 <script>
 import { on, off } from '../../src/utils/dom'
 import { rafThrottle, isFirefox } from '../../src/utils/util'
-import { reactive, computed, ref, watch, nextTick, onMounted } from 'vue'
+import { reactive, computed, ref, watch, onMounted } from 'vue'
+import useRef from './use/useRef'
+
 const Mode = {
   CONTAIN: {
     name: 'contain',
@@ -76,12 +77,9 @@ const Mode = {
     icon: 'el-icon-c-scale-to-original'
   }
 }
-
 const mousewheelEventName = isFirefox() ? 'DOMMouseScroll' : 'mousewheel'
-
 export default {
   name: 'elImageViewer',
-
   props: {
     urlList: {
       type: Array,
@@ -105,8 +103,11 @@ export default {
     }
   },
   setup(props) {
-    const img = ref(null)
     const imageWrapper = ref(null)
+
+    const [loading, setLoading] = useRef(false)
+    const index = ref(props.initialIndex)
+
     // data
     const state = reactive({
       mode: Mode.CONTAIN,
@@ -118,35 +119,32 @@ export default {
         enableTransition: false
       }
     })
-    const index = ref(props.initialIndex)
-    let loading = ref(false)
-    const infinite = ref(true)
-    const isShow = ref(true)
+
+    const { currentImg, currentIndex, changeCurrentImage } = useCurrentImage(
+      props.initialIndex,
+      props.urlList
+    )
     // computed
     const isSingle = computed(() => props.urlList.length <= 1)
-    const isFirst = computed(() => props.index === 0)
-    const isLast = computed(() => props.index === props.urlList.length - 1)
-    const currentImg = computed(() => props.urlList[index.value])
+
+    const isFirst = computed(() => currentIndex.value === 0)
+    const isLast = computed(
+      () => currentIndex.value === props.urlList.length - 1
+    )
     const imgStyle = useImgStyle(state)
     // lifeC
     onMounted(() => {
       deviceSupportInstall()
       // add tabindex then wrapper can be focusable via Javascript
       // focus wrapper so arrow key can't cause inner scroll behavior underneath
-      imageWrapper.value.focus()
+      focusImageWrapper()
     })
 
+    const focusImageWrapper = () => imageWrapper.value.focus()
     // watch
     watch(index, (val) => {
       reset()
-      props.onSwitch(val)
-    })
-    watch(currentImg, () => {
-      nextTick(() => {
-        if (img.value.complete) {
-          loading = true
-        }
-      })
+      changeCurrentImage(val)
     })
 
     const handleActions = (action, options = {}) => {
@@ -188,27 +186,24 @@ export default {
         enableTransition: false
       }
     }
-
     const toggleMode = () => {
       if (loading.value) return
       const modeNames = Object.keys(Mode)
       const modeValues = Object.values(Mode)
-
       const index = modeValues.findIndex(
         (index) => index.name === state.mode.name
       )
-
       const nextIndex = (index + 1) % modeNames.length
       state.mode = Mode[modeNames[nextIndex]]
       reset()
     }
     const prev = () => {
-      if (isFirst.value && !infinite.value) return
+      if (isFirst.value) return
       const len = props.urlList.length
       index.value = (index.value - 1 + len) % len
     }
     const next = () => {
-      if (isLast.value && !infinite.value) return
+      if (isLast.value) return
       const len = props.urlList.length
       index.value = (index.value + 1) % len
     }
@@ -255,15 +250,14 @@ export default {
       props.onClose()
     }
     const handleImgLoad = () => {
-      loading = false
+      setLoading(false)
     }
     const handleImgError = (e) => {
-      loading = false
+      setLoading(false)
       e.target.alt = '加载失败'
     }
     const handleMouseDown = (e) => {
       if (loading || e.button !== 0) return
-
       const { offsetX, offsetY } = state.transform
       const startX = e.pageX
       const startY = e.pageY
@@ -275,17 +269,12 @@ export default {
       on(document, 'mouseup', () => {
         off(document, 'mousemove', _dragHandler)
       })
-
       e.preventDefault()
     }
-
     return {
-      img,
       imageWrapper,
       loading,
-      isShow,
       state,
-      infinite,
       index,
       isSingle,
       isFirst,
@@ -326,5 +315,16 @@ const useImgStyle = (state) => {
 
     return style
   })
+}
+
+const useCurrentImage = (initialIndex, urlList) => {
+  const currentIndex = ref(initialIndex)
+  const currentImg = computed(() => urlList[currentIndex.value])
+  const changeCurrentImage = (index) => (currentIndex.value = index)
+  return {
+    currentImg,
+    currentIndex,
+    changeCurrentImage
+  }
 }
 </script>

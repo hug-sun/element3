@@ -44,14 +44,12 @@ import {
   ref,
   watch
 } from 'vue'
-
 const typeMap = {
   success: 'success',
   info: 'info',
   warning: 'warning',
   error: 'error'
 }
-
 export default {
   name: 'ElNotification',
   props: {
@@ -61,7 +59,7 @@ export default {
     iconClass: { type: String, default: '' },
     id: { type: String, default: '' },
     verticalOffset: { type: Number, default: 0 },
-    message: { type: String, default: '' },
+    message: [String, Object],
     position: {
       type: String,
       default: 'top-right'
@@ -81,17 +79,12 @@ export default {
         ? `el-icon-${typeMap[props.type]}`
         : ''
     })
-
     const horizontalClass = computed(() => {
-      console.log(props.position.indexOf('right') > -1 ? 'right' : 'left')
       return props.position.indexOf('right') > -1 ? 'right' : 'left'
     })
-
     const verticalProperty = computed(() => {
-      console.log(props.position.startsWith('top') ? 'top' : 'bottom')
       return props.position.startsWith('top') ? 'top' : 'bottom'
     })
-
     const positionStyle = computed(() => {
       return {
         [verticalProperty.value]: `${props.verticalOffset}px`
@@ -103,7 +96,8 @@ export default {
     const closed = ref(false)
     const timer = ref(0)
     const destroyElement = () => {
-      instance.ctx.$el.parentNode.removeChild(instance.ctx.$el)
+      instance.ctx.$el.parentNode &&
+        instance.ctx.$el.parentNode.removeChild(instance.ctx.$el)
     }
     const clearTimer = () => {
       clearTimeout(timer.value)
@@ -140,7 +134,6 @@ export default {
         onClick()
       }
     }
-
     watch(closed, (newVal) => {
       if (newVal) {
         visible.value = false
