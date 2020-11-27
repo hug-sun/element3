@@ -40,7 +40,7 @@ export default {
       default: 'process'
     }
   },
-  events: ['change'],
+  emits: ['change'],
   setup(props, context) {
     const state = reactive({
       steps: [],
