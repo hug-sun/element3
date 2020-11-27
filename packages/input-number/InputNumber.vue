@@ -257,8 +257,8 @@ export default {
 
         return currentValue
       },
-      set: ()=> {
-         return state.currentValue
+      set: () => {
+        return state.currentValue
       }
     })
 

@@ -32,8 +32,8 @@
 
 <script>
 import ImageViewer from './ImageViewer'
-import {loadImage, objectFit} from './uitls/utils'
-import {useImageStyle} from './use/useImageStyle';
+import { loadImage, objectFit } from './uitls/utils'
+import { useImageStyle } from './use/useImageStyle'
 import { t } from '../../src/locale'
 import { throttle } from 'throttle-debounce'
 import { isString, isHtmlElement } from '../../src/utils/types'
@@ -45,12 +45,11 @@ import {
   onMounted,
   onBeforeUnmount,
   getCurrentInstance,
-  toRef,
-  toRefs,
   toRaw
 } from 'vue'
 
-const isSupportObjectFit = () => document.documentElement.style.objectFit !== undefined
+const isSupportObjectFit = () =>
+  document.documentElement.style.objectFit !== undefined
 
 let prevOverflow = ''
 
@@ -86,31 +85,38 @@ export default {
     const error = ref(false)
     const show = ref(!props.lazy)
     const showViewer = ref(false)
- 
-    
+
     // computed
     const imageStyle = computed(() => {
       const { fit } = props
       if (fit) {
-        return isSupportObjectFit() ? { 'object-fit': fit } : useImageStyle(instance.ctx.$el, fit)
+        return isSupportObjectFit()
+          ? { 'object-fit': fit }
+          : useImageStyle(instance.ctx.$el, fit)
       }
       return {}
     })
 
     const alignCenter = computed(() => {
-       return (!isSupportObjectFit() && props.fit !== objectFit.FILL)
+      return !isSupportObjectFit() && props.fit !== objectFit.FILL
     })
     const preview = computed(() => {
-      const { previewSrcList } =  props
+      const { previewSrcList } = props
       return Array.isArray(previewSrcList) && previewSrcList.length > 0
     })
     const imageIndex = computed(() => {
-       const {previewSrcList, src} = toRaw(props)
-       return  previewSrcList.indexOf(src) >= 0 ? previewSrcList.indexOf(src) : 0
+      const { previewSrcList, src } = toRaw(props)
+      return previewSrcList.indexOf(src) >= 0 ? previewSrcList.indexOf(src) : 0
     })
-  
-    watch(([() => props.src, show]) , ([src, show]) => {
-      (show.value || src) && loadImage(props.src, instance.ctx.$attrs, handleLoad, handleError.bind(this))
+
+    watch([() => props.src, show], ([src, show]) => {
+      ;(show.value || src) &&
+        loadImage(
+          props.src,
+          instance.ctx.$attrs,
+          handleLoad,
+          handleError.bind(this)
+        )
     })
 
     // lifecycle
@@ -121,14 +127,19 @@ export default {
           console.log(8888)
         })
       } else {
-        loadImage(props.src, instance.ctx.$attrs, handleLoad, handleError.bind(this))
+        loadImage(
+          props.src,
+          instance.ctx.$attrs,
+          handleLoad,
+          handleError.bind(this)
+        )
       }
     })
     onBeforeUnmount(() => {
       props.lazy && removeLazyLoadListener()
     })
 
-    const handleLoad = (e, img) => {
+    const handleLoad = () => {
       loading.value = false
       error.value = false
     }
@@ -144,7 +155,6 @@ export default {
       }
     }
     const addLazyLoadListener = () => {
-      
       const { scrollContainer } = props
       let _scrollContainer = null
 
@@ -167,14 +177,14 @@ export default {
       const { _scrollContainer, _lazyLoadHandler } = instance.ctx
 
       if (!_scrollContainer || !_lazyLoadHandler) {
-         return
+        return
       }
-        
+
       off(_scrollContainer, 'scroll', _lazyLoadHandler)
       instance.ctx._scrollContainer = null
       instance.ctx._lazyLoadHandler = null
     }
-    
+
     const clickHandler = () => {
       // don't show viewer when preview is false
       if (!preview.value) {

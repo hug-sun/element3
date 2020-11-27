@@ -127,7 +127,7 @@ export default {
     const isFirst = computed(() => props.index === 0)
     const isLast = computed(() => props.index === props.urlList.length - 1)
     const currentImg = computed(() => props.urlList[index.value])
-    const imgStyle = useImgStyle(state);
+    const imgStyle = useImgStyle(state)
     // lifeC
     onMounted(() => {
       deviceSupportInstall()
@@ -148,7 +148,7 @@ export default {
         }
       })
     })
-    
+
     const handleActions = (action, options = {}) => {
       if (loading.value) return
       const { zoomRate, rotateDeg, enableTransition } = {
@@ -215,13 +215,13 @@ export default {
 
     let keyDownHandler = rafThrottle((e) => {
       const keyCode = e.keyCode
-      const actions  = {
-         "27": () => hide(), // ESC
-         "32": () => toggleMode(), // SPACE
-         "37": () => prev(), // LEFT_ARROW
-         "38": () => handleActions('zoomIn'), // UP_ARROW
-         "39": () => next(),  // RIGHT_ARROW
-         "40": () => handleActions('zoomOut'),  // DOWN_ARROW
+      const actions = {
+        27: () => hide(), // ESC
+        32: () => toggleMode(), // SPACE
+        37: () => prev(), // LEFT_ARROW
+        38: () => handleActions('zoomIn'), // UP_ARROW
+        39: () => next(), // RIGHT_ARROW
+        40: () => handleActions('zoomOut') // DOWN_ARROW
       }
 
       actions[keyCode] && actions[keyCode]()
@@ -261,9 +261,9 @@ export default {
       loading = false
       e.target.alt = '加载失败'
     }
-    const handleMouseDown = (e) => { 
+    const handleMouseDown = (e) => {
       if (loading || e.button !== 0) return
-      
+
       const { offsetX, offsetY } = state.transform
       const startX = e.pageX
       const startY = e.pageY
@@ -310,24 +310,21 @@ export default {
 }
 
 const useImgStyle = (state) => {
+  return computed(() => {
+    const { scale, deg, offsetX, offsetY, enableTransition } = state.transform
 
-   return computed(() => {
+    const style = {
+      transform: `scale(${scale}) rotate(${deg}deg)`,
+      transition: enableTransition ? 'transform .3s' : '',
+      'margin-left': `${offsetX}px`,
+      'margin-top': `${offsetY}px`
+    }
 
-      const { scale, deg, offsetX, offsetY, enableTransition } = state.transform
-      
-      const style = {
-        transform: `scale(${scale}) rotate(${deg}deg)`,
-        transition: enableTransition ? 'transform .3s' : '',
-        'margin-left': `${offsetX}px`,
-        'margin-top': `${offsetY}px`
-      }
+    if (state.mode.name === Mode.CONTAIN.name) {
+      style.maxWidth = style.maxHeight = '100%'
+    }
 
-      if (state.mode.name === Mode.CONTAIN.name) {
-        style.maxWidth = style.maxHeight = '100%'
-      }
-
-      return style
+    return style
   })
 }
-
 </script>
