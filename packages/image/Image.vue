@@ -44,10 +44,8 @@ import {
   onBeforeUnmount,
   getCurrentInstance
 } from 'vue'
-
 const isSupportObjectFit = () =>
   document.documentElement.style.objectFit !== undefined
-
 const ObjectFit = {
   NONE: 'none',
   CONTAIN: 'contain',
@@ -55,18 +53,13 @@ const ObjectFit = {
   FILL: 'fill',
   SCALE_DOWN: 'scale-down'
 }
-
 let prevOverflow = ''
-
 export default {
   name: 'ElImage',
-
   inheritAttrs: false,
-
   components: {
     ImageViewer
   },
-
   props: {
     src: String,
     fit: String,
@@ -83,7 +76,7 @@ export default {
   },
 
   emits: ['error'],
-
+  
   setup(props, ctx) {
     const instance = getCurrentInstance()
     const loading = ref(true)
@@ -92,7 +85,6 @@ export default {
     const showViewer = ref(false)
     const imageWidth = ref(0)
     const imageHeight = ref(0)
-
     // computed
     const imageStyle = computed(() => {
       const { fit } = props
@@ -129,7 +121,6 @@ export default {
     watch(show, (val) => {
       val && loadImage()
     })
-
     // lifecycle
     onMounted(() => {
       if (props.lazy) {
@@ -141,18 +132,15 @@ export default {
     onBeforeUnmount(() => {
       props.lazy && removeLazyLoadListener()
     })
-
     // methods
     const loadImage = () => {
       // if (this.$isServer) return
-
       // reset status
       loading.value = true
       error.value = false
       const img = new Image()
       img.onload = (e) => handleLoad(e, img)
       img.onerror = handleError.bind(this)
-
       // bind html attrs
       // so it can behave consistently
       Object.keys(instance.ctx.$attrs).forEach((key) => {
@@ -180,10 +168,8 @@ export default {
     }
     const addLazyLoadListener = () => {
       // if (this.$isServer) return
-
       const { scrollContainer } = props
       let _scrollContainer = null
-
       if (isHtmlElement(scrollContainer)) {
         _scrollContainer = scrollContainer
       } else if (isString(scrollContainer)) {
@@ -191,7 +177,6 @@ export default {
       } else {
         _scrollContainer = getScrollContainer(instance.ctx.$el)
       }
-
       if (_scrollContainer) {
         instance.ctx._scrollContainer = _scrollContainer
         instance.ctx._lazyLoadHandler = throttle(200, handleLazyLoad)
@@ -201,14 +186,12 @@ export default {
     }
     const removeLazyLoadListener = () => {
       const { _scrollContainer, _lazyLoadHandler } = instance.ctx
-
       if (
         // this.$isServer ||
         !_scrollContainer ||
         !_lazyLoadHandler
       )
         return
-
       off(_scrollContainer, 'scroll', _lazyLoadHandler)
       instance.ctx._scrollContainer = null
       instance.ctx._lazyLoadHandler = null
@@ -221,7 +204,6 @@ export default {
         clientWidth: containerWidth,
         clientHeight: containerHeight
       } = instance.ctx.$el
-
       if (
         !imageWidth.value ||
         !imageHeight.value ||
@@ -229,16 +211,13 @@ export default {
         !containerHeight
       )
         return {}
-
       const vertical = imageWidth.value / imageHeight.value < 1
-
       if (fit === ObjectFit.SCALE_DOWN) {
         const isSmaller =
           imageWidth.value < containerWidth &&
           imageHeight.value < containerHeight
         fit = isSmaller ? ObjectFit.NONE : ObjectFit.CONTAIN
       }
-
       switch (fit) {
         case ObjectFit.NONE:
           return { width: 'auto', height: 'auto' }
@@ -250,7 +229,6 @@ export default {
           return {}
       }
     }
-
     const clickHandler = () => {
       // don't show viewer when preview is false
       if (!preview.value) {
@@ -265,7 +243,6 @@ export default {
       document.body.style.overflow = prevOverflow
       showViewer.value = false
     }
-
     return {
       loading,
       error,
