@@ -93,6 +93,7 @@ import ElScrollbar from '../packages/scrollbar'
 import ElAutocomplete from '../packages/autocomplete'
 
 import { version } from '../package.json'
+import { setupGlobalOptions } from './use/globalConfig.js'
 
 const components = [
   ElRow,
@@ -182,15 +183,6 @@ const install = (app, opts = {}) => {
   components.forEach((component) => {
     app.use(component)
   })
-}
-
-const setupGlobalOptions = (opts = {}) => {
-  return (app) => {
-    app.config.globalProperties.$ELEMENT = {
-      size: opts.size || '',
-      zIndex: opts.zIndex || 2000
-    }
-  }
 }
 
 const elementUI = {
