@@ -76,12 +76,9 @@ const Mode = {
     icon: 'el-icon-c-scale-to-original'
   }
 }
-
 const mousewheelEventName = isFirefox() ? 'DOMMouseScroll' : 'mousewheel'
-
 export default {
   name: 'elImageViewer',
-
   props: {
     urlList: {
       type: Array,
@@ -147,7 +144,6 @@ export default {
       // focus wrapper so arrow key can't cause inner scroll behavior underneath
       imageWrapper.value.focus()
     })
-
     // watch
     watch(index, (val) => {
       reset()
@@ -200,16 +196,13 @@ export default {
         enableTransition: false
       }
     }
-
     const toggleMode = () => {
       if (loading.value) return
       const modeNames = Object.keys(Mode)
       const modeValues = Object.values(Mode)
-
       const index = modeValues.findIndex(
         (index) => index.name === state.mode.name
       )
-
       const nextIndex = (index + 1) % modeNames.length
       state.mode = Mode[modeNames[nextIndex]]
       reset()
@@ -290,7 +283,6 @@ export default {
     }
     const handleMouseDown = (e) => {
       if (loading || e.button !== 0) return
-
       const { offsetX, offsetY } = state.transform
       const startX = e.pageX
       const startY = e.pageY
@@ -302,10 +294,8 @@ export default {
       on(document, 'mouseup', () => {
         off(document, 'mousemove', _dragHandler)
       })
-
       e.preventDefault()
     }
-
     return {
       img,
       imageWrapper,

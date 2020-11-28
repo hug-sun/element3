@@ -121,12 +121,9 @@ export default {
 
   emits: ['update:modelValue', 'tab-click', 'tab-remove', 'tab-add', 'edit'],
 
-  setup: function () {
-    const instance = getCurrentInstance()
+  setup: function (props) {
     const tabList = reactive([])
     const tabElList = reactive([])
-
-    provide('elTabs', instance)
 
     const {
       scrollable,
@@ -148,6 +145,12 @@ export default {
     })
 
     const { activeBarStyle } = useTabBarStyle({ tabList, state, direction })
+
+    provide('elTabsInfo', {
+      tabList,
+      props,
+      state
+    })
 
     return {
       activeBarStyle,
