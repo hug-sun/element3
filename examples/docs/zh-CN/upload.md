@@ -99,8 +99,10 @@
 
 <script>
   import { ref } from 'vue';
+  import { useMessage } from 'element3';
   export default {
     setup(){
+      const message = useMessage();
       const imageUrl = ref('');
 
       const handleAvatarSuccess = (res, file) => {
@@ -111,10 +113,10 @@
         const isLt2M = file.size / 1024 / 1024 < 2;
 
         if (!isJPG) {
-          self.$message.error('上传头像图片只能是 JPG 格式!');
+          message.error('上传头像图片只能是 JPG 格式!');
         }
         if (!isLt2M) {
-          self.$message.error('上传头像图片大小不能超过 2MB!');
+          message.error('上传头像图片大小不能超过 2MB!');
         }
         return isJPG && isLt2M;
       }
