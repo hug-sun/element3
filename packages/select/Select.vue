@@ -37,18 +37,20 @@
         </el-tag>
       </span>
       <transition-group @after-leave="resetInputHeight" v-if="!collapseTags">
-        <el-tag
-          v-for="item in selected"
-          :key="getValueKey(item)"
-          :closable="!selectDisabled"
-          :size="collapseTagSize"
-          :hit="item.hitState"
-          type="info"
-          @close="deleteTag($event, item)"
-          disable-transitions
-        >
-          <span class="el-select__tags-text">{{ item.currentLabel }}</span>
-        </el-tag>
+        <span>
+          <el-tag
+            v-for="item in selected"
+            :key="getValueKey(item)"
+            :closable="!selectDisabled"
+            :size="collapseTagSize"
+            :hit="item.hitState"
+            type="info"
+            @close="deleteTag($event, item)"
+            disable-transitions
+          >
+            <span class="el-select__tags-text">{{ item.currentLabel }}</span>
+          </el-tag>
+        </span>
       </transition-group>
 
       <input
