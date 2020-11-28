@@ -122,16 +122,6 @@ describe('Button.vue', () => {
     expect(wrapper.classes()).toContain(`is-loading`)
   })
 
-  it('set button loading by prop loading', async () => {
-    const wrapper = mount(Button, {
-      props: {
-        loading: true
-      }
-    })
-
-    expect(wrapper.classes()).toContain(`is-loading`)
-  })
-
   describe('set button disabled', () => {
     it('by props.disabled', () => {
       const wrapper = mount(Button, {
@@ -144,7 +134,7 @@ describe('Button.vue', () => {
       expect(wrapper.attributes()).toHaveProperty('disabled')
     })
 
-    it('by elForm.disable', () => {
+    it('by elForm.disabled', () => {
       const wrapper = mount(Button, {
         global: {
           provide: {
