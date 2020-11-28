@@ -51,11 +51,11 @@ import ElAlert from '../packages/alert'
 
 import ElLoading, { useLoading } from '../packages/loading'
 
-import { useMessage } from '../packages/message'
+import ElMessage, { useMessage } from '../packages/message'
 
-import { useMsgbox } from '../packages/message-box'
+import ElMessageBox, { useMsgbox } from '../packages/message-box'
 
-import { useNotify } from '../packages/notification'
+import ElNotification, { useNotify } from '../packages/notification'
 // Navigation
 import ElMenu from '../packages/menu'
 import ElMenuItem from '../packages/menu-item'
@@ -183,6 +183,18 @@ const install = (app, opts = {}) => {
   components.forEach((component) => {
     app.use(component)
   })
+
+  applyOptions(app)
+}
+
+function applyOptions(app) {
+  app.config.globalProperties.$loading = ElLoading.service
+  app.config.globalProperties.$msgbox = ElMessageBox.service
+  app.config.globalProperties.$alert = ElMessageBox.service.alert
+  app.config.globalProperties.$confirm = ElMessageBox.service.confirm
+  app.config.globalProperties.$prompt = ElMessageBox.service.prompt
+  app.config.globalProperties.$notify = ElNotification.service
+  app.config.globalProperties.$message = ElMessage.service
 }
 
 const elementUI = {
