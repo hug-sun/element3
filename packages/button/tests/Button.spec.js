@@ -1,6 +1,7 @@
 import Button from '../Button.vue'
 import { mount } from '@vue/test-utils'
 import { reactive } from 'vue'
+import { setupGlobalOptions } from '../../../src/use/globalConfig'
 
 describe('Button.vue', () => {
   it('snapshot', () => {
@@ -58,13 +59,11 @@ describe('Button.vue', () => {
           size: ''
         },
         global: {
-          config: {
-            globalProperties: {
-              $ELEMENT: {
-                size
-              }
-            }
-          }
+          plugins: [
+            setupGlobalOptions({
+              size
+            })
+          ]
         }
       })
 
