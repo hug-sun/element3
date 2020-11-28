@@ -363,7 +363,6 @@ export default {
       state.action = action
       if (typeof unref(beforeClose) === 'function') {
         const close = getSafeClose()
-        console.log(instance.vnode)
         unref(beforeClose)(action, instance.vnode, close)
       } else {
         doClose()
@@ -425,7 +424,6 @@ export default {
         })
       }
       const focusAfterClosed = document.activeElement
-      console.log(instance)
       messageBox = new Dialog(
         instance.vnode.el,
         focusAfterClosed,

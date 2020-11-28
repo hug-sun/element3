@@ -1,5 +1,6 @@
 // #todo
-import { render, defineComponent, h, isVNode } from 'vue'
+import { defineComponent, isVNode } from 'vue'
+import { createComponent } from '../../../src/use/component'
 import msgboxVue from './MessageBox.vue'
 import merge from '../../../src/utils/merge'
 const messageBoxConstructor = defineComponent(msgboxVue)
@@ -49,9 +50,9 @@ const defaultCallback = (action) => {
   if (currentMsg) {
     if (currentMsg.resolve) {
       if (action === 'confirm') {
-        if (instance.component.vnode.props.showInput) {
+        if (instance.vnode.props.showInput) {
           currentMsg.resolve({
-            value: instance.component.setupState.state.inputValue,
+            value: instance.setupState.state.inputValue,
             action
           })
         } else {
@@ -69,8 +70,7 @@ const defaultCallback = (action) => {
 
 const initInstance = (currentMsg, VNode = null) => {
   defaults.callback = defaultCallback
-  instance = h(messageBoxConstructor, currentMsg.options, VNode)
-  render(instance, document.createElement('div'))
+  instance = createComponent(messageBoxConstructor, currentMsg.options, VNode)
 }
 
 const showNextMsg = () => {
@@ -102,7 +102,7 @@ const showNextMsg = () => {
         options[prop] = true
       }
     })
-    document.body.appendChild(instance.el)
+    document.body.appendChild(instance.vnode.el)
   }
   // }
 }
