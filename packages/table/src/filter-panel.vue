@@ -67,7 +67,7 @@
 import Popper from '../../../src/utils/vue-popper'
 import { PopupManager } from '../../../src/utils/popup'
 import Locale from '../../../src/mixins/locale'
-import Clickoutside from '../../../src/utils/clickoutside'
+import Clickoutside from '../../../src/directives/clickoutside'
 import Dropdown from './dropdown'
 import ElCheckbox from '../../../packages/checkbox'
 import ElCheckboxGroup from '../../../packages/checkbox-group'

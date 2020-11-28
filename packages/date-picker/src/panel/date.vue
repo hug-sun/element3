@@ -193,7 +193,7 @@ import {
   extractTimeFormat,
   timeWithinRange
 } from '../../../../src/utils/date-util'
-import Clickoutside from '../../../../src/utils/clickoutside'
+import Clickoutside from '../../../../src/directives/clickoutside'
 import Locale from '../../../../src/mixins/locale'
 import ElInput from '../../../input'
 import ElButton from '../../../button'
