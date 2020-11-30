@@ -90,37 +90,6 @@ describe('Carousel', () => {
   })
 
   // todo 需要重构这个测试 - 有时候成功有时候失败
-  it.skip('change', (done) => {
-    const change = {
-      template: `
-        <div>
-          <carousel :interval="50" @change="handleChange">
-            <carousel-item v-for="item in 3" :key="item"></carousel-item>
-          </carousel>
-        </div>
-      `,
-      components: { Carousel, CarouselItem },
-      data() {
-        return {
-          val: -1,
-          oldVal: -1
-        }
-      },
-      methods: {
-        handleChange(val, oldVal) {
-          this.val = val
-          this.oldVal = oldVal
-        }
-      }
-    }
-
-    const wrapper = mount(change)
-    setTimeout(() => {
-      expect(wrapper.componentVM.val).toBe(1)
-      expect(wrapper.componentVM.oldVal).toBe(0)
-      done()
-    }, 60)
-  })
 
   it('label', (done) => {
     const label = {

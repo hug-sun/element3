@@ -33,8 +33,7 @@
       ]
     },
     "test": {
-      "plugins": ["istanbul"],
-      "presets": [["env", { "targets": { "node": "current" } }]]
+      "presets": [["@babel/preset-env", { "targets": { "node": "current" } }]]
     },
     "esm": {
       "presets": [["@babel/preset-env", { "modules": false }]]
