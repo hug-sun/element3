@@ -55,4 +55,18 @@ describe('Tag.vue', () => {
       expect(wrapper.vm.clicksCount).toBe(1)
     })
   })
+
+  it('disableTransitions', async () => {
+    const wrapper = mount(Tag, {})
+    expect(wrapper.findComponent({ name: 'TransitionStub' }).exists()).toBe(
+      true
+    )
+    await wrapper.setProps({
+      disableTransitions: true
+    })
+
+    expect(wrapper.findComponent({ name: 'TransitionStub' }).exists()).toBe(
+      false
+    )
+  })
 })

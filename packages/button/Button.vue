@@ -14,7 +14,8 @@
 </template>
 
 <script>
-import { toRefs, inject, computed, getCurrentInstance } from 'vue'
+import { useGlobalOptions } from '../../src/use/globalConfig'
+import { toRefs, inject, computed } from 'vue'
 export default {
   name: 'ElButton',
   props: {
@@ -89,13 +90,10 @@ const useButtonDisabled = (disabled) => {
 }
 
 const useButtonSize = (size) => {
+  const globalConfig = useGlobalOptions()
   return computed(() => {
     const elFormItem = inject('elFormItem', {})
-    return (
-      size?.value ||
-      elFormItem.elFormItemSize ||
-      getCurrentInstance().ctx.$ELEMENT?.size
-    )
+    return size?.value || elFormItem.elFormItemSize || globalConfig.size
   })
 }
 </script>

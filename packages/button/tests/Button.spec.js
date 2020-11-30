@@ -1,6 +1,7 @@
 import Button from '../Button.vue'
 import { mount } from '@vue/test-utils'
 import { reactive } from 'vue'
+import { setupGlobalOptions } from '../../../src/use/globalConfig'
 
 describe('Button.vue', () => {
   it('snapshot', () => {
@@ -58,13 +59,11 @@ describe('Button.vue', () => {
           size: ''
         },
         global: {
-          config: {
-            globalProperties: {
-              $ELEMENT: {
-                size
-              }
-            }
-          }
+          plugins: [
+            setupGlobalOptions({
+              size
+            })
+          ]
         }
       })
 
@@ -123,16 +122,6 @@ describe('Button.vue', () => {
     expect(wrapper.classes()).toContain(`is-loading`)
   })
 
-  it('set button loading by prop loading', async () => {
-    const wrapper = mount(Button, {
-      props: {
-        loading: true
-      }
-    })
-
-    expect(wrapper.classes()).toContain(`is-loading`)
-  })
-
   describe('set button disabled', () => {
     it('by props.disabled', () => {
       const wrapper = mount(Button, {
@@ -145,7 +134,7 @@ describe('Button.vue', () => {
       expect(wrapper.attributes()).toHaveProperty('disabled')
     })
 
-    it('by elForm.disable', () => {
+    it('by elForm.disabled', () => {
       const wrapper = mount(Button, {
         global: {
           provide: {

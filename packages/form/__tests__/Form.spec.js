@@ -93,65 +93,6 @@ describe('Form', () => {
     ).toBe('')
   })
 
-  // todo autoWith 使用了dom的API getComputedStyle, 在单元测试中暂时还没办法获取到真正的宽度
-  // it('auto label width', async () => {
-  //   const wrapper = mount({
-  //     template: `
-  //       <el-form label-width="auto">
-  //         <el-form-item label="活动名称">
-  //           <input />
-  //         </el-form-item>
-  //         <el-form-item label="活动备注信息" v-if="display">
-  //           <input />
-  //         </el-form-item>
-  //       </el-form>
-  //     `,
-  //     data() {
-  //       return {
-  //         display: true
-  //       }
-  //     },
-  //     components: {
-  //       ElForm: Form,
-  //       ElFormItem: FormItem
-  //     }
-  //   })
-
-  //   const contents = wrapper.findAll('.el-form-item__content')
-
-  //   const marginLeft = contents[0].element.style.marginLeft
-  //   const marginLeft1 = contents[1].element.style.marginLeft
-  //   wrapper.vm.display = false
-  //   await wrapper.vm.$nextTick()
-
-  //   const newMarginLeft = contents[0].element.style.marginLeft
-  //   expect(marginLeft === marginLeft1).toBe(true)
-  //   expect(newMarginLeft < marginLeft).toBe(true)
-  // })
-
-  // it('label size', () => {
-  //   const wrapperForm = mount({
-  //     template: `<el-form size="mini">
-  //       <el-form-item>
-
-  //       </el-form-item>
-  //     </el-form>`,
-  //     components
-  //   })
-
-  //   const wrapperFormItem = mount({
-  //     template: `<el-form>
-  //       <el-form-item size="mini">
-
-  //       </el-form-item>
-  //     </el-form>`,
-  //     components
-  //   })
-
-  //   expect(wrapperForm.find('.el-form-item').classes()).toContain('el-form-item--mini')
-  //   expect(wrapperFormItem.find('.el-form-item').classes()).toContain('el-form-item--mini')
-  // })
-
   it('show message', (done) => {
     const wrapper = mount({
       template: `<el-form :model="form" ref="form">

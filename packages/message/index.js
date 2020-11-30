@@ -4,4 +4,6 @@ export function useMessage() {
   return Message
 }
 
-export default Message
+export default {
+  service: Message
+}
