@@ -31,7 +31,7 @@
     "pub": "npm run bootstrap && sh build/git-release.sh && sh build/release.sh && node build/bin/gen-indices.js && sh build/deploy-faas.sh",
     "build:docs": "npm run build:file && cross-env NODE_ENV=development webpack --config build/webpack.demo.js",
     "lint": "eslint --no-error-on-unmatched-pattern --ext .vue --ext .js --ext .jsx packages/**/ src/**/ --fix",
-    "test": "jest --runInBand",
+    "test": "jest --runInBand --coverage",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "build:next": "rollup -c",
     "release": "node scripts/release.js"

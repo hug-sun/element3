@@ -125,12 +125,10 @@ export default {
       props.urlList
     )
     // computed
-    const isSingle = computed(() => props.urlList.length <= 1)
+    const isSingle = useSingle(props.urlList)
 
-    const isFirst = computed(() => currentIndex.value === 0)
-    const isLast = computed(
-      () => currentIndex.value === props.urlList.length - 1
-    )
+    const isFirst = useFirstImage(currentIndex)
+    const isLast = useIsLastImage(currentIndex, props.urlList);
     const imgStyle = useImgStyle(state)
     // lifeC
     onMounted(() => {
@@ -326,5 +324,19 @@ const useCurrentImage = (initialIndex, urlList) => {
     currentIndex,
     changeCurrentImage
   }
+}
+
+const useSingle = (urlList) => {
+  return computed(() => urlList.length <= 1)
+}
+
+ const useFirstImage = (currentIndex) => {
+   return computed(() => currentIndex.value === 0)
+ }
+
+const useIsLastImage = (currentIndex, urlList) => {
+   return computed(
+      () => currentIndex.value === urlList.length - 1
+   )
 }
 </script>

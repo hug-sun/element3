@@ -1,5 +1,5 @@
 <template>
-  <div class="el-image">
+  <div :class="['el-image', $attrs.class]"  :style="$attrs.style">
     <slot v-if="loading" name="placeholder">
       <div class="el-image__placeholder"></div>
     </slot>
@@ -84,7 +84,7 @@ export default {
     const [showViewer, setShowViewer] = useRef(false)
 
  
-    const imageStyle = useImageFix(props.fix)
+    const imageStyle = useImageFix(props.fit)
 
     const alignCenter = useAlign(props, objectFit)
 
@@ -106,7 +106,6 @@ export default {
       if (props.lazy) {
         addLazyLoadListener()
         onBeforeUnmount(() => {
-          console.log(8888)
         })
       } else {
         loadImage(
@@ -130,7 +129,7 @@ export default {
       setError(true)
       ctx.emit('error', e)
     }
-    const handleLazyLoad = () => { console.log(useGlobalOptions());return
+    const handleLazyLoad = () => { 
       if (isInContainer(instance.ctx.$el, instance.ctx._scrollContainer)) {
         setShow(true)
         removeLazyLoadListener()
@@ -223,7 +222,7 @@ const useAlign = (props, objectFit) => {
 
 const useImageFix = (fit) => {
   return computed(() => {
-      if (fit) {
+      if (fit) { 
         return isSupportObjectFit()
           ? { 'object-fit': fit }
           : useImageStyle(useGlobalOptions(), fit)

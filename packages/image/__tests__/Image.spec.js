@@ -2,6 +2,7 @@ import { mount as $mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import Image from '../Image.vue'
 import { IMAGE_FAIL, IMAGE_SUCCESS as src } from './image'
+import sinon from 'sinon'
 
 const mount = async (Component, _options) => {
   const options = _options || {}
@@ -56,9 +57,44 @@ describe('Image.vue', () => {
         'hello world!'
       )
     })
-    test.todo('referrer-policy')
-    test.todo('lazy')
-    test.todo('scroll-container')
+
+    it('referrer-policy', async () => {
+      const wrapper = await mount(Image, {
+        props: {
+          "referrer-policy": 'test-referrerPolicy'
+        }
+      })
+      wrapper.componentVM.loading = false
+     
+      await nextTick()
+      
+      expect(wrapper.find('.el-image__inner').attributes('referrer-policy')).toEqual('test-referrerPolicy')
+    })
+
+    it('lazy', async () => {
+
+      const wrapper = await mount(Image, {
+        props: {
+         lazy: true
+        }
+      })
+     
+      await nextTick()
+      
+      expect(wrapper.props().lazy).toEqual(true);
+    })
+
+    it('scroll-container', async () => {
+      const wrapper = await mount(Image, {
+        props: {
+         "scroll-container": "div"
+        }
+      })
+     
+      await nextTick()
+      
+      expect(wrapper.props().scrollContainer).toEqual('div');
+    })
 
     it('preview-src-list', async () => {
       const wrapper = await mount(Image, {
@@ -87,8 +123,22 @@ describe('Image.vue', () => {
   })
 
   describe('Events', () => {
-    test.todo('load')
-    test.todo('error')
+    it('load', async () => {
+   
+      const wrapper = await mount(Image, {
+        propsData: {
+          lazy: true,
+          loadImage: spyFn
+        },
+      })
+
+      await nextTick()
+      spyFn.should.have.been.called()
+    })
+
+    expect(
+      wrapper.find('.el-image__inner').attributes('src')
+    ).toContain('z-index: 2020')
   })
 
   describe('Slots', () => {
