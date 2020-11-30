@@ -1,7 +1,8 @@
 import '@testing-library/jest-dom'
 import { nextTick } from 'vue'
 import Utils from 'main/utils/aria-utils'
-import Message from '../index.js'
+import MessageInfo from '../index.js'
+const Message = MessageInfo.service
 
 jest.useFakeTimers()
 

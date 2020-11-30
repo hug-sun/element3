@@ -81,3 +81,10 @@ export interface ElNotification {
   /** Show an error notification */
   error(options: ElNotificationOptions): INotificationComponent
 }
+
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    /** Displays a global notification message at the upper right corner of the page */
+    $notify: ElNotification
+  }
+}
