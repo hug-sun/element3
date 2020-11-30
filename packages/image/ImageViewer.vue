@@ -76,12 +76,9 @@ const Mode = {
     icon: 'el-icon-c-scale-to-original'
   }
 }
-
 const mousewheelEventName = isFirefox() ? 'DOMMouseScroll' : 'mousewheel'
-
 export default {
   name: 'elImageViewer',
-
   props: {
     urlList: {
       type: Array,
@@ -147,7 +144,6 @@ export default {
       // focus wrapper so arrow key can't cause inner scroll behavior underneath
       imageWrapper.value.focus()
     })
-
     // watch
     watch(index, (val) => {
       reset()
@@ -200,16 +196,13 @@ export default {
         enableTransition: false
       }
     }
-
     const toggleMode = () => {
       if (loading.value) return
       const modeNames = Object.keys(Mode)
       const modeValues = Object.values(Mode)
-
       const index = modeValues.findIndex(
         (index) => index.name === state.mode.name
       )
-
       const nextIndex = (index + 1) % modeNames.length
       state.mode = Mode[modeNames[nextIndex]]
       reset()
@@ -224,7 +217,7 @@ export default {
       const len = props.urlList.length
       index.value = (index.value + 1) % len
     }
-    let _keyDownHandler = rafThrottle((e) => {
+    let keyDownHandler = rafThrottle((e) => {
       const keyCode = e.keyCode
       switch (keyCode) {
         // ESC
@@ -253,7 +246,7 @@ export default {
           break
       }
     })
-    let _mouseWheelHandler = rafThrottle((e) => {
+    let mouseWheelHandler = rafThrottle((e) => {
       const delta = e.wheelDelta ? e.wheelDelta : -e.detail
       if (delta > 0) {
         handleActions('zoomIn', {
@@ -268,14 +261,14 @@ export default {
       }
     })
     const deviceSupportInstall = () => {
-      on(document, 'keydown', _keyDownHandler)
-      on(document, mousewheelEventName, _mouseWheelHandler)
+      on(document, 'keydown', keyDownHandler)
+      on(document, mousewheelEventName, mouseWheelHandler)
     }
     const deviceSupportUninstall = () => {
-      off(document, 'keydown', _keyDownHandler)
-      off(document, mousewheelEventName, _mouseWheelHandler)
-      _keyDownHandler = null
-      _mouseWheelHandler = null
+      off(document, 'keydown', keyDownHandler)
+      off(document, mousewheelEventName, mouseWheelHandler)
+      keyDownHandler = null
+      mouseWheelHandler = null
     }
     const hide = () => {
       deviceSupportUninstall()
@@ -290,7 +283,6 @@ export default {
     }
     const handleMouseDown = (e) => {
       if (loading || e.button !== 0) return
-
       const { offsetX, offsetY } = state.transform
       const startX = e.pageX
       const startY = e.pageY
@@ -302,10 +294,8 @@ export default {
       on(document, 'mouseup', () => {
         off(document, 'mousemove', _dragHandler)
       })
-
       e.preventDefault()
     }
-
     return {
       img,
       imageWrapper,
@@ -325,8 +315,8 @@ export default {
       toggleMode,
       handleActions,
       hide,
-      _keyDownHandler,
-      _mouseWheelHandler,
+      keyDownHandler,
+      mouseWheelHandler,
       deviceSupportInstall,
       deviceSupportUninstall,
       handleImgLoad,

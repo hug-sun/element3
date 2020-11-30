@@ -2,9 +2,9 @@
   <div
     v-if="lazy ? tab.rendered : true"
     v-show="
-      typeof elTabs.props.modelValue !== 'undefined'
-        ? elTabs.ctx.state.activeName === name
-        : elTabs.ctx.state.activeIndex === index
+      typeof elTabsInfo.props.modelValue !== 'undefined'
+        ? elTabsInfo.state.activeName === name
+        : elTabsInfo.state.activeIndex === index
     "
   >
     <slot></slot>
@@ -27,7 +27,9 @@ export default {
   setup(props) {
     const index = ref(0)
     const instance = getCurrentInstance()
-    const elTabs = inject('elTabs', null)
+
+    const elTabsInfo = inject('elTabsInfo', null)
+
     const tab = reactive({
       label: props.label,
       name: props.name,
@@ -37,14 +39,16 @@ export default {
       pane: instance
     })
 
-    if (!elTabs) {
+    if (!elTabsInfo) {
       console.error('Element: not find parent ETabs')
       return
     }
-    index.value = elTabs.ctx.tabList.length
-    elTabs.ctx.tabList[index.value] = tab
+
+    index.value = elTabsInfo.tabList.length
+    elTabsInfo.tabList[index.value] = tab
+
     return {
-      elTabs,
+      elTabsInfo,
       tab,
       index
     }

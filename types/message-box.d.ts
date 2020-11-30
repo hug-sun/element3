@@ -166,3 +166,19 @@ export interface ElMessageBox {
   /** Close current message box */
   close(): void
 }
+
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
+    /** Show a message box */
+    $msgbox: ElMessageBox
+
+    /** Show an alert message box */
+    $alert: ElMessageBoxShortcutMethod
+
+    /** Show a confirm message box */
+    $confirm: ElMessageBoxShortcutMethod
+
+    /** Show a prompt message box */
+    $prompt: ElMessageBoxShortcutMethod
+  }
+}

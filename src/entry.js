@@ -1,4 +1,5 @@
 // 用于构建时的入口
+import ElCollapseTransition from './transitions/collapse-transition'
 // Basic
 import ElRow from '../packages/row'
 import ElCol from '../packages/col'
@@ -50,11 +51,11 @@ import ElAlert from '../packages/alert'
 
 import ElLoading, { useLoading } from '../packages/loading'
 
-import { useMessage } from '../packages/message'
+import ElMessage, { useMessage } from '../packages/message'
 
-import { useMsgbox } from '../packages/message-box'
+import ElMessageBox, { useMsgbox } from '../packages/message-box'
 
-import { useNotify } from '../packages/notification'
+import ElNotification, { useNotify } from '../packages/notification'
 // Navigation
 import ElMenu from '../packages/menu'
 import ElMenuItem from '../packages/menu-item'
@@ -92,6 +93,7 @@ import ElScrollbar from '../packages/scrollbar'
 import ElAutocomplete from '../packages/autocomplete'
 
 import { version } from '../package.json'
+import { setupGlobalOptions } from './use/globalConfig.js'
 
 const components = [
   ElRow,
@@ -161,7 +163,6 @@ const components = [
   ElPopover,
   ElPopconfirm,
   ElCard,
-  ElCarousel,
   ElCollapse,
   ElCollapseItem,
   ElTimeline,
@@ -172,7 +173,8 @@ const components = [
   ElInfiniteScroll,
   ElDrawer,
   ElScrollbar,
-  ElAutocomplete
+  ElAutocomplete,
+  ElCollapseTransition
 ]
 
 const install = (app, opts = {}) => {
@@ -181,15 +183,18 @@ const install = (app, opts = {}) => {
   components.forEach((component) => {
     app.use(component)
   })
+
+  applyOptions(app)
 }
 
-const setupGlobalOptions = (opts = {}) => {
-  return (app) => {
-    app.config.globalProperties.$ELEMENT = {
-      size: opts.size || '',
-      zIndex: opts.zIndex || 2000
-    }
-  }
+function applyOptions(app) {
+  app.config.globalProperties.$loading = ElLoading.service
+  app.config.globalProperties.$msgbox = ElMessageBox.service
+  app.config.globalProperties.$alert = ElMessageBox.service.alert
+  app.config.globalProperties.$confirm = ElMessageBox.service.confirm
+  app.config.globalProperties.$prompt = ElMessageBox.service.prompt
+  app.config.globalProperties.$notify = ElNotification.service
+  app.config.globalProperties.$message = ElMessage.service
 }
 
 const elementUI = {
@@ -269,6 +274,7 @@ export {
   ElCard,
   ElCollapse,
   ElCollapseItem,
+  ElCollapseTransition,
   ElTimeline,
   ElTimelineItem,
   ElDivider,

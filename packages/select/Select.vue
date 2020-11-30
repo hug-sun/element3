@@ -37,18 +37,20 @@
         </el-tag>
       </span>
       <transition-group @after-leave="resetInputHeight" v-if="!collapseTags">
-        <el-tag
-          v-for="item in selected"
-          :key="getValueKey(item)"
-          :closable="!selectDisabled"
-          :size="collapseTagSize"
-          :hit="item.hitState"
-          type="info"
-          @close="deleteTag($event, item)"
-          disable-transitions
-        >
-          <span class="el-select__tags-text">{{ item.currentLabel }}</span>
-        </el-tag>
+        <span>
+          <el-tag
+            v-for="item in selected"
+            :key="getValueKey(item)"
+            :closable="!selectDisabled"
+            :size="collapseTagSize"
+            :hit="item.hitState"
+            type="info"
+            @close="deleteTag($event, item)"
+            disable-transitions
+          >
+            <span class="el-select__tags-text">{{ item.currentLabel }}</span>
+          </el-tag>
+        </span>
       </transition-group>
 
       <input
@@ -206,7 +208,6 @@ export default {
       select: this
     }
   },
-
   computed: {
     _elFormItemSize() {
       return (this.elFormItem || {}).elFormItemSize
@@ -357,7 +358,6 @@ export default {
       default: true
     }
   },
-
   emits: [
     'update:modelValue',
     'input',
@@ -751,15 +751,18 @@ export default {
         )[0]
         const tags = this.$refs.tags
         const sizeInMap = this.initialInputHeight || 40
-        input.style.height =
-          this.selected.length === 0
-            ? sizeInMap + 'px'
-            : Math.max(
-                tags
-                  ? tags.clientHeight + (tags.clientHeight > sizeInMap ? 6 : 0)
-                  : 0,
-                sizeInMap
-              ) + 'px'
+        if (input) {
+          input.style.height =
+            this.selected.length === 0
+              ? sizeInMap + 'px'
+              : Math.max(
+                  tags
+                    ? tags.clientHeight +
+                        (tags.clientHeight > sizeInMap ? 6 : 0)
+                    : 0,
+                  sizeInMap
+                ) + 'px'
+        }
         if (this.visible && this.emptyText !== false) {
           this.broadcast('updatePopper')
         }

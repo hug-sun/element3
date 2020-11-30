@@ -238,7 +238,7 @@ import {
   extractDateFormat,
   extractTimeFormat
 } from '../../../../src/utils/date-util'
-import Clickoutside from '../../../../src/utils/clickoutside'
+import Clickoutside from '../../../../src/directives/clickoutside'
 import Locale from '../../../../src/mixins/locale'
 import TimePicker from './time'
 import DateTable from '../basic/date-table'

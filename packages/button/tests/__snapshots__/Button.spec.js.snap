@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button.vue snapshot 1`] = `
+<button
+  class="el-button"
+  type="button"
+>
+  <!--v-if-->
+  <!--v-if-->
+</button>
+`;

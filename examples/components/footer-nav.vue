@@ -78,7 +78,7 @@ export default {
 
   computed: {
     lang() {
-      return this.$route.meta.lang
+      return this.$route.meta.lang || 'zh-CN'
     }
   },
 

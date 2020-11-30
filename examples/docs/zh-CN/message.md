@@ -197,13 +197,13 @@
 </template>
 
 <script>
-  import { Message } from 'element3'
+  import { useMessage } from 'element3'
   export default {
     setup() {
-
+      const message = useMessage()
       return {
         openHTML() {
-          Message({
+          message({
             dangerouslyUseHTMLString: true,
             verticalOffset: 100,
             message: '<strong>这是 <i>HTML</i> 片段</strong>'
