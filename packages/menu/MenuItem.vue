@@ -84,23 +84,23 @@ export default {
     const instance = getCurrentInstance()
     const { dispatch } = useEmitter()
     const active = computed(() => {
-      return index.value === rootMenu.ctx.activeIndex
+      return index.value === rootMenu.props.activeIndex
     })
     const hoverBackground = computed(() => {
-      return rootMenu.ctx.hoverBackground
+      return rootMenu.props.hoverBackground
     })
     const backgroundColor = computed(() => {
-      return rootMenu.ctx.backgroundColor || ''
+      return rootMenu.props.backgroundColor || ''
     })
     const itemBackgroundColor = ref(backgroundColor.value)
     const activeTextColor = computed(() => {
-      return rootMenu.ctx.activeTextColor || ''
+      return rootMenu.props.activeTextColor || ''
     })
     const textColor = computed(() => {
-      return rootMenu.ctx.textColor || ''
+      return rootMenu.props.textColor || ''
     })
     const mode = computed(() => {
-      return rootMenu.ctx.mode
+      return rootMenu.props.mode
     })
     const isNested = computed(() => {
       return parentMenu !== rootMenu
@@ -132,12 +132,12 @@ export default {
       }
     }
     onMounted(() => {
-      parentMenu.value.ctx.addItem(instance)
-      rootMenu.ctx.addItem(instance)
+      parentMenu.value.setupState.addItem(instance)
+      rootMenu.setupState.addItem(instance)
     })
     onBeforeUnmount(() => {
-      parentMenu.value.ctx.removeItem(instance)
-      rootMenu.ctx.removeItem(instance)
+      parentMenu.value.setupState.removeItem(instance)
+      rootMenu.setupState.removeItem(instance)
     })
     return {
       paddingStyle,
