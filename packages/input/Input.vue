@@ -125,7 +125,6 @@ import {
   watch,
   unref
 } from 'vue'
-import emitter from '../../src/mixins/emitter'
 import { useEmitter } from '../../src/use/emitter'
 import {
   useValidate,
@@ -139,8 +138,6 @@ export default {
   name: 'ElInput',
 
   componentName: 'ElInput',
-
-  mixins: [emitter],
 
   inheritAttrs: false,
 
@@ -219,7 +216,8 @@ export default {
       toRefs(state),
       nativeInputValue,
       emit,
-      slots
+      slots,
+      dispatch
     )
 
     // when change between <input> and <textarea>,
