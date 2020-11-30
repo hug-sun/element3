@@ -59,6 +59,7 @@ export default {
       }
       
       return {
+        ...toRefs(data),
         ...toRefs(data.form),
         onSubmit
       }
@@ -101,6 +102,7 @@ export default {
       }
 
       return {
+        ...toRefs(data),
         ...toRefs(data.formInline),
         onSubmit
       }
@@ -147,6 +149,7 @@ export default {
       })
        return {
         labelPosition,
+        ...toRefs(data),
         ...toRefs(data.formLabelAlign)
        }
     }
@@ -155,7 +158,7 @@ export default {
 ```
 :::
 
-<!-- ### 表单验证
+### 表单验证
 
 在防止用户犯错的前提下，尽可能让用户更早地发现并纠正错误。
 
@@ -248,7 +251,7 @@ export default {
   }
 </script>
 ```
-::: -->
+:::
 
 <!-- ### 自定义校验规则
 
