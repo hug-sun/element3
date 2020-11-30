@@ -172,7 +172,8 @@ export const useInteractive = (
   { focused, isComposing, passwordVisible },
   nativeInputValue,
   emit,
-  slots
+  slots,
+  dispatch
 ) => {
   const getInput = () => {
     return unref(input) || unref(textarea)
@@ -201,7 +202,7 @@ export const useInteractive = (
     focused.value = false
     emit('blur', event)
     if (unref(validateEvent)) {
-      instance.proxy.dispatch('el.form.blur', [unref(modelValue)])
+      dispatch('el.form.blur', [unref(modelValue)])
     }
   }
 
