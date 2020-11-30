@@ -32,6 +32,7 @@
 
 <script>
 import ImageViewer from './ImageViewer'
+import {useGlobalOptions} from '../../src/use/globalConfig'
 import { loadImage, objectFit } from './uitls/utils'
 import { useImageStyle } from './use/useImageStyle'
 import { t } from '../../src/locale'
@@ -79,23 +80,14 @@ export default {
     const instance = getCurrentInstance()
     const [loading, setLoading] = useRef(true)
     const [error, setError] = useRef(false)
-    const show = ref(!props.lazy)
+    const [show, setShow] = useRef(!props.lazy)
     const [showViewer, setShowViewer] = useRef(false)
 
-    // computed
-    const imageStyle = computed(() => {
-      const { fit } = props
-      if (fit) {
-        return isSupportObjectFit()
-          ? { 'object-fit': fit }
-          : useImageStyle(instance.ctx.$el, fit)
-      }
-      return {}
-    })
+ 
+    const imageStyle = useImageFix(props.fix)
 
-    const alignCenter = computed(() => {
-      return !isSupportObjectFit() && props.fit !== objectFit.FILL
-    })
+    const alignCenter = useAlign(props, objectFit)
+
     const preview = usePreviewStatus(props.previewSrcList)
 
     const imageIndex = useImageIndex(props)
@@ -138,9 +130,9 @@ export default {
       setError(true)
       ctx.emit('error', e)
     }
-    const handleLazyLoad = () => {
+    const handleLazyLoad = () => { console.log(useGlobalOptions());return
       if (isInContainer(instance.ctx.$el, instance.ctx._scrollContainer)) {
-        show.value = true
+        setShow(true)
         removeLazyLoadListener()
       }
     }
@@ -222,4 +214,22 @@ const useImageIndex = (props) => {
     return previewSrcList.indexOf(src) >= 0 ? previewSrcList.indexOf(src) : 0
   })
 }
+
+const useAlign = (props, objectFit) => {
+  return computed(() => {
+    return !isSupportObjectFit() && props.fit !== objectFit.FILL
+  })
+}
+
+const useImageFix = (fit) => {
+  return computed(() => {
+      if (fit) {
+        return isSupportObjectFit()
+          ? { 'object-fit': fit }
+          : useImageStyle(useGlobalOptions(), fit)
+      }
+      return {}
+    })
+}
+
 </script>
