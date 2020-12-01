@@ -2,7 +2,7 @@ import { mount as $mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import Image from '../Image.vue'
 import { IMAGE_FAIL, IMAGE_SUCCESS as src } from './image'
-import sinon from 'sinon'
+import ImageViewer from '../ImageViewer.vue'
 
 const mount = async (Component, _options) => {
   const options = _options || {}
@@ -71,17 +71,20 @@ describe('Image.vue', () => {
       expect(wrapper.find('.el-image__inner').attributes('referrer-policy')).toEqual('test-referrerPolicy')
     })
 
-    it('lazy', async () => {
+    it('props lazy', async () => {
 
       const wrapper = await mount(Image, {
-        props: {
-         lazy: true
+        propsData: {
+          lazy: true
         }
       })
-     
-      await nextTick()
       
-      expect(wrapper.props().lazy).toEqual(true);
+      await nextTick()
+      expect(wrapper.find('.el-image__inner').exists()).toBe(false);
+     
+      wrapper.setProps({lazy: false})
+      await nextTick()
+      expect(wrapper.find('.el-image__inner').exists()).toBe(true);
     })
 
     it('scroll-container', async () => {
@@ -120,25 +123,46 @@ describe('Image.vue', () => {
         wrapper.find('.el-image-viewer__wrapper').attributes('style')
       ).toContain('z-index: 2020')
     })
-  })
 
-  describe('Events', () => {
-    it('load', async () => {
-   
+    it('src update should be call loadimage method', async () => {
+      
       const wrapper = await mount(Image, {
         propsData: {
-          lazy: true,
-          loadImage: spyFn
-        },
-      })
+          src,
+          lazy: false
+        }
+      });
 
+      wrapper.componentVM.loading = false
+      wrapper.setProps({src: IMAGE_FAIL})
       await nextTick()
-      spyFn.should.have.been.called()
+      expect(wrapper.find('.el-image__inner').attributes('src')).toBe(IMAGE_FAIL)
     })
+  })
 
-    expect(
-      wrapper.find('.el-image__inner').attributes('src')
-    ).toContain('z-index: 2020')
+  describe('click image', () => {
+    it('click image should be show preview div', async () => {
+      
+      const wrapper = await mount(Image, {
+        propsData: {
+          src,
+          lazy: false,
+          previewSrcList: [src, IMAGE_FAIL]
+        },
+        global: {
+          stubs: ['image-viewer']
+        }
+      });
+
+      wrapper.componentVM.loading = false
+
+      expect(wrapper.findComponent({name: 'ImageViewer'}).exists()).toBe(false);
+      await nextTick()
+      wrapper.find('.el-image__inner').trigger('click')
+      
+      await nextTick(); console.log(wrapper.vm.components)
+      expect(wrapper.findComponent({name: 'ImageViewer'}).isVisible()).toBe(true);
+    })
   })
 
   describe('Slots', () => {

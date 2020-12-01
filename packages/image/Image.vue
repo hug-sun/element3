@@ -80,7 +80,6 @@ export default {
     const instance = getCurrentInstance()
     const [loading, setLoading] = useRef(true)
     const [error, setError] = useRef(false)
-    const [show, setShow] = useRef(!props.lazy)
     const [showViewer, setShowViewer] = useRef(false)
 
  
@@ -91,35 +90,30 @@ export default {
     const preview = usePreviewStatus(props.previewSrcList)
 
     const imageIndex = useImageIndex(props)
-
-    watch([() => props.src, show], ([src, show]) => {
-      ;(show.value || src) &&
-        loadImage(
+   
+    watch([() => props.src], (src) => {
+     
+     loadImage(
           props.src,
           instance.ctx.$attrs,
           handleLoad,
           handleError.bind(this)
         )
+        
     })
-    // lifecycle
-    onMounted(() => {
-      if (props.lazy) {
-        addLazyLoadListener()
-        onBeforeUnmount(() => {
-        })
+    watch(() => props.lazy, (lazy) => {  
+      if (lazy) {
+         setLoading(true)
       } else {
-        loadImage(
+         setLoading(false)
+         loadImage(
           props.src,
           instance.ctx.$attrs,
           handleLoad,
-          handleError.bind(this)
+          handleError
         )
       }
     })
-    onBeforeUnmount(() => {
-      props.lazy && removeLazyLoadListener()
-    })
-
     const handleLoad = () => {
       setLoading(false)
       setError(false)
@@ -129,9 +123,27 @@ export default {
       setError(true)
       ctx.emit('error', e)
     }
+
+    // lifecycle
+    onMounted(() => {
+      if (props.lazy) {
+        addLazyLoadListener()
+      } else {  
+        loadImage(
+          props.src,
+          instance.ctx.$attrs,
+          handleLoad,
+          handleError
+        )
+      }
+    })
+    onBeforeUnmount(() => {
+      props.lazy && removeLazyLoadListener()
+    })
+
+   
     const handleLazyLoad = () => { 
       if (isInContainer(instance.ctx.$el, instance.ctx._scrollContainer)) {
-        setShow(true)
         removeLazyLoadListener()
       }
     }
@@ -167,6 +179,7 @@ export default {
     }
 
     const clickHandler = () => {
+     
       // don't show viewer when preview is false
       if (!preview.value) {
         return
@@ -175,6 +188,7 @@ export default {
       prevOverflow = document.body.style.overflow
       document.body.style.overflow = 'hidden'
       setShowViewer(true)
+      
     }
     const closeViewer = () => {
       document.body.style.overflow = prevOverflow
@@ -183,7 +197,6 @@ export default {
     return {
       loading,
       error,
-      show,
       showViewer,
       imageStyle,
       alignCenter,
