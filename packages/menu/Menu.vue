@@ -110,7 +110,7 @@ export default {
         items[val] || items[activeIndex.value] || items[defaultActive.value]
       item = itemsInstance[item]
       if (item) {
-        activeIndex.value = item.ctx.index
+        activeIndex.value = item.props.index
         initOpenedMenu()
       } else {
         activeIndex.value = null
@@ -211,16 +211,16 @@ export default {
       const index = activeIndex.value
       const activeItem = itemsInstance[index]
       if (!activeItem || mode.value === 'horizontal' || collapse.value) return
-      const indexPath = activeItem.ctx.indexPath
+      const indexPath = activeItem.setupState.indexPath
       // 展开该菜单项的路径上所有子菜单
       // expand all submenus of the menu item
       indexPath.forEach((index) => {
         const submenu = submenusInstance[index]
-        submenu && openMenu(index, submenu.ctx.indexPath)
+        submenu && openMenu(index, submenu.setupState.indexPath)
       })
     }
     const routeToItem = (item, onError) => {
-      const route = item.route || item.index
+      const route = item.ctx.route || item.ctx.index
       try {
         instance.ctx.$router.push(route, () => {}, onError)
       } catch (e) {
@@ -263,7 +263,7 @@ export default {
       on('item-click', handleItemClick)
       on('submenu-click', handleSubmenuClick)
       if (mode.value === 'horizontal') {
-        new Menubar(instance.ctx.$el)
+        new Menubar(instance.vnode.el)
       }
       watch(items, updateActiveIndex)
     })

@@ -1,9 +1,9 @@
 import { createApp, reactive } from 'vue'
-import entry from './app'
+import EntryApp from './app'
 
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Element from 'main/index.js'
-// import hljs from 'highlight.js'
+// import * as Element3 from '../dist/element3-ui.esm-bundler'
+import * as Element3 from 'main/entry.js'
 import routes from './route.config'
 import demoBlock from './components/demo-block'
 import MainHeader from './components/header'
@@ -17,10 +17,8 @@ import './assets/styles/common.css'
 import './assets/styles/fonts/style.css'
 import icon from './icon.json'
 
-const app = createApp({ // eslint-disable-line
-  ...entry
-})
-app.use(Element)
+const app = createApp(EntryApp)
+app.use(Element3)
 // app.use(VueRouter);
 app.component('demo-block', demoBlock)
 // app.component('main-footer', MainFooter);
@@ -31,6 +29,9 @@ app.component('footer-nav', FooterNav)
 const globalEle = reactive({
   data: { $isEle: false } // 是否 ele 用户
 })
+
+// 方便在 demo 里面全局导入 element3
+window.Element3 = Element3
 
 app.mixin({
   computed: {

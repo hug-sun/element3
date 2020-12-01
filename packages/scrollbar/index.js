@@ -1,8 +1,8 @@
-import Scrollbar from './Scrollbar'
+import ElScrollbar from './Scrollbar'
 
 /* istanbul ignore next */
-Scrollbar.install = function (app) {
-  app.component(Scrollbar.name, Scrollbar)
+ElScrollbar.install = function (app) {
+  app.component(ElScrollbar.name, ElScrollbar)
 }
 
-export default Scrollbar
+export default ElScrollbar

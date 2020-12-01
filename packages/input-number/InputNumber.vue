@@ -49,9 +49,9 @@
   </div>
 </template>
 <script>
-import ElInput from 'element-ui/packages/input'
-import useFocus from 'element-ui/src/use/focus.js'
-import RepeatClick from 'element-ui/src/directives/repeatClick'
+import ElInput from '../input'
+import useFocus from '../../src/use/focus.js'
+import RepeatClick from '../../src/directives/repeatClick'
 import {
   computed,
   getCurrentInstance,
@@ -234,29 +234,32 @@ export default {
       return disabled.value || !!(elForm || {}).disabled
     })
 
-    const displayValue = computed(() => {
-      if (state.userInput !== null) {
-        return state.userInput
-      }
-      let currentValue = state.currentValue
-      if (typeof currentValue === 'number') {
-        if (stepStrictly.value) {
-          const stepPrecision = getPrecision(step.value)
-          const precisionFactor = Math.pow(10, stepPrecision)
-          currentValue =
-            (Math.round(currentValue / step.value) *
-              precisionFactor *
-              step.value) /
-            precisionFactor
+    const displayValue = computed({
+      get: () => {
+        if (state.userInput !== null) {
+          return state.userInput
         }
-        if (precision.value !== undefined) {
-          currentValue = currentValue.toFixed(precision.value)
+        let currentValue = state.currentValue
+        if (typeof currentValue === 'number') {
+          if (stepStrictly.value) {
+            const stepPrecision = getPrecision(step.value)
+            const precisionFactor = Math.pow(10, stepPrecision)
+            currentValue =
+              (Math.round(currentValue / step.value) *
+                precisionFactor *
+                step.value) /
+              precisionFactor
+          }
+          if (precision.value !== undefined) {
+            currentValue = currentValue.toFixed(precision.value)
+          }
         }
+        return currentValue
+      },
+      set: () => {
+        return state.currentValue
       }
-
-      return currentValue
     })
-
     const increase = () => {
       if (inputNumberDisabled.value || maxDisabled.value) return
 

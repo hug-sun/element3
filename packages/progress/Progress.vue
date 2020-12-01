@@ -87,7 +87,8 @@ export default {
     },
     strokeLinecap: {
       type: String,
-      default: 'round'
+      default: 'round',
+      validator: (val) => ['butt', 'round', 'square'].indexOf(val) > -1
     },
     textInside: {
       type: Boolean,

@@ -134,23 +134,23 @@ import {
   onMounted,
   onUnmounted
 } from 'vue'
-import Popper from 'element-ui/src/utils/vue-popper'
-import { useEmitter } from 'element-ui/src/use/emitter'
-import { migrating } from 'element-ui/src/use/migrating'
-import Clickoutside from 'element-ui/src/directives/clickoutside'
-import ElInput from 'element-ui/packages/input'
-import ElTag from 'element-ui/packages/tag'
-import ElScrollbar from 'element-ui/packages/scrollbar'
-import ElCascaderPanel from 'element-ui/packages/cascader-panel'
-import AriaUtils from 'element-ui/src/utils/aria-utils'
-import { t } from 'element-ui/src/locale'
-import { isEqual, isEmpty, kebabCase } from 'element-ui/src/utils/util'
-import { isDef } from 'element-ui/src/utils/shared'
-import { useLocale } from 'element-ui/src/use/locale'
+import Popper from '../../src/utils/vue-popper'
+import { useEmitter } from '../../src/use/emitter'
+import { migrating } from '../../src/use/migrating'
+import Clickoutside from '../../src/directives/clickoutside'
+import ElInput from '../input'
+import ElTag from '../tag'
+import ElScrollbar from '../scrollbar'
+import ElCascaderPanel from '../cascader-panel'
+import AriaUtils from '../../src/utils/aria-utils'
+import { t } from '../../src/locale'
+import { isEqual, isEmpty, kebabCase } from '../../src/utils/util'
+import { isDef } from '../../src/utils/shared'
+import { useLocale } from '../../src/use/locale'
 import {
   addResizeListener,
   removeResizeListener
-} from 'element-ui/src/utils/resize-event'
+} from '../../src/utils/resize-event'
 import { debounce } from 'throttle-debounce'
 
 const { keys: KeyCode } = AriaUtils
@@ -187,7 +187,7 @@ const PopperMixin = {
   },
   methods: Popper.methods,
   data: Popper.data,
-  beforeDestroy: Popper.beforeDestroy
+  beforeUnmount: Popper.beforeUnmount
 }
 
 const InputSizeMap = {
@@ -215,12 +215,18 @@ export default {
     'change',
     'expand-change',
     'active-item-change',
-    'visible-change'
+    'visible-change',
+    'focus',
+    'blur',
+    'created',
+    'remove-tag'
   ],
-
   props: {
     modelValue: {},
-    options: Array,
+    options: {
+      type: Array,
+      default: () => []
+    },
     props: Object,
     size: String,
     placeholder: {
@@ -233,7 +239,10 @@ export default {
     },
     clearable: Boolean,
     filterable: Boolean,
-    filterMethod: Function,
+    filterMethod: {
+      type: Function,
+      default: undefined
+    },
     separator: {
       type: String,
       default: ' / '
@@ -303,8 +312,8 @@ export default {
       nodes: []
     })
 
-    const elForm = inject('elForm')
-    const elFormItem = inject('elFormItem')
+    const elForm = inject('elForm', {})
+    const elFormItem = inject('elFormItem', {})
 
     const isDisabled = computed(() => disabled.value || elForm?.disabled)
 
@@ -731,16 +740,17 @@ const useSuggestion = ({
   const instance = getCurrentInstance()
   const suggestions = ref([])
   const getSuggestions = () => {
-    if (!(filterMethod.value instanceof Function)) {
-      filterMethod.value = (node, keyword) => node.text.includes(keyword)
+    let internalFilterMethod = filterMethod.value
+    if (!(internalFilterMethod instanceof Function)) {
+      internalFilterMethod = (node, keyword) => node.text.includes(keyword)
     }
 
-    const internalSuggestions = panel
+    const internalSuggestions = panel.value
       .getFlattedNodes(leafOnly.value)
       .filter((node) => {
         if (node.isDisabled) return false
         node.text = node.getText(showAllLevels.value, separator.value) || ''
-        return filterMethod.value(node, inputState.value)
+        return internalFilterMethod(node, inputState.value)
       })
 
     if (multiple) {
@@ -763,7 +773,7 @@ const useSuggestion = ({
     if (multiple?.value) {
       const { checked } = targetNode
       targetNode.doCheck(!checked)
-      panel.calculateMultiCheckedValue()
+      panel.value.calculateMultiCheckedValue()
     } else {
       checkedState.value = targetNode.getValueByOption()
       toggleDropDownVisible(false)

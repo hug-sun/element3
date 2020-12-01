@@ -27,6 +27,7 @@
     </div>
   </div>
 </template>
+
 <script>
   import { ref } from 'vue'
   export default {
@@ -911,6 +912,7 @@
     </div>
   </div>
 </template>
+
 <script>
   export default {
     setup() {
@@ -995,6 +997,7 @@
     </div>
   </div>
 </template>
+
 <script>
   export default {
     setup() {
@@ -1485,6 +1488,7 @@
     </template>
   </el-cascader>
 </template>
+
 <script>
   export default {
     setup() {
@@ -1702,6 +1706,7 @@
     <el-cascader-panel :options="options"></el-cascader-panel>
   </div>
 </template>
+
 <script>
   export default {
     setup() {
@@ -1952,7 +1957,7 @@
 ### CascaderPanel Attributes
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
-| value / v-model | 选中项绑定值 | - | — | — |
+| modelValue / v-model | 选中项绑定值 | - | — | — |
 | options | 可选项数据源，键名可通过 `Props` 属性配置 | array | — | — |
 | props | 配置选项，具体见下表 | object | — | — |
 

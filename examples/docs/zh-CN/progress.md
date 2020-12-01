@@ -86,14 +86,14 @@
         }
       }
       
-      const increase = ()=>{
+      const increase = () => {
         percentage.value += 10;
         if (percentage.value > 100) {
           percentage.value = 100;
         }
       }
 
-      const decrease = ()=> {
+      const decrease = () => {
         percentage.value -= 10;
         if (percentage.value < 0) {
           percentage.value = 0;
@@ -159,14 +159,14 @@ Progress 组件可通过 `type` 属性来指定使用环形进度条，在环形
         ]
       })
       
-      const increase = ()=>{
+      const increase = () => {
         percentage.value += 10;
         if (percentage.value > 100) {
           percentage.value = 100;
         }
       }
 
-      const decrease = ()=> {
+      const decrease = () => {
         percentage.value -= 10;
         if (percentage.value < 0) {
           percentage.value = 0;

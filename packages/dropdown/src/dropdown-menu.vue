@@ -38,7 +38,7 @@ export default {
     }
   },
 
-  emits: ['updatePopper', 'visible', 'update:value', 'created'],
+  emits: ['updatePopper', 'visible', 'update:modelValue', 'created'],
 
   setup(props, { emit, slots }) {
     const popperElm = ref(null)

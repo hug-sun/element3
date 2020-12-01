@@ -1,9 +1,9 @@
 import { ElementUIComponent } from './component'
 
 export type InputNumberSize = 'large' | 'small'
-
+export const ElInputNumber: IInputNumber
 /** InputNumber Component */
-export declare class ElInputNumber extends ElementUIComponent {
+interface IInputNumber extends ElementUIComponent {
   /** Binding value */
   value: number
 

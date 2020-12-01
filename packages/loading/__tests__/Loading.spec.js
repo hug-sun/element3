@@ -138,30 +138,6 @@ describe('Loading', () => {
       document.body.removeChild(mask)
     })
 
-    it('lock', async () => {
-      // vm = createVue(
-      //   {
-      //     template: `
-      //   <div v-loading.fullscreen.lock="loading"></div>
-      // `,
-      //
-      //     data() {
-      //       return {
-      //         loading: true
-      //       }
-      //     }
-      //   },
-      //   true
-      // )
-      // Vue.nextTick(() => {
-      //   expect(getStyle(document.body, 'overflow')).to.equal('hidden')
-      //   vm.loading = false
-      //   document.body.removeChild(document.querySelector('.el-loading-mask'))
-      //   document.body.removeChild(vm.$el)
-      //   done()
-      // })
-    })
-
     it('text', async () => {
       const wrapper = mount(
         {

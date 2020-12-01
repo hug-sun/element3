@@ -179,7 +179,7 @@ export default {
     },
     beforeClose: {
       type: Function,
-      default: null
+      default: () => {}
     },
     distinguishCancelAndClose: {
       type: Boolean,
@@ -223,15 +223,15 @@ export default {
     },
     inputPlaceholder: {
       type: String,
-      default: null
+      default: ''
     },
     inputType: {
       type: String,
-      default: null
+      default: 'text'
     },
     inputValue: {
       type: String,
-      default: null
+      default: ''
     },
     inputPattern: {
       type: RegExp,
@@ -243,7 +243,7 @@ export default {
     },
     inputErrorMessage: {
       type: String,
-      default: null
+      default: ''
     },
     center: {
       type: Boolean,
@@ -255,7 +255,7 @@ export default {
     },
     _type: {
       type: String,
-      default: null
+      default: ''
     },
     cancelButtonLoading: {
       type: Boolean,
@@ -343,7 +343,7 @@ export default {
       }
       nextTick(() => {
         if (state.action) {
-          unref(callback)(state.action, instance.ctx)
+          unref(callback)(state.action, instance.vnode)
         }
       })
     }
@@ -357,17 +357,13 @@ export default {
     }
     const confirmButtonLoading = ref(false)
     const handleAction = (action) => {
-      if (
-        unref(_type) === 'prompt' &&
-        state.action === 'confirm' &&
-        !validate()
-      ) {
+      if (unref(_type) === 'prompt' && action === 'confirm' && !validate()) {
         return
       }
       state.action = action
       if (typeof unref(beforeClose) === 'function') {
         const close = getSafeClose()
-        unref(beforeClose)(action, instance.proxy, close)
+        unref(beforeClose)(action, instance.vnode, close)
       } else {
         doClose()
       }
@@ -403,10 +399,10 @@ export default {
       return `el-button--primary ${unref(confirmButtonClass)}`
     })
     const getFirstFocus = () => {
-      const btn = instance.ctx.$el.querySelector(
+      const btn = instance.vnode.el.querySelector(
         '.el-message-box__btns .el-button'
       )
-      const title = instance.ctx.$el.querySelector(
+      const title = instance.vnode.el.querySelector(
         '.el-message-box__btns .el-message-box__title'
       )
       return btn || title
@@ -429,7 +425,7 @@ export default {
       }
       const focusAfterClosed = document.activeElement
       messageBox = new Dialog(
-        instance.ctx.$el,
+        instance.vnode.el,
         focusAfterClosed,
         getFirstFocus()
       )

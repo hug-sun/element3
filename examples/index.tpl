@@ -15,26 +15,26 @@
         document.write('<script src="//cdn.jsdelivr.net/npm/es6-promise@4.1.1/dist/es6-promise.min.js"><\/script><script>ES6Promise.polyfill()<\/script>')
       }
     </script>
+    <script>
+      if(location.host==='element3-ui.com'){
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?5a2d0564f4a4630ca4b0be931fa162c7";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
     <div id="app"></div>
-    <% if (process.env.NODE_ENV === 'production') { %>
-      <script src="//shadow.elemecdn.com/npm/vue@2.5.21/dist/vue.runtime.min.js"></script>
-      <script src="//shadow.elemecdn.com/npm/vue-router@3.0.1/dist/vue-router.min.js"></script>
-      <script src="//shadow.elemecdn.com/app/element/highlight.pack.b1f71b31-3c07-11e9-ba1a-55bba1877129.js"></script>
-    <% } %>
+
   </body>
-  <% if (process.env.NODE_ENV === 'production') { %><script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?6a0d9f308914e36537ea58cf79904414";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
+  <script>
 
 
-<% } %>
+  </script>
+
+
+
 
 </html>

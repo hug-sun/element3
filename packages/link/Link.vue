@@ -37,7 +37,7 @@ export default {
     href: String,
     icon: String
   },
-
+  emits: ['click'],
   setup(props, { emit }) {
     const handleClick = (evt) => {
       if (props.disabled) return

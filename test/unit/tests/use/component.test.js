@@ -20,7 +20,7 @@ describe('component', () => {
       expect(instance.ctx.$el.innerHTML).toBe('foo')
     })
 
-    it('the specified component should be destroyed', () => {
+    it('the specified component should be unmounted', () => {
       const Comp = {
         template: '<div>foo</div>'
       }

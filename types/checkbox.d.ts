@@ -1,7 +1,6 @@
 import { ElementUIComponent, ElementUIComponentSize } from './component'
 
-/** Checkbox Component */
-export declare class ElCheckbox extends ElementUIComponent {
+interface ICheckbox extends ElementUIComponent {
   /** The form input value */
   value: string | string[]
 
@@ -32,3 +31,6 @@ export declare class ElCheckbox extends ElementUIComponent {
   /** Same as indeterminate in native checkbox */
   indeterminate: boolean
 }
+
+/** Checkbox Component */
+export const ElCheckbox: ICheckbox

@@ -30,16 +30,16 @@ import {
 } from 'vue'
 import CascaderMenu from './CascaderMenu'
 import Store from './Store'
-import merge from 'element-ui/src/utils/merge'
-import AriaUtils from 'element-ui/src/utils/aria-utils'
-import scrollIntoView from 'element-ui/src/utils/scroll-into-view'
+import merge from '../../src/utils/merge'
+import AriaUtils from '../../src/utils/aria-utils'
+import scrollIntoView from '../../src/utils/scroll-into-view'
 import {
   noop,
   coerceTruthyValueToArray,
   isEqual,
   isEmpty,
   valueEquals
-} from 'element-ui/src/utils/util'
+} from '../../src/utils/util'
 
 const { keys: KeyCode } = AriaUtils
 const DefaultProps = {
@@ -110,7 +110,10 @@ export default {
   ],
 
   props: {
-    modelValue: {},
+    modelValue: {
+      type: Object,
+      default: () => {}
+    },
     options: Array,
     props: Object,
     border: {
@@ -311,7 +314,9 @@ export default {
       getNodeByValue(val) {
         return state.store.getNodeByValue(val)
       },
+      lazyLoad,
       getCheckedNodes,
+      getFlattedNodes,
       handleCheckChange,
       handleExpand,
       renderLabelFn,

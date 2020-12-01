@@ -1,150 +1,172 @@
-import { nextTick } from 'vue'
-import Watcher from './watcher'
-import { arrayFind } from 'element-ui/src/utils/util'
-console.log(Watcher)
-Watcher.prototype.mutations = {
-  setData(states, data) {
-    const dataInstanceChanged = states._data !== data
-    states._data = data
+import { nextTick, getCurrentInstance, unref } from 'vue'
+import { arrayFind } from '../../../../src/utils/util'
+import useWatcher from './watcher'
 
-    this.execQuery()
-    // 数据变化，更新部分数据。
-    // 没有使用 computed，而是手动更新部分数据 https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
-    this.updateCurrentRowData()
-    this.updateExpandRows()
-    if (states.reserveSelection) {
-      this.assertRowKey()
-      this.updateSelectionByRowKey()
-    } else {
-      if (dataInstanceChanged) {
-        this.clearSelection()
+function replaceColumn(array, column) {
+  return array.map((item) => {
+    if (item.id === column.id) {
+      return column
+    } else if (item.children?.length > 0) {
+      item.children = replaceColumn(item.children, column)
+    }
+    return item
+  })
+}
+
+function useStore() {
+  const instance = getCurrentInstance()
+  const mutations = {
+    setData(states, data) {
+      const dataInstanceChanged = unref(states.data) !== data
+      states.data.value = data
+      states._data.value = data
+      instance.store.execQuery()
+      // 数据变化，更新部分数据。
+      // 没有使用 computed，而是手动更新部分数据 https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
+      instance.store.updateCurrentRowData()
+      instance.store.updateExpandRows()
+      if (unref(states.reserveSelection)) {
+        instance.store.assertRowKey()
+        instance.store.updateSelectionByRowKey()
       } else {
-        this.cleanSelection()
+        if (dataInstanceChanged) {
+          instance.store.clearSelection()
+        } else {
+          instance.store.cleanSelection()
+        }
       }
+      instance.store.updateAllSelected()
+
+      instance.store.updateTableScrollY()
+    },
+
+    insertColumn(states, column, index, parent) {
+      if (index < -1) return
+      const array = unref(states._columns)
+
+      if (!parent) {
+        array.splice(index, 0, column)
+        states._columns.value = array
+      } else {
+        if (parent && !parent.children) {
+          parent.children = []
+        }
+        parent.children.push(column)
+        const newColumns = replaceColumn(array, parent)
+        states._columns.value = newColumns
+      }
+      if (column.type === 'selection') {
+        states.selectable.value = column.selectable
+        states.reserveSelection.value = column.reserveSelection
+      }
+
+      if (instance.$ready) {
+        instance.store.updateColumns() // hack for dynamics insert column
+        instance.store.scheduleLayout()
+      }
+    },
+
+    removeColumn(states, column, parent) {
+      const array = unref(states._columns) || []
+      if (parent) {
+        parent.children.splice(
+          parent.children.findIndex((item) => item.id === column.id),
+          1
+        )
+        states._columns.value = replaceColumn(array, parent)
+      } else {
+        array.splice(array.indexOf(column), 1)
+        states._columns.value = array
+      }
+
+      if (instance.$ready) {
+        instance.store.updateColumns() // hack for dynamics remove column
+        instance.store.scheduleLayout()
+      }
+    },
+
+    sort(states, options) {
+      const { prop, order, init } = options
+      if (prop) {
+        const column = arrayFind(
+          unref(states.columns),
+          (column) => column.property === prop
+        )
+        if (column) {
+          column.order = order
+          instance.store.updateSort(column, prop, order)
+          instance.store.commit('changeSortCondition', { init })
+        }
+      }
+    },
+
+    changeSortCondition(states, options) {
+      // 修复 pr https://github.com/ElemeFE/element/pull/15012 导致的 bug
+      const { sortingColumn: column, sortProp: prop, sortOrder: order } = states
+      if (unref(order) === null) {
+        states.sortingColumn.value = null
+        states.sortProp.value = null
+      }
+      const ingore = { filter: true }
+      instance.store.execQuery(ingore)
+
+      if (!options || !(options.silent || options.init)) {
+        instance.emit('sort-change', {
+          column: unref(column),
+          prop: unref(prop),
+          order: unref(order)
+        })
+      }
+
+      instance.store.updateTableScrollY()
+    },
+
+    filterChange(states, options) {
+      const { column, values, silent } = options
+      const newFilters = instance.store.updateFilters(column, values)
+      instance.store.execQuery()
+
+      if (!silent) {
+        instance.emit('filter-change', newFilters)
+      }
+      instance.store.updateTableScrollY()
+    },
+
+    toggleAllSelection() {
+      instance.store.toggleAllSelection()
+    },
+
+    rowSelectedChanged(states, row) {
+      instance.store.toggleRowSelection(row)
+      instance.store.updateAllSelected()
+    },
+
+    setHoverRow(states, row) {
+      states.hoverRow.value = row
+    },
+
+    setCurrentRow(states, row) {
+      instance.store.updateCurrentRow(row)
     }
-    this.updateAllSelected()
-
-    this.updateTableScrollY()
-  },
-
-  insertColumn(states, column, index, parent) {
-    let array = states._columns
-    if (parent) {
-      array = parent.children
-      if (!array) array = parent.children = []
-    }
-
-    if (typeof index !== 'undefined') {
-      array.splice(index, 0, column)
+  }
+  const commit = function (name, ...args) {
+    const mutations = instance.store.mutations
+    if (mutations[name]) {
+      mutations[name].apply(instance, [instance.store.states].concat(args))
     } else {
-      array.push(column)
+      throw new Error(`Action not found: ${name}`)
     }
-
-    if (column.type === 'selection') {
-      states.selectable = column.selectable
-      states.reserveSelection = column.reserveSelection
-    }
-
-    if (this.table.$ready) {
-      this.updateColumns() // hack for dynamics insert column
-      this.scheduleLayout()
-    }
-  },
-
-  removeColumn(states, column, parent) {
-    let array = states._columns
-    if (parent) {
-      array = parent.children
-      if (!array) array = parent.children = []
-    }
-    if (array) {
-      array.splice(array.indexOf(column), 1)
-    }
-
-    if (this.table.$ready) {
-      this.updateColumns() // hack for dynamics remove column
-      this.scheduleLayout()
-    }
-  },
-
-  sort(states, options) {
-    const { prop, order, init } = options
-    if (prop) {
-      const column = arrayFind(
-        states.columns,
-        (column) => column.property === prop
-      )
-      if (column) {
-        column.order = order
-        this.updateSort(column, prop, order)
-        this.commit('changeSortCondition', { init })
-      }
-    }
-  },
-
-  changeSortCondition(states, options) {
-    // 修复 pr https://github.com/ElemeFE/element/pull/15012 导致的 bug
-    const { sortingColumn: column, sortProp: prop, sortOrder: order } = states
-    if (order === null) {
-      states.sortingColumn = null
-      states.sortProp = null
-    }
-    const ingore = { filter: true }
-    this.execQuery(ingore)
-
-    if (!options || !(options.silent || options.init)) {
-      this.table.$emit('sort-change', {
-        column,
-        prop,
-        order
-      })
-    }
-
-    this.updateTableScrollY()
-  },
-
-  filterChange(states, options) {
-    const { column, values, silent } = options
-    const newFilters = this.updateFilters(column, values)
-
-    this.execQuery()
-
-    if (!silent) {
-      this.table.$emit('filter-change', newFilters)
-    }
-
-    this.updateTableScrollY()
-  },
-
-  toggleAllSelection() {
-    this.toggleAllSelection()
-  },
-
-  rowSelectedChanged(states, row) {
-    this.toggleRowSelection(row)
-    this.updateAllSelected()
-  },
-
-  setHoverRow(states, row) {
-    states.hoverRow = row
-  },
-
-  setCurrentRow(states, row) {
-    this.updateCurrentRow(row)
+  }
+  const updateTableScrollY = function () {
+    nextTick(instance.layout.updateScrollY.apply(instance.layout))
+  }
+  const watcher = useWatcher()
+  return {
+    ...watcher,
+    mutations,
+    commit,
+    updateTableScrollY
   }
 }
 
-Watcher.prototype.commit = function (name, ...args) {
-  const mutations = this.mutations
-  if (mutations[name]) {
-    mutations[name].apply(this, [this.states].concat(args))
-  } else {
-    throw new Error(`Action not found: ${name}`)
-  }
-}
-
-Watcher.prototype.updateTableScrollY = function () {
-  nextTick(this.table.updateScrollY)
-}
-
-export default Watcher
+export default useStore

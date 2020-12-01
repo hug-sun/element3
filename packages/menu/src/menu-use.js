@@ -7,8 +7,8 @@ function useMenu(index) {
     const path = [index]
     let p = parent
     while (p.type.name !== 'ElMenu') {
-      if (p.ctx.index) {
-        path.unshift(p.ctx.index)
+      if (p.props.index) {
+        path.unshift(p.props.index)
       }
       p = p.parent
     }
@@ -22,10 +22,10 @@ function useMenu(index) {
     return p
   })
   const paddingStyle = computed(() => {
-    if (rootMenu.ctx.mode !== 'vertical') return {}
+    if (rootMenu.props.mode !== 'vertical') return {}
     let padding = 20
     let p = parent
-    if (rootMenu.ctx.collapse) {
+    if (rootMenu.props.collapse) {
       padding = 20
     } else {
       while (p && p.type.name !== 'ElMenu') {
@@ -50,22 +50,22 @@ function useItems() {
   const submenus = reactive({})
   const submenusInstance = {}
   const addItem = (item) => {
-    let index = item.ctx.index
+    let index = item.props.index
     items[index] = index
     itemsInstance[index] = item
   }
   const removeItem = (item) => {
-    let index = item.ctx.index
+    let index = item.props.index
     delete items[index]
     delete itemsInstance[index]
   }
   const addSubmenu = (item) => {
-    let index = item.ctx.index
+    let index = item.props.index
     submenus[index] = index
     submenusInstance[index] = item
   }
   const removeSubmenu = (item) => {
-    let index = item.ctx.index
+    let index = item.props.index
     delete submenus[index]
     delete submenusInstance[index]
   }

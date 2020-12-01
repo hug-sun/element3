@@ -51,8 +51,9 @@ export interface CascaderPanelSlots {
   [key: string]: VNode[]
 }
 
+export const ElCascaderPanel:ICascaderPanel 
 /** CascaderPanel Component */
-export declare class ElCascaderPanel<V = any, D = CascaderOption> extends ElementUIComponent {
+interface ICascaderPanel<V = any, D = CascaderOption> extends ElementUIComponent {
   /** Selected value */
   value: V | V[]
 

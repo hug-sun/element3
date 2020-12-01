@@ -37,7 +37,7 @@
         ref="button1"
       ></slider-button>
       <slider-button
-        vertical="vertical"
+        :vertical="vertical"
         v-model="secondValue"
         :tooltip-class="tooltipClass"
         ref="button2"
@@ -74,11 +74,11 @@
 </template>
 
 <script type="text/babel">
-import ElInputNumber from 'element-ui/packages/input-number'
+import ElInputNumber from '../input-number'
 import SliderButton from './src/button.vue'
 import SliderMarker from './src/marker'
-import { useEmitter } from 'element-ui/src/use/emitter'
-import { isUndefined } from 'element-ui/src/utils/types'
+import { useEmitter } from '../../src/use/emitter'
+import { isUndefined } from '../../src/utils/types'
 
 import {
   reactive,
@@ -88,7 +88,6 @@ import {
   watch,
   getCurrentInstance,
   nextTick,
-  onBeforeMount,
   onMounted,
   onBeforeUnmount,
   unref
@@ -251,27 +250,25 @@ function useCommon(props, state, ctx) {
 function useLifeCycle(props, state, ctx, resetSize) {
   const { max, min, modelValue, range, label } = props
   let valuetext
-  onBeforeMount(() => {
-    if (range) {
-      if (Array.isArray(modelValue)) {
-        state.firstValue = Math.max(min, modelValue[0])
-        state.secondValue = Math.min(max, modelValue[1])
-      } else {
-        state.firstValue = min
-        state.secondValue = max
-      }
-      state.oldValue = [state.firstValue, state.secondValue]
-      valuetext = `${state.firstValue}-${state.secondValue}`
+  if (range) {
+    if (Array.isArray(modelValue)) {
+      state.firstValue = Math.max(min, modelValue[0])
+      state.secondValue = Math.min(max, modelValue[1])
     } else {
-      if (typeof modelValue !== 'number' || isNaN(modelValue)) {
-        state.firstValue = min
-      } else {
-        state.firstValue = Math.min(max, Math.max(min, modelValue))
-      }
-      state.oldValue = state.firstValue
-      valuetext = state.firstValue
+      state.firstValue = min
+      state.secondValue = max
     }
-  })
+    state.oldValue = [state.firstValue, state.secondValue]
+    valuetext = `${state.firstValue}-${state.secondValue}`
+  } else {
+    if (typeof modelValue !== 'number' || isNaN(modelValue)) {
+      state.firstValue = min
+    } else {
+      state.firstValue = Math.min(max, Math.max(min, modelValue))
+    }
+    state.oldValue = state.firstValue
+    valuetext = state.firstValue
+  }
   onMounted(() => {
     ctx.$el.setAttribute('aria-valuetext', valuetext)
 

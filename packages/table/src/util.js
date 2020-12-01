@@ -1,4 +1,4 @@
-import { getValueByPath } from 'element-ui/src/utils/util'
+import { getValueByPath } from '../../../src/utils/util'
 
 export const getCell = function (event) {
   let cell = event.target
@@ -126,7 +126,7 @@ export const getRowIdentity = (row, rowKey) => {
     }
     return current
   } else if (typeof rowKey === 'function') {
-    return rowKey(row)
+    return rowKey.call(null, row)
   }
 }
 

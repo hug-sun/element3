@@ -8,7 +8,7 @@
 
 :::demo 在 Form 组件中，每一个表单域由一个 Form-Item 组件构成，表单域中可以放置各种类型的表单控件，包括 Input、Select、Checkbox、Radio、Switch、DatePicker、TimePicker
 ```html
-<el-form ref="form" :model="form" label-width="auto">
+<el-form ref="formRef" :model="form" label-width="auto">
   <el-form-item label="活动名称">
     <el-input v-model="form.name"></el-input>
   </el-form-item>
@@ -37,10 +37,13 @@
     <el-button>取消</el-button>
   </el-form-item>
 </el-form>
+
 <script>
-  export default {
-    data() {
-      return {
+import { ref, reactive , toRefs } from 'vue'
+export default {
+    setup(){
+      const formRef = ref(null)
+      const data = reactive({
         form: {
           name: '',
           region: '',
@@ -51,11 +54,15 @@
           resource: '',
           desc: ''
         }
+      })
+      const onSubmit = () => {
+        console.log('submit!')
       }
-    },
-    methods: {
-      onSubmit() {
-        console.log('submit!', this.form);
+      
+      return {
+        ...toRefs(data),
+        formRef,
+        onSubmit
       }
     }
   }
@@ -82,18 +89,22 @@
   </el-form-item>
 </el-form>
 <script>
+  import { reactive , toRefs} from 'vue'
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         formInline: {
-          user: '',
-          delivery: false
-        }
-      }
-    },
-    methods: {
-      onSubmit() {
+            user: '',
+            delivery: false
+          }
+      })
+      const onSubmit = () => {
         console.log('submit!');
+      }
+
+      return {
+        ...toRefs(data),
+        onSubmit
       }
     }
   }
@@ -125,16 +136,21 @@
   </el-form-item>
 </el-form>
 <script>
+  import { reactive , toRefs , ref } from 'vue'
   export default {
-    data() {
-      return {
-        labelPosition: 'right',
+    setup(){
+      const labelPosition = ref('right');
+      const data = reactive({
         formLabelAlign: {
           name: '',
           region: '',
           type: ''
         }
-      };
+      })
+       return {
+        labelPosition,
+        ...toRefs(data)
+       }
     }
   }
 </script>
@@ -147,9 +163,15 @@
 
 :::demo Form 组件提供了表单验证的功能，只需要通过 `rules` 属性传入约定的验证规则，并将 Form-Item 的 `prop` 属性设置为需校验的字段名即可。校验规则参见 [async-validator](https://github.com/yiminghe/async-validator)
 ```html
-<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+<el-form :model="ruleForm" :rules="rules" ref="form" label-width="100px" class="demo-ruleForm">
   <el-form-item label="活动名称" prop="name">
     <el-input v-model="ruleForm.name"></el-input>
+  </el-form-item>
+  <el-form-item label="活动区域" prop="region">
+    <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
+      <el-option label="区域一" value="shanghai"></el-option>
+      <el-option label="区域二" value="beijing"></el-option>
+    </el-select>
   </el-form-item>
   <el-form-item label="即时配送" prop="delivery">
     <el-switch v-model="ruleForm.delivery"></el-switch>
@@ -177,23 +199,28 @@
   </el-form-item>
 </el-form>
 <script>
+  import { ref, reactive , toRefs , getCurrentInstance } from 'vue' 
   export default {
-    data() {
-      return {
+    setup(){
+      const form = ref(null)
+      const ruleForm = reactive({
         ruleForm: {
-          name: 'aaa',
+          name: '',
           region: '',
-          date1: '',
-          date2: '',
           delivery: false,
           type: [],
           resource: '',
           desc: ''
-        },
+        }
+      })
+      const rules = reactive({
         rules: {
           name: [
             { required: true, message: '请输入活动名称', trigger: 'blur' },
             { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          region: [
+            { required: true, message: '请选择活动区域', trigger: 'change' }
           ],
           type: [
             { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
@@ -205,11 +232,10 @@
             { required: true, message: '请填写活动形式', trigger: 'blur' }
           ]
         }
-      };
-    },
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+      })
+      const self = getCurrentInstance().ctx;
+      function submitForm(formName) {
+        self.$refs[formName].validate((valid) => {
           if (valid) {
             alert('submit!');
           } else {
@@ -217,9 +243,17 @@
             return false;
           }
         });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+      }
+      function resetForm(formName) {
+        self.$refs[formName].resetFields();
+      }
+
+      return {
+        form,
+        ...toRefs(ruleForm),
+        ...toRefs(rules),
+        submitForm,
+        resetForm
       }
     }
   }

@@ -49,7 +49,7 @@ export default {
     PopupManager.register(this._popupId, this)
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     PopupManager.deregister(this._popupId)
     PopupManager.closeModal(this._popupId)
 

@@ -50,8 +50,8 @@ import {
   watch,
   getCurrentInstance
 } from 'vue'
-import { hasClass } from 'element-ui/src/utils/dom'
-import { migrating } from 'element-ui/src/use/migrating'
+import { hasClass } from '../../src/utils/dom'
+import { migrating } from '../../src/use/migrating'
 
 export default {
   name: 'ElRate',

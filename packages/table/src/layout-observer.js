@@ -1,41 +1,40 @@
-export default {
-  created() {
-    this.tableLayout.addObserver(this)
-  },
+import {
+  onBeforeMount,
+  onUnmounted,
+  onMounted,
+  onUpdated,
+  computed,
+  getCurrentInstance,
+  nextTick
+} from 'vue'
 
-  destroyed() {
-    this.tableLayout.removeObserver(this)
-  },
-
-  computed: {
-    tableLayout() {
-      let layout = this.layout
-      if (!layout && this.table) {
-        layout = this.table.layout
-      }
-      if (!layout) {
-        throw new Error('Can not find table layout.')
-      }
-      return layout
+function useLayoutObserver(root) {
+  const instance = getCurrentInstance()
+  onBeforeMount(() => {
+    tableLayout.value.addObserver(instance)
+  })
+  onMounted(() => {
+    onColumnsChange(tableLayout.value)
+    onScrollableChange(tableLayout.value)
+  })
+  onUpdated(() => {
+    onColumnsChange(tableLayout.value)
+    onScrollableChange(tableLayout.value)
+  })
+  onUnmounted(() => {
+    tableLayout.value.removeObserver(instance)
+  })
+  const tableLayout = computed(() => {
+    const layout = root.layout
+    if (!layout) {
+      throw new Error('Can not find table layout.')
     }
-  },
-
-  mounted() {
-    this.onColumnsChange(this.tableLayout)
-    this.onScrollableChange(this.tableLayout)
-  },
-
-  updated() {
-    if (this.__updated__) return
-    this.onColumnsChange(this.tableLayout)
-    this.onScrollableChange(this.tableLayout)
-    this.__updated__ = true
-  },
-
-  methods: {
-    onColumnsChange(layout) {
-      const cols = this.$el.querySelectorAll('colgroup > col')
-      if (!cols.length) return
+    return layout
+  })
+  const onColumnsChange = (layout) => {
+    nextTick(() => {
+      const cols = root.vnode.el?.querySelectorAll('colgroup > col')
+      if (!cols || !cols.length) return
       const flattenColumns = layout.getFlattenColumns()
       const columnsMap = {}
       flattenColumns.forEach((column) => {
@@ -49,20 +48,35 @@ export default {
           col.setAttribute('width', column.realWidth || column.width)
         }
       }
-    },
+    })
+  }
 
-    onScrollableChange(layout) {
-      const cols = this.$el.querySelectorAll('colgroup > col[name=gutter]')
+  const onScrollableChange = (layout) => {
+    nextTick(() => {
+      const cols = root.vnode.el?.querySelectorAll(
+        'colgroup > col[name=gutter]'
+      )
       for (let i = 0, j = cols.length; i < j; i++) {
         const col = cols[i]
-        col.setAttribute('width', layout.scrollY ? layout.gutterWidth : '0')
+        col.setAttribute(
+          'width',
+          layout.scrollY.value ? layout.gutterWidth : '0'
+        )
       }
-      const ths = this.$el.querySelectorAll('th.gutter')
+      const ths = root.vnode.el.querySelectorAll('th.gutter')
       for (let i = 0, j = ths.length; i < j; i++) {
         const th = ths[i]
-        th.style.width = layout.scrollY ? layout.gutterWidth + 'px' : '0'
-        th.style.display = layout.scrollY ? '' : 'none'
+        th.style.width = layout.scrollY.value ? layout.gutterWidth + 'px' : '0'
+        th.style.display = layout.scrollY.value ? '' : 'none'
       }
-    }
+    })
+  }
+
+  return {
+    tableLayout: tableLayout.value,
+    onColumnsChange,
+    onScrollableChange
   }
 }
+
+export default useLayoutObserver

@@ -1,7 +1,7 @@
 import { ElementUIComponent } from './component'
 
 /** Toggleable menu for displaying lists of links and actions. */
-export declare class ElDropdownItem extends ElementUIComponent {
+interface IDropdownItem extends ElementUIComponent {
   /** A command to be dispatched to Dropdown's command callback */
   command: string | number | object
 
@@ -14,3 +14,5 @@ export declare class ElDropdownItem extends ElementUIComponent {
   /** Icon to show on left side of text */
   icon: string
 }
+
+export const ElDropdownItem:IDropdownItem

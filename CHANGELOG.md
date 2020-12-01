@@ -1,3 +1,173 @@
+## [0.0.27](https://github.com/kkbjs/element3/compare/v0.0.26...v0.0.27) (2020-11-28)
+
+
+### Bug Fixes
+
+* `message` 属性支持传入 HTML 片段 中引入  message 错误问题 ([592ae8d](https://github.com/kkbjs/element3/commit/592ae8de58f0c801ebe208909c8564117a2c4c0c))
+* add Array type for radio's label prop & fix all bug I know in cascader ([3d98ed8](https://github.com/kkbjs/element3/commit/3d98ed8b16383bf449a67917f3553f14d6bed62f))
+* add button-group test ([8335a26](https://github.com/kkbjs/element3/commit/8335a268cdf3f5deebc1e48de4533294d4759999))
+* Autocomplete and Form ([e5d2965](https://github.com/kkbjs/element3/commit/e5d29655d037b40b19a299f1854e2f126797c875))
+* clean NavMenu warn ([136bc4b](https://github.com/kkbjs/element3/commit/136bc4ba1f84de8916c7324b7116b1d57686dba0))
+* clear steps warn ([dd2aa8d](https://github.com/kkbjs/element3/commit/dd2aa8d10fd93345db3c90b1c8c284dc224d0cfc))
+* container inappropriate css ([b15ebfe](https://github.com/kkbjs/element3/commit/b15ebfe4c366966ac72dec7e61075f1b2b218cb6))
+* delet garbage code and change invoke place ([c6aa979](https://github.com/kkbjs/element3/commit/c6aa9799770e7337d555ccaeb05d4d1c2afc6004))
+* delete repeat component in entry for fix plugin already been applied ([11385fb](https://github.com/kkbjs/element3/commit/11385fbfb5e02d3c735c5af9003266fbe226abd0))
+* doc style problem ([21866dc](https://github.com/kkbjs/element3/commit/21866dc2730c8ef73afc2da972a9f92adda52c1c))
+* fix collapse-transition register error & export collapse-transition component ([5847f0e](https://github.com/kkbjs/element3/commit/5847f0ee53db75d380981a12520583a12789e0b9))
+* fix style don't into  root element ([8148ef5](https://github.com/kkbjs/element3/commit/8148ef58b7250fa4f3daef2adeb40d82f1f2a4d6))
+* misspelled word ([9e968ae](https://github.com/kkbjs/element3/commit/9e968ae4ea740e49ae91a85093ac57182b6b055f))
+* remove duplicate test case code ([e84ecb3](https://github.com/kkbjs/element3/commit/e84ecb3ec07e4bc29a20da7da31842a0dbb4ee76))
+* Replace old clickoutside file references ([17afe2d](https://github.com/kkbjs/element3/commit/17afe2dac41699c0db2e43d51890620c51101cda))
+* the data and headers parameter transmission format is wrong ([f363929](https://github.com/kkbjs/element3/commit/f3639292e7e48d8aa7a5cd91a7a8fc0349704091))
+* the official website example thumbnail does not display problem ([a6318c1](https://github.com/kkbjs/element3/commit/a6318c14680a38f498c00929168d266fec4a8bfd))
+* theme sub-routes and navigation to non-existent routes ([d4211fa](https://github.com/kkbjs/element3/commit/d4211fae39ea12c7c79f7a9db6ea1e73c3f99951))
+* transition can not wrok on frist ([c26a365](https://github.com/kkbjs/element3/commit/c26a365726951958520d68bac8848f5aa7b697a0))
+* transition cannt work ([a18489d](https://github.com/kkbjs/element3/commit/a18489d58c17a67d3790af3dffca9a1c7e057161))
+* Unload markdown-it-anchor plugin ([1ef5f10](https://github.com/kkbjs/element3/commit/1ef5f1092519986dfc61304a49a7977aed279004))
+* updata tabs/menu delete console ([6c38892](https://github.com/kkbjs/element3/commit/6c388925be8d478268b938a8100a5003a3113891))
+* update .d.ts and test ([484a646](https://github.com/kkbjs/element3/commit/484a646c193b03e14e472dd06aefd2c7598991b0))
+* update border and test ([f872ca1](https://github.com/kkbjs/element3/commit/f872ca12ac1878ffbaacbd58174179a1a1133e80))
+* update console and test ([3167be4](https://github.com/kkbjs/element3/commit/3167be4c5ca5668398e044a0347b05f281f40791))
+* upload scope slot and named slot known errors ([7cc9b1d](https://github.com/kkbjs/element3/commit/7cc9b1dc089f12221a475f9e754de6ed05bec45f))
+* use vnode proprety cant work, fix it was failed when input has been validation ([884d2a3](https://github.com/kkbjs/element3/commit/884d2a3eaeb6e1875a714761e21572c0801039c1))
+* use vnode variable instead of proxy ([89ed24a](https://github.com/kkbjs/element3/commit/89ed24addac50cd998f9f2a24d2fa16e70ec7d83))
+* user avatar upload example error ([dd4e04a](https://github.com/kkbjs/element3/commit/dd4e04acba3d9695decc2677f027a293f9cf8c5d))
+* 修复  input 组件引发  select多选框溢出 ([ec60a2d](https://github.com/kkbjs/element3/commit/ec60a2d4f2245d28b2aac94e3120089e3cd285e7))
+* **Link:** trigger for many times click event ([04ba8ae](https://github.com/kkbjs/element3/commit/04ba8ae680c81fb9dae971a0a75811c5d8bda98e))
+* **packages/theme-chalk/gulpfile.js:** theme构建,gulp警告信息修复 ([f857944](https://github.com/kkbjs/element3/commit/f857944c11c8605dd0b28a958446f936028a35a1))
+* **Tabs:** fix error on prod env ([c61b67c](https://github.com/kkbjs/element3/commit/c61b67c4df4ea994497a5bd89abc66037f33c778))
+* user avatar upload example, the picture does not display problem ([6b15e72](https://github.com/kkbjs/element3/commit/6b15e72123b3b6d5adab73367776bdcb71b29d09))
+* vue3 ctx isnot work on the prod ([6faa4b7](https://github.com/kkbjs/element3/commit/6faa4b794dc83e9638b68d9df23ad324809970d8))
+* **Cascader:** don't find Popper ([c9a3308](https://github.com/kkbjs/element3/commit/c9a3308a5eb50e04bf2bef34482dafe87be03b2a))
+
+
+### Features
+
+* export button-group compnoent ([1149e08](https://github.com/kkbjs/element3/commit/1149e08b53f9cff236996b6f7a749008d3ac2cbd))
+* support options api call for service component ([c850826](https://github.com/kkbjs/element3/commit/c85082614d78b55e66f613906649016f35e9ec33))
+
+
+
+## [0.0.26](https://github.com/kkbjs/element3/compare/v0.0.25...v0.0.26) (2020-11-19)
+
+
+### Bug Fixes
+
+* change d.ts ([bacf2ae](https://github.com/kkbjs/element3/commit/bacf2ae50bae3d7810e9ab2e34e7593a46988578))
+* CheckboxGroup.vue runtime error ([81355d7](https://github.com/kkbjs/element3/commit/81355d754c5390be04d14467fcc721d9c19a71cf))
+* error test script ([2d0c3cf](https://github.com/kkbjs/element3/commit/2d0c3cfc5c49098b455ad690d189f346f9ef1997))
+* fix mode is route cannot make ([0d3e5b1](https://github.com/kkbjs/element3/commit/0d3e5b1dd0fe63d33f6f4833029202d60fa611a1))
+* slider fixbug ([2b02135](https://github.com/kkbjs/element3/commit/2b021355021581c48bff10b7367714e9524e4795))
+* syntax code simplified ([d9140fc](https://github.com/kkbjs/element3/commit/d9140fc2053572c2cc80fd713ef0834f96abb704))
+* the disabled attribute should not be obtained from the parent component formItem ([03b0aa1](https://github.com/kkbjs/element3/commit/03b0aa1750aabca9a89137be9bb442c2388717fe))
+* tree doc ([75890ed](https://github.com/kkbjs/element3/commit/75890edbcbf210a91f64eaa0d5c5d902ace2af5f))
+* tree move api error ([aa852bc](https://github.com/kkbjs/element3/commit/aa852bc8c2c5d367d28dc7152411a3d2520b6eb3))
+* tree types file ([f71d9c8](https://github.com/kkbjs/element3/commit/f71d9c8ed6c663fafe18227e1b0d89f04187b9fd))
+* updata eltabs/elpageheader... and test ([df080e9](https://github.com/kkbjs/element3/commit/df080e9532ed956697bb67ce91b5710fa4c4fbac))
+* update Cascader error ([fb1487f](https://github.com/kkbjs/element3/commit/fb1487f29bf13915e9ae31dcd8baf3ed53741fca))
+* update element3.d.ts and test ([9c3c334](https://github.com/kkbjs/element3/commit/9c3c33443b31a5f3ca53198b94c90e7ee109e688))
+* update some From components ([363a37d](https://github.com/kkbjs/element3/commit/363a37df59499113c2b2f170e22d25190b88d2e0))
+* update Timeline test ([3828f66](https://github.com/kkbjs/element3/commit/3828f665b77efdc13ad1fdfe859c8429ae03ce8f))
+* update tree and test ([4007154](https://github.com/kkbjs/element3/commit/4007154d0be28ee911c0959888f4bd5ab1634c19))
+
+
+
+## [0.0.25](https://github.com/kkbjs/element3/compare/v0.0.24...v0.0.25) (2020-11-14)
+
+
+### Bug Fixes
+
+* add contributor ([569910e](https://github.com/kkbjs/element3/commit/569910e867a057d71549effbfcdc7c559ab2c6f3))
+* component export default was not found ([852fbe0](https://github.com/kkbjs/element3/commit/852fbe0448a1f8f2be3202d7283c67c3834c518f))
+* updata border/typography and test ([268456d](https://github.com/kkbjs/element3/commit/268456d9d00afce108eaf82e6aae870a9c628e76))
+* updata upload/steps and test ([9bd14af](https://github.com/kkbjs/element3/commit/9bd14afccf7551fa3818f5a2d184e787984f94d8))
+* update Container and test ([c550a9f](https://github.com/kkbjs/element3/commit/c550a9f91ef89a39efcf8944273460585b708eb1))
+* update Container and test ([676fca8](https://github.com/kkbjs/element3/commit/676fca8e421d7b1ad920623aec0ec2eeeec8225b))
+
+
+### Features
+
+* **icon.d.ts:** check icon docs  [#348](https://github.com/kkbjs/element3/issues/348) ([3d3866e](https://github.com/kkbjs/element3/commit/3d3866e66ab6a8d7f0f8ede42a944ff935b40427))
+
+
+
+## [0.0.24](https://github.com/kkbjs/element3/compare/v0.0.23...v0.0.24) (2020-11-12)
+
+
+
+## [0.0.23](https://github.com/kkbjs/element3/compare/v0.0.22...v0.0.23) (2020-11-12)
+
+
+### Bug Fixes
+
+* fix element3.d.ts ([05b0e60](https://github.com/kkbjs/element3/commit/05b0e6015d0bac7610d716a58dd84bd21114e457))
+* Radio.vue and RadioButton.vue get elForm disabled attribute error ([ae29201](https://github.com/kkbjs/element3/commit/ae292019620195f880db90b7953845c89312cce5))
+* Radio.vue getting elFormItemSize error ([e778c71](https://github.com/kkbjs/element3/commit/e778c7168a5a1b08d7d81b91aadca85a7435867f))
+* RadioGroup.vue get injection value error ([1f6696c](https://github.com/kkbjs/element3/commit/1f6696c8a0db511ff32a4177b32c749ff3184ba4))
+* refine user default language zh-CN ([2adda01](https://github.com/kkbjs/element3/commit/2adda01e825d5e8358187039d6474144c0f94f7d))
+* refine user default language zh-CN ([4fa3602](https://github.com/kkbjs/element3/commit/4fa3602fb0d1c4ad00479dfeb1e15f6efb7e6442))
+* update Avatar and test ([417b505](https://github.com/kkbjs/element3/commit/417b505cbfac4c6ed59a16ea1f7d5bb63de8d675))
+* update input.md ([f0493e3](https://github.com/kkbjs/element3/commit/f0493e3c0e59ab81a6d15016980908e7af95b8ba))
+* update link and test ([bf4db91](https://github.com/kkbjs/element3/commit/bf4db919f0dd76834fe6b3c2e76c8e9355f69371))
+* update Notification and test ([0045efb](https://github.com/kkbjs/element3/commit/0045efb68e9295ce5ce8d34b9773b49804d23607))
+* update rate and check ([7afa77f](https://github.com/kkbjs/element3/commit/7afa77f3fb3f53db589b31a17693c94e7000a0ff))
+* user language default zh-CN ([d5145cb](https://github.com/kkbjs/element3/commit/d5145cb4a1d93f199224b6cbb78deb3fec35eaac))
+
+
+### Features
+
+*  check button and breadcrumb and  NavMenu  and Tabs component ([ea59038](https://github.com/kkbjs/element3/commit/ea590386ce7868871b8386b9c5ea17612bd90be1))
+* change messagebox api ([034f432](https://github.com/kkbjs/element3/commit/034f43207fbc3375783214fbe60e6e964b978aac))
+* messageBox api add $ prefix ([a558746](https://github.com/kkbjs/element3/commit/a5587468afd72b8ff39da91e2caa133e29a6ec67))
+
+
+
+## [0.0.22](https://github.com/kkbjs/element3/compare/v0.0.21...v0.0.22) (2020-11-08)
+
+
+### Features
+
+* add setupGlobalOptions api for set global options ([26ad5cb](https://github.com/kkbjs/element3/commit/26ad5cba75a216d6adef8520aaa92ec55efcadcf))
+* change useMsgbox api ([2b55fc8](https://github.com/kkbjs/element3/commit/2b55fc88d31330a3621ac9ab3b5fe57243707872))
+
+
+
+## [0.0.21](https://github.com/kkbjs/element3/compare/v0.0.20...v0.0.21) (2020-11-07)
+
+
+### Bug Fixes
+
+* update doc and test ([8c71671](https://github.com/kkbjs/element3/commit/8c7167127b9d1a327e66355752622263607365bc))
+
+
+
+## [0.0.20](https://github.com/kkbjs/element3/compare/v0.0.19...v0.0.20) (2020-11-05)
+
+
+### Bug Fixes
+
+* avater ... md ([7fb82a2](https://github.com/kkbjs/element3/commit/7fb82a2cdee69c7f480eb1d12243538c83c517e5))
+* cascader export path ([1db3ca7](https://github.com/kkbjs/element3/commit/1db3ca725f5e182f98b3fb150b08e627fd7b42ae))
+
+
+
+## [0.0.19](https://github.com/kkbjs/element3/compare/v0.0.18...v0.0.19) (2020-11-03)
+
+
+### Bug Fixes
+
+* change emits update:value to update:modelValue ([a957075](https://github.com/kkbjs/element3/commit/a95707549f2cb0f06a12bd2ea383ab65219ad05f))
+* change installation.md & deleted test file ([3b1c3ca](https://github.com/kkbjs/element3/commit/3b1c3ca494b93c68557a05a42d5aad492fd16996))
+* change slot to vue3 version ([0b4dcf1](https://github.com/kkbjs/element3/commit/0b4dcf168203868b4314fe25fc7941c0ca8327cb))
+* convert all absolute paths to relative paths ([aec723d](https://github.com/kkbjs/element3/commit/aec723df0b69af04631f0fcb3eb51f209d80c09b))
+* export carousel-item & add some comp in entry.js ([55b3a2a](https://github.com/kkbjs/element3/commit/55b3a2a4e76bff17bfc2e1a3e5b4771f74629939))
+* export option component ([33d676a](https://github.com/kkbjs/element3/commit/33d676a4ccb9fd9df8a2beec619e6670e5fe8765))
+* expose update in scrollbar.js to fix a error ([f83b723](https://github.com/kkbjs/element3/commit/f83b72376f886fa19c572ab98a892f337caac4be))
+* fix addResizeListener params wrong ([89f40b8](https://github.com/kkbjs/element3/commit/89f40b8f306ea3cdabc1497cb86b5dbbbc387fcd))
+* fix avatar error callback call way ([4ff9e33](https://github.com/kkbjs/element3/commit/4ff9e33465f67f304ec988e74097ae9ff4b43c34))
+
+
+
 ## [0.0.18](https://github.com/kkbjs/element3/compare/v0.0.17...v0.0.18) (2020-10-27)
 
 
