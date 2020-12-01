@@ -30,7 +30,7 @@ export default {
     const levelPadding = computed(() => {
       let padding = 20
       let parent = instance.parent
-      if (rootMenu.ctx.collapse) return 20
+      if (rootMenu.props.collapse) return 20
       while (parent && parent.type.name !== 'ElMenu') {
         if (parent.type.name === 'ElSubmenu') {
           padding += 20

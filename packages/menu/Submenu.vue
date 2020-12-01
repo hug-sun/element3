@@ -92,9 +92,9 @@ export default {
     }
     const handleClick = () => {
       if (
-        (rootMenu.ctx.menuTrigger === 'hover' &&
-          rootMenu.ctx.mode === 'horizontal') ||
-        (rootMenu.ctx.collapse && rootMenu.ctx.mode === 'vertical') ||
+        (rootMenu.props.menuTrigger === 'hover' &&
+          rootMenu.props.mode === 'horizontal') ||
+        (rootMenu.props.collapse && rootMenu.props.mode === 'vertical') ||
         disabled.value
       ) {
         return
@@ -110,9 +110,9 @@ export default {
         return
       }
       if (
-        (rootMenu.ctx.menuTrigger === 'click' &&
-          rootMenu.ctx.mode === 'horizontal') ||
-        (!rootMenu.ctx.collapse && rootMenu.ctx.mode === 'vertical') ||
+        (rootMenu.props.menuTrigger === 'click' &&
+          rootMenu.props.mode === 'horizontal') ||
+        (!rootMenu.props.collapse && rootMenu.props.mode === 'vertical') ||
         disabled.value
       ) {
         return
@@ -120,29 +120,29 @@ export default {
       dispatch('mouse-enter-child')
       clearTimeout(timeout.value)
       timeout.value = setTimeout(() => {
-        rootMenu.ctx.openMenu(index.value, indexPath)
+        rootMenu.setupState.openMenu(index.value, indexPath)
       }, delay)
       if (appendToBody.value) {
-        instance.parent.ctx.$el.dispatchEvent(new MouseEvent('mouseenter'))
+        instance.parent.vnode.el.dispatchEvent(new MouseEvent('mouseenter'))
       }
     }
     const handleMouseleave = (deepDispatch = false) => {
       if (
-        (rootMenu.ctx.menuTrigger === 'click' &&
-          rootMenu.ctx.mode === 'horizontal') ||
-        (!rootMenu.ctx.collapse && rootMenu.ctx.mode === 'vertical')
+        (rootMenu.props.menuTrigger === 'click' &&
+          rootMenu.props.mode === 'horizontal') ||
+        (!rootMenu.props.collapse && rootMenu.props.mode === 'vertical')
       ) {
         return
       }
       dispatch('mouse-leave-child')
       clearTimeout(timeout.value)
       timeout.value = setTimeout(() => {
-        !mouseInChild.value && rootMenu.ctx.closeMenu(index.value)
+        !mouseInChild.value && rootMenu.setupState.closeMenu(index.value)
       }, hideTimeout.value)
 
       if (appendToBody.value && deepDispatch) {
         if (parentMenu.value && parentMenu.value.type.name === 'ElSubmenu') {
-          parentMenu.value.ctx.handleMouseleave(true)
+          parentMenu.value.setupState.handleMouseleave(true)
         }
       }
     }
@@ -172,7 +172,7 @@ export default {
           : 'right-start'
     }
     const initPopper = () => {
-      referenceElm.value = instance.ctx.$el
+      referenceElm.value = instance.vnode.el
       popperElm.value = menu.value
       updatePlacement()
     }
@@ -182,45 +182,45 @@ export default {
         : popperAppendToBody.value
     })
     const menuTransitionName = computed(() => {
-      return rootMenu.ctx.collapse ? 'el-zoom-in-left' : 'el-zoom-in-top'
+      return rootMenu.props.collapse ? 'el-zoom-in-left' : 'el-zoom-in-top'
     })
-    watch(rootMenu.ctx.openedMenus, (val) => {
+    watch(rootMenu.setupState.openedMenus, (val) => {
       showPopper.value = val.indexOf(index.value) > -1
     })
     const active = computed(() => {
       let isActive = false
       Object.keys(items).forEach((index) => {
-        if (itemsInstance[index].ctx.active) {
+        if (itemsInstance[index].props.active) {
           isActive = true
         }
       })
       Object.keys(submenus).forEach((index) => {
-        if (submenusInstance[index].ctx.active) {
+        if (submenusInstance[index].props.active) {
           isActive = true
         }
       })
       return isActive
     })
     const hoverBackground = computed(() => {
-      return rootMenu.ctx.hoverBackground
+      return rootMenu.setupState.hoverBackground
     })
     const backgroundColor = computed(() => {
-      return rootMenu.ctx.backgroundColor || ''
+      return rootMenu.props.backgroundColor || ''
     })
     const titleBackground = ref(backgroundColor.value)
     const activeTextColor = computed(() => {
-      return rootMenu.ctx.activeTextColor || ''
+      return rootMenu.props.activeTextColor || ''
     })
 
     const textColor = computed(() => {
-      return rootMenu.ctx.textColor || ''
+      return rootMenu.props.textColor || ''
     })
 
     const mode = computed(() => {
-      return rootMenu.ctx.mode
+      return rootMenu.props.mode
     })
     const isMenuPopup = computed(() => {
-      return rootMenu.ctx.isMenuPopup
+      return rootMenu.setupState.isMenuPopup
     })
     const titleStyle = computed(() => {
       if (mode.value !== 'horizontal') {
@@ -256,15 +256,16 @@ export default {
     })
 
     onMounted(() => {
-      parentMenu.value.ctx.addSubmenu(instance)
-      rootMenu.ctx.addSubmenu(instance)
+      parentMenu.value.setupState.addSubmenu(instance)
+      rootMenu.setupState.addSubmenu(instance)
       initPopper()
-      showPopper.value = rootMenu.ctx.openedMenus.indexOf(index.value) > -1
+      showPopper.value =
+        rootMenu.setupState.openedMenus.indexOf(index.value) > -1
     })
 
     onBeforeUnmount(() => {
-      parentMenu.value.ctx.removeSubmenu(instance)
-      rootMenu.ctx.removeSubmenu(instance)
+      parentMenu.value.setupState.removeSubmenu(instance)
+      rootMenu.setupState.removeSubmenu(instance)
     })
     return {
       active,
@@ -351,8 +352,8 @@ export default {
       </el-collapse-transition>
     )
     const submenuTitleIcon =
-      (rootMenu.ctx.mode === 'horizontal' && isFirstLevel) ||
-      (rootMenu.ctx.mode === 'vertical' && !rootMenu.ctx.collapse)
+      (rootMenu.props.mode === 'horizontal' && isFirstLevel) ||
+      (rootMenu.props.mode === 'vertical' && !rootMenu.props.collapse)
         ? 'el-icon-arrow-down'
         : 'el-icon-arrow-right'
     return (
