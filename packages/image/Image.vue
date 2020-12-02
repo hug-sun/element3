@@ -18,15 +18,13 @@
         'el-image__preview': preview
       }"
     />
-    <template v-if="preview">
-      <image-viewer
+     <image-viewer
         :z-index="zIndex"
-        :initial-index="imageIndex"
         v-if="showViewer"
+        :initial-index="imageIndex"
         :on-close="closeViewer"
         :url-list="previewSrcList"
       />
-    </template>
   </div>
 </template>
 

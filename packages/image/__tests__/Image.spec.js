@@ -88,15 +88,20 @@ describe('Image.vue', () => {
     })
 
     it('scroll-container', async () => {
+     
+      const div = document.createElement('div');
+            div.style.overflow = 'auto';
+            div.id = 'container'
       const wrapper = await mount(Image, {
-        props: {
-         "scroll-container": "div"
-        }
+          props: {
+          "scroll-container": div
+          },
+          el: div
       })
      
       await nextTick()
-      
-      expect(wrapper.props().scrollContainer).toEqual('div');
+      console.log(document.body)
+      expect(wrapper.props().scrollContainer).toEqual(div);
     })
 
     it('preview-src-list', async () => {
@@ -149,19 +154,18 @@ describe('Image.vue', () => {
           lazy: false,
           previewSrcList: [src, IMAGE_FAIL]
         },
-        global: {
-          stubs: ['image-viewer']
-        }
+        shallow: true 
       });
 
       wrapper.componentVM.loading = false
 
-      expect(wrapper.findComponent({name: 'ImageViewer'}).exists()).toBe(false);
+      expect(wrapper.find('el-image-viewer-stub').exists()).toBe(false);
       await nextTick()
+    
       wrapper.find('.el-image__inner').trigger('click')
       
-      await nextTick(); console.log(wrapper.vm.components)
-      expect(wrapper.findComponent({name: 'ImageViewer'}).isVisible()).toBe(true);
+      await nextTick(); 
+      expect(wrapper.find('el-image-viewer-stub').exists()).toBe(true);
     })
   })
 
