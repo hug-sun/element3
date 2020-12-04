@@ -34,7 +34,11 @@
           <i class="el-icon-zoom-out" @click="handleActions('zoomOut')"></i>
           <i class="el-icon-zoom-in" @click="handleActions('zoomIn')"></i>
           <i class="el-image-viewer__actions__divider"></i>
-          <i :class="state.mode.icon" @click="toggleMode"></i>
+          <i
+            :class="state.mode.icon"
+            class="el-image-viewer-toggle-btn"
+            @click="toggleMode"
+          ></i>
           <i class="el-image-viewer__actions__divider"></i>
           <i
             class="el-icon-refresh-left"
@@ -126,9 +130,8 @@ export default {
     )
     // computed
     const isSingle = useSingle(props.urlList)
-
     const isFirst = useFirstImage(currentIndex)
-    const isLast = useIsLastImage(currentIndex, props.urlList);
+    const isLast = useIsLastImage(currentIndex, props.urlList)
     const imgStyle = useImgStyle(state)
     // lifeC
     onMounted(() => {
@@ -330,13 +333,11 @@ const useSingle = (urlList) => {
   return computed(() => urlList.length <= 1)
 }
 
- const useFirstImage = (currentIndex) => {
-   return computed(() => currentIndex.value === 0)
- }
+const useFirstImage = (currentIndex) => {
+  return computed(() => currentIndex.value === 0)
+}
 
 const useIsLastImage = (currentIndex, urlList) => {
-   return computed(
-      () => currentIndex.value === urlList.length - 1
-   )
+  return computed(() => currentIndex.value === urlList.length - 1)
 }
 </script>

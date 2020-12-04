@@ -1,5 +1,5 @@
 <template>
-  <div :class="['el-image', $attrs.class]"  :style="$attrs.style">
+  <div :class="['el-image', $attrs.class]" :style="$attrs.style">
     <slot v-if="loading" name="placeholder">
       <div class="el-image__placeholder"></div>
     </slot>
@@ -18,19 +18,19 @@
         'el-image__preview': preview
       }"
     />
-     <image-viewer
-        :z-index="zIndex"
-        v-if="showViewer"
-        :initial-index="imageIndex"
-        :on-close="closeViewer"
-        :url-list="previewSrcList"
-      />
+    <image-viewer
+      :z-index="zIndex"
+      v-if="showViewer"
+      :initial-index="imageIndex"
+      :on-close="closeViewer"
+      :url-list="previewSrcList"
+    />
   </div>
 </template>
 
 <script>
 import ImageViewer from './ImageViewer'
-import {useGlobalOptions} from '../../src/use/globalConfig'
+import { useGlobalOptions } from '../../src/use/globalConfig'
 import { loadImage, objectFit } from './uitls/utils'
 import { useImageStyle } from './use/useImageStyle'
 import { t } from '../../src/locale'
@@ -38,7 +38,6 @@ import { throttle } from 'throttle-debounce'
 import { isString, isHtmlElement } from '../../src/utils/types'
 import { on, off, getScrollContainer, isInContainer } from '../../src/utils/dom'
 import {
-  ref,
   toRaw,
   computed,
   watch,
@@ -80,7 +79,6 @@ export default {
     const [error, setError] = useRef(false)
     const [showViewer, setShowViewer] = useRef(false)
 
- 
     const imageStyle = useImageFix(props.fit)
 
     const alignCenter = useAlign(props, objectFit)
@@ -88,30 +86,26 @@ export default {
     const preview = usePreviewStatus(props.previewSrcList)
 
     const imageIndex = useImageIndex(props)
-   
-    watch([() => props.src], (src) => {
-     
-     loadImage(
-          props.src,
-          instance.ctx.$attrs,
-          handleLoad,
-          handleError.bind(this)
-        )
-        
+
+    watch([() => props.src], () => {
+      loadImage(
+        props.src,
+        instance.ctx.$attrs,
+        handleLoad,
+        handleError.bind(this)
+      )
     })
-    watch(() => props.lazy, (lazy) => {  
-      if (lazy) {
-         setLoading(true)
-      } else {
-         setLoading(false)
-         loadImage(
-          props.src,
-          instance.ctx.$attrs,
-          handleLoad,
-          handleError
-        )
+    watch(
+      () => props.lazy,
+      (lazy) => {
+        if (lazy) {
+          setLoading(true)
+        } else {
+          setLoading(false)
+          loadImage(props.src, instance.ctx.$attrs, handleLoad, handleError)
+        }
       }
-    })
+    )
     const handleLoad = () => {
       setLoading(false)
       setError(false)
@@ -126,21 +120,15 @@ export default {
     onMounted(() => {
       if (props.lazy) {
         addLazyLoadListener()
-      } else {  
-        loadImage(
-          props.src,
-          instance.ctx.$attrs,
-          handleLoad,
-          handleError
-        )
+      } else {
+        loadImage(props.src, instance.ctx.$attrs, handleLoad, handleError)
       }
     })
     onBeforeUnmount(() => {
       props.lazy && removeLazyLoadListener()
     })
 
-   
-    const handleLazyLoad = () => { 
+    const handleLazyLoad = () => {
       if (isInContainer(instance.ctx.$el, instance.ctx._scrollContainer)) {
         removeLazyLoadListener()
       }
@@ -177,7 +165,6 @@ export default {
     }
 
     const clickHandler = () => {
-     
       // don't show viewer when preview is false
       if (!preview.value) {
         return
@@ -186,7 +173,6 @@ export default {
       prevOverflow = document.body.style.overflow
       document.body.style.overflow = 'hidden'
       setShowViewer(true)
-      
     }
     const closeViewer = () => {
       document.body.style.overflow = prevOverflow
@@ -233,13 +219,12 @@ const useAlign = (props, objectFit) => {
 
 const useImageFix = (fit) => {
   return computed(() => {
-      if (fit) { 
-        return isSupportObjectFit()
-          ? { 'object-fit': fit }
-          : useImageStyle(useGlobalOptions(), fit)
-      }
-      return {}
-    })
+    if (fit) {
+      return isSupportObjectFit()
+        ? { 'object-fit': fit }
+        : useImageStyle(useGlobalOptions(), fit)
+    }
+    return {}
+  })
 }
-
 </script>
