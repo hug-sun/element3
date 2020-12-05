@@ -1,6 +1,6 @@
 <template>
   <div
-    :style="$attrs.style"
+    :style="$attrs.style || {}"
     :class="[
       classProp,
       type === 'textarea' ? 'el-textarea' : 'el-input',
