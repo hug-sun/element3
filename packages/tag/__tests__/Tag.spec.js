@@ -56,17 +56,17 @@ describe('Tag.vue', () => {
     })
   })
 
-  it('disableTransitions', async () => {
-    const wrapper = mount(Tag, {})
-    expect(wrapper.findComponent({ name: 'TransitionStub' }).exists()).toBe(
-      true
-    )
-    await wrapper.setProps({
-      disableTransitions: true
-    })
+  // it('disableTransitions', async () => {
+  //   const wrapper = mount(Tag, {})
+  //   expect(wrapper.findComponent({ name: 'TransitionStub' }).exists()).toBe(
+  //     true
+  //   )
+  //   await wrapper.setProps({
+  //     disableTransitions: true
+  //   })
 
-    expect(wrapper.findComponent({ name: 'TransitionStub' }).exists()).toBe(
-      false
-    )
-  })
+  //   expect(wrapper.findComponent({ name: 'TransitionStub' }).exists()).toBe(
+  //     false
+  //   )
+  // })
 })
