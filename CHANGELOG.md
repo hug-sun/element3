@@ -1,3 +1,15 @@
+## [0.0.28](https://github.com/kkbjs/element3/compare/v0.0.27...v0.0.28) (2020-12-06)
+
+
+### Bug Fixes
+
+* fix input no validate error & add form validate in form.md & change function name in Form.vue ([5ec2924](https://github.com/kkbjs/element3/commit/5ec2924311b48e0ebf2cc49054e390fdc20a9e2a))
+* it was work when it was proxy and ctx ([0681b5e](https://github.com/kkbjs/element3/commit/0681b5e1589e60b963a54d961943605e54020a59))
+* slot havent to use correctly ([fdf0f5e](https://github.com/kkbjs/element3/commit/fdf0f5e474d4444bd3acdec015821ad663ae5084))
+* slot test error ([c0cf93e](https://github.com/kkbjs/element3/commit/c0cf93e67fa6a01e692e00b7d9815fd0ae7cfae4))
+
+
+
 ## [0.0.27](https://github.com/kkbjs/element3/compare/v0.0.26...v0.0.27) (2020-11-28)
 
 
