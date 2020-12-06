@@ -16,18 +16,17 @@
 </template>
 
 <script>
-  import { useMsgbox, useMessage } from 'element3'
+  import { useMsgbox, Message } from 'element3'
   export default {
     setup() {
       const messageBox = useMsgbox()
-      const message = useMessage()
 
       return {
         open() {
           messageBox.alert('这是一段内容', '标题名称', {
             confirmButtonText: '确定',
             callback: action => {
-              message({
+              Message({
                 type: 'info',
                 message: `action: ${ action }`
               });
@@ -53,11 +52,10 @@
 </template>
 
 <script>
-  import { useMsgbox, useMessage } from 'element3'
+  import { useMsgbox, Message } from 'element3'
   export default {
     setup() {
       const messageBox = useMsgbox()
-      const message = useMessage()
 
       return {
         open() {
@@ -66,12 +64,12 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            message({
+            Message({
               type: 'success',
               message: '删除成功!'
             });
           }).catch(() => {
-            message({
+            Message({
               type: 'info',
               message: '已取消删除'
             });          
@@ -96,11 +94,10 @@
 </template>
 
 <script>
-  import { useMsgbox, useMessage } from 'element3'
+  import { useMsgbox, Message } from 'element3'
   export default {
     setup() {
       const messageBox = useMsgbox()
-      const message = useMessage()
 
       return {
         open() {
@@ -110,12 +107,12 @@
             inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
             inputErrorMessage: '邮箱格式不正确'
           }).then(({ value }) => {
-            message({
+            Message({
               type: 'success',
               message: '你的邮箱是: ' + value
             });
           }).catch(() => {
-            message({
+            Message({
               type: 'info',
               message: '取消输入'
             });       
@@ -141,11 +138,10 @@
 
 <script>
   import { h } from 'vue'
-  import { useMsgbox, useMessage } from 'element3'
+  import { useMsgbox, Message } from 'element3'
   export default {
     setup() {
       const messageBox = useMsgbox()
-      const message = useMessage()
 
       return {
         open() {
@@ -173,7 +169,7 @@
               }
             }
           }).then(action => {
-            message({
+            Message({
               type: 'info',
               message: 'action: ' + action
             });
@@ -236,11 +232,10 @@
 </template>
 
 <script>
-  import { useMsgbox, useMessage } from 'element3'
+  import { useMsgbox, Message } from 'element3'
   export default {
     setup() {
       const messageBox = useMsgbox()
-      const message = useMessage()
 
       return {
         open() {
@@ -250,13 +245,13 @@
             cancelButtonText: '放弃修改'
           })
             .then(() => {
-              message({
+              Message({
                 type: 'info',
                 message: '保存修改'
               });
             })
             .catch(action => {
-              message({
+              Message({
                 type: 'info',
                 message: action === 'cancel'
                   ? '放弃保存并离开页面'
@@ -282,11 +277,10 @@
 </template>
 
 <script>
-  import { useMsgbox, useMessage } from 'element3'
+  import { useMsgbox, Message } from 'element3'
   export default {
     setup() {
       const messageBox = useMsgbox()
-      const message = useMessage()
 
       return {
         open() {
@@ -296,12 +290,12 @@
             type: 'warning',
             center: true
           }).then(() => {
-            message({
+            Message({
               type: 'success',
               message: '删除成功!'
             });
           }).catch(() => {
-            message({
+            Message({
               type: 'info',
               message: '已取消删除'
             });

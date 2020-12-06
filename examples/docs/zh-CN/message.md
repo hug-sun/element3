@@ -12,21 +12,35 @@
 <template>
   <el-button :plain="true" @click="open">打开消息提示</el-button>
   <el-button :plain="true" @click="openVn">VNode</el-button>
+  <el-button :plain="true" @click="openNewMessage">new message</el-button>
 </template>
 
 <script>
   import { h } from 'vue'
-  import { useMessage } from 'element3'
+  import { Message } from 'element3'
 
   export default {
+    methods:{
+      openNewMessage(){
+        this.$newMessage({
+          message: h("p","heihei"),
+          dangerouslyUseHTMLString:true,
+          onClose(){
+            console.log("close")
+          }
+        })
+      }
+    },
     setup() {
-      const message = useMessage()
       function open() {
-        message('这是一条消息提示')
+        // message('这是一条消息提示')
+        Message({
+          message:"verticalOffset",
+        })
       }
 
       function openVn() {
-        message({
+        Message({
           message: h('p', null, [
             h('span', null, '内容可以是 '),
             h('i', { style: 'color: teal' }, 'VNode')
@@ -60,31 +74,30 @@
 </template>
 
 <script>
-  import { useMessage } from 'element3'
+  import { Message } from 'element3'
   export default {
     setup() {
-      const message = useMessage()
       return {
         open1() {
-          message('这是一条消息提示')
+          Message('这是一条消息提示')
         },
 
         open2() {
-          message({
+          Message({
             message: '恭喜你，这是一条成功消息',
             type: 'success'
           })
         },
 
         open3() {
-          message({
+          Message({
             message: '警告哦，这是一条警告消息',
             type: 'warning'
           })
         },
 
         open4() {
-          message.error('错了哦，这是一条错误消息')
+          Message.error('错了哦，这是一条错误消息')
         }
       }
     }
@@ -109,21 +122,20 @@
 </template>
 
 <script>
-  import { useMessage } from 'element3'
+  import { Message } from 'element3'
   export default {
     setup() {
-      const message = useMessage()
 
       return {
         open1() {
-          message({
+          Message({
             showClose: true,
             message: '这是一条消息提示'
           })
         },
 
         open2() {
-          message({
+          Message({
             showClose: true,
             message: '恭喜你，这是一条成功消息',
             type: 'success'
@@ -131,7 +143,7 @@
         },
 
         open3() {
-          message({
+          Message({
             showClose: true,
             message: '警告哦，这是一条警告消息',
             type: 'warning'
@@ -139,7 +151,7 @@
         },
 
         open4() {
-          message({
+          Message({
             showClose: true,
             message: '错了哦，这是一条错误消息',
             type: 'error'
@@ -165,14 +177,13 @@
 </template>
 
 <script>
-  import { useMessage } from 'element3'
+  import { Message } from 'element3'
   export default {
     setup() {
-      const message = useMessage()
 
       return {
         openCenter() {
-          message({
+          Message({
             message: '居中的文字',
             center: true
           })
@@ -197,13 +208,12 @@
 </template>
 
 <script>
-  import { useMessage } from 'element3'
+  import { Message } from 'element3'
   export default {
     setup() {
-      const message = useMessage()
       return {
         openHTML() {
-          message({
+          Message({
             dangerouslyUseHTMLString: true,
             verticalOffset: 100,
             message: '<strong>这是 <i>HTML</i> 片段</strong>'
