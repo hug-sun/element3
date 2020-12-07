@@ -7,14 +7,10 @@ import {
   watch,
   toRefs
 } from 'vue'
-import PopupManager from 'element-ui/src/utils/popup/popup-manager'
-import getScrollBarWidth from 'element-ui/src/utils/scrollbar-width'
-import {
-  getStyle,
-  addClass,
-  removeClass,
-  hasClass
-} from 'element-ui/src/utils/dom'
+import PopupManager from '../../src/utils/popup/popup-manager'
+import getScrollBarWidth from '../../src/utils/scrollbar-width'
+import merge from '../../src/utils/merge'
+import { getStyle, addClass, removeClass, hasClass } from '../../src/utils/dom'
 
 let idSeed = 1
 let scrollBarWidth
@@ -54,17 +50,9 @@ const popupProps = {
 }
 
 function usePopup(props) {
-  const {
-    openDelay,
-    visible,
-    modal,
-    modalAppendToBody,
-    modalClass,
-    modalFade,
-    lockScroll,
-    zIndex,
-    closeDelay
-  } = toRefs(props)
+  const { visible, modal, modalAppendToBody, lockScroll, closeDelay } = toRefs(
+    props
+  )
   const opened = ref(false)
   const bodyPaddingRight = ref(null)
   const computedBodyPaddingRight = ref(0)
@@ -75,36 +63,42 @@ function usePopup(props) {
   let _closeTimer = 0
   let _openTimer = 0
   let _opening = false
-  let _closing = true
-  const open = () => {
+  let _closing = false
+  const open = (options) => {
     if (!rendered.value) {
       rendered.value = true
     }
+
+    const props = merge({}, instance.ctx, options)
+
     if (_closeTimer) {
       clearTimeout(_closeTimer)
       _closeTimer = 0
     }
     clearTimeout(_openTimer)
-    const delay = Number(openDelay && openDelay.value)
+    const delay = Number(props.openDelay) || 0
     if (delay > 0) {
       _openTimer = setTimeout(() => {
         _openTimer = 0
-        doOpen()
+        doOpen(props)
       }, delay)
     } else {
-      doOpen()
+      doOpen(props)
     }
   }
-  const doOpen = () => {
+  const doOpen = (props) => {
     if (instance.ctx.$isServer) return
     if (_opening) return
     if (opened.value) return
     _opening = true
     const dom = instance.ctx.$el
-    if (zIndex && zIndex.value) {
+    const modal = props.modal
+    const zIndex = props.zIndex
+
+    if (zIndex) {
       PopupManager.zIndex = zIndex.value
     }
-    if (modal && modal.value) {
+    if (modal) {
       if (_closing) {
         PopupManager.closeModal(_popupId)
         _closing = false
@@ -113,10 +107,10 @@ function usePopup(props) {
         _popupId,
         PopupManager.nextZIndex(),
         modalAppendToBody.value ? undefined : dom,
-        modalClass ? modalClass.value : '',
-        modalFade.value
+        props.modalClass,
+        props.modalFade
       )
-      if (lockScroll.value) {
+      if (props.lockScroll) {
         withoutHiddenClass.value = !hasClass(
           document.body,
           'el-popup-parent--hidden'

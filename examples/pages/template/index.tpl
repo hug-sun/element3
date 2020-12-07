@@ -340,36 +340,12 @@
             </router-link>
           </div>
         </li>
-        <li>
-          <div class="card">
-            <img src="~examples/assets/images/theme-index-icon.svg" alt="">
-            <h3><%= 10 ></h3>
-            <p><%= 11 ></p>
-            <router-link
-              active-class="active"
-              to="/<%= lang >/theme"
-              exact><%= 5 >
-            </router-link>
-          </div>
-        </li>
-        <li>
-          <div class="card">
-            <img src="~examples/assets/images/resource.png" alt="">
-            <h3><%= 8 ></h3>
-            <p><%= 9 ></p>
-            <router-link
-              active-class="active"
-              to="/<%= lang >/resource"
-              exact><%= 5 >
-            </router-link>
-          </div>
-        </li>
       </ul>
     </div>
   </div>
 </template>
 <script>
-  import throttle from 'throttle-debounce/throttle';
+  import { throttle } from 'throttle-debounce';
   
   export default {
     created() {
@@ -394,7 +370,7 @@
         mainImgOffset: 0
       };
     },
-    beforeDestroy() {
+    beforeUnmount() {
       window.removeEventListener('scroll', this.throttledHandleScroll);
     },
     mounted() {

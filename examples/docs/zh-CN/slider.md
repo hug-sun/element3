@@ -32,19 +32,26 @@
 </template>
 
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
-      return {
-        value1: 0,
-        value2: 50,
-        value3: 36,
-        value4: 48,
-        value5: 42
+    setup(){
+      const value1 = ref(0)
+      const value2 = ref(50)
+      const value3 = ref(36)
+      const value4 = ref(48)
+      const value5 = ref(42)
+
+      const formatTooltip = val => {
+        return val / 100
       }
-    },
-    methods: {
-      formatTooltip(val) {
-        return val / 100;
+
+      return {
+        value1,
+        value2,
+        value3,
+        value4,
+        value5,
+        formatTooltip
       }
     }
   }
@@ -77,11 +84,15 @@
 </template>
 
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup(){
+      const value1 = ref(0)
+      const value2 = ref(0)
+
       return {
-        value1: 0,
-        value2: 0
+        value1,
+        value2
       }
     }
   }
@@ -105,10 +116,13 @@
 </template>
 
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup(){
+      const value = ref(0)
+
       return {
-        value: 0
+        value
       }
     }
   }
@@ -134,10 +148,14 @@
 </template>
 
 <script>
+  import { reactive, toRefs } from 'vue'
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         value: [4, 8]
+      })
+      return {
+        ...toRefs(data)
       }
     }
   }
@@ -160,10 +178,13 @@
 </template>
 
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup(){
+      const value = ref(0)
+
       return {
-        value: 0
+        value
       }
     }
   }
@@ -186,9 +207,10 @@
 </template>
 
 <script>
+  import { reactive, toRefs } from 'vue'
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         value: [30, 60],
         marks: {
           0: '0°C',
@@ -198,9 +220,13 @@
             style: {
               color: '#1989FA'
             },
-            label: this.$createElement('strong', '50%')
+            label: <strong>50%</strong>
           }
         }
+      })
+
+      return {
+        ...toRefs(data)
       }
     }
   }
@@ -211,7 +237,7 @@
 ### Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
-| value / v-model | 绑定值 | number | — | 0 |
+| modelValue / v-model | 绑定值 | number | — | 0 |
 | min | 最小值 | number | — | 0 |
 | max | 最大值 | number | — | 100 |
 | disabled | 是否禁用 | boolean | — | false |

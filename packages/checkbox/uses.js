@@ -5,21 +5,30 @@ import {
   onMounted,
   getCurrentInstance,
   inject,
-  nextTick
+  nextTick,
+  reactive,
+  watchEffect
 } from 'vue'
-import { useEmitter } from 'element-ui/src/use/emitter'
-import { usePropUtils } from 'element-ui/src/use/prop-utils'
+import { useEmitter } from '../../src/use/emitter'
+import { usePropUtils } from '../../src/use/prop-utils'
 
 export function useModel() {
   // core
   const { emit, props } = getCurrentInstance()
   const elCheckboxGroup = inject('elCheckboxGroup', { props: {} })
   const { dispatch } = useEmitter()
+  const state = reactive({
+    modelValue: null
+    // If the parent element is ChceckboxGroup use its modelValue
+  })
+
+  watchEffect(() => {
+    state.modelValue = elCheckboxGroup.props.modelValue || props.modelValue
+  })
 
   const model = computed({
     get() {
-      const modelValue = elCheckboxGroup.props.modelValue || props.modelValue // If the parent element is ChceckboxGroup use its modelValue
-      return modelValue
+      return state.modelValue
       // BUG: if the Checkbox list and modelValue are an object, this causes the object element to be deleted.
       // Resolve: `isArray(modelValue) ? [...modelValue] : modelValue`, but doing so will invalidate the `checked` prop.
     },
@@ -32,10 +41,13 @@ export function useModel() {
         labelIndex !== -1 &&
           checked === false &&
           modelValue.splice(labelIndex, 1)
+        state.modelValue = modelValue
         emit('update:modelValue', modelValue)
-        dispatch('ElCheckboxGroup', 'update:modelValue', modelValue)
+        dispatch('update:modelValue', modelValue)
       } else {
-        emit('update:modelValue', checked ? props.trueLabel : props.falseLabel)
+        const modelValue = checked ? props.trueLabel : props.falseLabel
+        state.modelValue = modelValue
+        emit('update:modelValue', modelValue)
       }
     }
   })
@@ -43,7 +55,7 @@ export function useModel() {
   async function handleChange() {
     await nextTick()
     emit('change', model.value)
-    dispatch('ElCheckboxGroup', 'change', model.value)
+    dispatch('change', model.value)
   }
 
   return { model, handleChange }

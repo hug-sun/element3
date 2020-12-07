@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import { popupProps, usePopup } from 'element-ui/src/use/popup'
-import { useEmitter } from 'element-ui/src/use/emitter'
+import { popupProps, usePopup } from '../../src/use/popup'
+import { useEmitter } from '../../src/use/emitter'
 import {
   toRefs,
   ref,
@@ -121,7 +121,7 @@ export default {
     destroyOnClose: Boolean
   },
   emits: ['update:visible', 'close', 'opened', 'open', 'closed'],
-  setup(props, { emit, slots }) {
+  setup(props, { emit }) {
     const { visible, rendered, open } = usePopup(props)
     const {
       appendToBody,
@@ -131,7 +131,6 @@ export default {
       closeOnClickModal,
       destroyOnClose
     } = toRefs(props)
-    const { beforeClose } = props
     const closed = ref(false)
     const key = ref(0)
     const dialog = ref(null)
@@ -152,8 +151,8 @@ export default {
       handleClose()
     }
     const handleClose = () => {
-      if (typeof beforeClose === 'function') {
-        beforeClose(hide)
+      if (typeof props.beforeClose === 'function') {
+        props.beforeClose(hide)
       } else {
         hide()
       }
@@ -166,8 +165,8 @@ export default {
       }
     }
     const updatePopper = () => {
-      broadcast('ElSelectDropdown', 'updatePopper')
-      broadcast('ElDropdownMenu', 'updatePopper')
+      broadcast('updatePopper')
+      broadcast('updatePopper')
     }
     const afterEnter = () => {
       emit('opened')
@@ -215,7 +214,6 @@ export default {
     return {
       dialog,
       key,
-      fullscreen,
       rendered,
       handleClose,
       style,

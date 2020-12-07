@@ -9,7 +9,7 @@
   </component>
 </template>
 <script>
-import { useEmitter } from 'element-ui/src/use/emitter'
+import { useEmitter } from '../../src/use/emitter'
 import {
   getCurrentInstance,
   onMounted,
@@ -43,11 +43,10 @@ export default {
   setup(props) {
     const { modelValue = {}, size = {} } = toRefs(props)
     const { dispatch } = useEmitter()
-
-    const elFormItem = inject('elFormItem', { ctx: {} })
+    const { elFormItem } = useInject()
 
     watch(modelValue, (v) => {
-      dispatch('ElFormItem', 'el.form.change', v)
+      dispatch('el.form.change', v)
     })
 
     const { handleKeydown } = useKeyDown()
@@ -59,6 +58,13 @@ export default {
       radioGroupSize,
       handleKeydown
     }
+  }
+}
+
+function useInject() {
+  const elFormItem = inject('elFormItem', {})
+  return {
+    elFormItem
   }
 }
 
@@ -117,9 +123,7 @@ function useStyle({ elFormItem, size }) {
   const { ctx, vnode } = getCurrentInstance()
 
   const radioGroupSize = computed(() => {
-    return (
-      size.value || elFormItem.ctx.elFormItemSize || (ctx.$ELEMENT || {}).size
-    )
+    return size.value || elFormItem.elFormItemSize || (ctx.$ELEMENT || {}).size
   })
 
   const elTag = computed(() => {

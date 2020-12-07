@@ -19,9 +19,12 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -37,8 +40,11 @@
         }, {
           value: '选项5',
           label: '北京烤鸭'
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -63,9 +69,12 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -82,8 +91,11 @@
         }, {
           value: '选项5',
           label: '北京烤鸭'
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -109,9 +121,12 @@
 </template>
   
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -127,8 +142,11 @@
         }, {
           value: '选项5',
           label: '北京烤鸭'
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -154,9 +172,12 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -172,8 +193,11 @@
         }, {
           value: '选项5',
           label: '北京烤鸭'
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -213,9 +237,11 @@
 </template>
 
 <script>
+  import {reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -234,6 +260,75 @@
         }],
         value1: [],
         value2: []
+      })
+      return {
+        ...toRefs(data)
+      }
+    }
+  }
+</script>
+```
+:::
+
+
+### 分组
+
+备选项进行分组展示
+
+:::demo 使用`el-option-group`对备选项进行分组，它的`label`属性为分组名
+```html
+<template>
+  <el-select v-model="value" placeholder="请选择">
+    <el-option-group
+      v-for="group in options"
+      :key="group.label"
+      :label="group.label">
+      <el-option
+        v-for="item in group.options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-option-group>
+  </el-select>
+</template>
+
+<script>
+  import {ref, reactive, toRefs} from 'vue'
+
+  export default {
+    setup(){
+      const value = ref('')
+      const data = reactive({
+        options: [{
+          label: '热门城市',
+          options: [{
+            value: 'Shanghai',
+            label: '上海'
+          }, {
+            value: 'Beijing',
+            label: '北京'
+          }]
+        }, {
+          label: '城市名',
+          options: [{
+            value: 'Chengdu',
+            label: '成都'
+          }, {
+            value: 'Shenzhen',
+            label: '深圳'
+          }, {
+            value: 'Guangzhou',
+            label: '广州'
+          }, {
+            value: 'Dalian',
+            label: '大连'
+          }]
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -261,9 +356,12 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         cities: [{
           value: 'Beijing',
           label: '北京'
@@ -282,67 +380,11 @@
         }, {
           value: 'Guangzhou',
           label: '广州'
-        }],
-        value: ''
-      }
-    }
-  }
-</script>
-```
-:::
-
-### 分组
-
-备选项进行分组展示
-
-:::demo 使用`el-option-group`对备选项进行分组，它的`label`属性为分组名
-```html
-<template>
-  <el-select v-model="value" placeholder="请选择">
-    <el-option-group
-      v-for="group in options"
-      :key="group.label"
-      :label="group.label">
-      <el-option
-        v-for="item in group.options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
-      </el-option>
-    </el-option-group>
-  </el-select>
-</template>
-
-<script>
-  export default {
-    data() {
+        }]
+      })
       return {
-        options: [{
-          label: '热门城市',
-          options: [{
-            value: 'Shanghai',
-            label: '上海'
-          }, {
-            value: 'Beijing',
-            label: '北京'
-          }]
-        }, {
-          label: '城市名',
-          options: [{
-            value: 'Chengdu',
-            label: '成都'
-          }, {
-            value: 'Shenzhen',
-            label: '深圳'
-          }, {
-            value: 'Guangzhou',
-            label: '广州'
-          }, {
-            value: 'Dalian',
-            label: '大连'
-          }]
-        }],
-        value: ''
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -368,9 +410,12 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const value = ref('')
+      const data = reactive({
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -386,8 +431,11 @@
         }, {
           value: '选项5',
           label: '北京烤鸭'
-        }],
-        value: ''
+        }]
+      })
+      return {
+        value,
+        ...toRefs(data)
       }
     }
   }
@@ -420,51 +468,59 @@
 </template>
 
 <script>
+  import {ref, reactive, toRefs, getCurrentInstance, onMounted} from 'vue'
   export default {
-    data() {
-      return {
-        options: [],
-        value: [],
-        list: [],
-        loading: false,
-        states: ["Alabama", "Alaska", "Arizona",
-        "Arkansas", "California", "Colorado",
-        "Connecticut", "Delaware", "Florida",
-        "Georgia", "Hawaii", "Idaho", "Illinois",
-        "Indiana", "Iowa", "Kansas", "Kentucky",
-        "Louisiana", "Maine", "Maryland",
-        "Massachusetts", "Michigan", "Minnesota",
-        "Mississippi", "Missouri", "Montana",
-        "Nebraska", "Nevada", "New Hampshire",
-        "New Jersey", "New Mexico", "New York",
-        "North Carolina", "North Dakota", "Ohio",
-        "Oklahoma", "Oregon", "Pennsylvania",
-        "Rhode Island", "South Carolina",
-        "South Dakota", "Tennessee", "Texas",
-        "Utah", "Vermont", "Virginia",
-        "Washington", "West Virginia", "Wisconsin",
-        "Wyoming"]
-      }
-    },
-    mounted() {
-      this.list = this.states.map(item => {
-        return { value: `value:${item}`, label: `label:${item}` };
-      });
-    },
-    methods: {
-      remoteMethod(query) {
+    setup(){
+      const self = getCurrentInstance().ctx
+      const loading = ref(false)
+      const data = reactive({
+          options: [],
+          value: [],
+          list: [],
+          states: ["Alabama", "Alaska", "Arizona",
+          "Arkansas", "California", "Colorado",
+          "Connecticut", "Delaware", "Florida",
+          "Georgia", "Hawaii", "Idaho", "Illinois",
+          "Indiana", "Iowa", "Kansas", "Kentucky",
+          "Louisiana", "Maine", "Maryland",
+          "Massachusetts", "Michigan", "Minnesota",
+          "Mississippi", "Missouri", "Montana",
+          "Nebraska", "Nevada", "New Hampshire",
+          "New Jersey", "New Mexico", "New York",
+          "North Carolina", "North Dakota", "Ohio",
+          "Oklahoma", "Oregon", "Pennsylvania",
+          "Rhode Island", "South Carolina",
+          "South Dakota", "Tennessee", "Texas",
+          "Utah", "Vermont", "Virginia",
+          "Washington", "West Virginia", "Wisconsin",
+          "Wyoming"]
+      })
+
+      const remoteMethod = query => {
         if (query !== '') {
-          this.loading = true;
+          loading.value = true;
           setTimeout(() => {
-            this.loading = false;
-            this.options = this.list.filter(item => {
+            loading.value = false;
+            data.options = data.list.filter(item => {
               return item.label.toLowerCase()
                 .indexOf(query.toLowerCase()) > -1;
             });
           }, 200);
         } else {
-          this.options = [];
+          data.options = [];
         }
+      }
+
+      onMounted(()=>{
+        data.list = data.states.map(item => {
+        return { value: `value:${item}`, label: `label:${item}` };
+        })
+      })
+
+      return {
+        loading,
+        ...toRefs(data),
+        remoteMethod
       }
     }
   }
@@ -494,9 +550,11 @@
 </template>
 
 <script>
+  import {reactive, toRefs} from 'vue'
+
   export default {
-    data() {
-      return {
+    setup(){
+      const data = reactive({
         options: [{
           value: 'HTML',
           label: 'HTML'
@@ -508,6 +566,9 @@
           label: 'JavaScript'
         }],
         value: []
+      })
+      return {
+        ...toRefs(data)
       }
     }
   }

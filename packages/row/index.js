@@ -1,8 +1,8 @@
-import Row from './src/row'
+import ElRow from './Row.js'
 
 /* istanbul ignore next */
-Row.install = function (app) {
-  app.component(Row.name, Row)
+ElRow.install = function (app) {
+  app.component(ElRow.name, ElRow)
 }
 
-export default Row
+export default ElRow

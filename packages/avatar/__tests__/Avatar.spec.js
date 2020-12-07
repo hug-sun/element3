@@ -114,7 +114,6 @@ describe('Avatar.vue', () => {
           alt: 'icon'
         }
       })
-
       expect(wrapper.find('img').attributes('alt')).toBe('icon')
     })
 
@@ -156,6 +155,18 @@ describe('Avatar.vue', () => {
       expect(wrapperNone.find('img').element.style.objectFit).toBe('none')
       expect(wrapperScaleDown.find('img').element.style.objectFit).toBe(
         'scale-down'
+      )
+    })
+
+    it('srcSet', () => {
+      const wrapper = mount(Avatar, {
+        props: {
+          src: IMAGE_SUCCESS,
+          srcSet: 'big.jpg 1440w,middle.jpg 800w'
+        }
+      })
+      expect(wrapper.find('img').attributes('srcset')).toBe(
+        'big.jpg 1440w,middle.jpg 800w'
       )
     })
   })

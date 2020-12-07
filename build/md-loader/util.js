@@ -18,7 +18,10 @@ function stripTemplate(content) {
   if (!content) {
     return content
   }
-  return content.replace(/<(script|style)[\s\S]+<\/\1>/g, '').trim()
+  content = content.replace(/<(script|style)[\s\S]+<\/\1>/g, '').trim()
+  // 过滤<template>
+  const ret = content.match(/<(template)\s*>([\s\S]+)<\/\1>/)
+  return ret ? ret[2].trim() : content
 }
 
 // function pad(source) {
@@ -61,8 +64,16 @@ function genInlineComponentText(template, script) {
   if (script) {
     script = script
       .replace(/export\s+default/, 'const democomponentExport =')
-      .replace(/import ([,{}\w\s]+) from ['"\w]+/g, function (s0, s1) {
-        return `const ${s1} = Vue`
+      .replace(/import ([,{}\w\s]+) from (['"\w]+)/g, function (s0, s1, s2) {
+        if (s2 === `'vue'`) {
+          return `
+        const ${s1} = Vue
+        `
+        } else if (s2 === `'element3'`) {
+          return `
+            const ${s1} = Element3
+          `
+        }
       })
   } else {
     script = 'const democomponentExport = {}'

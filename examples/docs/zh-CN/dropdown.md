@@ -78,10 +78,12 @@
 
 <script>
   export default {
-    methods: {
-      handleClick() {
-        alert('button click');
+    setup(){
+      function handleClick(){
+        alert('button click')
       }
+
+      return {handleClick}
     }
   }
 </script>
@@ -207,11 +209,14 @@
 </style>
 
 <script>
+  import {Message} from 'element3'
   export default {
-    methods: {
-      handleCommand(command) {
-        this.$message('click on item ' + command);
+    setup(){
+      function handleCommand(command) {
+        Message('click on item ' + command);
       }
+
+      return {handleCommand}
     }
   }
 </script>

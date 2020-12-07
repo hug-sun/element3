@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { autoprefixer } from 'element-ui/src/utils/util'
+import { autoprefixer } from '../../src/utils/util'
 import {
   reactive,
   toRefs,

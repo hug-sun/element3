@@ -1,8 +1,8 @@
-import Image from './src/main'
+import ElImage from './Image'
 
 /* istanbul ignore next */
-Image.install = function (app) {
-  app.component(Image.name, Image)
+ElImage.install = function (app) {
+  app.component(ElImage.name, ElImage)
 }
 
-export default Image
+export default ElImage

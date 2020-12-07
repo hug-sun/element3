@@ -1,8 +1,8 @@
-import Aside from './src/main'
+import ElAside from './Aside.vue'
 
 /* istanbul ignore next */
-Aside.install = function (app) {
-  app.component(Aside.name, Aside)
+ElAside.install = function (app) {
+  app.component(ElAside.name, ElAside)
 }
 
-export default Aside
+export default ElAside

@@ -1,6 +1,8 @@
 <template>
   <div
+    :style="$attrs.style"
     :class="[
+      classProp,
       type === 'textarea' ? 'el-textarea' : 'el-input',
       inputSize ? 'el-input--' + inputSize : '',
       {
@@ -123,8 +125,7 @@ import {
   watch,
   unref
 } from 'vue'
-import emitter from 'element-ui/src/mixins/emitter'
-import { useEmitter } from 'element-ui/src/use/emitter'
+import { useEmitter } from '../../src/use/emitter'
 import {
   useValidate,
   useTextarea,
@@ -137,8 +138,6 @@ export default {
   name: 'ElInput',
 
   componentName: 'ElInput',
-
-  mixins: [emitter],
 
   inheritAttrs: false,
 
@@ -217,7 +216,8 @@ export default {
       toRefs(state),
       nativeInputValue,
       emit,
-      slots
+      slots,
+      dispatch
     )
 
     // when change between <input> and <textarea>,
@@ -241,7 +241,7 @@ export default {
           resizeTextarea()
         })
         if (unref(validateEvent)) {
-          dispatch('ElFormItem', 'el.form.change', val)
+          dispatch('el.form.change', val)
         }
       }
     )
@@ -258,6 +258,7 @@ export default {
 
     return {
       ...toRefs(state),
+      classProp: props.class,
       inputSize,
       validateState,
       validateIcon,
@@ -299,6 +300,7 @@ export default {
     form: String,
     disabled: Boolean,
     readonly: Boolean,
+    class: String,
     type: {
       type: String,
       default: 'text'

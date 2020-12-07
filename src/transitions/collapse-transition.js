@@ -1,4 +1,4 @@
-import { addClass, removeClass } from 'element-ui/src/utils/dom'
+import { addClass, removeClass } from '../utils/dom'
 import { h, Transition } from 'vue'
 
 class TransitionFn {
@@ -65,7 +65,7 @@ class TransitionFn {
   }
 }
 
-const ElCollapseTransition = (props, { slots }) => {
+const ElCollapseTransition = (props, context) => {
   const transitions = new TransitionFn()
   const data = {
     onBeforeEnter: transitions.beforeEnter,
@@ -75,7 +75,11 @@ const ElCollapseTransition = (props, { slots }) => {
     onLeave: transitions.leave,
     onAfterLeave: transitions.afterLeave
   }
-  return h(Transition, data, slots)
+  return h(Transition, data, context.slots)
+}
+
+ElCollapseTransition.install = function (app) {
+  app.component('ElCollapseTransition', ElCollapseTransition)
 }
 
 export default ElCollapseTransition

@@ -21,7 +21,8 @@ export interface ElPopoverDirective extends VNodeDirective {
 }
 
 /** Popover Component */
-export declare class ElPopover extends ElementUIComponent {
+export const ElPopover:IPopover
+ interface IPopover extends ElementUIComponent {
   /** How the popover is triggered */
   trigger: PopoverTrigger
 

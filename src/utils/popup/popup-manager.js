@@ -1,4 +1,4 @@
-import { addClass, removeClass } from 'element-ui/src/utils/dom'
+import { addClass, removeClass } from '../../utils/dom'
 
 let hasModal = false
 let hasInitZIndex = false
@@ -14,10 +14,14 @@ const getModal = function () {
     modalDom = document.createElement('div')
     PopupManager.modalDom = modalDom
 
-    modalDom.addEventListener('touchmove', function (event) {
-      event.preventDefault()
-      event.stopPropagation()
-    })
+    modalDom.addEventListener(
+      'touchmove',
+      function (event) {
+        event.preventDefault()
+        event.stopPropagation()
+      },
+      { passive: true }
+    )
 
     modalDom.addEventListener('click', function () {
       PopupManager.doOnModalClick && PopupManager.doOnModalClick()
@@ -69,9 +73,7 @@ const PopupManager = {
     // if (Vue.prototype.$isServer) return
     if (!id || zIndex === undefined) return
     this.modalFade = modalFade
-
     const modalStack = this.modalStack
-
     for (let i = 0, j = modalStack.length; i < j; i++) {
       const item = modalStack[i]
       if (item.id === id) {
@@ -80,7 +82,9 @@ const PopupManager = {
     }
 
     const modalDom = getModal()
-
+    if (zIndex) {
+      modalDom.style.zIndex = zIndex
+    }
     addClass(modalDom, 'v-modal')
     if (this.modalFade && !hasModal) {
       addClass(modalDom, 'v-modal-enter')
@@ -99,9 +103,6 @@ const PopupManager = {
       document.body.appendChild(modalDom)
     }
 
-    if (zIndex) {
-      modalDom.style.zIndex = zIndex
-    }
     modalDom.tabIndex = 0
     modalDom.style.display = ''
 
@@ -119,7 +120,6 @@ const PopupManager = {
           const classArr = topItem.modalClass.trim().split(/\s+/)
           classArr.forEach((item) => removeClass(modalDom, item))
         }
-
         modalStack.pop()
         if (modalStack.length > 0) {
           modalDom.style.zIndex = modalStack[modalStack.length - 1].zIndex

@@ -118,22 +118,30 @@
   </div>
 </template>
 <script>
+  import { ref } from 'vue'
   export default {
-    methods: {
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+    setup() {
+      const currentPage1 = ref(5)
+      const currentPage2 = ref(5)
+      const currentPage3 = ref(5)
+      const currentPage4 = ref(4)
+
+      const handleSizeChange = (size) => {
+        console.log(`每页 ${size} 条`)
       }
-    },
-    data() {
+
+      const handleCurrentChange = (page) => {
+        console.log(`当前页: ${page}`)
+      }
+
       return {
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4
-      };
+        handleSizeChange,
+        handleCurrentChange,
+        currentPage1,
+        currentPage2,
+        currentPage3,
+        currentPage4
+      }
     }
   }
 </script>
@@ -157,10 +165,13 @@
 </div>
 
 <script>
+  import { ref } from 'vue'
   export default {
-    data() {
+    setup() {
+      const value = ref(false)
+
       return {
-        value: false
+        value
       }
     }
   }
@@ -173,18 +184,18 @@
 |--------------------|----------------------------------------------------------|-------------------|-------------|--------|
 | small | 是否使用小型分页样式 | boolean | — | false |
 | background | 是否为分页按钮添加背景色 | boolean | — | false |
-| page-size | 每页显示条目个数，支持 .sync 修饰符 | number | — | 10 |
+| page-size | 每页显示条目个数，支持具名v-model v-model:pageSize | number | — | 10 |
 | total | 总条目数 | number | — | — |
 | page-count | 总页数，total 和 page-count 设置任意一个就可以达到显示页码的功能；如果要支持 page-sizes 的更改，则需要使用 total 属性 | Number | — | — |
 | pager-count | 页码按钮的数量，当总页数超过该值时会折叠 | number | 大于等于 5 且小于等于 21 的奇数 | 7 |
-| current-page | 当前页数，支持 .sync 修饰符 | number | — | 1 |
+| current-page | 当前页数，支持具名v-model v-model:currentPage | number | — | 1 |
 | layout | 组件布局，子组件名用逗号分隔| String | `sizes`, `prev`, `pager`, `next`, `jumper`, `->`, `total`, `slot` | 'prev, pager, next, jumper, ->, total'  |
 | page-sizes | 每页显示个数选择器的选项设置 | number[] | — |  [10, 20, 30, 40, 50, 100] |
 | popper-class | 每页显示个数选择器的下拉框类名 | string | — | — |
 | prev-text | 替代图标显示的上一页文字 | string | — | — |
 | next-text | 替代图标显示的下一页文字 | string | — | — |
 | disabled | 是否禁用 | boolean | — | false |
-| hide-on-single-page | 只有一页时是否隐藏 | boolean | — | - |
+| hide-on-single-page | 只有一页时是否隐藏 | boolean | — | false |
 
 ### Events
 | 事件名称 | 说明 | 回调参数 |

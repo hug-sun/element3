@@ -1,5 +1,10 @@
 import Vue, { VNodeDirective, PluginObject } from 'vue'
 
+import { ElementUIComponent } from './component'
+
+export const useLoading = () => (options: LoadingServiceOptions) =>
+  ILoadingComponent
+
 /** Options used in Loading service */
 export interface LoadingServiceOptions {
   /** The DOM node Loading needs to cover. Accepts a DOM object or a string. If it's a string, it will be passed to `document.querySelector` to get the corresponding DOM node */
@@ -28,35 +33,32 @@ export interface LoadingServiceOptions {
 }
 
 /** Loading Component */
-export declare class ElLoadingComponent extends Vue {
+export interface ILoadingComponent {
   /** Close the Loading instance */
-  close (): void
+  close(): void
 }
 
 /** Loading directive definition */
 export interface ElLoadingDirective extends VNodeDirective {
-  name: 'loading',
-  value: boolean,
+  name: 'loading'
+  value: boolean
   modifiers: {
-    body: boolean,
+    body: boolean
     fullscreen: boolean
   }
 }
-
+export const ElLoading: IlLoading
 /** Show animation while loading data */
-export interface ElLoading {
-  /** Install Loading directive into Vue */
-  install (vue: typeof Vue): void
-
+interface IlLoading extends ElementUIComponent {
   /** If you do not have a specific DOM node to attach the Loading directive, or if you simply prefer not to use Loading as a directive, you can call this service with some configs to open a Loading instance. */
-  service (options: LoadingServiceOptions): ElLoadingComponent
+  service(options: LoadingServiceOptions): ElLoadingComponent
 
   directive: PluginObject<never>
 }
 
-declare module 'vue/types/vue' {
-  interface Vue {
+declare module '@vue/runtime-core' {
+  export interface ComponentCustomProperties {
     /** If you do not have a specific DOM node to attach the Loading directive, or if you simply prefer not to use Loading as a directive, you can call this service with some configs to open a Loading instance. */
-    $loading (options: LoadingServiceOptions): ElLoadingComponent
+    $loading(options: LoadingServiceOptions): ILoadingComponent
   }
 }

@@ -85,21 +85,17 @@
   </transition-group>
 </template>
 <script>
-import Locale from 'element-ui/src/mixins/locale'
-import ElProgress from 'element-ui/packages/progress'
+import Locale from '../../../src/mixins/locale'
+import ElProgress from '../../progress'
+import { ref } from 'vue'
 
 export default {
   name: 'ElUploadList',
 
   mixins: [Locale],
 
-  data() {
-    return {
-      focusing: false
-    }
-  },
   components: { ElProgress },
-
+  emits: ['remove'],
   props: {
     files: {
       type: Array,
@@ -114,12 +110,19 @@ export default {
     handlePreview: Function,
     listType: String
   },
-  methods: {
-    parsePercentage(val) {
+  setup(props, { emit }) {
+    const focusing = ref(false)
+    const parsePercentage = (val) => {
       return parseInt(val, 10)
-    },
-    handleClick(file) {
-      this.handlePreview && this.handlePreview(file)
+    }
+    const handleClick = (file) => {
+      props.handlePreview && props.handlePreview(file)
+    }
+    return {
+      focusing,
+      parsePercentage,
+      handleClick,
+      emit
     }
   }
 }

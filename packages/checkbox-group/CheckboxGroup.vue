@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import { useEmitter } from 'element-ui/src/use/emitter'
-import { provide, getCurrentInstance, computed, inject, watch } from 'vue'
+import { useEmitter } from '../../src/use/emitter'
+import { provide, getCurrentInstance, computed, inject } from 'vue'
 export default {
   name: 'ElCheckboxGroup',
 
@@ -23,29 +23,28 @@ export default {
 
   emits: ['update:modelValue', 'change'],
 
-  setup(props) {
+  setup(props, { emit }) {
     const elForm = inject('elForm', { props: {}, ctx: {} })
-    const elFormItem = inject('elFormItem', {
-      props: {},
-      ctx: {},
-      emit: () => {}
-    })
+    const elFormItem = inject('elFormItem', {})
     provide('elCheckboxGroup', getCurrentInstance())
 
-    const { dispatch } = useEmitter()
+    const { dispatch, on } = useEmitter()
 
     const checkboxGroupSize = computed(() => {
-      return props.size || elFormItem.ctx.elFormItemSize
+      return props.size || elFormItem.elFormItemSize
     })
 
     const checkboxGroupDisabled = computed(() => {
-      return (
-        props.disabled || elFormItem.props.disabled || elForm.props.disabled
-      )
+      return props.disabled || elForm.disabled
     })
 
-    watch(props.modelValue, (v) => {
-      dispatch('ElFormItem', 'el.form.change', v)
+    on('update:modelValue', (v) => {
+      emit('update:modelValue', v)
+      dispatch('el.form.change', v)
+    })
+
+    on('change', (v) => {
+      emit('change', v)
     })
 
     return {

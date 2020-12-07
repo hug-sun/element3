@@ -42,13 +42,13 @@ import {
   nextDate,
   isDate,
   clearTime as _clearTime
-} from 'element-ui/src/utils/date-util'
-import Locale from 'element-ui/src/mixins/locale'
+} from '../../../../src/utils/date-util'
+import Locale from '../../../../src/mixins/locale'
 import {
   arrayFindIndex,
   arrayFind,
   coerceTruthyValueToArray
-} from 'element-ui/src/utils/util'
+} from '../../../../src/utils/util'
 
 const WEEKS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 const getDateTimestamp = function (time) {
@@ -481,6 +481,8 @@ export default {
       if (this.selectionMode === 'range') {
         if (!this.rangeState.selecting) {
           this.$emit('pick', { minDate: newDate, maxDate: null })
+          // TODO 不可以直接修改 props 的值
+          // eslint-disable-next-line vue/no-mutating-props
           this.rangeState.selecting = true
         } else {
           if (newDate >= this.minDate) {
@@ -488,6 +490,8 @@ export default {
           } else {
             this.$emit('pick', { minDate: newDate, maxDate: this.minDate })
           }
+          // TODO 不可以直接修改 props 的值
+          // eslint-disable-next-line vue/no-mutating-props
           this.rangeState.selecting = false
         }
       } else if (this.selectionMode === 'day') {

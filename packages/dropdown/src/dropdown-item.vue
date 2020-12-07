@@ -14,12 +14,11 @@
   </li>
 </template>
 <script>
-import Emitter from 'element-ui/src/mixins/emitter'
+import { toRefs, getCurrentInstance } from 'vue'
+import { useEmitter } from '../../../src/use/emitter'
 
 export default {
   name: 'ElDropdownItem',
-
-  mixins: [Emitter],
 
   props: {
     command: {},
@@ -28,9 +27,17 @@ export default {
     icon: String
   },
 
-  methods: {
-    handleClick(e) {
-      this.dispatch('ElDropdown', 'menu-item-click', [this.command, this])
+  setup(props) {
+    const instance = getCurrentInstance()
+    const { dispatch } = useEmitter(instance)
+    const { command } = toRefs(props)
+
+    const handleClick = () => {
+      dispatch('menu-item-click', command?.value, instance.proxy)
+    }
+
+    return {
+      handleClick
     }
   }
 }

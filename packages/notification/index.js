@@ -1,2 +1,9 @@
-import Notification from './src/main.js'
-export default Notification
+import Notification from './Notification.js'
+
+export function useNotify() {
+  return Notification
+}
+
+export default {
+  service: Notification
+}

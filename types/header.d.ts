@@ -1,7 +1,9 @@
 import { ElementUIComponent } from './component'
 
 /** Header Component */
-export declare class ElHeader extends ElementUIComponent {
+interface IHeader extends ElementUIComponent {
   /** Height of the header */
   height: string
 }
+
+export const ElHeader: IHeader

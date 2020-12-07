@@ -21,9 +21,9 @@
   </transition>
 </template>
 <script>
-import Popper from 'element-ui/src/utils/vue-popper'
-import Emitter from 'element-ui/src/mixins/emitter'
-import ElScrollbar from 'element-ui/packages/scrollbar'
+import Popper from '../../../src/utils/vue-popper'
+import Emitter from '../../../src/mixins/emitter'
+import ElScrollbar from '../../scrollbar'
 
 export default {
   components: { ElScrollbar },
@@ -56,7 +56,7 @@ export default {
   },
 
   updated() {
-    this.$nextTick((_) => {
+    this.$nextTick(() => {
       this.popperJS && this.updatePopper()
     })
   },
@@ -74,6 +74,8 @@ export default {
   },
 
   created() {
+    // TODO $on 已经废弃了
+    // eslint-disable-next-line vue/no-deprecated-events-api
     this.$on('visible', (val, inputWidth) => {
       this.dropdownWidth = inputWidth + 'px'
       this.showPopper = val

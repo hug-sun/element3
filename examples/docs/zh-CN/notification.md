@@ -6,7 +6,7 @@
 
 适用性广泛的通知栏
 
-:::demo Notification 组件提供通知功能，Element 注册了`$notify`方法，接收一个`options`字面量参数，在最简单的情况下，你可以设置`title`字段和`message`字段，用于设置通知的标题和正文。默认情况下，经过一段时间后 Notification 组件会自动关闭，但是通过设置`duration`，可以控制关闭的时间间隔，特别的是，如果设置为`0`，则不会自动关闭。注意：`duration`接收一个`Number`，单位为毫秒，默认为`4500`。
+:::demo Notification 组件提供通知功能，Element3 注册了`$Notify`方法，接收一个`options`字面量参数，在最简单的情况下，你可以设置`title`字段和`message`字段，用于设置通知的标题和正文。默认情况下，经过一段时间后 Notification 组件会自动关闭，但是通过设置`duration`，可以控制关闭的时间间隔，特别的是，如果设置为`0`，则不会自动关闭。注意：`duration`接收一个`Number`，单位为毫秒，默认为`4500`。
 ```html
 <template>
   <el-button
@@ -22,24 +22,27 @@
 </template>
 
 <script>
+  import {h} from 'vue'
+  import {useNotify} from 'element3'
   export default {
-    methods: {
-      open1() {
-        const h = this.$createElement;
-
-        this.$notify({
+    setup(){
+      let notify = useNotify()
+      function open1() {
+        notify({
           title: '标题名称',
           message: h('i', { style: 'color: teal'}, '这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案')
         });
-      },
+      }
 
-      open2() {
-        this.$notify({
+      function open2() {
+        notify({
           title: '提示',
           message: '这是一条不会自动关闭的消息',
           duration: 0
         });
       }
+
+      return {open1,open2}
     }
   }
 </script>
@@ -50,7 +53,7 @@
 
 带有 icon，常用来显示「成功、警告、消息、错误」类的系统消息
 
-:::demo Element 为 Notification 组件准备了四种通知类型：`success`, `warning`, `info`, `error`。通过`type`字段来设置，除此以外的值将被忽略。同时，我们也为 Notification 的各种 type 注册了方法，可以在不传入`type`字段的情况下像`open3`和`open4`那样直接调用。
+:::demo Element3 为 Notification 组件准备了四种通知类型：`success`, `warning`, `info`, `error`。通过`type`字段来设置，除此以外的值将被忽略。同时，我们也为 Notification 的各种 type 注册了方法，可以在不传入`type`字段的情况下像`open3`和`open4`那样直接调用。
 ```html
 <template>
   <el-button
@@ -76,37 +79,39 @@
 </template>
 
 <script>
+  import {useNotify} from 'element3'
   export default {
-    methods: {
-      open1() {
-        this.$notify({
+    setup(){
+      let notify = useNotify()
+
+      function open1() {
+        notify({
           title: '成功',
           message: '这是一条成功的提示消息',
           type: 'success'
         });
-      },
-
-      open2() {
-        this.$notify({
+      }
+      function open2() {
+        notify({
           title: '警告',
           message: '这是一条警告的提示消息',
           type: 'warning'
         });
-      },
-
-      open3() {
-        this.$notify.info({
+      }
+      function open3() {
+        notify.info({
           title: '消息',
           message: '这是一条消息的提示消息'
         });
-      },
-
-      open4() {
-        this.$notify.error({
+      }
+      function open4() {
+        notify.error({
           title: '错误',
           message: '这是一条错误的提示消息'
         });
       }
+      
+      return {open1,open2,open3,open4}
     }
   }
 </script>
@@ -143,38 +148,38 @@
 </template>
 
 <script>
+  import {useNotify} from 'element3'
   export default {
-    methods: {
-      open1() {
-        this.$notify({
+    setup(){
+      let notify = useNotify()
+      function open1() {
+        notify({
           title: '自定义位置',
           message: '右上角弹出的消息'
         });
-      },
-
-      open2() {
-        this.$notify({
+      }
+      function open2() {
+        notify({
           title: '自定义位置',
           message: '右下角弹出的消息',
           position: 'bottom-right'
         });
-      },
-
-      open3() {
-        this.$notify({
+      }
+      function open3() {
+        notify({
           title: '自定义位置',
           message: '左下角弹出的消息',
           position: 'bottom-left'
         });
-      },
-
-      open4() {
-        this.$notify({
+      }
+      function open4() {
+        notify({
           title: '自定义位置',
           message: '左上角弹出的消息',
           position: 'top-left'
         });
       }
+      return {open1,open2,open3,open4}
     }
   }
 </script>
@@ -196,15 +201,20 @@
 </template>
 
 <script>
+  import {useNotify} from 'element3'
   export default {
-    methods: {
-      open() {
-        this.$notify({
+    setup(){
+      let notify = useNotify()
+
+      function open() {
+        notify({
           title: '偏移',
           message: '这是一条带有偏移的提示消息',
           offset: 100
         });
       }
+
+      return {open}
     }
   }
 </script>
@@ -225,15 +235,20 @@
 </template>
 
 <script>
+  import {useNotify} from 'element3'
   export default {
-    methods: {
-      open() {
-        this.$notify({
+    setup(){
+      let $notify = useNotify()
+
+      function open() {
+        $notify({
           title: 'HTML 片段',
           dangerouslyUseHTMLString: true,
           message: '<strong>这是 <i>HTML</i> 片段</strong>'
         });
       }
+
+      return {open}
     }
   }
 </script>
@@ -259,31 +274,33 @@
 </template>
 
 <script>
+  import {useNotify} from 'element3'
   export default {
-    methods: {
-      open() {
-        this.$notify.success({
+    setup(){
+      let $notify = useNotify()
+
+      function open() {
+        $notify.success({
           title: 'Info',
           message: '这是一条没有关闭按钮的消息',
           showClose: false
         });
       }
+
+      return {open}
     }
   }
 </script>
 ```
 :::
 
-### 全局方法
-
-Element 为 `Vue.prototype` 添加了全局方法 `$notify`。因此在 vue instance 中可以采用本页面中的方式调用 Notification。
 
 ### 单独引用
 
 单独引入 Notification：
 
 ```javascript
-import { Notification } from 'element-ui';
+import { Notification } from 'element3';
 ```
 
 此时调用方法为 `Notification(options)`。我们也为每个 type 定义了各自的方法，如 `Notification.success(options)`。并且可以调用 `Notification.closeAll()` 手动关闭所有实例。

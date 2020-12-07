@@ -1,9 +1,10 @@
 <template>
   <div
+    ref="step"
     class="el-step"
     :style="style"
     :class="[
-      !isSimple && `is-${$parent.direction}`,
+      !isSimple && `is-${direction}`,
       isSimple && 'is-simple',
       isLast && !space && !isCenter && 'is-flex',
       isCenter && !isVertical && !isSimple && 'is-center'
@@ -13,7 +14,7 @@
     <div class="el-step__head" :class="`is-${currentStatus}`">
       <div
         class="el-step__line"
-        :style="isLast ? '' : { marginRight: $parent.stepOffset + 'px' }"
+        :style="isLast ? '' : { marginRight: stepOffset + 'px' }"
       >
         <i class="el-step__line-inner" :style="lineStyle"></i>
       </div>
@@ -52,6 +53,17 @@
 </template>
 
 <script>
+import {
+  computed,
+  watch,
+  onBeforeUnmount,
+  inject,
+  reactive,
+  toRefs,
+  onBeforeMount
+} from 'vue'
+import { propsSymbol, stateSymbol } from './constants'
+
 export default {
   name: 'ElStep',
 
@@ -62,129 +74,156 @@ export default {
     status: String
   },
 
-  data() {
-    return {
+  setup(props) {
+    const parentState = inject(stateSymbol)
+    const steps = parentState.steps
+    const stepOffset = parentState.stepOffset
+    const parentProps = inject(propsSymbol)
+    const isSimple = parentProps.simple
+    const isCenter = parentProps.alignCenter
+
+    const state = reactive({
       index: -1,
       lineStyle: {},
       internalStatus: ''
-    }
-  },
+    })
 
-  beforeCreate() {
-    this.$parent.steps.push(this)
-  },
+    const currentStatus = computed(() => {
+      return props.status || state.internalStatus
+    })
 
-  beforeDestroy() {
-    const steps = this.$parent.steps
-    const index = steps.indexOf(this)
-    if (index >= 0) {
-      steps.splice(index, 1)
-    }
-  },
-
-  computed: {
-    currentStatus() {
-      return this.status || this.internalStatus
-    },
-    prevStatus() {
-      const prevStep = this.$parent.steps[this.index - 1]
+    const prevStatus = computed(() => {
+      const prevStep = steps[state.index - 1]
       return prevStep ? prevStep.currentStatus : 'wait'
-    },
-    isCenter() {
-      return this.$parent.alignCenter
-    },
-    isVertical() {
-      return this.$parent.direction === 'vertical'
-    },
-    isSimple() {
-      return this.$parent.simple
-    },
-    isLast() {
-      const parent = this.$parent
-      return parent.steps[parent.steps.length - 1] === this
-    },
-    stepsCount() {
-      return this.$parent.steps.length
-    },
-    space() {
-      const {
-        isSimple,
-        $parent: { space }
-      } = this
-      return isSimple ? '' : space
-    },
-    style: function () {
-      const style = {}
-      const parent = this.$parent
-      const len = parent.steps.length
+    })
 
-      const space =
-        typeof this.space === 'number'
-          ? this.space + 'px'
-          : this.space
-          ? this.space
-          : 100 / (len - (this.isCenter ? 0 : 1)) + '%'
-      style.flexBasis = space
-      if (this.isVertical) return style
-      if (this.isLast) {
-        style.maxWidth = 100 / this.stepsCount + '%'
+    const isVertical = computed(() => {
+      return parentProps.direction === 'vertical'
+    })
+
+    const isLast = computed(() => {
+      return state.index === steps.length - 1
+    })
+
+    const stepsCount = computed(() => {
+      return steps.length
+    })
+
+    const space = computed(() => {
+      return isSimple ? '' : parentProps.space
+    })
+
+    const style = computed(() => {
+      const style = {}
+      const len = steps.length
+
+      const newSpace =
+        typeof space.value === 'number'
+          ? space.value + 'px'
+          : space.value
+          ? space.value
+          : 100 / (len - (isCenter ? 0 : 1)) + '%'
+      style.flexBasis = newSpace
+      if (isVertical.value) return style
+      if (isLast.value) {
+        style.maxWidth = 100 / stepsCount.value + '%'
       } else {
-        style.marginRight = -this.$parent.stepOffset + 'px'
+        style.marginRight = -stepOffset + 'px'
       }
 
       return style
-    }
-  },
+    })
 
-  methods: {
-    updateStatus(val) {
-      const prevChild = this.$parent.$children[this.index - 1]
+    const updateStatus = (val) => {
+      if (state.index < 0) return
 
-      if (val > this.index) {
-        this.internalStatus = this.$parent.finishStatus
-      } else if (val === this.index && this.prevStatus !== 'error') {
-        this.internalStatus = this.$parent.processStatus
+      const prevChild = steps[state.index - 1]
+
+      if (val > state.index) {
+        state.internalStatus = parentProps.finishStatus
+      } else if (val === state.index && prevStatus.value !== 'error') {
+        state.internalStatus = parentProps.processStatus
       } else {
-        this.internalStatus = 'wait'
+        state.internalStatus = 'wait'
       }
 
-      if (prevChild) prevChild.calcProgress(this.internalStatus)
-    },
+      if (prevChild) prevChild.calcProgress(state.internalStatus)
+    }
 
-    calcProgress(status) {
+    const calcProgress = (status) => {
       let step = 100
       const style = {}
 
-      style.transitionDelay = 150 * this.index + 'ms'
-      if (status === this.$parent.processStatus) {
-        step = this.currentStatus !== 'error' ? 0 : 0
+      style.transitionDelay = 150 * state.index + 'ms'
+      if (status === parentProps.processStatus) {
+        step = state.currentStatus !== 'error' ? 0 : 0
       } else if (status === 'wait') {
         step = 0
-        style.transitionDelay = -150 * this.index + 'ms'
+        style.transitionDelay = -150 * state.index + 'ms'
       }
 
-      style.borderWidth = step && !this.isSimple ? '1px' : 0
-      this.$parent.direction === 'vertical'
+      style.borderWidth = step && !isSimple ? '1px' : 0
+      parentProps.direction === 'vertical'
         ? (style.height = step + '%')
         : (style.width = step + '%')
 
-      this.lineStyle = style
+      state.lineStyle = style
     }
-  },
 
-  mounted() {
-    const unwatch = this.$watch('index', (val) => {
-      this.$watch('$parent.active', this.updateStatus, { immediate: true })
-      this.$watch(
-        '$parent.processStatus',
-        () => {
-          const activeIndex = this.$parent.active
-          this.updateStatus(activeIndex)
-        },
-        { immediate: true }
-      )
-      unwatch()
+    watch(
+      () => state.index,
+      () => {
+        updateStatus(parentProps.active)
+      },
+      {
+        immediate: true
+      }
+    )
+
+    watch(() => parentProps.active, updateStatus, {
+      immediate: true
     })
+
+    watch(
+      () => parentProps.processStatus,
+      () => {
+        updateStatus(parentProps.active)
+      },
+      {
+        immediate: true
+      }
+    )
+    const instance = {
+      state,
+      currentStatus,
+      calcProgress,
+      updateStatus
+    }
+
+    onBeforeMount(() => {
+      steps.push(instance)
+    })
+
+    onBeforeUnmount(() => {
+      const index = steps.indexOf(instance)
+      if (index >= 0) {
+        steps.splice(index, 1)
+      }
+    })
+
+    return {
+      ...toRefs(state),
+      currentStatus,
+      prevStatus,
+      direction: parentProps.direction,
+      isSimple,
+      isLast,
+      isCenter,
+      isVertical,
+      space,
+      style,
+      stepOffset
+    }
   }
 }
 </script>

@@ -1,8 +1,8 @@
-import Popconfirm from './src/main'
+import ElPopconfirm from './Popconfirm'
 
 /* istanbul ignore next */
-Popconfirm.install = function (app) {
-  app.component(Popconfirm.name, Popconfirm)
+ElPopconfirm.install = function (app) {
+  app.component(ElPopconfirm.name, ElPopconfirm)
 }
 
-export default Popconfirm
+export default ElPopconfirm

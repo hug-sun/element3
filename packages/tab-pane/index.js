@@ -1,8 +1,8 @@
-import TabPane from '../tabs/src/tab-pane.vue'
+import ElTabPane from './TabPane'
 
 /* istanbul ignore next */
-TabPane.install = function (app) {
-  app.component(TabPane.name, TabPane)
+ElTabPane.install = function (app) {
+  app.component(ElTabPane.name, ElTabPane)
 }
 
-export default TabPane
+export default ElTabPane

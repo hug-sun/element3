@@ -1,7 +1,8 @@
 import { ElementUIComponent } from './component'
 
+export const ElOptionGroup:IOptionGroup
 /** Dropdown Select Option Group Component */
-export declare class ElOptionGroup extends ElementUIComponent {
+interface IOptionGroup extends ElementUIComponent {
   /** Name of the group */
   label: string
 

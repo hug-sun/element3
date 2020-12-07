@@ -87,7 +87,8 @@ export default {
     },
     strokeLinecap: {
       type: String,
-      default: 'round'
+      default: 'round',
+      validator: (val) => ['butt', 'round', 'square'].indexOf(val) > -1
     },
     textInside: {
       type: Boolean,
@@ -115,10 +116,7 @@ export default {
       width,
       type,
       status,
-      format,
-      strokeLinecap,
-      textInside,
-      showText
+      format
     } = toRefs(props)
 
     const getCurrentColor = (percentage) => {
@@ -185,17 +183,7 @@ export default {
       stroke,
       iconClass,
       progressTextSize,
-      content,
-      percentage,
-      color,
-      strokeWidth,
-      width,
-      type,
-      status,
-      format,
-      strokeLinecap,
-      textInside,
-      showText
+      content
     }
   }
 }

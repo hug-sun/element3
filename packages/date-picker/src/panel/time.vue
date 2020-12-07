@@ -43,8 +43,8 @@ import {
   isDate,
   clearMilliseconds,
   timeWithinRange
-} from 'element-ui/src/utils/date-util'
-import Locale from 'element-ui/src/mixins/locale'
+} from '../../../../src/utils/date-util'
+import Locale from '../../../../src/mixins/locale'
 import TimeSpinner from '../basic/time-spinner'
 
 export default {
@@ -79,7 +79,7 @@ export default {
 
       this.date = date
       if (this.visible && this.needInitAdjust) {
-        this.$nextTick((_) => this.adjustSpinners())
+        this.$nextTick(() => this.adjustSpinners())
         this.needInitAdjust = false
       }
     },
