@@ -134,7 +134,7 @@ export default {
 
     function selectOptionClick() {
       if (disabled.value !== true && data.groupDisabled !== true) {
-        dispatch('handleOptionClick', { option: this, byClick: true })
+        dispatch('handleOptionClick', { option: props, byClick: true })
       }
     }
 
