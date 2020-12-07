@@ -44,7 +44,7 @@ describe('Link', () => {
           underline
         }
       })
-      console.log(wrapper.vm)
+
       expect(wrapper.classes()).toContain('is-underline')
     })
 
