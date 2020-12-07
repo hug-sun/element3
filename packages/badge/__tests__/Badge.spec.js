@@ -1,10 +1,17 @@
 import Badge from '../Badge.vue'
-import { mount } from '@vue/test-utils'
-import '@testing-library/jest-dom'
+import { mount as $mount } from '@vue/test-utils'
+
+const mount = async (options) => {
+  options = options || {}
+
+  const wrapper = await $mount(Badge, options)
+  return wrapper
+}
+
 describe('Badge', () => {
   describe('props', () => {
-    it('value', () => {
-      const wrapper = mount(Badge, {
+    it('should render props.value', async () => {
+      const wrapper = await mount({
         props: {
           value: 13
         }
@@ -13,48 +20,87 @@ describe('Badge', () => {
       expect(wrapper.find('.el-badge__content').text()).toContain('13')
     })
 
-    it('max', () => {
-      const wrapper = mount(Badge, {
+    it('should render string props.value', async () => {
+      const wrapper = await mount({
         props: {
-          value: 99,
-          max: 13
+          value: 'new~'
         }
       })
 
-      expect(wrapper.find('.el-badge__content').text()).toContain('13')
+      expect(wrapper.find('.el-badge__content').text()).toContain('new~')
     })
 
-    it('isDot', () => {
-      const wrapper = mount(Badge, {
+    it('should not render when props.value eq 0', async () => {
+      const wrapper = await mount({
         props: {
+          value: 0
+        }
+      })
+
+      expect(wrapper.find('.el-badge__content').exists()).toBeFalsy()
+    })
+
+    it('should  render solt', async () => {
+      const wrapper = await mount({
+        props: {
+          value: 0
+        },
+        slots: {
+          default() {
+            return 'default slot'
+          }
+        }
+      })
+
+      expect(wrapper.find('.el-badge').text()).toContain('default slot')
+    })
+
+    it('should render `+` over max value', async () => {
+      const wrapper = await mount({
+        props: {
+          value: 13,
+          max: 10
+        }
+      })
+
+      expect(wrapper.find('.el-badge__content').text()).toContain('10+')
+    })
+
+    it('should render dot', async () => {
+      const wrapper = await mount({
+        props: {
+          value: 13,
+          max: 10,
           isDot: true
         }
       })
 
-      expect(wrapper.find('.el-badge__content').classes()).toContain('is-dot')
+      expect(wrapper.find('.is-dot').text()).toBeTruthy()
     })
 
-    it('hidden', () => {
-      const wrapper = mount(Badge, {
+    it('should not render when hidden', async () => {
+      const wrapper = await mount({
         props: {
-          hidden: true,
-          isDot: true
+          value: 13,
+          max: 10,
+          hidden: true
         }
       })
 
-      expect(wrapper.find('.el-badge__content').element).not.toBeVisible()
+      expect(wrapper.find('sup').exists()).toBeFalsy()
     })
 
-    it('type', () => {
-      const wrapper = mount(Badge, {
+    it('should  render props.type', async () => {
+      const wrapper = await mount({
         props: {
-          value: 12,
-          type: 'success'
+          value: 13,
+          max: 10,
+          type: 'primary'
         }
       })
 
-      expect(wrapper.find('.el-badge__content').classes()).toContain(
-        'el-badge__content--success'
+      expect(wrapper.find('sup').classes()).toContain(
+        'el-badge__content--primary'
       )
     })
   })
