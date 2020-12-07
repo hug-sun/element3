@@ -56,6 +56,7 @@ export default {
     dangerouslyUseHTMLString: Boolean,
     verticalOffset: Number
   },
+  emits: ['close'],
   setup(props, { emit }) {
     const instance = getCurrentInstance()
 
