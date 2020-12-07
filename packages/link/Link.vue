@@ -1,54 +1,59 @@
 <template>
   <a
-    :class="[
-      'el-link',
-      type ? `el-link--${type}` : '',
-      disabled && 'is-disabled',
-      underline && !disabled && 'is-underline'
-    ]"
+    :class="classes"
     :href="disabled ? null : href"
     v-bind="$attrs"
     @click="handleClick"
   >
-    <i :class="icon" v-if="icon"></i>
-
+    <i v-if="icon" :class="icon"></i>
     <span v-if="$slots.default" class="el-link--inner">
       <slot></slot>
     </span>
-
-    <slot v-if="$slots.icon" name="icon"></slot>
   </a>
 </template>
 
 <script>
 export default {
   name: 'ElLink',
-
   props: {
     type: {
       type: String,
       default: 'default'
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     underline: {
       type: Boolean,
       default: true
     },
-    disabled: Boolean,
     href: String,
     icon: String
   },
   emits: ['click'],
   setup(props, { emit }) {
-    const handleClick = (evt) => {
+    const classes = useClasses(props)
+
+    const handleClick = (event) => {
       if (props.disabled) return
       if (props.href) return
 
-      emit('click', evt)
+      emit('click', event)
     }
-
     return {
+      classes,
       handleClick
     }
   }
 }
+const useClasses = (props) => {
+  return [
+    props.type ? `el-link--${props.type}` : '',
+    props.disabled && 'is-disabled',
+    props.underline && !props.disabled && 'is-underline'
+  ]
+}
 </script>
+
+<style></style>
