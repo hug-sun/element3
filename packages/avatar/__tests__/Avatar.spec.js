@@ -5,169 +5,112 @@ export const IMAGE_SUCCESS =
 
 export const IMAGE_FAIL = 'data:image/png;base64,fail'
 
-describe('Avatar.vue', () => {
-  describe('props', () => {
-    describe('size', () => {
-      it('size is number', () => {
-        const wrapper = mount(Avatar, {
-          props: {
-            size: 100
-          }
-        })
-
-        expect(wrapper.find('span').element.style.width).toBe('100px')
-        expect(wrapper.find('span').element.style.height).toBe('100px')
-        expect(wrapper.find('span').element.style.lineHeight).toBe('100px')
+describe('Avatar.props', () => {
+  describe('icon', () => {
+    it('should render props.icon', () => {
+      const wrapper = mount(Avatar, {
+        props: {
+          icon: 'el-icon-eleme'
+        }
       })
 
-      it('size is string', () => {
-        const wrapperLarge = mount(Avatar, {
-          props: {
-            size: 'large'
-          }
-        })
-        const wrapperMedium = mount(Avatar, {
-          props: {
-            size: 'medium'
-          }
-        })
-        const wrapperSmall = mount(Avatar, {
-          props: {
-            size: 'small'
-          }
-        })
+      expect(wrapper.find('i').classes()).toContain('el-icon-eleme')
+    })
+  })
 
-        expect(wrapperLarge.find('span').classes()).toContain(
-          'el-avatar--large'
-        )
-        expect(wrapperMedium.find('span').classes()).toContain(
-          'el-avatar--medium'
-        )
-        expect(wrapperSmall.find('span').classes()).toContain(
-          'el-avatar--small'
-        )
+  describe('size', () => {
+    it('size is number', () => {
+      const wrapper = mount(Avatar, {
+        props: {
+          size: 100
+        }
       })
+
+      expect(wrapper.find('span').element.style.width).toBe('100px')
+      expect(wrapper.find('span').element.style.height).toBe('100px')
+      expect(wrapper.find('span').element.style.lineHeight).toBe('100px')
     })
 
-    it('shape', () => {
-      const wrapperCircle = mount(Avatar, {
+    it('size is string', () => {
+      const wrapper = mount(Avatar, {
+        props: {
+          size: 'large'
+        }
+      })
+      expect(wrapper.find('.el-avatar--large').exists()).toBe(true)
+    })
+  })
+  describe('shape', () => {
+    it('should render shape by props.shape', () => {
+      const wrapper = mount(Avatar, {
         props: {
           shape: 'circle'
         }
       })
-      const wrapperSquare = mount(Avatar, {
-        props: {
-          shape: 'square'
-        }
-      })
-
-      expect(wrapperCircle.find('span').classes()).toContain(
-        'el-avatar--circle'
-      )
-      expect(wrapperSquare.find('span').classes()).toContain(
-        'el-avatar--square'
-      )
+      expect(wrapper.find('.el-avatar--circle').exists()).toBe(true)
     })
+  })
 
-    it('icon', () => {
-      const wrapper = mount(Avatar, {
-        props: {
-          icon: 'el-icon-edit'
-        }
-      })
-
-      expect(wrapper.find('span').classes()).toContain('el-avatar--icon')
-      expect(wrapper.find('i').classes()).toContain('el-icon-edit')
-    })
-
-    it('src', () => {
+  describe('src', () => {
+    it('should render image props.src', () => {
       const wrapper = mount(Avatar, {
         props: {
           src: IMAGE_SUCCESS
         }
       })
-
-      expect(wrapper.find('img').attributes('src')).toBe(IMAGE_SUCCESS)
+      expect(wrapper.find('img').attributes('src')).toEqual(IMAGE_SUCCESS)
     })
-
-    it('error', async () => {
-      const wrapper = mount(Avatar, {
-        props: {
-          src: IMAGE_FAIL,
-          error: () => true
-        },
-        slots: {
-          default: () => 'fallback'
-        }
-      })
-
-      await wrapper.find('img').trigger('error')
-
-      expect(wrapper.vm.isImageExist).toBe(false)
-      expect(wrapper.find('span').text()).toBe('fallback')
-    })
-
-    it('alt', () => {
+  })
+  describe('altSet', () => {
+    it('should render  props.srcSet', () => {
       const wrapper = mount(Avatar, {
         props: {
           src: IMAGE_SUCCESS,
-          alt: 'icon'
+          alt: 'girl',
+          srcSet: 'big.jpg 1440w,middle.jpg 800w'
         }
       })
-      expect(wrapper.find('img').attributes('alt')).toBe('icon')
+      expect(wrapper.find('img').attributes('srcset')).toEqual(
+        'big.jpg 1440w,middle.jpg 800w'
+      )
     })
-
-    it('fit', () => {
-      const wrapperFill = mount(Avatar, {
+  })
+  describe('alt', () => {
+    it('should render  props.alt', () => {
+      const wrapper = mount(Avatar, {
         props: {
           src: IMAGE_SUCCESS,
-          fit: 'fill'
+          alt: 'girl'
         }
       })
-      const wrapperContain = mount(Avatar, {
+      expect(wrapper.find('img').attributes('alt')).toEqual('girl')
+    })
+  })
+
+  describe('fit', () => {
+    it('should render  props.fit', () => {
+      const wrapper = mount(Avatar, {
         props: {
           src: IMAGE_SUCCESS,
           fit: 'contain'
         }
       })
-      const wrapperCover = mount(Avatar, {
-        props: {
-          src: IMAGE_SUCCESS,
-          fit: 'cover'
-        }
-      })
-      const wrapperNone = mount(Avatar, {
-        props: {
-          src: IMAGE_SUCCESS,
-          fit: 'none'
-        }
-      })
-      const wrapperScaleDown = mount(Avatar, {
-        props: {
-          src: IMAGE_SUCCESS,
-          fit: 'scale-down'
-        }
-      })
-
-      expect(wrapperFill.find('img').element.style.objectFit).toBe('fill')
-      expect(wrapperContain.find('img').element.style.objectFit).toBe('contain')
-      expect(wrapperCover.find('img').element.style.objectFit).toBe('cover')
-      expect(wrapperNone.find('img').element.style.objectFit).toBe('none')
-      expect(wrapperScaleDown.find('img').element.style.objectFit).toBe(
-        'scale-down'
+      expect(wrapper.find('img').attributes('style')).toContain(
+        `object-fit: contain`
       )
     })
+  })
 
-    it('srcSet', () => {
+  describe('solt', () => {
+    it('should render  props.solt', () => {
       const wrapper = mount(Avatar, {
-        props: {
-          src: IMAGE_SUCCESS,
-          srcSet: 'big.jpg 1440w,middle.jpg 800w'
+        slots: {
+          default: () => {
+            return '<span>default slot</span>'
+          }
         }
       })
-      expect(wrapper.find('img').attributes('srcset')).toBe(
-        'big.jpg 1440w,middle.jpg 800w'
-      )
+      expect(wrapper.find('span').text()).toEqual(`<span>default slot</span>`)
     })
   })
 })
