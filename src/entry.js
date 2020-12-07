@@ -51,7 +51,7 @@ import ElAlert from '../packages/alert'
 
 import ElLoading, { useLoading } from '../packages/loading'
 
-import ElMessage, { useMessage } from '../packages/message'
+import { Message } from '../packages/message'
 
 import ElMessageBox, { useMsgbox } from '../packages/message-box'
 
@@ -194,7 +194,7 @@ function applyOptions(app) {
   app.config.globalProperties.$confirm = ElMessageBox.service.confirm
   app.config.globalProperties.$prompt = ElMessageBox.service.prompt
   app.config.globalProperties.$notify = ElNotification.service
-  app.config.globalProperties.$message = ElMessage.service
+  app.config.globalProperties.$message = Message
 }
 
 const elementUI = {
@@ -282,7 +282,7 @@ export {
   ElImage,
   ElScrollbar,
   ElAutocomplete,
-  useMessage,
+  Message,
   useLoading,
   useMsgbox,
   useNotify,

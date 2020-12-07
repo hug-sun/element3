@@ -1,9 +1,1 @@
-import Message from './Message.js'
-
-export function useMessage() {
-  return Message
-}
-
-export default {
-  service: Message
-}
+export { Message } from './Message.js'

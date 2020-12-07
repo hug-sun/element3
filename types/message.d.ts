@@ -2,9 +2,6 @@ import { VNode } from 'vue'
 
 export type MessageType = 'success' | 'warning' | 'info' | 'error'
 
-/** Message Component */
-export const useMessage: () => ElMessage
-
 interface IMessage {
   /** Close the Loading instance */
   close(): void
@@ -52,6 +49,7 @@ export interface ElMessageOptions {
   offset?: number
 }
 
+/** Message Component */
 export interface ElMessage {
   /** Show an info message */
   (text: string): IMessage

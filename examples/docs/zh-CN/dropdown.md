@@ -209,12 +209,11 @@
 </style>
 
 <script>
-  import {useMessage} from 'element3'
+  import {Message} from 'element3'
   export default {
     setup(){
-      let $message = useMessage()
       function handleCommand(command) {
-        $message('click on item ' + command);
+        Message('click on item ' + command);
       }
 
       return {handleCommand}
