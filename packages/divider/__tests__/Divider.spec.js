@@ -5,11 +5,11 @@ describe('Divider.vue', () => {
   it('content', () => {
     const vm = mount(Divider, {
       slots: {
-        default: () => '我是一条完美分割线！'
+        default: () => 'Im perfect divider!'
       }
     })
 
-    expect(vm.text()).toBe('我是一条完美分割线！')
+    expect(vm.text()).toBe('Im perfect divider!')
   })
 
   it('direction', () => {
