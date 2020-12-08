@@ -185,6 +185,9 @@ export class TreeNode {
       return false
     }
     node.parent = this
+    if (this.isChecked) {
+      node.setChecked(true)
+    }
     this.childNodes.push(node)
     return true
   }
