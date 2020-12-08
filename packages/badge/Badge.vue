@@ -3,9 +3,9 @@
     <slot></slot>
     <transition name="el-zoom-in-center">
       <sup
-        v-if="showStatus"
+        v-if="isShow"
         class="el-badge__content"
-        v-text="number"
+        v-text="badgeNumber"
         :class="[
           'el-badge__content--' + type,
           {
@@ -42,23 +42,19 @@ export default defineComponent({
   },
 
   setup(props) {
-    const number = useNumber(props)
-    const showStatus = useShowStatus(props)
+    const badgeNumber = useBadgeNumber(props)
+    const isShow = useShow(props)
     return {
-      number,
-      showStatus,
+      badgeNumber,
+      isShow,
       ...toRefs(props)
     }
   }
 })
 
-const useNumber = (props) => {
+const useBadgeNumber = (props) => {
   return computed(() => {
-    if (!props.max) {
-      return props.value
-    }
-
-    if (isString(props.value)) {
+    if (!props.max || isString(props.value)) {
       return props.value
     }
 
@@ -70,7 +66,7 @@ const useNumber = (props) => {
   })
 }
 
-const useShowStatus = (props) => {
+const useShow = (props) => {
   if (props.hidden) {
     return false
   }

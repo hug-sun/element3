@@ -20,6 +20,17 @@ describe('Badge', () => {
       expect(wrapper.find('.el-badge__content').text()).toContain('13')
     })
 
+    it('should render props.value when value lt max', async () => {
+      const wrapper = await mount({
+        props: {
+          value: 13,
+          max: 20
+        }
+      })
+
+      expect(wrapper.find('.el-badge__content').text()).toContain('13')
+    })
+
     it('should render string props.value', async () => {
       const wrapper = await mount({
         props: {
