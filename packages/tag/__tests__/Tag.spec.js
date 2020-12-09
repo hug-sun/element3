@@ -1,72 +1,143 @@
 import Tag from '../Tag.vue'
 import { mount } from '@vue/test-utils'
+import { ref, nextTick } from 'vue'
+import { useGlobalOptions } from '../../../src/use/globalConfig'
+
+jest.fn(useGlobalOptions)
 
 describe('Tag.vue', () => {
-  describe('props', () => {
-    it('text', () => {
-      const wrapper = mount(Tag, {
-        slots: {
-          default: () => '标签'
-        }
-      })
-      expect(wrapper.text().length).toBeGreaterThanOrEqual(2)
-    })
+  it('normal render', () => {
+    const wrapper = mount(Tag)
+    const result = wrapper.findComponent(Tag).exists()
 
-    it('closeTransition', () => {
+    expect(result).toBeTruthy()
+  })
+  it('content', () => {
+    const wrapper = mount(Tag, {
+      slots: {
+        default: 'tag'
+      }
+    })
+    const result = wrapper.findComponent(Tag).text()
+
+    expect(result).toBe('tag')
+  })
+  describe('props', () => {
+    it('type', () => {
+      const type = 'success'
       const wrapper = mount(Tag, {
         props: {
-          closable: true,
-          closeTransition: true
+          type
         }
       })
-      expect(wrapper.find('.md-fade-center').exists()).toBeFalsy()
+      const result = wrapper
+        .findComponent(Tag)
+        .find(`.el-tag--${type}`)
+        .exists()
+
+      expect(result).toBeTruthy()
     })
-  })
-  describe('event', () => {
     it('closable', () => {
       const wrapper = mount(Tag, {
         props: {
           closable: true
         }
       })
-      wrapper.vm.$emit('close')
-      expect(wrapper.emitted('close')).toBeTruthy()
-      expect(wrapper.find('.el-tag .el-tag__close').exists()).toBeTruthy()
+      const result = wrapper.findComponent(Tag).find('.el-tag__close').exists()
+
+      expect(result).toBeTruthy()
     })
-    it('click', () => {
-      const wrapper = mount({
-        template: `
-              <el-tag ref="tag" @click="handleClick">点击标签</el-tag>
-              `,
-        data() {
-          return {
-            clicksCount: 0
-          }
-        },
-        methods: {
-          handleClick() {
-            this.clicksCount = this.clicksCount + 1
-          }
+    it('disable-transitions', async () => {
+      let disableTransitions = ref(false)
+      const wrapper = mount(Tag, {
+        props: {
+          closable: true,
+          disableTransitions
         }
       })
 
-      wrapper.trigger('click')
+      expect(wrapper.find('transition-stub').exists()).toBeTruthy()
+      await nextTick(() => {
+        disableTransitions.value = true
+      })
+      expect(wrapper.find('transition-stub').exists()).toBeFalsy()
+    })
+    it('hit', () => {
+      const wrapper = mount(Tag, {
+        props: {
+          hit: true
+        }
+      })
+      const result = wrapper.findComponent(Tag).find('.is-hit').exists()
 
-      expect(wrapper.vm.clicksCount).toBe(1)
+      expect(result).toBeTruthy()
+    })
+    it('color', () => {
+      const wrapper = mount(Tag, {
+        props: {
+          color: 'red'
+        }
+      })
+      const result = wrapper
+        .findComponent(Tag)
+        .find('[style="background-color: red;"]')
+        .exists()
+
+      expect(result).toBeTruthy()
+    })
+    it('size', () => {
+      const size = 'small'
+      const wrapper = mount(Tag, {
+        props: {
+          size
+        }
+      })
+      const result = wrapper
+        .findComponent(Tag)
+        .find(`.el-tag--${size}`)
+        .exists()
+
+      expect(result).toBeTruthy()
+    })
+    it('effect', () => {
+      const effect = 'dark'
+      const wrapper = mount(Tag, {
+        props: {
+          effect
+        }
+      })
+      const result = wrapper
+        .findComponent(Tag)
+        .find(`.el-tag--${effect}`)
+        .exists()
+
+      expect(result).toBeTruthy()
     })
   })
+  describe('events', () => {
+    it('close', async () => {
+      const close = jest.fn()
+      const wrapper = mount(Tag, {
+        props: {
+          closable: true,
+          onClose: close
+        }
+      })
+      await wrapper.find('.el-tag__close').trigger('click')
 
-  // it('disableTransitions', async () => {
-  //   const wrapper = mount(Tag, {})
-  //   expect(wrapper.findComponent({ name: 'TransitionStub' }).exists()).toBe(
-  //     true
-  //   )
-  //   await wrapper.setProps({
-  //     disableTransitions: true
-  //   })
+      expect(close).toBeCalledTimes(1)
+      expect(wrapper.find('.el-tag').exists()).toBeFalsy()
+    })
+    it('click', async () => {
+      const click = jest.fn()
+      const wrapper = mount(Tag, {
+        props: {
+          onClick: click
+        }
+      })
+      await wrapper.find('.el-tag').trigger('click')
 
-  //   expect(wrapper.findComponent({ name: 'TransitionStub' }).exists()).toBe(
-  //     false
-  //   )
-  // })
+      expect(click).toBeCalledTimes(1)
+    })
+  })
 })
