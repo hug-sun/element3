@@ -15,7 +15,7 @@
 
 <script>
 import { isString, isNumber } from '../../src/utils/types'
-import { defineComponent, computed, toRefs, ref, unref } from 'vue'
+import { defineComponent, computed, toRefs, ref } from 'vue'
 import { props } from './props'
 export default defineComponent({
   name: 'ElAvatar',
@@ -23,7 +23,7 @@ export default defineComponent({
   props: props,
 
   setup(props) {
-    const { size, shape, src, alt, srcSet, fit, icon } = toRefs(props)
+    const { size, shape, icon } = toRefs(props)
 
     const error = ref(false)
 
@@ -36,31 +36,25 @@ export default defineComponent({
     }
 
     return {
+      ...toRefs(props),
       style,
       classes,
-      src,
-      alt,
-      srcSet,
-      fit,
       error,
-      icon,
       handleError
     }
   }
 })
 
 const useStyle = (size) => {
-  const value = unref(size)
-
-  if (!isNumber(value)) {
+  if (!isNumber(size.value)) {
     return {}
   }
 
   return computed(() => {
     return {
-      lineHeight: `${value}px`,
-      height: `${value}px`,
-      width: `${value}px`
+      lineHeight: `${size.value}px`,
+      height: `${size.value}px`,
+      width: `${size.value}px`
     }
   })
 }
@@ -68,18 +62,12 @@ const useStyle = (size) => {
 const useClass = (size, shape, icon) => {
   const classList = ['el-avatar']
 
-  size = unref(size)
-
-  shape = unref(shape)
-
-  icon = unref(icon)
-
-  if (size && isString(size)) {
-    classList.push(`el-avatar--${size}`)
+  if (isString(size.value)) {
+    classList.push(`el-avatar--${size.value}`)
   }
 
-  if (shape) {
-    classList.push(`el-avatar--${shape}`)
+  if (shape.value) {
+    classList.push(`el-avatar--${shape.value}`)
   }
 
   if (icon) {
