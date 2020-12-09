@@ -180,11 +180,11 @@ function useCheckbox(props, state) {
   const { emit } = instance
 
   watchEffect(() => {
-    emit('update:checked', state.tree.checked)
+    if (props.checked) state.tree.setCheckedByIdList(props.checked)
   })
 
   watchEffect(() => {
-    state.tree.setCheckedByIdList(props.checked, true)
+    emit('update:checked', state.tree.checked)
   })
 }
 

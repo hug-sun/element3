@@ -216,6 +216,9 @@ export class TreeNode {
     if (!TreeNode.isType(node)) {
       return false
     }
+    if (this.isChecked) {
+      node.setChecked(true)
+    }
     node.parent = this
     this.childNodes.splice(index, 0, node)
     return true

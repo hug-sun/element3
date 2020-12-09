@@ -51,13 +51,13 @@ export class Tree {
   get checked() {
     const t = {}
     this.root.depthEach((node) => {
-      node.isChecked && (t[node.id] = true)
+      node.isChecked && !node.isIndeterminate && (t[node.id] = true)
     })
     return Object.keys(t)
   }
 
   set checked(v) {
-    this.setCheckedByIdList(v, true)
+    this.setCheckedByIdList(v)
   }
 
   get expanded() {
@@ -179,10 +179,16 @@ export class Tree {
     })
   }
 
-  setCheckedByIdList(idList = [], value = true) {
+  setCheckedByIdList(idList = []) {
+    console.log(idList.toString())
     this.root.depthEach((node) => {
+      if (node === this.root) {
+        return
+      }
       if (idList.indexOf(node.id) !== -1) {
-        node.setChecked(value)
+        node.isChecked = true
+      } else {
+        // node.isChecked = false
       }
     })
   }
