@@ -33,5 +33,8 @@ export const props = {
   fit: {
     type: String,
     default: 'cover'
+  },
+  error: {
+    type: Function
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <span :style="style" :class="classes">
     <img
-      v-if="!error && src"
+      v-if="isShow && src"
       :src="src"
       :alt="alt"
       :srcSet="srcSet"
@@ -23,23 +23,27 @@ export default defineComponent({
   props: props,
 
   setup(props) {
-    const { size, shape, icon } = toRefs(props)
-
-    const error = ref(false)
+    const { size, shape, icon, error } = toRefs(props)
 
     const style = useStyle(size)
 
+    const isShow = ref(true)
+
     const classes = useClass(size, shape, icon)
 
-    const handleError = () => {
-      error.value = true
+    const handleError = (e) => {
+      const ret = error?.value(e)
+
+      if (ret !== false) {
+        isShow.value = false
+      }
     }
 
     return {
       ...toRefs(props),
       style,
+      isShow,
       classes,
-      error,
       handleError
     }
   }
