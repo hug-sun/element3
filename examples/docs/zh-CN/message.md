@@ -12,7 +12,6 @@
 <template>
   <el-button :plain="true" @click="open">打开消息提示</el-button>
   <el-button :plain="true" @click="openVn">VNode</el-button>
-  <el-button :plain="true" @click="openNewMessage">new message</el-button>
 </template>
 
 <script>
@@ -20,17 +19,6 @@
   import { Message } from 'element3'
 
   export default {
-    methods:{
-      openNewMessage(){
-        this.$newMessage({
-          message: h("p","heihei"),
-          dangerouslyUseHTMLString:true,
-          onClose(){
-            console.log("close")
-          }
-        })
-      }
-    },
     setup() {
       function open() {
         // message('这是一条消息提示')
