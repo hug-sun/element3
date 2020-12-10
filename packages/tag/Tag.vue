@@ -47,7 +47,9 @@ export default {
   emits: ['close', 'click'],
   setup(props, { emit }) {
     const $ELEMENT = useGlobalOptions()
+
     const { type, hit, size, effect } = toRefs(props)
+
     const tagSize = computed(() => {
       return size?.value || $ELEMENT.size
     })
@@ -58,13 +60,12 @@ export default {
       `el-tag--${effect.value}`,
       hit.value && 'is-hit'
     ])
+
     const { show, handleClose } = useShow(emit)
+
     return {
-      // data
       show,
-      // computed
       classes,
-      // methods
       handleClose
     }
   },
