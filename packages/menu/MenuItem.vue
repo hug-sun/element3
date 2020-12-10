@@ -84,7 +84,7 @@ export default {
     const instance = getCurrentInstance()
     const { dispatch } = useEmitter()
     const active = computed(() => {
-      return index.value === rootMenu.props.activeIndex
+      return index.value === rootMenu.proxy.activeIndex
     })
     const hoverBackground = computed(() => {
       return rootMenu.props.hoverBackground
