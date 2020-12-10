@@ -1,9 +1,7 @@
 import Tag from '../Tag.vue'
 import { mount } from '@vue/test-utils'
 import { ref, nextTick } from 'vue'
-import { useGlobalOptions } from '../../../src/use/globalConfig'
-
-jest.fn(useGlobalOptions)
+import { setupGlobalOptions } from '../../../src/use/globalConfig'
 
 describe('Tag.vue', () => {
   it('normal render', () => {
@@ -99,6 +97,24 @@ describe('Tag.vue', () => {
 
       expect(result).toBeTruthy()
     })
+    it('size by global config', () => {
+      const size = 'small'
+      const wrapper = mount(Tag, {
+        global: {
+          plugins: [
+            setupGlobalOptions({
+              size
+            })
+          ]
+        }
+      })
+      const result = wrapper
+        .findComponent(Tag)
+        .find(`.el-tag--${size}`)
+        .exists()
+
+      expect(result).toBeTruthy()
+    })
     it('effect', () => {
       const effect = 'dark'
       const wrapper = mount(Tag, {
@@ -116,28 +132,21 @@ describe('Tag.vue', () => {
   })
   describe('events', () => {
     it('close', async () => {
-      const close = jest.fn()
       const wrapper = mount(Tag, {
         props: {
-          closable: true,
-          onClose: close
+          closable: true
         }
       })
       await wrapper.find('.el-tag__close').trigger('click')
 
-      expect(close).toBeCalledTimes(1)
+      expect(wrapper.emitted()).toHaveProperty('close')
       expect(wrapper.find('.el-tag').exists()).toBeFalsy()
     })
     it('click', async () => {
-      const click = jest.fn()
-      const wrapper = mount(Tag, {
-        props: {
-          onClick: click
-        }
-      })
+      const wrapper = mount(Tag)
       await wrapper.find('.el-tag').trigger('click')
 
-      expect(click).toBeCalledTimes(1)
+      expect(wrapper.emitted()).toHaveProperty('click')
     })
   })
 })
