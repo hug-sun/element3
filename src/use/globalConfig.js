@@ -7,7 +7,7 @@ export function useGlobalOptions() {
   const instance = getCurrentInstance()
 
   if (!instance) {
-    console.ware('useGlobalOptions must be call in setup function')
+    console.warn('useGlobalOptions must be call in setup function')
     return
   }
 

@@ -1,6 +1,12 @@
 import Card from '../Card.vue'
 import { mount } from '@vue/test-utils'
 describe('Card.vue', () => {
+  it('snapshot', () => {
+    const wrapper = mount(Card)
+
+    expect(wrapper.element).toMatchSnapshot()
+  })
+
   describe('header', () => {
     it('text', () => {
       const wrapper = mount(Card, {

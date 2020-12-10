@@ -49,6 +49,7 @@ export default {
 }
 const useClasses = (props) => {
   return [
+    'el-link',
     props.type ? `el-link--${props.type}` : '',
     props.disabled && 'is-disabled',
     props.underline && !props.disabled && 'is-underline'

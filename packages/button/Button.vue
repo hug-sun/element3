@@ -22,18 +22,20 @@ export default {
     size: {
       type: String,
       validator(val) {
-        if (val === '') return true
-        return ['medium', 'small', 'mini'].indexOf(val) !== -1
+        return ['medium', 'small', 'mini', ''].includes(val)
       }
     },
     type: {
       type: String,
       validator(val) {
-        return (
-          ['primary', 'success', 'warning', 'danger', 'info', 'text'].indexOf(
-            val
-          ) !== -1
-        )
+        return [
+          'primary',
+          'success',
+          'warning',
+          'danger',
+          'info',
+          'text'
+        ].includes(val)
       }
     },
     nativeType: {

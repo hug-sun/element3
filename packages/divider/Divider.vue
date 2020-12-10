@@ -17,14 +17,14 @@ export default {
       type: String,
       default: 'horizontal',
       validator(val) {
-        return ['horizontal', 'vertical'].indexOf(val) !== -1
+        return ['horizontal', 'vertical'].includes(val)
       }
     },
     contentPosition: {
       type: String,
       default: 'center',
       validator(val) {
-        return ['left', 'center', 'right'].indexOf(val) !== -1
+        return ['left', 'center', 'right'].includes(val)
       }
     }
   }

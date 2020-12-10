@@ -21,6 +21,17 @@ describe('Button.vue', () => {
     expect(wrapper.text()).toContain(content)
   })
 
+  it('autofocus', () => {
+    const wrapper = mount({
+      template: '<Button autofocus></Button>',
+      components: {
+        Button
+      }
+    })
+
+    expect(wrapper.attributes()).toHaveProperty('autofocus')
+  })
+
   describe('set button size', () => {
     it('by props.size', () => {
       const size = 'small'
