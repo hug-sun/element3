@@ -1,65 +1,98 @@
 <script lang="jsx">
-import { computed, getCurrentInstance, Transition, reactive } from 'vue'
+import { useGlobalOptions } from '../../src/use/globalConfig'
+import { ref, computed, toRefs, Transition } from 'vue'
+
+const useShow = (emit) => {
+  const show = ref(true)
+
+  const handleClose = (e) => {
+    e.stopPropagation()
+    show.value = false
+    emit('close', e)
+  }
+
+  return {
+    show,
+    handleClose
+  }
+}
 export default {
   name: 'ElTag',
   props: {
-    text: String,
+    type: {
+      type: String,
+      default: '',
+      validator(v) {
+        return ['success', 'info', 'warning', 'danger', ''].includes(v)
+      }
+    },
     closable: Boolean,
-    type: String,
-    hit: Boolean,
     disableTransitions: Boolean,
+    hit: Boolean,
     color: String,
-    size: String,
+    size: {
+      type: String,
+      validator(v) {
+        return ['medium', 'small', 'mini', ''].includes(v)
+      }
+    },
     effect: {
       type: String,
       default: 'light',
-      validator(val) {
-        return ['dark', 'light', 'plain'].indexOf(val) !== -1
+      validator(v) {
+        return ['dark', 'light', 'plain'].includes(v)
       }
     }
   },
   emits: ['close', 'click'],
-  setup(props, { emit, slots }) {
-    const state = reactive({ show: true })
+  setup(props, { emit }) {
+    const $ELEMENT = useGlobalOptions()
+
+    const { type, hit, size, effect } = toRefs(props)
+
     const tagSize = computed(() => {
-      return props.size || (getCurrentInstance().proxy.$ELEMENT || {}).size
+      return size?.value || $ELEMENT.size
     })
-    const handleClose = (event) => {
-      event.stopPropagation()
-      state.show = false
-      emit('close', event)
+    const classes = computed(() => [
+      'el-tag',
+      type.value ? `el-tag--${type.value}` : '',
+      tagSize.value ? `el-tag--${tagSize.value}` : '',
+      `el-tag--${effect.value}`,
+      hit.value && 'is-hit'
+    ])
+
+    const { show, handleClose } = useShow(emit)
+
+    return {
+      show,
+      classes,
+      handleClose
     }
-    const handleClick = (event) => {
-      emit('click', event)
-    }
-    return () => {
-      const classes = [
-        'el-tag',
-        props.type ? `el-tag--${props.type}` : '',
-        tagSize.value ? `el-tag--${tagSize.value}` : '',
-        props.effect ? `el-tag--${props.effect}` : '',
-        props.hit && 'is-hit'
-      ]
-      const tagEl = (
-        <span
-          class={classes}
-          style={{ backgroundColor: props.color }}
-          onClick={handleClick}
-        >
-          {slots.default && slots.default()}
-          {props.closable && (
-            <i class="el-tag__close el-icon-close" onClick={handleClose}></i>
-          )}
-        </span>
-      )
-      return props.disableTransitions ? (
-        tagEl
-      ) : (
-        <Transition appear name="el-zoom-in-center">
-          {state.show === true ? tagEl : ''}
-        </Transition>
-      )
-    }
+  },
+  render() {
+    const tagEl = this.show ? (
+      <span
+        class={this.classes}
+        style={{ backgroundColor: this.color }}
+        onClick={(e) => {
+          this.$emit('click', e)
+        }}
+      >
+        {this.$slots.default?.()}
+        {this.closable && (
+          <i class="el-tag__close el-icon-close" onClick={this.handleClose} />
+        )}
+      </span>
+    ) : (
+      ''
+    )
+    return this.disableTransitions ? (
+      tagEl
+    ) : (
+      <Transition appear name="el-zoom-in-center">
+        {tagEl}
+      </Transition>
+    )
   }
 }
 </script>
