@@ -60,7 +60,6 @@ export default {
     ])
     const { show, handleClose } = useShow(emit)
     return {
-      // state
       // data
       show,
       // computed
