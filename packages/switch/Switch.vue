@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="el-switch"
-    :class="{ 'is-checked': isChecked, 'is-disabled': disabled }"
-    @click.prevent="handleClick"
-  >
+  <div class="el-switch" :class="classes" @click.prevent="handleClick">
     <SwitchLabel
       :active="!isChecked"
       type="left"
@@ -11,15 +7,7 @@
       :iconClass="inactiveIconClass"
     ></SwitchLabel>
 
-    <span
-      class="el-switch__core"
-      ref="core"
-      :style="{
-        width: width + 'px',
-        background: backgroundColor,
-        'border-color': backgroundColor
-      }"
-    ></span>
+    <span class="el-switch__core" ref="core" :style="spanStyle"></span>
 
     <SwitchLabel
       :active="isChecked"
@@ -59,8 +47,14 @@ export default {
       type: Number,
       default: 40
     },
-    activeText: String,
-    inactiveText: String,
+    activeText: {
+      type: String,
+      default: ''
+    },
+    inactiveText: {
+      type: String,
+      default: ''
+    },
     activeIconClass: {
       type: String,
       default: ''
@@ -78,7 +72,7 @@ export default {
       default: ''
     }
   },
-  emits: ['update:modelValue', 'change'],
+  emits: ['update:modelValue', 'update:change'],
   setup(props, { emit }) {
     const {
       activeValue,
@@ -111,13 +105,31 @@ export default {
       disabled,
       emit
     })
-
+    const classes = useClasses({
+      disabled,
+      isChecked
+    })
+    const spanStyle = computed(() => {
+      const value = `width:${props.width}px;background:${backgroundColor.value};border-color:${backgroundColor.value}`
+      return value
+    })
     return {
       isChecked,
-      backgroundColor,
-      handleClick
+      handleClick,
+      classes,
+      spanStyle
     }
   }
+}
+const useClasses = ({ disabled, isChecked }) => {
+  return computed(() => {
+    return [
+      {
+        'is-disabled': disabled.value,
+        'is-checked': isChecked.value
+      }
+    ]
+  })
 }
 
 const useNormalizeModelValue = ({
@@ -143,16 +155,11 @@ const useClick = ({
   disabled,
   emit
 }) => {
-  const getNewValue = () => {
-    return isChecked.value ? inactiveValue.value : activeValue.value
-  }
-
   const handleClick = () => {
     if (disabled.value) return
-
-    const newValue = getNewValue()
+    const newValue = isChecked.value ? inactiveValue.value : activeValue.value
     emit('update:modelValue', newValue)
-    emit('change', newValue)
+    emit('update:change', newValue)
   }
 
   return {
