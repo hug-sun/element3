@@ -190,12 +190,12 @@ export default {
     const active = computed(() => {
       let isActive = false
       Object.keys(items).forEach((index) => {
-        if (itemsInstance[index].props.active) {
+        if (itemsInstance[index].proxy.active) {
           isActive = true
         }
       })
       Object.keys(submenus).forEach((index) => {
-        if (submenusInstance[index].props.active) {
+        if (submenusInstance[index].proxy.active) {
           isActive = true
         }
       })
