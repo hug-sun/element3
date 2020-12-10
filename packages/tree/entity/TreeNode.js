@@ -111,7 +111,9 @@ export class TreeNode {
   }
 
   get checkedNodes() {
-    return this.childNodes.filter((treeNode) => treeNode.isChecked)
+    return this.childNodes.filter(
+      (treeNode) => treeNode.isChecked && !treeNode.isIndeterminate
+    )
   }
 
   loadAsync() {
@@ -185,6 +187,9 @@ export class TreeNode {
       return false
     }
     node.parent = this
+    if (this.isChecked) {
+      node.setChecked(true)
+    }
     this.childNodes.push(node)
     return true
   }
@@ -212,6 +217,9 @@ export class TreeNode {
     }
     if (!TreeNode.isType(node)) {
       return false
+    }
+    if (this.isChecked) {
+      node.setChecked(true)
     }
     node.parent = this
     this.childNodes.splice(index, 0, node)
