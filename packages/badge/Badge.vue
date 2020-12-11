@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, toRefs } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { isString } from '../../src/utils/types'
 
 export default defineComponent({
@@ -34,9 +34,7 @@ export default defineComponent({
       type: String,
       default: 'primary',
       validator(val) {
-        return (
-          ['primary', 'success', 'warning', 'info', 'danger'].indexOf(val) > -1
-        )
+        return ['primary', 'success', 'warning', 'info', 'danger'].includes(val)
       }
     }
   },
@@ -46,8 +44,7 @@ export default defineComponent({
     const isShow = useShow(props)
     return {
       badgeNumber,
-      isShow,
-      ...toRefs(props)
+      isShow
     }
   }
 })
