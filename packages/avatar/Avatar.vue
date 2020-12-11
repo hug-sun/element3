@@ -1,11 +1,11 @@
 <template>
-  <span :class="avatarClass" :style="sizeStyle">
+  <span :style="style" :class="classes">
     <img
-      v-if="isImageExist && src"
+      v-if="isShow && src"
       :src="src"
-      @error="handleError"
       :alt="alt"
       :srcSet="srcSet"
+      @error="handleError"
       :style="{ 'object-fit': fit }"
     />
     <i v-else-if="icon" :class="icon" />
@@ -14,87 +14,71 @@
 </template>
 
 <script>
-import { computed, toRefs, ref } from 'vue'
-export default {
+import { isString, isNumber } from '../../src/utils/types'
+import { defineComponent, computed, toRefs, ref } from 'vue'
+import { props } from './props'
+export default defineComponent({
   name: 'ElAvatar',
 
-  props: {
-    size: {
-      type: [Number, String],
-      default: 'large',
-      validator(val) {
-        if (typeof val === 'string') {
-          return ['large', 'medium', 'small'].includes(val)
-        }
-        return typeof val === 'number'
-      }
-    },
-    shape: {
-      type: String,
-      default: 'circle',
-      validator(val) {
-        return ['circle', 'square'].includes(val)
-      }
-    },
-    icon: String,
-    src: String,
-    alt: String,
-    srcSet: String,
-    error: Function,
-    fit: {
-      type: String,
-      default: 'cover'
-    }
-  },
+  props: props,
 
   setup(props) {
-    const { error, size, icon, shape } = toRefs(props)
+    const { size, shape, icon, error } = toRefs(props)
 
-    const isImageExist = ref(true)
+    const style = useStyle(size)
+
+    const isShow = ref(true)
+
+    const classes = useClass(size, shape, icon)
 
     const handleError = (e) => {
-      const errorFlag = error?.value(e)
-      if (!!errorFlag !== false) {
-        isImageExist.value = false
+      const ret = error?.value(e)
+
+      if (ret !== false) {
+        isShow.value = false
       }
     }
 
-    const sizeStyle = useSizeStyle(size)
-    const avatarClass = useAvatarClass(size, icon, shape)
-
-    return { isImageExist, handleError, sizeStyle, avatarClass }
+    return {
+      style,
+      isShow,
+      classes,
+      handleError
+    }
   }
-}
+})
 
-const useSizeStyle = (size) => {
+const useStyle = (size) => {
+  if (!isNumber(size.value)) {
+    return {}
+  }
+
   return computed(() => {
-    return size && typeof size.value === 'number'
-      ? {
-          height: `${size.value}px`,
-          width: `${size.value}px`,
-          lineHeight: `${size.value}px`
-        }
-      : {}
+    return {
+      lineHeight: `${size.value}px`,
+      height: `${size.value}px`,
+      width: `${size.value}px`
+    }
   })
 }
 
-const useAvatarClass = (size, icon, shape) => {
+const useClass = (size, shape, icon) => {
   return computed(() => {
     const classList = ['el-avatar']
 
-    if (size && typeof size.value === 'string') {
+    if (isString(size.value)) {
       classList.push(`el-avatar--${size.value}`)
-    }
-
-    if (icon) {
-      classList.push('el-avatar--icon')
     }
 
     if (shape) {
       classList.push(`el-avatar--${shape.value}`)
     }
 
-    return classList.join(' ')
+    if (icon) {
+      classList.push('el-avatar--icon')
+    }
+
+    return classList
   })
 }
 </script>
