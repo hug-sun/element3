@@ -64,14 +64,14 @@ const useBadgeNumber = (props) => {
 }
 
 const useShow = (props) => {
-  if (props.hidden) {
-    return false
-  }
-
-  if (props.value == 0) {
-    return false
-  }
-
-  return true
+  return computed(() => {
+    if (props.hidden) {
+      return false
+    }
+    if (props.value == 0) {
+      return false
+    }
+    return true
+  })
 }
 </script>

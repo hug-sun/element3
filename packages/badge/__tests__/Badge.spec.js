@@ -1,17 +1,10 @@
 import Badge from '../Badge.vue'
-import { mount as $mount } from '@vue/test-utils'
-
-const mount = async (options) => {
-  options = options || {}
-
-  const wrapper = await $mount(Badge, options)
-  return wrapper
-}
+import { mount } from '@vue/test-utils'
 
 describe('Badge', () => {
   describe('props', () => {
-    it('should render props.value', async () => {
-      const wrapper = await mount({
+    it('should render props.value', () => {
+      const wrapper = mount(Badge, {
         props: {
           value: 13
         }
@@ -20,8 +13,8 @@ describe('Badge', () => {
       expect(wrapper.find('.el-badge__content').text()).toContain('13')
     })
 
-    it('should render props.value when value lt max', async () => {
-      const wrapper = await mount({
+    it('should render props.value when value lt max', () => {
+      const wrapper = mount(Badge, {
         props: {
           value: 13,
           max: 20
@@ -31,8 +24,8 @@ describe('Badge', () => {
       expect(wrapper.find('.el-badge__content').text()).toContain('13')
     })
 
-    it('should render string props.value', async () => {
-      const wrapper = await mount({
+    it('should render string props.value', () => {
+      const wrapper = mount(Badge, {
         props: {
           value: 'new~'
         }
@@ -41,8 +34,8 @@ describe('Badge', () => {
       expect(wrapper.find('.el-badge__content').text()).toContain('new~')
     })
 
-    it('should not render when props.value eq 0', async () => {
-      const wrapper = await mount({
+    it('should not render when props.value eq 0', () => {
+      const wrapper = mount(Badge, {
         props: {
           value: 0
         }
@@ -51,8 +44,8 @@ describe('Badge', () => {
       expect(wrapper.find('.el-badge__content').exists()).toBeFalsy()
     })
 
-    it('should  render solt', async () => {
-      const wrapper = await mount({
+    it('should  render solt', () => {
+      const wrapper = mount(Badge, {
         props: {
           value: 0
         },
@@ -66,8 +59,8 @@ describe('Badge', () => {
       expect(wrapper.find('.el-badge').text()).toContain('default slot')
     })
 
-    it('should render `+` over max value', async () => {
-      const wrapper = await mount({
+    it('should render `+` over max value', () => {
+      const wrapper = mount(Badge, {
         props: {
           value: 13,
           max: 10
@@ -77,8 +70,8 @@ describe('Badge', () => {
       expect(wrapper.find('.el-badge__content').text()).toContain('10+')
     })
 
-    it('should render dot', async () => {
-      const wrapper = await mount({
+    it('should render dot', () => {
+      const wrapper = mount(Badge, {
         props: {
           value: 13,
           max: 10,
@@ -89,8 +82,8 @@ describe('Badge', () => {
       expect(wrapper.find('.is-dot').text()).toBeTruthy()
     })
 
-    it('should not render when hidden', async () => {
-      const wrapper = await mount({
+    it('should not render when hidden', () => {
+      const wrapper = mount(Badge, {
         props: {
           value: 13,
           max: 10,
@@ -101,8 +94,8 @@ describe('Badge', () => {
       expect(wrapper.find('sup').exists()).toBeFalsy()
     })
 
-    it('should  render props.type', async () => {
-      const wrapper = await mount({
+    it('should  render props.type', () => {
+      const wrapper = mount(Badge, {
         props: {
           value: 13,
           max: 10,
