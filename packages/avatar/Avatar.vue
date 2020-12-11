@@ -63,20 +63,22 @@ const useStyle = (size) => {
 }
 
 const useClass = (size, shape, icon) => {
-  const classList = ['el-avatar']
+  return computed(() => {
+    const classList = ['el-avatar']
 
-  if (isString(size.value)) {
-    classList.push(`el-avatar--${size.value}`)
-  }
+    if (isString(size.value)) {
+      classList.push(`el-avatar--${size.value}`)
+    }
 
-  if (shape.value) {
-    classList.push(`el-avatar--${shape.value}`)
-  }
+    if (shape) {
+      classList.push(`el-avatar--${shape.value}`)
+    }
 
-  if (icon) {
-    classList.push('el-avatar--icon')
-  }
+    if (icon) {
+      classList.push('el-avatar--icon')
+    }
 
-  return classList
+    return classList
+  })
 }
 </script>
