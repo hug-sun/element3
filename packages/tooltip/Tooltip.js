@@ -35,7 +35,10 @@ export default {
       default: 0
     },
     popperClass: String,
-    content: String,
+    content: {
+      type: String,
+      default: 'dark'
+    },
     visibleArrow: {
       default: true
     },
@@ -92,7 +95,6 @@ export default {
       manual,
       effect,
       popperClass,
-      content,
       transition,
       enterable,
       hideAfter,
@@ -194,9 +196,8 @@ export default {
         removeClass(referenceElm.value, 'focusing')
       }
     })
-
     onMounted(() => {
-      referenceElm.value = instance.ctx.$el
+      referenceElm.value = instance.proxy.$el
       if (referenceElm.value.nodeType === 1) {
         referenceElm.value.setAttribute('aria-describedby', tooltipId)
         referenceElm.value.setAttribute('tabindex', tabindex)
@@ -219,8 +220,8 @@ export default {
         on(referenceElm.value, 'click', removeFocusing)
       }
       // fix issue https://github.com/ElemeFE/element/issues/14424
-      if (modelValue && instance.ctx.popperVM) {
-        instance.ctx.popperVM.$nextTick(() => {
+      if (modelValue && instance.proxy.popperVM) {
+        instance.proxy.popperVM.$nextTick(() => {
           if (modelValue) {
             updatePopper()
           }
@@ -228,7 +229,7 @@ export default {
       }
     })
     onBeforeMount(() => {
-      instance.ctx.updatePopper = updatePopper
+      instance.proxy.updatePopper = updatePopper
     })
     onUnmounted(() => {
       const reference = referenceElm.value
@@ -242,8 +243,8 @@ export default {
     })
 
     return () => {
-      if (instance.ctx.popperVM) {
-        instance.ctx.popperVM.node = (
+      if (instance.proxy.popperVM) {
+        instance.proxy.popperVM.node = (
           <Transition name={transition} onAfterLeave={doDestroy}>
             <div
               onMouseleave={() => {
@@ -260,7 +261,7 @@ export default {
               v-show={!disabled && showPopper.value}
               class={['el-tooltip__popper', 'is-' + effect, popperClass]}
             >
-              {slots.content ? slots.content() : content}
+              {slots.content ? slots.content() : instance.proxy.content}
             </div>
           </Transition>
         )

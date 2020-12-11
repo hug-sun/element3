@@ -1,23 +1,18 @@
 <template>
-  <span
-    v-if="iconClass || text"
-    :class="{
-      'el-switch__label': true,
-      'is-active': active,
-      [`el-switch__label--${type}`]: true
-    }"
-  >
+  <span v-if="iconClass || text" :class="classes">
     <i :class="[iconClass]"></i>
-
     <span v-if="!iconClass">{{ text }}</span>
   </span>
 </template>
 
 <script>
+import { computed } from 'vue'
+
 export default {
   props: {
     type: {
-      type: String
+      type: String,
+      default: ''
     },
     active: {
       type: Boolean,
@@ -31,8 +26,23 @@ export default {
       type: String,
       default: ''
     }
+  },
+  setup(props) {
+    const classes = useClasses(props)
+    return {
+      classes
+    }
   }
 }
+const useClasses = (props) => {
+  return computed(() => {
+    return [
+      'el-switch__label',
+      props && props.type ? `el-switch__label--${props && props.type}` : '',
+      {
+        'is-active': props && props.active
+      }
+    ]
+  })
+}
 </script>
-
-<style></style>

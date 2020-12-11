@@ -1,11 +1,7 @@
 /*
  * @Author: Mr Chang
  * @Date: 2020-08-31 11:36:07
-<<<<<<< HEAD
- * @LastEditTime: 2020-09-21 17:34:39
-=======
  * @LastEditTime: 2020-09-18 17:18:28
->>>>>>> 8153bb2fcb8d1e1dd147a6920d039a1c7d1a71f9
  * @LastEditors: Mr Chang
  * @Description:
  * @FilePath: \element3\packages\steps\__tests__\steps.spec.js
