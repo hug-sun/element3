@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils'
+import { nextTick, ref } from 'vue'
 import Tree from '../Tree.vue'
 
 function createData() {
@@ -75,6 +76,88 @@ describe('Tree.vue', () => {
       expect(node10.exists()).toBeTruthy()
       expect(node6.exists()).toBeTruthy()
     })
+
+    it('async', async () => {
+      let id = 1
+      const asyncLoadFn = (node, resolve) => {
+        if (node.level < 3) {
+          resolve([
+            {
+              id: ++id,
+              label: 'T' + id
+            },
+            {
+              id: ++id,
+              label: 'T' + id
+            },
+            {
+              id: ++id,
+              label: 'T' + id
+            }
+          ])
+        }
+      }
+      const tree = mount(Tree, {
+        props: {
+          data: [
+            {
+              id: 1,
+              label: 'T1'
+            }
+          ],
+          defaultExpandAll: true,
+          async: true,
+          asyncLoadFn: asyncLoadFn
+        }
+      })
+      const root = tree.vm.root
+      root.childNodes[0].expand()
+      expect(root.childNodes[0].childNodes).toHaveLength(3)
+    })
+
+    it('async and checked', async () => {
+      let id = 1
+      const asyncLoadFn = (node, resolve) => {
+        if (node.level < 3) {
+          resolve([
+            {
+              id: ++id,
+              label: 'T' + id
+            },
+            {
+              id: ++id,
+              label: 'T' + id
+            },
+            {
+              id: ++id,
+              label: 'T' + id
+            }
+          ])
+        }
+      }
+      const tree = mount(Tree, {
+        props: {
+          data: [
+            {
+              id: 1,
+              label: 'T1'
+            }
+          ],
+          defaultExpandAll: true,
+          async: true,
+          showCheckbox: true,
+          asyncLoadFn: asyncLoadFn
+        }
+      })
+      const root = tree.vm.root
+      const t1 = root.childNodes[0]
+      t1.expand()
+      t1.setChecked(true)
+      expect(t1.checkedNodes.length).toBe(3)
+      t1.childNodes[0].setChecked(false)
+      expect(t1.checkedNodes.length).toBe(2)
+      expect(t1.isChecked && !t1.isIndeterminate).toBe(false) // when isIndeterminate=false and isChecked=true, t1 checkbox is checked state
+    })
   })
 
   describe('events', () => {
@@ -97,6 +180,30 @@ describe('Tree.vue', () => {
       expect(node6.exists()).toBeTruthy()
 
       node6.trigger('click')
+    })
+  })
+
+  describe('v-model', () => {
+    it('checked', async () => {
+      const checked = ref([2])
+
+      const tree = mount(Tree, {
+        props: {
+          data: createData(),
+          defaultNodeKey: {
+            childNodes: 'children'
+          },
+          defaultExpandAll: true,
+          showCheckbox: true,
+          checked: checked.value,
+          'onUpdate:checked': (e) => (checked.value = e)
+        }
+      })
+      await nextTick()
+      const node4 = tree.find('#TreeNode4 input')
+      await node4.trigger('click')
+      await nextTick()
+      expect(checked.value).toStrictEqual(['1', '2', '4', '9', '10'])
     })
   })
 })

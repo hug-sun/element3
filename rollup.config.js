@@ -1,9 +1,5 @@
 import pkg from './package.json'
-// 等 rollup-plugin-vue 发版后在切换官方版
-// 暂时先用本地的 rollup-plugin-vue
-// 修复了 render 函数的编译问题，但是还没发版
-// import vuePlugin from 'rollup-plugin-vue'
-const vuePlugin = require('./rollup-plugin-vue/index')
+import vuePlugin from 'rollup-plugin-vue'
 import scss from 'rollup-plugin-scss'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import resolve from '@rollup/plugin-node-resolve'
@@ -29,15 +25,19 @@ const createBaseConfig = () => {
     external: ['vue'],
     plugins: [
       peerDepsExternal(),
-      babel(),
-      resolve({
-        extensions: ['.vue', '.jsx']
-      }),
-      commonjs(),
-      json(),
       vuePlugin({
         css: true
       }),
+      babel({
+        exclude: 'node_modules/**',
+        extensions: ['.js', '.jsx', '.vue'],
+        babelHelpers: 'bundled'
+      }),
+      resolve({
+        extensions: ['.vue', '.jsx', '.js']
+      }),
+      commonjs(),
+      json(),
       scss()
     ],
     output: {
