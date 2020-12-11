@@ -11,7 +11,8 @@ import { computed } from 'vue'
 export default {
   props: {
     type: {
-      type: String
+      type: String,
+      default: ''
     },
     active: {
       type: Boolean,
@@ -36,10 +37,10 @@ export default {
 const useClasses = (props) => {
   return computed(() => {
     return [
-      props.type ? `el-switch__label--${props.type}` : '',
       'el-switch__label',
+      props && props.type ? `el-switch__label--${props && props.type}` : '',
       {
-        'is-active': props.active
+        'is-active': props && props.active
       }
     ]
   })

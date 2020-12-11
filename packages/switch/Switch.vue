@@ -7,7 +7,7 @@
       :iconClass="inactiveIconClass"
     ></SwitchLabel>
 
-    <span class="el-switch__core" ref="core" :style="spanStyle"></span>
+    <span class="el-switch__core" ref="core" :style="coreStyle"></span>
 
     <SwitchLabel
       :active="isChecked"
@@ -109,15 +109,22 @@ export default {
       disabled,
       isChecked
     })
-    const spanStyle = computed(() => {
-      const value = `width:${props.width}px;background:${backgroundColor.value};border-color:${backgroundColor.value}`
-      return value
+    const coreStyle = computed(() => {
+      const style = {
+        width: '',
+        background: '',
+        'border-color': ''
+      }
+      style.width = props.width + 'px'
+      style.background = backgroundColor.value
+      style['border-color'] = backgroundColor.value
+      return style
     })
     return {
       isChecked,
       handleClick,
       classes,
-      spanStyle
+      coreStyle
     }
   }
 }
@@ -156,8 +163,9 @@ const useClick = ({
   emit
 }) => {
   const handleClick = () => {
-    if (disabled.value) return
-    const newValue = isChecked.value ? inactiveValue.value : activeValue.value
+    if (disabled && !disabled.value) return
+    const newValue =
+      isChecked && isChecked.value ? inactiveValue.value : activeValue.value
     emit('update:modelValue', newValue)
     emit('update:change', newValue)
   }
