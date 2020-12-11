@@ -3,9 +3,9 @@
     <slot></slot>
     <transition name="el-zoom-in-center">
       <sup
-        v-show="!hidden && (content || content === 0 || isDot)"
-        v-text="content"
+        v-if="isShow"
         class="el-badge__content"
+        v-text="badgeNumber"
         :class="[
           'el-badge__content--' + type,
           {
@@ -13,16 +13,16 @@
             'is-dot': isDot
           }
         ]"
-      >
-      </sup>
+      ></sup>
     </transition>
   </div>
 </template>
 
 <script>
-import { computed, toRefs } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { isString } from '../../src/utils/types'
 
-export default {
+export default defineComponent({
   name: 'ElBadge',
 
   props: {
@@ -32,39 +32,46 @@ export default {
     hidden: Boolean,
     type: {
       type: String,
+      default: 'danger',
       validator(val) {
-        return (
-          ['primary', 'success', 'warning', 'info', 'danger'].indexOf(val) > -1
-        )
+        return ['primary', 'success', 'warning', 'info', 'danger'].includes(val)
       }
     }
   },
 
   setup(props) {
-    const { isDot, max, value } = toRefs(props)
-    const content = useContent(isDot, max, value)
-
+    const badgeNumber = useBadgeNumber(props)
+    const isShow = useShow(props)
     return {
-      content
+      badgeNumber,
+      isShow
     }
   }
-}
+})
 
-const useContent = (isDot, max, value) => {
-  const content = computed(() => {
-    if (isDot.value) return
-
-    if (
-      max &&
-      typeof value.value === 'number' &&
-      typeof max.value === 'number'
-    ) {
-      return max.value < value.value ? `${max.value}+` : value.value
+const useBadgeNumber = (props) => {
+  return computed(() => {
+    if (!props.max || isString(props.value)) {
+      return props.value
     }
 
-    return value.value
-  })
+    if (props.value <= props.max) {
+      return props.value
+    }
 
-  return content
+    return `${props.max}+`
+  })
+}
+
+const useShow = (props) => {
+  return computed(() => {
+    if (props.hidden) {
+      return false
+    }
+    if (props.value == 0) {
+      return false
+    }
+    return true
+  })
 }
 </script>
