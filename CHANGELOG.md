@@ -1,3 +1,17 @@
+# [](https://github.com/kkbjs/element3/compare/v0.0.28...v) (2020-12-11)
+
+
+### Bug Fixes
+
+* **Message:** add emits ([cd9ebdd](https://github.com/kkbjs/element3/commit/cd9ebdd872a7e54b615f8cc52ab46915fc09f15f))
+
+
+### Features
+
+* Refactor Link component ([2a0bc80](https://github.com/kkbjs/element3/commit/2a0bc80ccd9a485ab29532c9fc4a60827e3fe159))
+
+
+
 ## [0.0.28](https://github.com/kkbjs/element3/compare/v0.0.27...v0.0.28) (2020-12-06)
 
 

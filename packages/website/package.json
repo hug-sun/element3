@@ -1,0 +1,55 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "lib": "lib"
+  },
+  "scripts": {
+    "build:file": "node build/bin/iconInit.js & node build/bin/build-entry.js & node build/bin/i18n.js",
+    "dev": "npm run build:file && cross-env NODE_ENV=development webpack-dev-server --config build/webpack.demo.js & node build/bin/template.js"
+  },
+  "dependencies": {
+    "element3": "^0.0.29",
+    "mitt": "^2.1.0",
+    "vue": "^3.0.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.7",
+    "@babel/preset-env": "^7.12.10",
+    "@vue/babel-plugin-jsx": "^1.0.0-rc.4",
+    "@vue/compiler-sfc": "^3.0.3",
+    "babel-loader": "^8.0.0-beta.6",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "chokidar": "^1.7.0",
+    "copy-webpack-plugin": "^5.0.0",
+    "cross-env": "^3.1.3",
+    "css-loader": "^2.1.0",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "json-loader": "^0.5.7",
+    "json-templater": "^1.2.0",
+    "mini-css-extract-plugin": "^0.4.1",
+    "node-sass": "^4.14.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "progress-bar-webpack-plugin": "^1.11.0",
+    "sass-loader": "^7.3.1",
+    "style-loader": "^0.23.1",
+    "uglifyjs-webpack-plugin": "^2.1.1",
+    "uppercamelcase": "^3.0.0",
+    "url-loader": "^1.0.1",
+    "vue-loader": "^16.0.0",
+    "vue-router": "^4.0.0-beta.3",
+    "webpack": "^4.14.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.11",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
