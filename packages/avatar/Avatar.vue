@@ -25,7 +25,7 @@ export default defineComponent({
   setup(props) {
     const { size, shape, icon, error } = toRefs(props)
 
-    const style = useStyle(size)
+    const style = useStyle(props)
 
     const isShow = ref(true)
 
@@ -40,7 +40,6 @@ export default defineComponent({
     }
 
     return {
-      ...toRefs(props),
       style,
       isShow,
       classes,
