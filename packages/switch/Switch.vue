@@ -163,7 +163,7 @@ const useClick = ({
   emit
 }) => {
   const handleClick = () => {
-    if (disabled && !disabled.value) return
+    if (disabled && disabled.value) return
     const newValue =
       isChecked && isChecked.value ? inactiveValue.value : activeValue.value
     emit('update:modelValue', newValue)
