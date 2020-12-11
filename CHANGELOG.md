@@ -1,3 +1,31 @@
+## [0.0.29](https://github.com/kkbjs/element3/compare/v0.0.28...v0.0.29) (2020-12-11)
+
+
+### Bug Fixes
+
+* **Switch:** disable-switch ([0f1a46a](https://github.com/kkbjs/element3/commit/0f1a46a891493585707215ec40708e6973447724))
+* **Switch:** steps-test ([15857fb](https://github.com/kkbjs/element3/commit/15857fbe46f982af8cb73dfe04c49ee92265bca3))
+* **Switch:** test ([ac44ea8](https://github.com/kkbjs/element3/commit/ac44ea8c7aaacfbced92e4279e91d40dafc69be1))
+* fix link style problem ([735a556](https://github.com/kkbjs/element3/commit/735a55662fc564f6e0452a350060323f215eebf3))
+* fixed bug where menu component selected style does not work ([c85f265](https://github.com/kkbjs/element3/commit/c85f2655d91b36b654d70390d252cf87e995462a))
+* hide tag error test script ([a1ae536](https://github.com/kkbjs/element3/commit/a1ae5368ff2b035d3b546ef8bb6b37a4228885c4))
+* input style bug ([7c31d34](https://github.com/kkbjs/element3/commit/7c31d3432356b7665f8e9d231bbb6839b0df58f7))
+* switch ([d4546de](https://github.com/kkbjs/element3/commit/d4546de506980769c2796efa8d51e2f4417ea2c6))
+* tree check state ([100c2c7](https://github.com/kkbjs/element3/commit/100c2c7fdc2abbd2800b0d862cd11b521c5c674b))
+* tree checkbox select bug ([c2f0489](https://github.com/kkbjs/element3/commit/c2f048966d1af6903b78b9490807328ddbe8f291))
+* tree inner checked state ([31007e3](https://github.com/kkbjs/element3/commit/31007e3c7f62e1c897fcecc732d6e905836dd265))
+* tree test script ([53429ba](https://github.com/kkbjs/element3/commit/53429ba6d02c01939d9874fa9116f8df175c1834))
+* **globalConfig:** fix console.ware to console.warn ([6b4de75](https://github.com/kkbjs/element3/commit/6b4de75d64c5b98b25cf52cc056fefb35b447053))
+* **Message:** add emits ([cd9ebdd](https://github.com/kkbjs/element3/commit/cd9ebdd872a7e54b615f8cc52ab46915fc09f15f))
+* 修复this传值为空的问题，这里应该传props ([c2bf0a6](https://github.com/kkbjs/element3/commit/c2bf0a6877932fb149af6e162e34cef527c57c44))
+
+
+### Features
+
+* Refactor Link component ([2a0bc80](https://github.com/kkbjs/element3/commit/2a0bc80ccd9a485ab29532c9fc4a60827e3fe159))
+
+
+
 ## [0.0.28](https://github.com/kkbjs/element3/compare/v0.0.27...v0.0.28) (2020-12-06)
 
 
