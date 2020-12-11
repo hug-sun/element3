@@ -32,7 +32,7 @@ export default defineComponent({
     hidden: Boolean,
     type: {
       type: String,
-      default: 'primary',
+      default: 'danger',
       validator(val) {
         return ['primary', 'success', 'warning', 'info', 'danger'].includes(val)
       }
