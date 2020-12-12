@@ -20,7 +20,6 @@
     "build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js",
     "build:umd": "node build/bin/build-locale.js",
     "i18n": "node build/bin/i18n.js",
-    "lint": "eslint --no-error-on-unmatched-pattern --ext .vue --ext .js --ext .jsx packages/**/ src/**/ --fix",
     "test": "jest --runInBand",
     "dev": "rollup -wc",
     "build": "rollup -c",

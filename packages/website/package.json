@@ -8,8 +8,10 @@
     "lib": "lib"
   },
   "scripts": {
+    "build": "yarn build:file && yarn build:docs",
+    "dev": "npm run build:file && cross-env NODE_ENV=development webpack-dev-server --config build/webpack.demo.js & node build/bin/template.js",
     "build:file": "node build/bin/iconInit.js & node build/bin/build-entry.js & node build/bin/i18n.js",
-    "dev": "npm run build:file && cross-env NODE_ENV=development webpack-dev-server --config build/webpack.demo.js & node build/bin/template.js"
+    "build:docs": "cross-env NODE_ENV=development webpack --config build/webpack.demo.js"
   },
   "dependencies": {
     "element3": "^0.0.29",
