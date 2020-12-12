@@ -5,7 +5,8 @@
   ],
   "scripts": {
     "bootstrap": "yarn",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "lint": "eslint --ext .js  packages/element3/packages/** packages/*/src/** "
   },
   "license": "MIT",
   "gitHooks": {
