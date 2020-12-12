@@ -1,334 +1,422 @@
 import Input from '../Input.vue'
-import { mount } from '@vue/test-utils'
-import { nextTick } from 'vue'
+import { mount as $mount } from '@vue/test-utils'
+import Vue, { nextTick, component} from 'vue'
 
-// todo
-// autosize case:  jest jsdom 不会真实计算高度，所以case要调整。但是，已在浏览器测试通过。
 
-const globalOption = {
-  config: {
-    globalProperties: {
-      $ELEMENT: {
-        size: '',
-        zIndex: 2000
-      }
-    }
-  }
+const mount = async (options) => {
+  options = options || {}
+  const wrapper = await $mount(Input, options)
+  return wrapper
 }
 
-describe('Input.vue', () => {
-  describe('props', () => {
-    it('create', async () => {
-      const wrapper = mount(
-        {
-          template: `
-                    <el-input
-                        :minlength="3"
-                        :maxlength="5"
-                        placeholder="请输入内容"
-                        @focus="handleFocus"
-                        :modelValue="input">
-                    </el-input>
-                `,
-          data() {
-            return {
-              input: 'input',
-              inputFocus: false
-            }
-          },
-          methods: {
-            handleFocus() {
-              this.inputFocus = true
-            }
-          },
-          components: {
-            [Input.name]: Input
-          }
-        },
-        {
-          global: globalOption
-        }
-      )
-      const inputElm = wrapper.find('input')
-      inputElm.trigger('focus')
-      expect(wrapper.vm.inputFocus).toBeTruthy()
-      expect(inputElm.attributes('placeholder')).toEqual('请输入内容')
-      expect(inputElm.attributes('minlength')).toEqual('3')
-      expect(inputElm.attributes('maxlength')).toEqual('5')
-      expect(inputElm.element.value).toEqual('input')
-      wrapper.vm.input = 'text'
-      await nextTick()
-      expect(inputElm.element.value).toEqual('text')
-    })
 
-    it('default to empty', () => {
-      const wrapper = mount(Input, {
-        global: globalOption
-      })
-      const inputElm = wrapper.find('input')
-      expect(inputElm.element.value).toEqual('')
-    })
+describe('render children by props.type', () => {
+   it ('should render input text children', async () => {
+       const wrapper = await mount({
+         propsData: {
+           type: 'button'
+         },
+         shallow: true
+       })
 
-    it('disabled', () => {
-      const wrapper = mount(Input, {
-        props: {
-          disabled: true
-        },
-        global: globalOption
-      })
+       expect(wrapper.find('input-text-stub').isVisible()).toBe(true)
+       expect(wrapper.find('input-text-area-stub').exists()).toBe(false)
+   }) 
 
-      const inputElm = wrapper.find('input')
-      expect(inputElm.attributes('disabled')).toEqual('')
-    })
-
-    it('suffixIcon', () => {
-      const wrapper = mount(Input, {
-        props: {
-          suffixIcon: 'time'
-        },
-        global: globalOption
-      })
-      const icon = wrapper.find('.el-input__icon')
-      expect(icon.exists()).toBeTruthy()
-    })
-
-    it('prefixIcon', () => {
-      const wrapper = mount(Input, {
-        props: {
-          prefixIcon: 'time'
-        },
-        global: globalOption
-      })
-      const icon = wrapper.find('.el-input__icon')
-      expect(icon.exists()).toBeTruthy()
-    })
-
-    it('size', () => {
-      const wrapper = mount(Input, {
-        props: {
-          size: 'large'
-        },
-        global: globalOption
-      })
-      expect(wrapper.classes()).toContain('el-input--large')
-    })
-
-    it('type', () => {
-      const wrapper = mount(Input, {
-        props: {
+   it ('should render input textarea children', async () => {
+      const wrapper = await mount({
+        propsData: {
           type: 'textarea'
         },
-        global: globalOption
+        shallow: true
       })
-      expect(wrapper.classes()).toContain('el-textarea')
-    })
+      
+      expect(wrapper.find('input-text-area-stub').isVisible()).toBe(true)
+      expect(wrapper.find('input-text-stub').exists()).toBe(false)
+    }) 
+})
 
-    it('rows', () => {
-      const wrapper = mount(Input, {
-        props: {
-          type: 'textarea',
-          rows: 3
-        },
-        global: globalOption
+
+describe('pass attrs to children', () => {
+  it ('get attrs in input chidren', async () => {
+      const wrapper = await mount({
+        propsData: {
+          type: 'number',
+          placeholder: "placeholder"
+        }
       })
-      expect(wrapper.find('.el-textarea__inner').attributes('rows')).toEqual(
-        '3'
-      )
-    })
+      
+      expect(wrapper.find('.el-input__inner').attributes('placeholder')).toEqual('placeholder')
+      expect(wrapper.find('.el-input__inner').attributes('type')).toEqual('number')
+  }) 
 
-    // Github issue #2836
-    it('resize', async () => {
-      const wrapper = mount(
-        {
-          template: `
-                <div>
-                      <el-input type="textarea" :resize="resize"></el-input>
-                    </div>
-                `,
-          data() {
+  it ('get attrs in textarea chidren', async () => {
+     const wrapper = await mount({
+       propsData: {
+         type: 'textarea',
+         placeholder: "placeholder"
+       }
+     })
+     
+     expect(wrapper.find('.el-textarea__inner').attributes('placeholder')).toEqual('placeholder')
+   }) 
+})
+
+describe('props', () => {
+  it('should render disable', async () => {
+    const wrapper = await mount({
+      attrs: {
+        disabled: 'disabled'
+      }
+    })
+    await nextTick()
+    expect(wrapper.find('.el-input__inner').attributes('disabled')).not.toBeUndefined()
+  })
+})
+
+describe('show-word-limit', () => {
+  it('should render limit-word', async () => {
+    const wrapper = await $mount({
+          data: () => {
             return {
-              resize: 'none'
+              text: "text"
             }
           },
-          components: {
-            [Input.name]: Input
-          }
-        },
-        {
-          global: globalOption
-        }
-      )
-
-      await nextTick()
-      const textarea = wrapper.find('.el-textarea__inner')
-      expect(textarea.attributes('style')).toContain(
-        `resize: ${wrapper.vm.resize}`
-      )
-      wrapper.vm.resize = 'horizontal'
-      await nextTick()
-      expect(textarea.attributes('style')).toContain(
-        `resize: ${wrapper.vm.resize}`
-      )
+          components: {Input},
+          template: `<Input type="text" v-model="text" maxlength=10 show-word-limit />
+        >`
     })
+    
+    wrapper.find('.el-input__inner').setValue('content')
 
-    // it('autosize', async () => {
-    //     Object.defineProperties(window.HTMLElement.prototype, {
-    //         scrollHeight: {
-    //             get: function () {
-    //                 console.log('get', this.style)
-    //                 return parseFloat(window.getComputedStyle(this).height) || 0;
-    //             }
-    //         },
-    //     });
-    //     const wrapper = mount({
-    //         template: `
-    //         <div>
-    //           <el-input
-    //             ref="limitSize"
-    //             type="textarea"
-    //             :autosize="{minRows: 3, maxRows: 5}"
-    //             v-model="textareaValue"
-    //           >
-    //           </el-input>
-    //           <el-input
-    //             ref="limitlessSize"
-    //             type="textarea"
-    //             autosize
-    //             v-model="textareaValue"
-    //           >
-    //           </el-input>
-    //         </div>
-    //       `,
-    //         data() {
-    //             return {
-    //                 textareaValue: 'sda\ndasd\nddasdsda\ndasd\nddasdsda\ndasd\nddasdsda\ndasd\nddasd'
-    //             }
-    //         },
-    //         components: {
-    //             [Input.name]: Input
-    //         },
-    //     }, {
-    //         global: globalOption,
-    //     })
+    await nextTick()
+    expect(wrapper.find('.el-input__count-inner').text()).toContain(`7/10`)
+  })
+})
 
-    //     let limitSizeInput = wrapper.componentVM.$refs.limitSize
-    //     let limitlessSizeInput = wrapper.componentVM.$refs.limitlessSize
-    //     await nextTick()
-
-    //     expect(limitSizeInput.textareaStyle.height).toEqual('117px')
-    //     expect(limitlessSizeInput.textareaStyle.height).toEqual('201px')
-
-    //     vm.textareaValue = ''
-
-    //     await nextTick()
-    //     expect(limitSizeInput.textareaStyle.height).to.be.equal('75px')
-    //     expect(limitlessSizeInput.textareaStyle.height).to.be.equal('33px')
-    // })
+describe('clearable', () => {
+  it('should render clear btn', async () => {
+    const wrapper = await $mount({
+      data: () => {
+         return {
+           value: "test"
+         }
+      },
+     
+      components: {Input},
+      template: `<Input v-model="value"  clearable/>`
+    })
+    
+    expect(wrapper.find('.el-input__clear').exists()).toEqual(true)
   })
 
-  describe('events', () => {
-    // it('focus', async () => {
-    //     const wrapper = mount(Input, {
-    //         global: globalOption
-    //     })
-    //     wrapper.trigger('focus')
-    //     await nextTick()
-    //     expect(wrapper.vm.focused).toBeTruthy()
-    // })
-    // it('Input contains Select and append slot', async () => {
-    //     const wrapper = mount({
-    //         template: `
-    //       <el-input v-model="value" clearable class="input-with-select" ref="input">
-    //         <el-select v-model="select" slot="prepend" placeholder="请选择">
-    //           <el-option label="餐厅名" value="1"></el-option>
-    //           <el-option label="订单号" value="2"></el-option>
-    //           <el-option label="用户电话" value="3"></el-option>
-    //         </el-select>
-    //         <el-button slot="append" icon="el-icon-search"></el-button>
-    //       </el-input>
-    //       `,
-    //         data() {
-    //             return {
-    //                 value: '1234',
-    //                 select: '1'
-    //             }
-    //         },
-    //         components: {
-    //             [Input.name]: Input
-    //         },
-    //     }, {
-    //         global: globalOption
-    //     })
-    //     wrapper.componentVM.$refs.input.hovering = true
-    //     await nextTick()
-    //     const suffixEl = document.querySelector('.input-with-select > .el-input__suffix')
-    //     expect(suffixEl).toBeNull()
-    //     expect(suffixEl.style.transform).to.not.be.empty
-    // })
-    // it('limit input and show word count', async () => {
-    //     const wrapper = mount({
-    //         template: `
-    //         <div>
-    //           <el-input
-    //             class="test-text"
-    //             type="text"
-    //             v-model="input1"
-    //             maxlength="10"
-    //             :show-word-limit="show">
-    //           </el-input>
-    //           <el-input
-    //             class="test-textarea"
-    //             type="textarea"
-    //             v-model="input2"
-    //             maxlength="10"
-    //             show-word-limit>
-    //           </el-input>
-    //           <el-input
-    //             class="test-password"
-    //             type="password"
-    //             v-model="input3"
-    //             maxlength="10"
-    //             show-word-limit>
-    //           </el-input>
-    //           <el-input
-    //             class="test-initial-exceed"
-    //             type="text"
-    //             v-model="input4"
-    //             maxlength="2"
-    //             show-word-limit>
-    //           </el-input>
-    //         </div>
-    //       `,
-    //         data() {
-    //             return {
-    //                 input1: '',
-    //                 input2: '',
-    //                 input3: '',
-    //                 input4: 'exceed',
-    //                 show: false
-    //             }
-    //         },
-    //         components: {
-    //             [Input.name]: Input
-    //         },
-    //     }, {
-    //         global: globalOption
-    //     })
-    //     const inputElm1 = wrapper.find('.test-text')
-    //     const inputElm2 = wrapper.find('.test-textarea')
-    //     const inputElm3 = wrapper.find('.test-password')
-    //     const inputElm4 = wrapper.find('.test-initial-exceed')
-    //     await nextTick()
-    //     expect(inputElm1.findAll('.el-input__count').length).toEqual(0)
-    //     // expect(inputElm2.findAll('.el-input__count').length).toEqual(1)
-    //     expect(inputElm3.findAll('.el-input__count').length).toEqual(0)
-    //     expect(inputElm4.classes()).toContain('is-exceed')
-    //     vm.show = true
-    //     await nextTick()
-    //     expect(inputElm1.findAll('.el-input__count').length).toEqual(0)
-    //     vm.input4 = '1'
-    //     await nextTick()
-    //     expect(inputElm4.classes()).toContain('is-exceed')
-    // })
+  it('clear value when click clear btn', async () => {
+    const wrapper = await $mount({
+      data: () => {
+         return {
+           value: "test"
+         }
+      },
+     
+      components: {Input},
+      template: `<Input v-model="value" type="input" clearable/>`
+    })
+    
+    wrapper.find('.el-input__clear').trigger('click')
+
+    await nextTick()
+    expect(wrapper.vm.value).toEqual('')
+  })
+})
+
+
+describe('password', () => {
+  it('show password input', async () => {
+    const wrapper = await $mount({
+      data: () => {
+         return {
+           value: "test"
+         }
+      },
+     
+      components: {Input},
+      template: `<Input v-model="value" type="password" showPassword/>`
+    })
+    
+    wrapper.find('.el-icon-view').trigger('click')
+
+    await nextTick()
+    expect(wrapper.find('.el-input__inner').attributes('type')).toEqual('text')
+
+    wrapper.find('.el-icon-view').trigger('click')
+
+    await nextTick()
+    expect(wrapper.find('.el-input__inner').attributes('type')).toEqual('password')
+  })
+})
+
+
+describe('size', () => {
+  it('should render props.size', async () => {
+    const wrapper = await mount({
+      propsData: {
+        size: 'medium'
+      }
+    })
+
+    expect(wrapper.find('div').classes()).toContain('el-input--medium')
+  })
+})
+
+describe('prefixIcon', () => {
+  it('should render props.prefixIcon', async () => {
+    const wrapper = await mount({
+      propsData: {
+        prefixIcon: 'el-icon-view'
+      }
+    })
+
+    expect(wrapper.find('.el-input__prefix').exists()).toBe(true)
+  })
+})
+
+describe('suffix-icon', () => {
+  it('should render props.suffixIcon', async () => {
+    const wrapper = await mount({
+      propsData: {
+        suffixIcon: 'el-icon-view'
+      }
+    })
+
+    expect(wrapper.find('.el-input__suffix').exists()).toBe(true)
+  })
+})
+
+describe('autocomplete', () => {
+  it('should render autocomplete', async () => {
+    const wrapper = await mount({
+      attrs: {
+        autocomplete: 'off'
+      }
+    })
+
+    expect(wrapper.find('.el-input__inner').attributes('autocomplete')).toEqual('off')
+  })
+})
+
+describe('name attribute', () => {
+  it('should render name attribute', async () => {
+    const wrapper = await mount({
+      attrs: {
+        name: 'username'
+      }
+    })
+
+    expect(wrapper.find('.el-input__inner').attributes('name')).toEqual('username')
+  })
+})
+
+describe('readonly attribute', () => {
+  it('should render readonly attribute', async () => {
+    const wrapper = await mount({
+      attrs: {
+        readonly: ''
+      }
+    })
+
+    expect(wrapper.find('.el-input__inner').attributes('readonly')).not.toBeUndefined()
+  })
+})
+
+describe('max attribute', () => {
+  it('should render max attribute', async () => {
+    const wrapper = await mount({
+      attrs: {
+        max: 13
+      }
+    })
+
+    expect(wrapper.find('.el-input__inner').attributes('max')).toEqual("13")
+  })
+})
+
+describe('min attribute', () => {
+  it('should render min attribute', async () => {
+    const wrapper = await mount({
+      attrs: {
+        min: 13
+      }
+    })
+
+    expect(wrapper.find('.el-input__inner').attributes('min')).toEqual("13")
+  })
+})
+
+describe('min attribute', () => {
+  it('should render min attribute', async () => {
+    const wrapper = await mount({
+      attrs: {
+        min: 13
+      }
+    })
+
+    expect(wrapper.find('.el-input__inner').attributes('min')).toEqual("13")
+  })
+})
+
+describe('step attribute', () => {
+  it('should render step attribute', async () => {
+    const wrapper = await mount({
+      attrs: {
+        step: ","
+      }
+    })
+
+    expect(wrapper.find('.el-input__inner').attributes('step')).toEqual(",")
+  })
+})
+
+describe('resize attribute', () => {
+  it('should render resize attribute', async () => {
+    const wrapper = await mount({
+      attrs: {
+        resize: "horizontal"
+      }
+    })
+
+    expect(wrapper.find('.el-input__inner').attributes('resize')).toEqual("horizontal")
+  })
+})
+
+describe('autofocus attribute', () => {
+  it('should render autofocus attribute', async () => {
+    const wrapper = await mount({
+      attrs: {
+        autofocus: "autofocus"
+      }
+    })
+   
+    expect(wrapper.find('.el-input__inner').attributes('autofocus')).not.toBeUndefined()
+  })
+})
+
+describe('form attribute', () => {
+  it('should render form attribute', async () => {
+    const wrapper = await mount({
+      attrs: {
+        form: 'form_id'
+      }
+    })
+
+    expect(wrapper.find('.el-input__inner').attributes('form')).toEqual("form_id")
+  })
+})
+
+describe('label attribute', () => {
+  it('should render label attribute', async () => {
+    const wrapper = await mount({
+      attrs: {
+        label: 'label'
+      }
+    })
+
+    expect(wrapper.find('.el-input__inner').attributes('label')).toEqual("label")
+  })
+})
+
+describe('tabindex attribute', () => {
+  it('should render tabindex attribute', async () => {
+    const wrapper = await mount({
+      attrs: {
+        tabindex: 12
+      }
+    })
+
+    expect(wrapper.find('.el-input__inner').attributes('tabindex')).toEqual("12")
+  })
+})
+
+describe('validate-event attribute', () => {
+  it('should call validate-event when validate-event eq true', async () => {
+    var called = false
+    const wrapper = await mount({
+      propsData: {
+        modelValue: 'test',
+        validateEvent: true
+      },
+      global: {
+        provide: {
+          'elForm.change': () => { called = true}
+        }
+      }
+    })
+
+    await nextTick()
+    
+    wrapper.setProps({'modelValue': 'content'})
+    await nextTick()
+    expect(called).toBeTruthy()
+  })
+
+  it('should call validate-event when validate-event eq false', async () => {
+    var called = false
+    const wrapper = await mount({
+      propsData: {
+        modelValue: 'test',
+        validateEvent: false
+      },
+      global: {
+        provide: {
+          'elForm.change': () => { called = true}
+        }
+      }
+    })
+
+    await nextTick()
+   
+    wrapper.setProps({'modelValue': 'content'})
+    await nextTick()
+    expect(called).toBeFalsy()
+  })
+})
+
+describe('solt', () => {
+  it('should render solt prefix', async () => {
+    const wrapper = await mount({
+      propsData: {
+        prefixIcon: 'el-view'
+      },
+      slots: {
+        prefix: 'prefix solt'
+      }
+    })
+
+    await nextTick()
+    expect(wrapper.find('.el-input__prefix').html()).toContain("prefix solt")
+  })
+
+  it('should render solt suffix', async () => {
+    const wrapper = await mount({
+      propsData: {
+        suffixIcon: 'el-view'
+      },
+      slots: {
+        suffix: 'suffix solt'
+      }
+    })
+
+    await nextTick()
+    expect(wrapper.find('.el-input__suffix').html()).toContain("suffix solt")
+  })
+
+  it('should render solt prepend', async () => {
+    const wrapper = await mount({
+      slots: {
+        prepend: 'prepend solt'
+      }
+    })
+
+    await nextTick()
+    expect(wrapper.find('.el-input-group__prepend').html()).toContain("prepend solt")
   })
 })
