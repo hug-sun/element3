@@ -1,18 +1,10 @@
 import Input from '../Input.vue'
-import { mount as $mount } from '@vue/test-utils'
-import Vue, { nextTick, component} from 'vue'
-
-
-const mount = async (options) => {
-  options = options || {}
-  const wrapper = await $mount(Input, options)
-  return wrapper
-}
-
+import { mount} from '@vue/test-utils'
+import  { nextTick} from 'vue'
 
 describe('render children by props.type', () => {
    it ('should render input text children', async () => {
-       const wrapper = await mount({
+       const wrapper = await mount(Input, {
          propsData: {
            type: 'button'
          },
@@ -24,7 +16,7 @@ describe('render children by props.type', () => {
    }) 
 
    it ('should render input textarea children', async () => {
-      const wrapper = await mount({
+      const wrapper = await mount(Input, {
         propsData: {
           type: 'textarea'
         },
@@ -39,7 +31,7 @@ describe('render children by props.type', () => {
 
 describe('pass attrs to children', () => {
   it ('get attrs in input chidren', async () => {
-      const wrapper = await mount({
+      const wrapper = await mount(Input, {
         propsData: {
           type: 'number',
           placeholder: "placeholder"
@@ -51,7 +43,7 @@ describe('pass attrs to children', () => {
   }) 
 
   it ('get attrs in textarea chidren', async () => {
-     const wrapper = await mount({
+     const wrapper = await mount(Input, {
        propsData: {
          type: 'textarea',
          placeholder: "placeholder"
@@ -64,7 +56,7 @@ describe('pass attrs to children', () => {
 
 describe('props', () => {
   it('should render disable', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         disabled: 'disabled'
       }
@@ -76,7 +68,7 @@ describe('props', () => {
 
 describe('show-word-limit', () => {
   it('should render limit-word', async () => {
-    const wrapper = await $mount({
+    const wrapper = await mount({
           data: () => {
             return {
               text: "text"
@@ -96,7 +88,7 @@ describe('show-word-limit', () => {
 
 describe('clearable', () => {
   it('should render clear btn', async () => {
-    const wrapper = await $mount({
+    const wrapper = await mount({
       data: () => {
          return {
            value: "test"
@@ -111,7 +103,7 @@ describe('clearable', () => {
   })
 
   it('clear value when click clear btn', async () => {
-    const wrapper = await $mount({
+    const wrapper = await mount({
       data: () => {
          return {
            value: "test"
@@ -132,7 +124,7 @@ describe('clearable', () => {
 
 describe('password', () => {
   it('show password input', async () => {
-    const wrapper = await $mount({
+    const wrapper = await mount({
       data: () => {
          return {
            value: "test"
@@ -158,7 +150,7 @@ describe('password', () => {
 
 describe('size', () => {
   it('should render props.size', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       propsData: {
         size: 'medium'
       }
@@ -170,7 +162,7 @@ describe('size', () => {
 
 describe('prefixIcon', () => {
   it('should render props.prefixIcon', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       propsData: {
         prefixIcon: 'el-icon-view'
       }
@@ -182,7 +174,7 @@ describe('prefixIcon', () => {
 
 describe('suffix-icon', () => {
   it('should render props.suffixIcon', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       propsData: {
         suffixIcon: 'el-icon-view'
       }
@@ -194,7 +186,7 @@ describe('suffix-icon', () => {
 
 describe('autocomplete', () => {
   it('should render autocomplete', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         autocomplete: 'off'
       }
@@ -206,7 +198,7 @@ describe('autocomplete', () => {
 
 describe('name attribute', () => {
   it('should render name attribute', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         name: 'username'
       }
@@ -218,7 +210,7 @@ describe('name attribute', () => {
 
 describe('readonly attribute', () => {
   it('should render readonly attribute', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         readonly: ''
       }
@@ -230,7 +222,7 @@ describe('readonly attribute', () => {
 
 describe('max attribute', () => {
   it('should render max attribute', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         max: 13
       }
@@ -242,7 +234,7 @@ describe('max attribute', () => {
 
 describe('min attribute', () => {
   it('should render min attribute', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         min: 13
       }
@@ -254,7 +246,7 @@ describe('min attribute', () => {
 
 describe('min attribute', () => {
   it('should render min attribute', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         min: 13
       }
@@ -266,7 +258,7 @@ describe('min attribute', () => {
 
 describe('step attribute', () => {
   it('should render step attribute', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         step: ","
       }
@@ -278,7 +270,7 @@ describe('step attribute', () => {
 
 describe('resize attribute', () => {
   it('should render resize attribute', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         resize: "horizontal"
       }
@@ -290,7 +282,7 @@ describe('resize attribute', () => {
 
 describe('autofocus attribute', () => {
   it('should render autofocus attribute', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         autofocus: "autofocus"
       }
@@ -302,7 +294,7 @@ describe('autofocus attribute', () => {
 
 describe('form attribute', () => {
   it('should render form attribute', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         form: 'form_id'
       }
@@ -314,7 +306,7 @@ describe('form attribute', () => {
 
 describe('label attribute', () => {
   it('should render label attribute', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         label: 'label'
       }
@@ -326,7 +318,7 @@ describe('label attribute', () => {
 
 describe('tabindex attribute', () => {
   it('should render tabindex attribute', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       attrs: {
         tabindex: 12
       }
@@ -339,7 +331,7 @@ describe('tabindex attribute', () => {
 describe('validate-event attribute', () => {
   it('should call validate-event when validate-event eq true', async () => {
     var called = false
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       propsData: {
         modelValue: 'test',
         validateEvent: true
@@ -360,7 +352,7 @@ describe('validate-event attribute', () => {
 
   it('should call validate-event when validate-event eq false', async () => {
     var called = false
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       propsData: {
         modelValue: 'test',
         validateEvent: false
@@ -382,7 +374,7 @@ describe('validate-event attribute', () => {
 
 describe('solt', () => {
   it('should render solt prefix', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       propsData: {
         prefixIcon: 'el-view'
       },
@@ -396,7 +388,7 @@ describe('solt', () => {
   })
 
   it('should render solt suffix', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       propsData: {
         suffixIcon: 'el-view'
       },
@@ -410,7 +402,7 @@ describe('solt', () => {
   })
 
   it('should render solt prepend', async () => {
-    const wrapper = await mount({
+    const wrapper = await mount(Input, {
       slots: {
         prepend: 'prepend solt'
       }
@@ -419,4 +411,36 @@ describe('solt', () => {
     await nextTick()
     expect(wrapper.find('.el-input-group__prepend').html()).toContain("prepend solt")
   })
+
+  it('should render solt append', async () => {
+    const wrapper = await mount(Input, {
+      slots: {
+        append: 'append solt'
+      }
+    })
+
+    await nextTick()
+    expect(wrapper.find('.el-input-group__append').html()).toContain("append solt")
+  })
+})
+
+describe('blur', () => {
+    it.only('should call custome blur event', async () => {
+    
+      const wrapper = await mount({
+         methods: {
+           blurFn: () => {}
+         },
+         components: {Input},
+         template: `<Input @blur="blurFn"/>`
+      })
+
+      wrapper.find('input').trigger('blur');
+    
+      expect(wrapper.emitted()).toHaveProperty('blur')
+    })
+
+    it('should tigger form blur event', async () => {
+
+    })
 })

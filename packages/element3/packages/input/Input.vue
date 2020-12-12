@@ -2,7 +2,7 @@
    <div :style="$attrs.style" :class="[
        inputSize ? 'el-input--' + inputSize : ''
    ]"> 
-        <InputText v-if="type !== 'textarea'" v-bind="$attrs" :type="type"> 
+        <InputText v-if="type !== 'textarea'" v-bind="$attrs" :type="type" :onBlurHanlder="onBlurHanlder"> 
              <template v-slot:prepend>
                    <slot name="prepend"></slot>
              </template>
@@ -12,13 +12,16 @@
               <template v-slot:suffix>
                    <slot name="suffix"></slot>
              </template>
+              <template v-slot:append>
+                   <slot name="append"></slot>
+             </template>
          </InputText>
         <InputTextArea v-else v-bind="$attrs"/>
    </div>
 </template>
 <script>
 
-import {defineComponent, toRefs, toRef, watch, reactive, getCurrentInstance} from 'vue'
+import {defineComponent, toRefs, toRef, watch, reactive, getCurrentInstance, onMounted} from 'vue'
 import InputText from './InputText.vue'
 import InputTextArea from './InputTextArea.vue'
 import {useInput} from './use'
@@ -39,7 +42,9 @@ export default defineComponent({
    
     const instance = getCurrentInstance()
     const {inputSize} = useInput(props, instance, cxt)
+    const onBlurHanlder = () => {cxt.emit('blur'); console.log(cxt.emit, cxt.attrs) }
     return {
+      onBlurHanlder,
       inputSize,
        ...toRefs(props),
     }

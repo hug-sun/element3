@@ -28,5 +28,8 @@ export const props = {
     validateEvent: {
       type: Boolean,
       default: true
+    },
+    onBlurHanlder: {
+      type: Function
     }
   }

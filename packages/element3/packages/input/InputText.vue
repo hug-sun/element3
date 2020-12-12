@@ -5,6 +5,7 @@
     <input class="el-input__inner" 
         ref="input" 
         v-bind="$attrs" 
+        @blur="handleBlur"
         :type="showPassword ? (isVisiablePassword ? 'text' : 'password'): type" 
         @input="handleInput" 
     />
@@ -39,6 +40,10 @@
           
         </span>
       </span>
+       <!-- 后置元素 -->
+      <div class="el-input-group__append" v-if="$slots.append">
+        <slot name="append"></slot>
+      </div>
 </template>
 <script>
 
@@ -64,6 +69,10 @@ export default defineComponent({
    const {input, handleInput, upperLimit, textLength, clearValue, getSuffixVisible} = useInput(props, instance, cxt)
 
    const togglePassword = () => state.isVisiablePassword = !state.isVisiablePassword
+
+   const handleBlur = (event) => { 
+      props.onBlurHanlder(event)
+   }
  
    return {
      ...toRefs(props),
@@ -76,7 +85,8 @@ export default defineComponent({
      handleInput,
      upperLimit,
      textLength,
-     showWordLimit
+     showWordLimit,
+     handleBlur
    }
   },
   props: InputProps
