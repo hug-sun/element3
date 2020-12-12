@@ -10,6 +10,7 @@
         'is-checked': isChecked
       }
     ]"
+    :id="id"
     :aria-checked="isChecked"
     :aria-disabled="isDisabled"
   >
@@ -37,9 +38,10 @@
         :false-value="falseLabel"
         type="checkbox"
         :value="label"
-        @input="inputHandle({ checked: $event.target.checked })"
+        @input="model = { checked: $event.target.checked }"
         @focus="isFocus = true"
         @blur="isFocus = false"
+        @change="changeHandle"
         :aria-hidden="indeterminate ? 'true' : 'false'"
       />
     </span>
@@ -60,7 +62,8 @@ import {
   ref,
   toRefs,
   unref,
-  watchEffect
+  watchEffect,
+  nextTick
 } from 'vue'
 import { useGlobalOptions } from '../../src/use/globalConfig'
 
@@ -72,20 +75,21 @@ export default {
 
     const isFocus = ref(false)
 
-    const { inputHandle, model } = useModel()
+    const { changeHandle, model } = useModel()
     const { checkboxRef, isChecked } = useInitSelect(model)
     const { isBorder } = useBorder(border)
     const { isDisabled } = useDisabled(disabled)
     const { checkboxSize } = useSize(size)
 
     return {
-      inputHandle,
+      changeHandle,
       isBorder,
       checkboxSize,
       isDisabled,
       checkboxRef,
       isChecked,
-      isFocus
+      isFocus,
+      model
     }
   },
   props: {
@@ -110,13 +114,15 @@ export default {
       default: false
     },
     checked: Boolean,
-    indeterminate: Boolean
+    indeterminate: Boolean,
+    id: String,
+    controls: String
   }
 }
 
 function useBorder(border) {
-  const { elCheckboxGroup, elFormItem } = useInject()
-  const isBorder = border?.value || elCheckboxGroup.border || elFormItem.border
+  const { elCheckboxGroup } = useInject()
+  const isBorder = border?.value || elCheckboxGroup.border
 
   return {
     isBorder
@@ -155,22 +161,25 @@ function useModel() {
     state.modelValue = modelValue.value
   })
 
-  const inputHandle = ({ checked }) => {
-    const modelValue = checked ? trueLabel : falseLabel
-    state.modelValue = unref(modelValue)
-    vm.emit('update:modelValue', unref(modelValue))
-  }
-
   const model = computed({
     get() {
       return state.modelValue
     },
-    set: inputHandle
+    set({ checked }) {
+      const modelValue = checked ? trueLabel : falseLabel
+      state.modelValue = unref(modelValue)
+      vm.emit('update:modelValue', unref(modelValue))
+    }
   })
 
+  const changeHandle = async () => {
+    await nextTick()
+    vm.emit('change', unref(model))
+  }
+
   return {
-    inputHandle,
-    model
+    model,
+    changeHandle
   }
 }
 

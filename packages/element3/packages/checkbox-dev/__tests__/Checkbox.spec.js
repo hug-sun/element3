@@ -55,42 +55,30 @@ describe('Checkbox.vue', () => {
     expect(wrapper.emitted()['update:modelValue'][0][0]).toBeTruthy()
   })
 
-  test('set border props', () => {
-    const wrapper = mount(Checkbox, {
-      props: {
-        border: true
-      }
-    })
-
-    expect(wrapper.classes()).toContain('is-bordered')
-  })
-
-  test('by elCheckboxGroup.border', () => {
-    const wrapper = mount(Checkbox, {
-      global: {
-        provide: {
-          elCheckboxGroup: reactive({
-            border: true
-          })
+  describe('border', () => {
+    test('set border props', () => {
+      const wrapper = mount(Checkbox, {
+        props: {
+          border: true
         }
-      }
+      })
+
+      expect(wrapper.classes()).toContain('is-bordered')
     })
 
-    expect(wrapper.classes()).toContain('is-bordered')
-  })
-
-  test('by elFormItem.border', () => {
-    const wrapper = mount(Checkbox, {
-      global: {
-        provide: {
-          elFormItem: reactive({
-            border: true
-          })
+    test('by elCheckboxGroup.border', () => {
+      const wrapper = mount(Checkbox, {
+        global: {
+          provide: {
+            elCheckboxGroup: reactive({
+              border: true
+            })
+          }
         }
-      }
-    })
+      })
 
-    expect(wrapper.classes()).toContain('is-bordered')
+      expect(wrapper.classes()).toContain('is-bordered')
+    })
   })
 
   describe('size', () => {
@@ -231,32 +219,36 @@ describe('Checkbox.vue', () => {
   describe('true-label and false-label', () => {
     test('true-label', async () => {
       const value = ref(false)
+      const trueLabel = ref('yes')
       const wrapper = mount(Checkbox, {
         props: {
           modelValue: value,
-          trueLabel: 'yes'
+          trueLabel
         }
       })
 
       await nextTick()
       await wrapper.get('input').trigger('click')
 
-      expect(wrapper.emitted()['update:modelValue'][0][0]).toBe('yes')
+      expect(wrapper.emitted()['update:modelValue'][0][0]).toBe(trueLabel.value)
     })
 
     test('false-label', async () => {
       const value = ref(true)
+      const falseLabel = ref('no')
       const wrapper = mount(Checkbox, {
         props: {
           modelValue: value,
-          falseLabel: 'no'
+          falseLabel
         }
       })
 
       await nextTick()
       await wrapper.get('input').trigger('click')
 
-      expect(wrapper.emitted()['update:modelValue'][0][0]).toBe('no')
+      expect(wrapper.emitted()['update:modelValue'][0][0]).toBe(
+        falseLabel.value
+      )
     })
   })
 
@@ -322,5 +314,20 @@ describe('Checkbox.vue', () => {
         'is-focus'
       )
     })
+  })
+
+  test('the modelValue changes, the change event should be triggered', async () => {
+    const value = ref(false)
+    const wrapper = mount(Checkbox, {
+      props: {
+        modelValue: value
+      }
+    })
+
+    await wrapper.get('input').trigger('click')
+    await nextTick()
+
+    expect(wrapper.emitted()).toHaveProperty('change')
+    expect(wrapper.emitted()['change'][0][0]).toBe(true)
   })
 })
