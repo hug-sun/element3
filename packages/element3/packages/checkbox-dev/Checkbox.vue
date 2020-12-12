@@ -43,7 +43,7 @@
         :aria-hidden="indeterminate ? 'true' : 'false'"
       />
     </span>
-    <span class="el-checkbox__label">
+    <span class="el-checkbox__label" v-if="$slots.default || label">
       <slot></slot>
       <template v-if="!$slots.default">{{ label }}</template>
     </span>
@@ -52,39 +52,28 @@
 
 <script>
 import {
-  toRefs,
-  inject,
-  unref,
-  getCurrentInstance,
   computed,
-  watchEffect,
+  getCurrentInstance,
+  inject,
+  onMounted,
   reactive,
   ref,
-  onMounted
+  toRefs,
+  unref,
+  watchEffect
 } from 'vue'
 import { useGlobalOptions } from '../../src/use/globalConfig'
+
 export default {
   name: 'Checkbox',
   emits: ['update:modelValue'],
   setup(props) {
-    const {
-      border,
-      size,
-      disabled,
-      modelValue,
-      trueLabel,
-      falseLabel,
-      checked
-    } = toRefs(props)
+    const { border, size, disabled } = toRefs(props)
 
     const isFocus = ref(false)
 
     const { inputHandle, model } = useModel()
-    const { checkboxRef, isChecked } = useInitSelect({
-      model,
-      trueLabel,
-      checked
-    })
+    const { checkboxRef, isChecked } = useInitSelect(model)
     const { isBorder } = useBorder(border)
     const { isDisabled } = useDisabled(disabled)
     const { checkboxSize } = useSize(size)
@@ -156,7 +145,7 @@ function useDisabled(disabled) {
 }
 
 function useModel() {
-  const { modelValue, trueLabel, falseLabel } = onlyProps('modelValue', 'trueLabel', 'falseLabel')
+  const { modelValue, trueLabel, falseLabel } = onlyProps()
   const vm = getCurrentInstance()
   const state = reactive({
     modelValue: false
@@ -185,7 +174,8 @@ function useModel() {
   }
 }
 
-function useInitSelect({ model, trueLabel, checked }) {
+function useInitSelect(model) {
+  const { trueLabel, checked } = onlyProps()
   const checkboxRef = ref(null)
 
   onMounted(() => {
@@ -216,15 +206,8 @@ function useInject() {
   }
 }
 
-function onlyProps () {
-  const { props } = getCurrentInstance()
-  return Array.prototype.reduce.call(arguments, (res, prop) => {
-    const val = props[prop]
-    if (val !== undefined) {
-      res[prop] = ref(val)
-    }
-    return res
-  }, {})
+function onlyProps() {
+  return toRefs(getCurrentInstance().props)
 }
 </script>
 

@@ -34,6 +34,14 @@ describe('Checkbox.vue', () => {
     expect(wrapper.find('.el-checkbox__label').text()).toBe('an apple')
   })
 
+  test('no label and slot are set, content should not be displayed', () => {
+    const wrapper = mount(Checkbox, {
+      modelValue: ref(true)
+    })
+
+    expect(wrapper.find('.el-checkbox__label').exists()).toBe(false)
+  })
+
   test('update:modelValue', async () => {
     const value = ref(false)
     const wrapper = mount(Checkbox, {
