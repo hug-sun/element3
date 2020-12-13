@@ -27,16 +27,13 @@ describe('Container.vue', () => {
           direction: 'horizontal'
         }
       })
-
       expect(wrapper.find('.is-vertical').exists()).toBe(false)
     })
-
-
+    
     it('contain has class el-container', () => {
       const wrapper = mount(Container)
       expect(wrapper.classes('el-container')).toBe(true)
     })
-
   })
 
   describe('slot', () => {
