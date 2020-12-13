@@ -20,7 +20,6 @@
     "build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js",
     "build:umd": "node build/bin/build-locale.js",
     "i18n": "node build/bin/i18n.js",
-    "lint": "eslint --no-error-on-unmatched-pattern --ext .vue --ext .js --ext .jsx packages/**/ src/**/ --fix",
     "test": "jest --runInBand",
     "dev": "rollup -wc",
     "build": "rollup -c",
@@ -58,6 +57,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.7",
     "@babel/preset-env": "^7.12.10",
     "@rollup/plugin-babel": "^5.2.2",
     "@rollup/plugin-commonjs": "^17.0.0",
