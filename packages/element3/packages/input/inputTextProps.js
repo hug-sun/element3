@@ -31,5 +31,17 @@ export const props = {
     },
     onBlurHanlder: {
       type: Function
+    },
+    onFocusHanlder: {
+      type: Function
+    },
+    onChangeHanlder: {
+      type: Function
+    },
+    onInputHanlder: {
+      type: Function
+    },
+    onClearHanlder: {
+      type: Function
     }
   }

@@ -425,22 +425,81 @@ describe('solt', () => {
 })
 
 describe('blur', () => {
-    it.only('should call custome blur event', async () => {
+    it('should call custome blur event', async () => {
     
-      const wrapper = await mount({
-         methods: {
-           blurFn: () => {}
-         },
-         components: {Input},
-         template: `<Input @blur="blurFn"/>`
-      })
+      const wrapper = mount(Input)
 
       wrapper.find('input').trigger('blur');
-    
       expect(wrapper.emitted()).toHaveProperty('blur')
     })
-
-    it('should tigger form blur event', async () => {
-
-    })
 })
+
+describe('focus', () => {
+  it('should call custome focus event', async () => {
+  
+    const wrapper = mount(Input)
+
+    wrapper.find('input').trigger('focus');
+    expect(wrapper.emitted()).toHaveProperty('focus')
+  })
+})
+
+describe('change', () => {
+  it('should call custome change event', async () => {
+  
+    const wrapper = mount(Input, {
+      propsData: {
+        modelValue: 'value'
+      }
+    })
+    
+    wrapper.find('input').trigger('change');
+  
+    expect(wrapper.emitted('change')).toBeTruthy()
+    expect(wrapper.emitted('change')[0][0]).toEqual('value')
+  })
+})
+
+describe('input', () => {
+  it('should call custome input event', async () => {
+  
+    const wrapper = mount(Input, {
+      propsData: {
+        modelValue: 'value'
+      }
+    })
+    
+    wrapper.find('input').trigger('input');
+  
+    expect(wrapper.emitted('input')).toBeTruthy()
+    expect(wrapper.emitted('input')[0][0]).toEqual('value')
+  })
+})
+describe('clear', () => {
+  it('click clear btn should call custom call', () => {
+    const wrapper = mount(Input, {
+      propsData: {
+         modelValue: 'value',
+         suffixIcon: 'el-view'
+      },
+      attrs: {
+        clearable: true
+      }
+    })
+    wrapper.find('.el-input__clear').trigger('click')
+    
+    expect(wrapper.emitted('clear')).toBeTruthy()
+    
+  })
+})
+
+describe('input focus', () => {
+  it.only('click input ref focus method input should focused', () => {
+    const wrapper = mount(Input)
+    
+   // console.log(document.body.innerHTML)
+    console.log(wrapper.vm)
+    expect(document.body).toHaveFocus()
+  })
+})
+

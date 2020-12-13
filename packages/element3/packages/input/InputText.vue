@@ -4,10 +4,13 @@
     </div>
     <input class="el-input__inner" 
         ref="input" 
+        autofocus="autofocus"
         v-bind="$attrs" 
-        @blur="handleBlur"
+        @blur="onBlurHanlder"
+        @focus="onFocusHanlder"
+        @change="onChange"
         :type="showPassword ? (isVisiablePassword ? 'text' : 'password'): type" 
-        @input="handleInput" 
+        @input="onInput" 
     />
     <span class="el-input__prefix" v-if="prefixIcon">
             <slot name="prefix"></slot>
@@ -23,7 +26,7 @@
             v-if="clearable"
             class="el-input__icon el-icon-circle-close el-input__clear"
             @mousedown.prevent
-            @click="clearValue"
+            @click="onClear"
           ></i>
          
           <i
@@ -66,27 +69,34 @@ export default defineComponent({
    })
    const {attrs, emit} = cxt
    const instance = getCurrentInstance()
-   const {input, handleInput, upperLimit, textLength, clearValue, getSuffixVisible} = useInput(props, instance, cxt)
+   const {input, handleInput, upperLimit, textLength, clearValue, getSuffixVisible, nativeInputValue} = useInput(props, instance, cxt)
 
    const togglePassword = () => state.isVisiablePassword = !state.isVisiablePassword
 
-   const handleBlur = (event) => { 
-      props.onBlurHanlder(event)
+   const onChange = (event) => props.onChangeHanlder(nativeInputValue.value)
+
+   const onInput = (event) => {
+       handleInput(event)
+       props.onInputHanlder(nativeInputValue.value)
+   } 
+
+   const onClear = () => {
+      clearValue()
+      props.onClearHanlder()
    }
  
    return {
-     ...toRefs(props),
      ...toRefs(state),
      togglePassword,
+     onChange,
      getSuffixVisible,
      attrs,
      input,
-     clearValue,
-     handleInput,
+     onClear,
+     onInput,
      upperLimit,
      textLength,
-     showWordLimit,
-     handleBlur
+     showWordLimit
    }
   },
   props: InputProps

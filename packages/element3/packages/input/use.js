@@ -72,6 +72,7 @@ export const useInput = (props, instance, cxt) => {
 
     return {
       input,
+      nativeInputValue,
       textLength,
       upperLimit,
       handleInput,

@@ -2,7 +2,15 @@
    <div :style="$attrs.style" :class="[
        inputSize ? 'el-input--' + inputSize : ''
    ]"> 
-        <InputText v-if="type !== 'textarea'" v-bind="$attrs" :type="type" :onBlurHanlder="onBlurHanlder"> 
+        <InputText v-if="type !== 'textarea'" 
+             v-bind="$attrs" 
+             :type="type" 
+             :onBlurHanlder="onBlurHanlder"
+             :onFocusHanlder="onFocusHanlder"
+             :onChangeHanlder="onChangeHanlder"
+             :onInputHanlder="onInputHanlder"
+             :onClearHanlder="onClearHanlder"
+        > 
              <template v-slot:prepend>
                    <slot name="prepend"></slot>
              </template>
@@ -37,14 +45,30 @@ export default defineComponent({
   },
 
   inheritAttrs: false,
-
+  emits: ['blur', 'focus', 'change', 'input', 'clear'],
+ 
   setup(props, cxt) {
-   
+    
     const instance = getCurrentInstance()
+    
     const {inputSize} = useInput(props, instance, cxt)
-    const onBlurHanlder = () => {cxt.emit('blur'); console.log(cxt.emit, cxt.attrs) }
+    
+    const onBlurHanlder = (event) =>  cxt.emit('blur', event) 
+
+    const onFocusHanlder = (event) =>  cxt.emit('focus', event) 
+
+    const onChangeHanlder = (value) => cxt.emit('change', value)
+
+    const onInputHanlder = (value) => cxt.emit('input', value)
+
+    const onClearHanlder = (value) => cxt.emit('clear')
+
     return {
       onBlurHanlder,
+      onFocusHanlder,
+      onChangeHanlder,
+      onInputHanlder,
+      onClearHanlder,
       inputSize,
        ...toRefs(props),
     }
