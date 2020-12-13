@@ -69,7 +69,7 @@ import { useGlobalOptions } from '../../src/use/globalConfig'
 
 export default {
   name: 'Checkbox',
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'change'],
   setup(props) {
     const { border, size, disabled } = toRefs(props)
 
