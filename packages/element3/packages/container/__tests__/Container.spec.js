@@ -17,7 +17,6 @@ describe('Container.vue', () => {
           direction: 'vertical'
         }
       })
-      //这行有问题
       expect(wrapper.find('.is-vertical').exists()).toBe(false)
     })
 
