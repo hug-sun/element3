@@ -5,8 +5,8 @@
   ],
   "scripts": {
     "bootstrap": "yarn",
-    "build":"yarn workspace element3 build && yarn workspace website build",
-    "test":"yarn workspace element3 test",
+    "build": "yarn workspace element3 build && yarn workspace website build",
+    "test": "yarn workspace element3 test",
     "lint": "eslint --ext .js  packages/element3/packages/** packages/*/src/** "
   },
   "license": "MIT",
@@ -21,11 +21,13 @@
     "babel-eslint": "^10.1.0",
     "conventional-changelog-cli": "^2.1.1",
     "cross-env": "^7.0.3",
+    "enquirer": "^2.3.6",
     "eslint": "^7.15.0",
     "eslint-plugin-json": "^2.1.2",
     "eslint-plugin-prettier": "^3.2.0",
     "eslint-plugin-vue": "^7.2.0",
     "lint-staged": "^10.5.3",
+    "minimist": "^1.2.5",
     "prettier": "^2.2.1",
     "yorkie": "^2.0.0"
   }
