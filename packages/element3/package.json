@@ -1,6 +1,6 @@
 {
   "name": "element3",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "A Component Library for Vue3",
   "main": "dist/element3-ui.cjs.js",
   "module": "dist/element3-ui.esm-bundler.js",
