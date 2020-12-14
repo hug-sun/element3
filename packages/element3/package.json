@@ -1,6 +1,6 @@
 {
   "name": "element3",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "A Component Library for Vue3",
   "main": "dist/element3-ui.cjs.js",
   "module": "dist/element3-ui.esm-bundler.js",
@@ -15,6 +15,7 @@
   ],
   "typings": "types/index.d.ts",
   "scripts": {
+    "build": "rollup -c",
     "build:file": "node build/bin/iconInit.js & node build/bin/build-entry.js & node build/bin/i18n.js",
     "build:theme": "node build/bin/gen-cssfile && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
     "build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js",
@@ -22,8 +23,8 @@
     "i18n": "node build/bin/i18n.js",
     "test": "jest --runInBand",
     "dev": "rollup -wc",
-    "build": "rollup -c",
-    "release": "node scripts/release.js"
+    "release": "node scripts/release.js",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "repository": {
     "type": "git",
@@ -70,6 +71,7 @@
     "@vue/babel-plugin-jsx": "^1.0.0-rc.4",
     "@vue/compiler-sfc": "^3.0.4",
     "@vue/test-utils": "^2.0.0-beta.12",
+    "babel-jest": "^26.6.3",
     "cp-cli": "^2.0.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",

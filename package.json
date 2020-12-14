@@ -5,7 +5,6 @@
   ],
   "scripts": {
     "bootstrap": "yarn",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "build":"yarn workspace element3 build && yarn workspace website build",
     "test":"yarn workspace element3 test",
     "lint": "eslint --ext .js  packages/element3/packages/** packages/*/src/** "
