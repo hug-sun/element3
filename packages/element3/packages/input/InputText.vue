@@ -69,7 +69,7 @@ export default defineComponent({
    })
    const {attrs, emit} = cxt
    const instance = getCurrentInstance()
-   const {input, handleInput, upperLimit, textLength, clearValue, getSuffixVisible, nativeInputValue} = useInput(props, instance, cxt)
+   const {input, handleInput, upperLimit, textLength, clearValue, getSuffixVisible, nativeInputValue, focus} = useInput(props, instance, cxt)
 
    const togglePassword = () => state.isVisiablePassword = !state.isVisiablePassword
 
@@ -87,6 +87,7 @@ export default defineComponent({
  
    return {
      ...toRefs(state),
+     focus,
      togglePassword,
      onChange,
      getSuffixVisible,

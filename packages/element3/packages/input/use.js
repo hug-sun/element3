@@ -37,6 +37,10 @@ export const useInput = (props, instance, cxt) => {
       return unref(input) 
     }
 
+    const focus = () => {
+      getInput().focus()
+    }
+
     const clearValue = () => {
        cxt.emit('update:modelValue', '')
     }
@@ -72,6 +76,7 @@ export const useInput = (props, instance, cxt) => {
 
     return {
       input,
+      focus,
       nativeInputValue,
       textLength,
       upperLimit,
