@@ -28,7 +28,7 @@ async function main() {
   await run('npm', ['run', 'test'])
 
   step('\nBuilding...')
-  await run('npm', ['run', 'build:next'])
+  await run('npm', ['run', 'build'])
 
   step('\nUpdate version...')
   await run('npm', ['version', targetVersion, '--no-git-tag-version'])
