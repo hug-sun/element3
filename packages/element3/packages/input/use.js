@@ -58,9 +58,9 @@ export const useInput = (props, cxt) => {
       input.value = unref(nativeInputValue)
     }
 
-    const handleInput = async (event) => {  
+    const handleInput = async (event) => {   console.log('input', event.target.value)
       cxt.emit('update:modelValue', event.target.value)
-      cxt.emit('input', event.target.value)
+    //  cxt.emit('input', event.target.value)
       await nextTick()
       setNativeInputValue(event.target.value)
    }
@@ -70,14 +70,15 @@ export const useInput = (props, cxt) => {
     })
 
     watch(() => props.modelValue, () => { 
+       setNativeInputValue() 
        if (props.validateEvent) {
            elFormChange()
        }
     })
 
-    onMounted(() => {
-        props.modelValue && setNativeInputValue()
-    })
+    // onMounted(() => {
+    //   //  props.modelValue && setNativeInputValue()
+    // })
 
     return {
       input,

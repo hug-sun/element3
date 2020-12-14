@@ -36,11 +36,8 @@ export const props = {
     size: {
       type: String,
       validator: function (value) {
+        return true
         return ['medium', 'small', 'mini'].includes(value)
       }
-    },
-    maxlength: {
-      type: String,
-      default: '0'
     }
   }

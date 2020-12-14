@@ -26,7 +26,6 @@
             <input
               class="el-input__inner"
               ref="input"
-              autofocus="autofocus"
               v-bind="$attrs"
               @blur="onBlur"
               @focus="onFocus"
@@ -60,7 +59,7 @@
 
                 <span v-if="showWordLimit" class="el-input__count">
                   <span class="el-input__count-inner"
-                    >{{ textLength }}/{{ maxlength }}</span
+                    >{{ textLength }}/{{ $attrs.maxlength }}</span
                   >
                 </span>
               </span>
@@ -84,7 +83,7 @@
         <span
           v-if="showWordLimit"
           class="el-input__count"
-          >{{ modelValue.length }}/{{ maxlength }}</span
+          >{{ modelValue.length }}/{{ $attrs.maxlength }}</span
         >
     </template>
    </div>
@@ -98,7 +97,8 @@ import {
   reactive,
   getCurrentInstance,
   onMounted,
-  computed
+  computed,
+  nextTick
 } from 'vue'
 import {props} from './props'
 
@@ -116,7 +116,8 @@ export default defineComponent({
     const state = reactive({
       isVisiablePassword: false
     })
-
+   
+    
     const { inputSize } = useInput(props, cxt)
 
      const {attrs, emit} = cxt
@@ -128,6 +129,7 @@ export default defineComponent({
     const togglePassword = () => state.isVisiablePassword = !state.isVisiablePassword
 
     const onChange = (event) => {
+      console.log('change', event.target.value)
         emit('change', nativeInputValue.value)
     }
 
@@ -136,8 +138,11 @@ export default defineComponent({
     } 
 
    const onClear = () => {
-      clearValue()
+      console.log('clear') 
+      emit('update:modelValue', '')
       emit('clear')
+
+      nextTick(() => console.log(props))
    }
 
    const onBlur = (event) => emit('blur', event)
