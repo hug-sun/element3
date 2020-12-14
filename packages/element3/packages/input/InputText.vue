@@ -6,8 +6,8 @@
         ref="input" 
         autofocus="autofocus"
         v-bind="$attrs" 
-        @blur="onBlurHanlder"
-        @focus="onFocusHanlder"
+        @blur="onBlur"
+        @focus="onFocus"
         @change="onChange"
         :type="showPassword ? (isVisiablePassword ? 'text' : 'password'): type" 
         @input="onInput" 
@@ -73,21 +73,28 @@ export default defineComponent({
 
    const togglePassword = () => state.isVisiablePassword = !state.isVisiablePassword
 
-   const onChange = (event) => props.onChangeHanlder(nativeInputValue.value)
+   const onChange = (event) => props.onEventHanlder('change', nativeInputValue.value)
 
    const onInput = (event) => {
        handleInput(event)
-       props.onInputHanlder(nativeInputValue.value)
+       props.onEventHanlder('input', nativeInputValue.value)
    } 
 
    const onClear = () => {
       clearValue()
-      props.onClearHanlder()
+      props.onEventHanlder('clear')
    }
+
+   const onBlur = (event) => props.onEventHanlder.bind(null, 'blur')(event)
+
+   const onFocus = (event) => props.onEventHanlder.bind(null, 'focus')(event)
+   
  
    return {
      ...toRefs(state),
      focus,
+     onBlur,
+     onFocus,
      togglePassword,
      onChange,
      getSuffixVisible,

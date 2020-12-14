@@ -2,6 +2,7 @@ import Input from '../Input.vue'
 import { mount} from '@vue/test-utils'
 import  { nextTick} from 'vue'
 
+
 describe('render children by props.type', () => {
    it ('should render input text children', async () => {
        const wrapper = await mount(Input, {
@@ -494,7 +495,7 @@ describe('clear', () => {
 })
 
 describe('input focus', () => {
-  it('click input ref focus method input should focused', () => {
+  it.only('click input ref focus method input should focused', () => {
     const wrapper = mount(Input)
     
     wrapper.vm.methods.focus()  // 不生效

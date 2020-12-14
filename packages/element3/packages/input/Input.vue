@@ -5,11 +5,7 @@
         <InputText v-if="type !== 'textarea'" 
              v-bind="$attrs" 
              :type="type" 
-             :onBlurHanlder="onBlurHanlder"
-             :onFocusHanlder="onFocusHanlder"
-             :onChangeHanlder="onChangeHanlder"
-             :onInputHanlder="onInputHanlder"
-             :onClearHanlder="onClearHanlder"
+             :onEventHanlder="onEventHanlder"
         > 
              <template v-slot:prepend>
                    <slot name="prepend"></slot>
@@ -53,22 +49,10 @@ export default defineComponent({
     
     const {inputSize} = useInput(props, instance, cxt)
     
-    const onBlurHanlder = (event) =>  cxt.emit('blur', event) 
-
-    const onFocusHanlder = (event) =>  cxt.emit('focus', event) 
-
-    const onChangeHanlder = (value) => cxt.emit('change', value)
-
-    const onInputHanlder = (value) => cxt.emit('input', value)
-
-    const onClearHanlder = (value) => cxt.emit('clear')
+    const onEventHanlder = (type, event) =>  cxt.emit(type, event) 
 
     return {
-      onBlurHanlder,
-      onFocusHanlder,
-      onChangeHanlder,
-      onInputHanlder,
-      onClearHanlder,
+      onEventHanlder,
       inputSize,
        ...toRefs(props),
     }

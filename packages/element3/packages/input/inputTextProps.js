@@ -29,19 +29,7 @@ export const props = {
       type: Boolean,
       default: true
     },
-    onBlurHanlder: {
-      type: Function
-    },
-    onFocusHanlder: {
-      type: Function
-    },
-    onChangeHanlder: {
-      type: Function
-    },
-    onInputHanlder: {
-      type: Function
-    },
-    onClearHanlder: {
+    onEventHanlder: {
       type: Function
     }
   }
