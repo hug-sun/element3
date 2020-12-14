@@ -497,9 +497,9 @@ describe('input focus', () => {
   it.only('click input ref focus method input should focused', () => {
     const wrapper = mount(Input)
     
-   // console.log(document.body.innerHTML)
-    console.log(wrapper.vm)
-    expect(document.body).toHaveFocus()
+    wrapper.vm.methods.focus()  // 不生效
+
+    expect(wrapper.vm.$refs.input).toHaveFocus() // 不生效
   })
 })
 
