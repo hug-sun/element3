@@ -174,7 +174,7 @@ export default {
       }
     }
     const handleSubmenuClick = (submenu) => {
-      const { index, indexPath } = submenu.ctx
+      const { index, indexPath } = submenu.proxy
       const isOpened = openedMenus.value.indexOf(index) !== -1
       if (isOpened) {
         closeMenu(index)
@@ -185,7 +185,7 @@ export default {
       }
     }
     const handleItemClick = (item) => {
-      const { index, indexPath } = item.ctx
+      const { index, indexPath } = item.proxy
       const oldActiveIndex = activeIndex.value
       const hasIndex = index !== null
       if (hasIndex) {
@@ -220,9 +220,9 @@ export default {
       })
     }
     const routeToItem = (item, onError) => {
-      const route = item.ctx.route || item.ctx.index
+      const route = item.proxy.route || item.proxy.index
       try {
-        instance.ctx.$router.push(route, () => {}, onError)
+        instance.proxy.$router.push(route, () => {}, onError)
       } catch (e) {
         console.error(e)
       }
