@@ -136,7 +136,7 @@ describe('Checkbox.vue', () => {
       expect(modelValue.value).toStrictEqual(['选项A', '选项B'])
       await nextTick()
       await wrappers[1].trigger('click')
-      expect(modelValue.value).toContain('选项A')
+      expect(modelValue.value).toContain('选项B')
     })
 
     it('checked', async () => {
