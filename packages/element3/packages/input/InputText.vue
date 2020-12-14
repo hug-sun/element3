@@ -26,13 +26,14 @@
             v-if="clearable"
             class="el-input__icon el-icon-circle-close el-input__clear"
             @mousedown.prevent
-            @click="onClear"
+            @click.prevent="onClear"
           ></i>
          
           <i
+            v-if="showPassword"
             class="el-input__icon el-icon-view el-input__clear"
             @mousedown.prevent
-            @click="togglePassword"
+            @click.prevent="togglePassword"
           ></i>
          
          <span v-if="showWordLimit" class="el-input__count">
@@ -59,17 +60,17 @@ export default defineComponent({
 
   componentName: 'InputText',
   inheritAttrs: true,
-  
+  emits: ['update:modelValue', 'input'],
   setup(props, cxt) {
-  
+   console.log(cxt)
    const {showWordLimit} = toRefs(props)
 
    const state = reactive({
       isVisiablePassword: false
    })
 
-   const {attrs, emit} = cxt
-   
+   const {attrs, emits} = cxt
+  
    const instance = getCurrentInstance()
 
    const {input, handleInput, upperLimit, textLength, clearValue, getSuffixVisible, nativeInputValue, focus} = useInput(props, cxt)
@@ -79,6 +80,7 @@ export default defineComponent({
    const onChange = (event) => props.onEventHanlder('change', nativeInputValue.value)
 
    const onInput = (event) => {
+     
        handleInput(event)
        props.onEventHanlder('input', nativeInputValue.value)
    } 

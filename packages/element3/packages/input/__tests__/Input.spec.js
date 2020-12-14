@@ -1,6 +1,6 @@
 import Input from '../Input.vue'
 import { mount} from '@vue/test-utils'
-import  { nextTick} from 'vue'
+import  { nextTick, ref} from 'vue'
 
 describe('render children by props.type', () => {
    it ('should render input text children', async () => {
@@ -64,12 +64,12 @@ describe('show-word-limit', () => {
 describe('clearable', () => {
   it('should render clear btn', async () => {
     const wrapper = await mount({
-      data: () => {
-         return {
-           value: "test"
-         }
+      setup() {
+        const value = ref('')
+        return {
+          value
+        }
       },
-     
       components: {Input},
       template: `<Input v-model="value"  clearable/>`
     })
@@ -79,18 +79,17 @@ describe('clearable', () => {
 
   it('clear value when click clear btn', async () => {
     const wrapper = await mount({
-      data: () => {
-         return {
-           value: "test"
-         }
+      setup() {
+        const value = ref('value')
+        return {
+          value
+        }
       },
-     
       components: {Input},
-      template: `<Input v-model="value" type="input" clearable/>`
+      template: `<Input v-model="value" type="text" clearable/>`
     })
     
     wrapper.find('.el-input__clear').trigger('click')
-
     await nextTick()
     expect(wrapper.vm.value).toEqual('')
   })
