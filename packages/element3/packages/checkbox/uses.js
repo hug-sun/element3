@@ -35,12 +35,17 @@ export function useModel() {
     set({ label, checked }) {
       if (label && isArray(model.value)) {
         // when modelValue or elCheckboxGroup.modeValue is array
-        const modelValue = model.value
+        let modelValue = model.value
         const labelIndex = modelValue.indexOf(label)
-        labelIndex === -1 && checked === true && modelValue.push(label)
-        labelIndex !== -1 &&
-          checked === false &&
-          modelValue.splice(labelIndex, 1)
+
+        if (labelIndex === -1 && checked === true) {
+          modelValue = modelValue.concat(label)
+        }
+
+        if (labelIndex !== -1 && checked === false) {
+          modelValue = modelValue.splice(labelIndex, 1)
+        }
+
         state.modelValue = modelValue
         emit('update:modelValue', modelValue)
         dispatch('update:modelValue', modelValue)
