@@ -1,104 +1,170 @@
 <template>
-   <div :style="$attrs.style" 
-      :class="[
-           inputSize ? 'el-input--' + inputSize : '',
-           type === 'textarea' ? 'el-textarea' : 'el-input',
-           {
-             'is-disabled': $attrs.disabled,
-             'is-exceed': inputExceed,
-             'el-input-group': $slots.prepend || $slots.append,
-             'el-input-group--append': $slots.append,
-             'el-input-group--prepend': $slots.prepend,
-             'el-input--prefix': $slots.prefix,
-             'el-input--suffix':
-              $slots.suffix || $slots.suffixIcon || $attrs.clearable || $attrs.showPassword
-            }
-       ]"
-    > 
-        <InputText v-if="type !== 'textarea'" 
-             v-bind="$attrs" 
-             :type="type" 
-             :onEventHanlder="onEventHanlder"
-         > 
-             <template v-slot:prepend v-if="$slots.prepend">
-                   <slot name="prepend"></slot>
-             </template>
-             <template v-slot:prefix v-if="$slots.prefix">
-                   <slot name="prefix"></slot>
-             </template>
-              <template v-slot:suffix v-if="$slots.suffix">
-                   <slot name="suffix"></slot>
-             </template>
-              <template v-slot:append v-if="$slots.append">
-                   <slot name="append"></slot>
-             </template>
-         </InputText>
-        <InputTextArea v-else 
-           v-bind="$attrs"
-          :onEventHanlder="onEventHanlder"
+  <div
+    :style="$attrs.style"
+    :class="[
+      inputSize ? 'el-input--' + inputSize : '',
+      type === 'textarea' ? 'el-textarea' : 'el-input',
+      {
+        'is-disabled': $attrs.disabled,
+        'is-exceed': inputExceed,
+        'el-input-group': $slots.prepend || $slots.append,
+        'el-input-group--append': $slots.append,
+        'el-input-group--prepend': $slots.prepend,
+        'el-input--prefix': $slots.prefix,
+        'el-input--suffix':
+          $slots.suffix ||
+          $slots.suffixIcon ||
+          $attrs.clearable ||
+          $attrs.showPassword
+      }
+    ]"
+  >
+          <template v-if="type !== 'textarea'">
+            <div class="el-input-group__prepend" v-if="$slots.prepend">
+              <slot name="prepend"></slot>
+            </div>
+            <input
+              class="el-input__inner"
+              ref="input"
+              autofocus="autofocus"
+              v-bind="$attrs"
+              @blur="onBlur"
+              @focus="onFocus"
+              @change="onChange"
+              :type="showPassword ? (isVisiablePassword ? 'text' : 'password') : type"
+              @input="handleInput"
+            />
+            <span class="el-input__prefix" v-if="prefixIcon">
+              <slot name="prefix"></slot>
+              <i class="el-input__icon" v-if="prefixIcon" :class="prefixIcon"></i>
+            </span>
+            <span class="el-input__suffix" v-if="getSuffixVisible">
+              <span class="el-input__suffix-inner">
+                <template v-if="!clearable || !showPassword || !showWordLimit">
+                  <slot name="suffix"></slot>
+                  <i class="el-input__icon" v-if="suffixIcon" :class="suffixIcon"></i>
+                </template>
+                <i
+                  v-if="clearable"
+                  class="el-input__icon el-icon-circle-close el-input__clear"
+                  @mousedown.prevent
+                  @click.prevent="onClear"
+                ></i>
+
+                <i
+                  v-if="showPassword"
+                  class="el-input__icon el-icon-view el-input__clear"
+                  @mousedown.prevent
+                  @click.prevent="togglePassword"
+                ></i>
+
+                <span v-if="showWordLimit" class="el-input__count">
+                  <span class="el-input__count-inner"
+                    >{{ textLength }}/{{ maxlength }}</span
+                  >
+                </span>
+              </span>
+            </span>
+            <!-- 后置元素 -->
+            <div class="el-input-group__append" v-if="$slots.append">
+              <slot name="append"></slot>
+            </div>
+          </template>
+       <template v-else>
+        <textarea 
+          class="el-textarea__inner" 
+          ref="textarea"
+          v-bind="$attrs"
+          @input="onInput"
+          @blur="onBlur"
+          @focus="onFocus"
+          @change="onChange"
         >
-             <template v-slot:prepend>
-                <slot name="prepend"></slot>
-             </template>
-            <template v-slot:prefix>
-                <slot name="prefix"></slot>
-             </template>
-            <template v-slot:suffix>
-              <slot name="suffix"></slot>
-            </template>
-        </InputTextArea>
+        </textarea>
+        <span
+          v-if="showWordLimit"
+          class="el-input__count"
+          >{{ modelValue.length }}/{{ maxlength }}</span
+        >
+    </template>
    </div>
 </template>
 <script>
+import {
+  defineComponent,
+  toRefs,
+  toRef,
+  watch,
+  reactive,
+  getCurrentInstance,
+  onMounted,
+  computed
+} from 'vue'
+import {props} from './props'
 
-import {defineComponent, toRefs, toRef, watch, reactive, getCurrentInstance, onMounted, computed} from 'vue'
-import InputText from './InputText.vue'
-import InputTextArea from './InputTextArea.vue'
-import {useInput} from './use'
+import { useInput } from './use'
 
 export default defineComponent({
   name: 'ElInput',
-  
-  componentName: 'ElInput',
-  
-  components: {
-    InputText,
-    InputTextArea
-  },
 
+  componentName: 'ElInput',
   inheritAttrs: false,
-  emits: ['blur', 'focus', 'change', 'input', 'clear'],
- 
+  emits: ['blur', 'focus', 'change', 'input', 'clear', 'update:modelValue'],
+
   setup(props, cxt) {
     
-    const instance = getCurrentInstance()
-    
-    const {inputSize} = useInput(props, cxt)
+    const state = reactive({
+      isVisiablePassword: false
+    })
 
-    const inputLenght
-    
-    const onEventHanlder = (type, event) =>  cxt.emit(type, event) 
+    const { inputSize } = useInput(props, cxt)
+
+     const {attrs, emit} = cxt
+  
+    const instance = getCurrentInstance()
+
+    const {input, textarea, handleInput, upperLimit, textLength, clearValue, getSuffixVisible, nativeInputValue, focus, inputExceed} = useInput(props, cxt)
+
+    const togglePassword = () => state.isVisiablePassword = !state.isVisiablePassword
+
+    const onChange = (event) => {
+        emit('change', nativeInputValue.value)
+    }
+
+    const onInput = (event) => { 
+        handleInput(event)
+    } 
+
+   const onClear = () => {
+      clearValue()
+      emit('clear')
+   }
+
+   const onBlur = (event) => emit('blur', event)
+
+   const onFocus = (event) => emit('focus', event)
 
     return {
+      ...toRefs(state),
+      focus,
+      onBlur,
+      handleInput,
+      onFocus,
+      togglePassword,
+      onChange,
+      getSuffixVisible,
+      attrs,
+      input,
+      textarea,
+      onClear,
+      onInput,
+      textLength,
       inputSize,
-      onEventHanlder,
       ...toRefs(props),
+      inputExceed
     }
   },
 
-  props: {
-     type: {
-       type: String,
-       default: 'text'
-     },
-     size: {
-      type: String,
-      validator: function (value) {
-          return ['medium', 'small', 'mini'].includes(value)
-      }
-    }
-  }
+  props: props
 })
-
-
 </script>

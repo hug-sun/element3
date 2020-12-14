@@ -62,7 +62,7 @@ export default defineComponent({
   inheritAttrs: true,
   emits: ['update:modelValue', 'input'],
   setup(props, cxt) {
-   console.log(cxt)
+ //  console.log(cxt)
    const {showWordLimit} = toRefs(props)
 
    const state = reactive({

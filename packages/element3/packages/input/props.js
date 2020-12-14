@@ -29,7 +29,18 @@ export const props = {
       type: Boolean,
       default: true
     },
-    onEventHanlder: {
-      type: Function
+    type: {
+      type: String,
+      default: 'text'
+    },
+    size: {
+      type: String,
+      validator: function (value) {
+        return ['medium', 'small', 'mini'].includes(value)
+      }
+    },
+    maxlength: {
+      type: String,
+      default: '0'
     }
   }

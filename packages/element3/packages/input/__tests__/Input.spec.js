@@ -3,7 +3,7 @@ import { mount} from '@vue/test-utils'
 import  { nextTick, ref} from 'vue'
 
 describe('render children by props.type', () => {
-   it ('should render input text children', async () => {
+   it ('should render input text ', async () => {
        const wrapper = await mount(Input, {
          propsData: {
            type: 'button'
@@ -11,20 +11,19 @@ describe('render children by props.type', () => {
          shallow: true
        })
 
-       expect(wrapper.find('input-text-stub').isVisible()).toBe(true)
-       expect(wrapper.find('input-text-area-stub').exists()).toBe(false)
+       expect(wrapper.find('input').isVisible()).toBe(true)
+       expect(wrapper.find('textarea').exists()).toBe(false)
    }) 
 
-   it ('should render input textarea children', async () => {
+   it('should render input textarea ', async () => {
       const wrapper = await mount(Input, {
         propsData: {
           type: 'textarea'
-        },
-        shallow: true
+        }
       })
       
-      expect(wrapper.find('input-text-area-stub').isVisible()).toBe(true)
-      expect(wrapper.find('input-text-stub').exists()).toBe(false)
+      expect(wrapper.find('textarea').isVisible()).toBe(true)
+      expect(wrapper.find('input').exists()).toBe(false)
     }) 
 })
 
@@ -80,18 +79,18 @@ describe('clearable', () => {
   it('clear value when click clear btn', async () => {
     const wrapper = await mount({
       setup() {
-        const value = ref('value')
+        const input = ref('value')
         return {
-          value
+          input
         }
       },
       components: {Input},
-      template: `<Input v-model="value" type="text" clearable/>`
+      template: `<Input v-model="input" type="text" clearable/>`
     })
     
     wrapper.find('.el-input__clear').trigger('click')
     await nextTick()
-    expect(wrapper.vm.value).toEqual('')
+    expect(wrapper.vm.input).toEqual('')
   })
 })
 
@@ -411,7 +410,7 @@ describe('blur', () => {
 describe('focus', () => {
   it('should call custome focus event', async () => {
   
-    const wrapper = mount(Input)
+    const wrapper =  mount(Input)
 
     wrapper.find('input').trigger('focus');
     expect(wrapper.emitted()).toHaveProperty('focus')
@@ -437,7 +436,7 @@ describe('change', () => {
 describe('input', () => {
   it('should call custome input event', async () => {
   
-    const wrapper = mount(Input, {
+    const wrapper =  mount(Input, {
       propsData: {
         modelValue: 'value'
       }

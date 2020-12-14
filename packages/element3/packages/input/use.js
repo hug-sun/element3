@@ -1,4 +1,4 @@
-import { ref, unref, computed, watch, nextTick, toRefs, inject } from "vue"
+import { ref, unref, computed, watch, nextTick, toRefs, inject, onMounted } from "vue"
 
 
 export const useInput = (props, cxt) => { 
@@ -10,7 +10,7 @@ export const useInput = (props, cxt) => {
     const textarea = ref(null)
 
     const elFormChange = inject('elForm.change', () => {})
-
+    
     const { modelValue, size, suffixIcon, clearable, showPassword, showWordLimit } = toRefs(props)
 
     const nativeInputValue = computed(() => {
@@ -33,6 +33,10 @@ export const useInput = (props, cxt) => {
 
     const inputSize = computed(() => {
         return size?.value || elFormItemSize.value 
+    })
+
+    const inputExceed = computed(() => {
+        return props.modelValue?.length > Number(cxt.attrs.maxlength) ? true : false
     })
   
     const getInput = () => { 
@@ -57,14 +61,9 @@ export const useInput = (props, cxt) => {
     const handleInput = async (event) => {  
       cxt.emit('update:modelValue', event.target.value)
       cxt.emit('input', event.target.value)
-     
       await nextTick()
       setNativeInputValue(event.target.value)
    }
-
-    const upperLimit = computed(() => {
-      return Number(cxt.attrs.maxlength)
-    })
 
     const getSuffixVisible = computed(() => {
         return suffixIcon?.value ||  clearable?.value || showPassword?.value || showWordLimit?.value
@@ -72,20 +71,25 @@ export const useInput = (props, cxt) => {
 
     watch(() => props.modelValue, () => { 
        if (props.validateEvent) {
-         elFormChange()
+           elFormChange()
        }
+    })
+
+    onMounted(() => {
+        props.modelValue && setNativeInputValue()
     })
 
     return {
       input,
+      textarea,
       focus,
       nativeInputValue,
       textLength,
-      upperLimit,
       handleInput,
       clearValue,
       inputSize,
-      getSuffixVisible
+      getSuffixVisible,
+      inputExceed
     }
 }
 
