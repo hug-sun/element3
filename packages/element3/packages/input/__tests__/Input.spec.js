@@ -29,31 +29,6 @@ describe('render children by props.type', () => {
 })
 
 
-describe('pass attrs to children', () => {
-  it ('get attrs in input chidren', async () => {
-      const wrapper = await mount(Input, {
-        propsData: {
-          type: 'number',
-          placeholder: "placeholder"
-        }
-      })
-      
-      expect(wrapper.find('.el-input__inner').attributes('placeholder')).toEqual('placeholder')
-      expect(wrapper.find('.el-input__inner').attributes('type')).toEqual('number')
-  }) 
-
-  it ('get attrs in textarea chidren', async () => {
-     const wrapper = await mount(Input, {
-       propsData: {
-         type: 'textarea',
-         placeholder: "placeholder"
-       }
-     })
-     
-     expect(wrapper.find('.el-textarea__inner').attributes('placeholder')).toEqual('placeholder')
-   }) 
-})
-
 describe('props', () => {
   it('should render disable', async () => {
     const wrapper = await mount(Input, {
@@ -494,7 +469,7 @@ describe('clear', () => {
 })
 
 describe('input focus', () => {
-  it('click input ref focus method input should focused', () => {
+  it.skip('click input ref focus method input should focused', () => {
     const wrapper = mount(Input)
     
     wrapper.vm.methods.focus()  // 不生效

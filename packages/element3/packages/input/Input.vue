@@ -6,7 +6,7 @@
              v-bind="$attrs" 
              :type="type" 
              :onEventHanlder="onEventHanlder"
-        > 
+         > 
              <template v-slot:prepend>
                    <slot name="prepend"></slot>
              </template>
@@ -20,7 +20,20 @@
                    <slot name="append"></slot>
              </template>
          </InputText>
-        <InputTextArea v-else v-bind="$attrs"/>
+        <InputTextArea v-else 
+           v-bind="$attrs"
+          :onEventHanlder="onEventHanlder"
+        >
+             <template v-slot:prepend>
+                <slot name="prepend"></slot>
+             </template>
+            <template v-slot:prefix>
+                <slot name="prefix"></slot>
+             </template>
+            <template v-slot:suffix>
+              <slot name="suffix"></slot>
+            </template>
+        </InputTextArea>
    </div>
 </template>
 <script>
@@ -47,14 +60,14 @@ export default defineComponent({
     
     const instance = getCurrentInstance()
     
-    const {inputSize} = useInput(props, instance, cxt)
+    const {inputSize} = useInput(props, cxt)
     
     const onEventHanlder = (type, event) =>  cxt.emit(type, event) 
 
     return {
-      onEventHanlder,
       inputSize,
-       ...toRefs(props),
+      onEventHanlder,
+      ...toRefs(props),
     }
   },
 

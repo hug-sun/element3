@@ -1,11 +1,13 @@
-import { ref, unref, computed, watch, nextTick, toRefs, onUpdated, inject } from "vue"
-import { dispatch } from '../../src/use/emitter'
+import { ref, unref, computed, watch, nextTick, toRefs, inject } from "vue"
 
-export const useInput = (props, instance, cxt) => { 
+
+export const useInput = (props, cxt) => { 
 
     const elFormItem = inject('elFormItem', {})
 
     const input = ref(null);
+
+    const textarea = ref(null)
 
     const elFormChange = inject('elForm.change', () => {})
 
@@ -34,7 +36,7 @@ export const useInput = (props, instance, cxt) => {
     })
   
     const getInput = () => { 
-      return unref(input) 
+      return input.value || textarea.value
     }
 
     const focus = () => {
@@ -45,7 +47,7 @@ export const useInput = (props, instance, cxt) => {
        cxt.emit('update:modelValue', '')
     }
 
-    const setNativeInputValue = (value) => {
+    const setNativeInputValue = () => {
       const input = getInput()
   
       if (!input) return

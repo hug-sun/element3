@@ -67,9 +67,12 @@ export default defineComponent({
    const state = reactive({
       isVisiablePassword: false
    })
+
    const {attrs, emit} = cxt
+   
    const instance = getCurrentInstance()
-   const {input, handleInput, upperLimit, textLength, clearValue, getSuffixVisible, nativeInputValue, focus} = useInput(props, instance, cxt)
+
+   const {input, handleInput, upperLimit, textLength, clearValue, getSuffixVisible, nativeInputValue, focus} = useInput(props, cxt)
 
    const togglePassword = () => state.isVisiablePassword = !state.isVisiablePassword
 
