@@ -25,10 +25,10 @@ async function main() {
   if (!yes) return
 
   step('\nRunning tests...')
-  await run('npm', ['run', 'test'])
+  await run('yarn', ['test'])
 
   step('\nBuilding...')
-  await run('npm', ['run', 'build:next'])
+  await run('yarn', ['build'])
 
   step('\nUpdate version...')
   await run('npm', ['version', targetVersion, '--no-git-tag-version'])
