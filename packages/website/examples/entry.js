@@ -10,18 +10,16 @@ import SideNav from './components/side-nav'
 import FooterNav from './components/footer-nav'
 import title from './i18n/title'
 
-import 'packages/theme-chalk/src/index.scss'
+import 'element3/lib/theme-chalk/index.css'
 import './demo-styles/index.scss'
 import './assets/styles/common.css'
 import './assets/styles/fonts/style.css'
 import icon from './icon.json'
 
 const app = createApp(EntryApp)
-console.log(Element3)
 app.use(Element3)
-// app.use(VueRouter);
+
 app.component('demo-block', demoBlock)
-// app.component('main-footer', MainFooter);
 app.component('main-header', MainHeader)
 app.component('side-nav', SideNav)
 app.component('footer-nav', FooterNav)
