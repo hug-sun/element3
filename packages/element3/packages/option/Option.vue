@@ -192,7 +192,7 @@ export default {
       itemSelected,
       limitReached,
       currentLabel,
-      currentValue,
+      value:currentValue,
       hoverItem
     }
   }
