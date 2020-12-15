@@ -22,8 +22,7 @@
     "build:umd": "node build/bin/build-locale.js",
     "i18n": "node build/bin/i18n.js",
     "test": "jest --runInBand",
-    "dev": "rollup -wc",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "dev": "rollup -wc"
   },
   "repository": {
     "type": "git",
