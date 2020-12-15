@@ -1,32 +1,31 @@
 import Input from '../Input.vue'
-import { mount} from '@vue/test-utils'
-import  { nextTick, ref} from 'vue'
+import { mount } from '@vue/test-utils'
+import { nextTick, ref } from 'vue'
 
 describe('render children by props.type', () => {
-   it ('should render input text ', async () => {
-       const wrapper = await mount(Input, {
-         propsData: {
-           type: 'button'
-         },
-         shallow: true
-       })
+  it('should render input text ', async () => {
+    const wrapper = await mount(Input, {
+      propsData: {
+        type: 'button'
+      },
+      shallow: true
+    })
 
-       expect(wrapper.find('input').isVisible()).toBe(true)
-       expect(wrapper.find('textarea').exists()).toBe(false)
-   }) 
+    expect(wrapper.find('input').isVisible()).toBe(true)
+    expect(wrapper.find('textarea').exists()).toBe(false)
+  })
 
-   it('should render input textarea ', async () => {
-      const wrapper = await mount(Input, {
-        propsData: {
-          type: 'textarea'
-        }
-      })
-      
-      expect(wrapper.find('textarea').isVisible()).toBe(true)
-      expect(wrapper.find('input').exists()).toBe(false)
-    }) 
+  it('should render input textarea ', async () => {
+    const wrapper = await mount(Input, {
+      propsData: {
+        type: 'textarea'
+      }
+    })
+
+    expect(wrapper.find('textarea').isVisible()).toBe(true)
+    expect(wrapper.find('input').exists()).toBe(false)
+  })
 })
-
 
 describe('props', () => {
   it('should render disable', async () => {
@@ -36,23 +35,25 @@ describe('props', () => {
       }
     })
     await nextTick()
-    expect(wrapper.find('.el-input__inner').attributes('disabled')).not.toBeUndefined()
+    expect(
+      wrapper.find('.el-input__inner').attributes('disabled')
+    ).not.toBeUndefined()
   })
 })
 
 describe('show-word-limit', () => {
   it('should render limit-word', async () => {
     const wrapper = await mount({
-          data: () => {
-            return {
-              text: "text"
-            }
-          },
-          components: {Input},
-          template: `<Input type="text" v-model="text" maxlength=10 show-word-limit />
+      data: () => {
+        return {
+          text: 'text'
+        }
+      },
+      components: { Input },
+      template: `<Input type="text" v-model="text" maxlength=10 show-word-limit />
         >`
     })
-    
+
     wrapper.find('.el-input__inner').setValue('content')
 
     await nextTick()
@@ -69,10 +70,10 @@ describe('clearable', () => {
           value
         }
       },
-      components: {Input},
+      components: { Input },
       template: `<Input v-model="value"  clearable/>`
     })
-    
+
     expect(wrapper.find('.el-input__clear').exists()).toEqual(true)
   })
 
@@ -84,30 +85,29 @@ describe('clearable', () => {
           input
         }
       },
-      components: {Input},
+      components: { Input },
       template: `<Input v-model="input" type="text" clearable/>`
     })
-    
+
     wrapper.find('.el-input__clear').trigger('click')
     await nextTick()
     expect(wrapper.vm.input).toEqual('')
   })
 })
 
-
 describe('password', () => {
   it('show password input', async () => {
     const wrapper = await mount({
       data: () => {
-         return {
-           value: "test"
-         }
+        return {
+          value: 'test'
+        }
       },
-     
-      components: {Input},
+
+      components: { Input },
       template: `<Input v-model="value" type="password" showPassword/>`
     })
-    
+
     wrapper.find('.el-icon-view').trigger('click')
 
     await nextTick()
@@ -116,10 +116,11 @@ describe('password', () => {
     wrapper.find('.el-icon-view').trigger('click')
 
     await nextTick()
-    expect(wrapper.find('.el-input__inner').attributes('type')).toEqual('password')
+    expect(wrapper.find('.el-input__inner').attributes('type')).toEqual(
+      'password'
+    )
   })
 })
-
 
 describe('size', () => {
   it('should render props.size', async () => {
@@ -165,7 +166,9 @@ describe('autocomplete', () => {
       }
     })
 
-    expect(wrapper.find('.el-input__inner').attributes('autocomplete')).toEqual('off')
+    expect(wrapper.find('.el-input__inner').attributes('autocomplete')).toEqual(
+      'off'
+    )
   })
 })
 
@@ -177,7 +180,9 @@ describe('name attribute', () => {
       }
     })
 
-    expect(wrapper.find('.el-input__inner').attributes('name')).toEqual('username')
+    expect(wrapper.find('.el-input__inner').attributes('name')).toEqual(
+      'username'
+    )
   })
 })
 
@@ -189,7 +194,9 @@ describe('readonly attribute', () => {
       }
     })
 
-    expect(wrapper.find('.el-input__inner').attributes('readonly')).not.toBeUndefined()
+    expect(
+      wrapper.find('.el-input__inner').attributes('readonly')
+    ).not.toBeUndefined()
   })
 })
 
@@ -201,7 +208,7 @@ describe('max attribute', () => {
       }
     })
 
-    expect(wrapper.find('.el-input__inner').attributes('max')).toEqual("13")
+    expect(wrapper.find('.el-input__inner').attributes('max')).toEqual('13')
   })
 })
 
@@ -213,7 +220,7 @@ describe('min attribute', () => {
       }
     })
 
-    expect(wrapper.find('.el-input__inner').attributes('min')).toEqual("13")
+    expect(wrapper.find('.el-input__inner').attributes('min')).toEqual('13')
   })
 })
 
@@ -225,7 +232,7 @@ describe('min attribute', () => {
       }
     })
 
-    expect(wrapper.find('.el-input__inner').attributes('min')).toEqual("13")
+    expect(wrapper.find('.el-input__inner').attributes('min')).toEqual('13')
   })
 })
 
@@ -233,23 +240,11 @@ describe('step attribute', () => {
   it('should render step attribute', async () => {
     const wrapper = await mount(Input, {
       attrs: {
-        step: ","
+        step: ','
       }
     })
 
-    expect(wrapper.find('.el-input__inner').attributes('step')).toEqual(",")
-  })
-})
-
-describe('resize attribute', () => {
-  it('should render resize attribute', async () => {
-    const wrapper = await mount(Input, {
-      attrs: {
-        resize: "horizontal"
-      }
-    })
-
-    expect(wrapper.find('.el-input__inner').attributes('resize')).toEqual("horizontal")
+    expect(wrapper.find('.el-input__inner').attributes('step')).toEqual(',')
   })
 })
 
@@ -257,11 +252,13 @@ describe('autofocus attribute', () => {
   it('should render autofocus attribute', async () => {
     const wrapper = await mount(Input, {
       attrs: {
-        autofocus: "autofocus"
+        autofocus: 'autofocus'
       }
     })
-   
-    expect(wrapper.find('.el-input__inner').attributes('autofocus')).not.toBeUndefined()
+
+    expect(
+      wrapper.find('.el-input__inner').attributes('autofocus')
+    ).not.toBeUndefined()
   })
 })
 
@@ -273,7 +270,9 @@ describe('form attribute', () => {
       }
     })
 
-    expect(wrapper.find('.el-input__inner').attributes('form')).toEqual("form_id")
+    expect(wrapper.find('.el-input__inner').attributes('form')).toEqual(
+      'form_id'
+    )
   })
 })
 
@@ -285,7 +284,9 @@ describe('label attribute', () => {
       }
     })
 
-    expect(wrapper.find('.el-input__inner').attributes('label')).toEqual("label")
+    expect(wrapper.find('.el-input__inner').attributes('label')).toEqual(
+      'label'
+    )
   })
 })
 
@@ -297,7 +298,9 @@ describe('tabindex attribute', () => {
       }
     })
 
-    expect(wrapper.find('.el-input__inner').attributes('tabindex')).toEqual("12")
+    expect(wrapper.find('.el-input__inner').attributes('tabindex')).toEqual(
+      '12'
+    )
   })
 })
 
@@ -311,14 +314,16 @@ describe('validate-event attribute', () => {
       },
       global: {
         provide: {
-          'elForm.change': () => { called = true}
+          'elForm.change': () => {
+            called = true
+          }
         }
       }
     })
 
     await nextTick()
-    
-    wrapper.setProps({'modelValue': 'content'})
+
+    wrapper.setProps({ modelValue: 'content' })
     await nextTick()
     expect(called).toBeTruthy()
   })
@@ -332,14 +337,16 @@ describe('validate-event attribute', () => {
       },
       global: {
         provide: {
-          'elForm.change': () => { called = true}
+          'elForm.change': () => {
+            called = true
+          }
         }
       }
     })
 
     await nextTick()
-   
-    wrapper.setProps({'modelValue': 'content'})
+
+    wrapper.setProps({ modelValue: 'content' })
     await nextTick()
     expect(called).toBeFalsy()
   })
@@ -357,7 +364,7 @@ describe('solt', () => {
     })
 
     await nextTick()
-    expect(wrapper.find('.el-input__prefix').html()).toContain("prefix solt")
+    expect(wrapper.find('.el-input__prefix').html()).toContain('prefix solt')
   })
 
   it('should render solt suffix', async () => {
@@ -371,7 +378,7 @@ describe('solt', () => {
     })
 
     await nextTick()
-    expect(wrapper.find('.el-input__suffix').html()).toContain("suffix solt")
+    expect(wrapper.find('.el-input__suffix').html()).toContain('suffix solt')
   })
 
   it('should render solt prepend', async () => {
@@ -382,7 +389,9 @@ describe('solt', () => {
     })
 
     await nextTick()
-    expect(wrapper.find('.el-input-group__prepend').html()).toContain("prepend solt")
+    expect(wrapper.find('.el-input-group__prepend').html()).toContain(
+      'prepend solt'
+    )
   })
 
   it('should render solt append', async () => {
@@ -393,41 +402,40 @@ describe('solt', () => {
     })
 
     await nextTick()
-    expect(wrapper.find('.el-input-group__append').html()).toContain("append solt")
+    expect(wrapper.find('.el-input-group__append').html()).toContain(
+      'append solt'
+    )
   })
 })
 
 describe('blur', () => {
-    it('should call custome blur event', async () => {
-    
-      const wrapper = mount(Input)
+  it('should call custome blur event', async () => {
+    const wrapper = mount(Input)
 
-      wrapper.find('input').trigger('blur');
-      expect(wrapper.emitted()).toHaveProperty('blur')
-    })
+    wrapper.find('input').trigger('blur')
+    expect(wrapper.emitted()).toHaveProperty('blur')
+  })
 })
 
 describe('focus', () => {
   it('should call custome focus event', async () => {
-  
-    const wrapper =  mount(Input)
+    const wrapper = mount(Input)
 
-    wrapper.find('input').trigger('focus');
+    wrapper.find('input').trigger('focus')
     expect(wrapper.emitted()).toHaveProperty('focus')
   })
 })
 
 describe('change', () => {
   it('should call custome change event', async () => {
-  
     const wrapper = mount(Input, {
       propsData: {
         modelValue: 'value'
       }
     })
-    
-    wrapper.find('input').trigger('change');
-  
+
+    wrapper.find('input').trigger('change')
+
     expect(wrapper.emitted('change')).toBeTruthy()
     expect(wrapper.emitted('change')[0][0]).toEqual('value')
   })
@@ -435,15 +443,14 @@ describe('change', () => {
 
 describe('input', () => {
   it('should call custome input event', async () => {
-  
-    const wrapper =  mount(Input, {
+    const wrapper = mount(Input, {
       propsData: {
         modelValue: 'value'
       }
     })
-    
-    wrapper.find('input').trigger('input');
-  
+
+    wrapper.find('input').trigger('input')
+
     expect(wrapper.emitted('input')).toBeTruthy()
     expect(wrapper.emitted('input')[0][0]).toEqual('value')
   })
@@ -452,27 +459,72 @@ describe('clear', () => {
   it('click clear btn should call custom call', () => {
     const wrapper = mount(Input, {
       propsData: {
-         modelValue: 'value',
-         suffixIcon: 'el-view'
+        modelValue: 'value',
+        suffixIcon: 'el-view'
       },
       attrs: {
         clearable: true
       }
     })
     wrapper.find('.el-input__clear').trigger('click')
-    
+
     expect(wrapper.emitted('clear')).toBeTruthy()
-    
   })
 })
 
 describe('input focus', () => {
   it.skip('click input ref focus method input should focused', () => {
     const wrapper = mount(Input)
-    
-    wrapper.vm.methods.focus()  // 不生效
+
+    wrapper.vm.methods.focus() // 不生效
 
     expect(wrapper.vm.$refs.input).toHaveFocus() // 不生效
   })
 })
 
+describe('methods', () => {
+  it('should export method focus', async () => {
+    const wrapper = await mount({
+      setup() {
+        const inputRef = ref(null)
+        return {
+          inputRef
+        }
+      },
+      components: { Input },
+      template: `<Input ref="inputRef" />`
+    })
+
+    expect(wrapper.vm.inputRef.focus).not.toBeUndefined()
+  })
+
+  it('should export method blur', async () => {
+    const wrapper = await mount({
+      setup() {
+        const inputRef = ref(null)
+        return {
+          inputRef
+        }
+      },
+      components: { Input },
+      template: `<Input ref="inputRef"/>`
+    })
+
+    expect(wrapper.vm.inputRef.blur).not.toBeUndefined()
+  })
+
+  it('should export method select', async () => {
+    const wrapper = await mount({
+      setup() {
+        const inputRef = ref(null)
+        return {
+          inputRef
+        }
+      },
+      components: { Input },
+      template: `<Input ref="inputRef"/>`
+    })
+
+    expect(wrapper.vm.inputRef.select).not.toBeUndefined()
+  })
+})

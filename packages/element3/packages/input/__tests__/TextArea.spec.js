@@ -1,19 +1,20 @@
 import Input from '../Input.vue'
-import { mount} from '@vue/test-utils'
-import  { nextTick} from 'vue'
-
+import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 
 describe('pass attrs to children', () => {
-  it ('get attrs in textarea chidren', async () => {
-     const wrapper = await mount(Input, {
-       propsData: {
-         type: 'textarea',
-         placeholder: "placeholder"
-       }
-     })
-     
-     expect(wrapper.find('.el-textarea__inner').attributes('placeholder')).toEqual('placeholder')
-   }) 
+  it('get attrs in textarea chidren', async () => {
+    const wrapper = await mount(Input, {
+      propsData: {
+        type: 'textarea',
+        placeholder: 'placeholder'
+      }
+    })
+
+    expect(
+      wrapper.find('.el-textarea__inner').attributes('placeholder')
+    ).toEqual('placeholder')
+  })
 })
 
 describe('props', () => {
@@ -34,15 +35,15 @@ describe('props', () => {
 describe('show-word-limit', () => {
   it('should render limit-word', async () => {
     const wrapper = await mount({
-          data: () => {
-            return {
-              text: "textarea"
-            }
-          },
-          components: {Input},
-          template: `<Input type="textarea" v-model="text" maxlength=10 show-word-limit />`
+      data: () => {
+        return {
+          text: 'textarea'
+        }
+      },
+      components: { Input },
+      template: `<Input type="textarea" v-model="text" maxlength=10 show-word-limit />`
     })
-    
+
     wrapper.find('textarea').setValue('content')
 
     await nextTick()
@@ -92,7 +93,7 @@ describe('max attribute', () => {
       }
     })
 
-    expect(wrapper.find('textarea').attributes('max')).toEqual("13")
+    expect(wrapper.find('textarea').attributes('max')).toEqual('13')
   })
 })
 
@@ -107,23 +108,7 @@ describe('min attribute', () => {
       }
     })
 
-    expect(wrapper.find('textarea').attributes('min')).toEqual("13")
-  })
-})
-
-
-describe('resize attribute', () => {
-  it('should render resize attribute', async () => {
-    const wrapper = await mount(Input, {
-      propsData: {
-        type: 'textarea'
-      },
-      attrs: {
-        resize: "horizontal"
-      }
-    })
-
-    expect(wrapper.find('textarea').attributes('resize')).toEqual("horizontal")
+    expect(wrapper.find('textarea').attributes('min')).toEqual('13')
   })
 })
 
@@ -134,10 +119,10 @@ describe('autofocus attribute', () => {
         type: 'textarea'
       },
       attrs: {
-        autofocus: "autofocus"
+        autofocus: 'autofocus'
       }
     })
-   
+
     expect(wrapper.find('textarea').attributes('autofocus')).not.toBeUndefined()
   })
 })
@@ -153,7 +138,7 @@ describe('form attribute', () => {
       }
     })
 
-    expect(wrapper.find('textarea').attributes('form')).toEqual("form_id")
+    expect(wrapper.find('textarea').attributes('form')).toEqual('form_id')
   })
 })
 
@@ -168,7 +153,7 @@ describe('label attribute', () => {
       }
     })
 
-    expect(wrapper.find('textarea').attributes('label')).toEqual("label")
+    expect(wrapper.find('textarea').attributes('label')).toEqual('label')
   })
 })
 
@@ -183,7 +168,7 @@ describe('tabindex attribute', () => {
       }
     })
 
-    expect(wrapper.find('textarea').attributes('tabindex')).toEqual("12")
+    expect(wrapper.find('textarea').attributes('tabindex')).toEqual('12')
   })
 })
 
@@ -192,22 +177,22 @@ describe('validate-event attribute', () => {
     var called = false
     const wrapper = await mount(Input, {
       propsData: {
-        type: 'textarea'
-      },
-      propsData: {
+        type: 'textarea',
         modelValue: 'test',
         validateEvent: true
       },
       global: {
         provide: {
-          'elForm.change': () => { called = true}
+          'elForm.change': () => {
+            called = true
+          }
         }
       }
     })
 
     await nextTick()
-    
-    wrapper.setProps({'modelValue': 'content'})
+
+    wrapper.setProps({ modelValue: 'content' })
     await nextTick()
     expect(called).toBeTruthy()
   })
@@ -216,67 +201,64 @@ describe('validate-event attribute', () => {
     var called = false
     const wrapper = await mount(Input, {
       propsData: {
-        type: 'textarea'
-      },
-      propsData: {
+        type: 'textarea',
         modelValue: 'test',
         validateEvent: false
       },
       global: {
         provide: {
-          'elForm.change': () => { called = true}
+          'elForm.change': () => {
+            called = true
+          }
         }
       }
     })
 
     await nextTick()
-   
-    wrapper.setProps({'modelValue': 'content'})
+
+    wrapper.setProps({ modelValue: 'content' })
     await nextTick()
     expect(called).toBeFalsy()
   })
 })
 
 describe('blur', () => {
-    it('should call custome blur event', async () => {
-    
-      const wrapper = mount(Input, {
-        propsData: {
-          type: 'textarea'
-        }
-      })
-
-      wrapper.find('textarea').trigger('blur');
-      expect(wrapper.emitted()).toHaveProperty('blur')
-    })
-})
-
-describe('focus', () => {
-  it('should call custome focus event', async () => {
-  
+  it('should call custome blur event', async () => {
     const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
       }
     })
 
-    wrapper.find('textarea').trigger('focus');
+    wrapper.find('textarea').trigger('blur')
+    expect(wrapper.emitted()).toHaveProperty('blur')
+  })
+})
+
+describe('focus', () => {
+  it('should call custome focus event', async () => {
+    const wrapper = mount(Input, {
+      propsData: {
+        type: 'textarea'
+      }
+    })
+
+    wrapper.find('textarea').trigger('focus')
     expect(wrapper.emitted()).toHaveProperty('focus')
   })
 })
 
 describe('change', () => {
   it('should call custome change event', async () => {
-  
     const wrapper = mount(Input, {
       propsData: {
         type: 'textarea',
         modelValue: 'value'
       }
     })
-    
-    wrapper.find('textarea').trigger('change');
-  
+
+    wrapper.find('textarea').trigger('change')
+
     expect(wrapper.emitted('change')).toBeTruthy()
     expect(wrapper.emitted('change')[0][0]).toEqual('value')
   })
@@ -284,29 +266,26 @@ describe('change', () => {
 
 describe('input', () => {
   it('should call custome input event', async () => {
-  
     const wrapper = mount(Input, {
       propsData: {
         type: 'textarea',
         modelValue: 'value'
       }
     })
-    
-    wrapper.find('textarea').trigger('input');
-  
+
+    wrapper.find('textarea').trigger('input')
+
     expect(wrapper.emitted('input')).toBeTruthy()
     expect(wrapper.emitted('input')[0][0]).toEqual('value')
   })
 })
 
-
 // describe('input focus', () => {
 //   it.only('click input ref focus method input should focused', () => {
 //     const wrapper = mount(Input)
-    
+
 //     wrapper.vm.methods.focus()  // 不生效
 
 //     expect(wrapper.vm.$refs.input).toHaveFocus() // 不生效
 //   })
 // })
-
