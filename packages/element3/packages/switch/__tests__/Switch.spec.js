@@ -162,4 +162,17 @@ describe('Switch', () => {
 
     expect(wrapper.emitted('update:modelValue')).toEqual([['3']])
   })
+  it('handleClick', async () => {
+    const wrapper = mount(Switch, {
+      props: {
+        isChecked: true,
+        disabled: false,
+        activeValue: '2',
+        inactiveValue: '3'
+      }
+    })
+    await wrapper.find('.el-switch').trigger('click')
+    expect(wrapper.emitted('update:modelValue')).toEqual([['3'], ['2']])
+    expect(wrapper.emitted('update:change')).toEqual([['2']])
+  })
 })
