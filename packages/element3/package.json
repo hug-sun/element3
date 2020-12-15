@@ -1,6 +1,6 @@
 {
   "name": "element3",
-  "version": "0.0.30",
+  "version": "0.0.34",
   "description": "A Component Library for Vue3",
   "main": "dist/element3-ui.cjs.js",
   "module": "dist/element3-ui.esm-bundler.js",
@@ -22,9 +22,7 @@
     "build:umd": "node build/bin/build-locale.js",
     "i18n": "node build/bin/i18n.js",
     "test": "jest --runInBand",
-    "dev": "rollup -wc",
-    "release": "node scripts/release.js",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "dev": "rollup -wc"
   },
   "repository": {
     "type": "git",

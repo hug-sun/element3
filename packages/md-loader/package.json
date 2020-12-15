@@ -1,5 +1,6 @@
 {
   "name": "md-loader",
+  "private": true,
   "version": "1.0.0",
   "description": "parse md to html",
   "main": "src/index.js",
