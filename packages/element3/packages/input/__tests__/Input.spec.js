@@ -518,4 +518,3 @@ describe('methods', () => {
     expect(wrapper.vm.inputRef.select).not.toBeUndefined()
   })
 })
-
