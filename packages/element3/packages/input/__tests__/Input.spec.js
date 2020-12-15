@@ -472,16 +472,6 @@ describe('clear', () => {
   })
 })
 
-describe('input focus', () => {
-  it.skip('click input ref focus method input should focused', () => {
-    const wrapper = mount(Input)
-
-    wrapper.vm.methods.focus() // 不生效
-
-    expect(wrapper.vm.$refs.input).toHaveFocus() // 不生效
-  })
-})
-
 describe('methods', () => {
   it('should export method focus', async () => {
     const wrapper = await mount({
@@ -528,3 +518,4 @@ describe('methods', () => {
     expect(wrapper.vm.inputRef.select).not.toBeUndefined()
   })
 })
+
