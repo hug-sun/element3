@@ -51,7 +51,6 @@ describe('Container.vue', () => {
       }
 
       const wrapper = mount(TestComponent)
-      //  如果存在is-vertical 证明正确
       expect(wrapper.classes('is-vertical')).toBe(true)
     })
 
@@ -70,7 +69,6 @@ describe('Container.vue', () => {
       }
 
       const wrapper = mount(TestComponent)
-      //  如果存在is-vertical 证明正确
       expect(wrapper.classes('is-vertical')).toBe(true)
     })
   })
