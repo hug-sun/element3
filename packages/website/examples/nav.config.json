@@ -1,10 +1,6 @@
 {
   "zh-CN": [
     {
-      "name": "更新日志",
-      "path": "/changelog"
-    },
-    {
       "name": "开发指南",
       "children": [
         {
