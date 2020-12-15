@@ -92,8 +92,8 @@ export default {
   methods: {
     setNav() {
       let nav = navConfig[this.lang]
-      this.nav = [nav[0]].concat(nav[1].children)
-      nav[2].groups
+      this.nav = [nav[0]]
+      nav[1].groups
         .map((group) => group.list)
         .forEach((list) => {
           this.nav = this.nav.concat(list)
