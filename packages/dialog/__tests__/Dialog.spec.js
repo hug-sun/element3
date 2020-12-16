@@ -22,6 +22,17 @@ describe('Dialog', () => {
     expect(wrapper.find('.el-dialog__footer').text()).toBe('SoltFooter')
   })
 
+  it('closeOnClickModal', () => {
+    const wrapper = mount(Dialog, {
+      props: {
+        closeOnClickModal: false,
+        visible: true
+      }
+    })
+    wrapper.find('.el-dialog__wrapper').trigger('click')
+    expect(wrapper.componentVM.visible).toBe(true)
+  })
+
   it('showClose', () => {
     const wrapperTrue = mount(Dialog, {
       props: {
