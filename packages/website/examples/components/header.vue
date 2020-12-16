@@ -398,27 +398,6 @@ export default {
       return /^component/.test(this.$route.name)
     }
   },
-  mounted() {
-    // getTestEle()
-    //   .then(() => {
-    //     this.$isEle = true;
-    //     ga('send', 'event', 'DocView', 'Ele', 'Inner');
-    //   })
-    //   .catch((err) => {
-    //     ga('send', 'event', 'DocView', 'Ele', 'Outer');
-    //     console.error(err);
-    //   });
-    // const testInnerImg = new Image();
-    // testInnerImg.onload = () => {
-    //   this.$isEle = true;
-    //   ga('send', 'event', 'DocView', 'Ali', 'Inner');
-    // };
-    // testInnerImg.onerror = (err) => {
-    //   ga('send', 'event', 'DocView', 'Ali', 'Outer');
-    //   console.error(err);
-    // };
-    // testInnerImg.src = `https://private-alipayobjects.alipay.com/alipay-rmsdeploy-image/rmsportal/VmvVUItLdPNqKlNGuRHi.png?t=${Date.now()}`;
-  },
   methods: {
     switchVersion(version) {
       if (version === this.version) return
@@ -438,21 +417,6 @@ export default {
     handleLangDropdownToggle(visible) {
       this.langDropdownVisible = visible
     }
-  },
-
-  created() {
-    const xhr = new XMLHttpRequest()
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        const versions = JSON.parse(xhr.responseText)
-        this.versions = Object.keys(versions).reduce((prev, next) => {
-          prev[next] = versions[next]
-          return prev
-        }, {})
-      }
-    }
-    xhr.open('GET', '/versions.json')
-    xhr.send()
   }
 }
 </script>
