@@ -21,6 +21,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install modules
       run: yarn
+    - name: debugger
+      run: tree node_modules/element3/lib/
     - name: Run Lint
       run: yarn lint
   UnitTest:
@@ -43,5 +45,3 @@ jobs:
       run: yarn
     - name: Pre Deploy test
       run: yarn build
-    - name: debugger
-      run: tree node_modules/element3/lib/
