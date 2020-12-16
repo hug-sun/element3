@@ -366,16 +366,12 @@
 </template>
 <script>
 import compoLang from '../i18n/component.json'
-import Element from 'main/index.js'
-
-const { version } = Element
 
 export default {
   data() {
     return {
       active: '',
       versions: [],
-      version,
       verDropdownVisible: true,
       langDropdownVisible: true,
       langs: {
@@ -399,11 +395,6 @@ export default {
     }
   },
   methods: {
-    switchVersion(version) {
-      if (version === this.version) return
-      location.href = `${location.origin}/${this.versions[version]}/${location.hash} `
-    },
-
     switchLang(targetLang) {
       if (this.lang === targetLang) return
       localStorage.setItem('ELEMENT_LANGUAGE', targetLang)
