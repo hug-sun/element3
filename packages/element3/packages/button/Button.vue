@@ -15,8 +15,8 @@
 
 <script>
 import { useGlobalOptions } from '../../src/use/globalConfig'
-import { toRefs, inject, computed } from 'vue'
-export default {
+import { toRefs, inject, computed, defineComponent } from 'vue'
+export default defineComponent({
   name: 'ElButton',
   props: {
     size: {
@@ -65,7 +65,7 @@ export default {
       classes
     }
   }
-}
+})
 
 const useClasses = ({ props, size, disabled }) => {
   return computed(() => {
