@@ -154,7 +154,6 @@ describe('Slider', () => {
       })
     })
   })
-
   it('accessibility', (done) => {
     const slider = ref(0.1)
     const wrapper = mount(Slider, {
@@ -227,6 +226,7 @@ describe('Slider', () => {
     const wrapper = mount(Slider, {
       props: {
         modelValue: slider,
+        type: 'touchmove',
         'onUpdate:modelValue': (val) => {
           slider.value = val
         },
@@ -265,7 +265,6 @@ describe('Slider', () => {
       done()
     })
   })
-
   it('show input', async () => {
     const slider = ref(0)
     const wrapper = mount(Slider, {
@@ -354,7 +353,69 @@ describe('Slider', () => {
         })
       })
     })
-
+    it('min should not be greater than max', async () => {
+      const wrapper = mount(Slider, {
+        props: {
+          min: 100
+        }
+      })
+      wrapper.setProps({ max: 10 })
+    })
+    it('a range test', async () => {
+      var slider = [12, 18]
+      const wrapper = mount(Slider, {
+        props: {
+          min: 10,
+          modelValue: slider,
+          range: true
+        }
+      })
+      wrapper.setProps({ modelValue: [24, 25] })
+      wrapper.setProps({ max: 30 })
+      wrapper.setProps({ min: 1 })
+      nextTick(async () => {
+        await wrapper.setProps({ min: 10 })
+        await wrapper.setProps({ max: 11 })
+        await wrapper.setProps({ modelValue: [12, 8] })
+      })
+    })
+    it('a env test', async () => {
+      const wrapper = mount(Slider, {
+        props: {
+          step: 0,
+          showStops: true,
+          min: 1,
+          max: 5
+        }
+      })
+      process.env.NODE_ENV = 'test'
+      nextTick(() => {
+        wrapper.setProps({ vertical: true })
+        process.env.NODE_ENV = 'production'
+      })
+    })
+    it('should not modelValue NAN', async (done) => {
+      var slider = [40, 60]
+      const wrapper = mount(Slider, {
+        props: {
+          modelValue: slider,
+          range: false,
+          min: 50,
+          'onUpdate:modelValue': (val) => {
+            slider = val
+          }
+        }
+      })
+      wrapper.setProps({ modelValue: [40, 60] })
+      nextTick(async () => {
+        expect(slider).toEqual([40, 60])
+        await wrapper.setProps({ modelValue: [40, 60] })
+        nextTick(() => {
+          expect(slider).toEqual([40, 60])
+          done()
+        })
+      })
+    })
     it('click', () => {
       var slider = [0, 100]
       const wrapper = mount(Slider, {
@@ -375,9 +436,8 @@ describe('Slider', () => {
         expect(slider.value[1]).toEqual(100)
       })
     })
-
     it('responsive to dynamic min and max', () => {
-      var slider = [50, 80]
+      var slider = ref(0)
       const min = ref(0)
       const max = ref(100)
       const wrapper = mount(Slider, {
@@ -385,21 +445,17 @@ describe('Slider', () => {
           modelValue: slider,
           min,
           max,
-          range: true,
-          'onUpdate:modelValue': (val) => {
-            slider = val
-          }
+          range: true
         }
       })
-      mockSliderRunWayClientAttr(wrapper)
       min.value = 60
       nextTick(() => {
-        expect(slider).toEqual([60, 80])
-        wrapper.setProps({ modelValue: [60, 80] })
+        expect(slider).toEqual([60, 100])
+        wrapper.setProps({ modelValue: 0 })
         min.value = 30
         max.value = 40
         nextTick(() => {
-          expect(slider).toEqual([40, 40])
+          expect(slider).toEqual([30, 40])
         })
       })
     })

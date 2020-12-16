@@ -1,7 +1,7 @@
 <template>
   <div
     class="el-slider"
-    :class="{ 'is-vertical': vertical, 'el-slider--with-input': showInput }"
+    :class="sliderClass"
     role="slider"
     :aria-valuemin="min"
     :aria-valuemax="max"
@@ -24,7 +24,7 @@
     ></el-input-number>
     <div
       class="el-slider__runway"
-      :class="{ 'show-input': showInput, disabled: sliderDisabled }"
+      :class="runwayClass"
       :style="runwayStyle"
       @click="onSliderClick"
       ref="slider"
@@ -166,7 +166,7 @@ export default {
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
-    const { ctx } = getCurrentInstance()
+    const { proxy } = getCurrentInstance()
     // data
     const state = reactive({
       firstValue: null,
@@ -175,15 +175,16 @@ export default {
       dragging: false,
       sliderSize: 1
     })
-    const { resetSize } = useCommon(props, state, ctx)
+    const { resetSize } = useCommon(props, state, proxy)
 
-    useLifeCycle(props, state, ctx, resetSize)
+    useLifeCycle(props, state, proxy, resetSize)
 
     const { minValue, maxValue, valueChanged, setValues } = useModel(
       props,
       state,
       emit
     )
+    const sliderClass = useSliderClasses(props)
 
     const {
       stops,
@@ -197,10 +198,12 @@ export default {
       getStopStyle
     } = useStyle(props, state, minValue, maxValue)
 
+    const runwayClass = useRunwayClasses(props, sliderDisabled)
+
     const { onSliderClick, emitChange, setPosition } = useEvent(
       props,
       state,
-      ctx,
+      proxy,
       emit,
       minValue,
       maxValue,
@@ -229,15 +232,17 @@ export default {
       onSliderClick,
       resetSize,
       emitChange,
-      getStopStyle
+      getStopStyle,
+      // classs
+      sliderClass,
+      runwayClass
     }
   }
 }
-
-function useCommon(props, state, ctx) {
+const useCommon = (props, state, proxy) => {
   const { vertical } = toRefs(props)
-  function resetSize() {
-    const slider = ctx.$refs.slider
+  const resetSize = () => {
+    const slider = proxy.$refs.slider
     if (slider) {
       state.sliderSize = slider[`client${unref(vertical) ? 'Height' : 'Width'}`]
     }
@@ -247,7 +252,7 @@ function useCommon(props, state, ctx) {
   }
 }
 
-function useLifeCycle(props, state, ctx, resetSize) {
+const useLifeCycle = (props, state, proxy, resetSize) => {
   const { max, min, modelValue, range, label } = props
   let valuetext
   if (range) {
@@ -270,10 +275,10 @@ function useLifeCycle(props, state, ctx, resetSize) {
     valuetext = state.firstValue
   }
   onMounted(() => {
-    ctx.$el.setAttribute('aria-valuetext', valuetext)
+    proxy.$el.setAttribute('aria-valuetext', valuetext)
 
     // label screen reader
-    ctx.$el.setAttribute(
+    proxy.$el.setAttribute(
       'aria-label',
       // eslint-disable-next-line
       label ? label : `slider between ${min} and ${max}`
@@ -284,7 +289,7 @@ function useLifeCycle(props, state, ctx, resetSize) {
   onBeforeUnmount(() => window.removeEventListener('resize', resetSize))
 }
 
-function useModel(props, state, emit) {
+const useModel = (props, state, emit) => {
   const { dispatch } = useEmitter()
   const { max, min, modelValue, range } = toRefs(props)
 
@@ -323,7 +328,7 @@ function useModel(props, state, emit) {
   watch(min, () => setValues())
   watch(max, () => setValues())
 
-  function valueChanged() {
+  const valueChanged = () => {
     if (unref(range)) {
       return ![minValue, maxValue].every(
         (item, index) => unref(item) === state.oldValue[index]
@@ -333,7 +338,7 @@ function useModel(props, state, emit) {
     }
   }
 
-  function setValues() {
+  const setValues = () => {
     const _max = unref(max)
     const _min = unref(min)
     if (_min > _max) {
@@ -385,23 +390,23 @@ function useModel(props, state, emit) {
   }
 }
 
-function useEvent(
+const useEvent = (
   props,
   state,
-  ctx,
+  proxy,
   emit,
   minValue,
   maxValue,
   sliderDisabled,
   resetSize
-) {
-  // const { emit, ctx, props } = getCurrentInstance()
+) => {
+  // const { emit, proxy, props } = getCurrentInstance()
   const { modelValue, range, vertical, min, max } = toRefs(props)
 
-  function onSliderClick(event) {
+  const onSliderClick = (event) => {
     if (unref(sliderDisabled) || state.dragging) return
     resetSize()
-    const slider = ctx.$refs.slider
+    const slider = proxy.$refs.slider
     if (unref(vertical)) {
       const sliderOffsetBottom = slider.getBoundingClientRect().bottom
       setPosition(
@@ -414,7 +419,7 @@ function useEvent(
     emitChange()
   }
 
-  function emitChange() {
+  const emitChange = () => {
     nextTick(() =>
       emit(
         'change',
@@ -423,10 +428,10 @@ function useEvent(
     )
   }
 
-  function setPosition(percent) {
+  const setPosition = (percent) => {
     const targetValue = unref(min) + (percent * (unref(max) - unref(min))) / 100
     if (!unref(range)) {
-      ctx.$refs.button1.setPosition(percent)
+      proxy.$refs.button1.setPosition(percent)
       return
     }
     let button
@@ -438,7 +443,7 @@ function useEvent(
     } else {
       button = state.firstValue > state.secondValue ? 'button1' : 'button2'
     }
-    ctx.$refs[button].setPosition(percent)
+    proxy.$refs[button].setPosition(percent)
   }
 
   return {
@@ -448,7 +453,7 @@ function useEvent(
   }
 }
 
-function useStyle(props, state, minValue, maxValue) {
+const useStyle = (props, state, minValue, maxValue) => {
   const elForm = inject('elFrom', { default: '' })
   const {
     disabled,
@@ -556,7 +561,7 @@ function useStyle(props, state, minValue, maxValue) {
     return unref(disabled) || (elForm.props || {}).disabled
   })
 
-  function getStopStyle(position) {
+  const getStopStyle = (position) => {
     return unref(vertical)
       ? { bottom: position + '%' }
       : { left: position + '%' }
@@ -572,5 +577,25 @@ function useStyle(props, state, minValue, maxValue) {
     sliderDisabled,
     getStopStyle
   }
+}
+const useSliderClasses = (props) => {
+  return computed(() => {
+    return [
+      {
+        'is-vertical': props.vertical,
+        'el-slider--with-input': props.showInput
+      }
+    ]
+  })
+}
+const useRunwayClasses = (props, sliderDisabled) => {
+  return computed(() => {
+    return [
+      sliderDisabled.value ? 'disabled' : '',
+      {
+        'show-input': props.showInput
+      }
+    ]
+  })
 }
 </script>
