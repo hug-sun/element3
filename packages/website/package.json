@@ -1,6 +1,7 @@
 {
   "name": "website",
   "private":true,
+  "version": "1.0.0",
   "description": "element3 website",
   "directories": {
     "example": "examples",
