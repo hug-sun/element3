@@ -15,8 +15,8 @@
   ],
   "typings": "types/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
-    "build:file": "node build/bin/iconInit.js & node build/bin/build-entry.js & node build/bin/i18n.js",
+    "build": "yarn build:theme && rollup -c",
+    "build:file": "node build/bin/iconInit.js & node build/bin/i18n.js",
     "build:theme": "node build/bin/gen-cssfile && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
     "build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js",
     "build:umd": "node build/bin/build-locale.js",
