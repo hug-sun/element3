@@ -9,7 +9,10 @@ import { computed, toRefs } from 'vue'
 export default {
   name: 'ElContainer',
   props: {
-    direction: String
+    direction: {
+      type: String,
+      default: 'horizontal'
+    }
   },
   setup(props, { slots }) {
     const { direction } = toRefs(props)
