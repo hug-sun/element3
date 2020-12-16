@@ -43,3 +43,5 @@ jobs:
       run: yarn
     - name: Pre Deploy test
       run: yarn build
+    - name: debugger
+      run: tree node_modules/element3/lib/
