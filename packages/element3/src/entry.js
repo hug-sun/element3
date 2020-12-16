@@ -30,7 +30,7 @@ import ElSwitch from '../packages/switch'
 import ElSlider from '../packages/slider'
 // import ElTimePicker from '../packages/time-picker'
 // import ElTimeSelect from '../packages/time-select'
-// import ElDatePicker from '../packages/date-picker'
+import ElDatePicker from '../packages/date-picker'
 import ElUpload from '../packages/upload'
 import ElRate from '../packages/rate'
 import ElColorPicker from '../packages/color-picker'
@@ -96,6 +96,7 @@ import { version } from '../package.json'
 import { setupGlobalOptions } from './use/globalConfig.js'
 
 const components = [
+  ElDatePicker,
   ElRow,
   ElCol,
   ElHeader,
@@ -204,6 +205,7 @@ const elementUI = {
 }
 
 export {
+  ElDatePicker,
   ElRow,
   ElCol,
   ElContainer,
