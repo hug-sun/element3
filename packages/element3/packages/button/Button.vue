@@ -14,41 +14,12 @@
 </template>
 
 <script>
+import { props } from './props'
 import { useGlobalOptions } from '../../src/use/globalConfig'
 import { toRefs, inject, computed, defineComponent } from 'vue'
 export default defineComponent({
   name: 'ElButton',
-  props: {
-    size: {
-      type: String,
-      validator(val) {
-        return ['medium', 'small', 'mini', ''].includes(val)
-      }
-    },
-    type: {
-      type: String,
-      validator(val) {
-        return [
-          'primary',
-          'success',
-          'warning',
-          'danger',
-          'info',
-          'text'
-        ].includes(val)
-      }
-    },
-    nativeType: {
-      type: String,
-      default: 'button'
-    },
-    plain: Boolean,
-    round: Boolean,
-    circle: Boolean,
-    loading: Boolean,
-    disabled: Boolean,
-    icon: String
-  },
+  props,
   setup(props) {
     const { size, disabled } = toRefs(props)
 
