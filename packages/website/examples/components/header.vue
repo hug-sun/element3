@@ -365,14 +365,8 @@
   </div>
 </template>
 <script>
-import ThemePicker from './theme-picker.vue'
-// import AlgoliaSearch from './search.vue';
 import compoLang from '../i18n/component.json'
 import Element from 'main/index.js'
-import themeLoader from './theme/loader'
-// import { getTestEle } from './theme/loader/api.js';
-import bus from '../bus'
-import { ACTION_USER_CONFIG_UPDATE } from './theme/constant.js'
 
 const { version } = Element
 
@@ -389,14 +383,6 @@ export default {
       },
       lang: 'zh-CN'
     }
-  },
-
-  mixins: [themeLoader],
-
-  components: {
-    // eslint-disable-next-line vue/no-unused-components
-    ThemePicker
-    // AlgoliaSearch
   },
 
   computed: {
@@ -467,21 +453,6 @@ export default {
     }
     xhr.open('GET', '/versions.json')
     xhr.send()
-    let primaryLast = '#409EFF'
-    bus.$on(ACTION_USER_CONFIG_UPDATE, (val) => {
-      let primaryColor = val.global['$--color-primary']
-      if (!primaryColor) primaryColor = '#409EFF'
-      const base64svg = 'data:image/svg+xml;base64,'
-      const imgSet = document.querySelectorAll('h1 img')
-      imgSet.forEach((img) => {
-        img.src = `${base64svg}${window.btoa(
-          window
-            .atob(img.src.replace(base64svg, ''))
-            .replace(primaryLast, primaryColor)
-        )}`
-      })
-      primaryLast = primaryColor
-    })
   }
 }
 </script>
