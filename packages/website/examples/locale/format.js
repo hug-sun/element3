@@ -1,4 +1,6 @@
-import { hasOwn } from '../../src/utils/util'
+function hasOwn(obj, key) {
+  return Object.prototype.hasOwnProperty.call(obj, key)
+}
 
 const RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g
 /**
