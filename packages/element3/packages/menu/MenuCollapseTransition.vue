@@ -2,7 +2,7 @@
 import { addClass, removeClass, hasClass } from '../../src/utils/dom'
 import { h, Transition } from 'vue'
 export default {
-  render(ctx) {
+  render(proxy) {
     const data = {
       mode: 'out-in',
       onBeforeEnter(el) {
@@ -43,7 +43,7 @@ export default {
         el.style.width = el.dataset.scrollWidth + 'px'
       }
     }
-    return h(Transition, data, ctx.$slots)
+    return h(Transition, data, proxy.$slots)
   }
 }
 </script>

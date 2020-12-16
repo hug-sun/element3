@@ -1,6 +1,5 @@
 <script>
   import bus from '../../bus';
-  import { ACTION_USER_CONFIG_UPDATE } from '../../components/theme/constant.js';
   import { reactive, toRefs, ref, getCurrentInstance, onMounted, watch } from 'vue'
   export default {
     setup(){
@@ -38,7 +37,6 @@
           self.global = window.userThemeConfig.global;
         }
       }
-      bus.$on(ACTION_USER_CONFIG_UPDATE, self.setGlobal);
 
       onMounted(()=>{
         setGlobal()

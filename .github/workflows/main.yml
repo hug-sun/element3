@@ -42,4 +42,4 @@ jobs:
     - name: Install modules
       run: yarn
     - name: Pre Deploy test
-      run: yarn build:docs
+      run: yarn build

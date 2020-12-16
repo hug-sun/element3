@@ -1,5 +1,6 @@
 {
   "name": "website",
+  "private":true,
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,11 +9,14 @@
     "lib": "lib"
   },
   "scripts": {
-    "build:file": "node build/bin/iconInit.js & node build/bin/build-entry.js & node build/bin/i18n.js",
-    "dev": "npm run build:file && cross-env NODE_ENV=development webpack-dev-server --config build/webpack.demo.js & node build/bin/template.js"
+    "build": "yarn build:file && yarn build:docs",
+    "build:file": "node build/bin/iconInit.js & node build/bin/i18n.js",
+    "build:docs": "cross-env NODE_ENV=development webpack --config build/webpack.demo.js",
+    "dev": "npm run build:file && cross-env NODE_ENV=development webpack-dev-server --config build/webpack.demo.js & node build/bin/template.js",
+    "dev:play": "npm run build:file && cross-env NODE_ENV=development PLAY_ENV=true webpack-dev-server --config build/webpack.demo.js"
   },
   "dependencies": {
-    "element3": "^0.0.29",
+    "element3": "0.0.34",
     "mitt": "^2.1.0",
     "vue": "^3.0.4"
   },
@@ -47,7 +51,8 @@
     "webpack": "^4.14.0",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.11",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "md-loader":"1.0.0"
   },
   "keywords": [],
   "author": "",
