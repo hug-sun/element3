@@ -96,11 +96,3 @@ describe('event', () => {
     expect(wrapper.emitted('close')).toBeTruthy()
   })
 })
-
-describe('clear', () => {
-  it('close', () => {
-    const wrapper = mount(Alert)
-    wrapper.find('.el-alert__closebtn').trigger('click')
-    expect(wrapper.emitted('close')).toBeTruthy()
-  })
-})

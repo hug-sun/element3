@@ -1,14 +1,13 @@
 import Input from '../Input.vue'
-import { mount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 import { nextTick, ref } from 'vue'
 
 describe('render children by props.type', () => {
   it('should render input text ', async () => {
-    const wrapper = await mount(Input, {
+    const wrapper = shallowMount(Input, {
       propsData: {
         type: 'button'
-      },
-      shallow: true
+      }
     })
 
     expect(wrapper.find('input').isVisible()).toBe(true)
@@ -16,7 +15,7 @@ describe('render children by props.type', () => {
   })
 
   it('should render input textarea ', async () => {
-    const wrapper = await mount(Input, {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
       }
@@ -29,21 +28,21 @@ describe('render children by props.type', () => {
 
 describe('props', () => {
   it('should render disable', async () => {
-    const wrapper = await mount(Input, {
+    const wrapper = mount(Input, {
       attrs: {
         disabled: 'disabled'
       }
     })
     await nextTick()
     expect(
-      wrapper.find('.el-input__inner').attributes('disabled')
-    ).not.toBeUndefined()
+      wrapper.find('.el-input__inner').attributes()
+    ).toHaveProperty('disabled')
   })
 })
 
 describe('show-word-limit', () => {
   it('should render limit-word', async () => {
-    const wrapper = await mount({
+    const wrapper = mount({
       data: () => {
         return {
           text: 'text'
@@ -62,8 +61,8 @@ describe('show-word-limit', () => {
 })
 
 describe('clearable', () => {
-  it('should render clear btn', async () => {
-    const wrapper = await mount({
+  it('should render clear btn', () => {
+    const wrapper = mount({
       setup() {
         const value = ref('')
         return {
@@ -74,11 +73,11 @@ describe('clearable', () => {
       template: `<Input v-model="value"  clearable/>`
     })
 
-    expect(wrapper.find('.el-input__clear').exists()).toEqual(true)
+    expect(wrapper.find('.el-input__clear').exists()).toBeTruthy()
   })
 
   it('clear value when click clear btn', async () => {
-    const wrapper = await mount({
+    const wrapper = mount({
       setup() {
         const input = ref('value')
         return {
@@ -91,13 +90,13 @@ describe('clearable', () => {
 
     wrapper.find('.el-input__clear').trigger('click')
     await nextTick()
-    expect(wrapper.vm.input).toEqual('')
+    expect(wrapper.vm.input).toBe('')
   })
 })
 
 describe('password', () => {
   it('show password input', async () => {
-    const wrapper = await mount({
+    const wrapper = mount({
       data: () => {
         return {
           value: 'test'
@@ -123,8 +122,8 @@ describe('password', () => {
 })
 
 describe('size', () => {
-  it('should render props.size', async () => {
-    const wrapper = await mount(Input, {
+  it('should render props.size',  () => {
+    const wrapper = mount(Input, {
       propsData: {
         size: 'medium'
       }
@@ -135,8 +134,8 @@ describe('size', () => {
 })
 
 describe('prefixIcon', () => {
-  it('should render props.prefixIcon', async () => {
-    const wrapper = await mount(Input, {
+  it('should render props.prefixIcon', () => {
+    const wrapper = mount(Input, {
       propsData: {
         prefixIcon: 'el-icon-view'
       }
@@ -147,8 +146,8 @@ describe('prefixIcon', () => {
 })
 
 describe('suffix-icon', () => {
-  it('should render props.suffixIcon', async () => {
-    const wrapper = await mount(Input, {
+  it('should render props.suffixIcon', () => {
+    const wrapper =  mount(Input, {
       propsData: {
         suffixIcon: 'el-icon-view'
       }
@@ -160,7 +159,7 @@ describe('suffix-icon', () => {
 
 describe('autocomplete', () => {
   it('should render autocomplete', async () => {
-    const wrapper = await mount(Input, {
+    const wrapper = mount(Input, {
       attrs: {
         autocomplete: 'off'
       }
@@ -173,8 +172,8 @@ describe('autocomplete', () => {
 })
 
 describe('name attribute', () => {
-  it('should render name attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render name attribute',  () => {
+    const wrapper =  mount(Input, {
       attrs: {
         name: 'username'
       }
@@ -187,22 +186,22 @@ describe('name attribute', () => {
 })
 
 describe('readonly attribute', () => {
-  it('should render readonly attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render readonly attribute', () => {
+    const wrapper = mount(Input, {
       attrs: {
         readonly: ''
       }
     })
 
     expect(
-      wrapper.find('.el-input__inner').attributes('readonly')
-    ).not.toBeUndefined()
+      wrapper.find('.el-input__inner').attributes()
+    ).toHaveProperty('readonly')
   })
 })
 
 describe('max attribute', () => {
-  it('should render max attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render max attribute', () => {
+    const wrapper = mount(Input, {
       attrs: {
         max: 13
       }
@@ -213,8 +212,8 @@ describe('max attribute', () => {
 })
 
 describe('min attribute', () => {
-  it('should render min attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render min attribute',  () => {
+    const wrapper = mount(Input, {
       attrs: {
         min: 13
       }
@@ -224,21 +223,10 @@ describe('min attribute', () => {
   })
 })
 
-describe('min attribute', () => {
-  it('should render min attribute', async () => {
-    const wrapper = await mount(Input, {
-      attrs: {
-        min: 13
-      }
-    })
-
-    expect(wrapper.find('.el-input__inner').attributes('min')).toEqual('13')
-  })
-})
 
 describe('step attribute', () => {
-  it('should render step attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render step attribute',  () => {
+    const wrapper = mount(Input, {
       attrs: {
         step: ','
       }
@@ -249,22 +237,22 @@ describe('step attribute', () => {
 })
 
 describe('autofocus attribute', () => {
-  it('should render autofocus attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render autofocus attribute', () => {
+    const wrapper = mount(Input, {
       attrs: {
         autofocus: 'autofocus'
       }
     })
 
     expect(
-      wrapper.find('.el-input__inner').attributes('autofocus')
-    ).not.toBeUndefined()
+      wrapper.find('.el-input__inner').attributes()
+    ).toHaveProperty('autofocus')
   })
 })
 
 describe('form attribute', () => {
-  it('should render form attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render form attribute',  () => {
+    const wrapper =  mount(Input, {
       attrs: {
         form: 'form_id'
       }
@@ -277,8 +265,8 @@ describe('form attribute', () => {
 })
 
 describe('label attribute', () => {
-  it('should render label attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render label attribute', () => {
+    const wrapper = mount(Input, {
       attrs: {
         label: 'label'
       }
@@ -291,8 +279,8 @@ describe('label attribute', () => {
 })
 
 describe('tabindex attribute', () => {
-  it('should render tabindex attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render tabindex attribute',  () => {
+    const wrapper = mount(Input, {
       attrs: {
         tabindex: 12
       }
@@ -307,7 +295,7 @@ describe('tabindex attribute', () => {
 describe('validate-event attribute', () => {
   it('should call validate-event when validate-event eq true', async () => {
     var called = false
-    const wrapper = await mount(Input, {
+    const wrapper = mount(Input, {
       propsData: {
         modelValue: 'test',
         validateEvent: true
@@ -330,7 +318,7 @@ describe('validate-event attribute', () => {
 
   it('should call validate-event when validate-event eq false', async () => {
     var called = false
-    const wrapper = await mount(Input, {
+    const wrapper = mount(Input, {
       propsData: {
         modelValue: 'test',
         validateEvent: false
@@ -354,7 +342,7 @@ describe('validate-event attribute', () => {
 
 describe('solt', () => {
   it('should render solt prefix', async () => {
-    const wrapper = await mount(Input, {
+    const wrapper = mount(Input, {
       propsData: {
         prefixIcon: 'el-view'
       },
@@ -368,7 +356,7 @@ describe('solt', () => {
   })
 
   it('should render solt suffix', async () => {
-    const wrapper = await mount(Input, {
+    const wrapper = mount(Input, {
       propsData: {
         suffixIcon: 'el-view'
       },
@@ -382,7 +370,7 @@ describe('solt', () => {
   })
 
   it('should render solt prepend', async () => {
-    const wrapper = await mount(Input, {
+    const wrapper = mount(Input, {
       slots: {
         prepend: 'prepend solt'
       }
@@ -395,7 +383,7 @@ describe('solt', () => {
   })
 
   it('should render solt append', async () => {
-    const wrapper = await mount(Input, {
+    const wrapper = mount(Input, {
       slots: {
         append: 'append solt'
       }
@@ -473,8 +461,8 @@ describe('clear', () => {
 })
 
 describe('methods', () => {
-  it('should export method focus', async () => {
-    const wrapper = await mount({
+  it('should export method focus', () => {
+    const wrapper = mount({
       setup() {
         const inputRef = ref(null)
         return {
@@ -485,11 +473,11 @@ describe('methods', () => {
       template: `<Input ref="inputRef" />`
     })
 
-    expect(wrapper.vm.inputRef.focus).not.toBeUndefined()
+    expect(wrapper.vm.inputRef.focus).toBeDefined()
   })
 
-  it('should export method blur', async () => {
-    const wrapper = await mount({
+  it('should export method blur', () => {
+    const wrapper = mount({
       setup() {
         const inputRef = ref(null)
         return {
@@ -500,11 +488,11 @@ describe('methods', () => {
       template: `<Input ref="inputRef"/>`
     })
 
-    expect(wrapper.vm.inputRef.blur).not.toBeUndefined()
+    expect(wrapper.vm.inputRef.blur).toBeDefined()
   })
 
-  it('should export method select', async () => {
-    const wrapper = await mount({
+  it('should export method select', () => {
+    const wrapper = mount({
       setup() {
         const inputRef = ref(null)
         return {
@@ -515,6 +503,6 @@ describe('methods', () => {
       template: `<Input ref="inputRef"/>`
     })
 
-    expect(wrapper.vm.inputRef.select).not.toBeUndefined()
+    expect(wrapper.vm.inputRef.select).toBeDefined()
   })
 })

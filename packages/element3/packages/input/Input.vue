@@ -89,7 +89,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, toRefs, reactive } from 'vue'
+import { defineComponent, toRef, reactive } from 'vue'
 import { props } from './props'
 
 import { useInput, useTextarea, useInputMethod, useInputEvent } from './use'
@@ -134,7 +134,7 @@ export default defineComponent({
       (state.isVisiablePassword = !state.isVisiablePassword)
 
     return {
-      ...toRefs(state),
+      isVisiablePassword: toRef(state, 'isVisiablePassword'),
       focus,
       select,
       blur,

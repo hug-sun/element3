@@ -3,8 +3,8 @@ import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 
 describe('pass attrs to children', () => {
-  it('get attrs in textarea chidren', async () => {
-    const wrapper = await mount(Input, {
+  it('get attrs in textarea chidren',  () => {
+    const wrapper =  mount(Input, {
       propsData: {
         type: 'textarea',
         placeholder: 'placeholder'
@@ -19,7 +19,7 @@ describe('pass attrs to children', () => {
 
 describe('props', () => {
   it('should render disable', async () => {
-    const wrapper = await mount(Input, {
+    const wrapper =  mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -28,13 +28,13 @@ describe('props', () => {
       }
     })
     await nextTick()
-    expect(wrapper.find('textarea').attributes('disabled')).not.toBeUndefined()
+    expect(wrapper.find('textarea').attributes()).toHaveProperty('disabled')
   })
 })
 
 describe('show-word-limit', () => {
   it('should render limit-word', async () => {
-    const wrapper = await mount({
+    const wrapper =  mount({
       data: () => {
         return {
           text: 'textarea'
@@ -53,8 +53,8 @@ describe('show-word-limit', () => {
 })
 
 describe('name attribute', () => {
-  it('should render name attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render name attribute',  () => {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -69,7 +69,7 @@ describe('name attribute', () => {
 
 describe('readonly attribute', () => {
   it('should render readonly attribute', async () => {
-    const wrapper = await mount(Input, {
+    const wrapper =  mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -78,13 +78,13 @@ describe('readonly attribute', () => {
       }
     })
 
-    expect(wrapper.find('textarea').attributes('readonly')).not.toBeUndefined()
+    expect(wrapper.find('textarea').attributes()).toHaveProperty('readonly')
   })
 })
 
 describe('max attribute', () => {
-  it('should render max attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render max attribute',  () => {
+    const wrapper =  mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -98,8 +98,8 @@ describe('max attribute', () => {
 })
 
 describe('min attribute', () => {
-  it('should render min attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render min attribute',  () => {
+    const wrapper =  mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -113,8 +113,8 @@ describe('min attribute', () => {
 })
 
 describe('autofocus attribute', () => {
-  it('should render autofocus attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render autofocus attribute',  () => {
+    const wrapper =  mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -123,13 +123,13 @@ describe('autofocus attribute', () => {
       }
     })
 
-    expect(wrapper.find('textarea').attributes('autofocus')).not.toBeUndefined()
+    expect(wrapper.find('textarea').attributes()).toHaveProperty('autofocus')
   })
 })
 
 describe('form attribute', () => {
-  it('should render form attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render form attribute', () => {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -143,8 +143,8 @@ describe('form attribute', () => {
 })
 
 describe('label attribute', () => {
-  it('should render label attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render label attribute', () => {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -158,8 +158,8 @@ describe('label attribute', () => {
 })
 
 describe('tabindex attribute', () => {
-  it('should render tabindex attribute', async () => {
-    const wrapper = await mount(Input, {
+  it('should render tabindex attribute', () => {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -175,7 +175,7 @@ describe('tabindex attribute', () => {
 describe('validate-event attribute', () => {
   it('should call validate-event when validate-event eq true', async () => {
     var called = false
-    const wrapper = await mount(Input, {
+    const wrapper =  mount(Input, {
       propsData: {
         type: 'textarea',
         modelValue: 'test',
@@ -199,7 +199,7 @@ describe('validate-event attribute', () => {
 
   it('should call validate-event when validate-event eq false', async () => {
     var called = false
-    const wrapper = await mount(Input, {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea',
         modelValue: 'test',
@@ -223,7 +223,7 @@ describe('validate-event attribute', () => {
 })
 
 describe('blur', () => {
-  it('should call custome blur event', async () => {
+  it('should call custome blur event', () => {
     const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
@@ -236,7 +236,7 @@ describe('blur', () => {
 })
 
 describe('focus', () => {
-  it('should call custome focus event', async () => {
+  it('should call custome focus event',  () => {
     const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
@@ -249,7 +249,7 @@ describe('focus', () => {
 })
 
 describe('change', () => {
-  it('should call custome change event', async () => {
+  it('should call custome change event',  () => {
     const wrapper = mount(Input, {
       propsData: {
         type: 'textarea',
@@ -265,7 +265,7 @@ describe('change', () => {
 })
 
 describe('input', () => {
-  it('should call custome input event', async () => {
+  it('should call custome input event',  () => {
     const wrapper = mount(Input, {
       propsData: {
         type: 'textarea',
@@ -280,12 +280,3 @@ describe('input', () => {
   })
 })
 
-// describe('input focus', () => {
-//   it.only('click input ref focus method input should focused', () => {
-//     const wrapper = mount(Input)
-
-//     wrapper.vm.methods.focus()  // 不生效
-
-//     expect(wrapper.vm.$refs.input).toHaveFocus() // 不生效
-//   })
-// })
