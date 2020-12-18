@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import Progress from '../Progress.vue'
+import Color from '../../color-picker/src/color'
 // import { getByTestId } from '@testing-library/jest-dom'
 
 describe('Progress.vue', () => {
@@ -40,25 +41,85 @@ describe('Progress.vue', () => {
       containText(wrapper, '.el-progress__text', '满')
     })
 
-    it('color', async () => {
-      const color = '#409eff'
+    it('color string', async () => {
+      const color1 = '#409eff'
       const percentage = 30
-      const props = { percentage, color }
+      const props = { percentage, color: color1 }
       const wrapper = mount(Progress, { props })
+      const c1 = fromHexToRgb(color1)
+      expect(c1).toBe('rgb(64, 158, 255)')
       containStyle(
         wrapper,
         '.el-progress-bar__inner',
-        `background-color: rgb(64, 158, 255);`
+        `background-color: ${c1};`
       )
-      await wrapper.setProps({ color: '#336699' })
+      const color2 = '#336699'
+      await wrapper.setProps({ color: color2 })
+      const c2 = fromHexToRgb(color2)
+      expect(c2).toBe('rgb(51, 102, 153)')
       containStyle(
         wrapper,
         '.el-progress-bar__inner',
-        `background-color: rgb(51, 102, 153);`
+        `background-color: ${c2};`
+      )
+    })
+
+    it('color function', async () => {
+      const color = (percentage) => {
+        if (percentage < 30) {
+          return '#33ff99'
+        } else if (percentage < 70) {
+          return '#ff9900'
+        } else {
+          return '#993300'
+        }
+      }
+      const p1 = 20
+      const props = { percentage: p1, color }
+      const wrapper = mount(Progress, { props })
+
+      const c1 = fromHexToRgb(color(p1))
+      expect(c1).toBe('rgb(51, 255, 153)')
+
+      containStyle(
+        wrapper,
+        '.el-progress-bar__inner',
+        `background-color: ${c1};`
+      )
+
+      const p2 = 50
+      await wrapper.setProps({ percentage: p2 })
+
+      const c2 = fromHexToRgb(color(p2))
+      expect(c2).toBe('rgb(255, 153, 0)')
+
+      containStyle(
+        wrapper,
+        '.el-progress-bar__inner',
+        `background-color: ${c2};`
+      )
+
+      const p3 = 80
+      await wrapper.setProps({ percentage: p3 })
+
+      const c3 = fromHexToRgb(color(p3))
+      expect(c3).toBe('rgb(153, 51, 0)')
+
+      containStyle(
+        wrapper,
+        '.el-progress-bar__inner',
+        `background-color: ${c3};`
       )
     })
   })
 })
+
+function fromHexToRgb(hex) {
+  const c = new Color()
+  c.fromString(hex)
+  const rgb = c.toRgb()
+  return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`
+}
 
 function testPercentage(wrapper, percentage) {
   containText(wrapper, '.el-progress__text', `${percentage}%`)
