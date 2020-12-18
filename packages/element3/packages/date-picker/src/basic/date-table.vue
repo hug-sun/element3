@@ -72,6 +72,7 @@ const removeFromArray = function (arr, pred) {
 
 export default {
   mixins: [Locale],
+  emits: ['pick'],
 
   props: {
     firstDayOfWeek: {
@@ -246,7 +247,7 @@ export default {
           )
           cell.customClass =
             typeof cellClassName === 'function' && cellClassName(cellDate)
-          this.$set(row, this.showWeekNumber ? j + 1 : j, cell)
+          row[this.showWeekNumber ? j + 1 : j] = cell
         }
 
         if (this.selectionMode === 'week') {
