@@ -1,23 +1,25 @@
 <template>
-  <transition name="el-notification-fade" appear>
+  <transition
+    name="el-notification-fade"
+    @after-leave="handleAfterLeave"
+    appear
+  >
     <div
       :class="['el-notification', customClass, horizontalClass]"
       v-show="visible"
       :style="positionStyle"
-      @mouseenter="clearTimer()"
-      @mouseleave="startTimer()"
-      @click="click"
+      @click="handleClick"
+      @keydown="handleKeydown"
+      @mouseenter="handleMouseenter"
+      @mouseleave="handleMouseleave"
       role="alert"
     >
       <i
         class="el-notification__icon"
-        :class="[typeClass, iconClass]"
+        :class="typeClass || iconClass"
         v-if="type || iconClass"
       ></i>
-      <div
-        class="el-notification__group"
-        :class="{ 'is-with-icon': typeClass || iconClass }"
-      >
+      <div class="el-notification__group">
         <h2 class="el-notification__title" v-text="title"></h2>
         <div class="el-notification__content" v-show="message">
           <slot>
@@ -28,7 +30,7 @@
         <div
           class="el-notification__closeBtn el-icon-close"
           v-if="showClose"
-          @click.stop="close"
+          @click="handleClose"
         ></div>
       </div>
     </div>
@@ -36,20 +38,7 @@
 </template>
 
 <script>
-import {
-  computed,
-  getCurrentInstance,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch
-} from 'vue'
-const typeMap = {
-  success: 'success',
-  info: 'info',
-  warning: 'warning',
-  error: 'error'
-}
+import { computed, getCurrentInstance, ref } from 'vue'
 export default {
   name: 'ElNotification',
   props: {
@@ -60,111 +49,113 @@ export default {
     id: { type: String, default: '' },
     verticalOffset: { type: Number, default: 0 },
     message: [String, Object],
-    position: {
-      type: String,
-      default: 'top-right'
-    },
-    onClose: null,
+    position: { type: String, default: 'top-right' },
     onClick: null,
     showClose: { type: Boolean, default: true },
     title: { type: String, default: '' },
-    type: { type: String, default: '' }
+    type: {
+      type: String,
+      default: '',
+      validator(val) {
+        return ['', 'success', 'warning', 'info', 'error'].includes(val)
+      }
+    }
   },
   emits: ['close'],
-  setup(props) {
-    // eslint-disable-next-line vue/no-setup-props-destructure
-    const { duration, onClose, onClick } = props
+  setup(props, { emit }) {
+    const instance = getCurrentInstance()
+    const visible = ref(true)
+    const verticalOffsetVal = ref(props.verticalOffset)
+
     const typeClass = computed(() => {
-      return props.type && typeMap[props.type]
-        ? `el-icon-${typeMap[props.type]}`
-        : ''
+      return props.type ? `el-icon-${props.type}` : ''
     })
+
     const horizontalClass = computed(() => {
       return props.position.indexOf('right') > -1 ? 'right' : 'left'
     })
+
     const verticalProperty = computed(() => {
       return props.position.startsWith('top') ? 'top' : 'bottom'
     })
+
     const positionStyle = computed(() => {
       return {
-        [verticalProperty.value]: `${props.verticalOffset}px`
-        // zIndex,
+        [verticalProperty.value]: `${verticalOffsetVal.value}px`
       }
     })
-    const instance = getCurrentInstance()
-    const visible = ref(true)
-    const closed = ref(false)
-    const timer = ref(0)
-    const destroyElement = () => {
-      instance.ctx.$el.parentNode && instance.ctx.$el.parentNode.removeChild(instance.ctx.$el)
+
+    function _click() {
+      emit('click', instance)
     }
-    const clearTimer = () => {
-      clearTimeout(timer.value)
+    function handleClick() {
+      _click()
     }
-    const close = () => {
-      closed.value = true
-      if (typeof onClose === 'function') {
-        onClose()
+
+    function click() {
+      _click()
+    }
+
+    function _close() {
+      clearTimeout(timer)
+      emit('close', instance)
+      visible.value = false
+    }
+    function handleClose() {
+      _close()
+    }
+
+    function close() {
+      _close()
+    }
+
+    let timer
+    function delayClose() {
+      if (props.duration > 0) {
+        timer = setTimeout(() => {
+          _close()
+        }, props.duration)
       }
     }
-    const startTimer = () => {
-      if (duration > 0) {
-        timer.value = setTimeout(() => {
-          if (!closed.value) {
-            close()
-          }
-        }, duration)
-      }
-    }
-    const keydown = (e) => {
+
+    const handleKeydown = (e) => {
       if (e.keyCode === 46 || e.keyCode === 8) {
-        clearTimer() // detele 取消倒计时
+        clearTimeout(timer)
       } else if (e.keyCode === 27) {
-        // esc关闭消息
-        if (!closed.value) {
-          close()
-        }
+        _close()
       } else {
-        startTimer() // 恢复倒计时
+        delayClose()
       }
     }
-    const click = () => {
-      if (typeof onClick === 'function') {
-        onClick()
-      }
+
+    function handleMouseenter() {
+      clearTimeout(timer)
     }
-    watch(closed, (newVal) => {
-      if (newVal) {
-        visible.value = false
-        instance.ctx.$el.addEventListener('transitionend', destroyElement)
-      }
-    })
-    onMounted(() => {
-      if (duration > 0) {
-        timer.value = setTimeout(() => {
-          if (!closed.value) {
-            close()
-          }
-        }, duration)
-      }
-      visible.value = true
-      document.addEventListener('keydown', keydown)
-    })
-    onBeforeUnmount(() => {
-      document.removeEventListener('keydown', keydown)
-    })
+    function handleMouseleave() {
+      delayClose()
+    }
+
+    function handleAfterLeave() {
+      instance.vnode.el.parentElement?.removeChild(instance.vnode.el)
+    }
+
+    delayClose()
+
     return {
+      close,
+      click,
+      visible,
       typeClass,
+      positionStyle,
       horizontalClass,
       verticalProperty,
-      positionStyle,
-      visible,
-      closed,
-      timer,
-      click,
-      clearTimer,
-      startTimer,
-      close
+      verticalOffsetVal,
+      handleClose,
+      handleClick,
+      handleKeydown,
+      handleMouseenter,
+      handleMouseleave,
+      handleAfterLeave
     }
   }
 }

@@ -1,63 +1,122 @@
-import { defineComponent, createVNode, render, isVNode } from 'vue'
-import Main from './Notification.vue'
-import merge from '../../src/utils/merge'
+import { isVNode } from 'vue'
+import notificationComponent from './Notification.vue'
+import { createComponent } from '../../src/use/component.js'
 import { PopupManager } from '../../src/utils/popup'
 
-const NotificationConstructor = defineComponent(Main)
-
-let instance
-const instances = []
 let seed = 1
+const instanceList = []
+const INTERVAL_HEIGHT = 16
 
-const Notification = function (options) {
-  // check ssr
-  if (window === undefined) return
+export function Notification(options) {
+  return createNotification(mergeProps(options))
+}
 
-  const userOnClose = options.onClose
+function addInstance(instance) {
+  instanceList.push(instance)
+}
+
+function createNotification(options) {
+  const instance = createNotificationByOpts(options)
+  setZIndex(instance)
+  addInstance(instance)
+  addToBody(instance)
+  return instance.proxy
+}
+
+function createNotificationByOpts(opts) {
+  if (isVNode(opts.message)) {
+    return createComponent(notificationComponent, opts, () => opts.message)
+  }
+
+  return createComponent(notificationComponent, opts)
+}
+
+function setZIndex(instance) {
+  instance.vnode.el.style.zIndex = PopupManager.nextZIndex()
+}
+
+function addToBody(instance) {
+  document.body.append(instance.vnode.el)
+}
+
+function mergeProps(options) {
   const id = 'notification_' + seed++
   const position = options.position || 'top-right'
-  let verticalOffset = options.offset || 0
-  instances
-    .filter((instance) => instance.component.props.position === position)
+
+  const verticalOffset = calculateVerticalOffset(position)
+
+  const defaultOptions = {
+    id,
+    position,
+    verticalOffset
+  }
+  const userOnClose = options?.onClose
+  delete options?.onClose
+  defaultOptions.onClose = (instance) => {
+    closeNotification(instance)
+    if (userOnClose) userOnClose(instance.proxy)
+  }
+
+  const userOnClick = options?.onClick
+  delete options?.onClick
+  defaultOptions.onClick = (instance) => {
+    if (userOnClick) userOnClick(instance.proxy)
+  }
+
+  if (typeof options === 'string' || isVNode(options)) {
+    defaultOptions.message = options
+    return defaultOptions
+  }
+  return Object.assign({}, defaultOptions, options)
+}
+
+function calculateVerticalOffset(position, offset = 0) {
+  let verticalOffset = offset
+  instanceList
+    .filter((instance) => instance.props.position === position)
     .forEach((instance) => {
-      verticalOffset += (instance.el.offsetHeight || 0) + 16
+      verticalOffset += (instance.vnode.el.offsetHeight || 0) + INTERVAL_HEIGHT
     })
-  verticalOffset += 16
-  const nextZIndex = PopupManager.nextZIndex()
-  options = merge(
-    {
-      id,
-      position,
-      verticalOffset,
-      zIndex: nextZIndex,
-      onClose() {
-        Notification.close(id, userOnClose)
-      }
-    },
-    options
-  )
-  instance = createVNode(
-    NotificationConstructor,
-    options,
-    isVNode(options.message)
-      ? {
-          default: () => options.message
-        }
-      : null
-  )
+  verticalOffset += INTERVAL_HEIGHT
 
-  // 防止render直接到body上导致覆盖原来的
-  const container = document.createElement('div')
+  return verticalOffset
+}
 
-  render(instance, container)
-  instance.el.style.zIndex = nextZIndex
-  instances.push(instance)
-  document.body.appendChild(instance.el)
-  return {
-    close() {
-      Notification.close(id, userOnClose)
+function closeNotification(instance) {
+  updatePosition(instance)
+  removeInstance(instance)
+}
+
+function updatePosition(closeInstance) {
+  const currentInstanceIndex = getIndexByInstance(closeInstance)
+  if (currentInstanceIndex < 0) return
+
+  for (let index = currentInstanceIndex; index < instanceList.length; index++) {
+    const instance = instanceList[index]
+
+    if (closeInstance.props.position === instance.props.position) {
+      instance.vnode.el.style[
+        instance.props.position.startsWith('top') ? 'top' : 'bottom'
+      ] =
+        parseInt(
+          instance.vnode.el.style[
+            instance.props.position.startsWith('top') ? 'top' : 'bottom'
+          ],
+          10
+        ) -
+        instance.vnode.el.offsetHeight -
+        INTERVAL_HEIGHT +
+        'px'
     }
   }
+}
+
+function removeInstance(instance) {
+  instanceList.splice(getIndexByInstance(instance), 1)
+}
+
+function getIndexByInstance(instance) {
+  return instanceList.findIndex((i) => i.uid == instance.uid)
 }
 
 ;['success', 'warning', 'info', 'error'].forEach((type) => {
@@ -72,51 +131,9 @@ const Notification = function (options) {
   }
 })
 
-Notification.close = function (id, userOnClose) {
-  const index = instances.findIndex((instance) => {
-    return instance.component.props.id === id
+Notification.closeAll = () => {
+  instanceList.forEach((instance) => {
+    instance.proxy.close()
+    removeInstance(instance)
   })
-  if (index === -1) {
-    return
-  }
-
-  const instance = instances[index]
-
-  if (typeof userOnClose === 'function') {
-    userOnClose(instance)
-  }
-
-  const len = instances.length
-  instances.splice(index, 1)
-
-  if (len <= 1) return
-
-  const position = instance.component.props.position
-  const removedHeight = instance.el.offsetHeight
-  for (let i = index; i < len - 1; i++) {
-    if (instances[i].component.props.position === position) {
-      instances[i].el.style[
-        instance.component.props.position.startsWith('top') ? 'top' : 'bottom'
-      ] =
-        parseInt(
-          instances[i].el.style[
-            instance.component.props.position.startsWith('top')
-              ? 'top'
-              : 'bottom'
-          ],
-          10
-        ) -
-        removedHeight -
-        16 +
-        'px'
-    }
-  }
 }
-
-Notification.closeAll = function () {
-  for (let i = instances.length - 1; i >= 0; i--) {
-    instances[i].component.ctx.close()
-  }
-}
-
-export default Notification
