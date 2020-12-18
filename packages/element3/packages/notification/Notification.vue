@@ -38,9 +38,9 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, ref } from 'vue'
+import { computed, getCurrentInstance, ref, defineComponent } from 'vue'
 import { notificationProps } from './props.js'
-export default {
+export default defineComponent({
   name: 'ElNotification',
   props: notificationProps,
   emits: ['close'],
@@ -140,5 +140,5 @@ export default {
       handleAfterLeave
     }
   }
-}
+})
 </script>
