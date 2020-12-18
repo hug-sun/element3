@@ -1,6 +1,13 @@
 import { mount } from '@vue/test-utils'
 import Progress from '../Progress.vue'
+import {
+  getColorsIndex,
+  getRefValue,
+  sortByPercentage,
+  toPercentageColors
+} from '../Progress.vue'
 import Color from '../../color-picker/src/color'
+import { isRef, toRefs, reactive } from 'vue'
 // import { getByTestId } from '@testing-library/jest-dom'
 
 describe('Progress.vue', () => {
@@ -29,6 +36,7 @@ describe('Progress.vue', () => {
       const wrapper = mount(Progress, {
         props: { percentage }
       })
+      testPercentage(wrapper, 58)
       await wrapper.setProps({ percentage: 28 })
       testPercentage(wrapper, 28)
     })
@@ -46,22 +54,10 @@ describe('Progress.vue', () => {
       const percentage = 30
       const props = { percentage, color: color1 }
       const wrapper = mount(Progress, { props })
-      const c1 = fromHexToRgb(color1)
-      expect(c1).toBe('rgb(64, 158, 255)')
-      containStyle(
-        wrapper,
-        '.el-progress-bar__inner',
-        `background-color: ${c1};`
-      )
+      testProgressColor(wrapper, color1)
       const color2 = '#336699'
       await wrapper.setProps({ color: color2 })
-      const c2 = fromHexToRgb(color2)
-      expect(c2).toBe('rgb(51, 102, 153)')
-      containStyle(
-        wrapper,
-        '.el-progress-bar__inner',
-        `background-color: ${c2};`
-      )
+      testProgressColor(wrapper, color2)
     })
 
     it('color function', async () => {
@@ -78,41 +74,129 @@ describe('Progress.vue', () => {
       const props = { percentage: p1, color }
       const wrapper = mount(Progress, { props })
 
-      const c1 = fromHexToRgb(color(p1))
-      expect(c1).toBe('rgb(51, 255, 153)')
-
-      containStyle(
-        wrapper,
-        '.el-progress-bar__inner',
-        `background-color: ${c1};`
-      )
+      testProgressColor(wrapper, color(p1))
 
       const p2 = 50
       await wrapper.setProps({ percentage: p2 })
 
-      const c2 = fromHexToRgb(color(p2))
-      expect(c2).toBe('rgb(255, 153, 0)')
-
-      containStyle(
-        wrapper,
-        '.el-progress-bar__inner',
-        `background-color: ${c2};`
-      )
+      testProgressColor(wrapper, color(p2))
 
       const p3 = 80
       await wrapper.setProps({ percentage: p3 })
 
-      const c3 = fromHexToRgb(color(p3))
-      expect(c3).toBe('rgb(153, 51, 0)')
+      testProgressColor(wrapper, color(p3))
+    })
 
-      containStyle(
-        wrapper,
-        '.el-progress-bar__inner',
-        `background-color: ${c3};`
-      )
+    it('get index of percentage in array', () => {
+      const colors = [
+        { color: '#1989fa', percentage: 80 },
+        { color: '#f56c6c', percentage: 20 },
+        { color: '#6f7ad3', percentage: 100 },
+        { color: '#5cb87a', percentage: 60 },
+        { color: '#e6a23c', percentage: 40 }
+      ]
+      colors.sort(sortByPercentage)
+      expect(getColorsIndex(colors, 0)).toBe(0)
+      expect(getColorsIndex(colors, 12)).toBe(0)
+      expect(getColorsIndex(colors, 20)).toBe(1)
+      expect(getColorsIndex(colors, 32)).toBe(1)
+      expect(getColorsIndex(colors, 42)).toBe(2)
+      expect(getColorsIndex(colors, 62)).toBe(3)
+      expect(getColorsIndex(colors, 82)).toBe(4)
+      expect(getColorsIndex(colors, 100)).toBe(4)
+    })
+
+    it('should get ref value correct', () => {
+      expect(isRef(undefined)).toBeFalsy()
+      expect(isRef(null)).toBeFalsy()
+      expect(isRef(0)).toBeFalsy()
+      expect(isRef('')).toBeFalsy()
+      expect(isRef(false)).toBeFalsy()
+      expect(isRef(true)).toBeFalsy()
+      const props = reactive({
+        percentage: 0,
+        color: ['#336699', '#339966', '#996633']
+      })
+      const { percentage, color } = toRefs(props)
+      const pv = getRefValue(percentage) // percentage.value
+      expect(pv).toBe(props.percentage)
+      const cv = color.value // getRefValue(color)
+      expect(cv).toEqual(props.color)
+    })
+
+    it('should map to percentage colors correct', () => {
+      const colors = ['#336699', '#339966', '#996633', '#663399']
+      const rs = toPercentageColors(colors)
+      expect(rs.length).toBe(4)
+      expect(rs[0].color).toBe(colors[0])
+      expect(rs[0].percentage).toBe(25)
+      expect(rs[1].percentage).toBe(50)
+      expect(rs[2].percentage).toBe(75)
+      expect(rs[3].percentage).toBe(100)
+
+      const colorObjs = [
+        { color: '#1989fa', percentage: 80 },
+        { color: '#6f7ad3', percentage: 100 },
+        { color: '#5cb87a', percentage: 60 },
+        { color: '#f56c6c', percentage: 20 },
+        { color: '#e6a23c', percentage: 40 }
+      ]
+      const objs = toPercentageColors(colorObjs)
+      expect(objs.length).toBe(5)
+      expect(objs[0].color).toBe(colorObjs[0].color)
+      expect(objs[0].percentage).toBe(80)
+      expect(objs[1].percentage).toBe(100)
+      expect(objs[2].percentage).toBe(60)
+      expect(objs[3].percentage).toBe(20)
+      expect(objs[4].percentage).toBe(40)
+    })
+
+    it('color string array', async () => {
+      const colors = ['#336699', '#339966', '#996633']
+      const percentage = 15
+      const props = { percentage, color: colors }
+      const wrapper = mount(Progress, { props })
+      testProgressColor(wrapper, colors[0])
+
+      await wrapper.setProps({ percentage: 0 })
+      testProgressColor(wrapper, colors[0])
+      await wrapper.setProps({ percentage: 10 })
+      testProgressColor(wrapper, colors[0])
+      await wrapper.setProps({ percentage: 35 })
+      testProgressColor(wrapper, colors[1])
+      await wrapper.setProps({ percentage: 65 })
+      testProgressColor(wrapper, colors[1])
+      await wrapper.setProps({ percentage: 67 })
+      testProgressColor(wrapper, colors[2])
+      await wrapper.setProps({ percentage: 100 })
+      testProgressColor(wrapper, colors[2])
+    })
+
+    it('color object array', () => {
+      const colors = [
+        { color: '#1989fa', percentage: 80 },
+        { color: '#6f7ad3', percentage: 100 },
+        { color: '#5cb87a', percentage: 60 },
+        { color: '#f56c6c', percentage: 20 },
+        { color: '#e6a23c', percentage: 40 }
+      ]
+      colors.sort(sortByPercentage)
+      expect(colors[0].percentage).toBe(20)
+      expect(colors[3].percentage).toBe(80)
+      expect(colors[4].percentage).toBe(100)
+      const percentage = 85
+      const props = { percentage, color: colors }
+      const wrapper = mount(Progress, { props })
+      expect(wrapper).toBeDefined()
+      testProgressColor(wrapper, colors[4].color)
     })
   })
 })
+
+function testProgressColor(wrapper, color) {
+  const rgb = fromHexToRgb(color)
+  containStyle(wrapper, '.el-progress-bar__inner', `background-color: ${rgb};`)
+}
 
 function fromHexToRgb(hex) {
   const c = new Color()
