@@ -63,7 +63,7 @@
 </style>
 
 <script>
-import navConfig from '../nav.config.json'
+import navConfig from '../route/nav.config.json'
 
 export default {
   data() {

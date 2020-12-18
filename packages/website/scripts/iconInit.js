@@ -24,7 +24,7 @@ nodes.forEach((node) => {
 classList.reverse()
 
 fs.writeFile(
-  path.resolve(__dirname, '../examples/icon.json'),
+  path.resolve(__dirname, '../src/icon.json'),
   JSON.stringify(classList),
   () => {}
 )

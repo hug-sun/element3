@@ -150,7 +150,7 @@
 </template>
 <script>
   import bus from '../../bus';
-  import navsData from '../../nav.config.json';
+  import navsData from '../../route/nav.config.json';
   import {throttle} from 'throttle-debounce';
 
   export default {

@@ -16,13 +16,13 @@ const webpackConfig = {
   mode: process.env.NODE_ENV,
   entry: isProd
     ? {
-        docs: './examples/entry.js'
+        docs: './src/entry.js'
       }
     : isPlay
-    ? './examples/play.js'
-    : './examples/entry.js',
+    ? './src/play.js'
+    : './src/entry.js',
   output: {
-    path: path.resolve(process.cwd(), './examples/element-ui/'),
+    path: path.resolve(process.cwd(), './element-ui/'),
     publicPath: process.env.CI_ENV || '',
     filename: '[name].[hash:7].js',
     chunkFilename: isProd ? '[name].[hash:7].js' : '[name].js'
@@ -105,9 +105,9 @@ const webpackConfig = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: './examples/index.tpl',
-      filename: './index.html',
-      favicon: './examples/favicon.ico'
+      template: './src/index.tpl',
+      filename: './src/index.html',
+      favicon: './src/favicon.ico'
     }),
     new ProgressBarPlugin(),
     new VueLoaderPlugin(),

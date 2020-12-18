@@ -87,7 +87,7 @@
       padding: 0 30px;
       margin: 0;
       word-break: break-all;
-      line-height: 1.8;
+      line-height: <%= paraHeight >;
     }
     a {
       height: 42px;
@@ -127,44 +127,44 @@
 </style>
 <template>
   <div class="page-container page-resource">
-    <h2>资源</h2>
+    <h2><%= 1 ></h2>
     <!--<div class="resource-placeholder">-->
-      <!--<img src="~examples/assets/images/resource-placeholder.svg" alt="">-->
-      <!--<h4>整理中</h4>-->
-      <!--<p>设计资源正在整理和完善中</p>-->
+      <!--<img src="assets/images/resource-placeholder.svg" alt="">-->
+      <!--<h4><%= placeholder1 ></h4>-->
+      <!--<p><%= placeholder2 ></p>-->
     <!--</div>-->
     
-    <p>设计资源正在整理和完善中</p>
+    <p><%= placeholder2 ></p>
     <div class="cards">
       <ul class="container">
         <li>
           <div class="card">
-            <img src="~examples/assets/images/Axure-Components.svg" alt="">
-            <h3>Axure Components</h3>
-            <p>通过在 Axure 中导入 Element 组件库，可以在交互设计阶段方便地调用常用的组件</p>
+            <img src="assets/images/Axure-Components.svg" alt="">
+            <h3><%= 3 ></h3>
+            <p><%= 4 ></p>
             <a
               onclick="ga('send', 'event', 'ResourceDownload', 'Download', 'Axure');" 
               href="https://github.com/ElementUI/Resources/raw/master/Element_Components_v2.0.0.rplib"
-            >下载</a>
+            ><%= 5 ></a>
           </div>
         </li>
         <li>
           <div class="card">
-            <img src="~examples/assets/images/Sketch-Template.svg" alt="">
-            <h3>Sketch Template</h3>
-            <p>从 Element Template 快速调用常用组件，在提升设计效率的同时，保证统一的视觉风格</p>
+            <img src="assets/images/Sketch-Template.svg" alt="">
+            <h3><%= 6 ></h3>
+            <p><%= 7 ></p>
             <a 
               onclick="ga('send', 'event', 'ResourceDownload', 'Download', 'Sketch');"
               href="https://github.com/ElementUI/Resources/raw/master/Element%20UI%20Kit_v2.0.sketch"
-            >下载</a>
+            ><%= 5 ></a>
           </div>
         </li>
         <!--<li>-->
           <!--<div class="card">-->
-            <!--<img src="~examples/assets/images/Module.svg" alt="">-->
-            <!--<h3>组件交互文档</h3>-->
-            <!--<p>进一步查看 Element 交互文档，从一个较为微观的角度详细地了解各个组件的交互细节</p>-->
-            <!--<a href="https://github.com/ElementUI/Resources/raw/master/Element%20Components%20Documentation.zip">下载</a>-->
+            <!--<img src="assets/images/Module.svg" alt="">-->
+            <!--<h3><%= 8 ></h3>-->
+            <!--<p><%= 9 ></p>-->
+            <!--<a href="https://github.com/ElementUI/Resources/raw/master/Element%20Components%20Documentation.zip"><%= 5 ></a>-->
           <!--</div>-->
         <!--</li>-->
       </ul>

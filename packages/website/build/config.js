@@ -6,8 +6,7 @@ const externals = [nodeExternals()]
 exports.externals = externals
 
 exports.alias = {
-  main: path.resolve(__dirname, '../src'),
-  examples: path.resolve(__dirname, '../examples')
+  main: path.resolve(__dirname, '../src')
 }
 
 exports.vue = {

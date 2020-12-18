@@ -1,10 +1,10 @@
 import { defineAsyncComponent } from 'vue'
 import navConfig from './nav.config'
-import langs from './i18n/route'
+import langs from '../i18n/route'
 
 const LOAD_MAP = {
   'zh-CN': (name) => {
-    return defineAsyncComponent(() => import(`./pages/zh-CN/${name}.vue`))
+    return defineAsyncComponent(() => import(`../pages/zh-CN/${name}.vue`))
   }
 }
 
@@ -14,7 +14,7 @@ const load = function (lang, path) {
 
 const LOAD_DOCS_MAP = {
   'zh-CN': (path) => {
-    return defineAsyncComponent(() => import(`./docs/zh-CN${path}.md`))
+    return defineAsyncComponent(() => import(`..//docs/zh-CN/${path}.md`))
   }
 }
 
@@ -118,22 +118,11 @@ langs.forEach((lang) => {
 route.push({
   path: '/play',
   name: 'play',
-  component: require('./play/index.vue')
+  component: require('../play/index.vue')
 })
 //To-do:目前只支持中文环境，所以设置中文为默认值
 let defaultPath = '/zh-CN'
-// const userLanguage =
-//   localStorage.getItem('ELEMENT_LANGUAGE') ||
-//   window.navigator.language ||
-//   'zh-CN'
-// let defaultPath = '/zh-CN'
-// if (userLanguage.indexOf('zh-') !== -1) {
-//   defaultPath = '/zh-CN'
-// } else if (userLanguage.indexOf('es') !== -1) {
-//   defaultPath = '/es'
-// } else if (userLanguage.indexOf('fr') !== -1) {
-//   defaultPath = '/fr-FR'
-// }
+
 
 route = route.concat([
   {

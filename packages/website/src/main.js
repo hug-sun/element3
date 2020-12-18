@@ -3,7 +3,7 @@ import EntryApp from './app'
 
 import { createRouter, createWebHashHistory } from 'vue-router'
 import * as Element3 from 'element3'
-import routes from './route.config'
+import routes from './route'
 import demoBlock from './components/demo-block'
 import MainHeader from './components/header'
 import SideNav from './components/side-nav'
@@ -62,8 +62,8 @@ router.isReady().then(() => {
     //   const blocks = document.querySelectorAll('pre code:not(.hljs)');
     //   Array.prototype.forEach.call(blocks, hljs.highlightBlock);
     // },1000)
-
-    const data = title[route.meta.lang]
+    
+    const data = title['zh-CN']
     for (const val in data) {
       if (new RegExp('^' + val, 'g').test(route.name)) {
         document.title = data[val]

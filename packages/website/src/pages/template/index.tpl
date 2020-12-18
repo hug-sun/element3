@@ -291,23 +291,23 @@
       </div>
     </div>
     <div class="jumbotron" ref="indexMainImg">
-      <img src="~examples/assets/images/theme-index-blue.png" alt="">
+      <img src="assets/images/theme-index-blue.png" alt="">
       <div class="jumbotron-red" :style="{
            height: mainImgOffset + 'px'
          }">
-        <img src="~examples/assets/images/theme-index-red.png" alt="">
+        <img src="assets/images/theme-index-red.png" alt="">
       </div>
     </div>
     <div class="sponsors">
       <a class="sponsor" href="https://tipe.io/?ref=element" target="_blank" v-show="lang !== 'zh-CN'">
-        <img width="35px" src="~examples/assets/images/tipe.svg" alt="tipe.io">
+        <img width="35px" src="assets/images/tipe.svg" alt="tipe.io">
         <div>
           <p>Sponsored by Tipe.io</p>
           <p>Next Generation API-first CMS</p>
         </div>
       </a>
       <a class="sponsor" href="https://www.duohui.cn/?utm_source=element&utm_medium=web&utm_campaign=element-index" target="_blank">
-        <img width="45px" src="~examples/assets/images/duohui.svg" alt="duohui">
+        <img width="45px" src="assets/images/duohui.svg" alt="duohui">
         <div>
           <p>Sponsored by 多会</p>
           <p>炫酷的新一代活动票务系统</p>
@@ -318,7 +318,7 @@
       <ul class="container">
         <li>
           <div class="card">
-            <img src="~examples/assets/images/guide.png" alt="">
+            <img src="assets/images/guide.png" alt="">
             <h3><%= 3 ></h3>
             <p><%= 4 ></p>
             <router-link
@@ -330,7 +330,7 @@
         </li>
         <li>
           <div class="card">
-            <img src="~examples/assets/images/component.png" alt="">
+            <img src="assets/images/component.png" alt="">
             <h3><%= 6 ></h3>
             <p><%= 7 ></p>
             <router-link

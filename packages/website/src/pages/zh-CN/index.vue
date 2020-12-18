@@ -291,23 +291,23 @@
       </div>
     </div>
     <div class="jumbotron" ref="indexMainImg">
-      <img src="~examples/assets/images/theme-index-blue.png" alt="">
+      <img src="assets/images/theme-index-blue.png" alt="">
       <div class="jumbotron-red" :style="{
            height: mainImgOffset + 'px'
          }">
-        <img src="~examples/assets/images/theme-index-red.png" alt="">
+        <img src="assets/images/theme-index-red.png" alt="">
       </div>
     </div>
     <div class="sponsors">
       <a class="sponsor" href="https://tipe.io/?ref=element" target="_blank" v-show="lang !== 'zh-CN'">
-        <img width="35px" src="~examples/assets/images/tipe.svg" alt="tipe.io">
+        <img width="35px" src="assets/images/tipe.svg" alt="tipe.io">
         <div>
           <p>Sponsored by Tipe.io</p>
           <p>Next Generation API-first CMS</p>
         </div>
       </a>
       <a class="sponsor" href="https://www.duohui.cn/?utm_source=element&utm_medium=web&utm_campaign=element-index" target="_blank">
-        <img width="45px" src="~examples/assets/images/duohui.svg" alt="duohui">
+        <img width="45px" src="assets/images/duohui.svg" alt="duohui">
         <div>
           <p>Sponsored by 多会</p>
           <p>炫酷的新一代活动票务系统</p>
@@ -318,7 +318,7 @@
       <ul class="container">
         <li>
           <div class="card">
-            <img src="~examples/assets/images/guide.png" alt="">
+            <img src="assets/images/guide.png" alt="">
             <h3>指南</h3>
             <p>了解设计指南，帮助产品设计人员搭建逻辑清晰、结构合理且高效易用的产品。</p>
             <router-link
@@ -330,7 +330,7 @@
         </li>
         <li>
           <div class="card">
-            <img src="~examples/assets/images/component.png" alt="">
+            <img src="assets/images/component.png" alt="">
             <h3>组件</h3>
             <p>使用组件 Demo 快速体验交互细节；使用前端框架封装的代码帮助工程师快速开发。</p>
             <router-link

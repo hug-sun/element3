@@ -143,7 +143,7 @@
 ### 行高
 
 <div>
-<img class="lineH-left" src="~examples/assets/images/typography.png" />
+<img class="lineH-left" src="assets/images/typography.png" />
 <ul class="lineH-right">
 <li>line-height:1 <span>无行高</span></li>
 <li>line-height:1.3 <span>紧凑</span></li>
