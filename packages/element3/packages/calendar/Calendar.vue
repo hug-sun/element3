@@ -48,7 +48,7 @@
 <script>
 import { useLocale } from '../../src/use/locale'
 import fecha from '../../src/utils/date'
-import ElButton from '../button'
+import { ElButton } from '../../src/components/button'
 import ElButtonGroup from '../button-group'
 import DateTable from './DateTable'
 import { validateRangeInOneMonth } from '../../src/utils/date-util'

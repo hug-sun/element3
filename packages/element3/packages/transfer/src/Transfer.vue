@@ -51,7 +51,7 @@
 
 <script>
 import TransferPanel from './TransferPanel.vue'
-import ElButton from '../../button'
+import { ElButton } from '../../../src/components/button'
 import { useLocale } from '../../../src/use/locale'
 import { ref, computed, watch, provide } from 'vue'
 

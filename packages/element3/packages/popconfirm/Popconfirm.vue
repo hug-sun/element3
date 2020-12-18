@@ -28,7 +28,7 @@
 <script>
 import { reactive, toRefs } from 'vue'
 import ElPopover from '../popover'
-import ElButton from '../button'
+import { ElButton } from '../../src/components/button'
 import { t } from '../../src/locale'
 
 export default {

@@ -9,7 +9,7 @@ import ElFooter from '../packages/footer'
 import ElAside from '../packages/aside'
 import ElMain from '../packages/main'
 import ElIcon from '../packages/icon'
-import ElButton from '../packages/button'
+import { ElButton } from './components/button'
 import ElButtonGroup from '../packages/button-group'
 import ElLink from '../packages/link'
 // Form

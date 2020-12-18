@@ -81,7 +81,7 @@ import Predefine from './predefine'
 // import Popper from '../../../../src/utils/vue-popper'
 // import Locale from '../../../../src/mixins/locale'
 import ElInput from '../../../input'
-import ElButton from '../../../button'
+import { ElButton } from '../../../../src/components/button'
 
 export default {
   name: 'el-color-picker-dropdown',

@@ -11,7 +11,7 @@ import {
 import { useEmitter } from '../../../src/use/emitter.js'
 import Clickoutside from '../../../src/directives/clickoutside.js'
 
-import ElButton from '../../button'
+import { ElButton } from '../../../src/components/button'
 import ElButtonGroup from '../../button-group'
 import { generateId } from '../../../src/utils/util.js'
 

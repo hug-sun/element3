@@ -1,4 +1,4 @@
-import { props } from '../props'
+import { props } from '../src/props'
 describe('Button.props', () => {
   it('size', () => {
     const { size } = props
