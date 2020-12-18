@@ -31,7 +31,7 @@ function getComponentNameList(componentPath) {
       return !blacklist.includes(name)
     })
     .map((componentName) => {
-      return componentName + fileSuffix
+      return (componentName + fileSuffix).toLocaleLowerCase()
     })
 }
 
