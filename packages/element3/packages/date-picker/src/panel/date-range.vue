@@ -243,7 +243,7 @@ import Locale from '../../../../src/mixins/locale'
 import TimePicker from './time'
 import DateTable from '../basic/date-table'
 import ElInput from '../../../input'
-import { ElButton } from '../../../../src/components/button'
+import { ElButton } from '../../../../src/components/Button'
 
 const calcDefaultValue = (defaultValue) => {
   if (Array.isArray(defaultValue)) {

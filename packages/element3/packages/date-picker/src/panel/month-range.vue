@@ -106,7 +106,7 @@ import Clickoutside from '../../../../src/directives/clickoutside'
 import Locale from '../../../../src/mixins/locale'
 import MonthTable from '../basic/month-table'
 import ElInput from '../../../input'
-import { ElButton } from '../../../../src/components/button'
+import { ElButton } from '../../../../src/components/Button'
 
 const calcDefaultValue = (defaultValue) => {
   if (Array.isArray(defaultValue)) {
