@@ -1,4 +1,4 @@
-import Switch from '../Switch.vue'
+import Switch from '../src/Switch.vue'
 import { mount } from '@vue/test-utils'
 describe('Switch', () => {
   it('modelValue', async () => {
