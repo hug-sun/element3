@@ -1,11 +1,9 @@
 import { mount } from '@vue/test-utils'
-import Radio from '../Radio'
+import { ref, h, reactive } from 'vue'
 import RadioGroup from 'element-ui/packages/radio-group/RadioGroup'
-import { ref } from '@vue/reactivity'
-import { h, nextTick } from '@vue/runtime-core'
-import RadioButton from 'element-ui/packages/radio-button/RadioButton'
+import Radio from '../Radio.vue'
 
-describe('Radio', () => {
+describe('Radio.vue', () => {
   describe('props', () => {
     it('disabled', () => {
       const wrapper = mount(Radio, {
@@ -13,65 +11,59 @@ describe('Radio', () => {
           disabled: true
         }
       })
-
       expect(wrapper.classes()).toContain('is-disabled')
+      expect(wrapper.vm.isDisabled).toEqual(true)
     })
-    it('bordered', () => {
+    it('border and size', () => {
       const wrapper = mount(Radio, {
         props: {
-          border: true
+          border: true,
+          size: 'small'
         }
       })
-
+      expect(wrapper.vm.radioSize).toEqual('small')
       expect(wrapper.classes()).toContain('is-bordered')
+      expect(wrapper.classes()).toContain('el-radio--small')
     })
-    it('bind value by v-model', async () => {
-      const radio = ref(0)
+    it('v-model', async () => {
+      const radioVal = ref(0)
       const wrapper = mount(Radio, {
         props: {
-          modelValue: radio,
           label: 1,
+          modelValue: radioVal,
           'onUpdate:modelValue': (val) => {
-            radio.value = val
+            radioVal.value = val
           }
         }
       })
+      expect(wrapper.vm.radioValue).toBe(0)
       await wrapper.trigger('click')
-
-      expect(wrapper.classes()).toContain('is-checked')
+      expect(wrapper.vm.radioValue).toBe(1)
     })
-    it('change event', async () => {
-      const radio = ref(0)
-      const data = ref(0)
+    it('by elForm.disable', () => {
       const wrapper = mount(Radio, {
-        props: {
-          modelValue: radio,
-          label: 1,
-          'onUpdate:modelValue': (val) => {
-            radio.value = val
-          },
-          onChange(val) {
-            data.value = val
+        global: {
+          provide: {
+            elForm: reactive({
+              disabled: true
+            })
           }
         }
       })
-      await wrapper.trigger('click')
-      await nextTick(() => {
-        expect(data.value).toEqual(1)
-      })
+      expect(wrapper.classes()).toContain(`is-disabled`)
     })
   })
 })
 
 describe('Radio Group', () => {
   describe('props', () => {
-    it('disabled', async () => {
-      const radio = ref(1)
+    it('disabled and size', () => {
+      const radioVal = ref(1)
       const wrapper = mount(RadioGroup, {
         props: {
-          modelValue: radio,
+          modelValue: radioVal,
           'onUpdate:modelValue': (val) => {
-            radio.value = val
+            radioVal.value = val
           },
           disabled: true
         },
@@ -84,111 +76,6 @@ describe('Radio Group', () => {
         }
       })
       expect(wrapper.findAllComponents('.is-disabled').length).toEqual(3)
-    })
-    it('bind value by v-model', async () => {
-      const radio = ref(1)
-      const wrapper = mount(RadioGroup, {
-        props: {
-          modelValue: radio,
-          'onUpdate:modelValue': (val) => {
-            radio.value = val
-          }
-        },
-        slots: {
-          default: [1, 2, 3].map((item) =>
-            h(Radio, {
-              label: item
-            })
-          )
-        }
-      })
-      expect(wrapper.find('.is-checked').exists()).toBe(true)
-      expect(wrapper.findComponent('.is-checked').vm.label).toEqual(1)
-      await wrapper.findAllComponents(Radio)[1].trigger('click')
-      await nextTick(() => {
-        expect(wrapper.findComponent('.is-checked').vm.label).toEqual(2)
-      })
-    })
-    it('change event', async () => {
-      const radio = ref(1)
-      const data = ref(1)
-      const wrapper = mount(RadioGroup, {
-        props: {
-          modelValue: radio,
-          'onUpdate:modelValue': (val) => {
-            radio.value = val
-          },
-          onChange(val) {
-            data.value = val
-          }
-        },
-        slots: {
-          default: [1, 2, 3].map((item) =>
-            h(Radio, {
-              label: item
-            })
-          )
-        }
-      })
-      await wrapper.findAllComponents(Radio)[1].trigger('click')
-      await nextTick(() => {
-        expect(data.value).toEqual(2)
-      })
-    })
-    it('keyboard event', async () => {
-      const radio = ref(1)
-      const wrapper = mount(RadioGroup, {
-        props: {
-          modelValue: radio,
-          'onUpdate:modelValue': (val) => {
-            radio.value = val
-          }
-        },
-        slots: {
-          default: [1, 2, 3].map((item) =>
-            h(Radio, {
-              label: item
-            })
-          )
-        }
-      })
-      await wrapper.findComponent(Radio).trigger('keydown', { keyCode: 39 })
-      expect(radio.value).toEqual(2)
-      await wrapper.findComponent(Radio).trigger('keydown', { keyCode: 40 })
-      expect(radio.value).toEqual(2)
-      await wrapper.findComponent(Radio).trigger('keydown', { keyCode: 38 })
-      expect(radio.value).toEqual(3)
-      await wrapper.findComponent(Radio).trigger('keydown', { keyCode: 37 })
-      expect(radio.value).toEqual(3)
-    })
-  })
-})
-
-describe('Radio Button', () => {
-  describe('props', () => {
-    it('bind value by v-model', async () => {
-      const radio = ref(1)
-      const wrapper = mount(RadioGroup, {
-        props: {
-          modelValue: radio,
-          'onUpdate:modelValue': (val) => {
-            radio.value = val
-          }
-        },
-        slots: {
-          default: [1, 2, 3].map((item) =>
-            h(RadioButton, {
-              label: item
-            })
-          )
-        }
-      })
-      expect(wrapper.find('.is-active').exists()).toBe(true)
-      expect(wrapper.findComponent('.is-active').vm.label).toEqual(1)
-      await wrapper.findAllComponents(RadioButton)[1].trigger('click')
-      await nextTick(() => {
-        expect(wrapper.findComponent('.is-active').vm.label).toEqual(2)
-      })
     })
   })
 })
