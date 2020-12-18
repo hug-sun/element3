@@ -22,7 +22,7 @@ describe('Progress.vue', () => {
     expect(wrapper.find('.temptest').text()).toBe('')
   })
 
-  describe('props', () => {
+  describe('line type progress props:', () => {
     it('percentage', async () => {
       const wrapper = mount(Progress, {
         props: {
@@ -31,6 +31,16 @@ describe('Progress.vue', () => {
       })
       await wrapper.setProps({ percentage: 28 })
       testPercentage(wrapper, 28)
+    })
+
+    it('format', () => {
+      const format = (p) => (p === 100 ? '满' : `${p}%`)
+      const props = {
+        percentage: 100,
+        format
+      }
+      const wrapper = mount(Progress, { props })
+      containText(wrapper, '.el-progress__text', '满')
     })
   })
 })
