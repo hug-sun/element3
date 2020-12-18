@@ -1,7 +1,7 @@
-import Button from '../Button.vue'
+import Button from '../src/Button.vue'
 import { mount } from '@vue/test-utils'
 import { reactive } from 'vue'
-import { setupGlobalOptions } from '../../../src/use/globalConfig'
+import { setupGlobalOptions } from '../../../use/globalConfig'
 
 describe('Button.vue', () => {
   it('snapshot', () => {

@@ -196,7 +196,7 @@ import {
 import Clickoutside from '../../../../src/directives/clickoutside'
 import Locale from '../../../../src/mixins/locale'
 import ElInput from '../../../input'
-import ElButton from '../../../button'
+import { ElButton } from '../../../../src/components/Button'
 import TimePicker from './time'
 import YearTable from '../basic/year-table'
 import MonthTable from '../basic/month-table'

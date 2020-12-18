@@ -106,8 +106,9 @@ import Clickoutside from '../../../../src/directives/clickoutside'
 import Locale from '../../../../src/mixins/locale'
 import MonthTable from '../basic/month-table'
 import ElInput from '../../../input'
-import ElButton from '../../../button'
+import { ElButton } from '../../../../src/components/Button'
 import { useDateEmitter } from '../../index'
+
 
 const calcDefaultValue = (defaultValue) => {
   if (Array.isArray(defaultValue)) {
