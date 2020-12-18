@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="el-progress__text">{{ content }}</div>
-    <div data-testid="temptest" class="temptest">{{ '' }}</div>
+    <div data-testid="temptest" class="temptest">{{ color }}</div>
   </div>
 </template>
 
@@ -15,18 +15,22 @@ import { computed, defineComponent, toRefs } from 'vue'
 
 export default defineComponent({
   name: 'ElProgress',
-  props: { percentage: Number, format: Function },
+  props: { percentage: Number, format: Function, color: String },
   setup(props) {
-    const { percentage, format } = toRefs(props)
-    const barStyle = useBarStyle(percentage)
+    const { percentage, format, color } = toRefs(props)
+    const barStyle = useBarStyle(percentage, color)
     const content = useContent(format, percentage)
     return { barStyle, content }
   }
 })
 
-const useBarStyle = (percentage) => {
+const useBarStyle = (percentage, color) => {
   return computed(() => {
-    return { width: `${percentage.value}%` }
+    const style = { width: `${percentage.value}%` }
+    if (color) {
+      style.backgroundColor = color.value
+    }
+    return style
   })
 }
 

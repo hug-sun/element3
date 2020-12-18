@@ -24,10 +24,9 @@ describe('Progress.vue', () => {
 
   describe('line type progress props:', () => {
     it('percentage', async () => {
+      const percentage = 58
       const wrapper = mount(Progress, {
-        props: {
-          percentage: 58
-        }
+        props: { percentage }
       })
       await wrapper.setProps({ percentage: 28 })
       testPercentage(wrapper, 28)
@@ -35,12 +34,28 @@ describe('Progress.vue', () => {
 
     it('format', () => {
       const format = (p) => (p === 100 ? '满' : `${p}%`)
-      const props = {
-        percentage: 100,
-        format
-      }
+      const percentage = 100
+      const props = { percentage, format }
       const wrapper = mount(Progress, { props })
       containText(wrapper, '.el-progress__text', '满')
+    })
+
+    it('color', async () => {
+      const color = '#409eff'
+      const percentage = 30
+      const props = { percentage, color }
+      const wrapper = mount(Progress, { props })
+      containStyle(
+        wrapper,
+        '.el-progress-bar__inner',
+        `background-color: rgb(64, 158, 255);`
+      )
+      await wrapper.setProps({ color: '#336699' })
+      containStyle(
+        wrapper,
+        '.el-progress-bar__inner',
+        `background-color: rgb(51, 102, 153);`
+      )
     })
   })
 })
