@@ -1,24 +1,28 @@
 <template>
-  <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
-    <el-radio-button label="top">top</el-radio-button>
-    <el-radio-button label="right">right</el-radio-button>
-    <el-radio-button label="bottom">bottom</el-radio-button>
-    <el-radio-button label="left">left</el-radio-button>
-  </el-radio-group>
-
-  <el-tabs :tab-position="tabPosition" style="height: 200px;">
-    <el-tab-pane label="用户管理">用户管理</el-tab-pane>
-    <el-tab-pane label="配置管理">配置管理</el-tab-pane>
-    <el-tab-pane label="角色管理">角色管理</el-tab-pane>
-    <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
-  </el-tabs>
+  <el-rate
+    v-model="value"
+    :icon-classes="iconClasses"
+    void-icon-class="icon-rate-face-off"
+    :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+  >
+  </el-rate>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        tabPosition: 'top'
-      };
+import { ref, reactive, toRefs } from 'vue'
+export default {
+  setup() {
+    const value = ref(null)
+    const data = reactive({
+      iconClasses: {
+        2: 'icon-rate-face-1',
+        4: { value: 'icon-rate-face-2', excluded: true },
+        5: 'icon-rate-face-3'
+      } // 等同于 { 2: 'icon-rate-face-1', 4: { value: 'icon-rate-face-2', excluded: true }, 5: 'icon-rate-face-3' }
+    })
+    return {
+      value,
+      ...toRefs(data)
     }
-  };
+  }
+}
 </script>
