@@ -22,7 +22,7 @@
     />
     <span
       class="el-radio-button__inner"
-      :style="style"
+      :style="isChecked ? style : null"
       @keydown.stop
     >
       <slot>{{ label }}</slot>
@@ -75,7 +75,7 @@ export default {
       tabIndex,
       classes,
       isChecked,
-      style: isChecked ? style : null
+      style
     }
   }
 }
