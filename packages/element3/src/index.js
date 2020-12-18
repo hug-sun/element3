@@ -3,7 +3,7 @@ import ElCollapseTransition from './transitions/collapse-transition'
 // Basic
 import ElRow from '../packages/row'
 import ElCol from '../packages/col'
-import ElContainer from '../packages/container'
+import { ElContainer } from './components/Container'
 import ElHeader from '../packages/header'
 import ElFooter from '../packages/footer'
 import ElAside from '../packages/aside'
