@@ -51,7 +51,7 @@ import ElAlert from '../packages/alert'
 
 import ElLoading, { useLoading } from '../packages/loading'
 
-import { Message } from '../packages/message'
+import { Message } from './components/Message'
 
 import ElMessageBox, { useMsgbox } from '../packages/message-box'
 
