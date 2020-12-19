@@ -1,10 +1,10 @@
-import Input from '../Input.vue'
+import Input from '../src/Input.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 
 describe('pass attrs to children', () => {
-  it('get attrs in textarea chidren',  () => {
-    const wrapper =  mount(Input, {
+  it('get attrs in textarea chidren', () => {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea',
         placeholder: 'placeholder'
@@ -19,7 +19,7 @@ describe('pass attrs to children', () => {
 
 describe('props', () => {
   it('should render disable', async () => {
-    const wrapper =  mount(Input, {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -34,7 +34,7 @@ describe('props', () => {
 
 describe('show-word-limit', () => {
   it('should render limit-word', async () => {
-    const wrapper =  mount({
+    const wrapper = mount({
       data: () => {
         return {
           text: 'textarea'
@@ -53,7 +53,7 @@ describe('show-word-limit', () => {
 })
 
 describe('name attribute', () => {
-  it('should render name attribute',  () => {
+  it('should render name attribute', () => {
     const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
@@ -69,7 +69,7 @@ describe('name attribute', () => {
 
 describe('readonly attribute', () => {
   it('should render readonly attribute', async () => {
-    const wrapper =  mount(Input, {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -83,8 +83,8 @@ describe('readonly attribute', () => {
 })
 
 describe('max attribute', () => {
-  it('should render max attribute',  () => {
-    const wrapper =  mount(Input, {
+  it('should render max attribute', () => {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -98,8 +98,8 @@ describe('max attribute', () => {
 })
 
 describe('min attribute', () => {
-  it('should render min attribute',  () => {
-    const wrapper =  mount(Input, {
+  it('should render min attribute', () => {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -113,8 +113,8 @@ describe('min attribute', () => {
 })
 
 describe('autofocus attribute', () => {
-  it('should render autofocus attribute',  () => {
-    const wrapper =  mount(Input, {
+  it('should render autofocus attribute', () => {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
       },
@@ -175,7 +175,7 @@ describe('tabindex attribute', () => {
 describe('validate-event attribute', () => {
   it('should call validate-event when validate-event eq true', async () => {
     var called = false
-    const wrapper =  mount(Input, {
+    const wrapper = mount(Input, {
       propsData: {
         type: 'textarea',
         modelValue: 'test',
@@ -236,7 +236,7 @@ describe('blur', () => {
 })
 
 describe('focus', () => {
-  it('should call custome focus event',  () => {
+  it('should call custome focus event', () => {
     const wrapper = mount(Input, {
       propsData: {
         type: 'textarea'
@@ -249,7 +249,7 @@ describe('focus', () => {
 })
 
 describe('change', () => {
-  it('should call custome change event',  () => {
+  it('should call custome change event', () => {
     const wrapper = mount(Input, {
       propsData: {
         type: 'textarea',
@@ -265,7 +265,7 @@ describe('change', () => {
 })
 
 describe('input', () => {
-  it('should call custome input event',  () => {
+  it('should call custome input event', () => {
     const wrapper = mount(Input, {
       propsData: {
         type: 'textarea',
@@ -279,4 +279,3 @@ describe('input', () => {
     expect(wrapper.emitted('input')[0][0]).toEqual('value')
   })
 })
-

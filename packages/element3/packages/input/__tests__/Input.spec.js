@@ -1,4 +1,4 @@
-import Input from '../Input.vue'
+import Input from '../src/Input.vue'
 import { mount, shallowMount } from '@vue/test-utils'
 import { nextTick, ref } from 'vue'
 
@@ -34,9 +34,9 @@ describe('props', () => {
       }
     })
     await nextTick()
-    expect(
-      wrapper.find('.el-input__inner').attributes()
-    ).toHaveProperty('disabled')
+    expect(wrapper.find('.el-input__inner').attributes()).toHaveProperty(
+      'disabled'
+    )
   })
 })
 
@@ -122,7 +122,7 @@ describe('password', () => {
 })
 
 describe('size', () => {
-  it('should render props.size',  () => {
+  it('should render props.size', () => {
     const wrapper = mount(Input, {
       propsData: {
         size: 'medium'
@@ -147,7 +147,7 @@ describe('prefixIcon', () => {
 
 describe('suffix-icon', () => {
   it('should render props.suffixIcon', () => {
-    const wrapper =  mount(Input, {
+    const wrapper = mount(Input, {
       propsData: {
         suffixIcon: 'el-icon-view'
       }
@@ -172,8 +172,8 @@ describe('autocomplete', () => {
 })
 
 describe('name attribute', () => {
-  it('should render name attribute',  () => {
-    const wrapper =  mount(Input, {
+  it('should render name attribute', () => {
+    const wrapper = mount(Input, {
       attrs: {
         name: 'username'
       }
@@ -193,9 +193,9 @@ describe('readonly attribute', () => {
       }
     })
 
-    expect(
-      wrapper.find('.el-input__inner').attributes()
-    ).toHaveProperty('readonly')
+    expect(wrapper.find('.el-input__inner').attributes()).toHaveProperty(
+      'readonly'
+    )
   })
 })
 
@@ -212,7 +212,7 @@ describe('max attribute', () => {
 })
 
 describe('min attribute', () => {
-  it('should render min attribute',  () => {
+  it('should render min attribute', () => {
     const wrapper = mount(Input, {
       attrs: {
         min: 13
@@ -223,9 +223,8 @@ describe('min attribute', () => {
   })
 })
 
-
 describe('step attribute', () => {
-  it('should render step attribute',  () => {
+  it('should render step attribute', () => {
     const wrapper = mount(Input, {
       attrs: {
         step: ','
@@ -244,15 +243,15 @@ describe('autofocus attribute', () => {
       }
     })
 
-    expect(
-      wrapper.find('.el-input__inner').attributes()
-    ).toHaveProperty('autofocus')
+    expect(wrapper.find('.el-input__inner').attributes()).toHaveProperty(
+      'autofocus'
+    )
   })
 })
 
 describe('form attribute', () => {
-  it('should render form attribute',  () => {
-    const wrapper =  mount(Input, {
+  it('should render form attribute', () => {
+    const wrapper = mount(Input, {
       attrs: {
         form: 'form_id'
       }
@@ -279,7 +278,7 @@ describe('label attribute', () => {
 })
 
 describe('tabindex attribute', () => {
-  it('should render tabindex attribute',  () => {
+  it('should render tabindex attribute', () => {
     const wrapper = mount(Input, {
       attrs: {
         tabindex: 12
@@ -342,57 +341,57 @@ describe('validate-event attribute', () => {
 
 describe('solt', () => {
   it('should render solt prefix', async () => {
+    const slot = 'prefix solt'
     const wrapper = mount(Input, {
       propsData: {
         prefixIcon: 'el-view'
       },
       slots: {
-        prefix: 'prefix solt'
+        prefix: slot
       }
     })
 
     await nextTick()
-    expect(wrapper.find('.el-input__prefix').html()).toContain('prefix solt')
+    expect(wrapper.find('.el-input__prefix').html()).toContain(slot)
   })
 
   it('should render solt suffix', async () => {
+    const slot = 'suffix solt'
     const wrapper = mount(Input, {
       propsData: {
         suffixIcon: 'el-view'
       },
       slots: {
-        suffix: 'suffix solt'
+        suffix: slot
       }
     })
 
     await nextTick()
-    expect(wrapper.find('.el-input__suffix').html()).toContain('suffix solt')
+    expect(wrapper.find('.el-input__suffix').html()).toContain(slot)
   })
 
   it('should render solt prepend', async () => {
+    const slot = 'prepend solt'
     const wrapper = mount(Input, {
       slots: {
-        prepend: 'prepend solt'
+        prepend: slot
       }
     })
 
     await nextTick()
-    expect(wrapper.find('.el-input-group__prepend').html()).toContain(
-      'prepend solt'
-    )
+    expect(wrapper.find('.el-input-group__prepend').html()).toContain(slot)
   })
 
   it('should render solt append', async () => {
+    const slot = 'append solt'
     const wrapper = mount(Input, {
       slots: {
-        append: 'append solt'
+        append: slot
       }
     })
 
     await nextTick()
-    expect(wrapper.find('.el-input-group__append').html()).toContain(
-      'append solt'
-    )
+    expect(wrapper.find('.el-input-group__append').html()).toContain(slot)
   })
 })
 
