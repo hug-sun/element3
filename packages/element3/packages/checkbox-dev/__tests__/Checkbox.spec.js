@@ -266,6 +266,8 @@ describe('Checkbox.vue', () => {
     await nextTick()
     expect(wrapper.emitted()).toHaveProperty('update:modelValue')
     expect(wrapper.emitted()['update:modelValue'][0][0]).toBeTruthy()
+
+    await wrapper.setProps({ modelValue: ref(true) })
     expect(wrapper.classes()).toContain('is-checked')
   })
 
@@ -322,8 +324,8 @@ describe('Checkbox.vue', () => {
       }
     })
 
-    await wrapper.get('input').trigger('click')
-    await nextTick()
+    await wrapper.setProps({ modelValue: ref(true) })
+    await wrapper.get('input').trigger('change')
     expect(wrapper.emitted()).toHaveProperty('change')
     expect(wrapper.emitted()['change'][0][0]).toBe(true)
   })
@@ -346,5 +348,53 @@ describe('Checkbox.vue', () => {
 
     await nextTick()
     expect(wrapper.get('input').element.checked).toBe(true)
+  })
+
+  test('select when clicked', async () => {
+    const spy = jest.fn()
+    const wrapper = mount(Checkbox, {
+      global: {
+        provide: {
+          elCheckboxGroup: reactive({
+            props: {
+              modelValue: ['one']
+            },
+            update: spy
+          })
+        }
+      },
+      props: {
+        label: 'two'
+      }
+    })
+
+    await wrapper.get('input').trigger('click')
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith(['one', 'two'])
+    expect(wrapper.get('input').element.checked).toBe(true)
+  })
+
+  test('when unchecked', async () => {
+    const spy = jest.fn()
+    const wrapper = mount(Checkbox, {
+      global: {
+        provide: {
+          elCheckboxGroup: reactive({
+            props: {
+              modelValue: ['one', 'two']
+            },
+            update: spy
+          })
+        }
+      },
+      props: {
+        label: 'one'
+      }
+    })
+
+    await wrapper.get('input').trigger('click')
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith(['two'])
+    expect(wrapper.get('input').element.checked).toBe(false)
   })
 })

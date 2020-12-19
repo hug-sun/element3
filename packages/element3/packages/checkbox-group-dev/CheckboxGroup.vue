@@ -5,12 +5,18 @@
 </template>
 
 <script>
-import { provide, getCurrentInstance } from 'vue'
+import { provide, toRefs } from 'vue'
 export default {
   name: 'CheckboxGroup',
-  setup() {
-    const checkboxGroupInstance = getCurrentInstance()
-    provide('elCheckboxGroup', checkboxGroupInstance)
+  setup(props) {
+    const update = (v) => {
+      console.log('checkbox-group v =>', v)
+    }
+
+    provide('elCheckboxGroup', {
+      ...toRefs(props),
+      update
+    })
   },
   props: {
     modelValue: { type: Array, default: () => [] }

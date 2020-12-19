@@ -58,11 +58,8 @@ import {
   getCurrentInstance,
   inject,
   onMounted,
-  reactive,
   ref,
   toRefs,
-  unref,
-  watchEffect,
   nextTick
 } from 'vue'
 import { useGlobalOptions } from '../../src/use/globalConfig'
@@ -94,7 +91,7 @@ export default {
   },
   props: {
     label: String,
-    modelValue: [String, Number, Boolean, Symbol, Array],
+    modelValue: { type: [String, Number, Boolean, Symbol, Array], default: '' },
     border: Boolean,
     size: {
       type: String,
@@ -151,27 +148,30 @@ function useDisabled(disabled) {
 }
 
 function useModel() {
-  const { modelValue, trueLabel, falseLabel } = onlyProps()
+  const { modelValue, trueLabel, falseLabel, label } = onlyProps()
   const { elCheckboxGroup } = useInject()
-  const parentModelValue = computed(() => elCheckboxGroup?.props?.modelValue)
-
   const vm = getCurrentInstance()
-  const state = reactive({
-    modelValue: false
-  })
-
-  watchEffect(() => {
-    state.modelValue = modelValue.value || parentModelValue.value || false
+  const parentModelValue = computed(() => elCheckboxGroup?.props?.modelValue)
+  const state = computed(() => {
+    return modelValue.value || parentModelValue.value || false
   })
 
   const model = computed({
     get() {
-      return state.modelValue
+      return state.value
     },
     set({ checked }) {
-      const modelValue = checked ? trueLabel : falseLabel
-      state.modelValue = modelValue.value
-      vm.emit('update:modelValue', modelValue.value)
+      let modelValue = model.value
+      if (label && label.value && Array.isArray(model.value)) {
+        const index = modelValue.indexOf(label.value)
+        index !== -1
+          ? modelValue.splice(index, 1)
+          : modelValue.push(label.value)
+        elCheckboxGroup.update(modelValue)
+      } else {
+        modelValue = checked ? trueLabel.value : falseLabel.value
+        vm.emit('update:modelValue', modelValue)
+      }
     }
   })
 
