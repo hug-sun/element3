@@ -14,7 +14,7 @@ const load = function (lang, path) {
 
 const LOAD_DOCS_MAP = {
   'zh-CN': (path) => {
-    return defineAsyncComponent(() => import(`..//docs/zh-CN/${path}.md`))
+    return defineAsyncComponent(() => import(`../docs/zh-CN/${path}.md`))
   }
 }
 
@@ -67,7 +67,7 @@ const registerRoute = (navConfig) => {
 
     route[index].children.push(child)
   }
-
+  
   return route
 }
 

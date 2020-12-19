@@ -1,4 +1,4 @@
-<style scoped>
+<style scoped lang='scss'>
   .banner {
     text-align: center;
   }
