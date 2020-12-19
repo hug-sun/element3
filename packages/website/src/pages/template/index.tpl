@@ -307,7 +307,7 @@
         </div>
       </a>
       <a class="sponsor" href="https://www.duohui.cn/?utm_source=element&utm_medium=web&utm_campaign=element-index" target="_blank">
-        <img width="45px" src="assets/images/duohui.svg" alt="duohui">
+        <img width="45px" src="../../assets/images/duohui.svg" alt="duohui">
         <div>
           <p>Sponsored by 多会</p>
           <p>炫酷的新一代活动票务系统</p>
@@ -318,7 +318,7 @@
       <ul class="container">
         <li>
           <div class="card">
-            <img src="assets/images/guide.png" alt="">
+            <img src="../../assets/images/guide.png" alt="">
             <h3><%= 3 ></h3>
             <p><%= 4 ></p>
             <router-link

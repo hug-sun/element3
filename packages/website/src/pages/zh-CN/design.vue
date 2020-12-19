@@ -30,28 +30,28 @@
     <el-row :gutter="14" class="cards">
       <el-col :xs="12" :sm="6">
         <div class="card">
-          <img src="assets/images/consistency.png" alt="Consistency">
+          <img src="../../assets/images/consistency.png" alt="Consistency">
           <h4>一致</h4>
           <span>Consistency</span>
         </div>
       </el-col>
       <el-col :xs="12" :sm="6">
         <div class="card">
-          <img src="assets/images/feedback.png" alt="Feedback">
+          <img src="../../assets/images/feedback.png" alt="Feedback">
           <h4>反馈</h4>
           <span>Feedback</span>
         </div>
       </el-col>
       <el-col :xs="12" :sm="6">
         <div class="card">
-          <img src="assets/images/efficiency.png" alt="Efficiency">
+          <img src="../../assets/images/efficiency.png" alt="Efficiency">
           <h4>效率</h4>
           <span>Efficiency</span>
         </div>
       </el-col>
       <el-col :xs="12" :sm="6">
         <div class="card">
-          <img src="assets/images/controllability.png" alt="Controllability">
+          <img src="../../assets/images/controllability.png" alt="Controllability">
           <h4>可控</h4>
           <span>Controllability</span>
         </div>
