@@ -10,6 +10,7 @@ describe('Checkbox.vue', () => {
         default: 'an apple'
       }
     })
+
     expect(wrapper.find('.el-checkbox__label').text()).toBe('an apple')
   })
 
@@ -19,6 +20,7 @@ describe('Checkbox.vue', () => {
         label: 'two apples'
       }
     })
+
     expect(wrapper.find('.el-checkbox__label').text()).toBe('two apples')
   })
 
@@ -31,6 +33,7 @@ describe('Checkbox.vue', () => {
         label: 'two apples'
       }
     })
+
     expect(wrapper.find('.el-checkbox__label').text()).toBe('an apple')
   })
 
@@ -49,8 +52,8 @@ describe('Checkbox.vue', () => {
         modelValue: value
       }
     })
-    await wrapper.get('input').trigger('click')
 
+    await wrapper.get('input').trigger('click')
     expect(wrapper.emitted()).toHaveProperty('update:modelValue')
     expect(wrapper.emitted()['update:modelValue'][0][0]).toBeTruthy()
   })
@@ -229,7 +232,6 @@ describe('Checkbox.vue', () => {
 
       await nextTick()
       await wrapper.get('input').trigger('click')
-
       expect(wrapper.emitted()['update:modelValue'][0][0]).toBe(trueLabel.value)
     })
 
@@ -245,7 +247,6 @@ describe('Checkbox.vue', () => {
 
       await nextTick()
       await wrapper.get('input').trigger('click')
-
       expect(wrapper.emitted()['update:modelValue'][0][0]).toBe(
         falseLabel.value
       )
@@ -263,7 +264,6 @@ describe('Checkbox.vue', () => {
     })
 
     await nextTick()
-
     expect(wrapper.emitted()).toHaveProperty('update:modelValue')
     expect(wrapper.emitted()['update:modelValue'][0][0]).toBeTruthy()
     expect(wrapper.classes()).toContain('is-checked')
@@ -277,7 +277,6 @@ describe('Checkbox.vue', () => {
     })
 
     await nextTick()
-
     expect(wrapper.find('.el-checkbox__input').classes()).toContain(
       'is-indeterminate'
     )
@@ -294,7 +293,6 @@ describe('Checkbox.vue', () => {
       })
 
       await wrapper.get('input').trigger('focus')
-
       expect(wrapper.find('.el-checkbox__input').classes()).toContain(
         'is-focus'
       )
@@ -326,7 +324,6 @@ describe('Checkbox.vue', () => {
 
     await wrapper.get('input').trigger('click')
     await nextTick()
-
     expect(wrapper.emitted()).toHaveProperty('change')
     expect(wrapper.emitted()['change'][0][0]).toBe(true)
   })
@@ -348,7 +345,6 @@ describe('Checkbox.vue', () => {
     })
 
     await nextTick()
-
     expect(wrapper.get('input').element.checked).toBe(true)
   })
 })
