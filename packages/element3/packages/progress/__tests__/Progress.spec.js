@@ -4,7 +4,8 @@ import {
   getColorsIndex,
   getRefValue,
   sortByPercentage,
-  toPercentageColors
+  toPercentageColors,
+  fixPercentage
 } from '../Progress.vue'
 import Color from '../../color-picker/src/color'
 import { isRef, toRefs, reactive } from 'vue'
@@ -39,6 +40,25 @@ describe('Progress.vue', () => {
       testPercentage(wrapper, 58)
       await wrapper.setProps({ percentage: 28 })
       testPercentage(wrapper, 28)
+    })
+
+    it('fix percentage value', () => {
+      expect(fixPercentage(undefined)).toBe(0)
+      expect(fixPercentage(null)).toBe(0)
+      expect(fixPercentage('')).toBe(0)
+      expect(fixPercentage('9')).toBe(0)
+      expect(fixPercentage(129)).toBe(100)
+      expect(fixPercentage(29)).toBe(29)
+    })
+
+    it.only('percentage validator', async () => {
+      const percentage = 158
+      const wrapper = mount(Progress, {
+        props: { percentage }
+      })
+      testPercentage(wrapper, 100)
+      await wrapper.setProps({ percentage: 'abc' })
+      testPercentage(wrapper, 0)
     })
 
     it('format', () => {

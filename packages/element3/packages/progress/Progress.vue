@@ -12,12 +12,17 @@
 
 <script>
 import { computed, defineComponent, isRef, toRefs } from 'vue'
-import { isArray, isFunction, isString } from '../../src/utils/types'
+import { isArray, isFunction, isNumber, isString } from '../../src/utils/types'
 
 export default defineComponent({
   name: 'ElProgress',
   props: {
-    percentage: Number,
+    percentage: {
+      type: Number,
+      default: 0,
+      required: true,
+      validator: (val) => val >= 0 && val <= 100
+    },
     format: Function,
     color: { type: [String, Function, Array], default: '' }
   },
@@ -57,9 +62,19 @@ export function toPercentageColors(colors) {
   })
 }
 
+export function fixPercentage(percentage) {
+  if (!isNumber(percentage) || percentage < 0) {
+    return 0
+  }
+  if (percentage > 100) {
+    return 100
+  }
+  return percentage
+}
+
 const useBarStyle = (percentage, color) => {
   return computed(() => {
-    const pv = getRefValue(percentage)
+    const pv = fixPercentage(getRefValue(percentage))
     const cv = getRefValue(color)
     let style = { width: `${pv}%` }
     if (isArray(cv)) {
@@ -80,7 +95,7 @@ const useBarStyle = (percentage, color) => {
 const useContent = (format, percentage) => {
   return computed(() => {
     const fv = getRefValue(format)
-    const pv = getRefValue(percentage)
+    const pv = fixPercentage(getRefValue(percentage))
     if (typeof fv === 'function') {
       return fv(pv) || ''
     } else {

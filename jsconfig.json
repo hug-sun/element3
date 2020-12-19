@@ -1,0 +1,6 @@
+{
+  "include": [
+    "./packages/element3/src/**/*",
+    "./packages/element3/packages/**/*",
+  ]
+}
