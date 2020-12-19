@@ -14,13 +14,13 @@
 </template>
 
 <script>
-import { isString, isNumber } from '../../src/utils/types'
+import { isString, isNumber } from '../../../utils/types'
 import { defineComponent, computed, toRefs, ref } from 'vue'
 import { props } from './props'
 export default defineComponent({
   name: 'ElAvatar',
 
-  props: props,
+  props,
 
   setup(props) {
     const { size, shape, icon, error } = toRefs(props)
