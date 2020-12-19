@@ -1,4 +1,4 @@
-export const propsConfig = {
+export const props = {
   modelValue: {
     type: [String, Number, Symbol, Boolean, Array],
     default: ''

@@ -3,7 +3,9 @@
     role="radio"
     class="el-radio"
     :class="labelClass"
+    :aria-checked="radioValue === label"
     :aria-disabled="isDisabled"
+    :tabindex="tabIndex"
   >
     <span
       class="el-radio__input"
@@ -19,9 +21,11 @@
         :value="label"
         v-model="radioValue"
         :name="name"
+        aria-hidden="true"
+        :disabled="isDisabled"
         @focus="focus = true"
         @blur="focus = false"
-        @change="changeHandler"
+        tabindex="-1"
       />
     </span>
     <span class="el-radio__label" @keydown.stop>
@@ -31,70 +35,110 @@
 </template>
 
 <script>
-import { reactive, toRefs, computed, inject, getCurrentInstance } from 'vue'
-import { propsConfig } from './useProps'
+import { ref, computed, inject, getCurrentInstance, defineComponent } from 'vue'
+import { props } from './RadioProps'
 
-export default {
+export default defineComponent({
   name: 'ElRadio',
   componentName: 'ElRadio',
-  props: propsConfig,
+  props,
   emits: ['update:modelValue', 'update:value', 'change'],
   setup(props, context) {
-    const {
-      proxy,
-      parent,
-      parent: {
-        proxy: { disabled: parentDisabled, radioGroupSize }
-      }
-    } = getCurrentInstance()
+    const focus = ref(false)
     const { elForm, elFormItem } = useInject()
-    const state = reactive({
-      isGroup: computed(() => parent.type.name === 'ElRadioGroup'),
-      isDisabled: computed(
-        () => props.disabled || parentDisabled || (elForm && elForm.disabled)
-      ),
-      radioSize: computed(
-        () =>
-          props.size ||
-          radioGroupSize ||
-          (elForm && elFormItem.elFormItemSize) ||
-          (proxy.$ELEMENT || {}).size
-      ),
-      focus: false
-    })
+    const { isGroup, radioGroup } = useCheckGroup()
     const radioValue = computed({
-      get: () => (state.isGroup ? parent.proxy.modelValue : props.modelValue),
+      get: () => (isGroup ? radioGroup.proxy.modelValue : props.modelValue),
       set: (value) => {
-        if (state.isDisabled) return
-        context.emit('update:modelValue', value)
-        state.isGroup && parent.emit('update:modelValue', value)
+        changeHandler(value)
       }
     })
-    const labelClass = computed(() => [
-      props.border && state.radioSize ? `el-radio--${state.radioSize}` : '',
-      { 'is-checked': state.radioValue === props.label },
-      { 'is-disabled': state.isDisabled },
-      { 'is-focus': state.focus },
-      { 'is-bordered': props.border }
-    ])
-    const changeHandler = () => {
-      if (state.isDisabled) return
-      context.emit('change', radioValue.value)
-      state.isGroup && parent.emit('change', radioValue.value)
+    const { isDisabled, radioSize, tabIndex } = useStyle({
+      props,
+      isGroup,
+      radioGroup,
+      elForm,
+      elFormItem,
+      radioValue
+    })
+
+    const labelClass = useLabelClass({
+      props,
+      radioSize,
+      radioValue,
+      isDisabled,
+      focus
+    })
+    const changeHandler = (value) => {
+      context.emit('update:modelValue', value)
+      isGroup && radioGroup.emit('update:modelValue', value)
+      context.emit('change', value)
+      isGroup && radioGroup.emit('change', value)
     }
     return {
-      ...toRefs(state),
-      labelClass,
+      focus,
       radioValue,
+      isDisabled,
+      radioSize,
+      tabIndex,
+      labelClass,
       changeHandler
     }
   }
-}
+})
 const useInject = () => {
   const elForm = inject('elForm', {})
   const elFormItem = inject('elFormItem', {})
   return { elForm, elFormItem }
 }
+const useCheckGroup = () => {
+  const { parent } = getCurrentInstance()
+  const isGroup = parent.type.name === 'ElRadioGroup'
+  const radioGroup = isGroup ? parent : null
+  return { isGroup, radioGroup }
+}
+const useStyle = ({
+  props,
+  isGroup,
+  radioGroup,
+  elForm,
+  elFormItem,
+  radioValue
+}) => {
+  const {
+    proxy,
+    parent: {
+      proxy: { radioGroupSize }
+    }
+  } = getCurrentInstance()
+  const elFormDisable = elForm.disabled
+  const isDisabled = computed(() =>
+    isGroup
+      ? radioGroup.props.disabled || props.disabled || elFormDisable
+      : props.disabled || elFormDisable
+  )
+
+  const radioSize = computed(
+    () =>
+      props.size ||
+      radioGroupSize ||
+      (elForm && elFormItem.elFormItemSize) ||
+      (proxy.$ELEMENT || {}).size
+  )
+  const tabIndex = computed(() =>
+    isDisabled.value || (isGroup && radioValue.value !== props.label) ? -1 : 0
+  )
+
+  return { isDisabled, radioSize, tabIndex }
+}
+const useLabelClass = ({ props, radioSize, radioValue, isDisabled, focus }) =>
+  computed(() => [
+    props.border && radioSize.value ? `el-radio--${radioSize.value}` : '',
+    { 'is-checked': radioValue.value === props.label },
+    { 'is-disabled': isDisabled.value },
+    { 'is-focus': focus.value },
+    { 'is-bordered': props.border }
+  ])
 </script>
 
 <style></style>
