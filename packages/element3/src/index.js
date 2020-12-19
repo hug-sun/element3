@@ -40,7 +40,7 @@ import ElFormItem from '../packages/form-item'
 // Data
 import ElTable from '../packages/table'
 import ElTableColumn from '../packages/table-column'
-import ElTag from '../packages/tag'
+import { ElTag } from './components/Tag'
 import ElProgress from '../packages/progress'
 import ElTree from '../packages/tree'
 import ElPagination from '../packages/pagination'
