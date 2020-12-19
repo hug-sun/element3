@@ -365,23 +365,13 @@
   </div>
 </template>
 <script>
-import ThemePicker from './theme-picker.vue'
-// import AlgoliaSearch from './search.vue';
 import compoLang from '../i18n/component.json'
-import Element from 'main/index.js'
-import themeLoader from './theme/loader'
-// import { getTestEle } from './theme/loader/api.js';
-import bus from '../bus'
-import { ACTION_USER_CONFIG_UPDATE } from './theme/constant.js'
-
-const { version } = Element
 
 export default {
   data() {
     return {
       active: '',
       versions: [],
-      version,
       verDropdownVisible: true,
       langDropdownVisible: true,
       langs: {
@@ -389,14 +379,6 @@ export default {
       },
       lang: 'zh-CN'
     }
-  },
-
-  mixins: [themeLoader],
-
-  components: {
-    // eslint-disable-next-line vue/no-unused-components
-    ThemePicker
-    // AlgoliaSearch
   },
 
   computed: {
@@ -412,33 +394,7 @@ export default {
       return /^component/.test(this.$route.name)
     }
   },
-  mounted() {
-    // getTestEle()
-    //   .then(() => {
-    //     this.$isEle = true;
-    //     ga('send', 'event', 'DocView', 'Ele', 'Inner');
-    //   })
-    //   .catch((err) => {
-    //     ga('send', 'event', 'DocView', 'Ele', 'Outer');
-    //     console.error(err);
-    //   });
-    // const testInnerImg = new Image();
-    // testInnerImg.onload = () => {
-    //   this.$isEle = true;
-    //   ga('send', 'event', 'DocView', 'Ali', 'Inner');
-    // };
-    // testInnerImg.onerror = (err) => {
-    //   ga('send', 'event', 'DocView', 'Ali', 'Outer');
-    //   console.error(err);
-    // };
-    // testInnerImg.src = `https://private-alipayobjects.alipay.com/alipay-rmsdeploy-image/rmsportal/VmvVUItLdPNqKlNGuRHi.png?t=${Date.now()}`;
-  },
   methods: {
-    switchVersion(version) {
-      if (version === this.version) return
-      location.href = `${location.origin}/${this.versions[version]}/${location.hash} `
-    },
-
     switchLang(targetLang) {
       if (this.lang === targetLang) return
       localStorage.setItem('ELEMENT_LANGUAGE', targetLang)
@@ -452,36 +408,6 @@ export default {
     handleLangDropdownToggle(visible) {
       this.langDropdownVisible = visible
     }
-  },
-
-  created() {
-    const xhr = new XMLHttpRequest()
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        const versions = JSON.parse(xhr.responseText)
-        this.versions = Object.keys(versions).reduce((prev, next) => {
-          prev[next] = versions[next]
-          return prev
-        }, {})
-      }
-    }
-    xhr.open('GET', '/versions.json')
-    xhr.send()
-    let primaryLast = '#409EFF'
-    bus.$on(ACTION_USER_CONFIG_UPDATE, (val) => {
-      let primaryColor = val.global['$--color-primary']
-      if (!primaryColor) primaryColor = '#409EFF'
-      const base64svg = 'data:image/svg+xml;base64,'
-      const imgSet = document.querySelectorAll('h1 img')
-      imgSet.forEach((img) => {
-        img.src = `${base64svg}${window.btoa(
-          window
-            .atob(img.src.replace(base64svg, ''))
-            .replace(primaryLast, primaryColor)
-        )}`
-      })
-      primaryLast = primaryColor
-    })
   }
 }
 </script>

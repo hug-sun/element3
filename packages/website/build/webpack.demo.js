@@ -1,7 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
@@ -35,7 +34,7 @@ const webpackConfig = {
   },
   devServer: {
     host: '0.0.0.0',
-    port: 8087,
+    port: 8088,
     publicPath: '/',
     hot: true
   },
@@ -88,7 +87,7 @@ const webpackConfig = {
             }
           },
           {
-            loader: path.resolve(__dirname, './md-loader/index.js')
+            loader: 'md-loader'
           }
         ]
       },
@@ -110,7 +109,6 @@ const webpackConfig = {
       filename: './index.html',
       favicon: './examples/favicon.ico'
     }),
-    new CopyWebpackPlugin([{ from: 'examples/versions.json' }]),
     new ProgressBarPlugin(),
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({

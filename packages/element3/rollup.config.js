@@ -21,7 +21,7 @@ const createBanner = () => {
 
 const createBaseConfig = () => {
   return {
-    input: 'src/entry.js',
+    input: 'src/index.js',
     external: ['vue'],
     plugins: [
       peerDepsExternal(),
@@ -153,7 +153,8 @@ const globalProdConfig = {
   plugins: [
     terser(),
     replace({
-      __DEV__: false
+      __DEV__: false,
+      'process.env.NODE_ENV': true
     })
   ],
   output: {

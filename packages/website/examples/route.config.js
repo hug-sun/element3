@@ -94,25 +94,6 @@ const generateMiscRoutes = function (lang) {
     ]
   }
 
-  const themeRoute = {
-    path: `/${lang}/theme`,
-    component: load(lang, 'theme-nav'),
-    children: [
-      {
-        path: '', // 主题管理
-        name: 'theme' + lang,
-        meta: { lang },
-        component: load(lang, 'theme')
-      },
-      {
-        path: 'preview', // 主题预览编辑
-        name: 'theme-preview-' + lang,
-        meta: { lang },
-        component: load(lang, 'theme-preview')
-      }
-    ]
-  }
-
   const resourceRoute = {
     path: `/${lang}/resource`, // 资源
     meta: { lang },
@@ -127,7 +108,7 @@ const generateMiscRoutes = function (lang) {
     component: load(lang, 'index')
   }
 
-  return [guideRoute, resourceRoute, themeRoute, indexRoute]
+  return [guideRoute, resourceRoute, indexRoute]
 }
 
 langs.forEach((lang) => {
@@ -161,5 +142,5 @@ route = route.concat([
   },
   { path: '/:pathMatch(.*)*', redirect: { path: defaultPath } }
 ])
-console.log(route)
+
 export default route
