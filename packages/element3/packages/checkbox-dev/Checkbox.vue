@@ -153,7 +153,7 @@ function useDisabled(disabled) {
 function useModel() {
   const { modelValue, trueLabel, falseLabel } = onlyProps()
   const { elCheckboxGroup } = useInject()
-  const parentModelValue = computed(() => elCheckboxGroup.props.modelValue)
+  const parentModelValue = computed(() => elCheckboxGroup?.props?.modelValue)
 
   const vm = getCurrentInstance()
   const state = reactive({
@@ -161,7 +161,7 @@ function useModel() {
   })
 
   watchEffect(() => {
-    state.modelValue = modelValue.value || parentModelValue.value
+    state.modelValue = modelValue.value || parentModelValue.value || false
   })
 
   const model = computed({
