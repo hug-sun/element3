@@ -21,7 +21,7 @@ const createBanner = () => {
 
 const createBaseConfig = () => {
   return {
-    input: 'src/entry.js',
+    input: 'src/index.js',
     external: ['vue'],
     plugins: [
       peerDepsExternal(),

@@ -15,14 +15,11 @@
   ],
   "typings": "types/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
-    "build:file": "node build/bin/iconInit.js & node build/bin/build-entry.js & node build/bin/i18n.js",
-    "build:theme": "node build/bin/gen-cssfile && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
-    "build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js",
-    "build:umd": "node build/bin/build-locale.js",
-    "i18n": "node build/bin/i18n.js",
-    "test": "jest --runInBand",
-    "dev": "rollup -wc"
+    "build": "yarn build:theme && yarn build:lib",
+    "build:lib":"rollup -c",
+    "build:theme": "node scripts/generateCssFile.js && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
+    "dev":"rollup -wc",
+    "test":"jest --runInBand"
   },
   "repository": {
     "type": "git",

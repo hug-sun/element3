@@ -1,7 +1,7 @@
-import Container from '../Container.vue'
-import Header from '../../header/Header.vue'
-import Footer from '../../footer/Footer.vue'
-import Main from '../../main/Main.vue'
+import Container from '../src/Container.vue'
+import { ElHeader } from '../../../../packages/header'
+import { ElFooter } from '../../../../packages/footer'
+import { ElMain } from '../../../../packages/main'
 import { mount } from '@vue/test-utils'
 
 describe('Container.vue', () => {
@@ -45,8 +45,8 @@ describe('Container.vue', () => {
         </el-container>`,
         components: {
           'el-container': Container,
-          'el-header': Header,
-          'el-main': Main
+          'el-header': ElHeader,
+          'el-main': ElMain
         }
       }
 
@@ -63,8 +63,8 @@ describe('Container.vue', () => {
         </el-container>`,
         components: {
           'el-container': Container,
-          'el-footer': Footer,
-          'el-main': Main
+          'el-footer': ElFooter,
+          'el-main': ElMain
         }
       }
 
