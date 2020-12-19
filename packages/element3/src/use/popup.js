@@ -9,7 +9,6 @@ import {
 } from 'vue'
 import PopupManager from '../../src/utils/popup/popup-manager'
 import getScrollBarWidth from '../../src/utils/scrollbar-width'
-import merge from '../../src/utils/merge'
 import { getStyle, addClass, removeClass, hasClass } from '../../src/utils/dom'
 
 let idSeed = 1
@@ -53,6 +52,7 @@ function usePopup(props) {
   const { visible, modal, modalAppendToBody, lockScroll, closeDelay } = toRefs(
     props
   )
+
   const opened = ref(false)
   const bodyPaddingRight = ref(null)
   const computedBodyPaddingRight = ref(0)
@@ -68,8 +68,7 @@ function usePopup(props) {
     if (!rendered.value) {
       rendered.value = true
     }
-
-    const props = merge({}, instance.ctx, options)
+    const props = Object.assign({}, instance.props, options)
 
     if (_closeTimer) {
       clearTimeout(_closeTimer)
@@ -87,11 +86,11 @@ function usePopup(props) {
     }
   }
   const doOpen = (props) => {
-    if (instance.ctx.$isServer) return
+    // if (instance.proxy.$isServer) return
     if (_opening) return
     if (opened.value) return
     _opening = true
-    const dom = instance.ctx.$el
+    const dom = instance.proxy.$el
     const modal = props.modal
     const zIndex = props.zIndex
 

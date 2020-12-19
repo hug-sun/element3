@@ -67,7 +67,6 @@ const defaultCallback = (action) => {
     }
   }
 }
-
 const initInstance = (currentMsg, VNode = null) => {
   defaults.callback = defaultCallback
   instance = createComponent(messageBoxConstructor, currentMsg.options, VNode)
@@ -102,6 +101,7 @@ const showNextMsg = () => {
         options[prop] = true
       }
     })
+
     document.body.appendChild(instance.vnode.el)
   }
   // }
@@ -156,6 +156,7 @@ MessageBox.alert = (message, title, options) => {
     merge(
       {
         title: title,
+        modal: true,
         message: message,
         _type: 'alert',
         closeOnPressEscape: false,
