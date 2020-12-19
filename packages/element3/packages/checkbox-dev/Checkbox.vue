@@ -152,13 +152,16 @@ function useDisabled(disabled) {
 
 function useModel() {
   const { modelValue, trueLabel, falseLabel } = onlyProps()
+  const { elCheckboxGroup } = useInject()
+  const parentModelValue = computed(() => elCheckboxGroup.props.modelValue)
+
   const vm = getCurrentInstance()
   const state = reactive({
     modelValue: false
   })
 
   watchEffect(() => {
-    state.modelValue = modelValue.value
+    state.modelValue = modelValue.value || parentModelValue.value
   })
 
   const model = computed({
@@ -167,14 +170,14 @@ function useModel() {
     },
     set({ checked }) {
       const modelValue = checked ? trueLabel : falseLabel
-      state.modelValue = unref(modelValue)
-      vm.emit('update:modelValue', unref(modelValue))
+      state.modelValue = modelValue.value
+      vm.emit('update:modelValue', modelValue.value)
     }
   })
 
   const changeHandle = async () => {
     await nextTick()
-    vm.emit('change', unref(model))
+    vm.emit('change', model.value)
   }
 
   return {
@@ -184,7 +187,7 @@ function useModel() {
 }
 
 function useInitSelect(model) {
-  const { trueLabel, checked } = onlyProps()
+  const { trueLabel, checked, label } = onlyProps()
   const checkboxRef = ref(null)
 
   onMounted(() => {
@@ -194,7 +197,10 @@ function useInitSelect(model) {
   })
 
   const isChecked = computed(() => {
-    const _isChecked = unref(model) === unref(trueLabel)
+    const _isChecked = Array.isArray(model.value)
+      ? model.value.includes(label.value)
+      : model.value === trueLabel.value
+
     checkboxRef.value && (checkboxRef.value.checked = _isChecked)
     return _isChecked
   })

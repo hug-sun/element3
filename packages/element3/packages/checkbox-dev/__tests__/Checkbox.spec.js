@@ -330,4 +330,25 @@ describe('Checkbox.vue', () => {
     expect(wrapper.emitted()).toHaveProperty('change')
     expect(wrapper.emitted()['change'][0][0]).toBe(true)
   })
+
+  test('when the parent component provides modelValue', async () => {
+    const wrapper = mount(Checkbox, {
+      global: {
+        provide: {
+          elCheckboxGroup: reactive({
+            props: {
+              modelValue: ['one', 'two']
+            }
+          })
+        }
+      },
+      props: {
+        label: 'one'
+      }
+    })
+
+    await nextTick()
+
+    expect(wrapper.get('input').element.checked).toBe(true)
+  })
 })
