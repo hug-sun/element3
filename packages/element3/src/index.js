@@ -44,7 +44,7 @@ import { ElTag } from './components/Tag'
 import ElProgress from '../packages/progress'
 import ElTree from '../packages/tree'
 import ElPagination from '../packages/pagination'
-import ElBadge from '../packages/badge'
+import { ElBadge } from './components/Badge'
 import ElAvatar from '../packages/avatar'
 // Notice
 import ElAlert from '../packages/alert'
