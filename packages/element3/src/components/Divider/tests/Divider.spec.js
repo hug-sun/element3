@@ -1,4 +1,4 @@
-import Divider from '../Divider.vue'
+import Divider from '../src/Divider.vue'
 import { mount } from '@vue/test-utils'
 
 describe('Divider.vue', () => {
