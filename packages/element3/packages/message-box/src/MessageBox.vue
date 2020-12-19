@@ -92,7 +92,7 @@ import { isFunction } from '@vue/shared'
 import { popupProps, usePopup } from '../../../src/use/popup'
 import Locale from '../../../src/mixins/locale'
 import ElInput from '../../input'
-import ElButton from '../../button'
+import { ElButton } from '../../../src/components/Button'
 import { addClass, removeClass } from '../../../src/utils/dom'
 import { t } from '../../../src/locale'
 

@@ -1,18 +1,6 @@
 import Drawer from '../Drawer.vue'
-import Button from '../../button/Button.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-
-const globalOption = {
-  config: {
-    globalProperties: {
-      $ELEMENT: {
-        size: '',
-        zIndex: 2000
-      }
-    }
-  }
-}
 
 const title = '我是测试 title'
 const content = 'content'
@@ -27,32 +15,6 @@ describe('Drawer.vue', () => {
     })
     expect(wrapper.find('.el-drawer__header').text()).toBe('title')
     expect(wrapper.find('.el-drawer').attributes().style).not.toBe('none')
-  })
-
-  it('render correct content', async () => {
-    const Comp = {
-      template: `
-            <Drawer :title='title' :visible='visible'>
-              <span>这是一段信息</span>
-              <Button @click.native='dialogVisible = false'>取消</Button>
-              <Button type='primary' @click.native='dialogVisible = false'>确定</Button>
-            </Drawer>
-        `,
-      data() {
-        return {
-          title: 'drawer test',
-          visible: true
-        }
-      },
-      components: { Drawer, Button }
-    }
-
-    const wrapper = mount(Comp, { global: globalOption })
-    await nextTick()
-    expect(wrapper.find('.el-drawer__body span').text()).toBe('这是一段信息')
-    const footerBtns = wrapper.findAll('.el-button')
-    expect(footerBtns[0].find('span').text()).toBe('取消')
-    expect(footerBtns[1].find('span').text()).toBe('确定')
   })
 
   it('should destroy every child after drawer was closed when destroy-on-close flag is true', async () => {
