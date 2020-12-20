@@ -13,8 +13,8 @@ const load = function (lang, path) {
 }
 
 const LOAD_DOCS_MAP = {
-  'zh-CN': (path) => {
-    return defineAsyncComponent(() => import(`../docs/zh-CN/${path}.md`))
+  'zh-CN': async (path) => {  
+    return defineAsyncComponent(() => import(`../docs/zh-CN${path}.md`))
   }
 }
 
@@ -32,6 +32,7 @@ const registerRoute = (navConfig) => {
       component: load(lang, 'component'),
       children: []
     })
+    
     navs.forEach((nav) => {
       if (nav.href) return
       if (nav.groups) {
