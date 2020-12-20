@@ -9,7 +9,6 @@ import {
 } from '../Progress.vue'
 import Color from '../../color-picker/src/color'
 import { isRef, toRefs, reactive } from 'vue'
-// import { getByTestId } from '@testing-library/jest-dom'
 
 describe('Progress.vue', () => {
   it('should create default Progress component and HTML structure', () => {
@@ -28,7 +27,6 @@ describe('Progress.vue', () => {
 
     testPercentage(wrapper, percentage)
 
-    // expect(getByTestId('temptest')).not.toBeEmptyDOMElement()
     expect(wrapper.find('.temptest').text()).toBe('')
   })
 
@@ -81,7 +79,6 @@ describe('Progress.vue', () => {
       testProgressColor(wrapper, color2)
       const color3 = ''
       await wrapper.setProps({ color: color3 })
-      //FIXME make sure not contain function works
       notContainStyle(wrapper, '.el-progress-bar__inner', 'background-color')
     })
 
@@ -143,9 +140,9 @@ describe('Progress.vue', () => {
         color: ['#336699', '#339966', '#996633']
       })
       const { percentage, color } = toRefs(props)
-      const pv = getRefValue(percentage) // percentage.value
+      const pv = getRefValue(percentage)
       expect(pv).toBe(props.percentage)
-      const cv = color.value // getRefValue(color)
+      const cv = color.value
       expect(cv).toEqual(props.color)
     })
 
@@ -233,11 +230,6 @@ describe('Progress.vue', () => {
   })
 })
 
-function notContainStyle(wrapper, selector, strStyle) {
-  const elem = wrapper.find(selector)
-  expect(elem.attributes().style).not.toContain(strStyle)
-}
-
 function testProgressColor(wrapper, color) {
   const rgb = fromHexToRgb(color)
   containStyle(wrapper, '.el-progress-bar__inner', `background-color: ${rgb};`)
@@ -259,6 +251,11 @@ function containStyle(wrapper, selector, strStyle) {
   const elem = wrapper.find(selector)
   expect(elem.attributes().style).toBeDefined()
   expect(elem.attributes().style).toContain(strStyle)
+}
+
+function notContainStyle(wrapper, selector, strStyle) {
+  const elem = wrapper.find(selector)
+  expect(elem.attributes().style).not.toContain(strStyle)
 }
 
 function containText(wrapper, selector, text) {
