@@ -65,7 +65,7 @@ import {
 import { useGlobalOptions } from '../../src/use/globalConfig'
 
 export default {
-  name: 'Checkbox',
+  name: 'ElCheckbox',
   emits: ['update:modelValue', 'change'],
   setup(props) {
     const { border, size, disabled } = toRefs(props)
@@ -164,10 +164,10 @@ function useModel() {
       let modelValue = model.value
       if (label && label.value && Array.isArray(model.value)) {
         const index = modelValue.indexOf(label.value)
-        index !== -1
-          ? modelValue.splice(index, 1)
-          : modelValue.push(label.value)
-        elCheckboxGroup.update(modelValue)
+        index === -1 && checked
+          ? modelValue.push(label.value)
+          : modelValue.splice(index, 1)
+        elCheckboxGroup.update && elCheckboxGroup.update(modelValue)
       } else {
         modelValue = checked ? trueLabel.value : falseLabel.value
         vm.emit('update:modelValue', modelValue)
@@ -178,6 +178,7 @@ function useModel() {
   const changeHandle = async () => {
     await nextTick()
     vm.emit('change', model.value)
+    elCheckboxGroup.change && elCheckboxGroup.change(model.value)
   }
 
   return {

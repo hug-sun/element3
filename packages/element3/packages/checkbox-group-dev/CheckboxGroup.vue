@@ -7,19 +7,33 @@
 <script>
 import { provide, toRefs } from 'vue'
 export default {
-  name: 'CheckboxGroup',
-  setup(props) {
-    const update = (v) => {
-      console.log('checkbox-group v =>', v)
+  name: 'ElCheckboxGroup',
+  emits: ['update:modelValue', 'change'],
+  setup(props, { emit }) {
+    const update = (newValue) => {
+      emit('update:modelValue', newValue)
+    }
+    const change = (newValue) => {
+      emit('change', newValue)
     }
 
     provide('elCheckboxGroup', {
       ...toRefs(props),
-      update
+      update,
+      change
     })
   },
   props: {
-    modelValue: { type: Array, default: () => [] }
+    modelValue: { type: Array, default: () => [] },
+    size: {
+      type: String,
+      default: '',
+      validator(val) {
+        if (val === '') return true
+        return ['medium', 'small', 'mini'].includes(val)
+      }
+    },
+    border: Boolean
   }
 }
 </script>
