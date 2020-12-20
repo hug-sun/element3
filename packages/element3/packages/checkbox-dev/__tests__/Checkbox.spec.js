@@ -335,9 +335,7 @@ describe('Checkbox.vue', () => {
       global: {
         provide: {
           elCheckboxGroup: reactive({
-            props: {
-              modelValue: ['one', 'two']
-            }
+            modelValue: ['one', 'two']
           })
         }
       },
@@ -355,9 +353,7 @@ describe('Checkbox.vue', () => {
       global: {
         provide: {
           elCheckboxGroup: reactive({
-            props: {
-              modelValue: ['one']
-            },
+            modelValue: ['one'],
             update: () => {}
           })
         }
@@ -376,9 +372,7 @@ describe('Checkbox.vue', () => {
       global: {
         provide: {
           elCheckboxGroup: reactive({
-            props: {
-              modelValue: ['one', 'two']
-            },
+            modelValue: ['one', 'two'],
             update: () => {}
           })
         }
@@ -398,9 +392,7 @@ describe('Checkbox.vue', () => {
       global: {
         provide: {
           elCheckboxGroup: {
-            props: {
-              modelValue: ['one']
-            },
+            modelValue: ['one'],
             update: spy
           }
         }
@@ -421,9 +413,7 @@ describe('Checkbox.vue', () => {
       global: {
         provide: {
           elCheckboxGroup: {
-            props: {
-              modelValue: ['one']
-            },
+            modelValue: ['one'],
             update: () => {},
             change: spy
           }

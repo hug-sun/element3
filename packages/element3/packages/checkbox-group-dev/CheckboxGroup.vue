@@ -24,7 +24,7 @@ export default {
     })
   },
   props: {
-    modelValue: { type: Array, default: () => [] },
+    modelValue: Array,
     size: {
       type: String,
       default: '',
@@ -33,7 +33,8 @@ export default {
         return ['medium', 'small', 'mini'].includes(val)
       }
     },
-    border: Boolean
+    border: Boolean,
+    disabled: Boolean
   }
 }
 </script>

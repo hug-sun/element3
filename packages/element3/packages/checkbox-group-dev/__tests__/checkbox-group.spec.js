@@ -1,7 +1,7 @@
 import CheckboxGroup from '../CheckboxGroup'
 import Checkbox from '../../checkbox-dev/Checkbox'
 import { mount } from '@vue/test-utils'
-import { h, nextTick } from 'vue'
+import { h, ref } from 'vue'
 
 describe('CheckboxGroup.vue', () => {
   test('support default slot', () => {
@@ -15,21 +15,26 @@ describe('CheckboxGroup.vue', () => {
     expect(wrapper.text()).toBe(text)
   })
 
-  test('default props.modelValue', () => {
-    const wrapper = mount(CheckboxGroup, {})
-
-    expect(wrapper.props('modelValue')).toEqual([])
-  })
-
-  test('props.modelValue', () => {
-    const values = ['apples', 'potatoes']
+  test('props.modelValue', async () => {
+    const values = ref(['one'])
     const wrapper = mount(CheckboxGroup, {
       props: {
-        modelValue: values
+        modelValue: values,
+        'onUpdate:modelValue': function (newValue) {
+          values.value = newValue
+        }
+      },
+      slots: {
+        default: ['two'].map((label) => h(Checkbox, { label }))
       }
     })
 
-    expect(wrapper.props('modelValue')).toEqual(values)
+    await wrapper
+      .findComponent({ name: 'ElCheckbox' })
+      .get('input')
+      .trigger('click')
+
+    expect(values.value).toEqual(['one', 'two'])
   })
 
   test('props.size', async () => {
@@ -56,5 +61,23 @@ describe('CheckboxGroup.vue', () => {
     expect(wrapper.findComponent({ name: 'ElCheckbox' }).classes()).toContain(
       `el-checkbox--medium`
     )
+  })
+
+  test('props.disabled', async () => {
+    const wrapper = mount(CheckboxGroup, {
+      slots: {
+        default: ['A', 'B'].map((label) => h(Checkbox, { label }))
+      }
+    })
+
+    await wrapper.setProps({ disabled: true })
+    expect(wrapper.findComponent({ name: 'ElCheckbox' }).classes()).toContain(
+      `is-disabled`
+    )
+
+    await wrapper.setProps({ disabled: false })
+    expect(
+      wrapper.findComponent({ name: 'ElCheckbox' }).classes()
+    ).not.toContain(`is-disabled`)
   })
 })

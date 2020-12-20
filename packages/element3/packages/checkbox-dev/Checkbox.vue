@@ -60,7 +60,8 @@ import {
   onMounted,
   ref,
   toRefs,
-  nextTick
+  nextTick,
+  unref
 } from 'vue'
 import { useGlobalOptions } from '../../src/use/globalConfig'
 
@@ -151,7 +152,10 @@ function useModel() {
   const { modelValue, trueLabel, falseLabel, label } = onlyProps()
   const { elCheckboxGroup } = useInject()
   const vm = getCurrentInstance()
-  const parentModelValue = computed(() => elCheckboxGroup?.props?.modelValue)
+  /**
+   * elCheckboxGroup.modelValue may be a normal array or a reactive array
+   */
+  const parentModelValue = computed(() => unref(elCheckboxGroup?.modelValue))
   const state = computed(() => {
     return modelValue.value || parentModelValue.value || false
   })
