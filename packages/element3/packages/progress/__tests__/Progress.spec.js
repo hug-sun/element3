@@ -42,10 +42,7 @@ describe('Progress.vue', () => {
     })
 
     it('fix percentage value', () => {
-      expect(autoFixPercentage(undefined)).toBe(0)
-      expect(autoFixPercentage(null)).toBe(0)
-      expect(autoFixPercentage('')).toBe(0)
-      expect(autoFixPercentage('9')).toBe(0)
+      expect(autoFixPercentage(-2)).toBe(0)
       expect(autoFixPercentage(129)).toBe(100)
       expect(autoFixPercentage(29)).toBe(29)
     })
@@ -56,7 +53,7 @@ describe('Progress.vue', () => {
         props: { percentage }
       })
       testPercentage(wrapper, 100)
-      await wrapper.setProps({ percentage: 'abc' })
+      await wrapper.setProps({ percentage: -28 })
       testPercentage(wrapper, 0)
     })
 

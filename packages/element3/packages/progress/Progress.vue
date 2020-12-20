@@ -67,7 +67,7 @@ export function toPercentageColors(colors) {
 }
 
 export function autoFixPercentage(percentage) {
-  if (!isNumber(percentage) || percentage < 0) {
+  if (percentage < 0) {
     return 0
   }
   if (percentage > 100) {
