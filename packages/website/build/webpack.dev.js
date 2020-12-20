@@ -1,31 +1,19 @@
 const path = require('path')
 const webpack = require('webpack')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const config = require('./config')
 
-const isProd = process.env.NODE_ENV === 'production'
-const isPlay = !!process.env.PLAY_ENV
-
 const webpackConfig = {
   mode: process.env.NODE_ENV,
-  entry: isProd
-    ? {
-        docs: './src/entry.js'
-      }
-    : isPlay
-    ? './src/play.js'
-    : './src/entry.js',
+  entry: './src/play.js',
   output: {
     path: path.resolve(process.cwd(), './element-ui/'),
     publicPath: process.env.CI_ENV || '',
     filename: '[name].[hash:7].js',
-    chunkFilename: isProd ? '[name].[hash:7].js' : '[name].js'
+    chunkFilename: '[name].js'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -46,12 +34,6 @@ const webpackConfig = {
   },
   module: {
     rules: [
-      // {
-      //   enforce: 'pre',
-      //   test: /\.(vue|jsx?)$/,
-      //   exclude: /node_modules/,
-      //   loader: 'eslint-loader'
-      // },
       {
         test: /\.(jsx?|babel|es6)$/,
         include: process.cwd(),
@@ -70,7 +52,7 @@ const webpackConfig = {
       {
         test: /\.(scss|css)$/,
         use: [
-          isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+          'style-loader',
           'css-loader',
           'sass-loader'
         ]
@@ -126,38 +108,6 @@ const webpackConfig = {
     minimizer: []
   },
   devtool: '#eval-source-map'
-}
-
-if (isProd) {
-  webpackConfig.externals = {
-    vue: 'Vue',
-    'vue-router': 'VueRouter',
-    'highlight.js': 'hljs'
-  }
-  webpackConfig.plugins.push(
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash:7].css'
-    })
-  )
-  webpackConfig.optimization.minimizer.push(
-    new UglifyJsPlugin({
-      cache: true,
-      parallel: true,
-      sourceMap: false
-    }),
-    new OptimizeCSSAssetsPlugin({})
-  )
-  // https://webpack.js.org/configuration/optimization/#optimizationsplitchunks
-  webpackConfig.optimization.splitChunks = {
-    cacheGroups: {
-      vendor: {
-        test: /\/src\//,
-        name: 'element-ui',
-        chunks: 'all'
-      }
-    }
-  }
-  webpackConfig.devtool = false
 }
 
 module.exports = webpackConfig
