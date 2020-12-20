@@ -1,4 +1,4 @@
-import { Message } from '../Message.js'
+import { Message } from '../src/Message.js'
 import { h } from 'vue'
 describe('Message', () => {
   afterEach(async () => {

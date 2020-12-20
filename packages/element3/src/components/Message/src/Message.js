@@ -1,6 +1,6 @@
 import messageComponent from './Message.vue'
-import { createComponent } from '../../src/use/component.js'
-import { PopupManager } from '../../src/utils/popup'
+import { createComponent } from '../../../use/component'
+import { PopupManager } from '../../../utils/popup'
 import { isVNode } from 'vue'
 
 const instanceList = []
