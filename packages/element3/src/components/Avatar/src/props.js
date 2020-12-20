@@ -1,4 +1,4 @@
-import { isString, isNumber } from '../../src/utils/types'
+import { isString, isNumber } from '../../../utils/types'
 
 export const props = {
   icon: {

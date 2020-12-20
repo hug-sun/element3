@@ -20,7 +20,7 @@
 
 <script>
 import { defineComponent, computed } from 'vue'
-import { isString } from '../../src/utils/types'
+import { isString } from '../../../utils/types'
 
 export default defineComponent({
   name: 'ElBadge',
