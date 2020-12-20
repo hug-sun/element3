@@ -72,4 +72,20 @@ describe('CheckboxGroup.vue', () => {
       wrapper.findComponent({ name: 'ElCheckbox' }).classes()
     ).not.toContain(`is-disabled`)
   })
+
+  test('props.border', async () => {
+    const wrapper = mount(CheckboxGroup, {
+      slots: { default: ['A', 'B'].map((label) => h(Checkbox, { label })) }
+    })
+
+    await wrapper.setProps({ border: true })
+    expect(wrapper.findComponent({ name: 'ElCheckbox' }).classes()).toContain(
+      'is-bordered'
+    )
+
+    await wrapper.setProps({ border: false })
+    expect(
+      wrapper.findComponent({ name: 'ElCheckbox' }).classes()
+    ).not.toContain('is-bordered')
+  })
 })
