@@ -5,7 +5,7 @@ import {
   getRefValue,
   sortByPercentage,
   toPercentageColors,
-  fixPercentage
+  autoFixPercentage
 } from '../Progress.vue'
 import Color from '../../color-picker/src/color'
 import { isRef, toRefs, reactive } from 'vue'
@@ -19,6 +19,7 @@ describe('Progress.vue', () => {
     })
     hasClass(wrapper, 'el-progress')
     hasClass(wrapper, 'el-progress--line')
+    notHasClass(wrapper, 'is-undefined')
 
     existsElem(wrapper, '.el-progress > .el-progress-bar')
     existsElem(wrapper, '.el-progress > .el-progress__text')
@@ -43,15 +44,15 @@ describe('Progress.vue', () => {
     })
 
     it('fix percentage value', () => {
-      expect(fixPercentage(undefined)).toBe(0)
-      expect(fixPercentage(null)).toBe(0)
-      expect(fixPercentage('')).toBe(0)
-      expect(fixPercentage('9')).toBe(0)
-      expect(fixPercentage(129)).toBe(100)
-      expect(fixPercentage(29)).toBe(29)
+      expect(autoFixPercentage(undefined)).toBe(0)
+      expect(autoFixPercentage(null)).toBe(0)
+      expect(autoFixPercentage('')).toBe(0)
+      expect(autoFixPercentage('9')).toBe(0)
+      expect(autoFixPercentage(129)).toBe(100)
+      expect(autoFixPercentage(29)).toBe(29)
     })
 
-    it.only('percentage validator', async () => {
+    it('percentage validator', async () => {
       const percentage = 158
       const wrapper = mount(Progress, {
         props: { percentage }
@@ -78,6 +79,10 @@ describe('Progress.vue', () => {
       const color2 = '#336699'
       await wrapper.setProps({ color: color2 })
       testProgressColor(wrapper, color2)
+      const color3 = ''
+      await wrapper.setProps({ color: color3 })
+      //FIXME make sure not contain function works
+      notContainStyle(wrapper, '.el-progress-bar__inner', 'background-color')
     })
 
     it('color function', async () => {
@@ -210,8 +215,28 @@ describe('Progress.vue', () => {
       expect(wrapper).toBeDefined()
       testProgressColor(wrapper, colors[4].color)
     })
+
+    it('status add "is-xxx" class', async () => {
+      const percentage = 85
+      const status = 'success'
+      const props = { percentage, status }
+      const wrapper = mount(Progress, { props })
+      hasClass(wrapper, 'is-success')
+      await wrapper.setProps({ status: 'exception' })
+      hasClass(wrapper, 'is-exception')
+      await wrapper.setProps({ status: 'warning' })
+      hasClass(wrapper, 'is-warning')
+
+      await wrapper.setProps({ status: 'error' })
+      notHasClass(wrapper, 'is-error')
+    })
   })
 })
+
+function notContainStyle(wrapper, selector, strStyle) {
+  const elem = wrapper.find(selector)
+  expect(elem.attributes().style).not.toContain(strStyle)
+}
 
 function testProgressColor(wrapper, color) {
   const rgb = fromHexToRgb(color)
@@ -242,6 +267,10 @@ function containText(wrapper, selector, text) {
 
 function hasClass(elem, className) {
   expect(elem.classes().includes(className)).toBeTruthy()
+}
+
+function notHasClass(elem, className) {
+  expect(elem.classes().includes(className)).toBeFalsy()
 }
 
 function existsElem(wrapper, selector) {
