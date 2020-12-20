@@ -1,5 +1,5 @@
 <template>
-  <div class="el-progress el-progress--line">
+  <div :class="['el-progress', 'el-progress--line', statusClass]">
     <div class="el-progress-bar">
       <div class="el-progress-bar__outer">
         <div class="el-progress-bar__inner" :style="barStyle"></div>
@@ -14,6 +14,10 @@
 import { computed, defineComponent, isRef, toRefs } from 'vue'
 import { isArray, isFunction, isNumber, isString } from '../../src/utils/types'
 
+export const percentageValid = (val) => val >= 0 && val <= 100
+export const statuses = ['success', 'exception', 'warning']
+export const statusValid = (val) => statuses.includes(val)
+
 export default defineComponent({
   name: 'ElProgress',
   props: {
@@ -21,27 +25,27 @@ export default defineComponent({
       type: Number,
       default: 0,
       required: true,
-      validator: (val) => val >= 0 && val <= 100
+      validator: percentageValid
     },
     format: Function,
+    status: {
+      type: String,
+      validator: statusValid
+    },
     color: { type: [String, Function, Array], default: '' }
   },
   setup(props) {
-    const { percentage, format, color } = toRefs(props)
+    const { percentage, format, color, status } = toRefs(props)
     const barStyle = useBarStyle(percentage, color)
     const content = useContent(format, percentage)
-    return { barStyle, content }
+    const statusClass = useStatusClass(status)
+    return { barStyle, content, statusClass }
   }
 })
 
 export function getColorsIndex(colors, percent) {
-  const n = colors.length
-  for (let i = 0; i < colors.length; i++) {
-    if (percent < colors[i].percentage) {
-      return i
-    }
-  }
-  return n - 1
+  const i = colors.findIndex((c) => percent < c.percentage)
+  return i < 0 ? colors.length - 1 : i
 }
 
 export function getRefValue(ref) {
@@ -62,7 +66,7 @@ export function toPercentageColors(colors) {
   })
 }
 
-export function fixPercentage(percentage) {
+export function autoFixPercentage(percentage) {
   if (!isNumber(percentage) || percentage < 0) {
     return 0
   }
@@ -74,7 +78,7 @@ export function fixPercentage(percentage) {
 
 const useBarStyle = (percentage, color) => {
   return computed(() => {
-    const pv = fixPercentage(getRefValue(percentage))
+    const pv = autoFixPercentage(getRefValue(percentage))
     const cv = getRefValue(color)
     let style = { width: `${pv}%` }
     if (isArray(cv)) {
@@ -95,12 +99,19 @@ const useBarStyle = (percentage, color) => {
 const useContent = (format, percentage) => {
   return computed(() => {
     const fv = getRefValue(format)
-    const pv = fixPercentage(getRefValue(percentage))
+    const pv = autoFixPercentage(getRefValue(percentage))
     if (typeof fv === 'function') {
       return fv(pv) || ''
     } else {
       return `${pv}%`
     }
+  })
+}
+
+const useStatusClass = (status) => {
+  return computed(() => {
+    const st = getRefValue(status)
+    return st && statusValid(st) ? `is-${st}` : ''
   })
 }
 </script>
