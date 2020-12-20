@@ -1,9 +1,7 @@
 // #todo
-import { defineComponent, isVNode } from 'vue'
+import { isVNode } from 'vue'
 import { createComponent } from '../../../src/use/component'
 import msgboxVue from './MessageBox.vue'
-import merge from '../../../src/utils/merge'
-const messageBoxConstructor = defineComponent(msgboxVue)
 const defaults = {
   title: null,
   message: '',
@@ -39,10 +37,6 @@ const defaults = {
   distinguishCancelAndClose: false
 }
 
-// const MessageBoxConstructor = {
-//   extends: msgboxVue
-// }
-
 let currentMsg, instance
 let msgQueue = []
 
@@ -67,9 +61,10 @@ const defaultCallback = (action) => {
     }
   }
 }
+
 const initInstance = (currentMsg, VNode = null) => {
   defaults.callback = defaultCallback
-  instance = createComponent(messageBoxConstructor, currentMsg.options, VNode)
+  instance = createComponent(msgboxVue, currentMsg.options, VNode)
 }
 
 const showNextMsg = () => {
@@ -86,44 +81,27 @@ const showNextMsg = () => {
     options.callback = (action, instance) => {
       oldCb(action, instance)
     }
-    if (isVNode(currentMsg.message)) {
-      initInstance(currentMsg, { default: () => currentMsg.message })
-    }
     initInstance(currentMsg)
-    ;[
-      'modal',
-      'showClose',
-      'closeOnClickModal',
-      'closeOnPressEscape',
-      'closeOnHashChange'
-    ].forEach((prop) => {
-      if (options[prop] === undefined) {
-        options[prop] = true
-      }
-    })
-
+    if (isVNode(options.message)) {
+      console.log(options.message)
+      instance.slots.default = () => options.message
+      console.log(instance)
+      debugger
+    }
     document.body.appendChild(instance.vnode.el)
   }
-  // }
 }
 
-const MessageBox = function (options, callback) {
-  // if (Vue.prototype.$isServer) return
-  if (typeof options === 'string' || isVNode(options)) {
-    options = {
-      message: options
-    }
-    if (typeof arguments[1] === 'string') {
-      options.title = arguments[1]
-    }
-  } else if (options.callback && !callback) {
+const MessageBox = function (options) {
+  let callback = null
+  if (options.callback) {
     callback = options.callback
   }
 
   if (typeof Promise !== 'undefined') {
     return new Promise((resolve, reject) => { // eslint-disable-line
       msgQueue.push({
-        options: merge({}, defaults, MessageBox.defaults, options),
+        options: Object.assign({}, defaults, MessageBox.defaults, options),
         callback: callback,
         resolve: resolve,
         reject: reject
@@ -133,16 +111,12 @@ const MessageBox = function (options, callback) {
     })
   } else {
     msgQueue.push({
-      options: merge({}, defaults, MessageBox.defaults, options),
+      options: Object.assign({}, defaults, options),
       callback: callback
     })
 
     showNextMsg()
   }
-}
-
-MessageBox.setDefaults = (defaults) => {
-  MessageBox.defaults = defaults
 }
 
 MessageBox.alert = (message, title, options) => {
@@ -152,15 +126,16 @@ MessageBox.alert = (message, title, options) => {
   } else if (title === undefined) {
     title = ''
   }
+  if (typeof message === 'object') {
+    options = message
+    message = ''
+  }
   return MessageBox(
-    merge(
+    Object.assign(
       {
         title: title,
-        modal: true,
         message: message,
-        _type: 'alert',
-        closeOnPressEscape: false,
-        closeOnClickModal: false
+        category: 'alert'
       },
       options
     )
@@ -175,11 +150,11 @@ MessageBox.confirm = (message, title, options) => {
     title = ''
   }
   return MessageBox(
-    merge(
+    Object.assign(
       {
         title: title,
         message: message,
-        _type: 'confirm',
+        category: 'confirm',
         showCancelButton: true
       },
       options
@@ -194,14 +169,17 @@ MessageBox.prompt = (message, title, options) => {
   } else if (title === undefined) {
     title = ''
   }
+  if (typeof message === 'object') {
+    options = message
+  }
   return MessageBox(
-    merge(
+    Object.assign(
       {
         title: title,
         message: message,
         showCancelButton: true,
         showInput: true,
-        _type: 'prompt'
+        category: 'prompt'
       },
       options
     )

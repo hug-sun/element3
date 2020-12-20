@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { nextTick } from 'vue'
+import { nextTick, h } from 'vue'
 import MessageBox from '../src/MessageBox.vue'
 describe('MessageBox.vue', () => {
   describe('proprety', () => {
@@ -117,19 +117,136 @@ describe('MessageBox.vue', () => {
           message: '333'
         }
       })
-      console.log()
-      expect(warpper.componentVM.getMessage.message).toBe('333')
+      expect(warpper.find('.el-message-box__message > p').text()).toBe('333')
+    })
+    it('meesage is VNode', () => {
+      const warpper = mount(MessageBox, {
+        slots: {
+          default: h('p', null, [
+            h('span', null, '内容可以是 '),
+            h('i', { style: 'color: teal' }, 'VNode')
+          ])
+        }
+      })
+
+      expect(warpper.find('.el-message-box__message > p').text()).toBe(
+        `内容可以是 VNode`
+      )
+    })
+    it('dangerouslyUseHTMLString', () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          dangerouslyUseHTMLString: true,
+          message: '<div class="mmm">444</div>'
+        }
+      })
+      expect(warpper.find('.mmm').exists()).toBeTruthy()
+    })
+    it('showInput', () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          showInput: true
+        }
+      })
+      expect(warpper.find('.el-message-box__input').isVisible()).toBeTruthy()
+    })
+    it('inputValue inputPlaceholder', () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          showInput: true,
+          inputValue: '444',
+          inputPlaceholder: '555'
+        }
+      })
+      expect(warpper.find('.el-input__inner').element.value).toEqual('444')
+      expect(
+        warpper.find('.el-input__inner').attributes('placeholder')
+      ).toEqual('555')
+    })
+
+    it('cancelButtonText, showCancelButton', () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          cancelButtonText: 'cancel',
+          showCancelButton: true,
+          cancelButtonClass: '4444'
+        }
+      })
+      expect(warpper.findAll('.el-message-box__btns button')[0].text()).toEqual(
+        'cancel'
+      )
+      expect(
+        warpper.findAll('.el-message-box__btns button')[0].isVisible()
+      ).toBeTruthy()
+      expect(
+        warpper.findAll('.el-button--primary')[0].element.classList
+      ).toContain('4444')
+    })
+
+    it('confirmButtonClass showConfirmButton, confirmButtonText', () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          confirmButtonText: 'cancel',
+          showConfirmButton: true,
+          confirmButtonClass: '4444'
+        }
+      })
+      expect(
+        warpper.findAll('.el-button--primary')[1].element.classList
+      ).toContain('4444')
+      expect(warpper.findAll('.el-message-box__btns button')[1].text()).toEqual(
+        'cancel'
+      )
+      expect(
+        warpper.findAll('.el-message-box__btns button')[1].isVisible()
+      ).toBeTruthy()
     })
   })
-  describe('test modal', () => {
+  describe('test modal closeOnClickModal', () => {
     it('open modal', async () => {
       const warpper = mount(MessageBox, {
         props: {
-          modal: true
+          modal: true,
+          closeOnClickModal: true
         }
       })
       await nextTick()
       expect(warpper.find('.v-modal').exists()).toBeTruthy()
+
+      await warpper.find('.v-modal').trigger('click')
+      setTimeout(() => {
+        expect(warpper.find('.el-message-box__wrapper').exists()).toBeFalsy()
+      }, 200)
+    })
+    it('open modal', async () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          modal: true,
+          closeOnClickModal: true
+        }
+      })
+      await nextTick()
+      expect(warpper.find('.v-modal').exists()).toBeTruthy()
+
+      await warpper.find('.v-modal').trigger('keyup', { keyCode: 'Escape' })
+      setTimeout(() => {
+        expect(warpper.find('.el-message-box__wrapper').exists()).toBeFalsy()
+      }, 200)
+    })
+    it('open modal', async () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          modal: true,
+          closeOnClickModal: true
+        }
+      })
+      await nextTick()
+      expect(warpper.find('.v-modal').exists()).toBeTruthy()
+
+      await warpper.find('.v-modal').trigger('hashchange')
+      setTimeout(() => {
+        expect(warpper.find('.el-message-box__wrapper').exists()).toBeFalsy()
+      }, 200)
     })
   })
 })
