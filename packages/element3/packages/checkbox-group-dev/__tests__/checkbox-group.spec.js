@@ -7,9 +7,7 @@ describe('CheckboxGroup.vue', () => {
   test('support default slot', () => {
     const text = 'welcome'
     const wrapper = mount(CheckboxGroup, {
-      slots: {
-        default: text
-      }
+      slots: { default: text }
     })
 
     expect(wrapper.text()).toBe(text)
@@ -39,12 +37,8 @@ describe('CheckboxGroup.vue', () => {
 
   test('props.size', async () => {
     const wrapper = mount(CheckboxGroup, {
-      props: {
-        border: true
-      },
-      slots: {
-        default: ['A'].map((label) => h(Checkbox, { label }))
-      }
+      props: { border: true },
+      slots: { default: ['A'].map((label) => h(Checkbox, { label })) }
     })
 
     await wrapper.setProps({ size: 'mini' })
@@ -65,9 +59,7 @@ describe('CheckboxGroup.vue', () => {
 
   test('props.disabled', async () => {
     const wrapper = mount(CheckboxGroup, {
-      slots: {
-        default: ['A', 'B'].map((label) => h(Checkbox, { label }))
-      }
+      slots: { default: ['A', 'B'].map((label) => h(Checkbox, { label })) }
     })
 
     await wrapper.setProps({ disabled: true })

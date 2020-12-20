@@ -6,9 +6,7 @@ import { setupGlobalOptions } from '../../../src/use/globalConfig'
 describe('Checkbox.vue', () => {
   test('the default slot content should be displayed', () => {
     const wrapper = mount(Checkbox, {
-      slots: {
-        default: 'an apple'
-      }
+      slots: { default: 'an apple' }
     })
 
     expect(wrapper.find('.el-checkbox__label').text()).toBe('an apple')
@@ -16,28 +14,22 @@ describe('Checkbox.vue', () => {
 
   test('should display the label attribute content', () => {
     const wrapper = mount(Checkbox, {
-      props: {
-        label: 'two apples'
-      }
+      props: { label: 'two apples' }
     })
 
     expect(wrapper.find('.el-checkbox__label').text()).toBe('two apples')
   })
 
-  test('slot and label exist at the same time, the content of the slot should be displayed', () => {
+  test('slot and label priority', () => {
     const wrapper = mount(Checkbox, {
-      slots: {
-        default: 'an apple'
-      },
-      props: {
-        label: 'two apples'
-      }
+      slots: { default: 'an apple' },
+      props: { label: 'two apples' }
     })
 
     expect(wrapper.find('.el-checkbox__label').text()).toBe('an apple')
   })
 
-  test('no label and slot are set, content should not be displayed', () => {
+  test('label does not exist, but exists', () => {
     const wrapper = mount(Checkbox, {
       modelValue: ref(true)
     })
@@ -48,9 +40,7 @@ describe('Checkbox.vue', () => {
   test('update:modelValue', async () => {
     const value = ref(false)
     const wrapper = mount(Checkbox, {
-      props: {
-        modelValue: value
-      }
+      props: { modelValue: value }
     })
 
     await wrapper.get('input').trigger('click')
@@ -61,9 +51,7 @@ describe('Checkbox.vue', () => {
   describe('border', () => {
     test('set border props', () => {
       const wrapper = mount(Checkbox, {
-        props: {
-          border: true
-        }
+        props: { border: true }
       })
 
       expect(wrapper.classes()).toContain('is-bordered')
@@ -73,9 +61,7 @@ describe('Checkbox.vue', () => {
       const wrapper = mount(Checkbox, {
         global: {
           provide: {
-            elCheckboxGroup: reactive({
-              border: true
-            })
+            elCheckboxGroup: reactive({ border: true })
           }
         }
       })
@@ -87,9 +73,7 @@ describe('Checkbox.vue', () => {
   describe('size', () => {
     test('when border property does not exist, setting the size property is invalid', () => {
       const wrapper = mount(Checkbox, {
-        props: {
-          size: 'mini'
-        }
+        props: { size: 'mini' }
       })
 
       expect(wrapper.classes()).not.toContain('el-checkbox--mini')
@@ -97,10 +81,7 @@ describe('Checkbox.vue', () => {
 
     test('set border and size at the same time', () => {
       const wrapper = mount(Checkbox, {
-        props: {
-          border: true,
-          size: 'mini'
-        }
+        props: { border: true, size: 'mini' }
       })
 
       expect(wrapper.classes()).toContain('el-checkbox--mini')
@@ -110,14 +91,10 @@ describe('Checkbox.vue', () => {
       const wrapper = mount(Checkbox, {
         global: {
           provide: {
-            elCheckboxGroup: reactive({
-              size: 'mini'
-            })
+            elCheckboxGroup: reactive({ size: 'mini' })
           }
         },
-        props: {
-          border: true
-        }
+        props: { border: true }
       })
 
       expect(wrapper.classes()).toContain('el-checkbox--mini')
@@ -127,14 +104,10 @@ describe('Checkbox.vue', () => {
       const wrapper = mount(Checkbox, {
         global: {
           provide: {
-            elFormItem: reactive({
-              size: 'mini'
-            })
+            elFormItem: reactive({ size: 'mini' })
           }
         },
-        props: {
-          border: true
-        }
+        props: { border: true }
       })
 
       expect(wrapper.classes()).toContain('el-checkbox--mini')
@@ -143,15 +116,9 @@ describe('Checkbox.vue', () => {
     test('by global config', () => {
       const wrapper = mount(Checkbox, {
         global: {
-          plugins: [
-            setupGlobalOptions({
-              size: 'mini'
-            })
-          ]
+          plugins: [setupGlobalOptions({ size: 'mini' })]
         },
-        props: {
-          border: true
-        }
+        props: { border: true }
       })
 
       expect(wrapper.classes()).toContain('el-checkbox--mini')
@@ -161,9 +128,7 @@ describe('Checkbox.vue', () => {
   describe('disabled', () => {
     test('Checkbox set disabled props', async () => {
       const wrapper = mount(Checkbox, {
-        props: {
-          disabled: true
-        }
+        props: { disabled: true }
       })
 
       expect(wrapper.classes()).toContain('is-disabled')
@@ -176,9 +141,7 @@ describe('Checkbox.vue', () => {
       const wrapper = mount(Checkbox, {
         global: {
           provide: {
-            elCheckboxGroup: reactive({
-              disabled: true
-            })
+            elCheckboxGroup: reactive({ disabled: true })
           }
         }
       })
@@ -193,9 +156,7 @@ describe('Checkbox.vue', () => {
       const wrapper = mount(Checkbox, {
         global: {
           provide: {
-            elFormItem: reactive({
-              disabled: true
-            })
+            elFormItem: reactive({ disabled: true })
           }
         }
       })
@@ -209,9 +170,7 @@ describe('Checkbox.vue', () => {
 
   test('set the native name attribute', () => {
     const wrapper = mount(Checkbox, {
-      props: {
-        name: 'checkbox'
-      }
+      props: { name: 'checkbox' }
     })
 
     expect(wrapper.find('.el-checkbox__original').attributes('name')).toBe(
@@ -224,10 +183,7 @@ describe('Checkbox.vue', () => {
       const value = ref(false)
       const trueLabel = ref('yes')
       const wrapper = mount(Checkbox, {
-        props: {
-          modelValue: value,
-          trueLabel
-        }
+        props: { modelValue: value, trueLabel }
       })
 
       await nextTick()
@@ -239,10 +195,7 @@ describe('Checkbox.vue', () => {
       const value = ref(true)
       const falseLabel = ref('no')
       const wrapper = mount(Checkbox, {
-        props: {
-          modelValue: value,
-          falseLabel
-        }
+        props: { modelValue: value, falseLabel }
       })
 
       await nextTick()
@@ -256,11 +209,7 @@ describe('Checkbox.vue', () => {
   test('set checked should be checked', async () => {
     const value = ref(false)
     const wrapper = mount(Checkbox, {
-      props: {
-        modelValue: value,
-        checked: true,
-        label: 'apples'
-      }
+      props: { modelValue: value, checked: true, label: 'apples' }
     })
 
     await nextTick()
@@ -273,9 +222,7 @@ describe('Checkbox.vue', () => {
 
   test('set indeterminate should be half-selected', async () => {
     const wrapper = mount(Checkbox, {
-      props: {
-        indeterminate: true
-      }
+      props: { indeterminate: true }
     })
 
     await nextTick()
@@ -288,10 +235,7 @@ describe('Checkbox.vue', () => {
     test('when the checkbox is focused', async () => {
       const value = ref(false)
       const wrapper = mount(Checkbox, {
-        props: {
-          modelValue: value,
-          label: 'apples'
-        }
+        props: { modelValue: value, label: 'apples' }
       })
 
       await wrapper.get('input').trigger('focus')
@@ -303,10 +247,7 @@ describe('Checkbox.vue', () => {
     test('when the checkbox is not focused', async () => {
       const value = ref(false)
       const wrapper = mount(Checkbox, {
-        props: {
-          modelValue: value,
-          label: 'apples'
-        }
+        props: { modelValue: value, label: 'apples' }
       })
 
       await wrapper.get('input').trigger('blur')
@@ -319,9 +260,7 @@ describe('Checkbox.vue', () => {
   test('the modelValue changes, the change event should be triggered', async () => {
     const value = ref(false)
     const wrapper = mount(Checkbox, {
-      props: {
-        modelValue: value
-      }
+      props: { modelValue: value }
     })
 
     await wrapper.setProps({ modelValue: ref(true) })
@@ -334,9 +273,7 @@ describe('Checkbox.vue', () => {
     const wrapper = mount(Checkbox, {
       global: {
         provide: {
-          elCheckboxGroup: reactive({
-            modelValue: ['one', 'two']
-          })
+          elCheckboxGroup: reactive({ modelValue: ['one', 'two'] })
         }
       },
       props: {
@@ -352,10 +289,7 @@ describe('Checkbox.vue', () => {
     const wrapper = mount(Checkbox, {
       global: {
         provide: {
-          elCheckboxGroup: reactive({
-            modelValue: ['one'],
-            update: () => {}
-          })
+          elCheckboxGroup: reactive({ modelValue: ['one'], update: () => {} })
         }
       },
       props: {
@@ -391,10 +325,7 @@ describe('Checkbox.vue', () => {
     const wrapper = mount(Checkbox, {
       global: {
         provide: {
-          elCheckboxGroup: {
-            modelValue: ['one'],
-            update: spy
-          }
+          elCheckboxGroup: { modelValue: ['one'], update: spy }
         }
       },
       props: {
