@@ -1,3 +1,0 @@
-describe('Menu', () => {
-  it('todo', () => {})
-})

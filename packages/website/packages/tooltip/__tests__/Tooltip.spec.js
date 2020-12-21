@@ -1,3 +1,0 @@
-describe('Tooltip', () => {
-  test('todo', () => {})
-})

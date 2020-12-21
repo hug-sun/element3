@@ -147,7 +147,7 @@ export default {
       return style
     })
     const handleWrapperClick = () => {
-      if (!closeOnClickModal) return
+      if (!closeOnClickModal.value) return
       handleClose()
     }
     const handleClose = () => {
