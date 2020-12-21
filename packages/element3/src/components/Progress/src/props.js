@@ -23,7 +23,11 @@ export const props = {
     type: String,
     validator: statusValid
   },
-  color: { type: [String, Function, Array], default: '' }
+  color: { type: [String, Function, Array], default: '' },
+  showText: {
+    type: Boolean,
+    default: true
+  }
 }
 
 export function getColorsIndex(colors, percent) {

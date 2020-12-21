@@ -5,7 +5,7 @@
         <div class="el-progress-bar__inner" :style="barStyle"></div>
       </div>
     </div>
-    <div class="el-progress__text">
+    <div class="el-progress__text" v-if="showText">
       <template v-if="!status">{{ content }}</template>
       <i v-else :class="iconClass"></i>
     </div>
