@@ -1,7 +1,7 @@
-@import "./common/var.scss";
-@import "./mixins/mixins.scss";
+@import './common/var.scss';
+@import './mixins/mixins.scss';
 
-[class*="el-col-"] {
+[class*='el-col-'] {
   float: left;
   box-sizing: border-box;
 }

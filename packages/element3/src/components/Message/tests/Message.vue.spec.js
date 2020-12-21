@@ -1,5 +1,5 @@
 import { mount, flushPromises } from '@vue/test-utils'
-import Message from '../Message.vue'
+import Message from '../src/Message.vue'
 import { h } from 'vue'
 
 describe('Message.vue', () => {

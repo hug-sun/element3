@@ -7,6 +7,4 @@ interface TableHeaderProps {
   defaultSort: any
 }
 
-export {
-  TableHeaderProps,
-}
+export { TableHeaderProps }

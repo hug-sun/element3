@@ -1,10 +1,15 @@
 import { ElementUIComponent } from './component'
 
 export type TimelineItemPlacement = 'top' | 'bottom'
-export type TimelineItemType = 'primary' | 'success' | 'warning' | 'danger' | 'info'
+export type TimelineItemType =
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'info'
 export type TimelineItemSize = 'normal' | 'large'
 
-export const ElTimelineItem:ITimelineItem
+export const ElTimelineItem: ITimelineItem
 /** TimelineItem Component */
 interface ITimelineItem extends ElementUIComponent {
   timestamp: string

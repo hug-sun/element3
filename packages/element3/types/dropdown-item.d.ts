@@ -15,4 +15,4 @@ interface IDropdownItem extends ElementUIComponent {
   icon: string
 }
 
-export const ElDropdownItem:IDropdownItem
+export const ElDropdownItem: IDropdownItem

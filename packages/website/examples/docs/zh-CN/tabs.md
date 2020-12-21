@@ -23,10 +23,10 @@
     setup() {
       const activeName = ref('second')
       const handleClick = (tab, event) => {
-         console.log(tab, event)
+        console.log(tab, event)
       }
       return { activeName, handleClick }
-    },
+    }
   }
 </script>
 ```
@@ -54,10 +54,10 @@
     setup() {
       const activeName = ref('first')
       const handleClick = (tab, event) => {
-       console.log(tab, event)
+        console.log(tab, event)
       }
       return { activeName, handleClick }
-    },
+    }
   }
 </script>
 ```
@@ -109,7 +109,7 @@
     setup() {
       const tabPosition = ref('left')
       return { tabPosition }
-    },
+    }
   }
 </script>
 ```
@@ -168,15 +168,15 @@
           {
             title: 'Tab 1',
             name: '1',
-            content: 'Tab 1 content',
+            content: 'Tab 1 content'
           },
           {
             title: 'Tab 2',
             name: '2',
-            content: 'Tab 2 content',
-          },
+            content: 'Tab 2 content'
+          }
         ],
-        tabIndex: 2,
+        tabIndex: 2
       })
       const handleTabsEdit = (targetName, action) => {
         if (action === 'add') {
@@ -184,7 +184,7 @@
           state.editableTabs.push({
             title: 'New Tab',
             name: newTabName,
-            content: 'New Tab content',
+            content: 'New Tab content'
           })
           state.editableTabsValue = newTabName
         }
@@ -208,7 +208,7 @@
       }
 
       return { ...toRefs(state), handleTabsEdit }
-    },
+    }
   }
 </script>
 ```
@@ -250,15 +250,15 @@
           {
             title: 'Tab 1',
             name: '1',
-            content: 'Tab 1 content',
+            content: 'Tab 1 content'
           },
           {
             title: 'Tab 2',
             name: '2',
-            content: 'Tab 2 content',
-          },
+            content: 'Tab 2 content'
+          }
         ],
-        tabIndex: 2,
+        tabIndex: 2
       })
 
       const addTab = (targetName) => {
@@ -266,7 +266,7 @@
         state.editableTabs.push({
           title: 'New Tab',
           name: newTabName,
-          content: 'New Tab content',
+          content: 'New Tab content'
         })
         state.editableTabsValue = newTabName
       }
@@ -289,7 +289,7 @@
         state.editableTabs = tabs.filter((tab) => tab.name !== targetName)
       }
       return { ...toRefs(state), addTab, removeTab }
-    },
+    }
   }
 </script>
 ```

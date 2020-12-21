@@ -42,7 +42,7 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper.classes()).toContain(`el-button--${size}`)
+      expect(wrapper).toHaveClass(`el-button--${size}`)
     })
 
     it('by elFormItem.elFormItemSize', () => {
@@ -60,7 +60,7 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper.classes()).toContain(`el-button--${size}`)
+      expect(wrapper).toHaveClass(`el-button--${size}`)
     })
 
     it('by global config ', () => {
@@ -78,7 +78,7 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper.classes()).toContain(`el-button--${size}`)
+      expect(wrapper).toHaveClass(`el-button--${size}`)
     })
   })
 
@@ -91,7 +91,7 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper.classes()).toContain(`el-button--${type}`)
+    expect(wrapper).toHaveClass(`el-button--${type}`)
   })
 
   it('set button plain by prop type', () => {
@@ -101,7 +101,7 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper.classes()).toContain(`is-plain`)
+    expect(wrapper).toHaveClass('is-plain')
   })
   it('set button round by prop type', () => {
     const wrapper = mount(Button, {
@@ -110,7 +110,7 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper.classes()).toContain(`is-round`)
+    expect(wrapper).toHaveClass('is-round')
   })
 
   it('set button circle by prop type', () => {
@@ -120,7 +120,7 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper.classes()).toContain(`is-circle`)
+    expect(wrapper).toHaveClass('is-circle')
   })
 
   it('set button loading by prop loading', async () => {
@@ -130,7 +130,7 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper.classes()).toContain(`is-loading`)
+    expect(wrapper).toHaveClass('is-loading')
   })
 
   describe('set button disabled', () => {
@@ -141,7 +141,7 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper.classes()).toContain(`is-disabled`)
+      expect(wrapper).toHaveClass('is-disabled')
       expect(wrapper.attributes()).toHaveProperty('disabled')
     })
 
@@ -156,7 +156,7 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper.classes()).toContain(`is-disabled`)
+      expect(wrapper).toHaveClass('is-disabled')
       expect(wrapper.attributes()).toHaveProperty('disabled')
     })
   })

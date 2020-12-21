@@ -4,8 +4,8 @@ export type ListType = 'text' | 'picture' | 'picture-card'
 export type FileUploadStatus = 'ready' | 'uploading' | 'success' | 'fail'
 
 export interface FileListItem {
-  name: string,
-  url: string,
+  name: string
+  url: string
   status?: FileUploadStatus
 }
 
@@ -14,12 +14,12 @@ export interface ElUploadInternalRawFile extends File {
 }
 
 export interface ElUploadInternalFileDetail {
-  status: FileUploadStatus,
-  name: string,
-  size: number,
-  percentage: number,
-  uid: number,
-  raw: ElUploadInternalRawFile,
+  status: FileUploadStatus
+  name: string
+  size: number
+  percentage: number
+  uid: number
+  raw: ElUploadInternalRawFile
   url?: string
 }
 
@@ -28,17 +28,17 @@ export interface ElUploadProgressEvent extends ProgressEvent {
 }
 
 export interface HttpRequestOptions {
-  headers: object,
-  withCredentials: boolean,
-  file: File,
-  data: object,
-  filename: string,
-  action: string,
-  onProgress: (e: ElUploadProgressEvent) => void,
-  onSuccess: (response: any) => void,
+  headers: object
+  withCredentials: boolean
+  file: File
+  data: object
+  filename: string
+  action: string
+  onProgress: (e: ElUploadProgressEvent) => void
+  onSuccess: (response: any) => void
   onError: (err: ErrorEvent) => void
 }
-export const ElUpload : IUpload;
+export const ElUpload: IUpload
 /** Upload Component */
 interface IUpload extends ElementUIComponent {
   /** Request URL (required) */
@@ -72,22 +72,42 @@ interface IUpload extends ElementUIComponent {
   onPreview: (file: ElUploadInternalFileDetail) => void
 
   /** Hook function when files are removed */
-  onRemove: (file: ElUploadInternalFileDetail, fileList: ElUploadInternalFileDetail[]) => void
+  onRemove: (
+    file: ElUploadInternalFileDetail,
+    fileList: ElUploadInternalFileDetail[]
+  ) => void
 
   /** Hook function when uploaded successfully */
-  onSuccess: (response: any, file: ElUploadInternalFileDetail, fileList: ElUploadInternalFileDetail[]) => void
+  onSuccess: (
+    response: any,
+    file: ElUploadInternalFileDetail,
+    fileList: ElUploadInternalFileDetail[]
+  ) => void
 
   /** Hook function when some errors occurs */
-  onError: (err: ErrorEvent, file: ElUploadInternalFileDetail, fileList: ElUploadInternalFileDetail[]) => void
+  onError: (
+    err: ErrorEvent,
+    file: ElUploadInternalFileDetail,
+    fileList: ElUploadInternalFileDetail[]
+  ) => void
 
   /** Hook function when some progress occurs */
-  onProgress: (event: ElUploadProgressEvent, file: ElUploadInternalFileDetail, fileList: ElUploadInternalFileDetail[]) => void
+  onProgress: (
+    event: ElUploadProgressEvent,
+    file: ElUploadInternalFileDetail,
+    fileList: ElUploadInternalFileDetail[]
+  ) => void
 
   /** Hook function when file status change */
-  onChange: (file: ElUploadInternalFileDetail, fileList: ElUploadInternalFileDetail[]) => void
+  onChange: (
+    file: ElUploadInternalFileDetail,
+    fileList: ElUploadInternalFileDetail[]
+  ) => void
 
   /** Hook function before uploading with the file to be uploaded as its parameter. If false or a Promise is returned, uploading will be aborted */
-  beforeUpload: (file: ElUploadInternalRawFile) => boolean | Promise<File | Blob | boolean>
+  beforeUpload: (
+    file: ElUploadInternalRawFile
+  ) => boolean | Promise<File | Blob | boolean>
 
   /** Whether thumbnail is displayed */
   thumbnailMode: boolean
@@ -111,14 +131,17 @@ interface IUpload extends ElementUIComponent {
   limit: number
 
   /** Hook function when limit is exceeded */
-  onExceed: (file: ElUploadInternalFileDetail, fileList: ElUploadInternalFileDetail[]) => void
+  onExceed: (
+    file: ElUploadInternalFileDetail,
+    fileList: ElUploadInternalFileDetail[]
+  ) => void
 
   /** Clear the upload file list */
-  clearFiles (): void;
+  clearFiles(): void
 
   /** Abort specified file */
-  abort (file: ElUploadInternalFileDetail): void
+  abort(file: ElUploadInternalFileDetail): void
 
   /** Upload the file list manually */
-  submit ():void;
+  submit(): void
 }

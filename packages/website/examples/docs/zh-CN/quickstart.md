@@ -204,9 +204,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import Element3 from 'element3'
 
-createApp(App)
-  .use(Element3, { size: 'small', zIndex: 3000 })
-  .mount('#app')
+createApp(App).use(Element3, { size: 'small', zIndex: 3000 }).mount('#app')
 ```
 
 按需引入 Element3：

@@ -1,7 +1,13 @@
 import { ElementUIComponent, ElementUIComponentSize } from './component'
 import { ButtonType } from './button'
 
-export type DropdownMenuAlignment = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end'
+export type DropdownMenuAlignment =
+  | 'top'
+  | 'top-start'
+  | 'top-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'bottom-end'
 export type DropdownMenuTrigger = 'hover' | 'click'
 
 /** Toggleable menu for displaying lists of links and actions */
@@ -34,4 +40,4 @@ interface IDropdown extends ElementUIComponent {
   tabindex: number
 }
 
-export const ElDropdown:IDropdown
+export const ElDropdown: IDropdown

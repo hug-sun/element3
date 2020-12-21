@@ -1,6 +1,6 @@
 import { ElementUIComponent } from './component'
 
-export const ElMenuItem:IMenuItem 
+export const ElMenuItem: IMenuItem
 /** Menu Item Component */
 interface IMenuItem extends ElementUIComponent {
   /** Unique identification */

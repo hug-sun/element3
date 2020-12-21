@@ -1,4 +1,4 @@
-import Avatar from '../Avatar.vue'
+import Avatar from '../src/Avatar.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 

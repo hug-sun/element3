@@ -1,4 +1,4 @@
-import Badge from '../Badge.vue'
+import Badge from '../src/Badge.vue'
 import { mount } from '@vue/test-utils'
 
 describe('Badge', () => {
