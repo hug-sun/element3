@@ -76,7 +76,7 @@ export default {
     const { changeHandle, model } = useModel()
     const { checkboxRef, isChecked } = useInitSelect(model)
     const { isBorder } = useBorder(border)
-    const { isDisabled } = useDisabled(disabled)
+    const { isDisabled } = useDisabled(disabled, isChecked)
     const { checkboxSize } = useSize(size)
 
     return {
@@ -138,10 +138,31 @@ function useSize(size) {
   }
 }
 
-function useDisabled(disabled) {
+function useDisabled(disabled, isChecked) {
   const { elCheckboxGroup, elFormItem } = useInject()
-  const isDisabled =
-    disabled?.value || elCheckboxGroup.disabled || elFormItem.disabled
+  const { parentModelValue, min } = useParent()
+  const disabledValue = computed(() => {
+    return (
+      disabled?.value ||
+      unref(elCheckboxGroup.disabled) ||
+      unref(elFormItem.disabled) ||
+      false
+    )
+  })
+
+  const isDisabled = computed(() => {
+    if (disabledValue.value) {
+      return true
+    } else if (
+      parentModelValue.value &&
+      parentModelValue.value.length <= min.value &&
+      isChecked.value
+    ) {
+      return true
+    } else {
+      return false
+    }
+  })
 
   return {
     isDisabled
@@ -223,6 +244,17 @@ function useInject() {
   return {
     elCheckboxGroup,
     elFormItem
+  }
+}
+
+function useParent() {
+  const { elCheckboxGroup } = useInject()
+  const parentModelValue = computed(() => elCheckboxGroup?.modelValue?.value)
+  const min = computed(() => elCheckboxGroup?.min?.value)
+
+  return {
+    parentModelValue,
+    min
   }
 }
 

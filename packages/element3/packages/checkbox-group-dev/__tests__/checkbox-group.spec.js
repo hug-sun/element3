@@ -88,4 +88,60 @@ describe('CheckboxGroup.vue', () => {
       wrapper.findComponent({ name: 'ElCheckbox' }).classes()
     ).not.toContain('is-bordered')
   })
+
+  describe('props.min', () => {
+    const values = ref(['A', 'B'])
+    test('the selected number is less than or equal to min', async () => {
+      const wrapper = mount(CheckboxGroup, {
+        props: { modelValue: values },
+        slots: {
+          default: ['A', 'B', 'C', 'D'].map((label) => h(Checkbox, { label }))
+        }
+      })
+
+      await wrapper.setProps({ min: 2 })
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[0].classes()
+      ).toContain('is-disabled')
+
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[1].classes()
+      ).toContain('is-disabled')
+
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[2].classes()
+      ).not.toContain('is-disabled')
+
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[3].classes()
+      ).not.toContain('is-disabled')
+    })
+
+    test('the selected number is greater than min', async () => {
+      const wrapper = mount(CheckboxGroup, {
+        props: { modelValue: values },
+        slots: {
+          default: ['A', 'B', 'C', 'D'].map((label) => h(Checkbox, { label }))
+        }
+      })
+
+      await wrapper.setProps({ min: 1 })
+
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[0].classes()
+      ).not.toContain('is-disabled')
+
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[1].classes()
+      ).not.toContain('is-disabled')
+
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[2].classes()
+      ).not.toContain('is-disabled')
+
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[3].classes()
+      ).not.toContain('is-disabled')
+    })
+  })
 })

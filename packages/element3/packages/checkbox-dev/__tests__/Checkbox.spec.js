@@ -127,14 +127,10 @@ describe('Checkbox.vue', () => {
 
   describe('disabled', () => {
     test('Checkbox set disabled props', async () => {
-      const wrapper = mount(Checkbox, {
-        props: { disabled: true }
-      })
+      const wrapper = mount(Checkbox)
+      await wrapper.setProps({ disabled: true })
 
       expect(wrapper.classes()).toContain('is-disabled')
-      expect(
-        wrapper.find('.el-checkbox__original').attributes()
-      ).toHaveProperty('disabled')
     })
 
     test('by elCheckboxGroup.disabled', () => {
@@ -147,9 +143,6 @@ describe('Checkbox.vue', () => {
       })
 
       expect(wrapper.classes()).toContain('is-disabled')
-      expect(
-        wrapper.find('.el-checkbox__original').attributes()
-      ).toHaveProperty('disabled')
     })
 
     test('by elFormItem.disabled', () => {
@@ -162,9 +155,6 @@ describe('Checkbox.vue', () => {
       })
 
       expect(wrapper.classes()).toContain('is-disabled')
-      expect(
-        wrapper.find('.el-checkbox__original').attributes()
-      ).toHaveProperty('disabled')
     })
   })
 

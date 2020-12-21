@@ -34,7 +34,8 @@ export default {
       }
     },
     border: Boolean,
-    disabled: Boolean
+    disabled: Boolean,
+    min: { type: Number, default: 0 }
   }
 }
 </script>
