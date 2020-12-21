@@ -233,9 +233,8 @@ export default {
           ]
         }
       })
-      const self = getCurrentInstance().ctx;
-      function submitForm(formName) {
-        self.$refs[formName].validate((valid) => {
+      function submitForm() {
+        form.value.validate((valid) => {
           if (valid) {
             alert('submit!');
           } else {
@@ -244,8 +243,8 @@ export default {
           }
         });
       }
-      function resetForm(formName) {
-        self.$refs[formName].resetFields();
+      function resetForm() {
+        form.value.resetFields();
       }
 
       return {
