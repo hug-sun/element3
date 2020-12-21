@@ -1,7 +1,10 @@
 <template>
   <div :class="['el-progress', 'el-progress--line', statusClass]">
     <div class="el-progress-bar">
-      <div class="el-progress-bar__outer">
+      <div
+        class="el-progress-bar__outer"
+        :style="{ height: strokeWidth + 'px' }"
+      >
         <div class="el-progress-bar__inner" :style="barStyle"></div>
       </div>
     </div>

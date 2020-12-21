@@ -1,4 +1,15 @@
+import { mount } from '@vue/test-utils'
+import Progress from '../src/Progress.vue'
 import Color from '../../../../packages/color-picker/src/color'
+import { merge } from 'lodash'
+
+export const DEFAULT_PERCENTAGE = 85
+
+export function initProgress(initProps) {
+  const percentage = (initProps && initProps.percentage) || DEFAULT_PERCENTAGE
+  const props = merge({ percentage }, initProps)
+  return mount(Progress, { props })
+}
 
 export function assertSetBgColor(wrapper, color) {
   const rgb = fromHexToRgb(color)
