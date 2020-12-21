@@ -27,6 +27,10 @@ export const props = {
   showText: {
     type: Boolean,
     default: true
+  },
+  strokeWidth: {
+    type: Number,
+    default: 6
   }
 }
 

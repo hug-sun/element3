@@ -34,6 +34,11 @@ describe('Progress.props', () => {
     expect(showText.default).toBe(true)
   })
 
+  it('stroke-width', () => {
+    const { strokeWidth } = props
+    expect(strokeWidth.default).toBe(6)
+  })
+
   it('test isRef for getRefValue', () => {
     expect(isRef(undefined)).toBeFalsy()
     expect(isRef(null)).toBeFalsy()

@@ -1,7 +1,6 @@
-import { mount } from '@vue/test-utils'
-import Progress from '../src/Progress.vue'
 import { sortByPercentage } from '../src/props'
 import {
+  initProgress,
   assertHasClass,
   assertNotHasClass,
   assertExistsElem,
@@ -9,15 +8,14 @@ import {
   assertSetPercentage,
   assertSetBgColor,
   assertContainText,
-  assertNotContainStyle
+  assertNotContainStyle,
+  assertContainStyle
 } from './test-helper'
 
 describe('Progress.vue', () => {
   it('should create default Progress component and HTML structure', () => {
     const percentage = 55
-    const wrapper = mount(Progress, {
-      props: { percentage }
-    })
+    const wrapper = initProgress({ percentage })
     assertHasClass(wrapper, 'el-progress')
     assertHasClass(wrapper, 'el-progress--line')
     assertNotHasClass(wrapper, 'is-undefined')
@@ -35,9 +33,7 @@ describe('Progress.vue', () => {
   describe('line type progress props:', () => {
     it('percentage', async () => {
       const percentage = 58
-      const wrapper = mount(Progress, {
-        props: { percentage }
-      })
+      const wrapper = initProgress({ percentage })
       assertSetPercentage(wrapper, 58)
       await wrapper.setProps({ percentage: 28 })
       assertSetPercentage(wrapper, 28)
@@ -45,9 +41,7 @@ describe('Progress.vue', () => {
 
     it('percentage validator', async () => {
       const percentage = 158
-      const wrapper = mount(Progress, {
-        props: { percentage }
-      })
+      const wrapper = initProgress({ percentage })
       assertSetPercentage(wrapper, 100)
       await wrapper.setProps({ percentage: -28 })
       assertSetPercentage(wrapper, 0)
@@ -57,7 +51,7 @@ describe('Progress.vue', () => {
       const format = (p) => (p === 100 ? '满' : `${p}%`)
       const percentage = 100
       const props = { percentage, format }
-      const wrapper = mount(Progress, { props })
+      const wrapper = initProgress(props)
       assertContainText(wrapper, '.el-progress__text', '满')
     })
 
@@ -65,7 +59,7 @@ describe('Progress.vue', () => {
       const color1 = '#409eff'
       const percentage = 30
       const props = { percentage, color: color1 }
-      const wrapper = mount(Progress, { props })
+      const wrapper = initProgress(props)
       assertSetBgColor(wrapper, color1)
       const color2 = '#336699'
       await wrapper.setProps({ color: color2 })
@@ -91,7 +85,7 @@ describe('Progress.vue', () => {
       }
       const p1 = 20
       const props = { percentage: p1, color }
-      const wrapper = mount(Progress, { props })
+      const wrapper = initProgress(props)
 
       assertSetBgColor(wrapper, color(p1))
 
@@ -110,7 +104,7 @@ describe('Progress.vue', () => {
       const colors = ['#336699', '#339966', '#996633']
       const percentage = 15
       const props = { percentage, color: colors }
-      const wrapper = mount(Progress, { props })
+      const wrapper = initProgress(props)
       assertSetBgColor(wrapper, colors[0])
 
       await wrapper.setProps({ percentage: 0 })
@@ -139,18 +133,14 @@ describe('Progress.vue', () => {
       expect(colors[0].percentage).toBe(20)
       expect(colors[3].percentage).toBe(80)
       expect(colors[4].percentage).toBe(100)
-      const percentage = 85
-      const props = { percentage, color: colors }
-      const wrapper = mount(Progress, { props })
+
+      const wrapper = initProgress({ color: colors })
       expect(wrapper).toBeDefined()
       assertSetBgColor(wrapper, colors[4].color)
     })
 
     it('status add "is-xxx" class', async () => {
-      const percentage = 85
-      const status = 'success'
-      const props = { percentage, status }
-      const wrapper = mount(Progress, { props })
+      const wrapper = initProgress({ status: 'success' })
       assertHasClass(wrapper, 'is-success')
       assertExistsElem(wrapper, '.el-progress__text > i.el-icon-circle-check')
       await wrapper.setProps({ status: 'exception' })
@@ -165,14 +155,27 @@ describe('Progress.vue', () => {
     })
 
     it('show-text', async () => {
-      const percentage = 85
-      const props = { percentage }
-      const wrapper = mount(Progress, { props })
+      const wrapper = initProgress()
       assertExistsElem(wrapper, '.el-progress__text')
       assertContainText(wrapper, '.el-progress__text', '85%')
 
       await wrapper.setProps({ showText: false })
       assertNoElem(wrapper, '.el-progress__text')
+    })
+
+    it('strokeWidth', async () => {
+      const wrapper = initProgress({ strokeWidth: 30 })
+      assertContainStyle(
+        wrapper,
+        '.el-progress-bar > .el-progress-bar__outer',
+        'height: 30px'
+      )
+      await wrapper.setProps({ strokeWidth: 20 })
+      assertContainStyle(
+        wrapper,
+        '.el-progress-bar > .el-progress-bar__outer',
+        'height: 20px'
+      )
     })
   })
 })
