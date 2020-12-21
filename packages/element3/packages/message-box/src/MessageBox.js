@@ -99,7 +99,8 @@ const MessageBox = function (options) {
   }
 
   if (typeof Promise !== 'undefined') {
-    return new Promise((resolve, reject) => { // eslint-disable-line
+    return new Promise((resolve, reject) => {
+      // eslint-disable-line
       msgQueue.push({
         options: Object.assign({}, defaults, MessageBox.defaults, options),
         callback: callback,

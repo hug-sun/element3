@@ -3,7 +3,7 @@ import { ElementUIComponent } from './component'
 
 export interface CollapseItemSlots {
   /** Content of the collapse item */
-  default: VNode[],
+  default: VNode[]
 
   /** Title of the collapse item */
   title: VNode[]
@@ -25,4 +25,4 @@ interface ICollapseItem extends ElementUIComponent {
   disabled: boolean
 }
 
-export const ElCollapseItem:ICollapseItem
+export const ElCollapseItem: ICollapseItem

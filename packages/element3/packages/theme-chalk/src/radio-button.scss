@@ -1,6 +1,6 @@
-@import "mixins/mixins";
-@import "mixins/_button";
-@import "common/var";
+@import 'mixins/mixins';
+@import 'mixins/_button';
+@import 'common/var';
 
 @include b(radio-button) {
   position: relative;
@@ -26,13 +26,18 @@
     cursor: pointer;
     transition: $--all-transition;
 
-    @include button-size($--button-padding-vertical, $--button-padding-horizontal, $--button-font-size, 0);
+    @include button-size(
+      $--button-padding-vertical,
+      $--button-padding-horizontal,
+      $--button-font-size,
+      0
+    );
 
     &:hover {
       color: $--color-primary;
     }
 
-    & [class*="el-icon-"] {
+    & [class*='el-icon-'] {
       line-height: 0.9;
 
       & + span {
@@ -93,21 +98,37 @@
 
   @include m(medium) {
     & .el-radio-button__inner {
-      @include button-size($--button-medium-padding-vertical, $--button-medium-padding-horizontal, $--button-medium-font-size, 0);
+      @include button-size(
+        $--button-medium-padding-vertical,
+        $--button-medium-padding-horizontal,
+        $--button-medium-font-size,
+        0
+      );
     }
   }
   @include m(small) {
     & .el-radio-button__inner {
-      @include button-size($--button-small-padding-vertical, $--button-small-padding-horizontal, $--button-small-font-size, 0);
+      @include button-size(
+        $--button-small-padding-vertical,
+        $--button-small-padding-horizontal,
+        $--button-small-font-size,
+        0
+      );
     }
   }
   @include m(mini) {
     & .el-radio-button__inner {
-      @include button-size($--button-mini-padding-vertical, $--button-mini-padding-horizontal, $--button-mini-font-size, 0);
+      @include button-size(
+        $--button-mini-padding-vertical,
+        $--button-mini-padding-horizontal,
+        $--button-mini-font-size,
+        0
+      );
     }
   }
 
-  &:focus:not(.is-focus):not(:active):not(.is-disabled){ /*获得焦点时 样式提醒*/
+  &:focus:not(.is-focus):not(:active):not(.is-disabled) {
+    /*获得焦点时 样式提醒*/
     box-shadow: 0 0 2px 2px $--radio-button-checked-border-color;
   }
 }

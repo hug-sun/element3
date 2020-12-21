@@ -27,4 +27,3 @@ interface ITag extends ElementUIComponent {
   /** Tag theme */
   effect: TagTheme
 }
-

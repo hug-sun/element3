@@ -1,11 +1,10 @@
-@import "mixins/mixins";
-@import "mixins/utils";
-@import "input-number";
-@import "tooltip";
-@import "common/var";
+@import 'mixins/mixins';
+@import 'mixins/utils';
+@import 'input-number';
+@import 'tooltip';
+@import 'common/var';
 
 @include b(slider) {
-
   @include utils-clearfix;
 
   @include e(runway) {
@@ -124,7 +123,7 @@
     border: solid 2px $--slider-main-background-color;
     background-color: $--color-white;
     border-radius: 50%;
-    transition: .2s;
+    transition: 0.2s;
     user-select: none;
 
     &:hover,
@@ -202,8 +201,7 @@
           padding-right: 5px;
         }
         .el-input-number__decrease,
-        .el-input-number__increase
-        {
+        .el-input-number__increase {
           top: $--input-small-height;
           margin-top: -1px;
           border: $--input-border;
@@ -226,15 +224,13 @@
         }
         &:hover {
           .el-input-number__decrease,
-          .el-input-number__increase
-          {
+          .el-input-number__increase {
             border-color: $--input-hover-border;
           }
         }
         &:active {
           .el-input-number__decrease,
-          .el-input-number__increase
-          {
+          .el-input-number__increase {
             border-color: $--input-focus-border;
           }
         }
