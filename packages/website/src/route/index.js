@@ -3,7 +3,7 @@ import navConfig from './nav.config'
 
 const load = (path) => defineAsyncComponent(() => import(`../pages/${path}.vue`))
 
-const loadDocs = async (path) => defineAsyncComponent(() => import(`../docs${path}.md`))
+const loadDocs = (path) => defineAsyncComponent(() => import(`../docs${path}.md`))
 
 const registerRoute = (navConfig) => {
   const route = []

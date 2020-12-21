@@ -12,7 +12,7 @@ import title from './i18n/title'
 
 import 'element3/lib/theme-chalk/index.css'
 import './demo-styles/index.scss'
-import './assets/styles/common.css'
+import './assets/styles/common.scss'
 import './assets/styles/fonts/style.css'
 import icon from './icon.json'
 
