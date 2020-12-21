@@ -6,4 +6,5 @@ coverage
 *.ttf
 *.d.ts
 *.md
+*.snap
 dist
