@@ -5,6 +5,7 @@ import {
   assertHasClass,
   assertNotHasClass,
   assertExistsElem,
+  assertNoElem,
   assertSetPercentage,
   assertSetBgColor,
   assertContainText,
@@ -161,6 +162,17 @@ describe('Progress.vue', () => {
 
       await wrapper.setProps({ status: 'error' })
       assertNotHasClass(wrapper, 'is-error')
+    })
+
+    it('show-text', async () => {
+      const percentage = 85
+      const props = { percentage }
+      const wrapper = mount(Progress, { props })
+      assertExistsElem(wrapper, '.el-progress__text')
+      assertContainText(wrapper, '.el-progress__text', '85%')
+
+      await wrapper.setProps({ showText: false })
+      assertNoElem(wrapper, '.el-progress__text')
     })
   })
 })
