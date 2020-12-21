@@ -5,15 +5,27 @@
         <div class="el-progress-bar__inner" :style="barStyle"></div>
       </div>
     </div>
-    <div class="el-progress__text">{{ content }}</div>
+    <div class="el-progress__text">
+      <template v-if="!status">{{ content }}</template>
+      <i v-else :class="iconClass"></i>
+    </div>
     <div data-testid="temptest" class="temptest">{{ '' }}</div>
   </div>
 </template>
 
 <script>
-import { computed, defineComponent, isRef, toRefs } from 'vue'
+import { computed, defineComponent, toRefs } from 'vue'
 import { isArray, isFunction, isString } from '../../../utils/types'
-import { props, statusValid } from './props'
+import {
+  props,
+  statusValid,
+  autoFixPercentage,
+  getRefValue,
+  toPercentageColors,
+  sortByPercentage,
+  getColorsIndex,
+  STATUS_SETTING
+} from './props'
 
 export default defineComponent({
   name: 'ElProgress',
@@ -23,42 +35,10 @@ export default defineComponent({
     const barStyle = useBarStyle(percentage, color)
     const content = useContent(format, percentage)
     const statusClass = useStatusClass(status)
-    return { barStyle, content, statusClass }
+    const iconClass = useIconClass(status)
+    return { barStyle, content, statusClass, iconClass }
   }
 })
-
-export function getColorsIndex(colors, percent) {
-  const i = colors.findIndex((c) => percent < c.percentage)
-  return i < 0 ? colors.length - 1 : i
-}
-
-export function getRefValue(ref) {
-  return isRef(ref) ? ref.value : ref
-}
-
-export function sortByPercentage(pre, next) {
-  return pre.percentage - next.percentage
-}
-
-export function toPercentageColors(colors) {
-  const span = 100 / colors.length
-  return colors.map((color, i) => {
-    if (isString(color)) {
-      return { color, percentage: span * (i + 1) }
-    }
-    return color
-  })
-}
-
-export function autoFixPercentage(percentage) {
-  if (percentage < 0) {
-    return 0
-  }
-  if (percentage > 100) {
-    return 100
-  }
-  return percentage
-}
 
 const useBarStyle = (percentage, color) => {
   return computed(() => {
@@ -96,6 +76,13 @@ const useStatusClass = (status) => {
   return computed(() => {
     const st = getRefValue(status)
     return st && statusValid(st) ? `is-${st}` : ''
+  })
+}
+
+const useIconClass = (status) => {
+  return computed(() => {
+    const st = getRefValue(status)
+    return STATUS_SETTING[st] || ''
   })
 }
 </script>
