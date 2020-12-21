@@ -55,7 +55,7 @@ import { Message } from './components/Message'
 
 import ElMessageBox, { useMsgbox } from '../packages/message-box'
 
-import ElNotification, { useNotify } from '../packages/notification'
+import ElNotification, { useNotify } from './components/Notification'
 // Navigation
 import ElMenu from '../packages/menu'
 import ElMenuItem from '../packages/menu-item'

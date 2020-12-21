@@ -1,7 +1,7 @@
 import { isVNode } from 'vue'
 import notificationComponent from './Notification.vue'
-import { createComponent } from '../../src/use/component.js'
-import { PopupManager } from '../../src/utils/popup'
+import { createComponent } from '../../../../src/use/component.js'
+import { PopupManager } from '../../../../src/utils/popup'
 
 let seed = 1
 const instanceList = []
@@ -72,6 +72,7 @@ function mergeProps(options) {
 
 function calculateVerticalOffset(position, offset = 0) {
   let verticalOffset = offset
+
   instanceList
     .filter((instance) => instance.props.position === position)
     .forEach((instance) => {

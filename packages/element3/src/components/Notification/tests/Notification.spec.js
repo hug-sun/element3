@@ -1,4 +1,4 @@
-import { Notification } from '../Notification.js'
+import { Notification } from '../src/Notification.js'
 import { h } from 'vue'
 
 describe('Notification.js', () => {

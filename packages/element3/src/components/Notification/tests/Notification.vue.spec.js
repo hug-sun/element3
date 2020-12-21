@@ -1,5 +1,5 @@
 import { mount, flushPromises } from '@vue/test-utils'
-import Notification from '../Notification.vue'
+import Notification from '../src/Notification.vue'
 import { h } from 'vue'
 
 describe('Notification.vue', () => {
