@@ -1,6 +1,6 @@
 <script>
-  import bus from '../../bus';
-  import { tintColor } from '../../color.js';
+  import bus from '../bus';
+  import { tintColor } from '../color.js';
   const varMap = {
     'primary': '$--color-primary',
     'success': '$--color-success',

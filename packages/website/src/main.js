@@ -45,25 +45,13 @@ app.config.globalProperties.$icon = icon
 
 const router = createRouter({
   history: createWebHashHistory(__dirname),
-  // history: createWebHistory(__dirname),
   routes
 })
 app.use(router)
 
 router.isReady().then(() => {
   router.afterEach(async (route) => {
-    // await nextTick()
-    // const blocks = document.querySelectorAll('pre code:not(.hljs)')
-    // Array.prototype.forEach.call(blocks, hljs.highlightBlock)
-
-    // https://github.com/highlightjs/highlight.js/issues/909#issuecomment-131686186
-
-    // setTimeout(()=>{
-    //   const blocks = document.querySelectorAll('pre code:not(.hljs)');
-    //   Array.prototype.forEach.call(blocks, hljs.highlightBlock);
-    // },1000)
-    
-    const data = title['zh-CN']
+    const data = title
     for (const val in data) {
       if (new RegExp('^' + val, 'g').test(route.name)) {
         document.title = data[val]
@@ -71,8 +59,6 @@ router.isReady().then(() => {
       }
     }
     document.title = 'Element'
-    // eslint-disable-next-line no-undef
-    ga('send', 'event', 'PageView', route.name)
   })
   app.mount('#app')
 })

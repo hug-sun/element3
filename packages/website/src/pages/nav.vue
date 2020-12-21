@@ -91,13 +91,13 @@
           <p>可将导航栏固定在左侧，提高导航可见性，方便页面之间切换；顶部可放置常用工具，如搜索条、帮助按钮、通知按钮等。适用于中后台的管理型、工具型网站。</p>
         </el-col>
         <el-col :span="15" class="nav-demos">
-          <img src="../../assets/images/navbar_1.png" alt="一级类目" @click="enlarge(846, $event)">
+          <img src="../assets/images/navbar_1.png" alt="一级类目" @click="enlarge(846, $event)">
           <h5>一级类目</h5>
           <p>适用于结构简单的网站：只有一级页面时，不需要使用面包屑。</p>
-          <img src="../../assets/images/navbar_2.png" alt="二级类目" @click="enlarge(846, $event)">
+          <img src="../assets/images/navbar_2.png" alt="二级类目" @click="enlarge(846, $event)">
           <h5>二级类目</h5>
           <p>侧栏中最多可显示两级导航；当使用二级导航时，我们建议搭配使用面包屑，方便用户定位自己的位置和快速返回。</p>
-          <img src="../../assets/images/navbar_3.png" alt="三级类目" @click="enlarge(846, $event)">
+          <img src="../assets/images/navbar_3.png" alt="三级类目" @click="enlarge(846, $event)">
           <h5>三级类目</h5>
           <p>适用于较复杂的工具型后台，左侧栏为一级导航，中间栏可显示其对应的二级导航，也可放置其他的工具型选项。</p>
         </el-col>
@@ -110,7 +110,7 @@
           <p>顺应了从上至下的正常浏览顺序，方便浏览信息；顶部宽度限制了导航的数量和文本长度。</p>
         </el-col>
         <el-col :span="14" class="nav-demos">
-          <img src="../../assets/images/navbar_0.png" alt="" @click="enlarge(846, $event)">
+          <img src="../assets/images/navbar_0.png" alt="" @click="enlarge(846, $event)">
           <p>适用于导航较少，页面篇幅较长的网站。</p>
         </el-col>
       </el-row>

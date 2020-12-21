@@ -274,7 +274,7 @@
     <header class="header" ref="header">
       <div class="container">
         <h1>
-          <router-link :to="`/${lang}`">
+          <router-link to="/">
             <!-- logo -->
             <slot>
               <img
@@ -297,12 +297,12 @@
             <!-- <algolia-search></algolia-search> -->
           </li>
           <li class="nav-item">
-            <router-link active-class="active" :to="`/${lang}/guide`"
+            <router-link active-class="active" :to="`/guide`"
               >{{ langConfig.guide }}
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link active-class="active" :to="`/${lang}/component`"
+            <router-link active-class="active" :to="`/component`"
               >{{ langConfig.components }}
             </router-link>
           </li>
@@ -314,50 +314,6 @@
 
           <!-- 版本选择器 -->
           <li class="nav-item nav-versions" v-show="isComponentPage">
-            <!-- <el-dropdown
-              trigger="click"
-              class="nav-dropdown"
-              :class="{ 'is-active': verDropdownVisible }">
-              <span>
-                {{ version }}
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu
-                slot="dropdown"
-                class="nav-dropdown-list"
-                @input="handleVerDropdownToggle">
-                <el-dropdown-item
-                  v-for="item in Object.keys(versions)"
-                  :key="item"
-                  @click.native="switchVersion(item)">
-                  {{ item }}
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown> -->
-          </li>
-
-          <!-- 语言选择器 -->
-          <li class="nav-item lang-item">
-            <!-- <el-dropdown
-              trigger="click"
-              class="nav-dropdown nav-lang"
-              :class="{ 'is-active': langDropdownVisible }">
-              <span>
-                {{ displayedLang }}
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu
-                slot="dropdown"
-                class="nav-dropdown-list"
-                @input="handleLangDropdownToggle">
-                <el-dropdown-item
-                  v-for="(value, key) in langs"
-                  :key="key"
-                  @click.native="switchLang(key)">
-                  {{ value }}
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown> -->
           </li>
         </ul>
       </div>
@@ -365,7 +321,7 @@
   </div>
 </template>
 <script>
-import compoLang from '../i18n/component.json'
+import componentConfig from '../i18n/component.json'
 
 export default {
   data() {
@@ -373,40 +329,16 @@ export default {
       active: '',
       versions: [],
       verDropdownVisible: true,
-      langDropdownVisible: true,
-      langs: {
-        'zh-CN': '中文'
-      },
-      lang: 'zh-CN'
+      langDropdownVisible: true
     }
   },
 
   computed: {
-    displayedLang() {
-      return this.langs[this.lang] || '中文'
-    },
     langConfig() {
-      return compoLang.filter((config) => config.lang === this.lang)[0][
-        'header'
-      ]
+      return componentConfig['header']
     },
     isComponentPage() {
       return /^component/.test(this.$route.name)
-    }
-  },
-  methods: {
-    switchLang(targetLang) {
-      if (this.lang === targetLang) return
-      localStorage.setItem('ELEMENT_LANGUAGE', targetLang)
-      this.$router.push(this.$route.path.replace(this.lang, targetLang))
-    },
-
-    handleVerDropdownToggle(visible) {
-      this.verDropdownVisible = visible
-    },
-
-    handleLangDropdownToggle(visible) {
-      this.langDropdownVisible = visible
     }
   }
 }

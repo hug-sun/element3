@@ -124,13 +124,8 @@
   >
     <ul>
       <li class="nav-item sponsors">
-        <a>{{ lang === 'zh-CN' ? '赞助商' : 'Sponsors' }}</a>
+        <a>赞助商</a>
         <ul class="pure-menu-list sub-nav">
-          <li class="nav-item" v-show="lang !== 'zh-CN'">
-            <a href="https://tipe.io/?ref=element" target="_blank">
-              <img src="../assets/images/tipe.svg" alt="tipe.io" />
-            </a>
-          </li>
           <li class="nav-item">
             <a
               class="sponsor"
@@ -197,7 +192,6 @@
         </template>
       </li>
     </ul>
-    <!--<div id="code-sponsor-widget"></div>-->
   </div>
 </template>
 <script>
@@ -238,11 +232,8 @@ export default {
       style.opacity = this.isFade ? '0.5' : '1'
       return style
     },
-    lang() {
-      return this.$route.meta.lang
-    },
     langConfig() {
-      return compoLang.filter((config) => config.lang === this.lang)[0]['nav']
+      return compoLang['nav']
     }
   },
   methods: {

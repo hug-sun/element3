@@ -306,9 +306,7 @@ export default {
     },
 
     langConfig() {
-      return compoLang.filter((config) => config.lang === this.lang)[0][
-        'demo-block'
-      ]
+      return compoLang['demo-block']
     },
 
     blockClass() {

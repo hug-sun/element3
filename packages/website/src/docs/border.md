@@ -1,5 +1,5 @@
 <script>
-  import bus from '../../bus';
+  import bus from '../bus';
   import { reactive, toRefs, ref, getCurrentInstance, onMounted, watch } from 'vue'
   export default {
     setup(){

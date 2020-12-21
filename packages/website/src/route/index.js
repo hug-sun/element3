@@ -1,72 +1,53 @@
 import { defineAsyncComponent } from 'vue'
 import navConfig from './nav.config'
-import langs from '../i18n/route'
 
-const LOAD_MAP = {
-  'zh-CN': (name) => {
-    return defineAsyncComponent(() => import(`../pages/zh-CN/${name}.vue`))
-  }
-}
+const load = (path) => defineAsyncComponent(() => import(`../pages/${path}.vue`))
 
-const load = function (lang, path) {
-  return LOAD_MAP[lang](path)
-}
-
-const LOAD_DOCS_MAP = {
-  'zh-CN': async (path) => {  
-    return defineAsyncComponent(() => import(`../docs/zh-CN${path}.md`))
-  }
-}
-
-const loadDocs = function (lang, path) {
-  return LOAD_DOCS_MAP[lang](path)
-}
+const loadDocs = async (path) => defineAsyncComponent(() => import(`../docs${path}.md`))
 
 const registerRoute = (navConfig) => {
   const route = []
-  Object.keys(navConfig).forEach((lang, index) => {
-    const navs = navConfig[lang]
-    route.push({
-      path: `/${lang}/component`,
-      redirect: `/${lang}/component/installation`,
-      component: load(lang, 'component'),
-      children: []
-    })
-    
-    navs.forEach((nav) => {
-      if (nav.href) return
-      if (nav.groups) {
-        nav.groups.forEach((group) => {
-          group.list.forEach((nav) => {
-            addRoute(nav, lang, index)
-          })
-        })
-      } else if (nav.children) {
-        nav.children.forEach((nav) => {
-          addRoute(nav, lang, index)
-        })
-      } else {
-        addRoute(nav, lang, index)
-      }
-    })
+  
+  route.push({
+    path: `/component`,
+    redirect: `/component/installation`,
+    component: load('component'),
+    children: []
   })
-  function addRoute(page, lang, index) {
+  
+  navConfig.forEach((nav) => {
+    if (nav.href) return
+    if (nav.groups) {
+      nav.groups.forEach((group) => {
+        group.list.forEach((nav) => {
+          addRoute(nav)
+        })
+      })
+    } else if (nav.children) {
+      nav.children.forEach((nav) => {
+        addRoute(nav)
+      })
+    } else {
+      addRoute(nav, index)
+    }
+  })
+
+  function addRoute(page) {
     const component =
       page.path === '/changelog'
-        ? load(lang, 'changelog')
-        : loadDocs(lang, page.path)
+        ? load('changelog')
+        : loadDocs(page.path)
     const child = {
       path: page.path.slice(1),
       meta: {
         title: page.title || page.name,
-        description: page.description,
-        lang
+        description: page.description
       },
-      name: 'component-' + lang + (page.title || page.name),
+      name: 'component' + (page.title || page.name),
       component: component.default || component
     }
 
-    route[index].children.push(child)
+    route[0].children.push(child)
   }
   
   return route
@@ -74,63 +55,40 @@ const registerRoute = (navConfig) => {
 
 let route = registerRoute(navConfig)
 
-const generateMiscRoutes = function (lang) {
+const generateRoutes = function () {
   const guideRoute = {
-    path: `/${lang}/guide`, // 指南
-    redirect: `/${lang}/guide/design`,
-    component: load(lang, 'guide'),
+    path: `/guide`, // 指南
+    redirect: `/guide/design`,
+    component: load('guide'),
     children: [
       {
         path: 'design', // 设计原则
-        name: 'guide-design' + lang,
-        meta: { lang },
-        component: load(lang, 'design')
+        name: 'guide-design',
+        component: load('design')
       },
       {
         path: 'nav', // 导航
-        name: 'guide-nav' + lang,
-        meta: { lang },
-        component: load(lang, 'nav')
+        name: 'guide-nav',
+        component: load('nav')
       }
     ]
   }
 
   const resourceRoute = {
-    path: `/${lang}/resource`, // 资源
-    meta: { lang },
-    name: 'resource' + lang,
-    component: load(lang, 'resource')
+    path: `/resource`, // 资源
+    name: 'resource',
+    component: load('resource')
   }
 
   const indexRoute = {
-    path: `/${lang}`, // 首页
-    meta: { lang },
-    name: 'home' + lang,
-    component: load(lang, 'index')
+    path: `/`, // 首页
+    name: 'home',
+    component: load('index')
   }
 
   return [guideRoute, resourceRoute, indexRoute]
 }
 
-langs.forEach((lang) => {
-  route = route.concat(generateMiscRoutes(lang.lang))
-})
-
-route.push({
-  path: '/play',
-  name: 'play',
-  component: require('../play/index.vue')
-})
-//To-do:目前只支持中文环境，所以设置中文为默认值
-let defaultPath = '/zh-CN'
-
-
-route = route.concat([
-  {
-    path: '',
-    redirect: { path: defaultPath }
-  },
-  { path: '/:pathMatch(.*)*', redirect: { path: defaultPath } }
-])
+route = route.concat(generateRoutes())
 
 export default route

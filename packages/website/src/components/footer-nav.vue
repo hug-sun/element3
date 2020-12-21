@@ -76,12 +76,6 @@ export default {
     }
   },
 
-  computed: {
-    lang() {
-      return this.$route.meta.lang || 'zh-CN'
-    }
-  },
-
   watch: {
     '$route.path'() {
       this.setNav()
@@ -91,7 +85,7 @@ export default {
 
   methods: {
     setNav() {
-      let nav = navConfig[this.lang]
+      let nav = navConfig
       this.nav = [nav[0]]
       nav[1].groups
         .map((group) => group.list)
@@ -114,7 +108,7 @@ export default {
 
     handleNavClick(direction) {
       this.$router.push(
-        `/${this.lang}/component${
+        `/component${
           direction === 'prev' ? this.leftNav.path : this.rightNav.path
         }`
       )
