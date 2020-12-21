@@ -5,6 +5,7 @@
 ### 基础用法
 
 :::demo 使用 v-model 与 Vue 实例中的一个变量进行双向绑定，绑定的变量需要是字符串类型。
+
 ```html
 <template>
   <div class="block">
@@ -19,20 +20,21 @@
 <script>
   import { ref } from 'vue'
   export default {
-    setup () {
+    setup() {
       const color1 = ref('#409EFF')
       const color2 = ref(null)
       return { color1, color2 }
     }
-    
-  };
+  }
 </script>
 ```
+
 :::
 
 ### 选择透明度
 
 :::demo ColorPicker 支持普通颜色，也支持带 Alpha 通道的颜色，通过`show-alpha`属性即可控制是否支持透明度的选择。
+
 ```html
 <template>
   <el-color-picker v-model="color" show-alpha></el-color-picker>
@@ -46,20 +48,19 @@
         color
       }
     }
-  };
+  }
 </script>
 ```
+
 :::
 
 ### 预定义颜色
 
 :::demo ColorPicker 支持预定义颜色
+
 ```html
 <template>
-  <el-color-picker
-    v-model="color"
-    show-alpha
-    :predefine="predefineColors">
+  <el-color-picker v-model="color" show-alpha :predefine="predefineColors">
   </el-color-picker>
 </template>
 <script>
@@ -68,34 +69,36 @@
     setup() {
       const color = ref('rgba(255, 69, 0, 0.68)')
       const predefineColors = ref([
-          '#ff4500',
-          '#ff8c00',
-          '#ffd700',
-          '#90ee90',
-          '#00ced1',
-          '#1e90ff',
-          '#c71585',
-          'rgba(255, 69, 0, 0.68)',
-          'rgb(255, 120, 0)',
-          'hsv(51, 100, 98)',
-          'hsva(120, 40, 94, 0.5)',
-          'hsl(181, 100%, 37%)',
-          'hsla(209, 100%, 56%, 0.73)',
-          '#c7158577'
-        ])
+        '#ff4500',
+        '#ff8c00',
+        '#ffd700',
+        '#90ee90',
+        '#00ced1',
+        '#1e90ff',
+        '#c71585',
+        'rgba(255, 69, 0, 0.68)',
+        'rgb(255, 120, 0)',
+        'hsv(51, 100, 98)',
+        'hsva(120, 40, 94, 0.5)',
+        'hsl(181, 100%, 37%)',
+        'hsla(209, 100%, 56%, 0.73)',
+        '#c7158577'
+      ])
       return {
         color,
         predefineColors
       }
     }
-  };
+  }
 </script>
 ```
+
 :::
 
 ### 不同尺寸
 
 :::demo
+
 ```html
 <template>
   <el-color-picker v-model="color"></el-color-picker>
@@ -112,24 +115,27 @@
         color
       }
     }
-  };
+  }
 </script>
 ```
+
 :::
 
 ### Attributes
-| 参数      | 说明    | 类型      | 可选值       | 默认值   |
-|---------- |-------- |---------- |-------------  |-------- |
-| modelValue / v-model | 绑定值 | string | — | — |
-| disabled | 是否禁用 | boolean | — | false |
-| size | 尺寸 | string | — | medium / small / mini |
-| show-alpha | 是否支持透明度选择 | boolean | — | false |
-| color-format | 写入 v-model 的颜色的格式 | string | hsl / hsv / hex / rgb | hex（show-alpha 为 false）/ rgb（show-alpha 为 true） |
-| popper-class | ColorPicker 下拉框的类名 | string | — | — |
-| predefine | 预定义颜色 | array | — | — |
+
+| 参数                 | 说明                      | 类型    | 可选值                | 默认值                                                |
+| -------------------- | ------------------------- | ------- | --------------------- | ----------------------------------------------------- |
+| modelValue / v-model | 绑定值                    | string  | —                     | —                                                     |
+| disabled             | 是否禁用                  | boolean | —                     | false                                                 |
+| size                 | 尺寸                      | string  | —                     | medium / small / mini                                 |
+| show-alpha           | 是否支持透明度选择        | boolean | —                     | false                                                 |
+| color-format         | 写入 v-model 的颜色的格式 | string  | hsl / hsv / hex / rgb | hex（show-alpha 为 false）/ rgb（show-alpha 为 true） |
+| popper-class         | ColorPicker 下拉框的类名  | string  | —                     | —                                                     |
+| predefine            | 预定义颜色                | array   | —                     | —                                                     |
 
 ### Events
-| 事件名称      | 说明    | 回调参数      |
-|---------- |-------- |---------- |
-| change | 当绑定值变化时触发 | 当前值 |
+
+| 事件名称      | 说明                               | 回调参数         |
+| ------------- | ---------------------------------- | ---------------- |
+| change        | 当绑定值变化时触发                 | 当前值           |
 | active-change | 面板中当前显示的颜色发生改变时触发 | 当前显示的颜色值 |

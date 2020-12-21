@@ -8,15 +8,15 @@ declare namespace jest {
      *
      * You must provide at least one class
      * @example
-     * 
+     *
      * Button.vue
      * <template>
      *   <button class="el-button--small">
      *   </button>
      * </template>
-     * 
-     * const wrapper = mount(Button)       
-     * 
+     *
+     * const wrapper = mount(Button)
+     *
      * expect(wrapper).toHaveClass(`el-button--small`)
      * expect(deleteButton).not.toHaveClass(`el-button--foo`)
      */

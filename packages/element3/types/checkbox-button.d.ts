@@ -1,7 +1,7 @@
 import { ElementUIComponent } from './component'
 
 /** Checkbox Button Component */
-export const ElCheckboxButton :ICheckboxButton
+export const ElCheckboxButton: ICheckboxButton
 
 interface ICheckboxButton extends ElementUIComponent {
   /** Value of the checkbox when used inside a checkbox-group */

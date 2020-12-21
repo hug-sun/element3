@@ -1,7 +1,7 @@
 import { ElementUIComponent } from './component'
 
 interface Option {
-  value: string,
+  value: string
   excluded?: boolean
 }
 
@@ -11,7 +11,6 @@ interface Options {
 
 export type RateColors = Options
 export type RateIconClasses = Options
-
 
 interface IRate extends ElementUIComponent {
   /** Max rating score */
@@ -63,4 +62,4 @@ interface IRate extends ElementUIComponent {
   scoreTemplate: string
 }
 /** Rate Component */
-export const ElRate:IRate
+export const ElRate: IRate

@@ -15,15 +15,16 @@
 
 <script>
   export default {
-    setup(){
-      const format = percentage => {
+    setup() {
+      const format = (percentage) => {
         return percentage === 100 ? '满' : `${percentage}%`
       }
-      return {format}
+      return { format }
     }
-  };
+  }
 </script>
 ```
+
 :::
 
 ### 百分比内显
@@ -33,11 +34,31 @@
 :::demo Progress 组件可通过 `stroke-width` 属性更改进度条的高度，并可通过 `text-inside` 属性来将进度条描述置于进度条内部。
 
 ```html
-<el-progress :text-inside="true" :stroke-width="26" :percentage="70"></el-progress>
-<el-progress :text-inside="true" :stroke-width="24" :percentage="100" status="success"></el-progress>
-<el-progress :text-inside="true" :stroke-width="22" :percentage="80" status="warning"></el-progress>
-<el-progress :text-inside="true" :stroke-width="20" :percentage="50" status="exception"></el-progress>
+<el-progress
+  :text-inside="true"
+  :stroke-width="26"
+  :percentage="70"
+></el-progress>
+<el-progress
+  :text-inside="true"
+  :stroke-width="24"
+  :percentage="100"
+  status="success"
+></el-progress>
+<el-progress
+  :text-inside="true"
+  :stroke-width="22"
+  :percentage="80"
+  status="warning"
+></el-progress>
+<el-progress
+  :text-inside="true"
+  :stroke-width="20"
+  :percentage="50"
+  status="exception"
+></el-progress>
 ```
+
 :::
 
 ### 自定义颜色
@@ -60,46 +81,46 @@
 </div>
 
 <script>
-  import {ref, reactive, getCurrentInstance, toRefs} from 'vue'
+  import { ref, reactive, getCurrentInstance, toRefs } from 'vue'
   export default {
-    setup(){
+    setup() {
       const self = getCurrentInstance().ctx
       const percentage = ref(20)
       const customColor = ref('#409eff')
       const data = reactive({
         customColors: [
-          {color: '#f56c6c', percentage: 20},
-          {color: '#e6a23c', percentage: 40},
-          {color: '#5cb87a', percentage: 60},
-          {color: '#1989fa', percentage: 80},
-          {color: '#6f7ad3', percentage: 100}
+          { color: '#f56c6c', percentage: 20 },
+          { color: '#e6a23c', percentage: 40 },
+          { color: '#5cb87a', percentage: 60 },
+          { color: '#1989fa', percentage: 80 },
+          { color: '#6f7ad3', percentage: 100 }
         ]
       })
 
-      const customColorMethod = percentage => {
+      const customColorMethod = (percentage) => {
         if (percentage < 30) {
-          return '#909399';
+          return '#909399'
         } else if (percentage < 70) {
-          return '#e6a23c';
+          return '#e6a23c'
         } else {
-          return '#67c23a';
+          return '#67c23a'
         }
       }
-      
+
       const increase = () => {
-        percentage.value += 10;
+        percentage.value += 10
         if (percentage.value > 100) {
-          percentage.value = 100;
+          percentage.value = 100
         }
       }
 
       const decrease = () => {
-        percentage.value -= 10;
+        percentage.value -= 10
         if (percentage.value < 0) {
-          percentage.value = 0;
+          percentage.value = 0
         }
       }
-      
+
       return {
         percentage,
         customColor,
@@ -112,6 +133,7 @@
   }
 </script>
 ```
+
 :::
 
 ### 环形进度条
@@ -127,6 +149,7 @@ Progress 组件可通过 `type` 属性来指定使用环形进度条，在环形
 <el-progress type="circle" :percentage="70" status="warning"></el-progress>
 <el-progress type="circle" :percentage="50" status="exception"></el-progress>
 ```
+
 :::
 
 ### 仪表盘形进度条
@@ -134,8 +157,11 @@ Progress 组件可通过 `type` 属性来指定使用环形进度条，在环形
 :::demo 通过 `type` 属性来指定使用仪表盘形进度条。
 
 ```html
-
-<el-progress type="dashboard" :percentage="percentage" :color="colors"></el-progress>
+<el-progress
+  type="dashboard"
+  :percentage="percentage"
+  :color="colors"
+></el-progress>
 <div>
   <el-button-group>
     <el-button icon="el-icon-minus" @click="decrease"></el-button>
@@ -144,35 +170,35 @@ Progress 组件可通过 `type` 属性来指定使用环形进度条，在环形
 </div>
 
 <script>
-  import {ref, reactive, getCurrentInstance, toRefs} from 'vue'
+  import { ref, reactive, getCurrentInstance, toRefs } from 'vue'
   export default {
-    setup(){
+    setup() {
       const self = getCurrentInstance().ctx
       const percentage = ref(10)
       const data = reactive({
         colors: [
-          {color: '#f56c6c', percentage: 20},
-          {color: '#e6a23c', percentage: 40},
-          {color: '#5cb87a', percentage: 60},
-          {color: '#1989fa', percentage: 80},
-          {color: '#6f7ad3', percentage: 100}
+          { color: '#f56c6c', percentage: 20 },
+          { color: '#e6a23c', percentage: 40 },
+          { color: '#5cb87a', percentage: 60 },
+          { color: '#1989fa', percentage: 80 },
+          { color: '#6f7ad3', percentage: 100 }
         ]
       })
-      
+
       const increase = () => {
-        percentage.value += 10;
+        percentage.value += 10
         if (percentage.value > 100) {
-          percentage.value = 100;
+          percentage.value = 100
         }
       }
 
       const decrease = () => {
-        percentage.value -= 10;
+        percentage.value -= 10
         if (percentage.value < 0) {
-          percentage.value = 0;
+          percentage.value = 0
         }
       }
-      
+
       return {
         percentage,
         ...toRefs(data),
@@ -183,17 +209,19 @@ Progress 组件可通过 `type` 属性来指定使用环形进度条，在环形
   }
 </script>
 ```
+
 :::
 
 ### Attributes
-| 参数          | 说明            | 类型            | 可选值                 | 默认值   |
-|-------------  |---------------- |---------------- |---------------------- |-------- |
-| **percentage** | **百分比（必填）**   | number         |     0-100          |     0    |
-| type          | 进度条类型           | string         | line/circle/dashboard | line |
-| stroke-width  | 进度条的宽度，单位 px | number          | — | 6 |
-| text-inside  | 进度条显示文字内置在进度条内（只在 type=line 时可用） | boolean | — | false |
-| status  | 进度条当前状态 | string | success/exception/warning | — |
-| color  | 进度条背景色（会覆盖 status 状态颜色） | string/function/array | — | '' |
-| width  | 环形进度条画布宽度（只在 type 为 circle 或 dashboard 时可用） | number |  | 126 |
-| show-text  | 是否显示进度条文字内容 | boolean | — | true |
-| stroke-linecap  | circle/dashboard 类型路径两端的形状 | string | butt/round/square | round |
+
+| 参数           | 说明                                                          | 类型                  | 可选值                    | 默认值 |
+| -------------- | ------------------------------------------------------------- | --------------------- | ------------------------- | ------ |
+| **percentage** | **百分比（必填）**                                            | number                | 0-100                     | 0      |
+| type           | 进度条类型                                                    | string                | line/circle/dashboard     | line   |
+| stroke-width   | 进度条的宽度，单位 px                                         | number                | —                         | 6      |
+| text-inside    | 进度条显示文字内置在进度条内（只在 type=line 时可用）         | boolean               | —                         | false  |
+| status         | 进度条当前状态                                                | string                | success/exception/warning | —      |
+| color          | 进度条背景色（会覆盖 status 状态颜色）                        | string/function/array | —                         | ''     |
+| width          | 环形进度条画布宽度（只在 type 为 circle 或 dashboard 时可用） | number                |                           | 126    |
+| show-text      | 是否显示进度条文字内容                                        | boolean               | —                         | true   |
+| stroke-linecap | circle/dashboard 类型路径两端的形状                           | string                | butt/round/square         | round  |

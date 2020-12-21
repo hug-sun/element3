@@ -16,10 +16,10 @@
   "typings": "types/index.d.ts",
   "scripts": {
     "build": "yarn build:theme && yarn build:lib",
-    "build:lib":"rollup -c",
+    "build:lib": "rollup -c",
     "build:theme": "node scripts/generateCssFile.js && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
-    "dev":"rollup -wc",
-    "test":"jest --runInBand"
+    "dev": "rollup -wc",
+    "test": "jest --runInBand"
   },
   "repository": {
     "type": "git",
