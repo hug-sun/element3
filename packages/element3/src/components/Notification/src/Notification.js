@@ -88,27 +88,28 @@ function closeNotification(instance) {
 }
 
 function updatePosition(closeInstance) {
-  const closeInstanceIndex = getIndexByInstance(closeInstance)
-  if (closeInstanceIndex < 0) return
+  const currentInstanceIndex = getIndexByInstance(closeInstance)
+  if (currentInstanceIndex < 0) return
 
-  const len = closeInstance.length
-  removeInstance(closeInstance)
+  const instance = instanceList[currentInstanceIndex]
+  const len = instanceList.length
+  removeInstance(instance)
   if (len <= 1) return
-  const closePosition = closeInstance.props.position
-  const closeHeight = closeInstance.vnode.el.offsetHeight
-  for (let i = closeInstanceIndex; i < len - 1; i++) {
-    if (instanceList[i].props.position === closePosition) {
+  const position = instance.props.position
+  const removedHeight = instance.vnode.el.offsetHeight
+  for (let i = currentInstanceIndex; i < len - 1; i++) {
+    if (instanceList[i].props.position === position) {
       instanceList[i].vnode.el.style[
-        closeInstance.props.position.startsWith('top') ? 'top' : 'bottom'
+        instance.props.position.startsWith('top') ? 'top' : 'bottom'
       ] =
         parseInt(
           instanceList[i].vnode.el.style[
-            closeInstance.props.position.startsWith('top') ? 'top' : 'bottom'
+            instance.props.position.startsWith('top') ? 'top' : 'bottom'
           ],
           10
         ) -
-        closeHeight -
-        INTERVAL_HEIGHT +
+        removedHeight -
+        16 +
         'px'
     }
   }
