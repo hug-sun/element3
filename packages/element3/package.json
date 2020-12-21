@@ -61,7 +61,6 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-replace": "^2.3.4",
-    "@testing-library/jest-dom": "^5.11.6",
     "@types/jest": "^26.0.18",
     "@vue/babel-plugin-jsx": "^1.0.0-rc.4",
     "@vue/compiler-sfc": "^3.0.4",
