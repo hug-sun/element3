@@ -51,3 +51,6 @@ export function assertNotHasClass(elem, className) {
 export function assertExistsElem(wrapper, selector) {
   expect(wrapper.find(selector).exists()).toBeTruthy()
 }
+export function assertNoElem(wrapper, selector) {
+  expect(wrapper.find(selector).exists()).toBeFalsy()
+}

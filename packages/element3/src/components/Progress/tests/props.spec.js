@@ -29,7 +29,12 @@ describe('Progress.props', () => {
     expect(status.validator('')).toBe(false)
   })
 
-  it('test isRef', () => {
+  it('show-text', () => {
+    const { showText } = props
+    expect(showText.default).toBe(true)
+  })
+
+  it('test isRef for getRefValue', () => {
     expect(isRef(undefined)).toBeFalsy()
     expect(isRef(null)).toBeFalsy()
     expect(isRef(0)).toBeFalsy()
