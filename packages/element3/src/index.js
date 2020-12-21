@@ -40,19 +40,19 @@ import ElFormItem from '../packages/form-item'
 // Data
 import ElTable from '../packages/table'
 import ElTableColumn from '../packages/table-column'
-import ElTag from '../packages/tag'
+import { ElTag } from './components/Tag'
 import ElProgress from '../packages/progress'
 // import { ElProgress } from './components/Progress'
 import ElTree from '../packages/tree'
 import ElPagination from '../packages/pagination'
-import ElBadge from '../packages/badge'
-import ElAvatar from '../packages/avatar'
+import { ElBadge } from './components/Badge'
+import { ElAvatar } from './components/Avatar'
 // Notice
 import ElAlert from '../packages/alert'
 
 import ElLoading, { useLoading } from '../packages/loading'
 
-import { Message } from '../packages/message'
+import { Message } from './components/Message'
 
 import ElMessageBox, { useMsgbox } from '../packages/message-box'
 
@@ -84,7 +84,7 @@ import ElCollapse from '../packages/collapse'
 import ElCollapseItem from '../packages/collapse-item'
 import ElTimeline from '../packages/timeline'
 import ElTimelineItem from '../packages/timeline-item'
-import ElDivider from '../packages/divider'
+import { ElDivider } from './components/Divider'
 import ElCalendar from '../packages/calendar'
 import ElImage from '../packages/image'
 import ElBacktop from '../packages/backtop'
