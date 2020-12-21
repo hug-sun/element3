@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-import ElInput from '../input'
+import ElInput from '../../src/components/Input'
 import useFocus from '../../src/use/focus.js'
 import RepeatClick from '../../src/directives/repeatClick'
 import {

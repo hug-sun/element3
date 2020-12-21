@@ -242,8 +242,8 @@ import Clickoutside from '../../../../src/directives/clickoutside'
 import Locale from '../../../../src/mixins/locale'
 import TimePicker from './time'
 import DateTable from '../basic/date-table'
-import ElInput from '../../../input'
-import ElButton from '../../../button'
+import ElInput from '../../../src/components/input'
+import { ElButton } from '../../../../src/components/Button'
 
 const calcDefaultValue = (defaultValue) => {
   if (Array.isArray(defaultValue)) {

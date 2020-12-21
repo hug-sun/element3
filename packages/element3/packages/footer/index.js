@@ -5,4 +5,6 @@ ElFooter.install = function (app) {
   app.component(ElFooter.name, ElFooter)
 }
 
+export { ElFooter }
+
 export default ElFooter
