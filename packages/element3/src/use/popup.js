@@ -68,8 +68,7 @@ function usePopup(props) {
     if (!rendered.value) {
       rendered.value = true
     }
-    const props = Object.assign({}, instance.props, options)
-
+    const props = Object.assign({}, instance.proxy, options)
     if (_closeTimer) {
       clearTimeout(_closeTimer)
       _closeTimer = 0
@@ -105,7 +104,7 @@ function usePopup(props) {
       PopupManager.openModal(
         _popupId,
         PopupManager.nextZIndex(),
-        modalAppendToBody.value ? undefined : dom,
+        modalAppendToBody?.value ? undefined : dom,
         props.modalClass,
         props.modalFade
       )

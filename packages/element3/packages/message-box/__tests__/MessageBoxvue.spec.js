@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils'
-import { nextTick, h } from 'vue'
+import { nextTick, h, ref } from 'vue'
 import MessageBox from '../src/MessageBox.vue'
 describe('MessageBox.vue', () => {
   describe('proprety', () => {
     it('proprety title', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           title: 'chushihua'
         }
       })
@@ -13,7 +13,7 @@ describe('MessageBox.vue', () => {
     })
     it('proprety center', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           center: true
         }
       })
@@ -21,7 +21,7 @@ describe('MessageBox.vue', () => {
     })
     it('proprety customClass', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           customClass: 'customClass'
         }
       })
@@ -29,7 +29,7 @@ describe('MessageBox.vue', () => {
     })
     it('proprety iconClass', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           iconClass: 'iconClass'
         }
       })
@@ -37,7 +37,7 @@ describe('MessageBox.vue', () => {
     })
     it('iconclass with center', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           iconClass: 'iconClass',
           center: true,
           title: 'title'
@@ -47,16 +47,17 @@ describe('MessageBox.vue', () => {
     })
     it('proprety type', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           title: 'title',
           center: true
         }
       })
+
       expect(warpper.find('.el-icon-info').exists()).toBeTruthy()
     })
     it('showClose', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           title: '12',
           showClose: false
         }
@@ -65,7 +66,7 @@ describe('MessageBox.vue', () => {
     })
     it('showClose toBeTruthy', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           title: '12'
         }
       })
@@ -74,7 +75,7 @@ describe('MessageBox.vue', () => {
     it('proprety beforeClose', async () => {
       let object = {}
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           title: '12',
           beforeClose: (action, instance, done) => {
             object.action = action
@@ -89,7 +90,7 @@ describe('MessageBox.vue', () => {
     })
     it('review messageBox when value was done', async () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           title: '12',
           beforeClose: (action, instance, done) => {
             done()
@@ -103,7 +104,7 @@ describe('MessageBox.vue', () => {
     it('showClose lockScroll', () => {
       document.body.classList.remove('el-popup-parent--hidden')
       mount(MessageBox, {
-        props: {
+        attrs: {
           title: '12',
           lockScroll: false
         },
@@ -113,7 +114,7 @@ describe('MessageBox.vue', () => {
     })
     it('meesage of normal', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           message: '333'
         }
       })
@@ -135,7 +136,7 @@ describe('MessageBox.vue', () => {
     })
     it('dangerouslyUseHTMLString', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           dangerouslyUseHTMLString: true,
           message: '<div class="mmm">444</div>'
         }
@@ -144,7 +145,7 @@ describe('MessageBox.vue', () => {
     })
     it('showInput', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           showInput: true
         }
       })
@@ -152,7 +153,7 @@ describe('MessageBox.vue', () => {
     })
     it('inputValue inputPlaceholder', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           showInput: true,
           inputValue: '444',
           inputPlaceholder: '555'
@@ -166,7 +167,7 @@ describe('MessageBox.vue', () => {
 
     it('cancelButtonText, showCancelButton', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           cancelButtonText: 'cancel',
           showCancelButton: true,
           cancelButtonClass: '4444'
@@ -185,7 +186,7 @@ describe('MessageBox.vue', () => {
 
     it('confirmButtonClass showConfirmButton, confirmButtonText', () => {
       const warpper = mount(MessageBox, {
-        props: {
+        attrs: {
           confirmButtonText: 'cancel',
           showConfirmButton: true,
           confirmButtonClass: '4444'
@@ -201,6 +202,21 @@ describe('MessageBox.vue', () => {
         warpper.findAll('.el-message-box__btns button')[1].isVisible()
       ).toBeTruthy()
     })
+
+    it('proprety callback', async () => {
+      let object = ref(null)
+      const warpper = mount(MessageBox, {
+        attrs: {
+          title: '12',
+          callback(action) {
+            object.value = action
+          }
+        }
+      })
+      await warpper.find('.el-message-box__headerbtn').trigger('click')
+      await nextTick()
+      expect(object.value).toBe('cancel')
+    })
   })
   describe('test modal closeOnClickModal', () => {
     it('open modal', async () => {
@@ -214,9 +230,8 @@ describe('MessageBox.vue', () => {
       expect(warpper.find('.v-modal').exists()).toBeTruthy()
 
       await warpper.find('.v-modal').trigger('click')
-      setTimeout(() => {
-        expect(warpper.find('.el-message-box__wrapper').exists()).toBeFalsy()
-      }, 200)
+      await nextTick()
+      expect(warpper.find('.v-moda').exists()).toBeFalsy()
     })
     it('open modal', async () => {
       const warpper = mount(MessageBox, {
@@ -229,9 +244,8 @@ describe('MessageBox.vue', () => {
       expect(warpper.find('.v-modal').exists()).toBeTruthy()
 
       await warpper.find('.v-modal').trigger('keyup', { keyCode: 'Escape' })
-      setTimeout(() => {
-        expect(warpper.find('.el-message-box__wrapper').exists()).toBeFalsy()
-      }, 200)
+      await nextTick()
+      expect(warpper.find('.v-moda').exists()).toBeFalsy()
     })
     it('open modal', async () => {
       const warpper = mount(MessageBox, {
@@ -244,9 +258,8 @@ describe('MessageBox.vue', () => {
       expect(warpper.find('.v-modal').exists()).toBeTruthy()
 
       await warpper.find('.v-modal').trigger('hashchange')
-      setTimeout(() => {
-        expect(warpper.find('.el-message-box__wrapper').exists()).toBeFalsy()
-      }, 200)
+      await nextTick()
+      expect(warpper.find('.v-moda').exists()).toBeFalsy()
     })
   })
 })

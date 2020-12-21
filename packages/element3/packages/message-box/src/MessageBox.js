@@ -2,40 +2,8 @@
 import { isVNode } from 'vue'
 import { createComponent } from '../../../src/use/component'
 import msgboxVue from './MessageBox.vue'
-const defaults = {
-  title: null,
-  message: '',
-  type: '',
-  iconClass: '',
-  showInput: false,
-  showClose: true,
-  modalFade: true,
-  lockScroll: true,
-  closeOnClickModal: true,
-  closeOnPressEscape: true,
-  closeOnHashChange: true,
-  inputValue: null,
-  inputPlaceholder: '',
-  inputType: 'text',
-  inputPattern: null,
-  inputValidator: null,
-  inputErrorMessage: '',
-  showConfirmButton: true,
-  showCancelButton: false,
-  confirmButtonPosition: 'right',
-  confirmButtonHighlight: false,
-  cancelButtonHighlight: false,
-  confirmButtonText: '',
-  cancelButtonText: '',
-  confirmButtonClass: '',
-  cancelButtonClass: '',
-  customClass: '',
-  beforeClose: null,
-  dangerouslyUseHTMLString: false,
-  center: false,
-  roundButton: false,
-  distinguishCancelAndClose: false
-}
+import propsList from './prop/prop'
+const defaults = propsList
 
 let currentMsg, instance
 let msgQueue = []
@@ -44,9 +12,9 @@ const defaultCallback = (action) => {
   if (currentMsg) {
     if (currentMsg.resolve) {
       if (action === 'confirm') {
-        if (instance.vnode.props.showInput) {
+        if (instance.proxy.showInput) {
           currentMsg.resolve({
-            value: instance.setupState.state.inputValue,
+            value: instance.proxy.modelValue,
             action
           })
         } else {
@@ -70,7 +38,7 @@ const initInstance = (currentMsg, VNode = null) => {
 const showNextMsg = () => {
   if (msgQueue.length > 0) {
     currentMsg = msgQueue.shift()
-
+    // initInstance(currentMsg)
     const options = currentMsg.options
 
     if (options.callback === undefined) {
@@ -81,13 +49,8 @@ const showNextMsg = () => {
     options.callback = (action, instance) => {
       oldCb(action, instance)
     }
-    initInstance(currentMsg)
-    if (isVNode(options.message)) {
-      console.log(options.message)
-      instance.slots.default = () => options.message
-      console.log(instance)
-      debugger
-    }
+
+    initInstance(currentMsg, isVNode(options.message) ? options.message : null)
     document.body.appendChild(instance.vnode.el)
   }
 }
@@ -101,7 +64,7 @@ const MessageBox = function (options) {
   if (typeof Promise !== 'undefined') {
     return new Promise((resolve, reject) => { // eslint-disable-line
       msgQueue.push({
-        options: Object.assign({}, defaults, MessageBox.defaults, options),
+        options: Object.assign({}, defaults, options),
         callback: callback,
         resolve: resolve,
         reject: reject
@@ -187,7 +150,7 @@ MessageBox.prompt = (message, title, options) => {
 }
 
 MessageBox.close = () => {
-  instance.doClose()
+  instance.proxy.closeHandle()
   msgQueue = []
   currentMsg = null
 }

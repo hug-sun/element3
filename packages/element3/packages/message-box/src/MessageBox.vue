@@ -1,7 +1,7 @@
 <template>
   <transition name="msgbox-fade">
     <div
-      v-show="state.visible"
+      v-show="visible"
       class="el-message-box__wrapper"
       tabindex="-1"
       role="dialog"
@@ -26,8 +26,12 @@
             class="el-message-box__headerbtn"
             aria-label="Close"
             v-if="showClose"
-            @click="handleAction('cancel')"
-            @keydown.enter="handleAction('cancel')"
+            @click="
+              handleAction(distinguishCancelAndClose ? 'close' : 'cancel')
+            "
+            @keydown.enter="
+              handleAction(distinguishCancelAndClose ? 'close' : 'cancel')
+            "
           >
             <i class="el-message-box__close el-icon-close"></i>
           </button>
@@ -69,23 +73,19 @@
             :loading="cancelButtonLoading"
             size="small"
             :round="roundButton"
-            @click="
-              handleAction(distinguishCancelAndClose ? 'close' : 'cancel')
-            "
-            @keydown.enter="
-              handleAction(distinguishCancelAndClose ? 'close' : 'cancel')
-            "
+            @click="handleAction('cancel')"
+            @keydown.enter="handleAction('cancel')"
             :class="['el-button--primary', cancelButtonClass]"
             v-show="showCancelButton"
           >
             {{ cancelButtonText }}
           </el-button>
           <el-button
-            :loading="cancelButtonLoading"
+            :loading="confirmButtonLoading"
             size="small"
             :round="roundButton"
-            @click="handleAction('cancel')"
-            @keydown.enter="handleAction('cancel')"
+            @click="handleAction('confirm')"
+            @keydown.enter="handleAction('confirm')"
             :class="['el-button--primary', confirmButtonClass]"
             v-show="showConfirmButton"
           >
@@ -101,165 +101,38 @@
 import {
   defineComponent,
   reactive,
-  isVNode,
   toRefs,
   getCurrentInstance,
   nextTick,
   unref,
-  render,
   computed,
   onMounted,
   onUnmounted,
   ref,
   watch
 } from 'vue'
+import propsObject from './prop/prop'
 import { isFunction } from '@vue/shared'
 import { popupProps, usePopup } from '../../../src/use/popup'
 import Locale from '../../../src/mixins/locale'
 import ElInput from '../../input'
 import { ElButton } from '../../../src/components/Button'
 import { addClass, removeClass } from '../../../src/utils/dom'
-import { t } from '../../../src/locale'
 
 export default defineComponent({
   mixins: [Locale],
-
-  props: {
-    closeOnHashChange: {
-      type: Boolean,
-      default: true
-    },
-    closeOnPressEscape: {
-      type: Boolean,
-      default: true
-    },
-    distinguishCancelAndClose: {
-      type: Boolean,
-      default: false
-    },
-    closeOnClickModal: {
-      type: Boolean,
-      default: true
-    },
-    cancelButtonLoading: {
-      type: Boolean,
-      default: false
-    },
-    roundButton: {
-      type: Boolean,
-      default: false
-    },
-    cancelButtonClass: {
-      type: String,
-      default: null
-    },
-    confirmButtonClass: {
-      type: String,
-      default: null
-    },
-    showCancelButton: {
-      type: Boolean,
-      default: false
-    },
-    showConfirmButton: {
-      type: Boolean,
-      default: false
-    },
-    confirmButtonText: {
-      type: String,
-      default: () => t('el.messagebox.cancel')
-    },
-    cancelButtonText: {
-      type: String,
-      default: () => t('el.messagebox.confirm')
-    },
-    category: {
-      type: String,
-      default: 'alert',
-      validator(val) {
-        return ['confirm', 'prompt', 'alert'].indexOf(val)
-      }
-    },
-    inputValue: {
-      type: String,
-      default: ''
-    },
-    inputPlaceholder: {
-      type: String,
-      default: ''
-    },
-    inputType: {
-      type: String,
-      default: 'text'
-    },
-    showInput: {
-      type: Boolean,
-      default: false
-    },
-    dangerouslyUseHTMLString: {
-      type: Boolean,
-      default: false
-    },
-    message: {
-      type: [Object, String],
-      default() {
-        return {}
-      }
-    },
-    lockScroll: {
-      type: Boolean,
-      default: true
-    },
-    modalAppendToBody: {
-      type: Boolean,
-      default: false
-    },
-    modal: {
-      type: Boolean,
-      default: true
-    },
-    center: {
-      type: Boolean,
-      default: false
-    },
-    title: {
-      type: String,
-      default: null
-    },
-    customClass: {
-      type: String,
-      default: null
-    },
-    type: {
-      type: String,
-      default: 'info',
-      validator(val) {
-        return ['success', 'warning', 'info', 'error'].indexOf(val)
-      }
-    },
-    iconClass: {
-      type: String,
-      default: null
-    },
-    showClose: {
-      type: Boolean,
-      default: true
-    },
-    beforeClose: {
-      type: Function,
-      default: null
-    }
-  },
 
   components: {
     ElInput,
     ElButton
   },
-  emits: ['update:visible'],
-  setup(props, { attrs, emit }) {
+  setup(props, { attrs }) {
+    const b = Object.assign(propsObject(), attrs)
+    console.log(b)
     const state = reactive({
       action: null,
-      visible: true
+      visible: true,
+      ...b
     })
     const instance = getCurrentInstance()
     const {
@@ -272,22 +145,27 @@ export default defineComponent({
       closeOnClickModal,
       distinguishCancelAndClose,
       closeOnPressEscape,
-      closeOnHashChange
-    } = toRefs(props)
-    const { open, close } = usePopup(
-      reactive({
-        visible: state.visible,
-        ...toRefs(props)
-      })
-    )
+      closeOnHashChange,
+      callback
+    } = toRefs(state)
+
+    const { open, close } = usePopup(state)
     const icon = computed(() => {
+      console.log('type', iconClass.value)
       return unref(iconClass) || (unref(type) ? `el-icon-${unref(type)}` : '')
     })
     const closeHandle = () => {
       state.visible = false
       close()
+      nextTick(() => {
+        unref(callback)(state.action, instance)
+      })
     }
     const handleAction = (action) => {
+      if (unref(category) === 'prompt' && action === 'confirm' && !validate()) {
+        return
+      }
+      state.action = action
       if (isFunction(beforeClose.value)) {
         beforeClose.value(action, instance.proxy, closeHandle)
       } else {
@@ -321,7 +199,7 @@ export default defineComponent({
       window.removeEventListener('keyup', handleKeyup)
     })
 
-    const modelValue = ref(inputValue)
+    const modelValue = ref(inputValue.value)
     const editorErrorMessage = ref(null)
     const getInputElement = () => {
       const inputRefs = instance.refs.input.$refs
@@ -345,14 +223,17 @@ export default defineComponent({
         handleAction(unref(distinguishCancelAndClose) ? 'close' : 'cancel')
       }
     }
+    const confirmButtonLoading = ref(false)
     return {
       modelValue,
-      state,
+      ...toRefs(state),
       icon,
       handleAction,
       handleInputEnter,
       editorErrorMessage,
-      handleWrapperClick
+      handleWrapperClick,
+      closeHandle,
+      confirmButtonLoading
     }
   }
 })
