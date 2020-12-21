@@ -7,7 +7,7 @@ export interface QueryChangeHandler {
   (queryString: string): void
 }
 
-export const ElSelect: IElSelect
+export const ElSelect: IElSelect
 
 /** Dropdown Select Component */
 interface IElSelect extends ElementUIComponent {
@@ -83,10 +83,10 @@ interface IElSelect extends ElementUIComponent {
   /**
    * Focus the Input component
    */
-  focus (): void
+  focus(): void
 
   /**
    * Blur the Input component, and hide the dropdown
    */
-  blur (): void
+  blur(): void
 }

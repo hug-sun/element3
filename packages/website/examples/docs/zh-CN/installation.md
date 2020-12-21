@@ -14,7 +14,10 @@ npm i element3 -S
 
 ```html
 <!-- 引入样式 -->
-<link rel="stylesheet" href="https://unpkg.com/element3/lib/theme-chalk/index.css">
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/element3/lib/theme-chalk/index.css"
+/>
 <!-- 引入组件库 -->
 <script src="https://unpkg.com/element3"></script>
 ```

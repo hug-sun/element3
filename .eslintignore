@@ -1,13 +1,10 @@
-src/utils/popper.js
-src/utils/date.js
-examples/play
-*.sh
 node_modules
 lib
 coverage
-*.md
 *.scss
 *.woff
 *.ttf
-src/index.js
+*.d.ts
+*.md
+*.snap
 dist

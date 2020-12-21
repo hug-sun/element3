@@ -1,7 +1,7 @@
 import { ElementUIComponent } from './component'
 
 /** Use Collapse to store contents. */
-interface ICollapse extends ElementUIComponent{
+interface ICollapse extends ElementUIComponent {
   /** Whether to activate accordion mode */
   accordion: boolean
 
@@ -9,4 +9,4 @@ interface ICollapse extends ElementUIComponent{
   value: string | number | string[] | number[]
 }
 
-export const ElCollapse:ICollapse
+export const ElCollapse: ICollapse

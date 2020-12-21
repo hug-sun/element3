@@ -3,7 +3,7 @@ import { ElementUIComponent } from './component'
 export type AlertType = 'success' | 'warning' | 'info' | 'error'
 export type AlertEffect = 'dark' | 'light'
 
-interface IAlert  extends ElementUIComponent{
+interface IAlert extends ElementUIComponent {
   /** Title */
   title: string
 

@@ -2,7 +2,6 @@
 
 加载数据时显示动效。
 
-
 ### 整页加载
 
 页面数据加载时显示。
@@ -22,32 +21,32 @@
 </template>
 
 <script>
-import {ref} from 'vue'
-import {useLoading} from 'element3'
+  import { ref } from 'vue'
+  import { useLoading } from 'element3'
   export default {
-    setup(){
-        let $loading = useLoading()
-        let fullscreenLoading = ref(false);
-        function openFullScreen1() {
-          fullscreenLoading.value = true
-          setTimeout(() => {
-            fullscreenLoading.value = false
-          }, 2000)
-        }
-        function openFullScreen2(e) {
-          const loading = $loading({
-            // lock: true,
-            // target: e.target,
-            text: 'Loading...',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)'
-          })
-          setTimeout(() => {
-            loading.close()
-          }, 2000)
-        }
+    setup() {
+      let $loading = useLoading()
+      let fullscreenLoading = ref(false)
+      function openFullScreen1() {
+        fullscreenLoading.value = true
+        setTimeout(() => {
+          fullscreenLoading.value = false
+        }, 2000)
+      }
+      function openFullScreen2(e) {
+        const loading = $loading({
+          // lock: true,
+          // target: e.target,
+          text: 'Loading...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
+        setTimeout(() => {
+          loading.close()
+        }, 2000)
+      }
 
-        return {fullscreenLoading,openFullScreen1,openFullScreen2}
+      return { fullscreenLoading, openFullScreen1, openFullScreen2 }
     }
   }
 </script>
@@ -61,7 +60,7 @@ Loading 还可以以服务的方式调用。引入 Loading 服务：
 
 ```javascript
 import { ElLoading } from 'element3'
-import {nextTick} from 'vue'
+import { nextTick } from 'vue'
 ```
 
 在需要调用时：
@@ -89,7 +88,6 @@ console.log(loadingInstance1 === loadingInstance2) // true
 ```
 
 此时调用它们中任意一个的 `close` 方法都能关闭这个全屏 Loading。
-
 
 :::
 
