@@ -109,7 +109,7 @@ function updatePosition(closeInstance) {
           10
         ) -
         removedHeight -
-        16 +
+        INTERVAL_HEIGHT +
         'px'
     }
   }
