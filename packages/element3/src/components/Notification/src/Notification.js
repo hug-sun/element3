@@ -85,27 +85,29 @@ function calculateVerticalOffset(position, offset = 0) {
 
 function closeNotification(instance) {
   updatePosition(instance)
-  removeInstance(instance)
 }
 
 function updatePosition(closeInstance) {
-  const currentInstanceIndex = getIndexByInstance(closeInstance)
-  if (currentInstanceIndex < 0) return
+  const closeInstanceIndex = getIndexByInstance(closeInstance)
+  if (closeInstanceIndex < 0) return
 
-  for (let index = currentInstanceIndex; index < instanceList.length; index++) {
-    const instance = instanceList[index]
-
-    if (closeInstance.props.position === instance.props.position) {
-      instance.vnode.el.style[
-        instance.props.position.startsWith('top') ? 'top' : 'bottom'
+  const len = closeInstance.length
+  removeInstance(closeInstance)
+  if (len <= 1) return
+  const closePosition = closeInstance.props.position
+  const closeHeight = closeInstance.vnode.el.offsetHeight
+  for (let i = closeInstanceIndex; i < len - 1; i++) {
+    if (instanceList[i].props.position === closePosition) {
+      instanceList[i].vnode.el.style[
+        closeInstance.props.position.startsWith('top') ? 'top' : 'bottom'
       ] =
         parseInt(
-          instance.vnode.el.style[
-            instance.props.position.startsWith('top') ? 'top' : 'bottom'
+          instanceList[i].vnode.el.style[
+            closeInstance.props.position.startsWith('top') ? 'top' : 'bottom'
           ],
           10
         ) -
-        instance.vnode.el.offsetHeight -
+        closeHeight -
         INTERVAL_HEIGHT +
         'px'
     }
