@@ -16,16 +16,16 @@ describe('Progress.vue', () => {
     const wrapper = mount(Progress, {
       props: { percentage }
     })
-    hasClass(wrapper, 'el-progress')
-    hasClass(wrapper, 'el-progress--line')
-    notHasClass(wrapper, 'is-undefined')
+    assertHasClass(wrapper, 'el-progress')
+    assertHasClass(wrapper, 'el-progress--line')
+    assertNotHasClass(wrapper, 'is-undefined')
 
-    existsElem(wrapper, '.el-progress > .el-progress-bar')
-    existsElem(wrapper, '.el-progress > .el-progress__text')
-    existsElem(wrapper, '.el-progress-bar > .el-progress-bar__outer')
-    existsElem(wrapper, '.el-progress-bar__outer .el-progress-bar__inner')
+    assertExistsElem(wrapper, '.el-progress > .el-progress-bar')
+    assertExistsElem(wrapper, '.el-progress > .el-progress__text')
+    assertExistsElem(wrapper, '.el-progress-bar > .el-progress-bar__outer')
+    assertExistsElem(wrapper, '.el-progress-bar__outer .el-progress-bar__inner')
 
-    testPercentage(wrapper, percentage)
+    assertSetPercentage(wrapper, percentage)
 
     expect(wrapper.find('.temptest').text()).toBe('')
   })
@@ -36,9 +36,9 @@ describe('Progress.vue', () => {
       const wrapper = mount(Progress, {
         props: { percentage }
       })
-      testPercentage(wrapper, 58)
+      assertSetPercentage(wrapper, 58)
       await wrapper.setProps({ percentage: 28 })
-      testPercentage(wrapper, 28)
+      assertSetPercentage(wrapper, 28)
     })
 
     it('fix percentage value', () => {
@@ -52,9 +52,9 @@ describe('Progress.vue', () => {
       const wrapper = mount(Progress, {
         props: { percentage }
       })
-      testPercentage(wrapper, 100)
+      assertSetPercentage(wrapper, 100)
       await wrapper.setProps({ percentage: -28 })
-      testPercentage(wrapper, 0)
+      assertSetPercentage(wrapper, 0)
     })
 
     it('format', () => {
@@ -62,7 +62,7 @@ describe('Progress.vue', () => {
       const percentage = 100
       const props = { percentage, format }
       const wrapper = mount(Progress, { props })
-      containText(wrapper, '.el-progress__text', '满')
+      assertContainText(wrapper, '.el-progress__text', '满')
     })
 
     it('color string', async () => {
@@ -70,13 +70,17 @@ describe('Progress.vue', () => {
       const percentage = 30
       const props = { percentage, color: color1 }
       const wrapper = mount(Progress, { props })
-      testProgressColor(wrapper, color1)
+      assertSetBgColor(wrapper, color1)
       const color2 = '#336699'
       await wrapper.setProps({ color: color2 })
-      testProgressColor(wrapper, color2)
+      assertSetBgColor(wrapper, color2)
       const color3 = ''
       await wrapper.setProps({ color: color3 })
-      notContainStyle(wrapper, '.el-progress-bar__inner', 'background-color')
+      assertNotContainStyle(
+        wrapper,
+        '.el-progress-bar__inner',
+        'background-color'
+      )
     })
 
     it('color function', async () => {
@@ -93,17 +97,17 @@ describe('Progress.vue', () => {
       const props = { percentage: p1, color }
       const wrapper = mount(Progress, { props })
 
-      testProgressColor(wrapper, color(p1))
+      assertSetBgColor(wrapper, color(p1))
 
       const p2 = 50
       await wrapper.setProps({ percentage: p2 })
 
-      testProgressColor(wrapper, color(p2))
+      assertSetBgColor(wrapper, color(p2))
 
       const p3 = 80
       await wrapper.setProps({ percentage: p3 })
 
-      testProgressColor(wrapper, color(p3))
+      assertSetBgColor(wrapper, color(p3))
     })
 
     it('get index of percentage in array', () => {
@@ -175,20 +179,20 @@ describe('Progress.vue', () => {
       const percentage = 15
       const props = { percentage, color: colors }
       const wrapper = mount(Progress, { props })
-      testProgressColor(wrapper, colors[0])
+      assertSetBgColor(wrapper, colors[0])
 
       await wrapper.setProps({ percentage: 0 })
-      testProgressColor(wrapper, colors[0])
+      assertSetBgColor(wrapper, colors[0])
       await wrapper.setProps({ percentage: 10 })
-      testProgressColor(wrapper, colors[0])
+      assertSetBgColor(wrapper, colors[0])
       await wrapper.setProps({ percentage: 35 })
-      testProgressColor(wrapper, colors[1])
+      assertSetBgColor(wrapper, colors[1])
       await wrapper.setProps({ percentage: 65 })
-      testProgressColor(wrapper, colors[1])
+      assertSetBgColor(wrapper, colors[1])
       await wrapper.setProps({ percentage: 67 })
-      testProgressColor(wrapper, colors[2])
+      assertSetBgColor(wrapper, colors[2])
       await wrapper.setProps({ percentage: 100 })
-      testProgressColor(wrapper, colors[2])
+      assertSetBgColor(wrapper, colors[2])
     })
 
     it('color object array', () => {
@@ -207,7 +211,7 @@ describe('Progress.vue', () => {
       const props = { percentage, color: colors }
       const wrapper = mount(Progress, { props })
       expect(wrapper).toBeDefined()
-      testProgressColor(wrapper, colors[4].color)
+      assertSetBgColor(wrapper, colors[4].color)
     })
 
     it('status add "is-xxx" class', async () => {
@@ -215,21 +219,25 @@ describe('Progress.vue', () => {
       const status = 'success'
       const props = { percentage, status }
       const wrapper = mount(Progress, { props })
-      hasClass(wrapper, 'is-success')
+      assertHasClass(wrapper, 'is-success')
       await wrapper.setProps({ status: 'exception' })
-      hasClass(wrapper, 'is-exception')
+      assertHasClass(wrapper, 'is-exception')
       await wrapper.setProps({ status: 'warning' })
-      hasClass(wrapper, 'is-warning')
+      assertHasClass(wrapper, 'is-warning')
 
       await wrapper.setProps({ status: 'error' })
-      notHasClass(wrapper, 'is-error')
+      assertNotHasClass(wrapper, 'is-error')
     })
   })
 })
 
-function testProgressColor(wrapper, color) {
+function assertSetBgColor(wrapper, color) {
   const rgb = fromHexToRgb(color)
-  containStyle(wrapper, '.el-progress-bar__inner', `background-color: ${rgb};`)
+  assertContainStyle(
+    wrapper,
+    '.el-progress-bar__inner',
+    `background-color: ${rgb};`
+  )
 }
 
 function fromHexToRgb(hex) {
@@ -239,34 +247,38 @@ function fromHexToRgb(hex) {
   return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`
 }
 
-function testPercentage(wrapper, percentage) {
-  containText(wrapper, '.el-progress__text', `${percentage}%`)
-  containStyle(wrapper, '.el-progress-bar__inner', `width: ${percentage}%;`)
+function assertSetPercentage(wrapper, percentage) {
+  assertContainText(wrapper, '.el-progress__text', `${percentage}%`)
+  assertContainStyle(
+    wrapper,
+    '.el-progress-bar__inner',
+    `width: ${percentage}%;`
+  )
 }
 
-function containStyle(wrapper, selector, strStyle) {
+function assertContainStyle(wrapper, selector, strStyle) {
   const elem = wrapper.find(selector)
   expect(elem.attributes().style).toBeDefined()
   expect(elem.attributes().style).toContain(strStyle)
 }
 
-function notContainStyle(wrapper, selector, strStyle) {
+function assertNotContainStyle(wrapper, selector, strStyle) {
   const elem = wrapper.find(selector)
   expect(elem.attributes().style).not.toContain(strStyle)
 }
 
-function containText(wrapper, selector, text) {
+function assertContainText(wrapper, selector, text) {
   expect(wrapper.find(selector).text()).toContain(text)
 }
 
-function hasClass(elem, className) {
+function assertHasClass(elem, className) {
   expect(elem.classes().includes(className)).toBeTruthy()
 }
 
-function notHasClass(elem, className) {
+function assertNotHasClass(elem, className) {
   expect(elem.classes().includes(className)).toBeFalsy()
 }
 
-function existsElem(wrapper, selector) {
+function assertExistsElem(wrapper, selector) {
   expect(wrapper.find(selector).exists()).toBeTruthy()
 }
