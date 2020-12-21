@@ -1,7 +1,7 @@
-@import "common/var";
-@import "mixins/mixins";
-@import "mixins/_button";
-@import "mixins/utils";
+@import 'common/var';
+@import 'mixins/mixins';
+@import 'mixins/_button';
+@import 'mixins/utils';
 
 @include b(checkbox) {
   color: $--checkbox-font-color;
@@ -161,7 +161,8 @@
         color: $--checkbox-checked-font-color;
       }
     }
-    @include when(focus) { /*focus时 视觉上区分*/
+    @include when(focus) {
+      /*focus时 视觉上区分*/
       .el-checkbox__inner {
         border-color: $--checkbox-input-border-color-hover;
       }
@@ -199,8 +200,8 @@
     height: $--checkbox-input-height;
     background-color: $--checkbox-background-color;
     z-index: $--index-normal;
-    transition: border-color .25s cubic-bezier(.71,-.46,.29,1.46),
-    background-color .25s cubic-bezier(.71,-.46,.29,1.46);
+    transition: border-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46),
+      background-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46);
 
     &:hover {
       border-color: $--checkbox-input-border-color-hover;
@@ -208,7 +209,7 @@
 
     &::after {
       box-sizing: content-box;
-      content: "";
+      content: '';
       border: 1px solid $--checkbox-checked-icon-color;
       border-left: 0;
       border-top: 0;
@@ -218,7 +219,7 @@
       top: 1px;
       transform: rotate(45deg) scaleY(0);
       width: 3px;
-      transition: transform .15s ease-in .05s;
+      transition: transform 0.15s ease-in 0.05s;
       transform-origin: center;
     }
   }
@@ -269,13 +270,18 @@
     transition: $--all-transition;
     @include utils-user-select(none);
 
-    @include button-size($--button-padding-vertical, $--button-padding-horizontal, $--button-font-size, 0);
+    @include button-size(
+      $--button-padding-vertical,
+      $--button-padding-horizontal,
+      $--button-font-size,
+      0
+    );
 
     &:hover {
       color: $--color-primary;
     }
 
-    & [class*="el-icon-"] {
+    & [class*='el-icon-'] {
       line-height: 0.9;
 
       & + span {
@@ -339,17 +345,32 @@
   }
   @include m(medium) {
     .el-checkbox-button__inner {
-      @include button-size($--button-medium-padding-vertical, $--button-medium-padding-horizontal, $--button-medium-font-size, 0);
+      @include button-size(
+        $--button-medium-padding-vertical,
+        $--button-medium-padding-horizontal,
+        $--button-medium-font-size,
+        0
+      );
     }
   }
   @include m(small) {
     .el-checkbox-button__inner {
-      @include button-size($--button-small-padding-vertical, $--button-small-padding-horizontal, $--button-small-font-size, 0);
+      @include button-size(
+        $--button-small-padding-vertical,
+        $--button-small-padding-horizontal,
+        $--button-small-font-size,
+        0
+      );
     }
   }
   @include m(mini) {
     .el-checkbox-button__inner {
-      @include button-size($--button-mini-padding-vertical, $--button-mini-padding-horizontal, $--button-mini-font-size, 0);
+      @include button-size(
+        $--button-mini-padding-vertical,
+        $--button-mini-padding-horizontal,
+        $--button-mini-font-size,
+        0
+      );
     }
   }
 }

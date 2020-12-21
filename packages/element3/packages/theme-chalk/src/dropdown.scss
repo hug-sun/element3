@@ -1,7 +1,7 @@
-@import "mixins/mixins";
-@import "common/var";
-@import "button";
-@import "./popper";
+@import 'mixins/mixins';
+@import 'common/var';
+@import 'button';
+@import './popper';
 
 @include b(dropdown) {
   display: inline-block;
@@ -55,8 +55,10 @@
     margin: 0 3px;
   }
 
-  .el-dropdown-selfdefine { // 自定义
-    &:focus:active, &:focus:not(.focusing) {
+  .el-dropdown-selfdefine {
+    // 自定义
+    &:focus:active,
+    &:focus:not(.focusing) {
       outline-width: 0;
     }
   }
@@ -83,7 +85,8 @@
     color: $--color-text-regular;
     cursor: pointer;
     outline: none;
-    &:not(.is-disabled):hover, &:focus {
+    &:not(.is-disabled):hover,
+    &:focus {
       background-color: $--dropdown-menuItem-hover-fill;
       color: $--dropdown-menuItem-hover-color;
     }

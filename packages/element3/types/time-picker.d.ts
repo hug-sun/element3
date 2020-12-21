@@ -1,4 +1,8 @@
-import { ElementUIComponent, ElementUIComponentSize, ElementUIHorizontalAlignment } from './component'
+import {
+  ElementUIComponent,
+  ElementUIComponentSize,
+  ElementUIHorizontalAlignment
+} from './component'
 
 export interface TimePickerOptions {
   /**
@@ -6,13 +10,13 @@ export interface TimePickerOptions {
    * e.g. `'18:30:00 - 20:30:00'`
    * or `['09:30:00 - 12:00:00', '14:30:00 - 18:30:00']`
    */
-  selectableRange?: string | string[],
+  selectableRange?: string | string[]
 
   /** Format  of the picker */
   format?: string
 }
 
-export const ElTimePicker:ITimePicker
+export const ElTimePicker: ITimePicker
 /** TimePicker Component */
 interface ITimePicker extends ElementUIComponent {
   /** Whether DatePicker is read only */
@@ -60,5 +64,5 @@ interface ITimePicker extends ElementUIComponent {
   /**
    * Focus the Input component
    */
-  focus (): void
+  focus(): void
 }

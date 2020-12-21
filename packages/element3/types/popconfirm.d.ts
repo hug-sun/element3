@@ -1,7 +1,7 @@
 import { ElementUIComponent } from './component'
 import { ElPopover } from './popover'
 
-export const ElPopconfirm:IPopconfirm
+export const ElPopconfirm: IPopconfirm
 
 type IPopover = typeof ElPopover
 /** Popconfirm Component */
@@ -11,7 +11,7 @@ interface IPopconfirm extends IPopover {
 
   /** Popconfirm ok text */
   confirmButtonText: string
-  
+
   /** Popconfirm cancel text */
   cancelButtonText: string
 

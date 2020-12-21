@@ -35,7 +35,9 @@ Nous sommes ravis que vous souhaitiez contribuer à Element. Avant de soumettre 
 - La fusion d'un PR nécessite deux responsables: l'un approuve les modifications après révision, puis l'autre les révise et les fusionne.
 
 ## Pré-requis
+
 `Node.js 4+`, `yarn` et `npm 3+` sont requis. Note: nous utilisons yarn pour verrouiller les versions des dépendances, donc vous devriez installer les dépendances en utilisant `yarn` au lieu de `npm install`.
+
 ```shell
 git clone git@github.com:ElemeFE/element.git
 npm run dev
@@ -52,9 +54,11 @@ npm run dist
 ```
 
 ## Concernant le développement de composants
+
 - Exécutez `make new <nom-du-composant>` pour créer un répertoire pour le nouveau composant. Les tests, le fichier d'entrée et la documentation sont inclus.
 - Reportez-vous au `Button` pour les composants imbriqués.
 - Reportez-vous à `Select` pour connaître les composants qui dépendent d'autres composants.
 
 ## Style du code
+
 Il suffit de se conformer à la configuration [ESLint](https://github.com/ElemeFE/eslint-config-elemefe) de [ElemeFE](https://github.com/elemefe).
