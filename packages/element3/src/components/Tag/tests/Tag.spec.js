@@ -1,7 +1,7 @@
-import Tag from '../Tag.vue'
+import Tag from '../src/Tag.vue'
 import { mount } from '@vue/test-utils'
 import { ref, nextTick } from 'vue'
-import { setupGlobalOptions } from '../../../src/use/globalConfig'
+import { setupGlobalOptions } from '../../../use/globalConfig'
 
 describe('Tag.vue', () => {
   it('normal render', () => {
