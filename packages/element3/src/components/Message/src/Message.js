@@ -59,8 +59,7 @@ function mergeOptions(opts, type = 'info') {
     defaultOptions.message = opts
     return defaultOptions
   }
-
-  return Object.assign({}, defaultOptions, opts)
+  return Object.assign({}, opts, defaultOptions)
 }
 
 function calculateVerticalOffset(offset = 20) {
