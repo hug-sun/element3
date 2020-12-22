@@ -55,7 +55,7 @@ import { Message } from './components/Message'
 
 import ElMessageBox, { useMsgbox } from '../packages/message-box'
 
-import ElNotification, { useNotify } from './components/Notification'
+import { Notification } from './components/Notification'
 // Navigation
 import ElMenu from '../packages/menu'
 import ElMenuItem from '../packages/menu-item'
@@ -193,7 +193,7 @@ function applyOptions(app) {
   app.config.globalProperties.$alert = ElMessageBox.service.alert
   app.config.globalProperties.$confirm = ElMessageBox.service.confirm
   app.config.globalProperties.$prompt = ElMessageBox.service.prompt
-  app.config.globalProperties.$notify = ElNotification.service
+  app.config.globalProperties.$notify = Notification
   app.config.globalProperties.$message = Message
 }
 
@@ -286,7 +286,7 @@ export {
   Message,
   useLoading,
   useMsgbox,
-  useNotify,
+  Notification,
   install,
   setupGlobalOptions
 }

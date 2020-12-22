@@ -3,7 +3,6 @@ import notificationComponent from './Notification.vue'
 import { createComponent } from '../../../../src/use/component.js'
 import { PopupManager } from '../../../../src/utils/popup'
 
-let seed = 1
 const instanceList = []
 const INTERVAL_HEIGHT = 16
 
@@ -40,13 +39,11 @@ function addToBody(instance) {
 }
 
 function mergeProps(options) {
-  const id = 'notification_' + seed++
   const position = options.position || 'top-right'
 
   const verticalOffset = calculateVerticalOffset(position)
 
   const defaultOptions = {
-    id,
     position,
     verticalOffset
   }
