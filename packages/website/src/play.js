@@ -7,3 +7,5 @@ const app = createApp(App)
 app.use(Element3)
 
 app.mount('#app')
+
+export default app;

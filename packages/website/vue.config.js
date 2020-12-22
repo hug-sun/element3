@@ -7,10 +7,17 @@ module.exports = {
   },
   chainWebpack: config => {
     config
-      // 修改 entry 配置
+      // app entry
       .entry('app')
       .clear()
       .add(path.resolve(__dirname, './src/main.js'))
+      .end()
+
+    config
+      // play entry
+      .entry('play')
+      .clear()
+      .add(path.resolve(__dirname, './src/play.js'))
       .end()
 
     // 添加解析 md 的 loader
