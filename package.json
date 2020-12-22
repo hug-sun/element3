@@ -13,10 +13,11 @@
   },
   "license": "MIT",
   "gitHooks": {
-    "commit-msg": "node scripts/verifyCommit.js"
+    "commit-msg": "node scripts/verifyCommit.js",
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,vue}": "eslint"
+    "*.{js,vue}": ["eslint","prettier --write"]
   },
   "devDependencies": {
     "@vue/eslint-config-prettier": "^6.0.0",

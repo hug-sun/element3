@@ -10,6 +10,4 @@ interface TableBodyProps {
   highlight: boolean
 }
 
-export {
-  TableBodyProps,
-}
+export { TableBodyProps }

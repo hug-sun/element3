@@ -2,7 +2,7 @@ import { ElementUIComponent } from './component'
 
 export type ContentPosition = 'left' | 'center' | 'right'
 
-export const ElDivider:IDivider
+export const ElDivider: IDivider
 /** Divider Component */
 interface IDivider extends ElementUIComponent {
   /** enable vertical divider */

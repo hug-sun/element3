@@ -138,9 +138,11 @@ export interface ElMessageBoxOptions {
 }
 
 export interface ElMessageBoxShortcutMethod {
-  (message: string, title: string, options?: ElMessageBoxOptions): Promise<
-    MessageBoxData
-  >
+  (
+    message: string,
+    title: string,
+    options?: ElMessageBoxOptions
+  ): Promise<MessageBoxData>
   (message: string, options?: ElMessageBoxOptions): Promise<MessageBoxData>
 }
 

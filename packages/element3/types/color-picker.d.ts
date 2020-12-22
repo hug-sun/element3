@@ -20,4 +20,4 @@ interface IColorPicker extends ElementUIComponent {
   colorFormat: ColorFormat
 }
 
-export const ElColorPicker:IColorPicker
+export const ElColorPicker: IColorPicker

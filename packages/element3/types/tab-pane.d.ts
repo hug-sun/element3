@@ -1,6 +1,6 @@
 import { ElementUIComponent } from './component'
 
-export const ElTabPane:ITabPane
+export const ElTabPane: ITabPane
 /** Tab Pane Component */
 interface ITabPane extends ElementUIComponent {
   /** Title of the tab */
