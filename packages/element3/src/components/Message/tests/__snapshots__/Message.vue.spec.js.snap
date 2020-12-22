@@ -16,4 +16,4 @@ exports[`Message.vue snapshot 1`] = `
     <!--v-if-->
   </div>
 </transition-stub>
-`;
+`

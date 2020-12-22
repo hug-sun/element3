@@ -4,4 +4,6 @@ coverage
 *.scss
 *.woff
 *.ttf
+*.d.ts
+*.md
 dist

@@ -148,7 +148,11 @@ export default {
       // 可能是文字评价可能是分数
       return texts.value[modelValue.value - 1]
     })
+    const iconColor = computed(() => {
+      return matchClassOrColor(colors)
+    })
 
+    //unrefIconClasses形参需要改个名
     const unifiedIconClassOrColor = (unrefIconClasses) => {
       return computed(() => {
         return Array.isArray(unrefIconClasses)
@@ -164,12 +168,11 @@ export default {
       })
     }
     //完善各函数后，加上有关disabled判断
-    const matchClassOrColor = (iconClasses) => {
-      const unrefObj = unref(unifiedIconClassOrColor(unref(iconClasses)))
+    const matchClassOrColor = (classOrColor) => {
+      const unrefObj = unref(unifiedIconClassOrColor(unref(classOrColor)))
       let arr = Object.keys(unrefObj).filter((key) => {
-        const eachClass = unrefObj[key]
-        const excluded =
-          eachClass instanceof Object ? eachClass.excluded : false
+        const each = unrefObj[key]
+        const excluded = each instanceof Object ? each.excluded : false
         return excluded ? modelValue.value < key : modelValue.value <= key
       })
       // console.log('arr', arr)
@@ -226,6 +229,7 @@ export default {
       rateDisabled,
       classes,
       rateText,
+      iconColor,
       // methods
       clickUpdateRate,
       slideSelectRate,
