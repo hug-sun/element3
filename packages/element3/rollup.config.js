@@ -173,7 +173,7 @@ const prodFormatConfigs = [
   globalConfig,
   globalProdConfig
 ]
-const devFormatConfigs = [esBrowserConfig]
+const devFormatConfigs = [esBundleConfig]
 
 function createPackageConfigs() {
   return getFormatConfigs().map((formatConfig) => {
