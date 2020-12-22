@@ -1,6 +1,6 @@
-@import "mixins/mixins";
-@import "common/var";
-@import "input";
+@import 'mixins/mixins';
+@import 'common/var';
+@import 'input';
 
 @include b(input-number) {
   position: relative;
@@ -92,8 +92,8 @@
       width: $--input-small-height;
       font-size: $--input-small-font-size;
 
-      [class*=el-icon] {
-        transform: scale(.9);
+      [class*='el-icon'] {
+        transform: scale(0.9);
       }
     }
 
@@ -111,8 +111,8 @@
       width: $--input-mini-height;
       font-size: $--input-mini-font-size;
 
-      [class*=el-icon] {
-        transform: scale(.8);
+      [class*='el-icon'] {
+        transform: scale(0.8);
       }
     }
 
@@ -139,8 +139,8 @@
       height: auto;
       line-height: #{($--input-height - 2) / 2};
 
-      [class*=el-icon] {
-        transform: scale(.8);
+      [class*='el-icon'] {
+        transform: scale(0.8);
       }
     }
 
@@ -159,20 +159,23 @@
       border-radius: 0 0 $--border-radius-base 0;
     }
 
-    &[class*=medium] {
-      [class*=increase], [class*=decrease] {
+    &[class*='medium'] {
+      [class*='increase'],
+      [class*='decrease'] {
         line-height: #{($--input-medium-height - 2) / 2};
       }
     }
 
-    &[class*=small] {
-      [class*=increase], [class*=decrease] {
+    &[class*='small'] {
+      [class*='increase'],
+      [class*='decrease'] {
         line-height: #{($--input-small-height - 2) / 2};
       }
     }
 
-    &[class*=mini] {
-      [class*=increase], [class*=decrease] {
+    &[class*='mini'] {
+      [class*='increase'],
+      [class*='decrease'] {
         line-height: #{($--input-mini-height - 2) / 2};
       }
     }
