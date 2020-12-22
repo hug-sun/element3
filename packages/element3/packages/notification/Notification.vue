@@ -96,7 +96,8 @@ export default {
     const closed = ref(false)
     const timer = ref(0)
     const destroyElement = () => {
-      instance.ctx.$el.parentNode && instance.ctx.$el.parentNode.removeChild(instance.ctx.$el)
+      instance.ctx.$el.parentNode &&
+        instance.ctx.$el.parentNode.removeChild(instance.ctx.$el)
     }
     const clearTimer = () => {
       clearTimeout(timer.value)

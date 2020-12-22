@@ -117,7 +117,7 @@ export interface RenderContentFnArgs {
 
 /** Tree Component */
 export const ElTree: ITree
-interface ITree extends ElementUIComponent{
+interface ITree extends ElementUIComponent {
   /** Tree raw data */
   data: RawNode[]
 

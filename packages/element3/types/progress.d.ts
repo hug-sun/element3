@@ -25,7 +25,10 @@ interface IProgress extends ElementUIComponent {
   status: ProgressStatus
 
   /** Background color of progress bar. Overrides `status` prop */
-  color: string | Function | Array<string | { color: string, percentage: number }>
+  color:
+    | string
+    | Function
+    | Array<string | { color: string; percentage: number }>
 
   /** The canvas width of circle progress bar */
   width: number

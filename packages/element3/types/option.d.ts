@@ -1,6 +1,6 @@
 import { ElementUIComponent } from './component'
 
-export const ElOption:IOption
+export const ElOption: IOption
 /** Dropdown Select Option Component */
 interface IOption extends ElementUIComponent {
   /** Value of option */

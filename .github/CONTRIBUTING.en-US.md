@@ -35,7 +35,9 @@ We are excited that you are interested in contributing to Element. Before submit
 - Merging a PR takes two maintainers: one approves the changes after reviewing, and then the other reviews and merges.
 
 ## Prerequisites
+
 `Node.js 4+`, `yarn` and `npm 3+` are required. Note: we use yarn to lock dependency versions, so you should install dependencies using `yarn` instead of `npm install`.
+
 ```shell
 git clone git@github.com:ElemeFE/element.git
 npm run dev
@@ -52,9 +54,11 @@ npm run dist
 ```
 
 ## Component Developing Guidelines
+
 - Run `make new <component-name>` to create project directory for a new component. Test codes, entry file and documentation are included.
 - Refer to `Button` for nested components.
 - Refer to `Select` for components that depend on other components.
 
 ## Code Style
+
 Just comply with the [ESLint](https://github.com/ElemeFE/eslint-config-elemefe) configuration of [ElemeFE](https://github.com/elemefe).
