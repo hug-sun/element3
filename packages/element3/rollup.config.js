@@ -164,7 +164,7 @@ const globalProdConfig = {
   }
 }
 
-const formatConfigs = [
+const prodFormatConfigs = [
   esBundleConfig,
   esBrowserProdConfig,
   esBrowserConfig,
@@ -173,11 +173,18 @@ const formatConfigs = [
   globalConfig,
   globalProdConfig
 ]
+const devFormatConfigs = [esBundleConfig]
 
 function createPackageConfigs() {
-  return formatConfigs.map((formatConfig) => {
+  return getFormatConfigs().map((formatConfig) => {
     return mergeConfig(createBaseConfig(), formatConfig)
   })
+}
+
+function getFormatConfigs() {
+  return process.env.NODE_ENV === 'development'
+    ? devFormatConfigs
+    : prodFormatConfigs
 }
 
 export default createPackageConfigs()

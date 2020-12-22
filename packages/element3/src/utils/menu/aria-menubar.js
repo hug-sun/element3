@@ -10,7 +10,7 @@ Menu.prototype.init = function () {
   ;[].filter
     .call(menuChildren, (child) => child.nodeType === 1)
     .forEach((child) => {
-    new MenuItem(child); // eslint-disable-line
+      new MenuItem(child) // eslint-disable-line
     })
 }
 export default Menu

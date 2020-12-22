@@ -4,20 +4,19 @@ import { ElementUIComponent } from './component'
 export const ElAvatar: IAvatar
 
 interface IAvatar extends ElementUIComponent {
-  icon: string;
+  icon: string
 
-  size: string | number;
+  size: string | number
 
-  shape: string;
+  shape: string
 
-  src: string;
+  src: string
 
-  error: () => false;
+  error: () => false
 
-  srcSet: string;
+  srcSet: string
 
-  alt: string;
+  alt: string
 
-  fit: string;
+  fit: string
 }
-

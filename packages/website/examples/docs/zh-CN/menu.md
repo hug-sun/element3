@@ -9,7 +9,12 @@
 :::demo 导航菜单默认为垂直模式，通过`mode`属性可以使导航菜单变更为水平模式。另外，在菜单中通过`submenu`组件可以生成二级菜单。Menu 还提供了`background-color`、`text-color`和`active-text-color`，分别用于设置菜单的背景色、菜单的文字颜色和当前激活菜单的文字颜色。
 
 ```html
-<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+<el-menu
+  :default-active="activeIndex"
+  class="el-menu-demo"
+  mode="horizontal"
+  @select="handleSelect"
+>
   <el-menu-item index="1">处理中心</el-menu-item>
   <el-submenu index="2">
     <template v-slot:title>我的工作台</template>
@@ -24,7 +29,11 @@
     </el-submenu>
   </el-submenu>
   <el-menu-item index="3" disabled>消息中心</el-menu-item>
-  <el-menu-item index="4"><a href="https://element3-ui.com" target="_blank">订单管理</a></el-menu-item>
+  <el-menu-item index="4"
+    ><a href="https://element3-ui.com" target="_blank"
+      >订单管理</a
+    ></el-menu-item
+  >
 </el-menu>
 <div class="line"></div>
 <el-menu
@@ -34,7 +43,8 @@
   @select="handleSelect"
   background-color="#545c64"
   text-color="#fff"
-  active-text-color="#ffd04b">
+  active-text-color="#ffd04b"
+>
   <el-menu-item index="1">处理中心</el-menu-item>
   <el-submenu index="2">
     <template v-slot:title>我的工作台</template>
@@ -49,25 +59,30 @@
     </el-submenu>
   </el-submenu>
   <el-menu-item index="3" disabled>消息中心</el-menu-item>
-  <el-menu-item index="4"><a  href="https://element3-ui.com" target="_blank">订单管理</a></el-menu-item>
+  <el-menu-item index="4"
+    ><a href="https://element3-ui.com" target="_blank"
+      >订单管理</a
+    ></el-menu-item
+  >
 </el-menu>
 
 <script>
-  import {ref} from 'vue'
+  import { ref } from 'vue'
   export default {
-    setup(){
+    setup() {
       let activeIndex = ref('1')
       let activeIndex2 = ref('1')
 
       function handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+        console.log(key, keyPath)
       }
 
-      return {activeIndex,activeIndex2,handleSelect}
+      return { activeIndex, activeIndex2, handleSelect }
     }
   }
 </script>
 ```
+
 :::
 
 ### 侧栏
@@ -162,7 +177,7 @@
       </el-menu-item>
       <el-menu-item index="3" disabled>
         <i class="el-icon-document"></i>
-         <template v-slot:title>
+        <template v-slot:title>
           <span>导航三</span>
         </template>
       </el-menu-item>
@@ -177,19 +192,19 @@
 </el-row>
 
 <script>
-  import {ref} from 'vue'
+  import { ref } from 'vue'
   export default {
-    setup(){
-      let defaultOpeneds = ref(["1","1-4"])
+    setup() {
+      let defaultOpeneds = ref(['1', '1-4'])
 
       function handleOpen(key, keyPath) {
-        console.log(key, keyPath);
+        console.log(key, keyPath)
       }
       function handleClose(key, keyPath) {
-       console.log(key, keyPath);
+        console.log(key, keyPath)
       }
 
-      return {defaultOpeneds,handleOpen,handleClose}
+      return { defaultOpeneds, handleOpen, handleClose }
     }
   }
 </script>
@@ -206,7 +221,13 @@
   <el-radio-button :label="false">展开</el-radio-button>
   <el-radio-button :label="true">收起</el-radio-button>
 </el-radio-group>
-<el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+<el-menu
+  default-active="1-4-1"
+  class="el-menu-vertical-demo"
+  @open="handleOpen"
+  @close="handleClose"
+  :collapse="isCollapse"
+>
   <el-submenu index="1">
     <template v-slot:title>
       <i class="el-icon-location"></i>
@@ -232,20 +253,20 @@
   <el-menu-item index="2">
     <i class="el-icon-menu"></i>
     <template v-slot:title>
-        <span>导航二</span>
-      </template>
+      <span>导航二</span>
+    </template>
   </el-menu-item>
   <el-menu-item index="3" disabled>
     <i class="el-icon-document"></i>
     <template v-slot:title>
-        <span>导航三</span>
-      </template>
+      <span>导航三</span>
+    </template>
   </el-menu-item>
   <el-menu-item index="4">
     <i class="el-icon-setting"></i>
     <template v-slot:title>
-        <span>导航四</span>
-      </template>
+      <span>导航四</span>
+    </template>
   </el-menu-item>
 </el-menu>
 
@@ -257,19 +278,19 @@
 </style>
 
 <script>
-  import {ref} from 'vue'
+  import { ref } from 'vue'
   export default {
-    setup(){
+    setup() {
       let isCollapse = ref(true)
 
       function handleOpen(key, keyPath) {
-        console.log(key, keyPath);
+        console.log(key, keyPath)
       }
       function handleClose(key, keyPath) {
-        console.log(key, keyPath);
+        console.log(key, keyPath)
       }
-      
-      return {isCollapse,handleOpen,handleClose}
+
+      return { isCollapse, handleOpen, handleClose }
     }
   }
 </script>

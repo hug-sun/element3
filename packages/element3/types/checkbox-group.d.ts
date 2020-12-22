@@ -1,7 +1,7 @@
 import { ElementUIComponent, ElementUIComponentSize } from './component'
 
 /** Checkbox Group Component */
-export const ElCheckboxGroup : ICheckboxGroup
+export const ElCheckboxGroup: ICheckboxGroup
 interface ICheckboxGroup extends ElementUIComponent {
   /** Size of checkbox buttons or bordered checkboxes */
   size: ElementUIComponentSize

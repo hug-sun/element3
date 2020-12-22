@@ -1,5 +1,5 @@
 import Store from './index'
-import { debounce } from 'lodash'
+import { debounce } from 'lodash-es'
 
 export function createStore(table, initialState = {}) {
   if (!table) {

@@ -76,7 +76,7 @@ export default {
   },
 
   emits: ['error'],
-  
+
   setup(props, ctx) {
     const instance = getCurrentInstance()
     const loading = ref(true)
@@ -115,9 +115,12 @@ export default {
       return previewIndex
     })
     // watch
-    watch(() => props.src, () => {
-      show.value && loadImage()
-    })
+    watch(
+      () => props.src,
+      () => {
+        show.value && loadImage()
+      }
+    )
     watch(show, (val) => {
       val && loadImage()
     })
