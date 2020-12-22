@@ -7,11 +7,18 @@ export const STATUS_SETTING = {
   exception: 'el-icon-circle-close'
 }
 export const STATUSES = Object.keys(STATUS_SETTING)
+export const TYPES = ['line', 'circle', 'dashboard']
 
 export const statusValid = (val) => STATUSES.includes(val)
 export const percentageValid = (val) => isNumber(val) && val >= 0 && val <= 100
+export const typeValid = (val) => TYPES.includes(val)
 
 export const props = {
+  type: {
+    type: String,
+    default: 'line',
+    validator: typeValid
+  },
   percentage: {
     type: Number,
     default: 0,

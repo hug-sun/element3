@@ -44,6 +44,13 @@ describe('Progress.props', () => {
     expect(textInside.default).toBe(false)
   })
 
+  it('type validator', () => {
+    const { type } = props
+    expect(type.default).toBe('line')
+    expect(type.validator('circle')).toBeTruthy()
+    expect(type.validator('dashboard')).toBeTruthy()
+  })
+
   it('test isRef for getRefValue', () => {
     expect(isRef(undefined)).toBeFalsy()
     expect(isRef(null)).toBeFalsy()

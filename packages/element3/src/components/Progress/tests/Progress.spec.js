@@ -28,7 +28,7 @@ describe('Progress.vue', () => {
     assertSetPercentage(wrapper, percentage)
   })
 
-  describe('line type progress props:', () => {
+  describe('line type progress:', () => {
     it('percentage', async () => {
       const percentage = 58
       const wrapper = initProgress({ percentage })
@@ -191,6 +191,14 @@ describe('Progress.vue', () => {
       expect(wrapper).toHaveClass('el-progress--text-inside')
       assertExistsElem(wrapper, '.el-progress-bar__innerText')
       assertNoElem(wrapper, '.el-progress__text')
+    })
+  })
+
+  describe('circle type progress', () => {
+    it('type prop', () => {
+      const wrapper = initProgress({ type: 'circle' })
+      assertNoElem(wrapper, '.el-progress-bar')
+      assertExistsElem(wrapper, '.el-progress-circle')
     })
   })
 })

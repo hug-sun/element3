@@ -1,10 +1,7 @@
 <template>
   <div :class="rootClass">
-    <div class="el-progress-bar">
-      <div
-        class="el-progress-bar__outer"
-        :style="{ height: strokeWidth + 'px' }"
-      >
+    <div class="el-progress-bar" v-if="type === 'line'">
+      <div class="el-progress-bar__outer" :style="barOuterStyle">
         <div class="el-progress-bar__inner" :style="barStyle">
           <div class="el-progress-bar__innerText" v-if="showText && textInside">
             {{ content }}
@@ -12,6 +9,7 @@
         </div>
       </div>
     </div>
+    <div class="el-progress-circle" v-else></div>
     <div class="el-progress__text" v-if="showText && !textInside">
       <template v-if="!status">{{ content }}</template>
       <i v-else :class="iconClass"></i>
@@ -37,14 +35,21 @@ export default defineComponent({
   name: 'ElProgress',
   props,
   setup(props) {
-    const { percentage, format, color, status, showText, textInside } = toRefs(
-      props
-    )
+    const {
+      percentage,
+      format,
+      color,
+      strokeWidth,
+      status,
+      showText,
+      textInside
+    } = toRefs(props)
     const barStyle = useBarStyle(percentage, color)
+    const barOuterStyle = useBarOuterStyle(strokeWidth)
     const content = useContent(format, percentage)
     const iconClass = useIconClass(status)
     const rootClass = useRootClass(status, showText, textInside)
-    return { barStyle, content, iconClass, rootClass }
+    return { barStyle, barOuterStyle, content, iconClass, rootClass }
   }
 })
 
@@ -84,6 +89,13 @@ const useBarStyle = (percentage, color) => {
       style.backgroundColor = cv
     }
     return style
+  })
+}
+
+const useBarOuterStyle = (strokeWidth) => {
+  return computed(() => {
+    const sw = getRefValue(strokeWidth)
+    return { height: sw + 'px' }
   })
 }
 
