@@ -1,5 +1,5 @@
-import RadioButton from '../RadioButton.vue'
-import RadioGroup from '../../radio-group/RadioGroup.vue'
+import RadioButton from '../src/RadioButton.vue'
+import RadioGroup from '../../../../packages/radio-group/RadioGroup.vue'
 import { mount } from '@vue/test-utils'
 import { ref, h, nextTick } from 'vue'
 

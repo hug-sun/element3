@@ -31,7 +31,7 @@
 </template>
 <script>
 import { toRefs, ref, inject, computed, nextTick } from 'vue'
-import { useGlobalOptions } from '../../src/use/globalConfig'
+import { useGlobalOptions } from '../../../use/globalConfig'
 import { useCheckGroup } from './uses'
 
 export default {
