@@ -51,14 +51,6 @@ export function assertContainText(wrapper, selector, text) {
   expect(wrapper.find(selector).text()).toContain(text)
 }
 
-export function assertHasClass(elem, className) {
-  expect(elem.classes().includes(className)).toBeTruthy()
-}
-
-export function assertNotHasClass(elem, className) {
-  expect(elem.classes().includes(className)).toBeFalsy()
-}
-
 export function assertExistsElem(wrapper, selector) {
   expect(wrapper.find(selector).exists()).toBeTruthy()
 }

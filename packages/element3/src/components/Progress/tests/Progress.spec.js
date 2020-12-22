@@ -1,8 +1,8 @@
 import { sortByPercentage } from '../src/props'
+// import { toHa } from "jest-vtu";
+
 import {
   initProgress,
-  assertHasClass,
-  assertNotHasClass,
   assertExistsElem,
   assertNoElem,
   assertSetPercentage,
@@ -16,9 +16,9 @@ describe('Progress.vue', () => {
   it('should create default Progress component and HTML structure', () => {
     const percentage = 55
     const wrapper = initProgress({ percentage })
-    assertHasClass(wrapper, 'el-progress')
-    assertHasClass(wrapper, 'el-progress--line')
-    assertNotHasClass(wrapper, 'is-undefined')
+    expect(wrapper).toHaveClass('el-progress')
+    expect(wrapper).toHaveClass('el-progress--line')
+    expect(wrapper).not.toHaveClass('is-undefined')
 
     assertExistsElem(wrapper, '.el-progress > .el-progress-bar')
     assertExistsElem(wrapper, '.el-progress > .el-progress__text')
@@ -26,8 +26,6 @@ describe('Progress.vue', () => {
     assertExistsElem(wrapper, '.el-progress-bar__outer .el-progress-bar__inner')
 
     assertSetPercentage(wrapper, percentage)
-
-    expect(wrapper.find('.temptest').text()).toBe('')
   })
 
   describe('line type progress props:', () => {
@@ -141,17 +139,17 @@ describe('Progress.vue', () => {
 
     it('status add "is-xxx" class', async () => {
       const wrapper = initProgress({ status: 'success' })
-      assertHasClass(wrapper, 'is-success')
+      expect(wrapper).toHaveClass('is-success')
       assertExistsElem(wrapper, '.el-progress__text > i.el-icon-circle-check')
       await wrapper.setProps({ status: 'exception' })
-      assertHasClass(wrapper, 'is-exception')
+      expect(wrapper).toHaveClass('is-exception')
       assertExistsElem(wrapper, '.el-progress__text > i.el-icon-circle-close')
       await wrapper.setProps({ status: 'warning' })
-      assertHasClass(wrapper, 'is-warning')
+      expect(wrapper).toHaveClass('is-warning')
       assertExistsElem(wrapper, '.el-progress__text > i.el-icon-warning')
 
       await wrapper.setProps({ status: 'error' })
-      assertNotHasClass(wrapper, 'is-error')
+      expect(wrapper).not.toHaveClass('is-error')
     })
 
     it('show-text', async () => {
@@ -161,6 +159,8 @@ describe('Progress.vue', () => {
 
       await wrapper.setProps({ showText: false })
       assertNoElem(wrapper, '.el-progress__text')
+      assertNoElem(wrapper, '.el-progress-bar__innerText')
+      expect(wrapper).toHaveClass('el-progress--without-text')
     })
 
     it('strokeWidth', async () => {
@@ -176,6 +176,21 @@ describe('Progress.vue', () => {
         '.el-progress-bar > .el-progress-bar__outer',
         'height: 20px'
       )
+    })
+
+    it('textInside', async () => {
+      const wrapper = initProgress()
+      expect(wrapper).not.toHaveClass('el-progress--text-inside')
+      assertExistsElem(
+        wrapper,
+        '.el-progress-bar__outer > .el-progress-bar__inner'
+      )
+      assertNoElem(wrapper, '.el-progress-bar__innerText')
+
+      await wrapper.setProps({ textInside: true })
+      expect(wrapper).toHaveClass('el-progress--text-inside')
+      assertExistsElem(wrapper, '.el-progress-bar__innerText')
+      assertNoElem(wrapper, '.el-progress__text')
     })
   })
 })

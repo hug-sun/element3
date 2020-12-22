@@ -39,6 +39,11 @@ describe('Progress.props', () => {
     expect(strokeWidth.default).toBe(6)
   })
 
+  it('text-inside', () => {
+    const { textInside } = props
+    expect(textInside.default).toBe(false)
+  })
+
   it('test isRef for getRefValue', () => {
     expect(isRef(undefined)).toBeFalsy()
     expect(isRef(null)).toBeFalsy()
