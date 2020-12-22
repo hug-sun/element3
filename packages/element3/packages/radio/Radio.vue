@@ -36,7 +36,7 @@
 
 <script>
 import { ref, computed, inject, getCurrentInstance, defineComponent } from 'vue'
-import { props } from './RadioProps'
+import { props } from './props'
 
 export default defineComponent({
   name: 'ElRadio',
