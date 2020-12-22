@@ -31,6 +31,10 @@ export const props = {
   strokeWidth: {
     type: Number,
     default: 6
+  },
+  textInside: {
+    type: Boolean,
+    default: false
   }
 }
 

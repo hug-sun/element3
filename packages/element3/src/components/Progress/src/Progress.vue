@@ -1,18 +1,31 @@
 <template>
-  <div :class="['el-progress', 'el-progress--line', statusClass]">
+  <div
+    :class="[
+      'el-progress',
+      'el-progress--line',
+      statusClass,
+      {
+        'el-progress--without-text': !showText,
+        'el-progress--text-inside': textInside
+      }
+    ]"
+  >
     <div class="el-progress-bar">
       <div
         class="el-progress-bar__outer"
         :style="{ height: strokeWidth + 'px' }"
       >
-        <div class="el-progress-bar__inner" :style="barStyle"></div>
+        <div class="el-progress-bar__inner" :style="barStyle">
+          <div class="el-progress-bar__innerText" v-if="showText && textInside">
+            {{ content }}
+          </div>
+        </div>
       </div>
     </div>
-    <div class="el-progress__text" v-if="showText">
+    <div class="el-progress__text" v-if="showText && !textInside">
       <template v-if="!status">{{ content }}</template>
       <i v-else :class="iconClass"></i>
     </div>
-    <div data-testid="temptest" class="temptest">{{ '' }}</div>
   </div>
 </template>
 

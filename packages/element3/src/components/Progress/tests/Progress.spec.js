@@ -161,6 +161,8 @@ describe('Progress.vue', () => {
 
       await wrapper.setProps({ showText: false })
       assertNoElem(wrapper, '.el-progress__text')
+      assertNoElem(wrapper, '.el-progress-bar__innerText')
+      assertHasClass(wrapper, 'el-progress--without-text')
     })
 
     it('strokeWidth', async () => {
@@ -176,6 +178,21 @@ describe('Progress.vue', () => {
         '.el-progress-bar > .el-progress-bar__outer',
         'height: 20px'
       )
+    })
+
+    it('textInside', async () => {
+      const wrapper = initProgress()
+      assertNotHasClass(wrapper, 'el-progress--text-inside')
+      assertExistsElem(
+        wrapper,
+        '.el-progress-bar__outer > .el-progress-bar__inner'
+      )
+      assertNoElem(wrapper, '.el-progress-bar__innerText')
+
+      await wrapper.setProps({ textInside: true })
+      assertHasClass(wrapper, 'el-progress--text-inside')
+      assertExistsElem(wrapper, '.el-progress-bar__innerText')
+      assertNoElem(wrapper, '.el-progress__text')
     })
   })
 })
