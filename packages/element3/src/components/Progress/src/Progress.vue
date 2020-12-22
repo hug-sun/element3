@@ -1,15 +1,5 @@
 <template>
-  <div
-    :class="[
-      'el-progress',
-      'el-progress--line',
-      statusClass,
-      {
-        'el-progress--without-text': !showText,
-        'el-progress--text-inside': textInside
-      }
-    ]"
-  >
+  <div :class="rootClass">
     <div class="el-progress-bar">
       <div
         class="el-progress-bar__outer"
@@ -47,14 +37,35 @@ export default defineComponent({
   name: 'ElProgress',
   props,
   setup(props) {
-    const { percentage, format, color, status } = toRefs(props)
+    const { percentage, format, color, status, showText, textInside } = toRefs(
+      props
+    )
     const barStyle = useBarStyle(percentage, color)
     const content = useContent(format, percentage)
-    const statusClass = useStatusClass(status)
     const iconClass = useIconClass(status)
-    return { barStyle, content, statusClass, iconClass }
+    const rootClass = useRootClass(status, showText, textInside)
+    return { barStyle, content, iconClass, rootClass }
   }
 })
+
+const useRootClass = (status, showText, textInside) => {
+  return computed(() => {
+    const valStatus = getRefValue(status)
+    const valShowText = getRefValue(showText)
+    const valTextInside = getRefValue(textInside)
+    const statusClass =
+      valStatus && statusValid(valStatus) ? `is-${valStatus}` : ''
+    return [
+      'el-progress',
+      'el-progress--line',
+      statusClass,
+      {
+        'el-progress--without-text': !valShowText,
+        'el-progress--text-inside': valTextInside
+      }
+    ]
+  })
+}
 
 const useBarStyle = (percentage, color) => {
   return computed(() => {
@@ -85,13 +96,6 @@ const useContent = (format, percentage) => {
     } else {
       return `${pv}%`
     }
-  })
-}
-
-const useStatusClass = (status) => {
-  return computed(() => {
-    const st = getRefValue(status)
-    return st && statusValid(st) ? `is-${st}` : ''
   })
 }
 
