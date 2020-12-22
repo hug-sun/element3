@@ -34,7 +34,9 @@ function getComponentNameList(componentPath) {
       return !name.startsWith('.')
     })
     .map((componentName) => {
-      return (componentName + fileSuffix).toLocaleLowerCase()
+      return (
+        componentName.charAt(0).toLocaleLowerCase() + componentName.slice(1)
+      )
     })
 }
 
