@@ -1,7 +1,15 @@
 import Input from '../src/Input.vue'
 import { mount, shallowMount } from '@vue/test-utils'
 import { nextTick, ref } from 'vue'
+import { props } from '../src/props'
 
+describe('test props size valiate', () => {
+  it('test props size valiate ', () => {
+    expect(props.size.validator('mini')).toBeTruthy()
+    expect(props.size.validator('small')).toBeTruthy()
+    expect(props.size.validator('medium')).toBeTruthy()
+  })
+})
 describe('render children by props.type', () => {
   it('should render input text ', async () => {
     const wrapper = shallowMount(Input, {

@@ -96,9 +96,8 @@ import { useInput, useTextarea, useInputMethod, useInputEvent } from './use'
 
 export default defineComponent({
   name: 'ElInput',
-
-  componentName: 'ElInput',
   inheritAttrs: false,
+  props: props,
   emits: ['blur', 'focus', 'change', 'input', 'clear', 'update:modelValue'],
 
   setup(props, cxt) {
@@ -153,8 +152,6 @@ export default defineComponent({
       inputExceed,
       textareaStyle
     }
-  },
-
-  props: props
+  }
 })
 </script>
