@@ -1,7 +1,11 @@
 node_modules
 lib
 coverage
-packages/website/src/assets
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.css
 *.scss
 *.woff
 *.ttf
