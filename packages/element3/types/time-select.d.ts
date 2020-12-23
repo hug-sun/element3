@@ -1,23 +1,27 @@
-import { ElementUIComponent, ElementUIComponentSize, ElementUIHorizontalAlignment } from './component'
+import {
+  ElementUIComponent,
+  ElementUIComponentSize,
+  ElementUIHorizontalAlignment
+} from './component'
 
 export interface TimeSelectOptions {
   /** Start time */
-  start?: string,
+  start?: string
 
   /** End time */
-  end?: string,
+  end?: string
 
   /** Time step */
-  step?: string,
+  step?: string
 
   /** Minimum time, any time before this time will be disabled */
-  minTime?: string,
+  minTime?: string
 
   /** Maximum time, any time after this time will be disabled */
   maxTime?: string
 }
 
-export const ElTimeSelect:ITimeSelect
+export const ElTimeSelect: ITimeSelect
 /** TimeSelect Component */
 interface ITimeSelect extends ElementUIComponent {
   /** Whether DatePicker is read only */
@@ -53,5 +57,5 @@ interface ITimeSelect extends ElementUIComponent {
   /**
    * Focus the Input component
    */
-  focus (): void
+  focus(): void
 }

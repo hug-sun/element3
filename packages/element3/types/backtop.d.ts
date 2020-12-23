@@ -1,11 +1,11 @@
 import { ElementUIComponent } from './component'
 
-export const ElBacktop:IBacktop 
+export const ElBacktop: IBacktop
 /** Backtop Component */
 interface IBacktop extends ElementUIComponent {
   /** Backtop target */
   target: string
-  
+
   /** Backtop visibility height */
   visibilityHeight: string | number
 

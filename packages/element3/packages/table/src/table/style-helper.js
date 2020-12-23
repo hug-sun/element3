@@ -3,7 +3,7 @@ import {
   addResizeListener,
   removeResizeListener
 } from '../../../../src/utils/resize-event'
-import { throttle } from 'lodash'
+import { throttle } from 'lodash-es'
 import { parseHeight } from '../util'
 
 function useStyle(props, layout, store, table, doLayout) {

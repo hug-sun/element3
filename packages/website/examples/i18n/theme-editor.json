@@ -88,7 +88,7 @@
       "FontWeight": "文字粗细",
       "LineHeight": "文字行高"
     },
-    "variable-name" : {
+    "variable-name": {
       "color-primary": "主题色",
       "color-white": "基础白色",
       "color-black": "基础黑色",

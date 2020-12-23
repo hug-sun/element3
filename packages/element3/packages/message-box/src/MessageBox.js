@@ -121,7 +121,8 @@ const MessageBox = function (options, callback) {
   }
 
   if (typeof Promise !== 'undefined') {
-    return new Promise((resolve, reject) => { // eslint-disable-line
+    return new Promise((resolve, reject) => {
+      // eslint-disable-line
       msgQueue.push({
         options: merge({}, defaults, MessageBox.defaults, options),
         callback: callback,

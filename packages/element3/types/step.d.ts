@@ -5,18 +5,18 @@ export type StepStatus = 'wait' | 'process' | 'finish' | 'error' | 'success'
 
 export interface StepRenderSlots {
   /** Custom icon */
-  icon: VNode[],
+  icon: VNode[]
 
   /** Step title */
-  title: VNode[],
+  title: VNode[]
 
   /** Step description */
-  description: VNode[],
+  description: VNode[]
 
   [key: string]: VNode[]
 }
 
-export const ElStep:IStep
+export const ElStep: IStep
 /** Step Component */
 interface IStep extends ElementUIComponent {
   /** Step title */

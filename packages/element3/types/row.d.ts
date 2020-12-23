@@ -1,7 +1,12 @@
 import { ElementUIComponent } from './component'
 
 /** Horizontal alignment of flex layout */
-export type HorizontalAlignment = 'start' | 'end' | 'center' | 'space-around' | 'space-between'
+export type HorizontalAlignment =
+  | 'start'
+  | 'end'
+  | 'center'
+  | 'space-around'
+  | 'space-between'
 
 /** vertical alignment of flex layout */
 export type VertialAlignment = 'top' | 'middle' | 'bottom'

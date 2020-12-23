@@ -43,5 +43,5 @@ interface IInputNumber extends ElementUIComponent {
   /**
    * Focus the Input component
    */
-  focus (): void
+  focus(): void
 }

@@ -55,12 +55,12 @@ interface StoreMutations {
     states: StoreStates,
     column: AnyObject,
     index: number | undefined,
-    parent: AnyObject,
+    parent: AnyObject
   ) => void
   removeColumn: (
     states: StoreStates,
     column: AnyObject,
-    parent: AnyObject,
+    parent: AnyObject
   ) => void
   sort: (states: StoreStates, options: Sort) => void
   changeSortCondition: (states: StoreStates, options: Sort) => void
@@ -126,7 +126,7 @@ interface Store {
   updateSort: (column: any, prop: string, order: string) => void
   execFilter: () => void
   execSort: () => void
-  execQuery: (ignore?: { filter?: any; }) => void
+  execQuery: (ignore?: { filter?: any }) => void
   clearFilter: (columnKeys: string | string[]) => void
   clearSort: () => void
   setExpandRowKeysAdapter: (val: string[]) => void
@@ -370,5 +370,5 @@ export {
   TableColumnCtx,
   TableLayout,
   fn,
-  TableColumn,
+  TableColumn
 }
