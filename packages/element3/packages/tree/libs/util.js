@@ -117,3 +117,7 @@ export const extractMethods = (obj, methods) => {
   })
   return methodList
 }
+
+export const generateID = function () {
+  return Date.now() * 1000 + parseInt(Math.random() * 1000)
+}

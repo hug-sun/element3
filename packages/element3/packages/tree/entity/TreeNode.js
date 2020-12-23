@@ -1,3 +1,5 @@
+import { generateID } from '../libs/util'
+
 const typeFlag = Symbol('TREE_NODE')
 
 /**
@@ -33,7 +35,7 @@ export class TreeNode {
       removeChild = null
     } = {}
   ) {
-    this.id = id || label
+    this.id = id || generateID()
     this.label = label
     this.parent = parent
     this.childNodes = childNodes
@@ -66,6 +68,8 @@ export class TreeNode {
     this.updateChildChecked()
     this.updateCheckedState()
     this.updateExpandedState()
+
+    if (data.raw && !data.raw.id) data.raw.id = this.id
   }
 
   get root() {
@@ -340,12 +344,12 @@ export class TreeNode {
 
   /**
    * Look for node in the subtree
-   * @param {ID|TreeNode} target
+   * @param {ID|TreeNode|RawNode} target
    */
   findOne(target) {
     let res = null
     this.depthEach((node) => {
-      if (node.id == target || node === target) {
+      if (node.id == target || node === target || node.data.raw === target) {
         res = node
         return true
       }

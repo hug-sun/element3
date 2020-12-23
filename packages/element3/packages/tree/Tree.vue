@@ -47,7 +47,9 @@ import {
   onMounted,
   ref,
   onUpdated,
-  watchEffect
+  watchEffect,
+  watch,
+  computed
 } from 'vue'
 
 export default {
@@ -127,6 +129,8 @@ export default {
       tree
     })
 
+    tree.root = reactive(tree.root)
+
     provide('elTree', instance)
 
     useTab()
@@ -140,6 +144,35 @@ export default {
     const { handleKeydown } = useKeyDown()
 
     const drag = useDrag(props)
+
+    watch(
+      computed(() => props.data),
+      () => {},
+      {
+        deep: true,
+        flush: 'pre',
+        async onTrigger(e) {
+          console.log(e)
+          if (e.type === 'add') {
+            const rawNode = tree.getParentRawNode(e.newValue)
+            const treeNode = tree.root.findOne(rawNode)
+            treeNode.append(e.newValue)
+          } else if (e.type === 'delete') {
+            const treeNode = tree.root.findOne(e.oldValue.id)
+            treeNode.remove()
+          } else if (
+            e.type === 'set' &&
+            e.key === props.defaultNodeKey.childNodes
+          ) {
+            const treeNode = tree.root.findOne(e.target.id)
+            treeNode.childNodes.forEach((node) => node.remove())
+            e.newValue.map((rawNode) =>
+              treeNode.appendChild(tree.rawNodeToTreeNode(rawNode))
+            )
+          }
+        }
+      }
+    )
 
     return {
       ...drag,
