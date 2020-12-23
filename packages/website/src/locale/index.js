@@ -5,9 +5,7 @@ import Format from './format'
 const format = Format()
 let lang = defaultLang
 // let merged = false
-let i18nHandler = function () {
-
-}
+let i18nHandler = function () {}
 
 export const t = function (path, options) {
   let value = i18nHandler.apply(this, arguments)

@@ -313,8 +313,7 @@
           </li>
 
           <!-- 版本选择器 -->
-          <li class="nav-item nav-versions" v-show="isComponentPage">
-          </li>
+          <li class="nav-item nav-versions" v-show="isComponentPage"></li>
         </ul>
       </div>
     </header>

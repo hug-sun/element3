@@ -1,20 +1,22 @@
 import { defineAsyncComponent } from 'vue'
 import navConfig from './nav.config'
 
-const load = (path) => defineAsyncComponent(() => import(`../pages/${path}.vue`))
+const load = (path) =>
+  defineAsyncComponent(() => import(`../pages/${path}.vue`))
 
-const loadDocs = (path) => defineAsyncComponent(() => import(`../docs${path}.md`))
+const loadDocs = (path) =>
+  defineAsyncComponent(() => import(`../docs${path}.md`))
 
 const registerRoute = (navConfig) => {
   const route = []
-  
+
   route.push({
     path: `/component`,
     redirect: `/component/installation`,
     component: load('component'),
     children: []
   })
-  
+
   navConfig.forEach((nav) => {
     if (nav.href) return
     if (nav.groups) {
@@ -28,15 +30,13 @@ const registerRoute = (navConfig) => {
         addRoute(nav)
       })
     } else {
-      addRoute(nav, index)
+      addRoute(nav)
     }
   })
 
   function addRoute(page) {
     const component =
-      page.path === '/changelog'
-        ? load('changelog')
-        : loadDocs(page.path)
+      page.path === '/changelog' ? load('changelog') : loadDocs(page.path)
     const child = {
       path: page.path.slice(1),
       meta: {
@@ -49,7 +49,7 @@ const registerRoute = (navConfig) => {
 
     route[0].children.push(child)
   }
-  
+
   return route
 }
 

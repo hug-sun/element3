@@ -64,21 +64,24 @@ interface IForm extends ElementUIComponent {
    *
    * @param callback A callback to tell the validation result
    */
-  validate (callback: ValidateCallback): void
-  validate (): Promise<boolean>
+  validate(callback: ValidateCallback): void
+  validate(): Promise<boolean>
   /**
    * Validate certain form items
    *
    * @param props The property of `model` or array of prop which is going to validate
    * @param callback A callback to tell the field validation result
    */
-  validateField (props: string | string[], callback?: ValidateFieldCallback): void
+  validateField(
+    props: string | string[],
+    callback?: ValidateFieldCallback
+  ): void
 
   /** reset all the fields and remove validation result */
-  resetFields (): void
+  resetFields(): void
 
   /** clear validation message for certain fields */
-  clearValidate (props?: string | string[]): void
+  clearValidate(props?: string | string[]): void
 }
 
-export const ElForm:IForm
+export const ElForm: IForm

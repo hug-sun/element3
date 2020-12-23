@@ -7,7 +7,7 @@ export type InputType = 'text' | 'textarea'
 /** Controls how el-input component automatically sets size */
 export interface AutoSize {
   /** Minimum rows to show */
-  minRows: number,
+  minRows: number
 
   /** Maximum rows to show */
   maxRows: number
@@ -93,15 +93,15 @@ interface IInput extends ElementUIComponent {
   /**
    * Focus the Input component
    */
-  focus (): void
+  focus(): void
 
   /**
    * Blur the Input component
    */
-  blur (): void
+  blur(): void
 
   /**
    * Select the text in input element
    */
-  select (): void
+  select(): void
 }

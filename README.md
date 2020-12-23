@@ -2,7 +2,6 @@
   <img src="https://gitee.com/pandafe/element3/raw/master/element_logo.svg">
 </p>
 
-
 ## Introduction
 
 A Vue.js 3.0 UI Toolkit for Web.
@@ -36,8 +35,9 @@ createApp(App).use(ElLink).use(ElButton)
 ```
 
 ## About
-* base on [element-ui](https://github.com/ElemeFE/element)
-* Table Component base on [element-plus](https://github.com/element-plus/element-plus)
+
+- base on [element-ui](https://github.com/ElemeFE/element)
+- Table Component base on [element-plus](https://github.com/element-plus/element-plus)
   - rewrite Table is WIP
 
 ## Documentation

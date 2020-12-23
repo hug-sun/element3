@@ -8,4 +8,4 @@ app.use(Element3)
 
 app.mount('#app')
 
-export default app;
+export default app

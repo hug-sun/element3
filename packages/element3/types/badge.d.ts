@@ -1,6 +1,6 @@
 import { ElementUIComponent } from './component'
 
-interface IBadge extends ElementUIComponent{
+interface IBadge extends ElementUIComponent {
   /** Display value */
   value: string | number
 

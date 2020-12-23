@@ -1,5 +1,5 @@
-@import "mixins/mixins";
-@import "common/var";
+@import 'mixins/mixins';
+@import 'common/var';
 
 @include b(select-dropdown) {
   @include e(item) {
@@ -24,7 +24,8 @@
       }
     }
 
-    &.hover, &:hover {
+    &.hover,
+    &:hover {
       background-color: $--select-option-hover-background;
     }
 

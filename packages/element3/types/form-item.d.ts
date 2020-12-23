@@ -30,10 +30,10 @@ interface IFormItem extends ElementUIComponent {
   size: ElementUIComponentSize
 
   /** Reset current field and remove validation result */
-  resetField (): void
+  resetField(): void
 
   /** Remove validation status of the field */
-  clearValidate (): void
+  clearValidate(): void
 }
 
-export const ElFormItem:IFormItem
+export const ElFormItem: IFormItem

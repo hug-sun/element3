@@ -1,6 +1,18 @@
-import { ElementUIComponent, ElementUIComponentSize, ElementUIHorizontalAlignment } from './component'
+import {
+  ElementUIComponent,
+  ElementUIComponentSize,
+  ElementUIHorizontalAlignment
+} from './component'
 
-export type DatePickerType = 'year' | 'month' | 'date' | 'datetime' | 'week' | 'datetimerange' | 'daterange' | 'dates'
+export type DatePickerType =
+  | 'year'
+  | 'month'
+  | 'date'
+  | 'datetime'
+  | 'week'
+  | 'datetimerange'
+  | 'daterange'
+  | 'dates'
 export type FirstDayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7
 
 export interface DisabledDateChecker {
@@ -15,7 +27,7 @@ export interface DisabledDateChecker {
 
 // Picked date range
 export interface DateRange {
-  minDate: Date,
+  minDate: Date
   maxDate: Date
 }
 
@@ -40,7 +52,7 @@ export interface ShortcutClickEventHandler {
 /** Shortcut options */
 export interface Shortcut {
   /** Title of the shortcut */
-  text: string,
+  text: string
 
   /** Callback function that triggers when picks a date range */
   onClick?: ShortcutClickEventHandler
@@ -120,7 +132,7 @@ interface IDatePicker extends ElementUIComponent {
   /**
    * Focus the Input component
    */
-  focus (): void
+  focus(): void
 }
 
-export const ElDatePicker:IDatePicker
+export const ElDatePicker: IDatePicker

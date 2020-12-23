@@ -160,7 +160,8 @@
         if (loading.value) {
           return
         }
-        msgbox.confirm('确定要提交表单吗？')
+        msgbox
+          .confirm('确定要提交表单吗？')
           .then((_) => {
             loading.value = true
             timer.value = setTimeout(() => {
@@ -224,7 +225,8 @@
       let innerDrawer = ref(false)
 
       function handleClose(done) {
-        msgbox.confirm('还有未保存的工作哦确定关闭吗？')
+        msgbox
+          .confirm('还有未保存的工作哦确定关闭吗？')
           .then((_) => {
             done()
           })
