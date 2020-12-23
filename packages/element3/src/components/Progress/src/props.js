@@ -1,4 +1,3 @@
-import { isRef } from 'vue'
 import { isNumber, isString } from '../../../utils/types'
 
 export const STATUS_SETTING = {
@@ -48,10 +47,6 @@ export const props = {
 export function getColorsIndex(colors, percent) {
   const i = colors.findIndex((c) => percent < c.percentage)
   return i < 0 ? colors.length - 1 : i
-}
-
-export function getRefValue(ref) {
-  return isRef(ref) ? ref.value : ref
 }
 
 export function sortByPercentage(pre, next) {

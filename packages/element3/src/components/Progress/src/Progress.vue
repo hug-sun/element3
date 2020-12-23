@@ -18,13 +18,12 @@
 </template>
 
 <script>
-import { computed, defineComponent, toRefs } from 'vue'
+import { computed, defineComponent, toRefs, unref } from 'vue'
 import { isArray, isFunction, isString } from '../../../utils/types'
 import {
   props,
   statusValid,
   autoFixPercentage,
-  getRefValue,
   toPercentageColors,
   sortByPercentage,
   getColorsIndex,
@@ -55,9 +54,9 @@ export default defineComponent({
 
 const useRootClass = (status, showText, textInside) => {
   return computed(() => {
-    const valStatus = getRefValue(status)
-    const valShowText = getRefValue(showText)
-    const valTextInside = getRefValue(textInside)
+    const valStatus = unref(status)
+    const valShowText = unref(showText)
+    const valTextInside = unref(textInside)
     const statusClass =
       valStatus && statusValid(valStatus) ? `is-${valStatus}` : ''
     return [
@@ -74,8 +73,8 @@ const useRootClass = (status, showText, textInside) => {
 
 const useBarStyle = (percentage, color) => {
   return computed(() => {
-    const pv = autoFixPercentage(getRefValue(percentage))
-    const cv = getRefValue(color)
+    const pv = autoFixPercentage(unref(percentage))
+    const cv = unref(color)
     let style = { width: `${pv}%` }
     if (isArray(cv)) {
       const cs = toPercentageColors(cv).sort(sortByPercentage)
@@ -94,15 +93,15 @@ const useBarStyle = (percentage, color) => {
 
 const useBarOuterStyle = (strokeWidth) => {
   return computed(() => {
-    const sw = getRefValue(strokeWidth)
+    const sw = unref(strokeWidth)
     return { height: sw + 'px' }
   })
 }
 
 const useContent = (format, percentage) => {
   return computed(() => {
-    const fv = getRefValue(format)
-    const pv = autoFixPercentage(getRefValue(percentage))
+    const fv = unref(format)
+    const pv = autoFixPercentage(unref(percentage))
     if (typeof fv === 'function') {
       return fv(pv) || ''
     } else {
@@ -113,7 +112,7 @@ const useContent = (format, percentage) => {
 
 const useIconClass = (status) => {
   return computed(() => {
-    const st = getRefValue(status)
+    const st = unref(status)
     return STATUS_SETTING[st] || ''
   })
 }
