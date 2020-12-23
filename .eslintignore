@@ -9,6 +9,7 @@ coverage
 *.scss
 *.woff
 *.ttf
+*.eot
 *.d.ts
 *.md
 *.snap
