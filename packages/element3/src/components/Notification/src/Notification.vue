@@ -54,7 +54,7 @@ export default defineComponent({
     })
 
     const horizontalClass = computed(() => {
-      return props.position.indexOf('right') > -1 ? 'right' : 'left'
+      return props.position.endsWith('right') ? 'right' : 'left'
     })
 
     const verticalProperty = computed(() => {

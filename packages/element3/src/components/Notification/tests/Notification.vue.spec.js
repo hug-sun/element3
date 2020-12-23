@@ -106,6 +106,7 @@ describe('Notification.vue', () => {
         position
       }
     })
+    expect(wrapper.find('.el-notification').classes()).toContain('right')
     expect(wrapper.vm.verticalProperty).toBe('bottom')
     expect(wrapper.find('.el-notification').element.style.bottom).toBe('0px')
   })
