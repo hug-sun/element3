@@ -8,4 +8,4 @@ exports[`Button.vue snapshot 1`] = `
   <!--v-if-->
   <!--v-if-->
 </button>
-`
+`;
