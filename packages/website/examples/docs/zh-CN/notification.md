@@ -6,7 +6,7 @@
 
 适用性广泛的通知栏
 
-:::demo Notification 组件提供通知功能，Element3 注册了`$Notify`方法，接收一个`options`字面量参数，在最简单的情况下，你可以设置`title`字段和`message`字段，用于设置通知的标题和正文。默认情况下，经过一段时间后 Notification 组件会自动关闭，但是通过设置`duration`，可以控制关闭的时间间隔，特别的是，如果设置为`0`，则不会自动关闭。注意：`duration`接收一个`Number`，单位为毫秒，默认为`4500`。
+:::demo Notification 组件提供通知功能，Element3 注册了`$notify`方法，接收一个`options`字面量参数，在最简单的情况下，你可以设置`title`字段和`message`字段，用于设置通知的标题和正文。默认情况下，经过一段时间后 Notification 组件会自动关闭，但是通过设置`duration`，可以控制关闭的时间间隔，特别的是，如果设置为`0`，则不会自动关闭。注意：`duration`接收一个`Number`，单位为毫秒，默认为`4500`。
 
 ```html
 <template>
@@ -16,12 +16,11 @@
 
 <script>
   import { h } from 'vue'
-  import { useNotify } from 'element3'
+  import { Notification } from 'element3'
   export default {
     setup() {
-      let notify = useNotify()
       function open1() {
-        notify({
+        Notification({
           title: '标题名称',
           message: h(
             'i',
@@ -32,7 +31,7 @@
       }
 
       function open2() {
-        notify({
+        Notification({
           title: '提示',
           message: '这是一条不会自动关闭的消息',
           duration: 0
@@ -62,33 +61,31 @@
 </template>
 
 <script>
-  import { useNotify } from 'element3'
+  import { Notification } from 'element3'
   export default {
     setup() {
-      let notify = useNotify()
-
       function open1() {
-        notify({
+        Notification.success({
           title: '成功',
           message: '这是一条成功的提示消息',
           type: 'success'
         })
       }
       function open2() {
-        notify({
+        Notification.warning({
           title: '警告',
           message: '这是一条警告的提示消息',
           type: 'warning'
         })
       }
       function open3() {
-        notify.info({
+        Notification.info({
           title: '消息',
           message: '这是一条消息的提示消息'
         })
       }
       function open4() {
-        notify.error({
+        Notification.error({
           title: '错误',
           message: '这是一条错误的提示消息'
         })
@@ -117,32 +114,31 @@
 </template>
 
 <script>
-  import { useNotify } from 'element3'
+  import { Notification } from 'element3'
   export default {
     setup() {
-      let notify = useNotify()
       function open1() {
-        notify({
+        Notification({
           title: '自定义位置',
           message: '右上角弹出的消息'
         })
       }
       function open2() {
-        notify({
+        Notification({
           title: '自定义位置',
           message: '右下角弹出的消息',
           position: 'bottom-right'
         })
       }
       function open3() {
-        notify({
+        Notification({
           title: '自定义位置',
           message: '左下角弹出的消息',
           position: 'bottom-left'
         })
       }
       function open4() {
-        notify({
+        Notification({
           title: '自定义位置',
           message: '左上角弹出的消息',
           position: 'top-left'
@@ -168,13 +164,11 @@
 </template>
 
 <script>
-  import { useNotify } from 'element3'
+  import { Notification } from 'element3'
   export default {
     setup() {
-      let notify = useNotify()
-
       function open() {
-        notify({
+        Notification({
           title: '偏移',
           message: '这是一条带有偏移的提示消息',
           offset: 100
@@ -201,13 +195,11 @@
 </template>
 
 <script>
-  import { useNotify } from 'element3'
+  import { Notification } from 'element3'
   export default {
     setup() {
-      let $notify = useNotify()
-
       function open() {
-        $notify({
+        Notification({
           title: 'HTML 片段',
           dangerouslyUseHTMLString: true,
           message: '<strong>这是 <i>HTML</i> 片段</strong>'
@@ -238,13 +230,11 @@
 </template>
 
 <script>
-  import { useNotify } from 'element3'
+  import { Notification } from 'element3'
   export default {
     setup() {
-      let $notify = useNotify()
-
       function open() {
-        $notify.success({
+        Notification.success({
           title: 'Info',
           message: '这是一条没有关闭按钮的消息',
           showClose: false
