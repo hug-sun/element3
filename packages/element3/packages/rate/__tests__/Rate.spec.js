@@ -45,31 +45,30 @@ describe('Rate', () => {
     })
     expect(wrapper.find('[allow-half]')).toBeTruthy()
   })
-  // it('low-threshold', () => {
-  //   const wrapper = mount(Rate, {
-  //     props: {
-  //       modelValue: 1,
-  //       lowThreshold: 2,
-  //       colors: ['#99A9BF', '#F7BA2A', '#FF9900']
-  //     }
-  //   })
-  //   console.log(wrapper.find('.el-icon-star-on'))
-  //   expect(wrapper.find('.el-icon-star-on').element.style.color).toBe(
-  //     'rgb(153, 169, 191)'
-  //   )
-  // })
-  // it('high-threshold', () => {
-  //   const wrapper = mount(Rate, {
-  //     porps: {
-  //       modelValue: 4,
-  //       highThreshold: 4,
-  //       colors: ['#99A9BF', '#F7BA2A', '#FF9900']
-  //     }
-  //   })
-  //   expect(wrapper.find('.el-icon-star-on').element.style.color).toBe(
-  //     'rgb(255, 153, 0)'
-  //   )
-  // })
+  it('low-threshold', () => {
+    const wrapper = mount(Rate, {
+      props: {
+        modelValue: 2,
+        lowThreshold: 2,
+        colors: ['#99A9BF', '#F7BA2A', '#FF9900']
+      }
+    })
+    expect(wrapper.find('.el-icon-star-on').element.style.color).toBe(
+      'rgb(153, 169, 191)'
+    )
+  })
+  it('high-threshold', () => {
+    const wrapper = mount(Rate, {
+      props: {
+        modelValue: 4,
+        highThreshold: 4,
+        colors: ['#99A9BF', '#F7BA2A', '#FF9900']
+      }
+    })
+    expect(wrapper.find('.el-icon-star-on').element.style.color).toBe(
+      'rgb(255, 153, 0)'
+    )
+  })
   it('icon-classes is Array', async () => {
     const modelValue = ref(1)
     const wrapper = mount(Rate, {
@@ -107,7 +106,18 @@ describe('Rate', () => {
       'el-icon-star-off'
     )
   })
-  it('show-text', async () => {
+  it('disabled-void-icon-class', () => {
+    const wrapper = mount(Rate, {
+      props: {
+        disabled: true,
+        showScore: true
+      }
+    })
+    expect(
+      wrapper.findAll('.el-rate__icon')[Math.ceil(3.7)].classes()
+    ).toContain('el-icon-star-on')
+  })
+  it('show-text & texts', async () => {
     const wrapper = mount(Rate, {
       props: {
         showText: true,
@@ -116,5 +126,26 @@ describe('Rate', () => {
       }
     })
     expect(wrapper.find('.el-rate__text').text()).toBe('一般')
+  })
+  it('show-score & score-template', () => {
+    const wrapper = mount(Rate, {
+      props: {
+        showScore: true,
+        modelValue: 3.7
+      }
+    })
+    expect(wrapper.find('.el-rate__text').attributes('show-text')).toBeFalsy()
+    expect(wrapper.find('.el-rate__text').text()).toContain(3.7)
+  })
+  it('text-color', () => {
+    const wrapper = mount(Rate, {
+      props: {
+        showText: true,
+        textColor: '#1F2D3D'
+      }
+    })
+    expect(wrapper.find('.el-rate__text').element.style.color).toBe(
+      'rgb(31, 45, 61)'
+    )
   })
 })

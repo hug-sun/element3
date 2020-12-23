@@ -1,7 +1,7 @@
 import { getCurrentInstance, ref, h } from 'vue'
 import { getStyle, hasClass } from '../../../../src/utils/dom'
 import { getCell, getColumnByCell } from '../util'
-import { debounce } from 'lodash'
+import { debounce } from 'lodash-es'
 
 function useEvents(props) {
   const instance = getCurrentInstance()

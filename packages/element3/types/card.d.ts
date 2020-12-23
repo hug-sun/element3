@@ -22,8 +22,7 @@ interface ICard extends ElementUIComponent {
   shadow: string
 
   $slots: CardSlots
-
 }
 
 /** Integrate information in a card container */
-export const ElCard: ICard 
+export const ElCard: ICard

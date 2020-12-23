@@ -1,6 +1,6 @@
 import { ElementUIComponent } from './component'
 
-export const ElSubmenu:ISubmenu
+export const ElSubmenu: ISubmenu
 /** Submenu Component */
 interface ISubmenu extends ElementUIComponent {
   /** Unique identification */

@@ -6,4 +6,8 @@ coverage
 *.ttf
 *.d.ts
 *.md
+<<<<<<< HEAD
+=======
+*.snap
+>>>>>>> 0cda5e2aa32739354662363a470ac42cca4a4ea1
 dist

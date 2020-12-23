@@ -4,19 +4,19 @@ import { ElementUIComponent } from './component'
 export type TransferPanelPosition = 'left' | 'right'
 
 export interface TransferData {
-  key: any,
-  label: string,
+  key: any
+  label: string
   disabled: boolean
 }
 
 export interface TransferFormat {
-  noChecked: string,
-  hasChecked: string,
+  noChecked: string
+  hasChecked: string
 }
 
 export interface TransferProps {
-  key: string,
-  label: string,
+  key: string
+  label: string
   disabled: string
 }
 
@@ -30,7 +30,7 @@ export interface TransferRenderContent {
   (h: CreateElement, option: TransferData): VNode
 }
 
-export const ElTransfer:ITransfer
+export const ElTransfer: ITransfer
 /** Transfer Component */
 interface ITransfer extends ElementUIComponent {
   /** Data source */
@@ -70,5 +70,5 @@ interface ITransfer extends ElementUIComponent {
   rightDefaultChecked: any[]
 
   /** Clear the query text in specified panel */
-  clearQuery (which: TransferPanelPosition): void
+  clearQuery(which: TransferPanelPosition): void
 }

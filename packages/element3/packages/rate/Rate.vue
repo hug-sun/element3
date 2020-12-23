@@ -17,11 +17,23 @@
       @mousemove="slideSelectRate(item)"
       @click="clickUpdateRate(item)"
     >
-      <i class="el-rate__icon" :class="[{ hover: false }, classes[item - 1]]">
-        <i class="el-rate__decimal" v-if="allowHalf"></i>
+      <i
+        class="el-rate__icon"
+        :class="[{ hover: false }, classes[item - 1]]"
+        :style="{ color: iconColor(item) }"
+      >
+        <i
+          class="el-rate__decimal"
+          v-if="showDecimalIcon"
+          :style="{ width: decimalStyle, color: iconColor(item) }"
+          :class="activeClass"
+        ></i>
       </i>
     </span>
-    <span v-if="showText || showScore" class="el-rate__text"
+    <span
+      v-if="showText || showScore"
+      class="el-rate__text"
+      :style="{ color: textColor }"
       >{{ rateText }}
     </span>
   </div>
@@ -29,15 +41,15 @@
 
 <script>
 import {
-  inject,
+  // inject,
   toRefs,
   computed,
-  unref,
-  ref,
-  watch,
-  getCurrentInstance
+  unref
+  // ref,
+  // watch,
+  // getCurrentInstance
 } from 'vue'
-import { hasClass } from '../../src/utils/dom'
+// import { hasClass } from '../../src/utils/dom'
 
 export default {
   name: 'ElRate',
@@ -137,20 +149,44 @@ export default {
       voidColor,
       disabledVoidColor,
       showScore,
-      scoreTemplate,
       showText
     } = toRefs(props)
 
-    const rateDisabled = () => {
-      return computed(() => disabled.value)
-    }
+    const rateDisabled = computed(() => disabled.value)
+
+    const percentage = computed(() => {
+      return (modelValue.value - Math.floor(modelValue.value)) * 100
+    })
+    const decimalStyle = computed(() => {
+      let width = ''
+      console.log(152, rateDisabled.value)
+      if (rateDisabled.value) {
+        width = `${percentage.value}%`
+        console.log(155, width)
+      } else if (allowHalf.value) {
+        width = '50%'
+      }
+      return width
+    })
+    console.log(160, decimalStyle.value)
+
+    const showDecimalIcon = computed(
+      () => allowHalf.value || percentage.value !== 0
+    )
     const rateText = computed(() => {
-      // 可能是文字评价可能是分数
-      return texts.value[modelValue.value - 1]
+      if (showScore.value) {
+        return modelValue.value
+      } else if (showText.value) {
+        return texts.value[modelValue.value - 1]
+      }
     })
-    const iconColor = computed(() => {
-      return matchClassOrColor(colors)
-    })
+    const iconColor = (item) => {
+      return item <= modelValue.value
+        ? matchClassOrColor(colors)
+        : rateDisabled.value
+        ? disabledVoidColor.value
+        : voidColor.value
+    }
 
     //unrefIconClasses形参需要改个名
     const unifiedIconClassOrColor = (unrefIconClasses) => {
@@ -167,7 +203,6 @@ export default {
           : unrefIconClasses
       })
     }
-    //完善各函数后，加上有关disabled判断
     const matchClassOrColor = (classOrColor) => {
       const unrefObj = unref(unifiedIconClassOrColor(unref(classOrColor)))
       let arr = Object.keys(unrefObj).filter((key) => {
@@ -175,7 +210,6 @@ export default {
         const excluded = each instanceof Object ? each.excluded : false
         return excluded ? modelValue.value < key : modelValue.value <= key
       })
-      // console.log('arr', arr)
       const matchKey = Math.min(...arr)
       return unrefObj[matchKey] instanceof Object
         ? unrefObj[matchKey].value
@@ -185,7 +219,7 @@ export default {
       return matchClassOrColor(iconClasses)
     })
     const voidClass = computed(() => {
-      return rateDisabled().value
+      return rateDisabled.value
         ? disabledVoidIconClass.value
         : voidIconClass.value
     })
@@ -199,15 +233,16 @@ export default {
       for (; i < max.value; i++) {
         result.push(voidClass.value)
       }
-      // console.log(result, 'classesResult')
       return result
     })
     // eslint-disable-next-line no-unused-vars
     const slideSelectRate = (value, event) => {}
     const clickUpdateRate = (value) => {
+      if (rateDisabled.value) return
       setRate(value)
     }
     const pressKeyUpdateRate = (e) => {
+      if (rateDisabled.value) return
       let value = modelValue.value
       //增加和减少需要判断临界值
       if (e.keyCode === 38 || e.keyCode === 39) {
@@ -230,6 +265,9 @@ export default {
       classes,
       rateText,
       iconColor,
+      decimalStyle,
+      showDecimalIcon,
+      activeClass,
       // methods
       clickUpdateRate,
       slideSelectRate,
