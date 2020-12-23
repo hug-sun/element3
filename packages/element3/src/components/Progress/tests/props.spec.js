@@ -1,7 +1,6 @@
-import { isRef, toRefs, reactive } from 'vue'
+import { isRef, toRefs, reactive, unref } from 'vue'
 import {
   props,
-  getRefValue,
   getColorsIndex,
   sortByPercentage,
   toPercentageColors,
@@ -44,13 +43,26 @@ describe('Progress.props', () => {
     expect(textInside.default).toBe(false)
   })
 
-  it('test isRef for getRefValue', () => {
+  it('type validator', () => {
+    const { type } = props
+    expect(type.default).toBe('line')
+    expect(type.validator('circle')).toBeTruthy()
+    expect(type.validator('dashboard')).toBeTruthy()
+  })
+
+  it('learn isRef and unref', () => {
     expect(isRef(undefined)).toBeFalsy()
     expect(isRef(null)).toBeFalsy()
     expect(isRef(0)).toBeFalsy()
     expect(isRef('')).toBeFalsy()
     expect(isRef(false)).toBeFalsy()
     expect(isRef(true)).toBeFalsy()
+    expect(unref(undefined)).toBeUndefined()
+    expect(unref(null)).toBe(null)
+    expect(unref(0)).toBe(0)
+    expect(unref('')).toBe('')
+    expect(unref(false)).toBeFalsy()
+    expect(unref(true)).toBeTruthy()
   })
 
   it('should get ref value correct', () => {
@@ -59,7 +71,7 @@ describe('Progress.props', () => {
       color: ['#336699', '#339966', '#996633']
     })
     const { percentage, color } = toRefs(props)
-    const pv = getRefValue(percentage)
+    const pv = unref(percentage)
     expect(pv).toBe(props.percentage)
     const cv = color.value
     expect(cv).toEqual(props.color)

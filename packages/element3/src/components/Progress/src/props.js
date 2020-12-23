@@ -1,4 +1,3 @@
-import { isRef } from 'vue'
 import { isNumber, isString } from '../../../utils/types'
 
 export const STATUS_SETTING = {
@@ -7,11 +6,18 @@ export const STATUS_SETTING = {
   exception: 'el-icon-circle-close'
 }
 export const STATUSES = Object.keys(STATUS_SETTING)
+export const TYPES = ['line', 'circle', 'dashboard']
 
 export const statusValid = (val) => STATUSES.includes(val)
 export const percentageValid = (val) => isNumber(val) && val >= 0 && val <= 100
+export const typeValid = (val) => TYPES.includes(val)
 
 export const props = {
+  type: {
+    type: String,
+    default: 'line',
+    validator: typeValid
+  },
   percentage: {
     type: Number,
     default: 0,
@@ -41,10 +47,6 @@ export const props = {
 export function getColorsIndex(colors, percent) {
   const i = colors.findIndex((c) => percent < c.percentage)
   return i < 0 ? colors.length - 1 : i
-}
-
-export function getRefValue(ref) {
-  return isRef(ref) ? ref.value : ref
 }
 
 export function sortByPercentage(pre, next) {
