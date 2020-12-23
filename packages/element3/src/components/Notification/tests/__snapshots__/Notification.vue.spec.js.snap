@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Notification.vue snapshot 1`] = `
+<transition-stub>
+  <div
+    class="el-notification  right"
+    role="alert"
+    style="top: 0px;"
+  >
+    <!--v-if-->
+    <div
+      class="el-notification__group"
+    >
+      <h2
+        class="el-notification__title"
+      />
+      <div
+        class="el-notification__content"
+        style="display: none;"
+      >
+        
+        <p />
+        
+      </div>
+      <div
+        class="el-notification__closeBtn el-icon-close"
+      />
+    </div>
+  </div>
+</transition-stub>
+`;
