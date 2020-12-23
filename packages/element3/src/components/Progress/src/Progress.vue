@@ -9,7 +9,26 @@
         </div>
       </div>
     </div>
-    <div class="el-progress-circle" v-else></div>
+    <div class="el-progress-circle" v-else :style="circleStyle">
+      <svg :viewBox="viewBox">
+        <path
+          class="el-progress-circle__track"
+          stroke="#e5e9f2"
+          :stroke-width="svgStrokeWidth"
+          fill="none"
+          :d="svgPathD"
+          :style="trailPathStyle"
+        ></path>
+        <path
+          class="el-progress-circle__path"
+          stroke="#13ce66"
+          :stroke-width="svgStrokeWidth"
+          fill="none"
+          :d="svgPathD"
+          :style="arcPathStyle"
+        ></path>
+      </svg>
+    </div>
     <div class="el-progress__text" v-if="showText && !textInside">
       <template v-if="!status">{{ content }}</template>
       <i v-else :class="iconClass"></i>
@@ -27,7 +46,14 @@ import {
   toPercentageColors,
   sortByPercentage,
   getColorsIndex,
-  STATUS_SETTING
+  STATUS_SETTING,
+  SVG_VIEW_BOX,
+  calcRelativeSvgSize,
+  generateSvgPathD,
+  genStrokeStyle,
+  calcPerimeter,
+  calcSvgRadius,
+  genCircleStyle
 } from './props'
 
 export default defineComponent({
@@ -41,14 +67,33 @@ export default defineComponent({
       strokeWidth,
       status,
       showText,
-      textInside
+      textInside,
+      width
     } = toRefs(props)
     const barStyle = useBarStyle(percentage, color)
     const barOuterStyle = useBarOuterStyle(strokeWidth)
     const content = useContent(format, percentage)
     const iconClass = useIconClass(status)
     const rootClass = useRootClass(status, showText, textInside)
-    return { barStyle, barOuterStyle, content, iconClass, rootClass }
+    const circleStyle = useCircleStyle(width)
+    const viewBox = SVG_VIEW_BOX
+    const svgStrokeWidth = useSvgStrokeWidth(strokeWidth, width)
+    const svgPathD = useSvgPathD(svgStrokeWidth)
+    const trailPathStyle = useTrailPathStyle(svgStrokeWidth)
+    const arcPathStyle = useArcPathStyle(svgStrokeWidth, percentage)
+    return {
+      barStyle,
+      barOuterStyle,
+      content,
+      iconClass,
+      rootClass,
+      circleStyle,
+      viewBox,
+      svgPathD,
+      svgStrokeWidth,
+      trailPathStyle,
+      arcPathStyle
+    }
   }
 })
 
@@ -114,6 +159,47 @@ const useIconClass = (status) => {
   return computed(() => {
     const st = unref(status)
     return STATUS_SETTING[st] || ''
+  })
+}
+
+const useCircleStyle = (width) => {
+  return computed(() => {
+    const val = unref(width) + 'px'
+    return { width: val, height: val }
+  })
+}
+
+const useSvgStrokeWidth = (strokeWidth, width) => {
+  return computed(() => {
+    const sw = unref(strokeWidth)
+    const w = unref(width)
+    return calcRelativeSvgSize(sw, w)
+  })
+}
+
+const useSvgPathD = (svgStrokeWidth) => {
+  return computed(() => {
+    const ssw = unref(svgStrokeWidth)
+    return generateSvgPathD(ssw)
+  })
+}
+
+const useTrailPathStyle = (svgStrokeWidth) => {
+  return computed(() => {
+    const ssw = unref(svgStrokeWidth)
+    const radius = calcSvgRadius(ssw)
+    const perimeter = calcPerimeter(radius)
+    return genStrokeStyle(perimeter)
+  })
+}
+
+const useArcPathStyle = (svgStrokeWidth, percentage) => {
+  return computed(() => {
+    const ssw = unref(svgStrokeWidth)
+    const radius = calcSvgRadius(ssw)
+    const perimeter = calcPerimeter(radius)
+    const percent = unref(percentage)
+    return genCircleStyle(perimeter, percent)
   })
 }
 </script>

@@ -57,3 +57,12 @@ export function assertExistsElem(wrapper, selector) {
 export function assertNoElem(wrapper, selector) {
   expect(wrapper.find(selector).exists()).toBeFalsy()
 }
+
+export function assertArcStyleOk(wrapper, angle) {
+  const testArcs = { 50: '149.5', 0: '299.1', 85: '254.2', 25: '74.8' }
+  const pathNew = wrapper.find('.el-progress-circle > svg > path:last-child')
+  const pathAttrsNew = pathNew.attributes()
+  expect(pathAttrsNew.style).toBe(
+    `stroke-dasharray: ${testArcs[angle]}px, 299.1px; stroke-dashoffset: 0px; transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s;`
+  )
+}
