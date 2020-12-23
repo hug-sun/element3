@@ -1,6 +1,50 @@
 import { ref, computed, watch, reactive, toRefs, inject, onMounted } from 'vue'
 import calcTextareaHeight from './calcTextareaHeight'
 
+export const useClass = (inputSize, inputExceed, props, attrs, slots) => {
+  return computed(() => {
+    const classes = [
+      inputSize.value ? 'el-input--' + inputSize.value : '',
+      props.type === 'textarea' ? 'el-textarea' : 'el-input'
+    ]
+
+    if (attrs.disabled) {
+      classes.push('is-disabled')
+    }
+
+    if (inputExceed) {
+      classes.push('is-exceed')
+    }
+
+    if (slots.prepend || slots.append) {
+      classes.push('el-input-group')
+    }
+
+    if (slots.append) {
+      classes.push('el-input-group--append')
+    }
+
+    if (slots.prepend) {
+      classes.push('el-input-group--prepend')
+    }
+    if (slots.prefix || props.prefixIcon) {
+      classes.push('el-input--prefix')
+    }
+
+    if (
+      slots.suffix ||
+      props.suffixIcon ||
+      slots.suffixIcon ||
+      attrs.clearable ||
+      attrs.showPassword
+    ) {
+      classes.push('el-input--suffix')
+    }
+
+    return classes
+  })
+}
+
 export const useInput = (props, cxt, textarea) => {
   const input = ref(null)
 

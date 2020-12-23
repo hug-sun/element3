@@ -1,25 +1,5 @@
 <template>
-  <div
-    :style="$attrs.style"
-    :class="[
-      inputSize ? 'el-input--' + inputSize : '',
-      type === 'textarea' ? 'el-textarea' : 'el-input',
-      {
-        'is-disabled': $attrs.disabled,
-        'is-exceed': inputExceed,
-        'el-input-group': $slots.prepend || $slots.append,
-        'el-input-group--append': $slots.append,
-        'el-input-group--prepend': $slots.prepend,
-        'el-input--prefix': $slots.prefix || prefixIcon,
-        'el-input--suffix':
-          $slots.suffix ||
-          suffixIcon ||
-          $slots.suffixIcon ||
-          $attrs.clearable ||
-          $attrs.showPassword
-      }
-    ]"
-  >
+  <div :style="$attrs.style" :class="classes">
     <template v-if="type !== 'textarea'">
       <div class="el-input-group__prepend" v-if="$slots.prepend">
         <slot name="prepend"></slot>
@@ -92,7 +72,13 @@
 import { defineComponent, toRef, reactive } from 'vue'
 import { props } from './props'
 
-import { useInput, useTextarea, useInputMethod, useInputEvent } from './use'
+import {
+  useInput,
+  useTextarea,
+  useInputMethod,
+  useInputEvent,
+  useClass
+} from './use'
 
 export default defineComponent({
   name: 'ElInput',
@@ -119,6 +105,13 @@ export default defineComponent({
       getInput
     } = useInput(props, cxt, textarea)
 
+    const classes = useClass(
+      inputSize,
+      inputExceed,
+      props,
+      cxt.attrs,
+      cxt.slots
+    )
     const {
       handleInput,
       handleFocus,
@@ -148,9 +141,8 @@ export default defineComponent({
       textarea,
       handleClear,
       textLength,
-      inputSize,
-      inputExceed,
-      textareaStyle
+      textareaStyle,
+      classes
     }
   }
 })
