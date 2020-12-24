@@ -1,8 +1,8 @@
-import RadioButton from './src/RadioButton.vue'
+import ElRadioButton from './src/RadioButton.vue'
 
 /* istanbul ignore next */
-RadioButton.install = function (app) {
-  app.component(RadioButton.name, RadioButton)
+ElRadioButton.install = function (app) {
+  app.component(ElRadioButton.name, ElRadioButton)
 }
 
-export default RadioButton
+export { ElRadioButton }

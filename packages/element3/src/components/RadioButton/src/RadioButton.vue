@@ -30,7 +30,7 @@
   </label>
 </template>
 <script>
-import { toRefs, ref, inject, computed, nextTick } from 'vue'
+import { toRefs, ref, inject, computed, watch } from 'vue'
 import { useGlobalOptions } from '../../../use/globalConfig'
 import { useCheckGroup } from './uses'
 
@@ -50,7 +50,8 @@ export default {
     const { label, disabled } = toRefs(props)
     const focus = ref(false)
 
-    const { value, handleChange } = useModel(radioGroup)
+    let value = useModel(radioGroup)
+    const handleChange = useChange(radioGroup, value)
     const { style, size, isDisabled } = useStyle({ disabled, radioGroup })
     const { classes, isChecked, tabIndex } = useClasses({
       size,
@@ -74,23 +75,25 @@ export default {
 }
 
 const useModel = (radioGroup) => {
-  const value = computed({
-    get() {
-      return radioGroup.props.modelValue
-    },
-    set(val) {
-      radioGroup.emit('update:modelValue', val)
+  const value = ref(radioGroup.props.modelValue)
+
+  watch(
+    () => radioGroup.props.modelValue,
+    (val) => {
+      value.value = val
     }
-  })
-  const handleChange = async () => {
-    await nextTick()
+  )
+
+  return value
+}
+
+const useChange = (radioGroup, value) => {
+  const handleChange = () => {
+    radioGroup.emit('update:modelValue', value.value)
     radioGroup.emit('change', value.value)
   }
 
-  return {
-    value,
-    handleChange
-  }
+  return handleChange
 }
 
 const useStyle = ({ disabled, radioGroup }) => {
