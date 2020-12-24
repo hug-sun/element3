@@ -8,9 +8,9 @@ export const STATUS_SETTING = {
   exception: 'el-icon-circle-close'
 }
 export const STATUS_COLOR = {
-  success: '#20a0ff',
-  warning: '#67c23a',
-  exception: '#e6a23c'
+  success: '#67c23a',
+  warning: '#e6a23c',
+  exception: '#f56c6c'
 }
 export const STATUSES = Object.keys(STATUS_SETTING)
 export const TYPES = ['line', 'circle', 'dashboard']
@@ -46,6 +46,7 @@ export const props = {
   format: Function,
   status: {
     type: String,
+    default: '',
     validator: statusValid
   },
   color: { type: [String, Function, Array], default: '' },

@@ -80,7 +80,6 @@ export function findSvgArcPath(wrapper) {
 
 export function assertSvgStrokeOk(wrapper, status) {
   expect(wrapper.props('status')).toBe(status)
-  console.debug('test-helper status:', wrapper.props('status'))
   const svgArcPath = findSvgArcPath(wrapper)
   expect(svgArcPath.attributes()['stroke']).toBe(STATUS_COLOR[status])
 }

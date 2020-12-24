@@ -76,7 +76,6 @@ export default defineComponent({
     const barStyle = useBarStyle(percentage, color)
     const barOuterStyle = useBarOuterStyle(strokeWidth)
     const content = useContent(format, percentage)
-    console.debug('icon status:', status)
     const iconClass = useIconClass(status)
     const rootClass = useRootClass(type, status, showText, textInside)
     const circleStyle = useCircleStyle(width)
@@ -85,8 +84,6 @@ export default defineComponent({
     const svgPathD = useSvgPathD(svgStrokeWidth)
     const trailPathStyle = useTrailPathStyle(svgStrokeWidth)
     const arcPathStyle = useArcPathStyle(svgStrokeWidth, percentage)
-    console.debug('why type:', type)
-    console.debug('why status:', status)
     const svgStrokeColor = useSvgStrokeColor(color, status)
     return {
       barStyle,

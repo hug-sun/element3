@@ -246,15 +246,16 @@ describe('Progress.vue', () => {
       expect(svgArcPath.attributes()['stroke-linecap']).toBe('square')
     })
 
-    it.only('color and status', async () => {
+    it('default color stroke', async () => {
       const wrapper = initProgress({ type: 'circle' })
       const svgArcPath = findSvgArcPath(wrapper)
       expect(svgArcPath.attributes()['stroke']).toBe(DEFAULT_COLOR)
+    })
 
+    it('status change stroke color', async () => {
+      const wrapper = initProgress({ type: 'circle' })
       let status = 'success'
-      await wrapper.setProps({ status: 'success' })
-      expect(wrapper.props('status')).toBe(status)
-      expect(svgArcPath.attributes()['stroke']).toBe('#456456')
+      await wrapper.setProps({ status })
       assertSvgStrokeOk(wrapper, status)
 
       status = 'warning'
