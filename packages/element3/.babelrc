@@ -1,5 +1,8 @@
 {
-  "presets": [["@babel/preset-env", { "targets": { "node": "current" } }]],
+  "presets": [
+    ["@babel/preset-env", { "targets": { "node": "current" } }],
+    "@babel/preset-typescript"
+  ],
   "plugins": [
     "@vue/babel-plugin-jsx",
     "@babel/plugin-proposal-optional-chaining",
@@ -7,7 +10,10 @@
   ],
   "env": {
     "test": {
-      "presets": [["@babel/preset-env", { "targets": { "node": "current" } }]]
+      "presets": [
+        ["@babel/preset-env", { "targets": { "node": "current" } }],
+        "@babel/preset-typescript"
+      ]
     },
     "esm": {
       "presets": [["@babel/preset-env", { "modules": false }]]

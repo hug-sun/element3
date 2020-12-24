@@ -7,6 +7,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import replace from '@rollup/plugin-replace'
 import babel from '@rollup/plugin-babel'
+import ts from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 
 const name = 'Element3'
@@ -28,6 +29,7 @@ const createBaseConfig = () => {
       vuePlugin({
         css: true
       }),
+      ts(),
       babel({
         exclude: 'node_modules/**',
         extensions: ['.js', '.jsx', '.vue'],
@@ -164,7 +166,7 @@ const globalProdConfig = {
   }
 }
 
-const formatConfigs = [
+const prodFormatConfigs = [
   esBundleConfig,
   esBrowserProdConfig,
   esBrowserConfig,
@@ -173,11 +175,18 @@ const formatConfigs = [
   globalConfig,
   globalProdConfig
 ]
+const devFormatConfigs = [esBundleConfig]
 
 function createPackageConfigs() {
-  return formatConfigs.map((formatConfig) => {
+  return getFormatConfigs().map((formatConfig) => {
     return mergeConfig(createBaseConfig(), formatConfig)
   })
+}
+
+function getFormatConfigs() {
+  return process.env.NODE_ENV === 'development'
+    ? devFormatConfigs
+    : prodFormatConfigs
 }
 
 export default createPackageConfigs()
