@@ -16,7 +16,10 @@ import {
   calcPerimeter,
   genTrailPathStyle,
   genArcPathStyle,
-  TRANSITION
+  TRANSITION,
+  DEFAULT_COLOR,
+  getSvgStrokeColor,
+  STATUS_COLOR
 } from '../src/props'
 
 describe('Progress.props', () => {
@@ -43,6 +46,11 @@ describe('Progress.props', () => {
   it('show-text', () => {
     const { showText } = props
     expect(showText.default).toBe(true)
+  })
+
+  it('color', () => {
+    const { color } = props
+    expect(color.default).toBe('')
   })
 
   it('stroke-width', () => {
@@ -107,6 +115,18 @@ describe('Progress.props', () => {
     expect(strokeLinecap.validator('round')).toBe(true)
     expect(strokeLinecap.validator('butt')).toBe(true)
     expect(strokeLinecap.validator('square')).toBe(true)
+  })
+
+  it('color and status', () => {
+    const color = getSvgStrokeColor()
+    expect(color).toBe(DEFAULT_COLOR)
+
+    let status = 'success'
+    expect(getSvgStrokeColor('', status)).toBe(STATUS_COLOR[status])
+    status = 'warning'
+    expect(getSvgStrokeColor('', status)).toBe(STATUS_COLOR[status])
+    status = 'exception'
+    expect(getSvgStrokeColor('', status)).toBe(STATUS_COLOR[status])
   })
 
   it('learn isRef and unref', () => {

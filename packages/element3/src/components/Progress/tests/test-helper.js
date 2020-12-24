@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils'
 import Progress from '../src/Progress.vue'
 import Color from '../../../../packages/color-picker/src/color'
 import { merge } from 'lodash'
+import { STATUS_COLOR } from '../src/props'
 
 export const DEFAULT_PERCENTAGE = 85
 
@@ -58,11 +59,28 @@ export function assertNoElem(wrapper, selector) {
   expect(wrapper.find(selector).exists()).toBeFalsy()
 }
 
-export function assertArcStyleOk(wrapper, angle) {
+export async function assertArcStyleOk(wrapper, percentage) {
+  const percent = percentage || wrapper.props('percentage')
+  await wrapper.setProps({ percentage: percent })
   const testArcs = { 50: '149.5', 0: '299.1', 85: '254.2', 25: '74.8' }
   const pathNew = wrapper.find('.el-progress-circle > svg > path:last-child')
   const pathAttrsNew = pathNew.attributes()
   expect(pathAttrsNew.style).toBe(
-    `stroke-dasharray: ${testArcs[angle]}px, 299.1px; stroke-dashoffset: 0px; transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s;`
+    `stroke-dasharray: ${testArcs[percent]}px, 299.1px; stroke-dashoffset: 0px; transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s;`
   )
+}
+
+export function findSvgTrailPath(wrapper) {
+  return wrapper.find('.el-progress-circle > svg > path:first-child')
+}
+
+export function findSvgArcPath(wrapper) {
+  return wrapper.find('.el-progress-circle > svg > path:last-child')
+}
+
+export function assertSvgStrokeOk(wrapper, status) {
+  expect(wrapper.props('status')).toBe(status)
+  console.debug('test-helper status:', wrapper.props('status'))
+  const svgArcPath = findSvgArcPath(wrapper)
+  expect(svgArcPath.attributes()['stroke']).toBe(STATUS_COLOR[status])
 }

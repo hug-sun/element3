@@ -1,4 +1,4 @@
-import { sortByPercentage } from '../src/props'
+import { DEFAULT_COLOR, sortByPercentage } from '../src/props'
 // import { toHa } from "jest-vtu";
 
 import {
@@ -10,7 +10,10 @@ import {
   assertContainText,
   assertNotContainStyle,
   assertContainStyle,
-  assertArcStyleOk
+  assertArcStyleOk,
+  findSvgTrailPath,
+  findSvgArcPath,
+  assertSvgStrokeOk
 } from './test-helper'
 
 describe('Progress.vue', () => {
@@ -198,6 +201,8 @@ describe('Progress.vue', () => {
   describe('circle type progress', () => {
     it('type prop', () => {
       const wrapper = initProgress({ type: 'circle' })
+      expect(wrapper).not.toHaveClass('el-progress--line')
+      expect(wrapper).toHaveClass('el-progress--circle')
       assertNoElem(wrapper, '.el-progress-bar')
       assertExistsElem(wrapper, '.el-progress-circle')
     })
@@ -209,16 +214,16 @@ describe('Progress.vue', () => {
       expect(circle.attributes().style).toBe('width: 126px; height: 126px;')
       const svg = wrapper.find('.el-progress-circle > svg')
       expect(svg.attributes().viewBox).toBe('0 0 100 100')
-      const track = wrapper.find('.el-progress-circle > svg > path:first-child')
-      expect(track).toHaveClass('el-progress-circle__track')
-      const path = wrapper.find('.el-progress-circle > svg > path:last-child')
-      expect(path).toHaveClass('el-progress-circle__path')
+      const svgTrailPath = findSvgTrailPath(wrapper)
+      expect(svgTrailPath).toHaveClass('el-progress-circle__track')
+      const svgArcPath = findSvgArcPath(wrapper)
+      expect(svgArcPath).toHaveClass('el-progress-circle__path')
 
       const d = `M 50 50 m 0 -47.6 a 47.6 47.6 0 1 1 0 95.2 a 47.6 47.6 0 1 1 0 -95.2`
-      const trackAttrs = track.attributes()
-      expect(trackAttrs.d).toContain(d)
-      expect(trackAttrs['stroke-width']).toBe('4.8')
-      expect(trackAttrs.style).toBe(
+      const trailAttrs = svgTrailPath.attributes()
+      expect(trailAttrs.d).toContain(d)
+      expect(trailAttrs['stroke-width']).toBe('4.8')
+      expect(trailAttrs.style).toBe(
         'stroke-dasharray: 299.1px, 299.1px; stroke-dashoffset: 0px;'
       )
       assertArcStyleOk(wrapper, 85)
@@ -226,22 +231,39 @@ describe('Progress.vue', () => {
 
     it('percentage', async () => {
       const wrapper = initProgress({ type: 'circle', percentage: 25 })
-      assertArcStyleOk(wrapper, 25)
-
-      await wrapper.setProps({ percentage: 50 })
-      assertArcStyleOk(wrapper, 50)
+      await assertArcStyleOk(wrapper)
+      await assertArcStyleOk(wrapper, 50)
     })
 
     it('strokeLinecap', async () => {
       const wrapper = initProgress({ type: 'circle' })
-      assertExistsElem(wrapper, '.el-progress-circle > svg')
-      const path = wrapper.find('.el-progress-circle > svg > path:last-child')
-      expect(path.attributes()['stroke-linecap']).toBe('round')
+      const svgArcPath = findSvgArcPath(wrapper)
+      expect(svgArcPath.attributes()['stroke-linecap']).toBe('round')
 
       await wrapper.setProps({ strokeLinecap: 'butt' })
-      expect(path.attributes()['stroke-linecap']).toBe('butt')
+      expect(svgArcPath.attributes()['stroke-linecap']).toBe('butt')
       await wrapper.setProps({ strokeLinecap: 'square' })
-      expect(path.attributes()['stroke-linecap']).toBe('square')
+      expect(svgArcPath.attributes()['stroke-linecap']).toBe('square')
+    })
+
+    it.only('color and status', async () => {
+      const wrapper = initProgress({ type: 'circle' })
+      const svgArcPath = findSvgArcPath(wrapper)
+      expect(svgArcPath.attributes()['stroke']).toBe(DEFAULT_COLOR)
+
+      let status = 'success'
+      await wrapper.setProps({ status: 'success' })
+      expect(wrapper.props('status')).toBe(status)
+      expect(svgArcPath.attributes()['stroke']).toBe('#456456')
+      assertSvgStrokeOk(wrapper, status)
+
+      status = 'warning'
+      await wrapper.setProps({ status })
+      assertSvgStrokeOk(wrapper, status)
+
+      status = 'exception'
+      await wrapper.setProps({ status })
+      assertSvgStrokeOk(wrapper, status)
     })
   })
 })
