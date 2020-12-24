@@ -147,7 +147,7 @@ Progress 组件可通过 `type` 属性来指定使用环形进度条，在环形
 <el-progress type="circle" :percentage="25"></el-progress>
 <el-progress type="circle" :percentage="100" status="success"></el-progress>
 <el-progress type="circle" :percentage="70" status="warning"></el-progress>
-<el-progress type="circle" :percentage="70" status="exception"></el-progress>
+<el-progress type="circle" :percentage="50" status="exception"></el-progress>
 ```
 
 :::
