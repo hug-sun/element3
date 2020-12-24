@@ -39,7 +39,7 @@
   import { ref } from 'vue'
   export default {
     setup() {
-      const radio = ref('1')
+      const radio = ref('选中且禁用')
       return { radio }
     }
   }
