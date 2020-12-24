@@ -56,14 +56,16 @@
             <el-input
               @keydown.enter="handleInputEnter"
               :type="inputType"
-              v-model="modelValue"
+              v-model="inputValue"
               :placeholder="inputPlaceholder"
               ref="input"
             ></el-input>
-            <div class="el-message-box__errormsg">
-              <!-- :style="{
-                visibility: !!state.editorErrorMessage ? 'visible' : 'hidden'
-              }" -->
+            <div
+              :style="{
+                visibility: !!editorErrorMessage ? 'visible' : 'hidden'
+              }"
+              class="el-message-box__errormsg"
+            >
               {{ editorErrorMessage }}
             </div>
           </div>
@@ -83,6 +85,7 @@
           <el-button
             :loading="confirmButtonLoading"
             size="small"
+            ref="confirm"
             :round="roundButton"
             @click="handleAction('confirm')"
             @keydown.enter="handleAction('confirm')"
@@ -113,7 +116,7 @@ import {
 } from 'vue'
 import propsObject from './prop/prop'
 import { isFunction } from '@vue/shared'
-import { popupProps, usePopup } from '../../../src/use/popup'
+import { usePopup } from '../../../src/use/popup'
 import Locale from '../../../src/mixins/locale'
 import ElInput from '../../input'
 import { ElButton } from '../../../src/components/Button'
@@ -121,18 +124,16 @@ import { addClass, removeClass } from '../../../src/utils/dom'
 
 export default defineComponent({
   mixins: [Locale],
-
+  props: propsObject,
   components: {
     ElInput,
     ElButton
   },
-  setup(props, { attrs }) {
-    const b = Object.assign(propsObject(), attrs)
-    console.log(b)
+  setup(props) {
     const state = reactive({
       action: null,
       visible: true,
-      ...b
+      ...props
     })
     const instance = getCurrentInstance()
     const {
@@ -146,19 +147,21 @@ export default defineComponent({
       distinguishCancelAndClose,
       closeOnPressEscape,
       closeOnHashChange,
-      callback
+      callback,
+      inputPattern,
+      inputErrorMessage,
+      inputValidator
     } = toRefs(state)
 
     const { open, close } = usePopup(state)
     const icon = computed(() => {
-      console.log('type', iconClass.value)
       return unref(iconClass) || (unref(type) ? `el-icon-${unref(type)}` : '')
     })
     const closeHandle = () => {
       state.visible = false
       close()
       nextTick(() => {
-        unref(callback)(state.action, instance)
+        unref(callback)(state.action, instance.proxy)
       })
     }
     const handleAction = (action) => {
@@ -199,18 +202,42 @@ export default defineComponent({
       window.removeEventListener('keyup', handleKeyup)
     })
 
-    const modelValue = ref(inputValue.value)
     const editorErrorMessage = ref(null)
     const getInputElement = () => {
       const inputRefs = instance.refs.input.$refs
       return inputRefs.input || inputRefs.textarea
     }
     const validate = () => {
-      state.editorErrorMessage = ''
+      if (unref(category) === 'prompt') {
+        if (
+          unref(inputPattern) &&
+          !unref(inputPattern).test(unref(inputValue))
+        ) {
+          editorErrorMessage.value = unref(inputErrorMessage)
+
+          addClass(getInputElement(), 'invalid')
+          return false
+        }
+        const _inputValidator = unref(inputValidator)
+        if (typeof _inputValidator === 'function') {
+          const validateResult = _inputValidator(unref(inputValue))
+          if (validateResult === false) {
+            editorErrorMessage.value = unref(inputErrorMessage)
+            addClass(getInputElement(), 'invalid')
+            return false
+          }
+          if (typeof validateResult === 'string') {
+            editorErrorMessage.value = validateResult
+            addClass(getInputElement(), 'invalid')
+            return false
+          }
+        }
+      }
+      editorErrorMessage.value = ''
       removeClass(getInputElement(), 'invalid')
       return true
     }
-    watch(modelValue, (val) => {
+    watch(inputValue, (val) => {
       nextTick(() => {
         if (unref(category) === 'prompt' && val !== null) {
           validate()
@@ -225,7 +252,6 @@ export default defineComponent({
     }
     const confirmButtonLoading = ref(false)
     return {
-      modelValue,
       ...toRefs(state),
       icon,
       handleAction,

@@ -2,8 +2,6 @@
 import { isVNode } from 'vue'
 import { createComponent } from '../../../src/use/component'
 import msgboxVue from './MessageBox.vue'
-import propsList from './prop/prop'
-const defaults = propsList
 
 let currentMsg, instance
 let msgQueue = []
@@ -14,31 +12,30 @@ const defaultCallback = (action) => {
       if (action === 'confirm') {
         if (instance.proxy.showInput) {
           currentMsg.resolve({
-            value: instance.proxy.modelValue,
+            value: instance.proxy.inputValue,
             action
           })
         } else {
-          currentMsg.resolve(action)
+          currentMsg.resolve({ action })
         }
       } else if (
         currentMsg.reject &&
         (action === 'cancel' || action === 'close')
       ) {
-        currentMsg.reject(action)
+        currentMsg.reject({ action })
       }
     }
   }
 }
 
 const initInstance = (currentMsg, VNode = null) => {
-  defaults.callback = defaultCallback
   instance = createComponent(msgboxVue, currentMsg.options, VNode)
+  MessageBox.instance = instance
 }
 
 const showNextMsg = () => {
   if (msgQueue.length > 0) {
     currentMsg = msgQueue.shift()
-    // initInstance(currentMsg)
     const options = currentMsg.options
 
     if (options.callback === undefined) {
@@ -62,24 +59,26 @@ const MessageBox = function (options) {
   }
 
   if (typeof Promise !== 'undefined') {
-    return new Promise((resolve, reject) => {
+    let promiseInstance = new Promise((resolve, reject) => {
       // eslint-disable-line
       msgQueue.push({
-        options: Object.assign({}, defaults, options),
+        options: options,
         callback: callback,
         resolve: resolve,
         reject: reject
       })
-
       showNextMsg()
     })
+    promiseInstance.instance = instance
+    return promiseInstance
   } else {
     msgQueue.push({
-      options: Object.assign({}, defaults, options),
+      options: options,
       callback: callback
     })
 
     showNextMsg()
+    return { instance }
   }
 }
 
@@ -97,9 +96,12 @@ MessageBox.alert = (message, title, options) => {
   return MessageBox(
     Object.assign(
       {
+        type: '',
         title: title,
         message: message,
-        category: 'alert'
+        category: 'alert',
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
       },
       options
     )
@@ -113,9 +115,14 @@ MessageBox.confirm = (message, title, options) => {
   } else if (title === undefined) {
     title = ''
   }
+  if (typeof message === 'object') {
+    options = message
+    message = ''
+  }
   return MessageBox(
     Object.assign(
       {
+        type: 'info',
         title: title,
         message: message,
         category: 'confirm',
@@ -139,11 +146,13 @@ MessageBox.prompt = (message, title, options) => {
   return MessageBox(
     Object.assign(
       {
+        type: '',
         title: title,
         message: message,
         showCancelButton: true,
         showInput: true,
-        category: 'prompt'
+        category: 'prompt',
+        inputErrorMessage: '输入的数据不合法!'
       },
       options
     )

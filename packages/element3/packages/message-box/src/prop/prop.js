@@ -1,5 +1,5 @@
 import { t } from '../../../../src/locale'
-const props = () => ({
+const props = {
   inputPattern: {
     type: RegExp,
     default: null
@@ -10,7 +10,7 @@ const props = () => ({
   },
   inputErrorMessage: {
     type: String,
-    default: ''
+    default: () => t('el.messagebox.error')
   },
   modalFade: {
     type: Boolean,
@@ -144,20 +144,5 @@ const props = () => ({
     type: Function,
     default: null
   }
-})
-export default () =>
-  new Proxy(props(), {
-    get: function (target, propKey) {
-      return target[propKey]['default']
-    },
-    set: function (target, propKey, value) {
-      if (
-        target[propKey]['validator'] &&
-        target[propKey]['validator'](value) < 0
-      ) {
-        return false
-      }
-      target[propKey]['default'] = value
-      return true
-    }
-  })
+}
+export default props

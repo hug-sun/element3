@@ -5,7 +5,7 @@ describe('MessageBox.vue', () => {
   describe('proprety', () => {
     it('proprety title', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           title: 'chushihua'
         }
       })
@@ -13,7 +13,7 @@ describe('MessageBox.vue', () => {
     })
     it('proprety center', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           center: true
         }
       })
@@ -21,7 +21,7 @@ describe('MessageBox.vue', () => {
     })
     it('proprety customClass', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           customClass: 'customClass'
         }
       })
@@ -29,7 +29,7 @@ describe('MessageBox.vue', () => {
     })
     it('proprety iconClass', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           iconClass: 'iconClass'
         }
       })
@@ -37,7 +37,7 @@ describe('MessageBox.vue', () => {
     })
     it('iconclass with center', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           iconClass: 'iconClass',
           center: true,
           title: 'title'
@@ -47,7 +47,7 @@ describe('MessageBox.vue', () => {
     })
     it('proprety type', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           title: 'title',
           center: true
         }
@@ -57,7 +57,7 @@ describe('MessageBox.vue', () => {
     })
     it('showClose', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           title: '12',
           showClose: false
         }
@@ -66,7 +66,7 @@ describe('MessageBox.vue', () => {
     })
     it('showClose toBeTruthy', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           title: '12'
         }
       })
@@ -75,7 +75,7 @@ describe('MessageBox.vue', () => {
     it('proprety beforeClose', async () => {
       let object = {}
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           title: '12',
           beforeClose: (action, instance, done) => {
             object.action = action
@@ -90,7 +90,7 @@ describe('MessageBox.vue', () => {
     })
     it('review messageBox when value was done', async () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           title: '12',
           beforeClose: (action, instance, done) => {
             done()
@@ -104,7 +104,7 @@ describe('MessageBox.vue', () => {
     it('showClose lockScroll', () => {
       document.body.classList.remove('el-popup-parent--hidden')
       mount(MessageBox, {
-        attrs: {
+        props: {
           title: '12',
           lockScroll: false
         },
@@ -114,7 +114,7 @@ describe('MessageBox.vue', () => {
     })
     it('meesage of normal', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           message: '333'
         }
       })
@@ -136,7 +136,7 @@ describe('MessageBox.vue', () => {
     })
     it('dangerouslyUseHTMLString', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           dangerouslyUseHTMLString: true,
           message: '<div class="mmm">444</div>'
         }
@@ -145,7 +145,7 @@ describe('MessageBox.vue', () => {
     })
     it('showInput', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           showInput: true
         }
       })
@@ -153,7 +153,7 @@ describe('MessageBox.vue', () => {
     })
     it('inputValue inputPlaceholder', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           showInput: true,
           inputValue: '444',
           inputPlaceholder: '555'
@@ -167,7 +167,7 @@ describe('MessageBox.vue', () => {
 
     it('cancelButtonText, showCancelButton', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           cancelButtonText: 'cancel',
           showCancelButton: true,
           cancelButtonClass: '4444'
@@ -186,7 +186,7 @@ describe('MessageBox.vue', () => {
 
     it('confirmButtonClass showConfirmButton, confirmButtonText', () => {
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           confirmButtonText: 'cancel',
           showConfirmButton: true,
           confirmButtonClass: '4444'
@@ -206,7 +206,7 @@ describe('MessageBox.vue', () => {
     it('proprety callback', async () => {
       let object = ref(null)
       const warpper = mount(MessageBox, {
-        attrs: {
+        props: {
           title: '12',
           callback(action) {
             object.value = action
@@ -216,6 +216,20 @@ describe('MessageBox.vue', () => {
       await warpper.find('.el-message-box__headerbtn').trigger('click')
       await nextTick()
       expect(object.value).toBe('cancel')
+    })
+    it('validate', async () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          title: '12',
+          category: 'prompt',
+          inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }
+      })
+      await warpper.findComponent({ ref: 'input' }).setValue('2323')
+      await nextTick()
+      expect(warpper.componentVM.editorErrorMessage).toBe('输入的数据不合法!')
     })
   })
   describe('test modal closeOnClickModal', () => {
