@@ -25,8 +25,7 @@
         <i
           class="el-rate__decimal"
           v-if="showDecimalIcon"
-          :style="{ width: decimalStyle, color: iconColor(item) }"
-          :class="activeClass"
+          :style="{ width: decimalStyle, color: decimalIconColor(item) }"
         ></i>
       </i>
     </span>
@@ -187,6 +186,11 @@ export default {
         ? disabledVoidColor.value
         : voidColor.value
     }
+    const decimalIconColor = (item) => {
+      return item <= Math.ceil(modelValue.value)
+        ? matchClassOrColor(colors)
+        : disabledVoidColor.value
+    }
 
     //unrefIconClasses形参需要改个名
     const unifiedIconClassOrColor = (unrefIconClasses) => {
@@ -265,6 +269,7 @@ export default {
       classes,
       rateText,
       iconColor,
+      decimalIconColor,
       decimalStyle,
       showDecimalIcon,
       activeClass,
