@@ -1,4 +1,5 @@
 module.exports = {
+  preset: 'ts-jest',
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['./scripts/setupJestEnv.js'],
   roots: ['<rootDir>/src', '<rootDir>/packages', '<rootDir>/tests'],
@@ -9,8 +10,8 @@ module.exports = {
   moduleFileExtensions: ['vue', 'js', 'json', 'jsx', 'ts', 'tsx', 'node'],
   testMatch: [
     '**/tests/**/?(*.)+(test).[jt]s?(x)',
-    '**/__tests__/**/*.spec.js',
-    '**/tests/**/*.spec.js'
+    '**/tests/**/*spec.[jt]s?(x)',
+    '**/__tests__/**/*.spec.js'
   ],
   moduleNameMapper: {
     '^element-ui(.*)$': '<rootDir>$1',

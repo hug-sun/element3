@@ -1,13 +1,16 @@
+import { ButtonType, ButtonSize, ButtonNativeType } from './types'
+import { PropType } from 'vue'
+
 export const props = {
   size: {
-    type: String,
-    validator(val) {
+    type: String as PropType<ButtonSize>,
+    validator(val: string): boolean {
       return ['medium', 'small', 'mini', ''].includes(val)
     }
   },
   type: {
-    type: String,
-    validator(val) {
+    type: String as PropType<ButtonType>,
+    validator(val: string): boolean {
       return [
         'primary',
         'success',
@@ -19,7 +22,7 @@ export const props = {
     }
   },
   nativeType: {
-    type: String,
+    type: String as PropType<ButtonNativeType>,
     default: 'button'
   },
   plain: Boolean,

@@ -17,11 +17,21 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,vue}": ["eslint","prettier --write"]
+    "*.{js,vue}": [
+      "eslint",
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "eslint",
+      "prettier --parser=typescript --write"
+    ]
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/eslint-config-typescript": "^7.0.0",
     "babel-eslint": "^10.1.0",
     "chalk": "^4.1.0",
     "conventional-changelog-cli": "^2.1.1",
@@ -35,6 +45,7 @@
     "lint-staged": "^10.5.3",
     "minimist": "^1.2.5",
     "prettier": "^2.2.1",
+    "typescript": "^4.1.3",
     "yorkie": "^2.0.0"
   }
 }
