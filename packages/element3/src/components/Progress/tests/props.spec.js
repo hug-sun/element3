@@ -101,6 +101,14 @@ describe('Progress.props', () => {
     expect(circleStyle.transition).toBe(TRANSITION)
   })
 
+  it(':stroke-linecap', () => {
+    const { strokeLinecap } = props
+    expect(strokeLinecap.default).toBe('round')
+    expect(strokeLinecap.validator('round')).toBe(true)
+    expect(strokeLinecap.validator('butt')).toBe(true)
+    expect(strokeLinecap.validator('square')).toBe(true)
+  })
+
   it('learn isRef and unref', () => {
     expect(isRef(undefined)).toBeFalsy()
     expect(isRef(null)).toBeFalsy()

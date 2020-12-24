@@ -231,5 +231,17 @@ describe('Progress.vue', () => {
       await wrapper.setProps({ percentage: 50 })
       assertArcStyleOk(wrapper, 50)
     })
+
+    it('strokeLinecap', async () => {
+      const wrapper = initProgress({ type: 'circle' })
+      assertExistsElem(wrapper, '.el-progress-circle > svg')
+      const path = wrapper.find('.el-progress-circle > svg > path:last-child')
+      expect(path.attributes()['stroke-linecap']).toBe('round')
+
+      await wrapper.setProps({ strokeLinecap: 'butt' })
+      expect(path.attributes()['stroke-linecap']).toBe('butt')
+      await wrapper.setProps({ strokeLinecap: 'square' })
+      expect(path.attributes()['stroke-linecap']).toBe('square')
+    })
   })
 })

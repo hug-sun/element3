@@ -7,10 +7,12 @@ export const STATUS_SETTING = {
 }
 export const STATUSES = Object.keys(STATUS_SETTING)
 export const TYPES = ['line', 'circle', 'dashboard']
+export const LINECAPS = ['butt', 'round', 'square']
 
 export const statusValid = (val) => STATUSES.includes(val)
 export const percentageValid = (val) => isNumber(val) && val >= 0 && val <= 100
 export const typeValid = (val) => TYPES.includes(val)
+export const linecapValid = (val) => LINECAPS.includes(val)
 
 export const FULL_PERCENT = 100
 export const DEFAULT_SVG_PX = 126
@@ -55,6 +57,11 @@ export const props = {
   width: {
     type: Number,
     default: DEFAULT_SVG_PX
+  },
+  strokeLinecap: {
+    type: String,
+    default: 'round',
+    validator: linecapValid
   }
 }
 
