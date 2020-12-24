@@ -1,7 +1,5 @@
 <template>
   <div :class="rootClass">
-    {{ strokeLinecap }}
-    {{ type }}
     <div class="el-progress-bar" v-if="type === 'line'">
       <div class="el-progress-bar__outer" :style="barOuterStyle">
         <div class="el-progress-bar__inner" :style="barStyle">
