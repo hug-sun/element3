@@ -21,7 +21,7 @@
         ></path>
         <path
           class="el-progress-circle__path"
-          stroke="#13ce66"
+          :stroke="svgStrokeColor"
           :stroke-width="svgStrokeWidth"
           :stroke-linecap="strokeLinecap"
           fill="none"
@@ -54,7 +54,8 @@ import {
   genTrailPathStyle,
   calcPerimeter,
   calcSvgRadius,
-  genArcPathStyle
+  genArcPathStyle,
+  getSvgStrokeColor
 } from './props'
 
 export default defineComponent({
@@ -66,6 +67,7 @@ export default defineComponent({
       format,
       color,
       strokeWidth,
+      type,
       status,
       showText,
       textInside,
@@ -75,13 +77,14 @@ export default defineComponent({
     const barOuterStyle = useBarOuterStyle(strokeWidth)
     const content = useContent(format, percentage)
     const iconClass = useIconClass(status)
-    const rootClass = useRootClass(status, showText, textInside)
+    const rootClass = useRootClass(type, status, showText, textInside)
     const circleStyle = useCircleStyle(width)
     const viewBox = SVG_VIEW_BOX
     const svgStrokeWidth = useSvgStrokeWidth(strokeWidth, width)
     const svgPathD = useSvgPathD(svgStrokeWidth)
     const trailPathStyle = useTrailPathStyle(svgStrokeWidth)
     const arcPathStyle = useArcPathStyle(svgStrokeWidth, percentage)
+    const svgStrokeColor = useSvgStrokeColor(color, status)
     return {
       barStyle,
       barOuterStyle,
@@ -93,13 +96,15 @@ export default defineComponent({
       svgPathD,
       svgStrokeWidth,
       trailPathStyle,
-      arcPathStyle
+      arcPathStyle,
+      svgStrokeColor
     }
   }
 })
 
-const useRootClass = (status, showText, textInside) => {
+const useRootClass = (type, status, showText, textInside) => {
   return computed(() => {
+    const valType = unref(type)
     const valStatus = unref(status)
     const valShowText = unref(showText)
     const valTextInside = unref(textInside)
@@ -107,7 +112,7 @@ const useRootClass = (status, showText, textInside) => {
       valStatus && statusValid(valStatus) ? `is-${valStatus}` : ''
     return [
       'el-progress',
-      'el-progress--line',
+      `el-progress--${valType}`,
       statusClass,
       {
         'el-progress--without-text': !valShowText,
@@ -201,6 +206,14 @@ const useArcPathStyle = (svgStrokeWidth, percentage) => {
     const perimeter = calcPerimeter(radius)
     const percent = unref(percentage)
     return genArcPathStyle(perimeter, percent)
+  })
+}
+
+const useSvgStrokeColor = (color, status) => {
+  return computed(() => {
+    const c = unref(color)
+    const s = unref(status)
+    return getSvgStrokeColor(c, s)
   })
 }
 </script>

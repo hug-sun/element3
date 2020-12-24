@@ -1,9 +1,16 @@
 import { isNumber, isString } from '../../../utils/types'
+import { isEmpty } from '../../../utils/util'
 
+export const DEFAULT_COLOR = '#409EFF'
 export const STATUS_SETTING = {
   success: 'el-icon-circle-check',
   warning: 'el-icon-warning',
   exception: 'el-icon-circle-close'
+}
+export const STATUS_COLOR = {
+  success: '#67c23a',
+  warning: '#e6a23c',
+  exception: '#f56c6c'
 }
 export const STATUSES = Object.keys(STATUS_SETTING)
 export const TYPES = ['line', 'circle', 'dashboard']
@@ -39,6 +46,7 @@ export const props = {
   format: Function,
   status: {
     type: String,
+    default: '',
     validator: statusValid
   },
   color: { type: [String, Function, Array], default: '' },
@@ -142,4 +150,14 @@ export function genArcPathStyle(perimeter, percentage = 0) {
   const strokeDashoffset = `0px`
   const transition = TRANSITION
   return { strokeDasharray, strokeDashoffset, transition }
+}
+
+export function getSvgStrokeColor(color, status) {
+  if (!isEmpty(color)) {
+    return color
+  }
+  if (!isEmpty(status)) {
+    return STATUS_COLOR[status]
+  }
+  return DEFAULT_COLOR
 }
