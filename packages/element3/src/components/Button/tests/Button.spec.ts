@@ -162,7 +162,7 @@ describe('Button.vue', () => {
   })
 
   describe('set button icon', () => {
-    it(' by props.icon', () => {
+    it.only(' by props.icon', () => {
       const wrapper = mount(Button, {
         props: {
           icon: 'el-icon-edit'
