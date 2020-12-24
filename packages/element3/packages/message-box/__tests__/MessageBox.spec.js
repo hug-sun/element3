@@ -52,7 +52,7 @@ describe('MessageBox.js', () => {
     expect(instanceProprety.message).toBeTruthy()
     expect(callback).toHaveBeenCalled()
   })
-  test('alert', async () => {
+  test('confirm', async () => {
     messageBox.confirm({
       type: 'warning',
       title: '消息',
@@ -65,26 +65,23 @@ describe('MessageBox.js', () => {
   })
   test('kind of prompt', async () => {
     let v = ''
-    // const callback = jest.fn(({ value }) => {
-    //   v = value
-    // })
-    messageBox
-      .prompt('请输入邮箱', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        confirmButtonClass: 'mmm',
-        inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-        inputErrorMessage: '邮箱格式不正确'
-      })
-      .then(({ action }) => {
-        v = action
-      })
-    await sleep()
+    const callback = jest.fn(({ value }) => {
+      v = value
+    })
+    const instance = messageBox.prompt('请输入邮箱', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      confirmButtonClass: 'mmm',
+      inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+      inputErrorMessage: '邮箱格式不正确'
+    })
+    instance.then(callback)
+    await nextTick()
     const btn = document.querySelector('.mmm')
-    btn.click()
+    instance.instance.proxy.inputValue = '409187100@qq.com'
+    await btn.click()
     await sleep()
-    console.log('>>>>', v)
-    // await nextTick()
-    // expect(callback).toHaveBeenCalled()
+    expect(callback).toHaveBeenCalled()
+    expect(v).toBeTruthy()
   })
 })

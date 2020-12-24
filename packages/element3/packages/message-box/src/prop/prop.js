@@ -72,7 +72,7 @@ const props = {
     type: String,
     default: 'alert',
     validator(val) {
-      return ['confirm', 'prompt', 'alert'].indexOf(val)
+      return ['confirm', 'prompt', 'alert'].indexOf(val) > -1
     }
   },
   inputValue: {
@@ -126,10 +126,13 @@ const props = {
     default: null
   },
   type: {
-    type: String,
+    type: [String, null],
     default: 'info',
     validator(val) {
-      return ['success', 'warning', 'info', 'error'].indexOf(val)
+      return (
+        ['success', 'warning', 'info', 'error'].indexOf(val) > -1 ||
+        val === null
+      )
     }
   },
   iconClass: {

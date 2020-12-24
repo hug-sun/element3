@@ -1,8 +1,10 @@
-import porps from '../src/prop/prop'
+import props from '../src/prop/prop'
 describe('porps', () => {
-  test('props', () => {
-    let o = { title: '23232', type: 'info' }
-    const b = Object.assign(porps, o)
-    expect(b.title).toBe('23232')
+  test('type', () => {
+    expect(props.type.validator('success')).toBeTruthy()
+    expect(props.type.validator()).toBeFalsy()
+  })
+  test('category', () => {
+    expect(props.category.validator('alert')).toBeTruthy()
   })
 })

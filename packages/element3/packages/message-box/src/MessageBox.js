@@ -1,4 +1,3 @@
-// #todo
 import { isVNode } from 'vue'
 import { createComponent } from '../../../src/use/component'
 import msgboxVue from './MessageBox.vue'
@@ -82,7 +81,7 @@ const MessageBox = function (options) {
   }
 }
 
-MessageBox.alert = (message, title, options) => {
+const MergeCondition = (message, title, options) => {
   if (typeof title === 'object') {
     options = title
     title = ''
@@ -93,69 +92,46 @@ MessageBox.alert = (message, title, options) => {
     options = message
     message = ''
   }
+  return Object.assign(
+    {
+      title: title,
+      message: message,
+      confirmButtonText: '确认',
+      cancelButtonText: '取消'
+    },
+    options
+  )
+}
+
+MessageBox.alert = (message, title, options) => {
+  const defaultVal = {
+    type: null,
+    category: 'alert'
+  }
   return MessageBox(
-    Object.assign(
-      {
-        type: '',
-        title: title,
-        message: message,
-        category: 'alert',
-        confirmButtonText: '确认',
-        cancelButtonText: '取消'
-      },
-      options
-    )
+    Object.assign(defaultVal, MergeCondition(message, title, options))
   )
 }
 
 MessageBox.confirm = (message, title, options) => {
-  if (typeof title === 'object') {
-    options = title
-    title = ''
-  } else if (title === undefined) {
-    title = ''
-  }
-  if (typeof message === 'object') {
-    options = message
-    message = ''
+  const defaultVal = {
+    type: 'info',
+    category: 'confirm'
   }
   return MessageBox(
-    Object.assign(
-      {
-        type: 'info',
-        title: title,
-        message: message,
-        category: 'confirm',
-        showCancelButton: true
-      },
-      options
-    )
+    Object.assign(defaultVal, MergeCondition(message, title, options))
   )
 }
 
 MessageBox.prompt = (message, title, options) => {
-  if (typeof title === 'object') {
-    options = title
-    title = ''
-  } else if (title === undefined) {
-    title = ''
-  }
-  if (typeof message === 'object') {
-    options = message
+  const defaultVal = {
+    type: null,
+    showInput: true,
+    category: 'prompt',
+    inputErrorMessage: '输入的数据不合法!'
   }
   return MessageBox(
-    Object.assign(
-      {
-        type: '',
-        title: title,
-        message: message,
-        showCancelButton: true,
-        showInput: true,
-        category: 'prompt',
-        inputErrorMessage: '输入的数据不合法!'
-      },
-      options
-    )
+    Object.assign(defaultVal, MergeCondition(message, title, options))
   )
 }
 

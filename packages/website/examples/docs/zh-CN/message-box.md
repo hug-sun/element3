@@ -179,7 +179,7 @@
                 done()
               }
             }
-          }).then((action) => {
+          }).then(({action}) => {
             Message({
               type: 'info',
               message: 'action: ' + action
