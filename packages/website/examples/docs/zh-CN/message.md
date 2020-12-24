@@ -23,7 +23,7 @@
       function open() {
         // message('这是一条消息提示')
         Message({
-          message:"verticalOffset",
+          message: 'verticalOffset'
         })
       }
 
@@ -40,7 +40,7 @@
         open,
         openVn
       }
-    },
+    }
   }
 </script>
 ```
@@ -113,7 +113,6 @@
   import { Message } from 'element3'
   export default {
     setup() {
-
       return {
         open1() {
           Message({
@@ -168,7 +167,6 @@
   import { Message } from 'element3'
   export default {
     setup() {
-
       return {
         openCenter() {
           Message({

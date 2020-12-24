@@ -3,7 +3,7 @@ import { PopoverPlacement } from './popover'
 
 export type TooltipEffect = 'dark' | 'light'
 
-export const ElTooltip:ITooltip
+export const ElTooltip: ITooltip
 /** Tooltip Component */
 interface ITooltip extends ElementUIComponent {
   /** Tooltip theme */

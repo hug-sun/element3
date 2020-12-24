@@ -13,6 +13,17 @@ describe('Dialog', () => {
     expect(dialog.find('.el-dialog__title').text()).toBe('dialog test')
   })
 
+  it('closeOnClickModal', () => {
+    const wrapper = mount(Dialog, {
+      props: {
+        closeOnClickModal: false,
+        visible: true
+      }
+    })
+    wrapper.find('.el-dialog__wrapper').trigger('click')
+    expect(wrapper.componentVM.visible).toBe(true)
+  })
+
   it('Dialog slot', async () => {
     const wrapper = await mount(Dialog, {
       slots: {

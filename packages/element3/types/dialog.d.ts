@@ -3,13 +3,13 @@ import { ElementUIComponent } from './component'
 
 export interface DialogSlots {
   /** Content of the Dialog */
-  default: VNode[],
+  default: VNode[]
 
   /** Content of the Dialog title */
-  title: VNode[],
+  title: VNode[]
 
   /** Content of the Dialog footer */
-  footer: VNode[],
+  footer: VNode[]
 
   [key: string]: VNode[]
 }
@@ -61,4 +61,4 @@ interface IDialog extends ElementUIComponent {
   $slots: DialogSlots
 }
 
-export const ElDialog:IDialog
+export const ElDialog: IDialog

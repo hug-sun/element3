@@ -13,7 +13,7 @@ export interface ImageSlots {
   [key: string]: VNode[]
 }
 
-export const ElImage:IImage
+export const ElImage: IImage
 /** Image Component */
 interface IImage extends ElementUIComponent {
   /** Image source */

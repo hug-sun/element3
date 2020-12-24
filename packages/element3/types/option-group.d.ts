@@ -1,6 +1,6 @@
 import { ElementUIComponent } from './component'
 
-export const ElOptionGroup:IOptionGroup
+export const ElOptionGroup: IOptionGroup
 /** Dropdown Select Option Group Component */
 interface IOptionGroup extends ElementUIComponent {
   /** Name of the group */
