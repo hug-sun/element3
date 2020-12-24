@@ -276,7 +276,7 @@ export default {
       pager: (
         <Pager
           currentPage={this.internalCurrentPage}
-          onUpdate:currentPage={this.onUpdate}
+          v-model={[this.internalCurrentPage, 'currentPage']}
           pageCount={this.internalPageCount}
           disabled={this.disabled}
         />

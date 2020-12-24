@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs')
 const path = require('path')
 const blacklist = ['icon', 'option', 'option-group', 'theme-chalk']
@@ -35,7 +36,9 @@ function getComponentNameList(componentPath) {
     })
     .map((componentName) => {
       return (
-        componentName.charAt(0).toLocaleLowerCase() + componentName.slice(1)
+        componentName.charAt(0).toLocaleLowerCase() +
+        componentName.slice(1) +
+        fileSuffix
       )
     })
 }
