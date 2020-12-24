@@ -1,5 +1,7 @@
 <template>
   <div :class="rootClass">
+    {{ strokeLinecap }}
+    {{ type }}
     <div class="el-progress-bar" v-if="type === 'line'">
       <div class="el-progress-bar__outer" :style="barOuterStyle">
         <div class="el-progress-bar__inner" :style="barStyle">
@@ -23,6 +25,7 @@
           class="el-progress-circle__path"
           stroke="#13ce66"
           :stroke-width="svgStrokeWidth"
+          :stroke-linecap="strokeLinecap"
           fill="none"
           :d="svgPathD"
           :style="arcPathStyle"
@@ -50,10 +53,10 @@ import {
   SVG_VIEW_BOX,
   calcRelativeSvgSize,
   generateSvgPathD,
-  genStrokeStyle,
+  genTrailPathStyle,
   calcPerimeter,
   calcSvgRadius,
-  genCircleStyle
+  genArcPathStyle
 } from './props'
 
 export default defineComponent({
@@ -189,7 +192,7 @@ const useTrailPathStyle = (svgStrokeWidth) => {
     const ssw = unref(svgStrokeWidth)
     const radius = calcSvgRadius(ssw)
     const perimeter = calcPerimeter(radius)
-    return genStrokeStyle(perimeter)
+    return genTrailPathStyle(perimeter)
   })
 }
 
@@ -199,7 +202,7 @@ const useArcPathStyle = (svgStrokeWidth, percentage) => {
     const radius = calcSvgRadius(ssw)
     const perimeter = calcPerimeter(radius)
     const percent = unref(percentage)
-    return genCircleStyle(perimeter, percent)
+    return genArcPathStyle(perimeter, percent)
   })
 }
 </script>
