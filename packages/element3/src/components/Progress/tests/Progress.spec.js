@@ -9,7 +9,8 @@ import {
   assertSetBgColor,
   assertContainText,
   assertNotContainStyle,
-  assertContainStyle
+  assertContainStyle,
+  assertArcStyleOk
 } from './test-helper'
 
 describe('Progress.vue', () => {
@@ -199,6 +200,36 @@ describe('Progress.vue', () => {
       const wrapper = initProgress({ type: 'circle' })
       assertNoElem(wrapper, '.el-progress-bar')
       assertExistsElem(wrapper, '.el-progress-circle')
+    })
+
+    it('circle html and svg etc', () => {
+      const wrapper = initProgress({ type: 'circle' })
+      assertExistsElem(wrapper, '.el-progress-circle > svg')
+      const circle = wrapper.find('.el-progress-circle')
+      expect(circle.attributes().style).toBe('width: 126px; height: 126px;')
+      const svg = wrapper.find('.el-progress-circle > svg')
+      expect(svg.attributes().viewBox).toBe('0 0 100 100')
+      const track = wrapper.find('.el-progress-circle > svg > path:first-child')
+      expect(track).toHaveClass('el-progress-circle__track')
+      const path = wrapper.find('.el-progress-circle > svg > path:last-child')
+      expect(path).toHaveClass('el-progress-circle__path')
+
+      const d = `M 50 50 m 0 -47.6 a 47.6 47.6 0 1 1 0 95.2 a 47.6 47.6 0 1 1 0 -95.2`
+      const trackAttrs = track.attributes()
+      expect(trackAttrs.d).toContain(d)
+      expect(trackAttrs['stroke-width']).toBe('4.8')
+      expect(trackAttrs.style).toBe(
+        'stroke-dasharray: 299.1px, 299.1px; stroke-dashoffset: 0px;'
+      )
+      assertArcStyleOk(wrapper, 85)
+    })
+
+    it('percentage', async () => {
+      const wrapper = initProgress({ type: 'circle', percentage: 25 })
+      assertArcStyleOk(wrapper, 25)
+
+      await wrapper.setProps({ percentage: 50 })
+      assertArcStyleOk(wrapper, 50)
     })
   })
 })

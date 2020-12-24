@@ -4,7 +4,19 @@ import {
   getColorsIndex,
   sortByPercentage,
   toPercentageColors,
-  autoFixPercentage
+  autoFixPercentage,
+  DEFAULT_SVG_PX,
+  SVG_MAX_SIZE,
+  SVG_VIEW_BOX,
+  DEFAULT_STROKE_PX,
+  genFnToRelativeSvgSize,
+  calcRelativeSvgSize,
+  calcSvgRadius,
+  generateSvgPathD,
+  calcPerimeter,
+  genTrailPathStyle,
+  genArcPathStyle,
+  TRANSITION
 } from '../src/props'
 
 describe('Progress.props', () => {
@@ -48,6 +60,45 @@ describe('Progress.props', () => {
     expect(type.default).toBe('line')
     expect(type.validator('circle')).toBeTruthy()
     expect(type.validator('dashboard')).toBeTruthy()
+  })
+
+  it('type width', () => {
+    const { width } = props
+    expect(width.default).toBe(DEFAULT_SVG_PX)
+  })
+
+  it('svg relative max size', () => {
+    expect(SVG_MAX_SIZE).toBe(100)
+    expect(SVG_VIEW_BOX).toBe('0 0 100 100')
+  })
+
+  it('calculate relative stroke width', () => {
+    const strokeWidth = DEFAULT_STROKE_PX
+    const width = DEFAULT_SVG_PX
+    const toRelativeSvgSize = genFnToRelativeSvgSize(width)
+    expect(toRelativeSvgSize(width)).toBe(SVG_MAX_SIZE)
+    expect(calcRelativeSvgSize(strokeWidth, width)).toBe('4.8')
+  })
+
+  it('calculate radius, path.d and styles', () => {
+    const svgStrokeWidth = 4.8
+    const radius = calcSvgRadius(svgStrokeWidth)
+    expect(radius).toBe(47.6)
+    const svgPathD = generateSvgPathD(svgStrokeWidth)
+    expect(svgPathD).toBe(
+      `M 50 50 m 0 -47.6 a 47.6 47.6 0 1 1 0 95.2 a 47.6 47.6 0 1 1 0 -95.2`
+    )
+    const perimeter = calcPerimeter(radius)
+    expect(perimeter).toBe(299.0796206217483)
+    const strokeStyle = genTrailPathStyle(perimeter)
+    expect(strokeStyle.strokeDasharray).toBe('299.1px, 299.1px')
+    expect(strokeStyle.strokeDashoffset).toBe('0px')
+
+    const percentage = 25
+    const circleStyle = genArcPathStyle(perimeter, percentage)
+    expect(circleStyle.strokeDasharray).toBe('74.8px, 299.1px')
+    expect(circleStyle.strokeDashoffset).toBe('0px')
+    expect(circleStyle.transition).toBe(TRANSITION)
   })
 
   it('learn isRef and unref', () => {
