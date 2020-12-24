@@ -1,4 +1,4 @@
-import { generateID } from '../libs/util'
+import { generateID, rawNodeToTreeNode } from '../libs/util'
 
 const typeFlag = Symbol('TREE_NODE')
 
@@ -28,12 +28,7 @@ export class TreeNode {
       data = {},
       asyncLoadFn = () => null
     } = {},
-    {
-      /* 拦截函数 */
-      insertChild = null,
-      appendChild = null,
-      removeChild = null
-    } = {}
+    tree
   ) {
     this.id = id || generateID()
     this.label = label
@@ -53,11 +48,7 @@ export class TreeNode {
     this.asyncState = 'notload' // notload || loaded || loading
     this.asyncLoadFn = asyncLoadFn // (currentNode, resolveFn) async load child node
 
-    this.interceptHandler = {
-      insertChild,
-      appendChild,
-      removeChild
-    }
+    this.tree = tree
 
     // this.cache = {
     //   level: null
@@ -182,13 +173,12 @@ export class TreeNode {
    *
    * @param {TreeNode} node
    */
-  appendChild(node) {
-    if (this.interceptHandler.appendChild) {
-      const [_node] = this.interceptHandler.appendChild.apply(this, arguments)
-      if (typeof _node !== 'undefined') node = _node
+  appendChild(node, isNotAddRaw = true) {
+    if (isNotAddRaw) {
+      this.tree.appendRawNode(this, node)
     }
     if (!TreeNode.isType(node)) {
-      return false
+      node = rawNodeToTreeNode(node, this.tree.defaultNodeKey, this.tree)
     }
     node.parent = this
     if (this.isChecked) {
@@ -210,14 +200,12 @@ export class TreeNode {
    * @param {number} index
    * @param {TreeNode} node
    */
-  insertChild(index, node) {
-    if (this.interceptHandler.appendChild) {
-      const [_index, _node] = this.interceptHandler.insertChild.apply(
-        this,
-        arguments
-      )
-      if (typeof _index !== 'undefined') index = _index
-      if (typeof _node !== 'undefined') node = _node
+  insertChild(index, node, isNotInsertRaw = true) {
+    if (isNotInsertRaw) {
+      this.tree.insertRawNode(this, index, node)
+    }
+    if (!TreeNode.isType(node)) {
+      node = rawNodeToTreeNode(node, this.tree.defaultNodeKey, this.tree)
     }
     if (!TreeNode.isType(node)) {
       return false
@@ -238,12 +226,13 @@ export class TreeNode {
    *
    * @param {number} index
    */
-  removeChild(index) {
-    if (this.interceptHandler.appendChild) {
-      this.interceptHandler.removeChild.apply(this, arguments)
-    }
+  removeChild(index, isNotDelRaw = true) {
     if (index < 0 || index >= this.childNodes.length) {
       return false
+    }
+    if (isNotDelRaw) {
+      console.log(this, index)
+      this.tree.removeChildRawNode(this, index)
     }
     this.childNodes.splice(index, 1)
     return true
@@ -494,9 +483,5 @@ export class TreeNode {
     }
 
     return node.type === typeFlag
-  }
-
-  static create({ id, label, childNodes, interceptHandler, ...otherParams }) {
-    return new TreeNode(id, label, childNodes, otherParams, interceptHandler)
   }
 }

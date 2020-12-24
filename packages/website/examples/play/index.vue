@@ -2,6 +2,7 @@
   <el-tree
     :data="data"
     :defaultNodeKey="defaultNodeKey"
+    ref="tree"
     @node-click="handleNodeClick"
   ></el-tree>
   <button @click="onClick('add')">ADD</button>
@@ -72,14 +73,21 @@ export default {
     },
     onClick(e) {
       if (e === 'add') {
-        this.data[0].children = [
+        this.$refs.tree.root.appendChild(
           {
-            label: Math.random() * 1000,
-            t: 55
-          }
-        ]
+            label: 'test'
+          },
+          true
+        )
+        console.log('click', this.data)
+        // this.data[0].children = [
+        //   {
+        //     label: Math.random() * 1000,
+        //     t: 55
+        //   }
+        // ]
       } else {
-        this.data[0].children.pop()
+        this.$refs.tree.root.removeChild(2)
       }
     }
   }

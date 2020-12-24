@@ -152,14 +152,17 @@ export default {
         deep: true,
         flush: 'pre',
         async onTrigger(e) {
-          console.log(e)
           if (e.type === 'add') {
-            const rawNode = tree.getParentRawNode(e.newValue)
-            const treeNode = tree.root.findOne(rawNode)
-            treeNode.append(e.newValue)
+            if (e.target.findIndex((n) => n.id === e.newValue.id) === -1) {
+              const rawNode = tree.getParentRawNode(e.newValue)
+              const treeNode = tree.root.findOne(rawNode)
+              treeNode && treeNode.appendChild(e.newValue, false)
+            }
           } else if (e.type === 'delete') {
-            const treeNode = tree.root.findOne(e.oldValue.id)
-            treeNode.remove()
+            if (!tree.root.findOne(e.oldValue.id)) {
+              const treeNode = tree.root.findOne(e.oldValue.id)
+              treeNode.parent.removeChild(e.key, false)
+            }
           } else if (
             e.type === 'set' &&
             e.key === props.defaultNodeKey.childNodes
@@ -167,8 +170,13 @@ export default {
             const treeNode = tree.root.findOne(e.target.id)
             treeNode.childNodes.forEach((node) => node.remove())
             e.newValue.map((rawNode) =>
-              treeNode.appendChild(tree.rawNodeToTreeNode(rawNode))
+              treeNode.appendChild(tree.rawNodeToTreeNode(rawNode), false)
             )
+          } else if (e.type === 'set' && e.key === 'value') {
+            const treeNode = tree.root
+            e.target.value.map((rawNode) => {
+              treeNode.appendChild(tree.rawNodeToTreeNode(rawNode), false)
+            })
           }
         }
       }

@@ -1,6 +1,5 @@
 import { TreeNode } from './TreeNode'
-import { nodeMap, nodeEach, transitionObjectKey } from '../libs/util'
-import { createAction } from './Action'
+import { nodeEach, rawNodeToTreeNode } from '../libs/util'
 
 export class Tree {
   /**
@@ -11,14 +10,7 @@ export class Tree {
   constructor(list, defaultNodeKey = {}, defaultNodeValue = {}) {
     this.isUpdateRaw = true
     this.raw = list
-    this.injectAction = createAction(this) // The core method is injected with interceptor functions, the insert RowNode is automatically converted to TreeNode
-    this.root = new TreeNode(
-      Date.now(),
-      'root',
-      [],
-      defaultNodeValue,
-      this.injectAction
-    )
+    this.root = new TreeNode(Date.now(), 'root', [], defaultNodeValue, this)
     this.defaultNodeKey = Object.assign(
       {
         id: 'id',
@@ -81,24 +73,10 @@ export class Tree {
   }
 
   rawNodeToTreeNode(rawNode) {
-    const { childNodes } = this.defaultNodeKey
-    return nodeMap(
+    return rawNodeToTreeNode(
       rawNode,
-      (_node, node) => {
-        const handledNode = transitionObjectKey(_node, this.defaultNodeKey)
-        // debugger
-        const treeNode = TreeNode.create(
-          Object.assign(
-            {},
-            this.defaultNodeValue,
-            { data: { raw: node }, interceptHandler: this.injectAction },
-            handledNode,
-            { childNodes: [] }
-          )
-        )
-        return treeNode
-      },
-      { childKey: childNodes, mapChildKey: 'childNodes' }
+      this.defaultNodeKey,
+      this.defaultNodeValue
     )
   }
 

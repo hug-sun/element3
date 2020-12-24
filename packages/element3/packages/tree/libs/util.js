@@ -1,4 +1,5 @@
 import { isArray, isObject } from '../../../src/utils/types'
+import { TreeNode } from '../entity/TreeNode'
 
 /**
  * Deep traversal of the object
@@ -120,4 +121,28 @@ export const extractMethods = (obj, methods) => {
 
 export const generateID = function () {
   return Date.now() * 1000 + parseInt(Math.random() * 1000)
+}
+
+export const rawNodeToTreeNode = (rawNode, defaultNodeKey, tree) => {
+  const { childNodes } = defaultNodeKey
+  return nodeMap(
+    rawNode,
+    (_node, node) => {
+      const handledNode = transitionObjectKey(_node, defaultNodeKey)
+      // debugger
+      const _treeNode = Object.assign({}, handledNode, {
+        childNodes: [],
+        data: { raw: node }
+      })
+      const treeNode = new TreeNode(
+        _treeNode.id,
+        _treeNode.label,
+        _treeNode.childNodes,
+        _treeNode,
+        tree
+      )
+      return treeNode
+    },
+    { childKey: childNodes, mapChildKey: 'childNodes' }
+  )
 }
