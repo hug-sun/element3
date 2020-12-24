@@ -99,7 +99,7 @@ import {
 } from '../../../src/utils/date-util'
 import Popper from '../../../src/utils/vue-popper'
 import Emitter from '../../../src/mixins/emitter'
-import ElInput from '../../src/components/Input'
+import { ElInput } from '../../src/components/Input'
 import merge from '../../../src/utils/merge'
 
 const NewPopper = {
