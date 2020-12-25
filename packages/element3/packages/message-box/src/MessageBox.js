@@ -1,47 +1,6 @@
-// #todo
-import { defineComponent, isVNode } from 'vue'
+import { isVNode } from 'vue'
 import { createComponent } from '../../../src/use/component'
 import msgboxVue from './MessageBox.vue'
-import merge from '../../../src/utils/merge'
-const messageBoxConstructor = defineComponent(msgboxVue)
-const defaults = {
-  title: null,
-  message: '',
-  type: '',
-  iconClass: '',
-  showInput: false,
-  showClose: true,
-  modalFade: true,
-  lockScroll: true,
-  closeOnClickModal: true,
-  closeOnPressEscape: true,
-  closeOnHashChange: true,
-  inputValue: null,
-  inputPlaceholder: '',
-  inputType: 'text',
-  inputPattern: null,
-  inputValidator: null,
-  inputErrorMessage: '',
-  showConfirmButton: true,
-  showCancelButton: false,
-  confirmButtonPosition: 'right',
-  confirmButtonHighlight: false,
-  cancelButtonHighlight: false,
-  confirmButtonText: '',
-  cancelButtonText: '',
-  confirmButtonClass: '',
-  cancelButtonClass: '',
-  customClass: '',
-  beforeClose: null,
-  dangerouslyUseHTMLString: false,
-  center: false,
-  roundButton: false,
-  distinguishCancelAndClose: false
-}
-
-// const MessageBoxConstructor = {
-//   extends: msgboxVue
-// }
 
 let currentMsg, instance
 let msgQueue = []
@@ -50,33 +9,32 @@ const defaultCallback = (action) => {
   if (currentMsg) {
     if (currentMsg.resolve) {
       if (action === 'confirm') {
-        if (instance.vnode.props.showInput) {
+        if (instance.proxy.showInput) {
           currentMsg.resolve({
-            value: instance.setupState.state.inputValue,
+            value: instance.proxy.inputValue,
             action
           })
         } else {
-          currentMsg.resolve(action)
+          currentMsg.resolve({ action })
         }
       } else if (
         currentMsg.reject &&
         (action === 'cancel' || action === 'close')
       ) {
-        currentMsg.reject(action)
+        currentMsg.reject({ action })
       }
     }
   }
 }
 
 const initInstance = (currentMsg, VNode = null) => {
-  defaults.callback = defaultCallback
-  instance = createComponent(messageBoxConstructor, currentMsg.options, VNode)
+  instance = createComponent(msgboxVue, currentMsg.options, VNode)
+  MessageBox.instance = instance
 }
 
 const showNextMsg = () => {
   if (msgQueue.length > 0) {
     currentMsg = msgQueue.shift()
-
     const options = currentMsg.options
 
     if (options.callback === undefined) {
@@ -87,129 +45,98 @@ const showNextMsg = () => {
     options.callback = (action, instance) => {
       oldCb(action, instance)
     }
-    if (isVNode(currentMsg.message)) {
-      initInstance(currentMsg, { default: () => currentMsg.message })
-    }
-    initInstance(currentMsg)
-    ;[
-      'modal',
-      'showClose',
-      'closeOnClickModal',
-      'closeOnPressEscape',
-      'closeOnHashChange'
-    ].forEach((prop) => {
-      if (options[prop] === undefined) {
-        options[prop] = true
-      }
-    })
+
+    initInstance(currentMsg, isVNode(options.message) ? options.message : null)
     document.body.appendChild(instance.vnode.el)
   }
-  // }
 }
 
-const MessageBox = function (options, callback) {
-  // if (Vue.prototype.$isServer) return
-  if (typeof options === 'string' || isVNode(options)) {
-    options = {
-      message: options
-    }
-    if (typeof arguments[1] === 'string') {
-      options.title = arguments[1]
-    }
-  } else if (options.callback && !callback) {
+const MessageBox = function (options) {
+  let callback = null
+  if (options.callback) {
     callback = options.callback
   }
 
   if (typeof Promise !== 'undefined') {
-    return new Promise((resolve, reject) => {
+    let promiseInstance = new Promise((resolve, reject) => {
       // eslint-disable-line
       msgQueue.push({
-        options: merge({}, defaults, MessageBox.defaults, options),
+        options: options,
         callback: callback,
         resolve: resolve,
         reject: reject
       })
-
       showNextMsg()
     })
+    promiseInstance.instance = instance
+    return promiseInstance
   } else {
     msgQueue.push({
-      options: merge({}, defaults, MessageBox.defaults, options),
+      options: options,
       callback: callback
     })
 
     showNextMsg()
+    return { instance }
   }
 }
 
-MessageBox.setDefaults = (defaults) => {
-  MessageBox.defaults = defaults
-}
-
-MessageBox.alert = (message, title, options) => {
+const MergeCondition = (message, title, options) => {
   if (typeof title === 'object') {
     options = title
     title = ''
   } else if (title === undefined) {
     title = ''
   }
+  if (typeof message === 'object') {
+    options = message
+    message = ''
+  }
+  return Object.assign(
+    {
+      title: title,
+      message: message,
+      confirmButtonText: '确认',
+      cancelButtonText: '取消'
+    },
+    options
+  )
+}
+
+MessageBox.alert = (message, title, options) => {
+  const defaultVal = {
+    type: null,
+    category: 'alert'
+  }
   return MessageBox(
-    merge(
-      {
-        title: title,
-        message: message,
-        _type: 'alert',
-        closeOnPressEscape: false,
-        closeOnClickModal: false
-      },
-      options
-    )
+    Object.assign(defaultVal, MergeCondition(message, title, options))
   )
 }
 
 MessageBox.confirm = (message, title, options) => {
-  if (typeof title === 'object') {
-    options = title
-    title = ''
-  } else if (title === undefined) {
-    title = ''
+  const defaultVal = {
+    type: 'info',
+    category: 'confirm'
   }
   return MessageBox(
-    merge(
-      {
-        title: title,
-        message: message,
-        _type: 'confirm',
-        showCancelButton: true
-      },
-      options
-    )
+    Object.assign(defaultVal, MergeCondition(message, title, options))
   )
 }
 
 MessageBox.prompt = (message, title, options) => {
-  if (typeof title === 'object') {
-    options = title
-    title = ''
-  } else if (title === undefined) {
-    title = ''
+  const defaultVal = {
+    type: null,
+    showInput: true,
+    category: 'prompt',
+    inputErrorMessage: '输入的数据不合法!'
   }
   return MessageBox(
-    merge(
-      {
-        title: title,
-        message: message,
-        showCancelButton: true,
-        showInput: true,
-        _type: 'prompt'
-      },
-      options
-    )
+    Object.assign(defaultVal, MergeCondition(message, title, options))
   )
 }
 
 MessageBox.close = () => {
-  instance.doClose()
+  instance.proxy.closeHandle()
   msgQueue = []
   currentMsg = null
 }
