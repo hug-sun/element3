@@ -18,7 +18,7 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper.text()).toContain(content)
+    expect(wrapper).toHaveTextContent(content)
   })
 
   it('autofocus', () => {
@@ -29,7 +29,7 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper.attributes()).toHaveProperty('autofocus')
+    expect(wrapper).toHaveAttribute('autofocus')
   })
 
   describe('set button size', () => {
@@ -142,7 +142,7 @@ describe('Button.vue', () => {
       })
 
       expect(wrapper).toHaveClass('is-disabled')
-      expect(wrapper.attributes()).toHaveProperty('disabled')
+      expect(wrapper).toHaveAttribute('disabled')
     })
 
     it('by elForm.disabled', () => {
@@ -157,19 +157,19 @@ describe('Button.vue', () => {
       })
 
       expect(wrapper).toHaveClass('is-disabled')
-      expect(wrapper.attributes()).toHaveProperty('disabled')
+      expect(wrapper).toHaveAttribute('disabled')
     })
   })
 
   describe('set button icon', () => {
-    it.only(' by props.icon', () => {
+    it(' by props.icon', () => {
       const wrapper = mount(Button, {
         props: {
           icon: 'el-icon-edit'
         }
       })
 
-      expect(wrapper.find('.el-icon-edit').exists()).toBe(true)
+      expect(wrapper.find('.el-icon-edit')).toBeExist()
     })
 
     it("don't show icon when loading eq true", () => {
@@ -180,8 +180,8 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper.find('.el-icon-edit').exists()).toBe(false)
-      expect(wrapper.find('.el-icon-loading').exists()).toBe(true)
+      expect(wrapper.find('.el-icon-edit')).not.toBeExist()
+      expect(wrapper.find('.el-icon-loading')).toBeExist()
     })
   })
 
@@ -194,6 +194,6 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper.attributes('type')).toBe(nativeType)
+    expect(wrapper).toHaveAttribute('type', nativeType)
   })
 })
