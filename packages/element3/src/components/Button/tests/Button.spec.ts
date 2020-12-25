@@ -19,6 +19,7 @@ describe('Button.vue', () => {
     })
 
     expect(wrapper).toHaveTextContent(content)
+    expect(wrapper).toHaveTextContent(content)
   })
 
   it('autofocus', () => {
