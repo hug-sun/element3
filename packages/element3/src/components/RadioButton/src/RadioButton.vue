@@ -31,6 +31,7 @@
 </template>
 <script>
 import { toRefs, ref, inject, computed, watch } from 'vue'
+import { props } from './props'
 import { useGlobalOptions } from '../../../use/globalConfig'
 import { useCheckGroup } from './uses'
 
@@ -39,11 +40,7 @@ export default {
 
   componentName: 'ElRadioButton',
 
-  props: {
-    label: [String, Number, Symbol, Boolean],
-    disabled: Boolean,
-    name: String
-  },
+  props,
 
   setup(props) {
     const { radioGroup } = useCheckGroup('button')

@@ -29,19 +29,19 @@ describe('radioButton.vue', () => {
     })
 
     await wrapper.setProps({ size: 'mini' })
-    expect(
-      wrapper.findComponent({ name: 'ElRadioButton' }).classes()
-    ).toContain(`el-radio-button--mini`)
+    expect(wrapper.findComponent({ name: 'ElRadioButton' })).toHaveClass(
+      `el-radio-button--mini`
+    )
 
     await wrapper.setProps({ size: 'small' })
-    expect(
-      wrapper.findComponent({ name: 'ElRadioButton' }).classes()
-    ).toContain(`el-radio-button--small`)
+    expect(wrapper.findComponent({ name: 'ElRadioButton' })).toHaveClass(
+      `el-radio-button--small`
+    )
 
     await wrapper.setProps({ size: 'medium' })
-    expect(
-      wrapper.findComponent({ name: 'ElRadioButton' }).classes()
-    ).toContain(`el-radio-button--medium`)
+    expect(wrapper.findComponent({ name: 'ElRadioButton' })).toHaveClass(
+      `el-radio-button--medium`
+    )
   })
 
   it('modelValue', async () => {
@@ -84,9 +84,9 @@ describe('radioButton.vue', () => {
     })
 
     await wrapper.setProps({ disabled: true })
-    expect(
-      wrapper.findComponent({ name: 'ElRadioButton' }).classes()
-    ).toContain('is-disabled')
+    expect(wrapper.findComponent({ name: 'ElRadioButton' })).toHaveClass(
+      'is-disabled'
+    )
 
     await wrapper
       .findAllComponents({ name: 'ElRadioButton' })[1]
@@ -112,9 +112,9 @@ describe('radioButton.vue', () => {
       .findAllComponents({ name: 'ElRadioButton' })[0]
       .trigger('click')
 
-    expect(
-      wrapper.findAllComponents({ name: 'ElRadioButton' })[0].classes()
-    ).toContain('is-active')
+    expect(wrapper.findAllComponents({ name: 'ElRadioButton' })[0]).toHaveClass(
+      'is-active'
+    )
   })
 
   describe('event', () => {
