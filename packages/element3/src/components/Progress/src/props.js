@@ -3,14 +3,21 @@ import { isEmpty } from '../../../utils/util'
 
 export const DEFAULT_COLOR = '#409EFF'
 export const STATUS_SETTING = {
-  success: 'el-icon-circle-check',
-  warning: 'el-icon-warning',
-  exception: 'el-icon-circle-close'
-}
-export const STATUS_COLOR = {
-  success: '#67c23a',
-  warning: '#e6a23c',
-  exception: '#f56c6c'
+  success: {
+    color: '#67c23a',
+    lineIconClass: 'el-icon-circle-check',
+    arcIconClass: 'el-icon-check'
+  },
+  warning: {
+    color: '#e6a23c',
+    lineIconClass: 'el-icon-warning',
+    arcIconClass: 'el-icon-warning'
+  },
+  exception: {
+    color: '#f56c6c',
+    lineIconClass: 'el-icon-circle-close',
+    arcIconClass: 'el-icon-close'
+  }
 }
 export const STATUSES = Object.keys(STATUS_SETTING)
 export const TYPES = ['line', 'circle', 'dashboard']
@@ -157,7 +164,7 @@ export function getSvgStrokeColor(color, status) {
     return color
   }
   if (!isEmpty(status)) {
-    return STATUS_COLOR[status]
+    return STATUS_SETTING[status].color
   }
   return DEFAULT_COLOR
 }

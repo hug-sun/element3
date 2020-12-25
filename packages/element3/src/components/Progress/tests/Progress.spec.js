@@ -1,5 +1,4 @@
 import { DEFAULT_COLOR, sortByPercentage } from '../src/props'
-// import { toHa } from "jest-vtu";
 
 import {
   initProgress,
@@ -13,7 +12,8 @@ import {
   assertArcStyleOk,
   findSvgTrailPath,
   findSvgArcPath,
-  assertSvgStrokeOk
+  assertSvgStrokeOk,
+  assertIconClassOk
 } from './test-helper'
 
 describe('Progress.vue', () => {
@@ -265,6 +265,21 @@ describe('Progress.vue', () => {
       status = 'exception'
       await wrapper.setProps({ status })
       assertSvgStrokeOk(wrapper, status)
+    })
+
+    it('icon class', async () => {
+      const wrapper = initProgress({ type: 'circle' })
+      let status = 'success'
+      await wrapper.setProps({ status })
+      assertIconClassOk(wrapper, status)
+
+      status = 'warning'
+      await wrapper.setProps({ status })
+      assertIconClassOk(wrapper, status)
+
+      status = 'exception'
+      await wrapper.setProps({ status })
+      assertIconClassOk(wrapper, status)
     })
   })
 })
