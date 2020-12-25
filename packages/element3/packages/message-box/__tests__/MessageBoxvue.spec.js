@@ -2,6 +2,10 @@ import { mount } from '@vue/test-utils'
 import { nextTick, h, ref } from 'vue'
 import MessageBox from '../src/MessageBox.vue'
 describe('MessageBox.vue', () => {
+  describe('snapshot', () => {
+    const wrapper = mount(MessageBox)
+    expect(wrapper.element).toMatchSnapshot()
+  })
   describe('proprety', () => {
     it('proprety title', () => {
       const warpper = mount(MessageBox, {
