@@ -32,7 +32,7 @@ export const props = {
   size: {
     type: String,
     validator: function (value) {
-      return ['medium', 'small', 'mini'].includes(value)
+      return ['medium', 'small', 'mini', ''].includes(value)
     }
   },
   autosize: {
