@@ -80,7 +80,7 @@ import AlphaSlider from './alpha-slider'
 import Predefine from './predefine'
 // import Popper from '../../../../src/utils/vue-popper'
 // import Locale from '../../../../src/mixins/locale'
-import ElInput from '../../../input'
+import { ElInput } from '../../../../src/components/Input'
 import { ElButton } from '../../../../src/components/Button'
 
 export default {
