@@ -61,10 +61,12 @@ describe('show-word-limit', () => {
         >`
     })
 
-    wrapper.find('.el-input__inner').setValue('content')
+    expect(wrapper.find('.el-input').classes()).not.toContain('is-exceed')
+    wrapper.find('.el-input__inner').setValue('content test')
 
     await nextTick()
-    expect(wrapper.find('.el-input__count-inner').text()).toContain(`7/10`)
+    expect(wrapper.find('.el-input__count-inner').text()).toContain(`10/10`)
+    expect(wrapper.find('.el-input').classes()).toContain('is-exceed')
   })
 })
 

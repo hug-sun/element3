@@ -69,10 +69,14 @@ export const useInput = (props, cxt, textarea) => {
 
   const textLength = computed(() => {
     if (typeof modelValue.value === 'number') {
-      return String(modelValue.value).length
+      return String(modelValue.value).length >= Number(cxt.attrs.maxlength)
+        ? Number(cxt.attrs.maxlength)
+        : String(modelValue.value).length
     }
 
-    return (modelValue.value || '').length
+    return modelValue.value.length >= Number(cxt.attrs.maxlength)
+      ? Number(cxt.attrs.maxlength)
+      : modelValue.value.length
   })
 
   const elFormItemSize = computed(() => {
