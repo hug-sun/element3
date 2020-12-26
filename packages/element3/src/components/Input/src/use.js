@@ -4,7 +4,7 @@ import calcTextareaHeight from './calcTextareaHeight'
 export const useClass = (inputSize, inputExceed, props, attrs, slots) => {
   return computed(() => {
     const classes = [
-      inputSize.value ? 'el-input--' + inputSize.value : 'el-input',
+      inputSize.value ? 'el-input--' + inputSize.value : '',
       props.type === 'textarea' ? 'el-textarea' : 'el-input'
     ]
 
