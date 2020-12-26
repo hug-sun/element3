@@ -17,4 +17,10 @@ describe('Button.props', () => {
     expect(type.validator('info')).toBe(true)
     expect(type.validator('text')).toBe(true)
   })
+
+  it('nativeType', () => {
+    const { nativeType } = props
+
+    expect(nativeType.default).toBe('button')
+  })
 })
