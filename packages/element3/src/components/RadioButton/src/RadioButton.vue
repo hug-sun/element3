@@ -30,10 +30,9 @@
   </label>
 </template>
 <script>
-import { toRefs, ref, inject, computed, watch } from 'vue'
+import { toRefs, ref, inject, computed, watch, getCurrentInstance } from 'vue'
 import { props } from './props'
 import { useGlobalOptions } from '../../../use/globalConfig'
-import { useCheckGroup } from './uses'
 
 export default {
   name: 'ElRadioButton',
@@ -43,7 +42,7 @@ export default {
   props,
 
   setup(props) {
-    const { radioGroup } = useCheckGroup('button')
+    const { radioGroup } = useCheckGroup()
     const { label, disabled } = toRefs(props)
     const focus = ref(false)
 
@@ -71,11 +70,18 @@ export default {
   }
 }
 
+const useCheckGroup = () => {
+  const { parent } = getCurrentInstance()
+  const isGroup = parent.type.name === 'ElRadioGroup'
+  const radioGroup = isGroup ? parent : null
+  return { isGroup, radioGroup }
+}
+
 const useModel = (radioGroup) => {
-  const value = ref(radioGroup.props.modelValue)
+  const value = ref(radioGroup?.props.modelValue)
 
   watch(
-    () => radioGroup.props.modelValue,
+    () => radioGroup?.props.modelValue,
     (val) => {
       value.value = val
     }
@@ -86,8 +92,8 @@ const useModel = (radioGroup) => {
 
 const useChange = (radioGroup, value) => {
   const handleChange = () => {
-    radioGroup.emit('update:modelValue', value.value)
-    radioGroup.emit('change', value.value)
+    radioGroup?.emit('update:modelValue', value.value)
+    radioGroup?.emit('change', value.value)
   }
 
   return handleChange
@@ -99,25 +105,25 @@ const useStyle = ({ disabled, radioGroup }) => {
   const isDisabled = computed(() => {
     const elForm = inject('elForm', {})
 
-    return disabled?.value || radioGroup.props.disabled || elForm.disabled
+    return disabled?.value || radioGroup?.props.disabled || elForm.disabled
   })
 
   const size = computed(() => {
     const elFormItem = inject('elFormItem', {})
 
     return (
-      radioGroup.props.size || elFormItem?.elFormItemSize || globalConfig.size
+      radioGroup?.props.size || elFormItem?.elFormItemSize || globalConfig.size
     )
   })
 
   const style = computed(() => {
     return {
-      backgroundColor: radioGroup.props.fill || '',
-      borderColor: radioGroup.props.fill || '',
-      boxShadow: radioGroup.props.fill
-        ? `-1px 0 0 0 ${radioGroup.props.fill}`
+      backgroundColor: radioGroup?.props.fill || '',
+      borderColor: radioGroup?.props.fill || '',
+      boxShadow: radioGroup?.props.fill
+        ? `-1px 0 0 0 ${radioGroup?.props.fill}`
         : '',
-      color: radioGroup.props.textColor || ''
+      color: radioGroup?.props.textColor || ''
     }
   })
 

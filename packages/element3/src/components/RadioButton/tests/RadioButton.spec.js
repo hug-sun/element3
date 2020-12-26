@@ -1,7 +1,7 @@
 import RadioButton from '../src/RadioButton.vue'
-import RadioGroup from '../../../../packages/radio-group/RadioGroup.vue'
+import RadioGroup from 'element-ui/packages/radio-group/RadioGroup'
 import { mount } from '@vue/test-utils'
-import { ref, h, nextTick } from 'vue'
+import { ref, h, nextTick, reactive } from 'vue'
 
 const content = ['上海', '北京']
 
@@ -92,6 +92,19 @@ describe('radioButton.vue', () => {
       .findAllComponents({ name: 'ElRadioButton' })[1]
       .trigger('click')
     expect(modelValue.value).toStrictEqual('')
+  })
+
+  it('by elForm.disable', () => {
+    const wrapper = mount(RadioButton, {
+      global: {
+        provide: {
+          elForm: reactive({
+            disabled: true
+          })
+        }
+      }
+    })
+    expect(wrapper.classes()).toContain(`is-disabled`)
   })
 
   it('is-active', async () => {
