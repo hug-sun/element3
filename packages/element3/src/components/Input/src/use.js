@@ -12,7 +12,7 @@ export const useClass = (inputSize, inputExceed, props, attrs, slots) => {
       classes.push('is-disabled')
     }
 
-    if (inputExceed) {
+    if (inputExceed.value) {
       classes.push('is-exceed')
     }
 
