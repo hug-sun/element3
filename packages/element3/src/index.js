@@ -13,7 +13,7 @@ import { ElButton } from './components/Button'
 import ElButtonGroup from '../packages/button-group'
 import { ElLink } from './components/Link'
 // Form
-import ElRadio from '../packages/radio'
+import { ElRadio } from './components/Radio'
 import { ElRadioButton } from './components/RadioButton'
 import ElRadioGroup from '../packages/radio-group'
 import ElCheckbox from '../packages/checkbox'
