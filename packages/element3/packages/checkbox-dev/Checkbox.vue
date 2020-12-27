@@ -96,7 +96,7 @@ export default {
     border: Boolean,
     size: {
       type: String,
-      validator(val) {
+      validator: (val) => {
         if (val === '') return true
         return ['medium', 'small', 'mini'].includes(val)
       }
@@ -120,7 +120,9 @@ export default {
 
 function useBorder(border) {
   const { elCheckboxGroup } = useInject()
-  const isBorder = border?.value || elCheckboxGroup.border
+  const isBorder = computed(() => {
+    return border?.value || elCheckboxGroup.proxy.border
+  })
 
   return {
     isBorder
@@ -130,8 +132,14 @@ function useBorder(border) {
 function useSize(size) {
   const globalConfig = useGlobalOptions()
   const { elCheckboxGroup, elFormItem } = useInject()
-  const checkboxSize =
-    size?.value || elCheckboxGroup.size || elFormItem.size || globalConfig.size
+  const checkboxSize = computed(() => {
+    return (
+      size?.value ||
+      elCheckboxGroup.proxy.size ||
+      elFormItem.size ||
+      globalConfig.size
+    )
+  })
 
   return {
     checkboxSize
@@ -140,28 +148,27 @@ function useSize(size) {
 
 function useDisabled(disabled, isChecked) {
   const { elCheckboxGroup, elFormItem } = useInject()
-  const { parentModelValue, min } = useParent()
+  const modelValue = computed(() => elCheckboxGroup.proxy.modelValue)
+  const min = computed(() => elCheckboxGroup.proxy.min)
+  const max = computed(() => elCheckboxGroup.proxy.max)
   const disabledValue = computed(() => {
     return (
       disabled?.value ||
-      unref(elCheckboxGroup.disabled) ||
+      unref(elCheckboxGroup.proxy.disabled) ||
       unref(elFormItem.disabled) ||
       false
     )
   })
 
   const isDisabled = computed(() => {
-    if (disabledValue.value) {
-      return true
-    } else if (
-      parentModelValue.value &&
-      parentModelValue.value.length <= min.value &&
-      isChecked.value
-    ) {
-      return true
-    } else {
-      return false
+    let limit = false
+    if (modelValue.value) {
+      limit =
+        (modelValue.value.length <= min.value && isChecked.value) ||
+        (modelValue.value.length >= max.value && !isChecked.value)
     }
+
+    return disabledValue.value || limit
   })
 
   return {
@@ -176,7 +183,7 @@ function useModel() {
   /**
    * elCheckboxGroup.modelValue may be a normal array or a reactive array
    */
-  const parentModelValue = computed(() => unref(elCheckboxGroup?.modelValue))
+  const parentModelValue = computed(() => elCheckboxGroup.proxy.modelValue)
   const state = computed(() => {
     return modelValue.value || parentModelValue.value || false
   })
@@ -238,23 +245,12 @@ function useInitSelect(model) {
 }
 
 function useInject() {
-  const elCheckboxGroup = inject('elCheckboxGroup', {})
+  const elCheckboxGroup = inject('elCheckboxGroup', { proxy: {} })
   const elFormItem = inject('elFormItem', {})
 
   return {
     elCheckboxGroup,
     elFormItem
-  }
-}
-
-function useParent() {
-  const { elCheckboxGroup } = useInject()
-  const parentModelValue = computed(() => elCheckboxGroup?.modelValue?.value)
-  const min = computed(() => elCheckboxGroup?.min?.value)
-
-  return {
-    parentModelValue,
-    min
   }
 }
 

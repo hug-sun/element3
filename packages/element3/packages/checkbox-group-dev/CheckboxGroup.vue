@@ -5,11 +5,12 @@
 </template>
 
 <script>
-import { provide, toRefs } from 'vue'
+import { provide, getCurrentInstance } from 'vue'
 export default {
   name: 'ElCheckboxGroup',
   emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
+    const instance = getCurrentInstance()
     const update = (newValue) => {
       emit('update:modelValue', newValue)
     }
@@ -17,25 +18,26 @@ export default {
       emit('change', newValue)
     }
 
-    provide('elCheckboxGroup', {
-      ...toRefs(props),
+    provide('elCheckboxGroup', instance)
+
+    return {
       update,
       change
-    })
+    }
   },
   props: {
     modelValue: Array,
     size: {
       type: String,
-      default: '',
-      validator(val) {
+      validator: (val) => {
         if (val === '') return true
         return ['medium', 'small', 'mini'].includes(val)
       }
     },
     border: Boolean,
     disabled: Boolean,
-    min: { type: Number, default: 0 }
+    min: Number,
+    max: Number
   }
 }
 </script>

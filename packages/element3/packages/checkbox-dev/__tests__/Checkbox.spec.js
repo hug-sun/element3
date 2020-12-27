@@ -61,7 +61,7 @@ describe('Checkbox.vue', () => {
       const wrapper = mount(Checkbox, {
         global: {
           provide: {
-            elCheckboxGroup: reactive({ border: true })
+            elCheckboxGroup: reactive({ proxy: { border: true } })
           }
         }
       })
@@ -91,7 +91,7 @@ describe('Checkbox.vue', () => {
       const wrapper = mount(Checkbox, {
         global: {
           provide: {
-            elCheckboxGroup: reactive({ size: 'mini' })
+            elCheckboxGroup: reactive({ proxy: { size: 'mini' } })
           }
         },
         props: { border: true }
@@ -137,7 +137,7 @@ describe('Checkbox.vue', () => {
       const wrapper = mount(Checkbox, {
         global: {
           provide: {
-            elCheckboxGroup: reactive({ disabled: true })
+            elCheckboxGroup: reactive({ proxy: { disabled: true } })
           }
         }
       })
@@ -263,7 +263,7 @@ describe('Checkbox.vue', () => {
     const wrapper = mount(Checkbox, {
       global: {
         provide: {
-          elCheckboxGroup: reactive({ modelValue: ['one', 'two'] })
+          elCheckboxGroup: reactive({ proxy: { modelValue: ['one', 'two'] } })
         }
       },
       props: {
@@ -279,7 +279,10 @@ describe('Checkbox.vue', () => {
     const wrapper = mount(Checkbox, {
       global: {
         provide: {
-          elCheckboxGroup: reactive({ modelValue: ['one'], update: () => {} })
+          elCheckboxGroup: reactive({
+            proxy: { modelValue: ['one'] },
+            update: () => {}
+          })
         }
       },
       props: {
@@ -296,7 +299,7 @@ describe('Checkbox.vue', () => {
       global: {
         provide: {
           elCheckboxGroup: reactive({
-            modelValue: ['one', 'two'],
+            proxy: { modelValue: ['one', 'two'] },
             update: () => {}
           })
         }
@@ -315,7 +318,7 @@ describe('Checkbox.vue', () => {
     const wrapper = mount(Checkbox, {
       global: {
         provide: {
-          elCheckboxGroup: { modelValue: ['one'], update: spy }
+          elCheckboxGroup: { proxy: { modelValue: ['one'] }, update: spy }
         }
       },
       props: {
@@ -334,7 +337,7 @@ describe('Checkbox.vue', () => {
       global: {
         provide: {
           elCheckboxGroup: {
-            modelValue: ['one'],
+            proxy: { modelValue: ['one'] },
             update: () => {},
             change: spy
           }

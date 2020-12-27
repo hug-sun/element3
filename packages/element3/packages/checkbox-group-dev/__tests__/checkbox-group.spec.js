@@ -144,4 +144,54 @@ describe('CheckboxGroup.vue', () => {
       ).not.toContain('is-disabled')
     })
   })
+
+  describe('props.max', () => {
+    test('the selected quantity is equal to max', async () => {
+      const values = ref(['B', 'D'])
+      const wrapper = mount(CheckboxGroup, {
+        props: { modelValue: values },
+        slots: {
+          default: ['A', 'B', 'C', 'D'].map((label) => h(Checkbox, { label }))
+        }
+      })
+
+      await wrapper.setProps({ max: 2 })
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[0].classes()
+      ).toContain('is-disabled')
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[1].classes()
+      ).not.toContain('is-disabled')
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[2].classes()
+      ).toContain('is-disabled')
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[3].classes()
+      ).not.toContain('is-disabled')
+    })
+
+    test('the selected quantity is less than max', async () => {
+      const values = ref(['B'])
+      const wrapper = mount(CheckboxGroup, {
+        props: { modelValue: values },
+        slots: {
+          default: ['A', 'B', 'C', 'D'].map((label) => h(Checkbox, { label }))
+        }
+      })
+
+      await wrapper.setProps({ max: 2 })
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[0].classes()
+      ).not.toContain('is-disabled')
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[1].classes()
+      ).not.toContain('is-disabled')
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[2].classes()
+      ).not.toContain('is-disabled')
+      expect(
+        wrapper.findAllComponents({ name: 'ElCheckbox' })[3].classes()
+      ).not.toContain('is-disabled')
+    })
+  })
 })
