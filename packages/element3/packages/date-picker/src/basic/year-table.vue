@@ -63,6 +63,7 @@ const datesInYear = (year) => {
 }
 
 export default {
+  emits: ['pick'],
   props: {
     disabledDate: {},
     value: {},

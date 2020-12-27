@@ -26,6 +26,7 @@
     <template v-slot:suffix>
       <i
         class="el-input__icon"
+        @mouseenter="handleMouseEnter"
         @click="handleClickIcon"
         :class="[showClose ? '' + clearIcon : '']"
         v-if="haveTrigger"
@@ -99,9 +100,9 @@ import {
 } from '../../../src/utils/date-util'
 import Popper from '../../../src/utils/vue-popper'
 import Emitter from '../../../src/mixins/emitter'
-import ElInput from '../../input'
+import { ElInput } from '../../../src/components/Input'
 import merge from '../../../src/utils/merge'
-
+import { createApp } from 'vue'
 const NewPopper = {
   props: {
     appendToBody: Popper.props.appendToBody,
@@ -347,7 +348,7 @@ const validator = function (val) {
 
 export default {
   mixins: [Emitter, NewPopper],
-
+  emits: ['pick', 'blur', 'focus', 'created', 'update:modelValue'],
   inject: {
     elForm: {
       default: ''
@@ -392,7 +393,7 @@ export default {
       type: String,
       default: 'left'
     },
-    value: {},
+    modelValue: {},
     defaultValue: {},
     defaultTime: {},
     rangeSeparator: {
@@ -425,12 +426,12 @@ export default {
       if (this.readonly || this.pickerDisabled) return
       if (val) {
         this.showPicker()
-        this.valueOnOpen = Array.isArray(this.value)
-          ? [...this.value]
-          : this.value
+        this.valueOnOpen = Array.isArray(this.modelValue)
+          ? [...this.modelValue]
+          : this.modelValue
       } else {
         this.hidePicker()
-        this.emitChange(this.value)
+        this.emitChange(this.modelValue)
         this.userInput = null
         if (this.validateEvent) {
           this.dispatch('el.form.blur')
@@ -482,7 +483,7 @@ export default {
     },
 
     valueIsEmpty() {
-      const val = this.value
+      const val = this.modelValue
       if (Array.isArray(val)) {
         for (let i = 0, len = val.length; i < len; i++) {
           if (val[i]) {
@@ -519,9 +520,6 @@ export default {
     },
 
     haveTrigger() {
-      if (typeof this.showTrigger !== 'undefined') {
-        return this.showTrigger
-      }
       return HAVE_TRIGGER_TYPES.indexOf(this.type) !== -1
     },
 
@@ -549,32 +547,32 @@ export default {
     },
 
     parsedValue() {
-      if (!this.value) return this.value // component value is not set
-      if (this.type === 'time-select') return this.value // time-select does not require parsing, this might change in next major version
+      if (!this.modelValue) return this.modelValue // component value is not set
+      if (this.type === 'time-select') return this.modelValue // time-select does not require parsing, this might change in next major version
 
       const valueIsDateObject =
-        isDateObject(this.value) ||
-        (Array.isArray(this.value) && this.value.every(isDateObject))
+        isDateObject(this.modelValue) ||
+        (Array.isArray(this.modelValue) && this.modelValue.every(isDateObject))
       if (valueIsDateObject) {
-        return this.value
+        return this.modelValue
       }
 
       if (this.valueFormat) {
         return (
           parseAsFormatAndType(
-            this.value,
+            this.modelValue,
             this.valueFormat,
             this.type,
             this.rangeSeparator
-          ) || this.value
+          ) || this.modelValue
         )
       }
 
       // NOTE: deal with common but incorrect usage, should remove in next major version
       // user might provide string / timestamp without value-format, coerce them into date (or array of date)
-      return Array.isArray(this.value)
-        ? this.value.map((val) => new Date(val))
-        : new Date(this.value)
+      return Array.isArray(this.modelValue)
+        ? this.modelValue.map((val) => new Date(val))
+        : new Date(this.modelValue)
     },
 
     _elFormItemSize() {
@@ -622,7 +620,7 @@ export default {
 
     // TODO $on 废弃掉了
     // eslint-disable-next-line vue/no-deprecated-events-api
-    this.$on('fieldReset', this.handleFieldReset)
+    // this.$on('fieldReset', this.handleFieldReset)
   },
 
   methods: {
@@ -757,7 +755,7 @@ export default {
     handleClickIcon(event) {
       if (this.readonly || this.pickerDisabled) return
       if (this.showClose) {
-        this.valueOnOpen = this.value
+        this.valueOnOpen = this.modelValue
         event.stopPropagation()
         this.emitInput(null)
         this.emitChange(null)
@@ -892,7 +890,7 @@ export default {
 
     mountPicker() {
       // eslint-disable-next-line no-undef
-      this.picker = new Vue(this.panel).$mount()
+      this.picker = createApp(this.panel).mount(document.createElement('div'))
       this.picker.defaultValue = this.defaultValue
       this.picker.defaultTime = this.defaultTime
       this.picker.popperClass = this.popperClass
@@ -945,16 +943,15 @@ export default {
       )
       this.$el.appendChild(this.picker.$el)
       this.picker.resetView && this.picker.resetView()
-
-      this.picker.$on('dodestroy', this.doDestroy)
-      this.picker.$on('pick', (date = '', visible = false) => {
+      this.picker.on('dodestroy', this.doDestroy)
+      this.picker.on('pick', (date = '', visible = false) => {
         this.userInput = null
         this.pickerVisible = this.picker.visible = visible
         this.emitInput(date)
         this.picker.resetView && this.picker.resetView()
       })
 
-      this.picker.$on('select-range', (start, end, pos) => {
+      this.picker.on('select-range', (start, end, pos) => {
         if (this.refInput.length === 0) return
         if (!pos || pos === 'min') {
           this.refInput[0].setSelectionRange(start, end)
@@ -990,8 +987,8 @@ export default {
 
     emitInput(val) {
       const formatted = this.formatToValue(val)
-      if (!valueEquals(this.value, formatted)) {
-        this.$emit('input', formatted)
+      if (!valueEquals(this.modelValue, formatted)) {
+        this.$emit('update:modelValue', formatted)
       }
     },
 

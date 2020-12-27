@@ -13,13 +13,13 @@ import { ElButton } from './components/Button'
 import ElButtonGroup from '../packages/button-group'
 import { ElLink } from './components/Link'
 // Form
-import ElRadio from '../packages/radio'
+import { ElRadio } from './components/Radio'
 import ElRadioButton from '../packages/radio-button'
 import ElRadioGroup from '../packages/radio-group'
 import ElCheckbox from '../packages/checkbox'
 import ElCheckboxButton from '../packages/checkbox-button'
 import ElCheckboxGroup from '../packages/checkbox-group'
-import ElInput from '../packages/input'
+import { ElInput } from './components/Input'
 import ElInputNumber from '../packages/input-number'
 import ElSelect from '../packages/select'
 import ElOption from '../packages/option'
@@ -30,7 +30,7 @@ import { ElSwitch } from './components/Switch'
 import ElSlider from '../packages/slider'
 // import ElTimePicker from '../packages/time-picker'
 // import ElTimeSelect from '../packages/time-select'
-// import ElDatePicker from '../packages/date-picker'
+import ElDatePicker from '../packages/date-picker'
 import ElUpload from '../packages/upload'
 import ElRate from '../packages/rate'
 import ElColorPicker from '../packages/color-picker'
@@ -55,7 +55,7 @@ import { Message } from './components/Message'
 
 import ElMessageBox, { useMsgbox } from '../packages/message-box'
 
-import ElNotification, { useNotify } from '../packages/notification'
+import { Notification } from './components/Notification'
 // Navigation
 import ElMenu from '../packages/menu'
 import ElMenuItem from '../packages/menu-item'
@@ -151,7 +151,7 @@ const components = [
   ElSlider,
   // ElTimePicker,
   // ElTimeSelect,
-  // ElDatePicker,
+  ElDatePicker,
   ElUpload,
   ElRate,
   ElColorPicker,
@@ -193,7 +193,7 @@ function applyOptions(app) {
   app.config.globalProperties.$alert = ElMessageBox.service.alert
   app.config.globalProperties.$confirm = ElMessageBox.service.confirm
   app.config.globalProperties.$prompt = ElMessageBox.service.prompt
-  app.config.globalProperties.$notify = ElNotification.service
+  app.config.globalProperties.$notify = Notification
   app.config.globalProperties.$message = Message
 }
 
@@ -261,7 +261,7 @@ export {
   ElSlider,
   // ElTimePicker,
   // ElTimeSelect,
-  // ElDatePicker,
+  ElDatePicker,
   ElUpload,
   ElRate,
   ElColorPicker,
@@ -286,7 +286,7 @@ export {
   Message,
   useLoading,
   useMsgbox,
-  useNotify,
+  Notification,
   install,
   setupGlobalOptions
 }
