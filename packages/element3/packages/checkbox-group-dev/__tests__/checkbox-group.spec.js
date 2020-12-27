@@ -35,6 +35,33 @@ describe('CheckboxGroup.vue', () => {
     expect(values.value).toEqual(['one', 'two'])
   })
 
+  test('emit.change', async () => {
+    jest.useFakeTimers()
+    let changeModel
+    const onChange = (newChangeModel) => {
+      changeModel = newChangeModel
+    }
+
+    const values = ref(['A', 'B', 'C'])
+    const wrapper = mount(CheckboxGroup, {
+      props: {
+        modelValue: values,
+        onChange
+      },
+      slots: {
+        default: ['A', 'B', 'C', 'D'].map((label) => h(Checkbox, { label }))
+      }
+    })
+
+    await wrapper
+      .findAllComponents({ name: 'ElCheckbox' })[0]
+      .get('input')
+      .trigger('change')
+
+    await jest.runAllTicks()
+    expect(changeModel).toStrictEqual(['A', 'B', 'C'])
+  })
+
   test('props.size', async () => {
     const wrapper = mount(CheckboxGroup, {
       props: { border: true },

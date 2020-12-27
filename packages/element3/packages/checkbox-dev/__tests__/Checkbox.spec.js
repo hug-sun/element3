@@ -280,8 +280,7 @@ describe('Checkbox.vue', () => {
       global: {
         provide: {
           elCheckboxGroup: reactive({
-            proxy: { modelValue: ['one'] },
-            update: () => {}
+            proxy: { modelValue: ['one'] }
           })
         }
       },
@@ -299,8 +298,7 @@ describe('Checkbox.vue', () => {
       global: {
         provide: {
           elCheckboxGroup: reactive({
-            proxy: { modelValue: ['one', 'two'] },
-            update: () => {}
+            proxy: { modelValue: ['one', 'two'] }
           })
         }
       },
@@ -311,46 +309,5 @@ describe('Checkbox.vue', () => {
 
     await wrapper.get('input').trigger('click')
     expect(wrapper.get('input').element.checked).toBe(false)
-  })
-
-  test('should trigger parent update', async () => {
-    const spy = jest.fn()
-    const wrapper = mount(Checkbox, {
-      global: {
-        provide: {
-          elCheckboxGroup: { proxy: { modelValue: ['one'] }, update: spy }
-        }
-      },
-      props: {
-        label: 'two'
-      }
-    })
-
-    await wrapper.get('input').trigger('click')
-    expect(spy).toBeCalledTimes(1)
-    expect(spy).toHaveBeenCalledWith(['one', 'two'])
-  })
-
-  test('should trigger parent change', async () => {
-    const spy = jest.fn()
-    const wrapper = mount(Checkbox, {
-      global: {
-        provide: {
-          elCheckboxGroup: {
-            proxy: { modelValue: ['one'] },
-            update: () => {},
-            change: spy
-          }
-        }
-      },
-      props: {
-        label: 'two'
-      }
-    })
-
-    await wrapper.get('input').trigger('click')
-    await nextTick()
-    expect(spy).toBeCalledTimes(1)
-    expect(spy).toHaveBeenCalledWith(['one', 'two'])
   })
 })

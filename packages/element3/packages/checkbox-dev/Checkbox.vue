@@ -64,6 +64,7 @@ import {
   unref
 } from 'vue'
 import { useGlobalOptions } from '../../src/use/globalConfig'
+import { useEmitter } from '../../src/use/emitter'
 
 export default {
   name: 'ElCheckbox',
@@ -180,6 +181,7 @@ function useModel() {
   const { modelValue, trueLabel, falseLabel, label } = onlyProps()
   const { elCheckboxGroup } = useInject()
   const vm = getCurrentInstance()
+  const { dispatch } = useEmitter()
   /**
    * elCheckboxGroup.modelValue may be a normal array or a reactive array
    */
@@ -199,7 +201,7 @@ function useModel() {
         index === -1 && checked
           ? modelValue.push(label.value)
           : modelValue.splice(index, 1)
-        elCheckboxGroup.update && elCheckboxGroup.update(modelValue)
+        dispatch('update:modelValue', modelValue)
       } else {
         modelValue = checked ? trueLabel.value : falseLabel.value
         vm.emit('update:modelValue', modelValue)
@@ -210,7 +212,7 @@ function useModel() {
   const changeHandle = async () => {
     await nextTick()
     vm.emit('change', model.value)
-    elCheckboxGroup.change && elCheckboxGroup.change(model.value)
+    dispatch('change', model.value)
   }
 
   return {

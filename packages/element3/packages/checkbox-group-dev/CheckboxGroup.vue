@@ -5,25 +5,25 @@
 </template>
 
 <script>
+import { useEmitter } from '../../src/use/emitter'
 import { provide, getCurrentInstance } from 'vue'
 export default {
   name: 'ElCheckboxGroup',
   emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
     const instance = getCurrentInstance()
-    const update = (newValue) => {
-      emit('update:modelValue', newValue)
-    }
-    const change = (newValue) => {
-      emit('change', newValue)
-    }
+    const { dispatch, on } = useEmitter()
+
+    on('update:modelValue', (v) => {
+      emit('update:modelValue', v)
+      dispatch('el.form.change', v)
+    })
+
+    on('change', (v) => {
+      emit('change', v)
+    })
 
     provide('elCheckboxGroup', instance)
-
-    return {
-      update,
-      change
-    }
   },
   props: {
     modelValue: Array,
