@@ -10,7 +10,7 @@
     "dev:play": "vue-cli-service serve src/play.js"
   },
   "dependencies": {
-    "element3": "0.0.34",
+    "element3": "0.0.35",
     "mitt": "^2.1.0",
     "vue": "^3.0.4"
   },
