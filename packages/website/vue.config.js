@@ -5,19 +5,12 @@ module.exports = {
   devServer: {
     port: 8088
   },
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config
       // app entry
       .entry('app')
       .clear()
       .add(path.resolve(__dirname, './src/main.js'))
-      .end()
-
-    config
-      // play entry
-      .entry('play')
-      .clear()
-      .add(path.resolve(__dirname, './src/play.js'))
       .end()
 
     // 添加解析 md 的 loader
@@ -30,6 +23,5 @@ module.exports = {
       .use('md-loader')
       .loader(path.resolve(__dirname, '../md-loader/src/index.js'))
       .end()
-
   }
 }
