@@ -288,7 +288,7 @@
       <div class="banner-desc">
         <h1>网站快速成型工具</h1>
         <p>
-          Element，一套为开发者、设计师和产品经理准备的基于 Vue 3.0
+          Element3，一套为开发者、设计师和产品经理准备的基于 Vue 3.0
           的桌面端组件库
         </p>
       </div>
@@ -303,61 +303,6 @@
       >
         <img src="../assets/images/theme-index-red.png" alt="" />
       </div>
-    </div>
-    <div class="sponsors">
-      <a
-        class="sponsor"
-        href="https://www.duohui.cn/?utm_source=element&utm_medium=web&utm_campaign=element-index"
-        target="_blank"
-      >
-        <img width="45px" src="../assets/images/duohui.svg" alt="duohui" />
-
-        <div>
-          <p>Sponsored by Tipe.io</p>
-          <p>Next Generation API-first CMS</p>
-        </div>
-      </a>
-      <a
-        class="sponsor"
-        href="https://www.duohui.cn/?utm_source=element&utm_medium=web&utm_campaign=element-index"
-        target="_blank"
-      >
-        <img width="45px" src="../assets/images/duohui.svg" alt="duohui" />
-
-        <div>
-          <p>Sponsored by 多会</p>
-          <p>炫酷的新一代活动票务系统</p>
-        </div>
-      </a>
-    </div>
-    <div class="cards">
-      <ul class="container">
-        <li>
-          <div class="card">
-            <img src="../assets/images/guide.png" alt="" />
-            <h3>指南</h3>
-            <p>
-              了解设计指南，帮助产品设计人员搭建逻辑清晰、结构合理且高效易用的产品。
-            </p>
-            <router-link active-class="active" to="/guide/design" exact
-              >查看详情
-            </router-link>
-          </div>
-        </li>
-        <li>
-          <div class="card">
-            <img src="../assets/images/component.png" alt="" />
-            <h3>组件</h3>
-            <p>
-              使用组件 Demo
-              快速体验交互细节；使用前端框架封装的代码帮助工程师快速开发。
-            </p>
-            <router-link active-class="active" to="/component/layout" exact
-              >查看详情
-            </router-link>
-          </div>
-        </li>
-      </ul>
     </div>
   </div>
 </template>

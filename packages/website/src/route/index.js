@@ -56,24 +56,6 @@ const registerRoute = (navConfig) => {
 let route = registerRoute(navConfig)
 
 const generateRoutes = function () {
-  const guideRoute = {
-    path: `/guide`, // 指南
-    redirect: `/guide/design`,
-    component: load('guide'),
-    children: [
-      {
-        path: 'design', // 设计原则
-        name: 'guide-design',
-        component: load('design')
-      },
-      {
-        path: 'nav', // 导航
-        name: 'guide-nav',
-        component: load('nav')
-      }
-    ]
-  }
-
   const resourceRoute = {
     path: `/resource`, // 资源
     name: 'resource',
@@ -86,7 +68,7 @@ const generateRoutes = function () {
     component: load('index')
   }
 
-  return [guideRoute, resourceRoute, indexRoute]
+  return [resourceRoute, indexRoute]
 }
 
 route = route.concat(generateRoutes())

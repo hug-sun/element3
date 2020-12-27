@@ -123,20 +123,6 @@
     :style="navStyle"
   >
     <ul>
-      <li class="nav-item sponsors">
-        <a>赞助商</a>
-        <ul class="pure-menu-list sub-nav">
-          <li class="nav-item">
-            <a
-              class="sponsor"
-              href="https://www.duohui.cn/?utm_source=element&utm_medium=web&utm_campaign=element-index"
-              target="_blank"
-            >
-              <img src="../assets/images/duohui.svg" alt="duohui" />
-            </a>
-          </li>
-        </ul>
-      </li>
       <li class="nav-item" v-for="(item, key) in data" :key="key">
         <a v-if="!item.path && !item.href" @click="expandMenu">{{
           item.name
