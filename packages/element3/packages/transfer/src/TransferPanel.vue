@@ -67,7 +67,7 @@
 <script>
 import ElCheckboxGroup from '../../checkbox-group'
 import ElCheckbox from '../../checkbox'
-import ElInput from '../../input'
+import { ElInput } from '../../../src/components/Input'
 import OptionContent from './OptionContent.vue'
 import { useLocale } from '../../../src/use/locale'
 import { reactive, toRefs, computed, watch } from 'vue'
