@@ -40,22 +40,17 @@ exports[` 1`] = `
             class="el-input"
           >
             
-            <!-- 前置元素 -->
             <!--v-if-->
             <input
-              autocomplete="off"
               class="el-input__inner"
               placeholder=""
               type="text"
             />
-            <!-- 前置内容 -->
             <!--v-if-->
-            <!-- 后置内容 -->
             <!--v-if-->
             <!-- 后置元素 -->
             <!--v-if-->
             
-            <!--v-if-->
           </div>
           <div
             class="el-message-box__errormsg"
