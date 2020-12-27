@@ -1,5 +1,5 @@
 import { isVNode } from 'vue'
-import { createComponent } from '../../../src/use/component'
+import { createComponent } from '../../../use/component'
 import msgboxVue from './MessageBox.vue'
 
 let currentMsg, instance

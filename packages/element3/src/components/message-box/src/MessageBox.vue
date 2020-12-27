@@ -114,13 +114,13 @@ import {
   ref,
   watch
 } from 'vue'
-import propsObject from './prop/prop'
+import propsObject from './props.js'
 import { isFunction } from '@vue/shared'
-import { usePopup } from '../../../src/use/popup'
-import Locale from '../../../src/mixins/locale'
-import ElInput from '../../input'
-import { ElButton } from '../../../src/components/Button'
-import { addClass, removeClass } from '../../../src/utils/dom'
+import { usePopup } from '../../../use/popup'
+import Locale from '../../../mixins/locale'
+import ElInput from '../../../../packages/input'
+import { ElButton } from '../../Button'
+import { addClass, removeClass } from '../../../utils/dom'
 
 export default defineComponent({
   mixins: [Locale],

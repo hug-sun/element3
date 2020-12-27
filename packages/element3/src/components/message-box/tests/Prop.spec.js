@@ -1,4 +1,4 @@
-import props from '../src/prop/prop'
+import props from '../src/props.js'
 describe('porps', () => {
   test('type', () => {
     expect(props.type.validator('success')).toBeTruthy()

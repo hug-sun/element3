@@ -53,7 +53,7 @@ import ElLoading, { useLoading } from '../packages/loading'
 
 import { Message } from './components/Message'
 
-import ElMessageBox, { useMsgbox } from '../packages/message-box'
+import ElMessageBox, { useMsgbox } from './components/message-box'
 
 import { Notification } from './components/Notification'
 // Navigation
