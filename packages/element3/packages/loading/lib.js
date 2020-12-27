@@ -1,16 +1,16 @@
 import { PopupManager } from '../../src/utils/popup'
 import { addClass, removeClass, getStyle } from '../../src/utils/dom'
 
-export const addStyle = (options, parent, ctx) => {
+export const addStyle = (options, parent, proxy) => {
   const maskStyle = {}
   if (options.fullscreen) {
-    addClass(ctx.$el, 'is-fullscreen')
-    ctx.originalPosition = getStyle(document.body, 'position')
-    ctx.originalOverflow = getStyle(document.body, 'overflow')
+    addClass(proxy.$el, 'is-fullscreen')
+    proxy.originalPosition = getStyle(document.body, 'position')
+    proxy.originalOverflow = getStyle(document.body, 'overflow')
     maskStyle.zIndex = PopupManager.nextZIndex()
   } else if (options.body) {
-    removeClass(ctx.$el, 'is-fullscreen')
-    ctx.originalPosition = getStyle(document.body, 'position')
+    removeClass(proxy.$el, 'is-fullscreen')
+    proxy.originalPosition = getStyle(document.body, 'position')
     ;['top', 'left'].forEach((property) => {
       const scroll = property === 'top' ? 'scrollTop' : 'scrollLeft'
       maskStyle[property] =
@@ -23,13 +23,16 @@ export const addStyle = (options, parent, ctx) => {
         options.target.getBoundingClientRect()[property] + 'px'
     })
   } else {
-    ctx.originalPosition = getStyle(parent, 'position')
+    proxy.originalPosition = getStyle(parent, 'position')
   }
   Object.keys(maskStyle).forEach((property) => {
-    ctx.$el.style[property] = maskStyle[property]
+    proxy.$el.style[property] = maskStyle[property]
   })
 
-  if (ctx.originalPosition !== 'absolute' && ctx.originalPosition !== 'fixed') {
+  if (
+    proxy.originalPosition !== 'absolute' &&
+    proxy.originalPosition !== 'fixed'
+  ) {
     addClass(parent, 'el-loading-parent--relative')
   }
 
