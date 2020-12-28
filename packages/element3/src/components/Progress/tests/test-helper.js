@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import Progress from '../src/Progress.vue'
 import Color from '../../../../packages/color-picker/src/color'
 import { merge } from 'lodash'
-import { STATUS_COLOR } from '../src/props'
+import { STATUS_SETTING } from '../src/props'
 
 export const DEFAULT_PERCENTAGE = 85
 
@@ -81,5 +81,10 @@ export function findSvgArcPath(wrapper) {
 export function assertSvgStrokeOk(wrapper, status) {
   expect(wrapper.props('status')).toBe(status)
   const svgArcPath = findSvgArcPath(wrapper)
-  expect(svgArcPath.attributes()['stroke']).toBe(STATUS_COLOR[status])
+  expect(svgArcPath.attributes()['stroke']).toBe(STATUS_SETTING[status].color)
+}
+
+export function assertIconClassOk(wrapper, status) {
+  const icon = wrapper.find('.el-progress__text > i')
+  expect(icon).toHaveClass(STATUS_SETTING[status]['arcIconClass'])
 }

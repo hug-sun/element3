@@ -76,7 +76,7 @@ export default defineComponent({
     const barStyle = useBarStyle(percentage, color)
     const barOuterStyle = useBarOuterStyle(strokeWidth)
     const content = useContent(format, percentage)
-    const iconClass = useIconClass(status)
+    const iconClass = useIconClass(status, type)
     const rootClass = useRootClass(type, status, showText, textInside)
     const circleStyle = useCircleStyle(width)
     const viewBox = SVG_VIEW_BOX
@@ -161,10 +161,12 @@ const useContent = (format, percentage) => {
   })
 }
 
-const useIconClass = (status) => {
+const useIconClass = (status, type) => {
   return computed(() => {
     const st = unref(status)
-    return STATUS_SETTING[st] || ''
+    const t = unref(type) === 'line' ? 'lineIconClass' : 'arcIconClass'
+    const stat = STATUS_SETTING[st]
+    return (stat && stat[t]) || ''
   })
 }
 

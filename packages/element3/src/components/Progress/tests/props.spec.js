@@ -19,7 +19,7 @@ import {
   TRANSITION,
   DEFAULT_COLOR,
   getSvgStrokeColor,
-  STATUS_COLOR
+  STATUS_SETTING
 } from '../src/props'
 
 describe('Progress.props', () => {
@@ -122,11 +122,11 @@ describe('Progress.props', () => {
     expect(color).toBe(DEFAULT_COLOR)
 
     let status = 'success'
-    expect(getSvgStrokeColor('', status)).toBe(STATUS_COLOR[status])
+    expect(getSvgStrokeColor('', status)).toBe(STATUS_SETTING[status].color)
     status = 'warning'
-    expect(getSvgStrokeColor('', status)).toBe(STATUS_COLOR[status])
+    expect(getSvgStrokeColor('', status)).toBe(STATUS_SETTING[status].color)
     status = 'exception'
-    expect(getSvgStrokeColor('', status)).toBe(STATUS_COLOR[status])
+    expect(getSvgStrokeColor('', status)).toBe(STATUS_SETTING[status].color)
   })
 
   it('learn isRef and unref', () => {
