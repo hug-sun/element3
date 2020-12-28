@@ -293,27 +293,11 @@
 
         <!-- nav -->
         <ul class="nav">
-          <li class="nav-item nav-algolia-search" v-show="isComponentPage">
-            <!-- <algolia-search></algolia-search> -->
-          </li>
-          <li class="nav-item">
-            <router-link active-class="active" :to="`/guide`"
-              >{{ langConfig.guide }}
-            </router-link>
-          </li>
           <li class="nav-item">
             <router-link active-class="active" :to="`/component`"
               >{{ langConfig.components }}
             </router-link>
           </li>
-
-          <!-- gap -->
-          <li class="nav-item" v-show="isComponentPage">
-            <div class="nav-gap"></div>
-          </li>
-
-          <!-- 版本选择器 -->
-          <li class="nav-item nav-versions" v-show="isComponentPage"></li>
         </ul>
       </div>
     </header>

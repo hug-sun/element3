@@ -30,12 +30,12 @@ export default {
     const separator = inject('separator')
     const separatorClass = inject('separatorClass')
     const link = ref(null)
-    const { ctx } = getCurrentInstance()
+    const { proxy } = getCurrentInstance()
     onMounted(() => {
       link.value.setAttribute('role', 'link')
       link.value.addEventListener('click', () => {
-        if (!props.to || !ctx.$router) return
-        replace ? ctx.$router.replace(props.to) : ctx.$router.push(props.to)
+        if (!props.to || !proxy.$router) return
+        replace ? proxy.$router.replace(props.to) : proxy.$router.push(props.to)
       })
     })
     return {

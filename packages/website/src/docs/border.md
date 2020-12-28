@@ -20,7 +20,7 @@
   const boxShadowBase = ref('')
   const borderRadiusBase = ref('')
   const borderRadiusSmall =ref('')
-  const self = getCurrentInstance().ctx;
+  const self = getCurrentInstance().proxy;
 
   const setGlobal=()=>{
     if(window.userThemeConfig){

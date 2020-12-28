@@ -1,15 +1,24 @@
-<!--
-重要: 请使用以下链接创建新 issue
+### Bug description
 
-  https://elementui.github.io/issue-generator
+<!-- Any context around the issue or bug is helpful. -->
 
-未通过以上链接创建的 issue 会被机器人直接关闭。
+**What is the current behavior?**
 
-########
+<!-- Describe how element3 is currently functioning with respect to the bug. -->
 
-IMPORTANT: Please use the following link to create a new issue:
+**What is the expected behavior?**
 
-  https://elementui.github.io/issue-generator
+<!-- Describe how you expect it to work -->
 
-If your issue was not created using the app above, it will be closed immediately.
--->
+**Steps to Reproduce**
+
+<!-- If you can, provide a link to a public repository which contains the files necessary to reproduce this. -->
+
+1.
+2.
+
+**Environment**
+
+- Element3 Version: `x.x.x`
+- Node Version: `x.x.x`
+- OS and version:

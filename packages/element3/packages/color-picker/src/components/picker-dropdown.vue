@@ -125,7 +125,9 @@ export default {
     const popperState = usePopper(props, context, { ...toRefs(state) })
     const currentColor = computed(() => {
       const parent = instance.parent
-      return !parent || !parent.ctx.showPanelColor ? '' : parent.ctx.color.value
+      return !parent || !parent.proxy.showPanelColor
+        ? ''
+        : parent.proxy.color.value
     })
 
     provide('currentColor', currentColor)

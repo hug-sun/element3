@@ -4,12 +4,13 @@
   "version": "1.0.0",
   "description": "element3 website",
   "scripts": {
-    "build": "vue-cli-service build",
+    "build": "yarn build:icon && vue-cli-service build",
+    "build:icon": "node scripts/iconInit.js",
     "dev": "vue-cli-service serve src/main.js",
     "dev:play": "vue-cli-service serve src/play.js"
   },
   "dependencies": {
-    "element3": "0.0.34",
+    "element3": "0.0.35",
     "mitt": "^2.1.0",
     "vue": "^3.0.4"
   },
@@ -56,10 +57,6 @@
     "url-loader": "^1.0.1",
     "vue-loader": "^16.0.0",
     "vue-router": "^4.0.0-beta.3",
-    "webpack": "^4.14.0",
-    "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "^3.1.11",
-    "webpack-node-externals": "^1.7.2",
     "md-loader": "1.0.0",
     "@types/jest": "^24.0.19",
     "@typescript-eslint/eslint-plugin": "^2.33.0",

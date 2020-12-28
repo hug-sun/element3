@@ -14,7 +14,7 @@ import ElButtonGroup from '../packages/button-group'
 import { ElLink } from './components/Link'
 // Form
 import { ElRadio } from './components/Radio'
-import ElRadioButton from '../packages/radio-button'
+import { ElRadioButton } from './components/RadioButton'
 import ElRadioGroup from '../packages/radio-group'
 import ElCheckbox from '../packages/checkbox'
 import ElCheckboxButton from '../packages/checkbox-button'
@@ -30,7 +30,7 @@ import { ElSwitch } from './components/Switch'
 import ElSlider from '../packages/slider'
 // import ElTimePicker from '../packages/time-picker'
 // import ElTimeSelect from '../packages/time-select'
-import ElDatePicker from '../packages/date-picker'
+// import ElDatePicker from '../packages/date-picker'
 import ElUpload from '../packages/upload'
 import ElRate from '../packages/rate'
 import ElColorPicker from '../packages/color-picker'
@@ -151,7 +151,7 @@ const components = [
   ElSlider,
   // ElTimePicker,
   // ElTimeSelect,
-  ElDatePicker,
+  // ElDatePicker,
   ElUpload,
   ElRate,
   ElColorPicker,
@@ -261,7 +261,7 @@ export {
   ElSlider,
   // ElTimePicker,
   // ElTimeSelect,
-  ElDatePicker,
+  // ElDatePicker,
   ElUpload,
   ElRate,
   ElColorPicker,
