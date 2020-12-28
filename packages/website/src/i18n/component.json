@@ -1,0 +1,30 @@
+{
+	"demo-block": {
+		"hide-text": "隐藏代码",
+		"show-text": "显示代码",
+		"button-text": "在线运行",
+		"tooltip-text": "前往 codepen.io 运行此示例"
+	},
+	"footer": {
+		"links": "链接",
+		"repo": "代码仓库",
+		"community": "社区",
+		"changelog": "更新日志",
+		"theme": "在线主题生成器",
+		"faq": "常见问题",
+		"gitter": "在线讨论",
+		"starter": "脚手架",
+		"feedback": "反馈建议",
+		"contribution": "贡献指南",
+		"eleme": "饿了么"
+	},
+	"header": {
+		"guide": "指南",
+		"components": "组件",
+		"theme": "主题",
+		"resource": "资源"
+	},
+	"nav": {
+		"dropdown": "版本："
+	}
+}

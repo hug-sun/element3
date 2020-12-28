@@ -121,40 +121,6 @@ describe('Slider', () => {
     })
   })
 
-  it('drag', (done) => {
-    const slider = ref(0)
-    const vertical = ref(false)
-    const wrapper = mount(Slider, {
-      props: {
-        modelValue: slider,
-        vertical: vertical,
-        height: '200px',
-        'onUpdate:modelValue': (val) => {
-          slider.value = val
-        }
-      }
-    })
-    const sliderBtn = wrapper.findComponent(SliderButton)
-    sliderBtn.trigger('mousedown', { clientX: 0, preventDefault() {} })
-    sliderBtn.vm.onDragging({ clientX: 100 })
-    sliderBtn.vm.onDragEnd()
-    nextTick(() => {
-      expect(slider.value > 0).toBeTruthy()
-      slider.value = 0
-      vertical.value = true
-      nextTick(() => {
-        expect(slider.value === 0).toBeTruthy()
-        sliderBtn.trigger('mousedown', { clientY: 0, preventDefault() {} })
-        sliderBtn.vm.onDragging({ clientY: -100 })
-        sliderBtn.vm.onDragEnd()
-        nextTick(() => {
-          expect(slider.value > 0).toBeTruthy()
-          done()
-        })
-      })
-    })
-  })
-
   it('accessibility', (done) => {
     const slider = ref(0.1)
     const wrapper = mount(Slider, {

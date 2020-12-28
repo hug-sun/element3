@@ -211,17 +211,17 @@ function useExpand(props, state) {
 
 function useTab() {
   const instance = getCurrentInstance()
-  const { ctx } = instance
+  const { proxy } = instance
 
   const initCheckbox = () => {
-    const checkboxItems = ctx.$el.querySelectorAll('input[type=checkbox]')
+    const checkboxItems = proxy.$el.querySelectorAll('input[type=checkbox]')
     Array.prototype.forEach.call(checkboxItems, (checkbox) => {
       checkbox.setAttribute('tabindex', -1)
     })
   }
   const initTabIndex = () => {
-    const treeItems = ctx.$el.querySelectorAll('.is-focusable[role=TreeItem]')
-    const checkedItem = ctx.$el.querySelectorAll('.is-checked[role=TreeItem]')
+    const treeItems = proxy.$el.querySelectorAll('.is-focusable[role=TreeItem]')
+    const checkedItem = proxy.$el.querySelectorAll('.is-checked[role=TreeItem]')
     if (checkedItem.length) {
       checkedItem[0].setAttribute('tabindex', 0)
       return
@@ -235,12 +235,12 @@ function useTab() {
 
 function useKeyDown() {
   const instance = getCurrentInstance()
-  const { ctx } = instance
+  const { proxy } = instance
   const handleKeydown = (ev) => {
     const currentItem = ev.target
     if (currentItem.className.indexOf('el-tree-node') === -1) return
     const { key } = ev
-    const treeItems = ctx.$el.querySelectorAll('.is-focusable[role=TreeNode]')
+    const treeItems = proxy.$el.querySelectorAll('.is-focusable[role=TreeNode]')
     const treeItemArray = Array.prototype.slice.call(treeItems)
     const currentIndex = treeItemArray.indexOf(currentItem)
     let nextIndex

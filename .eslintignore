@@ -1,9 +1,15 @@
 node_modules
 lib
 coverage
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.css
 *.scss
 *.woff
 *.ttf
+*.eot
 *.d.ts
 *.md
 *.snap

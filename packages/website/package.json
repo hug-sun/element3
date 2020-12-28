@@ -3,23 +3,34 @@
   "private": true,
   "version": "1.0.0",
   "description": "element3 website",
-  "directories": {
-    "example": "examples",
-    "lib": "lib"
-  },
   "scripts": {
-    "build": "yarn build:file && yarn build:docs",
-    "build:docs": "cross-env NODE_ENV=development webpack --config build/webpack.demo.js",
-    "build:file": "node scripts/iconInit.js",
-    "dev": "npm run build:file && cross-env NODE_ENV=development webpack-dev-server --config build/webpack.demo.js",
-    "dev:play": "npm run build:file && cross-env NODE_ENV=development PLAY_ENV=true webpack-dev-server --config build/webpack.demo.js"
+    "build": "yarn build:icon && vue-cli-service build",
+    "build:icon": "node scripts/iconInit.js",
+    "dev": "vue-cli-service serve src/main.js",
+    "dev:play": "vue-cli-service serve src/play.js"
   },
   "dependencies": {
-    "element3": "0.0.34",
+    "element3": "0.0.35",
     "mitt": "^2.1.0",
     "vue": "^3.0.4"
   },
   "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-e2e-cypress": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-unit-jest": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/eslint-config-standard": "^5.1.2",
+    "@vue/test-utils": "^2.0.0-0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^7.0.0-0",
+    "typescript": "~3.9.3",
+    "vue-jest": "^5.0.0-0",
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",
@@ -46,11 +57,21 @@
     "url-loader": "^1.0.1",
     "vue-loader": "^16.0.0",
     "vue-router": "^4.0.0-beta.3",
-    "webpack": "^4.14.0",
-    "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "^3.1.11",
-    "webpack-node-externals": "^1.7.2",
-    "md-loader": "1.0.0"
+    "md-loader": "1.0.0",
+    "@types/jest": "^24.0.19",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "@vue/eslint-config-typescript": "^5.0.2"
   },
-  "license": "MIT"
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "jest": {
+    "preset": "@vue/cli-plugin-unit-jest",
+    "transform": {
+      "^.+\\.vue$": "vue-jest"
+    }
+  }
 }
