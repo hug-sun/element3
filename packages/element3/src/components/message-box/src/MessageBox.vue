@@ -134,130 +134,158 @@ export default defineComponent({
       ...props
     })
     const instance = getCurrentInstance()
+    const { iconClass, type } = toRefs(state)
+    const { validate, editorErrorMessage } = validateFunction(state, instance)
     const {
-      iconClass,
-      type,
-      beforeClose,
-      inputType,
-      inputValue,
-      category,
-      closeOnClickModal,
-      distinguishCancelAndClose,
-      closeOnPressEscape,
-      closeOnHashChange,
-      callback,
-      inputPattern,
-      inputErrorMessage,
-      inputValidator
-    } = toRefs(state)
-
-    const { open, close } = usePopup(state)
+      closeHandle,
+      handleAction,
+      handleInputEnter,
+      handleWrapperClick
+    } = handleList(state, instance, validate)
+    const confirmButtonLoading = ref(false)
     const icon = computed(() => {
       return unref(iconClass) || (unref(type) ? `el-icon-${unref(type)}` : '')
     })
-    const closeHandle = () => {
-      state.visible = false
-      close()
-      nextTick(() => {
-        unref(callback)(state.action, instance.proxy)
-      })
-    }
-    const handleAction = (action) => {
-      if (unref(category) === 'prompt' && action === 'confirm' && !validate()) {
-        return
-      }
-      state.action = action
-      if (isFunction(beforeClose.value)) {
-        beforeClose.value(action, instance.proxy, closeHandle)
-      } else {
-        closeHandle()
-      }
-    }
-    const handleInputEnter = () => {
-      if (unref(inputType) !== 'textarea') {
-        return handleAction('confirm')
-      }
-    }
-    const handleKeyup = (element = {}) => {
-      if (element.code !== 'Escape') return
-      if (unref(closeOnPressEscape)) {
-        handleAction(unref(distinguishCancelAndClose) ? 'close' : 'cancel')
-      }
-    }
-    onMounted(() => {
-      if (unref(closeOnHashChange)) {
-        window.addEventListener('hashchange', closeHandle)
-      }
-      window.addEventListener('keyup', handleKeyup)
-      nextTick(() => {
-        open()
-      })
-    })
-    onUnmounted(() => {
-      if (unref(closeOnHashChange)) {
-        window.removeEventListener('hashchange', closeHandle)
-      }
-      window.removeEventListener('keyup', handleKeyup)
-    })
-
-    const editorErrorMessage = ref(null)
-    const getInputElement = () => {
-      const inputRefs = instance.refs.input.$refs
-      return inputRefs.input || inputRefs.textarea
-    }
-    const validate = () => {
-      if (unref(category) === 'prompt') {
-        if (
-          unref(inputPattern) &&
-          !unref(inputPattern).test(unref(inputValue))
-        ) {
-          editorErrorMessage.value = unref(inputErrorMessage)
-
-          addClass(getInputElement(), 'invalid')
-          return false
-        }
-        const _inputValidator = unref(inputValidator)
-        if (typeof _inputValidator === 'function') {
-          const validateResult = _inputValidator(unref(inputValue))
-          if (validateResult === false) {
-            editorErrorMessage.value = unref(inputErrorMessage)
-            addClass(getInputElement(), 'invalid')
-            return false
-          }
-          if (typeof validateResult === 'string') {
-            editorErrorMessage.value = validateResult
-            addClass(getInputElement(), 'invalid')
-            return false
-          }
-        }
-      }
-      editorErrorMessage.value = ''
-      removeClass(getInputElement(), 'invalid')
-      return true
-    }
-    watch(inputValue, (val) => {
-      nextTick(() => {
-        if (unref(category) === 'prompt' && val !== null) {
-          validate()
-        }
-      })
-    })
-
-    const handleWrapperClick = () => {
-      if (unref(closeOnClickModal)) {
-        handleAction(unref(distinguishCancelAndClose) ? 'close' : 'cancel')
-      }
-    }
-    const confirmButtonLoading = ref(false)
     return {
       ...toRefs(state),
+      editorErrorMessage,
       icon,
       handleAction,
       handleInputEnter,
-      editorErrorMessage,
       handleWrapperClick,
       closeHandle,
       confirmButtonLoading
+    }
+    function handleList(state, instance, validate) {
+      const { open, close } = usePopup(state)
+      const {
+        visible,
+        callback,
+        category,
+        inputType,
+        closeOnHashChange,
+        closeOnPressEscape,
+        distinguishCancelAndClose,
+        closeOnClickModal,
+        action,
+        beforeClose
+      } = toRefs(state)
+      const closeHandle = () => {
+        visible.value = false
+        close()
+        nextTick(() => {
+          unref(callback)(state.action, instance.proxy)
+        })
+      }
+      const handleAction = (_action) => {
+        if (
+          unref(category) === 'prompt' &&
+          _action === 'confirm' &&
+          !validate()
+        ) {
+          return
+        }
+        action.value = _action
+        if (isFunction(beforeClose.value)) {
+          beforeClose.value(_action, instance.proxy, closeHandle)
+        } else {
+          closeHandle()
+        }
+      }
+      const handleKeyup = (element = {}) => {
+        if (element.code !== 'Escape') return
+        if (unref(closeOnPressEscape)) {
+          handleAction(unref(distinguishCancelAndClose) ? 'close' : 'cancel')
+        }
+      }
+      const handleInputEnter = () => {
+        if (unref(inputType) !== 'textarea') {
+          return handleAction('confirm')
+        }
+      }
+
+      const handleWrapperClick = () => {
+        if (unref(closeOnClickModal)) {
+          handleAction(unref(distinguishCancelAndClose) ? 'close' : 'cancel')
+        }
+      }
+      onMounted(() => {
+        if (unref(closeOnHashChange)) {
+          window.addEventListener('hashchange', closeHandle)
+        }
+        window.addEventListener('keyup', handleKeyup)
+        nextTick(() => {
+          open()
+        })
+      })
+      onUnmounted(() => {
+        if (unref(closeOnHashChange)) {
+          window.removeEventListener('hashchange', closeHandle)
+        }
+        window.removeEventListener('keyup', handleKeyup)
+      })
+      return {
+        closeHandle,
+        handleAction,
+        handleWrapperClick,
+        handleInputEnter
+      }
+    }
+    function validateFunction(state, instance) {
+      const editorErrorMessage = ref(null)
+      const {
+        category,
+        inputPattern,
+        inputValue,
+        inputValidator,
+        inputErrorMessage
+      } = toRefs(state)
+      const getInputElement = () => {
+        const inputRefs = instance.refs.input.$refs
+        return inputRefs.input || inputRefs.textarea
+      }
+
+      const validate = () => {
+        if (unref(category) === 'prompt') {
+          if (
+            unref(inputPattern) &&
+            !unref(inputPattern).test(unref(inputValue))
+          ) {
+            editorErrorMessage.value = unref(inputErrorMessage)
+
+            addClass(getInputElement(), 'invalid')
+            return false
+          }
+          const _inputValidator = unref(inputValidator)
+          if (typeof _inputValidator === 'function') {
+            const validateResult = _inputValidator(unref(inputValue))
+            if (validateResult === false) {
+              editorErrorMessage.value = unref(inputErrorMessage)
+              addClass(getInputElement(), 'invalid')
+              return false
+            }
+            if (typeof validateResult === 'string') {
+              editorErrorMessage.value = validateResult
+              addClass(getInputElement(), 'invalid')
+              return false
+            }
+          }
+        }
+        editorErrorMessage.value = ''
+        removeClass(getInputElement(), 'invalid')
+        return true
+      }
+      watch(inputValue, (val) => {
+        nextTick(() => {
+          if (unref(category) === 'prompt' && val !== null) {
+            validate()
+          }
+        })
+      })
+      return {
+        validate,
+        editorErrorMessage
+      }
     }
   }
 })

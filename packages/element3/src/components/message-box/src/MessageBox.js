@@ -9,13 +9,14 @@ const defaultCallback = (action) => {
   if (currentMsg) {
     if (currentMsg.resolve) {
       if (action === 'confirm') {
+        console.log(instance.proxy.showInput)
         if (instance.proxy.showInput) {
           currentMsg.resolve({
             value: instance.proxy.inputValue,
             action
           })
         } else {
-          currentMsg.resolve({ action })
+          currentMsg.reject({ action })
         }
       } else if (
         currentMsg.reject &&
@@ -56,29 +57,18 @@ const MessageBox = function (options) {
   if (options.callback) {
     callback = options.callback
   }
-
-  if (typeof Promise !== 'undefined') {
-    let promiseInstance = new Promise((resolve, reject) => {
-      // eslint-disable-line
-      msgQueue.push({
-        options: options,
-        callback: callback,
-        resolve: resolve,
-        reject: reject
-      })
-      showNextMsg()
-    })
-    promiseInstance.instance = instance
-    return promiseInstance
-  } else {
+  let promiseInstance = new Promise((resolve, reject) => {
+    // eslint-disable-line
     msgQueue.push({
       options: options,
-      callback: callback
+      callback: callback,
+      resolve: resolve,
+      reject: reject
     })
-
     showNextMsg()
-    return { instance }
-  }
+  })
+  promiseInstance.instance = instance
+  return promiseInstance
 }
 
 const MergeCondition = (message, title, options) => {
@@ -106,7 +96,8 @@ const MergeCondition = (message, title, options) => {
 MessageBox.alert = (message, title, options) => {
   const defaultVal = {
     type: null,
-    category: 'alert'
+    category: 'alert',
+    closeOnPressEscape: false
   }
   return MessageBox(
     Object.assign(defaultVal, MergeCondition(message, title, options))

@@ -147,6 +147,50 @@ describe('MessageBox.vue', () => {
       })
       expect(warpper.find('.mmm').exists()).toBeTruthy()
     })
+    it('handleInputEnter', async () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          inputType: 'texg'
+        }
+      })
+      warpper.componentVM.handleInputEnter()
+      await nextTick()
+      expect(warpper.componentVM.visible).toBeFalsy()
+    })
+    it('closeOnPressEscape', async () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          closeOnPressEscape: true
+        }
+      })
+      const event = new KeyboardEvent('keyup', {
+        code: 'Escape'
+      })
+      window.dispatchEvent(event)
+      expect(warpper.find('.el-message-box__wrapper').isVisible()).toBeTruthy()
+      expect(warpper.componentVM.visible).toBeFalsy()
+    })
+    it('handleWrapperClick', async () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          closeOnClickModal: true
+        }
+      })
+      await warpper.find('.el-message-box__wrapper').trigger('click')
+      await nextTick()
+      expect(warpper.componentVM.action).toBe('cancel')
+    })
+    it('closeOnHashChange', async () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          closeOnHashChange: true
+        }
+      })
+      window.dispatchEvent(new Event('hashchange'))
+      expect(warpper.find('.el-message-box__wrapper').isVisible()).toBeTruthy()
+      expect(warpper.componentVM.visible).toBeFalsy()
+    })
+
     it('showInput', () => {
       const warpper = mount(MessageBox, {
         props: {
@@ -221,7 +265,7 @@ describe('MessageBox.vue', () => {
       await nextTick()
       expect(object.value).toBe('cancel')
     })
-    it('validate', async () => {
+    it('validate correct', async () => {
       const warpper = mount(MessageBox, {
         props: {
           title: '12',
@@ -234,6 +278,40 @@ describe('MessageBox.vue', () => {
       await warpper.findComponent({ ref: 'input' }).setValue('2323')
       await nextTick()
       expect(warpper.componentVM.editorErrorMessage).toBe('输入的数据不合法!')
+      expect(warpper.find('.el-input__inner').classes()).toHaveLength(2)
+    })
+    it('validate fail', async () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          title: '12',
+          category: 'prompt',
+          inputValidator() {
+            return '失败'
+          },
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }
+      })
+      await warpper.findComponent({ ref: 'input' }).setValue('2323')
+      await nextTick()
+      expect(warpper.find('.el-input__inner').classes()).toHaveLength(2)
+      expect(warpper.componentVM.editorErrorMessage).toBe('失败')
+    })
+    it('inputValidator', async () => {
+      const warpper = mount(MessageBox, {
+        props: {
+          title: '12',
+          category: 'prompt',
+          inputValidator() {
+            return false
+          },
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }
+      })
+      await warpper.findComponent({ ref: 'input' }).setValue('2323')
+      await nextTick()
+      expect(warpper.find('.el-input__inner').classes()).toHaveLength(2)
     })
   })
   describe('test modal closeOnClickModal', () => {

@@ -65,8 +65,10 @@ describe('MessageBox.js', () => {
   })
   test('kind of prompt', async () => {
     let v = ''
-    const callback = jest.fn(({ value }) => {
+    let a = ''
+    const callback = jest.fn(({ action, value }) => {
       v = value
+      a = action
     })
     const instance = messageBox.prompt('请输入邮箱', '提示', {
       confirmButtonText: '确定',
@@ -78,10 +80,52 @@ describe('MessageBox.js', () => {
     instance.then(callback)
     await nextTick()
     const btn = document.querySelector('.mmm')
+    instance.instance.proxy.inputValue = '4091'
+    await btn.click()
+    await sleep()
+    expect(callback).not.toHaveBeenCalled()
     instance.instance.proxy.inputValue = '409187100@qq.com'
     await btn.click()
     await sleep()
     expect(callback).toHaveBeenCalled()
     expect(v).toBeTruthy()
+  })
+  test('was invoked', async () => {
+    const callback = jest.fn(() => {})
+    const instance = messageBox.prompt('请输入邮箱', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      cancelButtonClass: 'mmm',
+      inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+      inputErrorMessage: '邮箱格式不正确'
+    })
+    instance.catch(callback)
+    await nextTick()
+    const btn = document.querySelector('.mmm')
+    await btn.click()
+    await sleep()
+    expect(callback).toHaveBeenCalled()
+  })
+  test('paramter', async () => {
+    const instance = messageBox.alert('请输入邮箱', { title: 'aaa' })
+    expect(instance.instance.proxy.title).toBe('aaa')
+    expect(instance.instance.proxy.message).toBe('请输入邮箱')
+  })
+  test('showInput is false', async () => {
+    const callback = jest.fn(() => {})
+    const instance = messageBox.prompt('请输入邮箱', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      confirmButtonClass: 'mmm',
+      showInput: false,
+      inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+      inputErrorMessage: '邮箱格式不正确'
+    })
+    instance.catch(callback)
+    const btn = document.querySelector('.mmm')
+    instance.instance.proxy.inputValue = '409187100@qq.com'
+    await btn.click()
+    await sleep()
+    expect(callback).toHaveBeenCalled()
   })
 })
