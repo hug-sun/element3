@@ -138,12 +138,13 @@ function useModel({ radioGroup }) {
 }
 
 function useStyle({ radioGroup, disabled, value, label, elForm, elFormItem }) {
-  const { ctx } = getCurrentInstance()
+  const { proxy } = getCurrentInstance()
   const elFormDisable = elForm.disabled
 
   const size = computed(() => {
-    const temRadioSize = elFormItem.elFormItemSize || (ctx.$ELEMENT || {}).size
-    return radioGroup.ctx.radioGroupSize || temRadioSize
+    const temRadioSize =
+      elFormItem.elFormItemSize || (proxy.$ELEMENT || {}).size
+    return radioGroup.proxy.radioGroupSize || temRadioSize
   })
   const isDisabled = computed(() => {
     return radioGroup.props.disabled || disabled.value || elFormDisable

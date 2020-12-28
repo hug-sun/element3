@@ -60,7 +60,7 @@
 <script>
 import { h, computed, watch, inject, toRefs, Fragment, watchEffect } from 'vue'
 import ElCheckbox from '../checkbox'
-import ElRadio from '../radio'
+import { ElRadio } from '../../src/components/Radio'
 import { isEqual } from '../../src/utils/util'
 
 export default {

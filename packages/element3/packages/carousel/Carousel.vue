@@ -47,7 +47,7 @@
         @click.stop="handleIndicatorClick(index)"
       >
         <button class="el-carousel__button">
-          <span v-if="hasLabel">{{ item.ctx.label }}</span>
+          <span v-if="hasLabel">{{ item.proxy.label }}</span>
         </button>
       </li>
     </ul>
@@ -265,15 +265,19 @@ const useArrowButton = (props, initData) => {
   const itemInStage = (item, index) => {
     const length = initData.items.length
     if (
-      (index === length - 1 && item.ctx.inStage && initData.items[0].active) ||
-      (item.ctx.inStage &&
+      (index === length - 1 &&
+        item.proxy.inStage &&
+        initData.items[0].active) ||
+      (item.proxy.inStage &&
         initData.items[index + 1] &&
         initData.items[index + 1].active)
     ) {
       return 'left'
     } else if (
-      (index === 0 && item.ctx.inStage && initData.items[length - 1].active) ||
-      (item.ctx.inStage &&
+      (index === 0 &&
+        item.proxy.inStage &&
+        initData.items[length - 1].active) ||
+      (item.proxy.inStage &&
         initData.items[index - 1] &&
         initData.items[index - 1].active)
     ) {
@@ -284,14 +288,14 @@ const useArrowButton = (props, initData) => {
 
   const resetItemPosition = (oldIndex) => {
     initData.items.forEach((item, index) => {
-      item.ctx.translateItem(index, initData.activeIndex, oldIndex)
+      item.proxy.translateItem(index, initData.activeIndex, oldIndex)
     })
   }
 
   const setActiveItem = (index) => {
     if (typeof index === 'string') {
       const filteredItems = initData.items.filter(
-        (item) => item.ctx.name === index
+        (item) => item.proxy.name === index
       )
       if (filteredItems.length > 0) {
         index = initData.items.indexOf(filteredItems[0])
@@ -324,7 +328,7 @@ const useArrowButton = (props, initData) => {
     if (props.direction === 'vertical') return
     initData.items.forEach((item, index) => {
       if (arrow === itemInStage(item, index)) {
-        item.ctx.hover = true
+        item.proxy.hover = true
       }
     })
   }
@@ -332,7 +336,7 @@ const useArrowButton = (props, initData) => {
   const handleButtonLeave = () => {
     if (props.direction === 'vertical') return
     initData.items.forEach((item) => {
-      item.ctx.hover = false
+      item.proxy.hover = false
     })
   }
 
@@ -370,7 +374,7 @@ const useIndicator = (props, initData) => {
   }
 
   const hasLabel = computed(() => {
-    return initData.items.some((item) => item.ctx.label.toString().length > 0)
+    return initData.items.some((item) => item.proxy.label.toString().length > 0)
   })
 
   const indicatorsClasses = computed(() => {

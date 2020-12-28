@@ -91,20 +91,20 @@ export function useCheckSelected({ model }) {
 }
 
 export function useSize() {
-  const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, ctx: {} })
-  const { props, ctx } = getCurrentInstance()
+  const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, proxy: {} })
+  const { props, proxy } = getCurrentInstance()
   const checkboxSize = computed(() => {
     return (
       props.size ||
-      elCheckboxGroup.ctx.checkboxGroupSize ||
-      (ctx.$ELEMENT || {}).size
+      elCheckboxGroup.proxy.checkboxGroupSize ||
+      (proxy.$ELEMENT || {}).size
     )
   })
   return checkboxSize
 }
 
 export function useLimit({ model }) {
-  const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, ctx: {} })
+  const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, proxy: {} })
   const { props } = getCurrentInstance()
   const isLimit = computed(() => {
     if (elCheckboxGroup.props.modelValue) {
@@ -124,12 +124,12 @@ export function useLimit({ model }) {
 }
 
 export function useDisabled({ isLimit }) {
-  const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, ctx: {} })
+  const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, proxy: {} })
   const { props } = getCurrentInstance()
   const isDisabled = computed(() => {
     return (
       props.disabled ||
-      elCheckboxGroup.ctx.checkboxGroupDisabled ||
+      elCheckboxGroup.proxy.checkboxGroupDisabled ||
       isLimit.value
     )
   })
@@ -137,7 +137,7 @@ export function useDisabled({ isLimit }) {
 }
 
 export function useBorder() {
-  const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, ctx: {} })
+  const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, proxy: {} })
   const { props } = getCurrentInstance()
   const isBorder = computed(() => {
     return props.border || elCheckboxGroup.props.border
@@ -146,7 +146,7 @@ export function useBorder() {
 }
 
 export function useActiveStyle() {
-  const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, ctx: {} })
+  const elCheckboxGroup = inject('elCheckboxGroup', { props: {}, proxy: {} })
 
   return {
     backgroundColor: elCheckboxGroup.props.fill || '',

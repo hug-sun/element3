@@ -71,7 +71,7 @@ export default {
     }
 
     function handleDrag(event) {
-      const rect = instance.ctx.$el.getBoundingClientRect()
+      const rect = instance.proxy.$el.getBoundingClientRect()
       const { thumb } = instance.refs
 
       if (!props.vertical) {
@@ -105,7 +105,7 @@ export default {
 
     function getThumbLeft() {
       if (props.vertical) return 0
-      const el = instance.ctx.$el
+      const el = instance.proxy.$el
       const alpha = props.color._alpha
 
       if (!el) return 0
@@ -117,7 +117,7 @@ export default {
 
     function getThumbTop() {
       if (!props.vertical) return 0
-      const el = instance.ctx.$el
+      const el = instance.proxy.$el
       const alpha = props.color._alpha
 
       if (!el) return 0

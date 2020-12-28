@@ -195,16 +195,16 @@ import {
 } from '../../../../src/utils/date-util'
 import Clickoutside from '../../../../src/directives/clickoutside'
 import Locale from '../../../../src/mixins/locale'
-import ElInput from '../../../input'
+import { ElInput } from '../../../../src/components/Input'
 import { ElButton } from '../../../../src/components/Button'
 import TimePicker from './time'
 import YearTable from '../basic/year-table'
 import MonthTable from '../basic/month-table'
 import DateTable from '../basic/date-table'
+import { useDateEmitter } from '../../index'
 
 export default {
   mixins: [Locale],
-
   directives: { Clickoutside },
 
   watch: {
@@ -277,19 +277,19 @@ export default {
 
     handleClear() {
       this.date = this.getDefaultValue()
-      this.$emit('pick', null)
+      this.trigger('pick', null)
     },
 
     emit(value, ...args) {
       if (!value) {
-        this.$emit('pick', value, ...args)
+        this.trigger('pick', value, ...args)
       } else if (Array.isArray(value)) {
         const dates = value.map((date) =>
           this.showTime ? clearMilliseconds(date) : clearTime(date)
         )
-        this.$emit('pick', dates, ...args)
+        this.trigger('pick', dates, ...args)
       } else {
-        this.$emit(
+        this.trigger(
           'pick',
           this.showTime ? clearMilliseconds(value) : clearTime(value),
           ...args
@@ -467,7 +467,7 @@ export default {
     },
 
     handleLeave() {
-      this.$emit('dodestroy')
+      this.trigger('dodestroy')
       document.body.removeEventListener('keydown', this.handleKeydown)
     },
 
@@ -536,7 +536,7 @@ export default {
           continue
         }
         this.date = newDate
-        this.$emit('pick', newDate, true)
+        this.trigger('pick', newDate, true)
         break
       }
     },
@@ -703,6 +703,10 @@ export default {
         return 'yyyy-MM-dd'
       }
     }
+  },
+  setup() {
+    const { trigger, on } = useDateEmitter()
+    return { trigger, on }
   }
 }
 </script>

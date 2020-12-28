@@ -168,7 +168,7 @@
 <script type="text/babel">
 import Focus from '../../src/mixins/focus'
 import Locale from '../../src/mixins/locale'
-import ElInput from '../input'
+import { ElInput } from '../../src/components/Input'
 import ElSelectMenu from './SelectDropdown'
 import ElOption from '../option/Option'
 import { ElTag } from '../../src/components/Tag'

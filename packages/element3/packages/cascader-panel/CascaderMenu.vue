@@ -60,7 +60,7 @@ export default {
     const instance = getCurrentInstance()
     const t = useLocale()
     const { index, nodes } = toRefs(props)
-    const { ctx } = instance
+    const { proxy } = instance
     const panel = inject('panel')
     const hoverZone = ref(null)
     const data = {
@@ -87,9 +87,9 @@ export default {
       if (data.activeNode.contains(e.target)) {
         clearTimeout(data.hoverTimer)
 
-        const { left } = ctx.$el.getBoundingClientRect()
+        const { left } = proxy.$el.getBoundingClientRect()
         const startX = e.clientX - left
-        const { offsetWidth, offsetHeight } = ctx.$el
+        const { offsetWidth, offsetHeight } = proxy.$el
         const top = data.activeNode.offsetTop
         const bottom = top + data.activeNode.offsetHeight
 

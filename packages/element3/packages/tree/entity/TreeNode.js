@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 const typeFlag = Symbol('TREE_NODE')
 
 /**
