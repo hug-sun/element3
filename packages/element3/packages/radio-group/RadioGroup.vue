@@ -69,10 +69,10 @@ function useInject() {
 }
 
 function useKeyDown() {
-  const { ctx } = getCurrentInstance()
+  const { proxy } = getCurrentInstance()
   onMounted(() => {
-    const radios = ctx.$el.querySelectorAll('[type=radio]')
-    const firstLabel = ctx.$el.querySelectorAll('[role=radio]')[0]
+    const radios = proxy.$el.querySelectorAll('[type=radio]')
+    const firstLabel = proxy.$el.querySelectorAll('[role=radio]')[0]
     if (![].some.call(radios, (radio) => radio.checked) && firstLabel) {
       firstLabel.tabIndex = 0
     }
@@ -82,10 +82,10 @@ function useKeyDown() {
     const target = e.target
     const className =
       target.nodeName === 'INPUT' ? '[type=radio]' : '[role=radio]'
-    const radios = ctx.$el.querySelectorAll(className)
+    const radios = proxy.$el.querySelectorAll(className)
     const length = radios.length
     const index = [].indexOf.call(radios, target)
-    const roleRadios = ctx.$el.querySelectorAll('[role=radio]')
+    const roleRadios = proxy.$el.querySelectorAll('[role=radio]')
     switch (e.keyCode) {
       case keyCode.LEFT:
       case keyCode.UP:
@@ -120,10 +120,12 @@ function useKeyDown() {
 }
 
 function useStyle({ elFormItem, size }) {
-  const { ctx, vnode } = getCurrentInstance()
+  const { proxy, vnode } = getCurrentInstance()
 
   const radioGroupSize = computed(() => {
-    return size.value || elFormItem.elFormItemSize || (ctx.$ELEMENT || {}).size
+    return (
+      size.value || elFormItem.elFormItemSize || (proxy.$ELEMENT || {}).size
+    )
   })
 
   const elTag = computed(() => {

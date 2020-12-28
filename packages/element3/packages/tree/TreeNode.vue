@@ -4,13 +4,13 @@
     class="el-tree-node"
     :class="{
       'is-expanded': node.isExpanded,
-      'is-current': elTree.ctx.dragState.current === node,
+      'is-current': elTree.proxy.dragState.current === node,
       'is-hidden': !node.isVisable,
       'is-focusable': !node.isDisabled,
       'is-checked': node.isChecked,
       'is-drop-inner':
-        elTree.ctx.dragState.drop === 'inner' &&
-        elTree.ctx.dragState.current === node
+        elTree.proxy.dragState.drop === 'inner' &&
+        elTree.proxy.dragState.current === node
     }"
     role="TreeNode"
     tabindex="-1"
@@ -23,10 +23,10 @@
     :data-node-id="node.id"
     @click.right.stop="onRightEvent"
     @click.stop="onClickNode"
-    @dragstart.stop="elTree.ctx.handleDragStart(node, $event)"
-    @dragover.stop="elTree.ctx.handleDragOver(node, $event)"
-    @dragend.stop="elTree.ctx.handleDragEnd(node, $event)"
-    @drop.stop="elTree.ctx.handleDrop(node, $event)"
+    @dragstart.stop="elTree.proxy.handleDragStart(node, $event)"
+    @dragover.stop="elTree.proxy.handleDragOver(node, $event)"
+    @dragend.stop="elTree.proxy.handleDragEnd(node, $event)"
+    @drop.stop="elTree.proxy.handleDrop(node, $event)"
   >
     <div
       class="el-tree-node__content"

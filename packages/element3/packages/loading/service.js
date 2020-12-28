@@ -48,9 +48,9 @@ const Loading = (options = {}) => {
       unmountComponent(instance)
     }
   })
-  addStyle(options, parent, instance.ctx)
+  addStyle(options, parent, instance.proxy)
 
-  parent.appendChild(instance.ctx.$el)
+  parent.appendChild(instance.proxy.$el)
 
   if (options.fullscreen) {
     fullscreenLoading = instance
@@ -62,7 +62,7 @@ const Loading = (options = {}) => {
 }
 
 const close = function () {
-  this.ctx.close()
+  this.proxy.close()
 }
 
 export default Loading

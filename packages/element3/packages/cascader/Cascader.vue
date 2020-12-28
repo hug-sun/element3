@@ -138,7 +138,7 @@ import Popper from '../../src/utils/vue-popper'
 import { useEmitter } from '../../src/use/emitter'
 import { migrating } from '../../src/use/migrating'
 import Clickoutside from '../../src/directives/clickoutside'
-import ElInput from '../input'
+import { ElInput } from '../../src/components/Input'
 import { ElTag } from '../../src/components/Tag'
 import ElScrollbar from '../scrollbar'
 import ElCascaderPanel from '../cascader-panel'
@@ -446,7 +446,7 @@ export default {
       }
     }
     const handleExpandChange = (value) => {
-      nextTick(instance.ctx.updatePopper.bind(instance.ctx))
+      nextTick(instance.proxy.updatePopper.bind(instance.proxy))
       emit('expand-change', value)
       emit('active-item-change', value)
     }
@@ -487,7 +487,7 @@ export default {
       }
     }
     const updateStyle = () => {
-      const { $el } = instance.ctx
+      const { $el } = instance.proxy
       if (!$el) return
 
       const inputInner = $el.querySelector('.el-input__inner')
@@ -512,7 +512,7 @@ export default {
           const { offsetHeight } = tags
           inputInner.style.height =
             Math.max(offsetHeight + 6, inputState.initialHeight) + 'px'
-          instance.ctx.updatePopper()
+          instance.proxy.updatePopper()
         })
       }
     }
@@ -549,10 +549,10 @@ export default {
         }
       })
 
-      addResizeListener(instance.ctx.$el, updateStyle)
+      addResizeListener(instance.proxy.$el, updateStyle)
     })
     onUnmounted(() => {
-      removeResizeListener(instance.ctx.$el, updateStyle)
+      removeResizeListener(instance.proxy.$el, updateStyle)
     })
 
     watch(disabled, () => {
@@ -602,7 +602,7 @@ export default {
       }
     })
     watch(filtering, () => {
-      nextTick(instance.ctx.updatePopper)
+      nextTick(instance.proxy.updatePopper)
     })
 
     return {
@@ -651,10 +651,10 @@ export default {
 }
 
 const useSize = ({ size, elFormItem }) => {
-  const { ctx } = getCurrentInstance()
+  const { proxy } = getCurrentInstance()
   const realSize = computed(() => {
     const _elFormItemSize = elFormItem?.elFormItemSize
-    return size?.value || _elFormItemSize || ctx.$ELEMENT?.size
+    return size?.value || _elFormItemSize || proxy.$ELEMENT?.size
   })
   const tagSize = computed(() => {
     return ['small', 'mini'].indexOf(realSize.value) > -1 ? 'mini' : 'small'
@@ -709,7 +709,7 @@ const useDropdownVisible = ({ input, panel, isDisabled, emit }) => {
       dropDownVisible.value = visible
       if (visible) {
         nextTick(() => {
-          instance.ctx.updatePopper()
+          instance.proxy.updatePopper()
           panel.value.scrollIntoView()
         })
       }
@@ -765,7 +765,7 @@ const useSuggestion = ({
 
     filtering.value = true
     suggestions.value = internalSuggestions
-    nextTick(instance.ctx.updatePopper)
+    nextTick(instance.proxy.updatePopper)
   }
   const handleSuggestionClick = (index) => {
     const targetNode = suggestions.value[index]

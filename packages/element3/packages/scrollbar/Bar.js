@@ -11,8 +11,8 @@ import {
 
 const useDrag = ({ bar, state, thumb, cursorDown }) => {
   const instance = getCurrentInstance()
-  const { ctx } = instance
-  const wrap = computed(() => instance.parent.ctx.wrap)
+  const { proxy } = instance
+  const wrap = computed(() => instance.parent.proxy.wrap)
   const startDrag = (e) => {
     e.stopImmediatePropagation()
     cursorDown.value = true
@@ -29,12 +29,12 @@ const useDrag = ({ bar, state, thumb, cursorDown }) => {
     if (!prevPage) return
 
     const offset =
-      (ctx.$el.getBoundingClientRect()[bar.value.direction] -
+      (proxy.$el.getBoundingClientRect()[bar.value.direction] -
         e[bar.value.client]) *
       -1
     const thumbClickPosition = thumb.value[bar.value.offset] - prevPage
     const thumbPositionPercentage =
-      ((offset - thumbClickPosition) * 100) / ctx.$el[bar.value.offset]
+      ((offset - thumbClickPosition) * 100) / proxy.$el[bar.value.offset]
 
     wrap.value[bar.value.scroll] =
       (thumbPositionPercentage * wrap.value[bar.value.scrollSize]) / 100
@@ -66,7 +66,7 @@ const useDrag = ({ bar, state, thumb, cursorDown }) => {
     )
     const thumbHalf = thumb.value[bar.value.offset] / 2
     const thumbPositionPercentage =
-      ((offset - thumbHalf) * 100) / ctx.$el[bar.value.offset]
+      ((offset - thumbHalf) * 100) / proxy.$el[bar.value.offset]
 
     wrap.value[bar.value.scroll] =
       (thumbPositionPercentage * wrap.value[bar.value.scrollSize]) / 100

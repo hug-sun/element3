@@ -105,8 +105,10 @@ import {
 import Clickoutside from '../../../../src/directives/clickoutside'
 import Locale from '../../../../src/mixins/locale'
 import MonthTable from '../basic/month-table'
-import ElInput from '../../../input'
+import { ElInput } from '../../../../src/components/Input'
 import { ElButton } from '../../../../src/components/Button'
+import { useDateEmitter } from '../../index'
+
 
 const calcDefaultValue = (defaultValue) => {
   if (Array.isArray(defaultValue)) {
@@ -228,7 +230,7 @@ export default {
       this.maxDate = null
       this.leftDate = calcDefaultValue(this.defaultValue)[0]
       this.rightDate = nextYear(this.leftDate)
-      this.$emit('pick', null)
+      this.trigger('pick', null)
     },
 
     handleChangeRange(val) {
@@ -289,7 +291,7 @@ export default {
 
     handleConfirm(visible = false) {
       if (this.isValidValue([this.minDate, this.maxDate])) {
-        this.$emit('pick', [this.minDate, this.maxDate], visible)
+        this.trigger('pick', [this.minDate, this.maxDate], visible)
       }
     },
 
@@ -320,6 +322,10 @@ export default {
   },
 
   // eslint-disable-next-line vue/no-unused-components
-  components: { MonthTable, ElInput, ElButton }
+  components: { MonthTable, ElInput, ElButton },
+  setup() {
+    const { trigger, on } = useDateEmitter()
+    return { trigger, on }
+  }
 }
 </script>

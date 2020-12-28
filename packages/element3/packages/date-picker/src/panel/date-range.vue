@@ -242,8 +242,10 @@ import Clickoutside from '../../../../src/directives/clickoutside'
 import Locale from '../../../../src/mixins/locale'
 import TimePicker from './time'
 import DateTable from '../basic/date-table'
-import ElInput from '../../../input'
+import { ElInput } from '../../../../src/components/Input'
 import { ElButton } from '../../../../src/components/Button'
+import { useDateEmitter } from '../../index'
+
 
 const calcDefaultValue = (defaultValue) => {
   if (Array.isArray(defaultValue)) {
@@ -513,7 +515,7 @@ export default {
       this.maxDate = null
       this.leftDate = calcDefaultValue(this.defaultValue)[0]
       this.rightDate = nextMonth(this.leftDate)
-      this.$emit('pick', null)
+      this.trigger('pick', null)
     },
 
     handleChangeRange(val) {
@@ -777,7 +779,7 @@ export default {
 
     handleConfirm(visible = false) {
       if (this.isValidValue([this.minDate, this.maxDate])) {
-        this.$emit('pick', [this.minDate, this.maxDate], visible)
+        this.trigger('pick', [this.minDate, this.maxDate], visible)
       }
     },
 
@@ -809,6 +811,10 @@ export default {
     }
   },
 
-  components: { TimePicker, DateTable, ElInput, ElButton }
+  components: { TimePicker, DateTable, ElInput, ElButton },
+  setup() {
+    const { trigger, on } = useDateEmitter()
+    return { trigger, on }
+  }
 }
 </script>

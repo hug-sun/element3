@@ -5,8 +5,8 @@ function useFocus(ref) {
     if (isRef(ref)) {
       ref.value.focus()
     } else {
-      const { ctx } = getCurrentInstance()
-      ctx.$refs[ref].focus()
+      const { proxy } = getCurrentInstance()
+      proxy.$refs[ref].focus()
     }
   }
 }
