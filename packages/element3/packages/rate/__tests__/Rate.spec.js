@@ -102,6 +102,7 @@ describe('Rate', () => {
         voidIconClass: 'el-icon-star-off'
       }
     })
+    console.log(wrapper)
     expect(wrapper.findAll('.el-rate__icon')[3].classes()).toContain(
       'el-icon-star-off'
     )
@@ -147,5 +148,17 @@ describe('Rate', () => {
     expect(wrapper.find('.el-rate__text').element.style.color).toBe(
       'rgb(31, 45, 61)'
     )
+  })
+  it('inElForm', () => {
+    const wrapper = mount(Rate, {
+      global: {
+        provide: {
+          elForm: {
+            disabled: true
+          }
+        }
+      }
+    })
+    expect(wrapper.find('[style="cursor: auto;"]').exists()).toBeTruthy()
   })
 })

@@ -19,7 +19,7 @@
     >
       <i
         class="el-rate__icon"
-        :class="[{ hover: false }, classes[item - 1]]"
+        :class="[{ hover: hoverIndex === item }, classes[item - 1]]"
         :style="{ color: iconColor(item) }"
       >
         <i
@@ -40,11 +40,11 @@
 
 <script>
 import {
-  // inject,
+  inject,
   toRefs,
   computed,
-  unref
-  // ref,
+  unref,
+  ref
   // watch,
   // getCurrentInstance
 } from 'vue'
@@ -151,7 +151,9 @@ export default {
       showText
     } = toRefs(props)
 
-    const rateDisabled = computed(() => disabled.value)
+    const elForm = inject('elForm', {})
+
+    const rateDisabled = computed(() => disabled.value || elForm.disabled)
 
     const percentage = computed(() => {
       return (modelValue.value - Math.floor(modelValue.value)) * 100
@@ -239,8 +241,11 @@ export default {
       }
       return result
     })
-    // eslint-disable-next-line no-unused-vars
-    const slideSelectRate = (value, event) => {}
+    const hoverIndex = ref(-1)
+    const slideSelectRate = (value) => {
+      if (rateDisabled.value) return
+      hoverIndex.value = value
+    }
     const clickUpdateRate = (value) => {
       if (rateDisabled.value) return
       setRate(value)
@@ -248,12 +253,13 @@ export default {
     const pressKeyUpdateRate = (e) => {
       if (rateDisabled.value) return
       let value = modelValue.value
-      //增加和减少需要判断临界值
       if (e.keyCode === 38 || e.keyCode === 39) {
         value += 1
+        value = value > max.value ? max.value : value
       }
       if (e.keyCode === 37 || e.keyCode === 40) {
         value -= 1
+        value = value < 0 ? 0 : value
       }
 
       setRate(value)
@@ -273,6 +279,7 @@ export default {
       decimalStyle,
       showDecimalIcon,
       activeClass,
+      hoverIndex,
       // methods
       clickUpdateRate,
       slideSelectRate,
