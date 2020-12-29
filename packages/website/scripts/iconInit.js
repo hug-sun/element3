@@ -25,6 +25,6 @@ classList.reverse()
 
 fs.writeFile(
   path.resolve(__dirname, '../src/icon.json'),
-  JSON.stringify(classList),
+  JSON.stringify(classList, null, 2) + '\n',
   () => {}
 )

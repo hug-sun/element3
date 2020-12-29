@@ -146,8 +146,8 @@ export default {
       img.onerror = handleError.bind(this)
       // bind html attrs
       // so it can behave consistently
-      Object.keys(instance.ctx.$attrs).forEach((key) => {
-        const value = instance.ctx.$attrs[key]
+      Object.keys(instance.proxy.$attrs).forEach((key) => {
+        const value = instance.proxy.$attrs[key]
         img.setAttribute(key, value)
       })
       img.src = props.src
@@ -164,7 +164,7 @@ export default {
       ctx.emit('error', e)
     }
     const handleLazyLoad = () => {
-      if (isInContainer(instance.ctx.$el, instance.ctx._scrollContainer)) {
+      if (isInContainer(instance.proxy.$el, instance.proxy._scrollContainer)) {
         show.value = true
         removeLazyLoadListener()
       }
@@ -178,17 +178,17 @@ export default {
       } else if (isString(scrollContainer)) {
         _scrollContainer = document.querySelector(scrollContainer)
       } else {
-        _scrollContainer = getScrollContainer(instance.ctx.$el)
+        _scrollContainer = getScrollContainer(instance.proxy.$el)
       }
       if (_scrollContainer) {
-        instance.ctx._scrollContainer = _scrollContainer
-        instance.ctx._lazyLoadHandler = throttle(200, handleLazyLoad)
-        on(_scrollContainer, 'scroll', instance.ctx._lazyLoadHandler)
+        instance.proxy._scrollContainer = _scrollContainer
+        instance.proxy._lazyLoadHandler = throttle(200, handleLazyLoad)
+        on(_scrollContainer, 'scroll', instance.proxy._lazyLoadHandler)
         handleLazyLoad()
       }
     }
     const removeLazyLoadListener = () => {
-      const { _scrollContainer, _lazyLoadHandler } = instance.ctx
+      const { _scrollContainer, _lazyLoadHandler } = instance.proxy
       if (
         // this.$isServer ||
         !_scrollContainer ||
@@ -196,8 +196,8 @@ export default {
       )
         return
       off(_scrollContainer, 'scroll', _lazyLoadHandler)
-      instance.ctx._scrollContainer = null
-      instance.ctx._lazyLoadHandler = null
+      instance.proxy._scrollContainer = null
+      instance.proxy._lazyLoadHandler = null
     }
     /**
      * simulate object-fit behavior to compatible with IE11 and other browsers which not support object-fit
@@ -206,7 +206,7 @@ export default {
       const {
         clientWidth: containerWidth,
         clientHeight: containerHeight
-      } = instance.ctx.$el
+      } = instance.proxy.$el
       if (
         !imageWidth.value ||
         !imageHeight.value ||

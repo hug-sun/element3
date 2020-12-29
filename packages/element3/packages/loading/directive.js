@@ -62,8 +62,8 @@ const loadingDirective = {
       }
     })
     el.options = options
-    el.instance = mask.ctx
-    el.mask = mask.ctx.$el
+    el.instance = mask.proxy
+    el.mask = mask.proxy.$el
     el.maskStyle = {}
 
     binding.value && toggleLoading(el, binding)

@@ -28,7 +28,7 @@ npm i element3 -S
 
 ### Hello world
 
-通过 CDN 的方式我们可以很容易地使用 Element 写出一个 Hello world 页面。[在线演示](https://codepen.io/imjustaman/pen/abZajYg)
+通过 CDN 的方式我们可以很容易地使用 Element3 写出一个 Hello world 页面。[在线演示](https://codepen.io/imjustaman/pen/abZajYg)
 
 <iframe height="265" style="width: 100%;" scrolling="no" title="Element3 Demo" src="https://codepen.io/imjustaman/embed/abZajYg?height=265&theme-id=light&default-tab=html,result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
   See the Pen <a href='https://codepen.io/imjustaman/pen/abZajYg'>Element3 Demo</a> by ImJustAMan

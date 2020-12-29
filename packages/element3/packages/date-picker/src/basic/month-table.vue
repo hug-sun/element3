@@ -245,6 +245,7 @@ export default {
       if (this.selectionMode === 'range') {
         if (!this.rangeState.selecting) {
           this.$emit('pick', { minDate: newDate, maxDate: null })
+          // eslint-disable-next-line vue/no-mutating-props
           this.rangeState.selecting = true
         } else {
           if (newDate >= this.minDate) {
@@ -252,6 +253,7 @@ export default {
           } else {
             this.$emit('pick', { minDate: newDate, maxDate: this.minDate })
           }
+          // eslint-disable-next-line vue/no-mutating-props
           this.rangeState.selecting = false
         }
       } else {

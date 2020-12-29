@@ -69,7 +69,7 @@ function usePopup(props) {
       rendered.value = true
     }
 
-    const props = merge({}, instance.ctx, options)
+    const props = merge({}, instance.proxy, options)
 
     if (_closeTimer) {
       clearTimeout(_closeTimer)
@@ -87,11 +87,11 @@ function usePopup(props) {
     }
   }
   const doOpen = (props) => {
-    if (instance.ctx.$isServer) return
+    if (instance.proxy.$isServer) return
     if (_opening) return
     if (opened.value) return
     _opening = true
-    const dom = instance.ctx.$el
+    const dom = instance.proxy.$el
     const modal = props.modal
     const zIndex = props.zIndex
 

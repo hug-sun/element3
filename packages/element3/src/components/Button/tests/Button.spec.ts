@@ -1,6 +1,6 @@
 import Button from '../src/Button.vue'
 import { mount } from '@vue/test-utils'
-import { reactive } from 'vue'
+import { nextTick, reactive } from 'vue'
 import { setupGlobalOptions } from '../../../use/globalConfig'
 
 describe('Button.vue', () => {
@@ -33,7 +33,7 @@ describe('Button.vue', () => {
   })
 
   describe('set button size', () => {
-    it('by props.size', () => {
+    it('by props.size', async () => {
       const size = 'small'
 
       const wrapper = mount(Button, {
@@ -43,24 +43,35 @@ describe('Button.vue', () => {
       })
 
       expect(wrapper).toHaveClass(`el-button--${size}`)
+
+      await wrapper.setProps({
+        size: 'mini'
+      })
+      expect(wrapper).toHaveClass(`el-button--mini`)
     })
 
-    it('by elFormItem.elFormItemSize', () => {
+    it('by elFormItem.elFormItemSize', async () => {
       const size = 'small'
+
+      const elFormItem = reactive({
+        elFormItemSize: size
+      })
+
       const wrapper = mount(Button, {
         props: {
           size: ''
         },
         global: {
           provide: {
-            elFormItem: reactive({
-              elFormItemSize: size
-            })
+            elFormItem
           }
         }
       })
 
       expect(wrapper).toHaveClass(`el-button--${size}`)
+      elFormItem.elFormItemSize = 'mini'
+      await nextTick()
+      expect(wrapper).toHaveClass(`el-button--mini`)
     })
 
     it('by global config ', () => {
@@ -82,7 +93,7 @@ describe('Button.vue', () => {
     })
   })
 
-  it('set button type by prop type ', () => {
+  it('set button type ', () => {
     const type = 'success'
 
     const wrapper = mount(Button, {
@@ -94,7 +105,7 @@ describe('Button.vue', () => {
     expect(wrapper).toHaveClass(`el-button--${type}`)
   })
 
-  it('set button plain by prop type', () => {
+  it('set button plain ', async () => {
     const wrapper = mount(Button, {
       props: {
         plain: true
@@ -102,8 +113,14 @@ describe('Button.vue', () => {
     })
 
     expect(wrapper).toHaveClass('is-plain')
+
+    await wrapper.setProps({
+      plain: false
+    })
+
+    expect(wrapper).not.toHaveClass('is-plain')
   })
-  it('set button round by prop type', () => {
+  it('set button round ', async () => {
     const wrapper = mount(Button, {
       props: {
         round: true
@@ -111,9 +128,15 @@ describe('Button.vue', () => {
     })
 
     expect(wrapper).toHaveClass('is-round')
+
+    await wrapper.setProps({
+      round: false
+    })
+
+    expect(wrapper).not.toHaveClass('is-round')
   })
 
-  it('set button circle by prop type', () => {
+  it('set button circle ', async () => {
     const wrapper = mount(Button, {
       props: {
         circle: true
@@ -121,9 +144,15 @@ describe('Button.vue', () => {
     })
 
     expect(wrapper).toHaveClass('is-circle')
+
+    await wrapper.setProps({
+      circle: false
+    })
+
+    expect(wrapper).not.toHaveClass('is-circle')
   })
 
-  it('set button loading by prop loading', async () => {
+  it('set button loading ', async () => {
     const wrapper = mount(Button, {
       props: {
         loading: true
@@ -131,10 +160,16 @@ describe('Button.vue', () => {
     })
 
     expect(wrapper).toHaveClass('is-loading')
+
+    await wrapper.setProps({
+      loading: false
+    })
+
+    expect(wrapper).not.toHaveClass('is-loading')
   })
 
   describe('set button disabled', () => {
-    it('by props.disabled', () => {
+    it('by props.disabled', async () => {
       const wrapper = mount(Button, {
         props: {
           disabled: true
@@ -143,21 +178,36 @@ describe('Button.vue', () => {
 
       expect(wrapper).toHaveClass('is-disabled')
       expect(wrapper).toHaveAttribute('disabled')
+
+      await wrapper.setProps({
+        disabled: false
+      })
+
+      expect(wrapper).not.toHaveClass('is-disabled')
+      expect(wrapper).not.toHaveAttribute('disabled')
     })
 
-    it('by elForm.disabled', () => {
+    it('by elForm.disabled', async () => {
+      const elForm = reactive({
+        disabled: true
+      })
+
       const wrapper = mount(Button, {
         global: {
           provide: {
-            elForm: reactive({
-              disabled: true
-            })
+            elForm
           }
         }
       })
 
       expect(wrapper).toHaveClass('is-disabled')
       expect(wrapper).toHaveAttribute('disabled')
+
+      elForm.disabled = false
+      await nextTick()
+
+      expect(wrapper).not.toHaveClass('is-disabled')
+      expect(wrapper).not.toHaveAttribute('disabled')
     })
   })
 
@@ -185,7 +235,7 @@ describe('Button.vue', () => {
     })
   })
 
-  it('set native-type by props.native-type', () => {
+  it('set native-type ', () => {
     const nativeType = 'reset'
 
     const wrapper = mount(Button, {

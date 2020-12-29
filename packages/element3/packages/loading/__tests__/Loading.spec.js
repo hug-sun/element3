@@ -18,16 +18,18 @@ describe('Loading', () => {
   afterEach((done) => {
     if (loadingInstance) {
       loadingInstance.close()
-      loadingInstance.ctx.$el &&
-        loadingInstance.ctx.$el.parentNode &&
-        loadingInstance.ctx.$el.parentNode.removeChild(loadingInstance.ctx.$el)
+      loadingInstance.proxy.$el &&
+        loadingInstance.proxy.$el.parentNode &&
+        loadingInstance.proxy.$el.parentNode.removeChild(
+          loadingInstance.proxy.$el
+        )
     }
     if (loadingInstance2) {
       loadingInstance2.close()
-      loadingInstance2.ctx.$el &&
-        loadingInstance2.ctx.$el.parentNode &&
-        loadingInstance2.ctx.$el.parentNode.removeChild(
-          loadingInstance2.ctx.$el
+      loadingInstance2.proxy.$el &&
+        loadingInstance2.proxy.$el.parentNode &&
+        loadingInstance2.proxy.$el.parentNode.removeChild(
+          loadingInstance2.proxy.$el
         )
     }
     loadingInstance = loadingInstance2 = null
@@ -196,7 +198,7 @@ describe('Loading', () => {
     it('close', () => {
       loadingInstance = LoadingService()
       loadingInstance.close()
-      expect(loadingInstance.ctx.visible).toBe(false)
+      expect(loadingInstance.proxy.visible).toBe(false)
     })
 
     it('target', () => {
