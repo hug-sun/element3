@@ -77,7 +77,7 @@
             :round="roundButton"
             @click="handleAction('cancel')"
             @keydown.enter="handleAction('cancel')"
-            :class="['el-button--primary', cancelButtonClass]"
+            :class="[cancelButtonClass]"
             v-show="showCancelButton"
           >
             {{ cancelButtonText }}

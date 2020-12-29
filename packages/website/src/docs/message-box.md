@@ -184,6 +184,11 @@
               type: 'info',
               message: 'action: ' + action
             })
+          }).catch(() => {
+            Message({
+              type: 'info',
+              message: '已取消'
+            })
           })
         }
       }
@@ -210,7 +215,7 @@
 </template>
 
 <script>
-  import { useMsgbox } from 'element3'
+  import { useMsgbox, Message } from 'element3'
   export default {
     setup() {
       const messageBox = useMsgbox()
@@ -223,7 +228,17 @@
             {
               dangerouslyUseHTMLString: true
             }
-          )
+          ).then(({action}) => {
+            Message({
+              type: 'info',
+              message: 'action: ' + action
+            })
+          }).catch(() => {
+            Message({
+              type: 'info',
+              message: '已取消'
+            })
+          })
         }
       }
     }

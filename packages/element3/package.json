@@ -19,8 +19,7 @@
     "build:lib": "rollup -c",
     "build:theme": "node scripts/generateCssFile.js && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
     "dev": "cross-env NODE_ENV=development rollup -wc",
-    "test": "jest --runInBand",
-    "testc": "jest --coverage"
+    "test": "jest --runInBand"
   },
   "repository": {
     "type": "git",

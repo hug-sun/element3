@@ -46,7 +46,10 @@ const showNextMsg = () => {
       oldCb(action, instance)
     }
 
-    initInstance(currentMsg, isVNode(options.message) ? options.message : null)
+    initInstance(
+      currentMsg,
+      isVNode(options.message) ? () => options.message : null
+    )
     document.body.appendChild(instance.vnode.el)
   }
 }
@@ -106,7 +109,8 @@ MessageBox.alert = (message, title, options) => {
 MessageBox.confirm = (message, title, options) => {
   const defaultVal = {
     type: 'info',
-    category: 'confirm'
+    category: 'confirm',
+    showCancelButton: true
   }
   return MessageBox(
     Object.assign(defaultVal, MergeCondition(message, title, options))
@@ -118,6 +122,7 @@ MessageBox.prompt = (message, title, options) => {
     type: null,
     showInput: true,
     category: 'prompt',
+    showCancelButton: true,
     inputErrorMessage: '输入的数据不合法!'
   }
   return MessageBox(

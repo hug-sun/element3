@@ -218,18 +218,11 @@ describe('MessageBox.vue', () => {
         props: {
           cancelButtonText: 'cancel',
           showCancelButton: true,
-          cancelButtonClass: '4444'
+          cancelButtonClass: 'vvv'
         }
       })
-      expect(warpper.findAll('.el-message-box__btns button')[0].text()).toEqual(
-        'cancel'
-      )
-      expect(
-        warpper.findAll('.el-message-box__btns button')[0].isVisible()
-      ).toBeTruthy()
-      expect(
-        warpper.findAll('.el-button--primary')[0].element.classList
-      ).toContain('4444')
+      expect(warpper.find('.vvv').text()).toEqual('cancel')
+      expect(warpper.find('.vvv').isVisible()).toBeTruthy()
     })
 
     it('confirmButtonClass showConfirmButton, confirmButtonText', () => {
@@ -237,18 +230,12 @@ describe('MessageBox.vue', () => {
         props: {
           confirmButtonText: 'cancel',
           showConfirmButton: true,
-          confirmButtonClass: '4444'
+          confirmButtonClass: 'mmm'
         }
       })
-      expect(
-        warpper.findAll('.el-button--primary')[1].element.classList
-      ).toContain('4444')
-      expect(warpper.findAll('.el-message-box__btns button')[1].text()).toEqual(
-        'cancel'
-      )
-      expect(
-        warpper.findAll('.el-message-box__btns button')[1].isVisible()
-      ).toBeTruthy()
+      expect(warpper.find('.el-button--primary').classes()).toContain('mmm')
+      expect(warpper.find('.mmm').text()).toEqual('cancel')
+      expect(warpper.find('.el-message-box__btns').isVisible()).toBeTruthy()
     })
 
     it('proprety callback', async () => {

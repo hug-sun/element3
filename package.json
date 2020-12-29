@@ -7,7 +7,6 @@
     "bootstrap": "yarn",
     "build": "yarn workspace element3 build && yarn workspace website build",
     "test": "yarn workspace element3 test",
-    "testc": "yarn workspace element3 testc",
     "lint": "eslint --ext .js  packages/element3/packages/** packages/*/src/** --no-error-on-unmatched-pattern",
     "release": "node scripts/release.js",
     "clean": "rm -rf node_modules && rm -rf packages/*/node_modules && yarn cache clean",

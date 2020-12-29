@@ -1,5 +1,5 @@
 // import { mount } from '@vue/test-utils'
-import { nextTick } from 'vue'
+import { nextTick, h } from 'vue'
 import messageBox from '../src/MessageBox.js'
 const sleep = (time = 0) => new Promise((resolve) => setTimeout(resolve, time))
 const selector = '.el-message-box__wrapper'
@@ -127,5 +127,12 @@ describe('MessageBox.js', () => {
     await btn.click()
     await sleep()
     expect(callback).toHaveBeenCalled()
+  })
+  test('message is vnode', async () => {
+    const v = h('div', '4')
+    const { instance } = messageBox.alert({
+      message: v
+    })
+    expect(instance.proxy.$slots.default()[0]).toEqual(v)
   })
 })
