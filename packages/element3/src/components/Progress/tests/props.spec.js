@@ -19,7 +19,8 @@ import {
   TRANSITION,
   DEFAULT_COLOR,
   getSvgStrokeColor,
-  STATUS_SETTING
+  STATUS_SETTING,
+  STATUSES
 } from '../src/props'
 
 describe('Progress.props', () => {
@@ -35,12 +36,17 @@ describe('Progress.props', () => {
   })
 
   it('status', () => {
+    expect(STATUSES.length).toBe(3)
+    expect(STATUSES[0]).toBe('success')
+    expect(STATUSES[1]).toBe('warning')
+    expect(STATUSES[2]).toBe('exception')
     const { status } = props
     expect(status.validator('success')).toBe(true)
     expect(status.validator('exception')).toBe(true)
     expect(status.validator('warning')).toBe(true)
     expect(status.validator('info')).toBe(false)
-    expect(status.validator('')).toBe(false)
+    expect(status.validator('')).toBe(true)
+    expect(status.validator(undefined)).toBe(true)
   })
 
   it('show-text', () => {

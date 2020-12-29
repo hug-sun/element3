@@ -23,7 +23,8 @@ export const STATUSES = Object.keys(STATUS_SETTING)
 export const TYPES = ['line', 'circle', 'dashboard']
 export const LINECAPS = ['butt', 'round', 'square']
 
-export const statusValid = (val) => STATUSES.includes(val)
+export const statusValid = (val) =>
+  isEmpty(val) || (!isEmpty(val) && STATUSES.includes(val))
 export const percentageValid = (val) => isNumber(val) && val >= 0 && val <= 100
 export const typeValid = (val) => TYPES.includes(val)
 export const linecapValid = (val) => LINECAPS.includes(val)
@@ -54,6 +55,7 @@ export const props = {
   status: {
     type: String,
     default: '',
+    required: false,
     validator: statusValid
   },
   color: { type: [String, Function, Array], default: '' },

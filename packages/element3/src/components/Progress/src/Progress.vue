@@ -30,7 +30,11 @@
         ></path>
       </svg>
     </div>
-    <div class="el-progress__text" v-if="showText && !textInside">
+    <div
+      class="el-progress__text"
+      v-if="showText && !textInside"
+      :style="textStyle"
+    >
       <template v-if="!status">{{ content }}</template>
       <i v-else :class="iconClass"></i>
     </div>
@@ -85,6 +89,7 @@ export default defineComponent({
     const trailPathStyle = useTrailPathStyle(svgStrokeWidth)
     const arcPathStyle = useArcPathStyle(svgStrokeWidth, percentage)
     const svgStrokeColor = useSvgStrokeColor(color, status)
+    const textStyle = useTextStyle(type, width)
     return {
       barStyle,
       barOuterStyle,
@@ -97,7 +102,8 @@ export default defineComponent({
       svgStrokeWidth,
       trailPathStyle,
       arcPathStyle,
-      svgStrokeColor
+      svgStrokeColor,
+      textStyle
     }
   }
 })
@@ -216,6 +222,18 @@ const useSvgStrokeColor = (color, status) => {
     const c = unref(color)
     const s = unref(status)
     return getSvgStrokeColor(c, s)
+  })
+}
+
+/**
+ * Only change when type is not 'line'
+ */
+const useTextStyle = (type, width) => {
+  return computed(() => {
+    const t = unref(type)
+    const w = unref(width)
+    const fontSize = (w * 0.11 + 2).toFixed() + 'px'
+    return t === 'line' ? '' : { fontSize }
   })
 }
 </script>
