@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { props } from './props'
-import { toRefs, inject, computed, defineComponent, Ref } from 'vue'
+import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'ElCard',
   props
