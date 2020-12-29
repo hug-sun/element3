@@ -93,7 +93,7 @@ export default {
   },
   props: {
     label: String,
-    modelValue: { type: [String, Number, Boolean, Symbol, Array], default: '' },
+    modelValue: [String, Number, Boolean, Symbol, Array],
     border: Boolean,
     size: {
       type: String,
