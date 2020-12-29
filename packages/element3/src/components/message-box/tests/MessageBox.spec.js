@@ -121,7 +121,7 @@ describe('MessageBox.js', () => {
       inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
       inputErrorMessage: '邮箱格式不正确'
     })
-    instance.catch(callback)
+    instance.then(callback)
     const btn = document.querySelector('.mmm')
     instance.instance.proxy.inputValue = '409187100@qq.com'
     await btn.click()

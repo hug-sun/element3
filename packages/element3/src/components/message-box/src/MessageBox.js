@@ -9,14 +9,13 @@ const defaultCallback = (action) => {
   if (currentMsg) {
     if (currentMsg.resolve) {
       if (action === 'confirm') {
-        console.log(instance.proxy.showInput)
         if (instance.proxy.showInput) {
           currentMsg.resolve({
             value: instance.proxy.inputValue,
             action
           })
         } else {
-          currentMsg.reject({ action })
+          currentMsg.resolve({ action })
         }
       } else if (
         currentMsg.reject &&
