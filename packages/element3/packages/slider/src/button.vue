@@ -67,11 +67,11 @@ export default {
   setup(props, { emit }) {
     const tooltip = ref(null)
 
-    const { parent, ctx } = getCurrentInstance()
+    const { parent, proxy } = getCurrentInstance()
 
     const { modelValue, vertical } = toRefs(props)
 
-    const { displayTooltip, hideTooltip } = useToolTip(ctx)
+    const { displayTooltip, hideTooltip } = useToolTip(proxy)
 
     const { hovering, handleMouseEnter, handleMouseLeave } = useMouseHover(
       displayTooltip,
@@ -113,7 +113,7 @@ export default {
       setPosition
     } = useDragAndKeyDown(
       parent,
-      ctx,
+      proxy,
       emit,
       modelValue,
       vertical,
@@ -166,13 +166,13 @@ export default {
   }
 }
 
-function useToolTip(ctx) {
+function useToolTip(proxy) {
   function displayTooltip() {
-    ctx.tooltip && (ctx.tooltip.showPopper = true)
+    proxy.tooltip && (proxy.tooltip.showPopper = true)
   }
 
   function hideTooltip() {
-    ctx.tooltip && (ctx.tooltip.showPopper = false)
+    proxy.tooltip && (proxy.tooltip.showPopper = false)
   }
   return {
     displayTooltip,
@@ -196,7 +196,7 @@ function useMouseHover(displayTooltip, hideTooltip) {
 
 function useDragAndKeyDown(
   parent,
-  ctx,
+  proxy,
   emit,
   modelValue,
   vertical,
@@ -209,7 +209,7 @@ function useDragAndKeyDown(
   displayTooltip,
   hideTooltip
 ) {
-  const { resetSize, emitChange } = parent.ctx
+  const { resetSize, emitChange } = parent.proxy
 
   const dragging = ref(false)
   const isClick = ref(false)
@@ -221,7 +221,7 @@ function useDragAndKeyDown(
   const newPosition = ref(null)
   const oldValue = ref(unref(modelValue))
   // watch
-  watch(dragging, (val) => (parent.ctx.dragging = val))
+  watch(dragging, (val) => (parent.proxy.dragging = val))
 
   // eslint-disable-next-line
   //#region drag methods: onButtonDown, onDragStart, onDragging, onDragEnd
@@ -265,10 +265,10 @@ function useDragAndKeyDown(
       }
       if (unref(vertical)) {
         currentY.value = event.clientY
-        diff = ((startY.value - currentY.value) / parent.ctx.sliderSize) * 100
+        diff = ((startY.value - currentY.value) / parent.proxy.sliderSize) * 100
       } else {
         currentX.value = event.clientX
-        diff = ((currentX.value - startX.value) / parent.ctx.sliderSize) * 100
+        diff = ((currentX.value - startX.value) / parent.proxy.sliderSize) * 100
       }
       newPosition.value = unref(startPosition) + diff
       setPosition(unref(newPosition))
@@ -336,8 +336,8 @@ function useDragAndKeyDown(
     value = parseFloat(value.toFixed(precision.value))
     emit('update:modelValue', value)
     nextTick(() => {
-      //console.log(ctx.tooltip);
-      ctx.tooltip && ctx.tooltip.updatePopper()
+      //console.log(proxy.tooltip);
+      proxy.tooltip && proxy.tooltip.updatePopper()
     })
     if (!unref(dragging) && unref(modelValue) !== unref(oldValue)) {
       oldValue.value = value
@@ -368,22 +368,22 @@ function useDragAndKeyDown(
 function useComputed(modelValue, vertical) {
   const { parent } = getCurrentInstance()
 
-  const disabled = computed(() => parent.ctx.sliderDisabled)
-  const max = computed(() => parent.ctx.max)
-  const min = computed(() => parent.ctx.min)
-  const step = computed(() => parent.ctx.step)
-  const showTooltip = computed(() => parent.ctx.showTooltip)
-  const precision = computed(() => parent.ctx.precision)
+  const disabled = computed(() => parent.proxy.sliderDisabled)
+  const max = computed(() => parent.proxy.max)
+  const min = computed(() => parent.proxy.min)
+  const step = computed(() => parent.proxy.step)
+  const showTooltip = computed(() => parent.proxy.showTooltip)
+  const precision = computed(() => parent.proxy.precision)
   const currentPosition = computed(
     () =>
       `${((unref(modelValue) - unref(min)) / (unref(max) - unref(min))) * 100}%`
   )
   const enableFormat = computed(
-    () => parent.ctx.formatTooltip instanceof Function
+    () => parent.proxy.formatTooltip instanceof Function
   )
   const formatValue = computed(
     () =>
-      (unref(enableFormat) && parent.ctx.formatTooltip(unref(modelValue))) ||
+      (unref(enableFormat) && parent.proxy.formatTooltip(unref(modelValue))) ||
       unref(modelValue)
   )
   const wrapperStyle = computed(() =>

@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-import ElInput from '../input'
+import { ElInput } from '../../src/components/Input'
 import useFocus from '../../src/use/focus.js'
 import RepeatClick from '../../src/directives/repeatClick'
 import {
@@ -118,7 +118,7 @@ export default {
   },
   emits: ['change', 'update:modelValue', 'blur', 'focus'],
   setup(props, { emit }) {
-    const { ctx } = getCurrentInstance()
+    const { proxy } = getCurrentInstance()
     const {
       step,
       stepStrictly,
@@ -226,7 +226,7 @@ export default {
     })
 
     const inputNumberSize = computed(() => {
-      return size.value || _elFormItemSize.value || (ctx.$ELEMENT || {}).size
+      return size.value || _elFormItemSize.value || (proxy.$ELEMENT || {}).size
     })
 
     const inputNumberDisabled = computed(() => {

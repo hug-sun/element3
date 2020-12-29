@@ -89,7 +89,7 @@ export default {
     const { dispatch } = useEmitter()
     const isActive = computed(() => {
       const name = props.name || props.name === 0 ? props.name : instance.uid
-      return collapse.ctx.activeNames.indexOf(name) > -1
+      return collapse.proxy.activeNames.indexOf(name) > -1
     })
 
     function handleFocus() {

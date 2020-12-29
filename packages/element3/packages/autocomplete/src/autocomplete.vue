@@ -60,7 +60,7 @@
 </template>
 <script>
 import { debounce } from 'throttle-debounce'
-import ElInput from '../../input'
+import { ElInput } from '../../../src/components/Input'
 import Clickoutside from '../../../src/directives/clickoutside'
 import ElAutocompleteSuggestions from './autocomplete-suggestions.vue'
 import Emitter from '../../../src/mixins/emitter'

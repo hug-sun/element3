@@ -6,7 +6,7 @@ import Next from '../components/Next'
 import Total from '../components/Total'
 import Pagination from '../Pagination'
 import Jumper from '../components/Jumper'
-import Input from 'element-ui/packages/input'
+import { Input } from '../../../src/components/Input'
 import Sizes from '../components/Sizes'
 
 describe('components', () => {

@@ -1,1 +1,1 @@
-import '../jest-vtu'
+import 'jest-vtu'

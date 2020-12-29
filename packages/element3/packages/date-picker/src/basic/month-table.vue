@@ -53,6 +53,7 @@ const getMonthTimestamp = function (time) {
   }
 }
 export default {
+  emits: ['pick'],
   props: {
     disabledDate: {},
     value: {},
@@ -244,16 +245,16 @@ export default {
       if (this.selectionMode === 'range') {
         if (!this.rangeState.selecting) {
           this.$emit('pick', { minDate: newDate, maxDate: null })
-          // TODO 需要使用 emit 来修改 rangeState 的值
-          // this.rangeState.selecting = true
+          // eslint-disable-next-line vue/no-mutating-props
+          this.rangeState.selecting = true
         } else {
           if (newDate >= this.minDate) {
             this.$emit('pick', { minDate: this.minDate, maxDate: newDate })
           } else {
             this.$emit('pick', { minDate: newDate, maxDate: this.minDate })
           }
-          // TODO 需要使用 emit 来修改 rangeState 的值
-          // this.rangeState.selecting = false
+          // eslint-disable-next-line vue/no-mutating-props
+          this.rangeState.selecting = false
         }
       } else {
         this.$emit('pick', month)
@@ -306,8 +307,7 @@ export default {
             selectedDate,
             (date) => date.getTime() === cellDate.getTime()
           )
-
-          this.$set(row, j, cell)
+          row[j] = cell
         }
       }
       return rows

@@ -38,7 +38,7 @@ export default {
     const { disabled } = toRefs(props)
     const visible = ref(true)
     const { on, broadcast } = useEmitter()
-    const { ctx } = getCurrentInstance()
+    const { proxy } = getCurrentInstance()
 
     watch(disabled, (val) => {
       broadcast('handleGroupDisabled', val)
@@ -46,9 +46,9 @@ export default {
 
     function queryChange() {
       visible.value =
-        ctx.$children &&
-        Array.isArray(ctx.$children) &&
-        ctx.$children.some((option) => option.visible === true)
+        proxy.$children &&
+        Array.isArray(proxy.$children) &&
+        proxy.$children.some((option) => option.visible === true)
     }
 
     onBeforeMount(() => {

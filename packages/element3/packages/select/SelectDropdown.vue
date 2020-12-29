@@ -83,14 +83,14 @@ export default {
 }
 
 function usePopperElm(elSelect) {
-  const { ctx } = getCurrentInstance()
+  const { proxy } = getCurrentInstance()
   const elms = reactive({
     referenceElm: null,
     popperElm: null
   })
   onMounted(() => {
     elms.referenceElm = elSelect.$refs.reference.$el
-    elSelect.popperElm = elms.popperElm = ctx.$el
+    elSelect.popperElm = elms.popperElm = proxy.$el
   })
   return { ...toRefs(elms) }
 }
