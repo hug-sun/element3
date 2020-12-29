@@ -13,7 +13,8 @@ import {
   findSvgTrailPath,
   findSvgArcPath,
   assertSvgStrokeOk,
-  assertIconClassOk
+  assertIconClassOk,
+  assertNotHaveAttr
 } from './test-helper'
 
 describe('Progress.vue', () => {
@@ -280,6 +281,17 @@ describe('Progress.vue', () => {
       status = 'exception'
       await wrapper.setProps({ status })
       assertIconClassOk(wrapper, status)
+    })
+
+    it.only('font size', async () => {
+      const wrapper = initProgress()
+      assertNotHaveAttr(wrapper, '.el-progress__text', 'style')
+      await wrapper.setProps({ strokeWidth: 50 })
+      assertNotHaveAttr(wrapper, '.el-progress__text', 'style')
+      await wrapper.setProps({ type: 'circle' })
+      assertContainStyle(wrapper, '.el-progress__text', 'font-size: 16px;')
+      await wrapper.setProps({ width: 200 })
+      assertContainStyle(wrapper, '.el-progress__text', 'font-size: 24px;')
     })
   })
 })

@@ -48,6 +48,11 @@ export function assertNotContainStyle(wrapper, selector, strStyle) {
   expect(elem.attributes().style).not.toContain(strStyle)
 }
 
+export function assertNotHaveAttr(wrapper, selector, attr) {
+  const elem = wrapper.find(selector)
+  expect(elem.attributes(attr)).toBeUndefined()
+}
+
 export function assertContainText(wrapper, selector, text) {
   expect(wrapper.find(selector).text()).toContain(text)
 }
