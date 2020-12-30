@@ -81,7 +81,7 @@ const MergeCondition = (message, title, options) => {
   } else if (isUndefined(title)) {
     title = ''
   }
-  if (title(message)) {
+  if (isObject(message)) {
     options = message
     message = ''
   }
