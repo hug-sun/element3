@@ -18,14 +18,12 @@
 </template>
 
 <script>
-  import { useMsgbox, Message } from 'element3'
+  import { MessageBox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
-
       return {
         open() {
-          messageBox.alert('这是一段内容', '标题名称', {
+          MessageBox.alert('这是一段内容', '标题名称', {
             confirmButtonText: '确定',
             callback: (action) => {
               Message({
@@ -55,14 +53,12 @@
 </template>
 
 <script>
-  import { useMsgbox, Message } from 'element3'
+  import { MessageBox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
-
       return {
         open() {
-          messageBox
+          MessageBox
             .confirm('此操作将永久删除该文件, 是否继续?', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -101,14 +97,12 @@
 </template>
 
 <script>
-  import { useMsgbox, Message } from 'element3'
+  import { MessageBox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
-
       return {
         open() {
-          messageBox
+          MessageBox
             .prompt('请输入邮箱', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -149,14 +143,12 @@
 
 <script>
   import { h } from 'vue'
-  import { useMsgbox, Message } from 'element3'
+  import { MessageBox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
-
       return {
         open() {
-          messageBox({
+          MessageBox({
             title: '消息',
             message: h('p', null, [
               h('span', null, '内容可以是 '),
@@ -215,14 +207,12 @@
 </template>
 
 <script>
-  import { useMsgbox, Message } from 'element3'
+  import { MessageBox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
-
       return {
         open() {
-          messageBox.alert(
+          MessageBox.alert(
             '<strong>这是 <i>HTML</i> 片段</strong>',
             'HTML 片段',
             {
@@ -264,14 +254,12 @@
 </template>
 
 <script>
-  import { useMsgbox, Message } from 'element3'
+  import { MessageBox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
-
       return {
         open() {
-          messageBox
+          MessageBox
             .confirm(
               '检测到未保存的内容，是否在离开页面前保存修改？',
               '确认信息',
@@ -315,14 +303,13 @@
 </template>
 
 <script>
-  import { useMsgbox, Message } from 'element3'
+  import { MessageBox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
-
+      console.log(MessageBox)
       return {
         open() {
-          messageBox
+          MessageBox
             .confirm('此操作将永久删除该文件, 是否继续?', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',

@@ -13,7 +13,7 @@ export interface MessageBoxInputValidator {
   (value: string): boolean | string
 }
 
-export const useMsgbox: () => ElMessageBox
+export const MessageBox: () => ElMessageBox
 
 interface IMessageBox {
   title: string
@@ -171,9 +171,6 @@ export interface ElMessageBox {
 
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
-    /** Show a message box */
-    $msgbox: ElMessageBox
-
     /** Show an alert message box */
     $alert: ElMessageBoxShortcutMethod
 

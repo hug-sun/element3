@@ -113,17 +113,13 @@ describe('MessageBox.js', () => {
   })
   test('showInput is false', async () => {
     const callback = jest.fn(() => {})
-    const instance = messageBox.prompt('请输入邮箱', '提示', {
+    const instance = messageBox.confirm('请输入邮箱', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      confirmButtonClass: 'mmm',
-      showInput: false,
-      inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-      inputErrorMessage: '邮箱格式不正确'
+      confirmButtonClass: 'mmm'
     })
     instance.then(callback)
     const btn = document.querySelector('.mmm')
-    instance.instance.proxy.inputValue = '409187100@qq.com'
     await btn.click()
     await sleep()
     expect(callback).toHaveBeenCalled()

@@ -95,39 +95,37 @@ const MergeCondition = (message, title, options) => {
   )
 }
 
-MessageBox.alert = (message, title, options) => {
-  const defaultVal = {
+const messageBoxList = {
+  alert: {
     type: null,
     category: 'alert',
     closeOnPressEscape: false
-  }
-  return MessageBox(
-    Object.assign(defaultVal, MergeCondition(message, title, options))
-  )
-}
-
-MessageBox.confirm = (message, title, options) => {
-  const defaultVal = {
+  },
+  confirm: {
     type: 'info',
     category: 'confirm',
     showCancelButton: true
-  }
-  return MessageBox(
-    Object.assign(defaultVal, MergeCondition(message, title, options))
-  )
-}
-
-MessageBox.prompt = (message, title, options) => {
-  const defaultVal = {
+  },
+  prompt: {
     type: null,
     showInput: true,
     category: 'prompt',
     showCancelButton: true,
     inputErrorMessage: '输入的数据不合法!'
   }
-  return MessageBox(
-    Object.assign(defaultVal, MergeCondition(message, title, options))
-  )
+}
+
+function init() {
+  for (let key in messageBoxList) {
+    MessageBox[key] = (message, title, options) => {
+      return MessageBox(
+        Object.assign(
+          messageBoxList[key],
+          MergeCondition(message, title, options)
+        )
+      )
+    }
+  }
 }
 
 MessageBox.close = () => {
@@ -135,6 +133,8 @@ MessageBox.close = () => {
   msgQueue = []
   currentMsg = null
 }
+
+init()
 
 export default MessageBox
 export { MessageBox }

@@ -31,10 +31,10 @@ Dialog 弹出一个对话框，适合需要定制性更大的场景。
 
 <script>
   import { ref } from 'vue'
-  import { useMsgbox } from 'element3'
+  import { MessageBox } from 'element3'
   export default {
     setup() {
-      let msgbox = useMsgbox()
+      let msgbox = MessageBox
       let dialogVisible = ref(false)
 
       function handleClose(done) {

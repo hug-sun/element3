@@ -33,10 +33,10 @@
 
 <script>
   import { ref } from 'vue'
-  import { useMsgbox } from 'element3'
+  import { MessageBox } from 'element3'
   export default {
     setup() {
-      let msgbox = useMsgbox()
+      let msgbox = MessageBox
       let drawer = ref(false)
       let direction = ref('rtl')
 
@@ -137,10 +137,10 @@
 
 <script>
   import { ref } from 'vue'
-  import { useMsgbox } from 'element3'
+  import { MessageBox } from 'element3'
   export default {
     setup() {
-      let msgbox = useMsgbox()
+      let msgbox = MessageBox
       let dialog = ref(false)
       let loading = ref(false)
       let form = ref({
@@ -217,10 +217,10 @@
 
 <script>
   import { ref } from 'vue'
-  import { useMsgbox } from 'element3'
+  import { MessageBox } from 'element3'
   export default {
     setup() {
-      let msgbox = useMsgbox()
+      let msgbox = MessageBox
       let drawer = ref(false)
       let innerDrawer = ref(false)
 
