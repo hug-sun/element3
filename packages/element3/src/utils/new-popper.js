@@ -955,7 +955,6 @@ Popper.prototype.modifiers.arrow = function (data) {
 
   var len = isVertical ? 'height' : 'width'
   var side = isVertical ? 'top' : 'left'
-  var translate = isVertical ? 'translateY' : 'translateX'
   var altSide = isVertical ? 'left' : 'top'
   var opSide = isVertical ? 'bottom' : 'right'
   var arrowSize = getOuterSizes(arrow)[len]
@@ -1007,7 +1006,6 @@ function getOuterSizes(element) {
     _visibility = element.style.visibility
   element.style.display = 'block'
   element.style.visibility = 'hidden'
-  var calcWidthToForceRepaint = element.offsetWidth
 
   // original method
   var styles = root.getComputedStyle(element)
