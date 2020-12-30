@@ -1,5 +1,5 @@
 import { isVNode } from 'vue'
-import { isObject, isDefined } from '../../../utils/types'
+import { isObject, isUndefined } from '../../../utils/types'
 import { createComponent } from '../../../use/component'
 import msgboxVue from './MessageBox.vue'
 
@@ -78,7 +78,7 @@ const MergeCondition = (message, title, options) => {
   if (isObject(title)) {
     options = title
     title = ''
-  } else if (isDefined(title)) {
+  } else if (isUndefined(title)) {
     title = ''
   }
   if (title(message)) {
