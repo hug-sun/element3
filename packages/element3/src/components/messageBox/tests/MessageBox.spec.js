@@ -65,10 +65,8 @@ describe('MessageBox.js', () => {
   })
   test('kind of prompt', async () => {
     let v = ''
-    let a = ''
-    const callback = jest.fn(({ action, value }) => {
+    const callback = jest.fn(({ value }) => {
       v = value
-      a = action
     })
     const instance = messageBox.prompt('请输入邮箱', '提示', {
       confirmButtonText: '确定',
