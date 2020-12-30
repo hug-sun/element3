@@ -43,14 +43,10 @@
 
 <script>
 import { computed, defineComponent, toRefs, unref } from 'vue'
-import { isArray, isFunction, isString } from '../../../utils/types'
 import {
   props,
   statusValid,
   autoFixPercentage,
-  toPercentageColors,
-  sortByPercentage,
-  getColorsIndex,
   STATUS_SETTING,
   SVG_VIEW_BOX,
   calcRelativeSvgSize,
@@ -59,7 +55,8 @@ import {
   calcPerimeter,
   calcSvgRadius,
   genArcPathStyle,
-  getSvgStrokeColor
+  getSvgStrokeColor,
+  getColorBy
 } from './props'
 
 export default defineComponent({
@@ -85,10 +82,10 @@ export default defineComponent({
     const circleStyle = useCircleStyle(width)
     const viewBox = SVG_VIEW_BOX
     const svgStrokeWidth = useSvgStrokeWidth(strokeWidth, width)
-    const svgPathD = useSvgPathD(svgStrokeWidth)
-    const trailPathStyle = useTrailPathStyle(svgStrokeWidth)
-    const arcPathStyle = useArcPathStyle(svgStrokeWidth, percentage)
-    const svgStrokeColor = useSvgStrokeColor(color, status)
+    const svgPathD = useSvgPathD(svgStrokeWidth, type)
+    const trailPathStyle = useTrailPathStyle(svgStrokeWidth, type)
+    const arcPathStyle = useArcPathStyle(svgStrokeWidth, percentage, type)
+    const svgStrokeColor = useSvgStrokeColor(status, color, percentage)
     const textStyle = useTextStyle(type, width)
     return {
       barStyle,
@@ -132,19 +129,8 @@ const useBarStyle = (percentage, color) => {
   return computed(() => {
     const pv = autoFixPercentage(unref(percentage))
     const cv = unref(color)
-    let style = { width: `${pv}%` }
-    if (isArray(cv)) {
-      const cs = toPercentageColors(cv).sort(sortByPercentage)
-      const i = getColorsIndex(cs, pv)
-      style.backgroundColor = cs[i].color
-    }
-    if (isFunction(cv)) {
-      style.backgroundColor = cv(pv)
-    }
-    if (isString(cv)) {
-      style.backgroundColor = cv
-    }
-    return style
+    const backgroundColor = getColorBy(cv, pv)
+    return { width: `${pv}%`, backgroundColor }
   })
 }
 
@@ -191,37 +177,41 @@ const useSvgStrokeWidth = (strokeWidth, width) => {
   })
 }
 
-const useSvgPathD = (svgStrokeWidth) => {
+const useSvgPathD = (svgStrokeWidth, type) => {
   return computed(() => {
     const ssw = unref(svgStrokeWidth)
-    return generateSvgPathD(ssw)
+    const tv = unref(type)
+    return generateSvgPathD(ssw, tv)
   })
 }
 
-const useTrailPathStyle = (svgStrokeWidth) => {
-  return computed(() => {
-    const ssw = unref(svgStrokeWidth)
-    const radius = calcSvgRadius(ssw)
-    const perimeter = calcPerimeter(radius)
-    return genTrailPathStyle(perimeter)
-  })
-}
-
-const useArcPathStyle = (svgStrokeWidth, percentage) => {
+const useTrailPathStyle = (svgStrokeWidth, type) => {
   return computed(() => {
     const ssw = unref(svgStrokeWidth)
     const radius = calcSvgRadius(ssw)
     const perimeter = calcPerimeter(radius)
-    const percent = unref(percentage)
-    return genArcPathStyle(perimeter, percent)
+    const tv = unref(type)
+    return genTrailPathStyle(perimeter, tv)
   })
 }
 
-const useSvgStrokeColor = (color, status) => {
+const useArcPathStyle = (svgStrokeWidth, percentage, type) => {
   return computed(() => {
-    const c = unref(color)
+    const ssw = unref(svgStrokeWidth)
+    const radius = calcSvgRadius(ssw)
+    const perimeter = calcPerimeter(radius)
+    const percent = autoFixPercentage(unref(percentage))
+    const tv = unref(type)
+    return genArcPathStyle(perimeter, percent, tv)
+  })
+}
+
+const useSvgStrokeColor = (status, color, percentage) => {
+  return computed(() => {
     const s = unref(status)
-    return getSvgStrokeColor(c, s)
+    const c = unref(color)
+    const p = autoFixPercentage(unref(percentage))
+    return getSvgStrokeColor(s, c, p)
   })
 }
 

@@ -17,6 +17,15 @@ import {
   assertNotHaveAttr
 } from './test-helper'
 
+const colorPercents = [
+  { color: '#1989fa', percentage: 80 },
+  { color: '#6f7ad3', percentage: 100 },
+  { color: '#5cb87a', percentage: 60 },
+  { color: '#f56c6c', percentage: 20 },
+  { color: '#e6a23c', percentage: 40 }
+]
+colorPercents.sort(sortByPercentage)
+
 describe('Progress.vue', () => {
   it('should create default Progress component and HTML structure', () => {
     const percentage = 55
@@ -125,21 +134,13 @@ describe('Progress.vue', () => {
     })
 
     it('color object array', () => {
-      const colors = [
-        { color: '#1989fa', percentage: 80 },
-        { color: '#6f7ad3', percentage: 100 },
-        { color: '#5cb87a', percentage: 60 },
-        { color: '#f56c6c', percentage: 20 },
-        { color: '#e6a23c', percentage: 40 }
-      ]
-      colors.sort(sortByPercentage)
-      expect(colors[0].percentage).toBe(20)
-      expect(colors[3].percentage).toBe(80)
-      expect(colors[4].percentage).toBe(100)
+      expect(colorPercents[0].percentage).toBe(20)
+      expect(colorPercents[3].percentage).toBe(80)
+      expect(colorPercents[4].percentage).toBe(100)
 
-      const wrapper = initProgress({ color: colors })
+      const wrapper = initProgress({ color: colorPercents })
       expect(wrapper).toBeDefined()
-      assertSetBgColor(wrapper, colors[4].color)
+      assertSetBgColor(wrapper, colorPercents[4].color)
     })
 
     it('status add "is-xxx" class', async () => {
@@ -225,7 +226,7 @@ describe('Progress.vue', () => {
       expect(trailAttrs.d).toContain(d)
       expect(trailAttrs['stroke-width']).toBe('4.8')
       expect(trailAttrs.style).toBe(
-        'stroke-dasharray: 299.1px, 299.1px; stroke-dashoffset: 0px;'
+        'stroke-dasharray: 299.1px, 299.1px; stroke-dashoffset: 0.0px;'
       )
       assertArcStyleOk(wrapper, 85)
     })
@@ -283,7 +284,7 @@ describe('Progress.vue', () => {
       assertIconClassOk(wrapper, status)
     })
 
-    it.only('font size', async () => {
+    it('font size', async () => {
       const wrapper = initProgress()
       assertNotHaveAttr(wrapper, '.el-progress__text', 'style')
       await wrapper.setProps({ strokeWidth: 50 })
@@ -292,6 +293,33 @@ describe('Progress.vue', () => {
       assertContainStyle(wrapper, '.el-progress__text', 'font-size: 16px;')
       await wrapper.setProps({ width: 200 })
       assertContainStyle(wrapper, '.el-progress__text', 'font-size: 24px;')
+    })
+  })
+
+  describe('dashboard type progress', () => {
+    it('dashboard progress', async () => {
+      const wrapper = initProgress({ type: 'dashboard' })
+      const svgArcPath = findSvgArcPath(wrapper)
+      expect(svgArcPath.attributes()['stroke']).toBe(DEFAULT_COLOR)
+    })
+
+    it('dashboard progress with color', async () => {
+      const wrapper = initProgress({ type: 'dashboard', color: colorPercents })
+      const svgTrailPath = findSvgTrailPath(wrapper)
+      const trailAttrs = svgTrailPath.attributes()
+      expect(trailAttrs.style).toBe(
+        'stroke-dasharray: 224.3px, 299.1px; stroke-dashoffset: -37.4px;'
+      )
+
+      const d = `M 50 50 m 0 47.6 a 47.6 47.6 0 1 1 0 -95.2 a 47.6 47.6 0 1 1 0 95.2`
+      expect(trailAttrs.d).toContain(d)
+
+      const svgArcPath = findSvgArcPath(wrapper)
+      expect(svgArcPath.attributes()['stroke']).toBe(colorPercents[4].color)
+      const arcAttrs = svgArcPath.attributes()
+      expect(arcAttrs.style).toBe(
+        'stroke-dasharray: 190.7px, 299.1px; stroke-dashoffset: -37.4px; transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s;'
+      )
     })
   })
 })
