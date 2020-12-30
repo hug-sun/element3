@@ -1,4 +1,4 @@
-import { isNumber, isString } from '../../../utils/types'
+import { isArray, isNumber, isString, isFunction } from '../../../utils/types'
 import { isEmpty } from '../../../utils/util'
 
 export const DEFAULT_COLOR = '#409EFF'
@@ -36,7 +36,7 @@ export const SVG_MAX_SIZE = 100
 export const SVG_VIEW_BOX = generateViewBox(SVG_MAX_SIZE)
 export const DEFAULT_FIXED = 1
 export const RATE_CIRCLE = 1
-export const RATE_DASHBOARD = 0.75
+export const DASHBOARD_RATE = 0.75
 export const TRANSITION = 'stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s'
 
 export const props = {
@@ -115,11 +115,14 @@ export function generateViewBox(size) {
   return `0 0 ${size} ${size}`
 }
 
-export function generateSvgPathD(strokeWidth) {
+export function generateSvgPathD(strokeWidth, type) {
   const half = SVG_MAX_SIZE / 2
   const radius = calcSvgRadius(strokeWidth)
   const diameter = radius * 2
-  const d = `M ${half} ${half} m 0 -${radius} a ${radius} ${radius} 0 1 1 0 ${diameter} a ${radius} ${radius} 0 1 1 0 -${diameter}`
+  const isDashboard = type === 'dashboard'
+  const fromTo = isDashboard ? '' : '-'
+  const toFrom = isDashboard ? '-' : ''
+  const d = `M ${half} ${half} m 0 ${fromTo}${radius} a ${radius} ${radius} 0 1 1 0 ${toFrom}${diameter} a ${radius} ${radius} 0 1 1 0 ${fromTo}${diameter}`
   return d
 }
 
@@ -145,28 +148,55 @@ export function calcPerimeter(radius) {
   return 2 * Math.PI * radius
 }
 
-export function genTrailPathStyle(perimeter) {
-  const s = toFixedStr(perimeter)
-  const strokeDasharray = `${s}px, ${s}px`
-  const strokeDashoffset = `0px`
+export function genTrailPathStyle(perimeter, type = 'circle') {
+  const rate = getRate(type)
+  const offset = toFixedStr(getOffset(perimeter, rate))
+  const range = toFixedStr(perimeter * rate)
+  const all = toFixedStr(perimeter)
+  const strokeDasharray = `${range}px, ${all}px`
+  const strokeDashoffset = `${offset}px`
   return { strokeDasharray, strokeDashoffset }
 }
 
-export function genArcPathStyle(perimeter, percentage = 0) {
-  const p = toFixedStr(perimeter * (percentage / FULL_PERCENT))
+export function getRate(type) {
+  return type === 'dashboard' ? DASHBOARD_RATE : 1
+}
+
+export function genArcPathStyle(perimeter, percentage = 0, type = 'circle') {
+  const rate = getRate(type)
+  const offset = toFixedStr(getOffset(perimeter, rate))
+  const p = toFixedStr(perimeter * (percentage / FULL_PERCENT) * rate)
   const s = toFixedStr(perimeter)
   const strokeDasharray = `${p}px, ${s}px`
-  const strokeDashoffset = `0px`
+  const strokeDashoffset = `${offset}px`
   const transition = TRANSITION
   return { strokeDasharray, strokeDashoffset, transition }
 }
 
-export function getSvgStrokeColor(color, status) {
+export function getSvgStrokeColor(status, color, percentage) {
   if (!isEmpty(color)) {
-    return color
+    return getColorBy(color, percentage)
   }
   if (!isEmpty(status)) {
     return STATUS_SETTING[status].color
   }
   return DEFAULT_COLOR
+}
+
+export function getOffset(perimeter, rate) {
+  return (-1 * perimeter * (1 - rate)) / 2
+}
+
+export function getColorBy(color, percentage) {
+  if (isArray(color)) {
+    const cs = toPercentageColors(color).sort(sortByPercentage)
+    const i = getColorsIndex(cs, percentage)
+    return cs[i].color
+  }
+  if (isFunction(color)) {
+    return color(percentage)
+  }
+  if (isString(color)) {
+    return color
+  }
 }

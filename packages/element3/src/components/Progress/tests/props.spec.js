@@ -20,8 +20,20 @@ import {
   DEFAULT_COLOR,
   getSvgStrokeColor,
   STATUS_SETTING,
-  STATUSES
+  STATUSES,
+  getColorBy,
+  getRate,
+  getOffset
 } from '../src/props'
+
+const colorPercents = [
+  { color: '#1989fa', percentage: 80 },
+  { color: '#f56c6c', percentage: 20 },
+  { color: '#6f7ad3', percentage: 100 },
+  { color: '#5cb87a', percentage: 60 },
+  { color: '#e6a23c', percentage: 40 }
+]
+colorPercents.sort(sortByPercentage)
 
 describe('Progress.props', () => {
   it('percentage', () => {
@@ -94,25 +106,52 @@ describe('Progress.props', () => {
     expect(calcRelativeSvgSize(strokeWidth, width)).toBe('4.8')
   })
 
+  it('getRate, getOffset, getPermi', () => {
+    expect(getRate('circle')).toBe(1)
+    expect(getRate('dashboard')).toBe(0.75)
+    expect(getOffset(DEFAULT_SVG_PX, 0.75)).toBe(-15.75)
+    expect(getOffset(DEFAULT_SVG_PX, 1)).toBe(-0)
+  })
+
   it('calculate radius, path.d and styles', () => {
     const svgStrokeWidth = 4.8
     const radius = calcSvgRadius(svgStrokeWidth)
     expect(radius).toBe(47.6)
-    const svgPathD = generateSvgPathD(svgStrokeWidth)
-    expect(svgPathD).toBe(
+    const svgPathDCircle = generateSvgPathD(svgStrokeWidth)
+    expect(svgPathDCircle).toBe(
       `M 50 50 m 0 -47.6 a 47.6 47.6 0 1 1 0 95.2 a 47.6 47.6 0 1 1 0 -95.2`
+    )
+    const svgPathDDashboard = generateSvgPathD(svgStrokeWidth, 'dashboard')
+    expect(svgPathDDashboard).toBe(
+      `M 50 50 m 0 47.6 a 47.6 47.6 0 1 1 0 -95.2 a 47.6 47.6 0 1 1 0 95.2`
     )
     const perimeter = calcPerimeter(radius)
     expect(perimeter).toBe(299.0796206217483)
     const strokeStyle = genTrailPathStyle(perimeter)
     expect(strokeStyle.strokeDasharray).toBe('299.1px, 299.1px')
-    expect(strokeStyle.strokeDashoffset).toBe('0px')
+    expect(strokeStyle.strokeDashoffset).toBe('0.0px')
 
     const percentage = 25
     const circleStyle = genArcPathStyle(perimeter, percentage)
     expect(circleStyle.strokeDasharray).toBe('74.8px, 299.1px')
-    expect(circleStyle.strokeDashoffset).toBe('0px')
+    expect(circleStyle.strokeDashoffset).toBe('0.0px')
     expect(circleStyle.transition).toBe(TRANSITION)
+  })
+
+  it('dashboard type: calculate radius, path.d and styles', () => {
+    const svgStrokeWidth = 4.8
+    const radius = calcSvgRadius(svgStrokeWidth)
+    const perimeter = calcPerimeter(radius)
+
+    const strokeStyle = genTrailPathStyle(perimeter, 'dashboard')
+    expect(strokeStyle.strokeDasharray).toBe('224.3px, 299.1px')
+    expect(strokeStyle.strokeDashoffset).toBe('-37.4px')
+
+    const percentage = 25
+    const dashboardStyle = genArcPathStyle(perimeter, percentage, 'dashboard')
+    expect(dashboardStyle.strokeDasharray).toBe('56.1px, 299.1px')
+    expect(dashboardStyle.strokeDashoffset).toBe('-37.4px')
+    expect(dashboardStyle.transition).toBe(TRANSITION)
   })
 
   it(':stroke-linecap', () => {
@@ -127,12 +166,19 @@ describe('Progress.props', () => {
     const color = getSvgStrokeColor()
     expect(color).toBe(DEFAULT_COLOR)
 
-    let status = 'success'
-    expect(getSvgStrokeColor('', status)).toBe(STATUS_SETTING[status].color)
-    status = 'warning'
-    expect(getSvgStrokeColor('', status)).toBe(STATUS_SETTING[status].color)
-    status = 'exception'
-    expect(getSvgStrokeColor('', status)).toBe(STATUS_SETTING[status].color)
+    expect(getSvgStrokeColor('success')).toBe(STATUS_SETTING['success'].color)
+    expect(getSvgStrokeColor('warning')).toBe(STATUS_SETTING['warning'].color)
+    expect(getSvgStrokeColor('exception')).toBe(
+      STATUS_SETTING['exception'].color
+    )
+
+    expect(getSvgStrokeColor(null, '#996600')).toBe('#996600')
+    expect(getSvgStrokeColor(null, '#996600', 30)).toBe('#996600')
+    expect(getSvgStrokeColor(null, '#996600', 30)).toBe('#996600')
+
+    expect(getSvgStrokeColor('', colorPercents, 30)).toBe(
+      colorPercents[1].color
+    )
   })
 
   it('learn isRef and unref', () => {
@@ -163,22 +209,20 @@ describe('Progress.props', () => {
   })
 
   it('get index of percentage in array', () => {
-    const colors = [
-      { color: '#1989fa', percentage: 80 },
-      { color: '#f56c6c', percentage: 20 },
-      { color: '#6f7ad3', percentage: 100 },
-      { color: '#5cb87a', percentage: 60 },
-      { color: '#e6a23c', percentage: 40 }
-    ]
-    colors.sort(sortByPercentage)
-    expect(getColorsIndex(colors, 0)).toBe(0)
-    expect(getColorsIndex(colors, 12)).toBe(0)
-    expect(getColorsIndex(colors, 20)).toBe(1)
-    expect(getColorsIndex(colors, 32)).toBe(1)
-    expect(getColorsIndex(colors, 42)).toBe(2)
-    expect(getColorsIndex(colors, 62)).toBe(3)
-    expect(getColorsIndex(colors, 82)).toBe(4)
-    expect(getColorsIndex(colors, 100)).toBe(4)
+    expect(getColorsIndex(colorPercents, 0)).toBe(0)
+    expect(getColorsIndex(colorPercents, 12)).toBe(0)
+    expect(getColorsIndex(colorPercents, 20)).toBe(1)
+    expect(getColorsIndex(colorPercents, 32)).toBe(1)
+    expect(getColorsIndex(colorPercents, 42)).toBe(2)
+    expect(getColorsIndex(colorPercents, 62)).toBe(3)
+    expect(getColorsIndex(colorPercents, 82)).toBe(4)
+    expect(getColorsIndex(colorPercents, 100)).toBe(4)
+
+    expect(getColorBy(colorPercents, 15)).toBe(colorPercents[0].color)
+    expect(getColorBy(colorPercents, 35)).toBe(colorPercents[1].color)
+    expect(getColorBy(colorPercents, 55)).toBe(colorPercents[2].color)
+    expect(getColorBy(colorPercents, 75)).toBe(colorPercents[3].color)
+    expect(getColorBy(colorPercents, 85)).toBe(colorPercents[4].color)
   })
   it('should map to percentage colors correct', () => {
     const colors = ['#336699', '#339966', '#996633', '#663399']

@@ -71,7 +71,7 @@ export async function assertArcStyleOk(wrapper, percentage) {
   const pathNew = wrapper.find('.el-progress-circle > svg > path:last-child')
   const pathAttrsNew = pathNew.attributes()
   expect(pathAttrsNew.style).toBe(
-    `stroke-dasharray: ${testArcs[percent]}px, 299.1px; stroke-dashoffset: 0px; transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s;`
+    `stroke-dasharray: ${testArcs[percent]}px, 299.1px; stroke-dashoffset: 0.0px; transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease 0s;`
   )
 }
 
