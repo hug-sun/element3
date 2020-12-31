@@ -8,7 +8,7 @@
     "build": "yarn workspace element3 build && yarn workspace website build",
     "test": "yarn workspace element3 test",
     "test:coverage": "yarn workspace element3 test:coverage",
-    "lint": "eslint --ext .js  packages/element3/packages/** packages/*/src/** --no-error-on-unmatched-pattern",
+    "lint": "eslint --ext .js --ext .vue --ext .ts packages/element3/packages/** packages/*/src/** --no-error-on-unmatched-pattern",
     "release": "node scripts/release.js",
     "clean": "rm -rf node_modules && rm -rf packages/*/node_modules && yarn cache clean",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
