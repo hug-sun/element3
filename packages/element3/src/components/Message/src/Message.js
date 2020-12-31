@@ -44,10 +44,9 @@ function mergeOptions(opts, type = 'info') {
   const defaultOptions = {
     duration: 4500,
     type,
-    verticalOffset: calculateVerticalOffset(),
-    vertical: opts.verticalOffset
+    verticalOffset: calculateVerticalOffset(opts.verticalOffset)
   }
-
+  delete opts?.verticalOffset
   const userOnClose = opts?.onClose
   // opts.onClose Cannot be merged into the default options
   delete opts?.onClose
@@ -60,15 +59,13 @@ function mergeOptions(opts, type = 'info') {
     defaultOptions.message = opts
     return defaultOptions
   }
-
   return Object.assign({}, defaultOptions, opts)
 }
 
 function calculateVerticalOffset(offset = 20) {
   let result = offset
 
-  let list = instanceList.filter((item) => !item.attrs.vertical)
-  list.forEach((instance) => {
+  instanceList.forEach((instance) => {
     result += getNextElementInterval(instance)
   })
   return result
