@@ -44,7 +44,8 @@ function mergeOptions(opts, type = 'info') {
   const defaultOptions = {
     duration: 4500,
     type,
-    verticalOffset: calculateVerticalOffset()
+    verticalOffset: calculateVerticalOffset(),
+    vertical: opts.verticalOffset
   }
 
   const userOnClose = opts?.onClose
@@ -66,10 +67,10 @@ function mergeOptions(opts, type = 'info') {
 function calculateVerticalOffset(offset = 20) {
   let result = offset
 
-  instanceList.forEach((instance) => {
+  let list = instanceList.filter((item) => !item.attrs.vertical)
+  list.forEach((instance) => {
     result += getNextElementInterval(instance)
   })
-
   return result
 }
 
@@ -82,15 +83,16 @@ function updatePosition(closeInstance) {
   const currentInstanceIndex = getIndexByInstance(closeInstance)
 
   if (currentInstanceIndex < 0) return
-
   for (let index = currentInstanceIndex; index < instanceList.length; index++) {
     const instance = instanceList[index]
+
     instance.proxy.verticalOffsetVal -= getNextElementInterval(instance)
   }
 }
 
 function getNextElementInterval(instance) {
   const INTERVAL_HEIGHT = 16
+
   return instance.vnode.el.offsetHeight + INTERVAL_HEIGHT
 }
 
