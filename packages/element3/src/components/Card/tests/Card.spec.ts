@@ -17,13 +17,15 @@ describe('Card.vue', () => {
   it('shadow', async () => {
     const wrapper = mount(Card)
 
+    expect(wrapper).toHaveClass(`is-always-shadow`)
+
     await wrapper.setProps({ shadow: 'hover' })
     expect(wrapper).toHaveClass(`is-hover-shadow`)
+
     await wrapper.setProps({ shadow: 'never' })
     expect(wrapper).toHaveClass(`is-never-shadow`)
+
     await wrapper.setProps({ shadow: 'always' })
-    expect(wrapper).toHaveClass(`is-always-shadow`)
-    await wrapper
     expect(wrapper).toHaveClass(`is-always-shadow`)
   })
 
