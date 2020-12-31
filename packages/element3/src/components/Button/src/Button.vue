@@ -29,6 +29,7 @@ export default defineComponent({
       size: buttonSize,
       disabled: buttonDisabled
     })
+    console.log('t')
     return {
       buttonDisabled,
       classes
