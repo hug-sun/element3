@@ -206,50 +206,44 @@ describe('Checkbox.vue', () => {
     })
   })
 
-  test('set checked should be checked', async () => {
-    const value = ref(false)
+  test('props.checked', async () => {
     const wrapper = mount(Checkbox, {
-      props: { modelValue: value, checked: true, label: 'apples' }
+      props: { checked: true }
     })
 
-    await nextTick()
     expect(wrapper.emitted()).toHaveProperty('update:modelValue')
     expect(wrapper.emitted()['update:modelValue'][0][0]).toBeTruthy()
-
-    await wrapper.setProps({ modelValue: ref(true) })
-    expect(wrapper.classes()).toContain('is-checked')
   })
 
-  test('set indeterminate should be half-selected', async () => {
-    const wrapper = mount(Checkbox, {
-      props: { indeterminate: true }
-    })
+  test('props.indeterminate', async () => {
+    const wrapper = mount(Checkbox)
 
-    await nextTick()
-    expect(wrapper.find('.el-checkbox__input').classes()).toContain(
+    expect(wrapper.get('.el-checkbox__input').classes()).not.toContain(
+      'is-indeterminate'
+    )
+    await wrapper.setProps({ indeterminate: true })
+    expect(wrapper.get('.el-checkbox__input').classes()).toContain(
       'is-indeterminate'
     )
   })
 
   describe('focus', () => {
-    test('when the checkbox is focused', async () => {
-      const value = ref(false)
-      const wrapper = mount(Checkbox, {
-        props: { modelValue: value, label: 'apples' }
-      })
+    test('checkbox is focused', async () => {
+      const wrapper = mount(Checkbox)
 
+      expect(wrapper.find('.el-checkbox__input').classes()).not.toContain(
+        'is-focus'
+      )
       await wrapper.get('input').trigger('focus')
       expect(wrapper.find('.el-checkbox__input').classes()).toContain(
         'is-focus'
       )
     })
 
-    test('when the checkbox is not focused', async () => {
-      const value = ref(false)
-      const wrapper = mount(Checkbox, {
-        props: { modelValue: value, label: 'apples' }
-      })
+    test('checkbox is not focused', async () => {
+      const wrapper = mount(Checkbox)
 
+      await wrapper.get('input').trigger('focus')
       await wrapper.get('input').trigger('blur')
       expect(wrapper.find('.el-checkbox__input').classes()).not.toContain(
         'is-focus'
@@ -257,11 +251,8 @@ describe('Checkbox.vue', () => {
     })
   })
 
-  test('the modelValue changes, the change event should be triggered', async () => {
-    const value = ref(false)
-    const wrapper = mount(Checkbox, {
-      props: { modelValue: value }
-    })
+  test('change', async () => {
+    const wrapper = mount(Checkbox)
 
     await wrapper.setProps({ modelValue: ref(true) })
     await wrapper.get('input').trigger('change')
@@ -269,16 +260,14 @@ describe('Checkbox.vue', () => {
     expect(wrapper.emitted()['change'][0][0]).toBe(true)
   })
 
-  test('when the parent component provides modelValue', async () => {
+  test('parent provides modelValue', async () => {
     const wrapper = mount(Checkbox, {
       global: {
         provide: {
           elCheckboxGroup: reactive({ proxy: { modelValue: ['one', 'two'] } })
         }
       },
-      props: {
-        label: 'one'
-      }
+      props: { label: 'one' }
     })
 
     await nextTick()
