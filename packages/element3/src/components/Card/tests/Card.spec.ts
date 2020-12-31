@@ -58,7 +58,8 @@ describe('Card.vue', () => {
       }
     })
 
-    expect(wrapper.find('.el-card__body').attributes().style).toBe(
+    expect(wrapper.find('.el-card__body')).toHaveAttribute(
+      'style',
       'padding: 30px;'
     )
   })
