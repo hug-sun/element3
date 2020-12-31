@@ -26,6 +26,7 @@
           class="el-rate__decimal"
           v-if="showDecimalIcon"
           :style="{ width: decimalStyle, color: decimalIconColor(item) }"
+          :class="decimalIconClass"
         ></i>
       </i>
     </span>
@@ -38,97 +39,24 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   inject,
   toRefs,
   computed,
   unref,
-  ref
+  ref,
+  defineComponent
   // watch,
   // getCurrentInstance
 } from 'vue'
+import { props } from './props'
 // import { hasClass } from '../../src/utils/dom'
 
-export default {
+export default defineComponent({
   name: 'ElRate',
 
-  props: {
-    modelValue: {
-      type: Number,
-      default: 0
-    },
-    lowThreshold: {
-      type: Number,
-      default: 2
-    },
-    highThreshold: {
-      type: Number,
-      default: 4
-    },
-    max: {
-      type: Number,
-      default: 5
-    },
-    colors: {
-      type: [Array, Object],
-      default() {
-        return ['#F7BA2A', '#F7BA2A', '#F7BA2A']
-      }
-    },
-    voidColor: {
-      type: String,
-      default: '#C6D1DE'
-    },
-    disabledVoidColor: {
-      type: String,
-      default: '#EFF2F7'
-    },
-    iconClasses: {
-      type: [Array, Object],
-      default() {
-        return ['el-icon-star-on', 'el-icon-star-on', 'el-icon-star-on']
-      }
-    },
-    voidIconClass: {
-      type: String,
-      default: 'el-icon-star-off'
-    },
-    disabledVoidIconClass: {
-      type: String,
-      default: 'el-icon-star-on'
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    allowHalf: {
-      type: Boolean,
-      default: false
-    },
-    showText: {
-      type: Boolean,
-      default: false
-    },
-    showScore: {
-      type: Boolean,
-      default: false
-    },
-    textColor: {
-      type: String,
-      default: '#1f2d3d'
-    },
-    texts: {
-      type: Array,
-      default() {
-        return ['极差', '失望', '一般', '满意', '惊喜']
-      }
-    },
-    scoreTemplate: {
-      type: String,
-      default: '{value}'
-    }
-  },
+  props,
 
   emits: ['update:modelValue', 'change'],
 
@@ -151,7 +79,7 @@ export default {
       showText
     } = toRefs(props)
 
-    const elForm = inject('elForm', {})
+    const elForm = inject('elForm', { disabled: false })
 
     const rateDisabled = computed(() => disabled.value || elForm.disabled)
 
@@ -169,7 +97,6 @@ export default {
       }
       return width
     })
-    console.log(160, decimalStyle.value)
 
     const showDecimalIcon = computed(
       () => allowHalf.value || percentage.value !== 0
@@ -193,6 +120,10 @@ export default {
         ? matchClassOrColor(colors)
         : disabledVoidColor.value
     }
+    const decimalIconClass = () => {
+      console.log('半星class')
+      return activeClass.value
+    }
 
     //unrefIconClasses形参需要改个名
     const unifiedIconClassOrColor = (unrefIconClasses) => {
@@ -211,12 +142,14 @@ export default {
     }
     const matchClassOrColor = (classOrColor) => {
       const unrefObj = unref(unifiedIconClassOrColor(unref(classOrColor)))
-      let arr = Object.keys(unrefObj).filter((key) => {
+      let arr: Array<string> = Object.keys(unrefObj).filter((key) => {
         const each = unrefObj[key]
         const excluded = each instanceof Object ? each.excluded : false
-        return excluded ? modelValue.value < key : modelValue.value <= key
+        return excluded
+          ? Math.ceil(modelValue.value) < Number(key)
+          : Math.ceil(modelValue.value) <= Number(key)
       })
-      const matchKey = Math.min(...arr)
+      const matchKey = Math.min(...arr.map((item) => Number(item)))
       return unrefObj[matchKey] instanceof Object
         ? unrefObj[matchKey].value
         : unrefObj[matchKey]
@@ -277,6 +210,7 @@ export default {
       iconColor,
       decimalIconColor,
       decimalStyle,
+      decimalIconClass,
       showDecimalIcon,
       activeClass,
       hoverIndex,
@@ -286,5 +220,5 @@ export default {
       pressKeyUpdateRate
     }
   }
-}
+})
 </script>
