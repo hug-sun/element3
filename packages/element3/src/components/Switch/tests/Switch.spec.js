@@ -162,4 +162,15 @@ describe('Switch', () => {
 
     expect(wrapper.emitted('update:modelValue')).toEqual([['3']])
   })
+
+  it('should emit change eventName when changed ', async () => {
+    const wrapper = mount(Switch, {
+      props: {
+        modelValue: false
+      }
+    })
+
+    await wrapper.trigger('click')
+    expect(wrapper.emitted('change')[0]).toEqual([true])
+  })
 })
