@@ -4,7 +4,6 @@ import {
   initProgress,
   assertSetPercentage,
   assertSetBgColor,
-  assertContainText,
   assertNotContainStyle,
   assertContainStyle,
   assertArcStyleOk,
@@ -65,7 +64,7 @@ describe('Progress.vue', () => {
       const percentage = 100
       const props = { percentage, format }
       const wrapper = initProgress(props)
-      assertContainText(wrapper, '.el-progress__text', '满')
+      expect(wrapper.get('.el-progress__text')).toHaveTextContent('满')
     })
 
     it('color string', async () => {
@@ -166,7 +165,7 @@ describe('Progress.vue', () => {
     it('show-text', async () => {
       const wrapper = initProgress()
       expect(wrapper.find('.el-progress__text')).toBeExist()
-      assertContainText(wrapper, '.el-progress__text', '85%')
+      expect(wrapper.get('.el-progress__text')).toHaveTextContent('85%')
 
       await wrapper.setProps({ showText: false })
       expect(wrapper.find('.el-progress__text')).not.toBeExist()

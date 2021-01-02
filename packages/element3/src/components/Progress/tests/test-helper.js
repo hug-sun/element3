@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import Progress from '../src/Progress.vue'
 import Color from '../../../../packages/color-picker/src/color'
-import { merge } from 'lodash'
+import { merge } from 'lodash-es'
 import { STATUS_SETTING } from '../src/props'
 
 export const DEFAULT_PERCENTAGE = 85
@@ -29,7 +29,7 @@ export function fromHexToRgb(hex) {
 }
 
 export function assertSetPercentage(wrapper, percentage) {
-  assertContainText(wrapper, '.el-progress__text', `${percentage}%`)
+  expect(wrapper.get('.el-progress__text')).toHaveTextContent(`${percentage}%`)
   assertContainStyle(
     wrapper,
     '.el-progress-bar__inner',
@@ -46,10 +46,6 @@ export function assertContainStyle(wrapper, selector, strStyle) {
 export function assertNotContainStyle(wrapper, selector, strStyle) {
   const elem = wrapper.find(selector)
   expect(elem.attributes().style).not.toContain(strStyle)
-}
-
-export function assertContainText(wrapper, selector, text) {
-  expect(wrapper.find(selector).text()).toContain(text)
 }
 
 export async function assertArcStyleOk(wrapper, percentage) {
