@@ -3,10 +3,7 @@
 exports[` 1`] = `
 <transition-stub>
   <div
-    aria-label="dialog"
-    aria-modal="true"
     class="el-message-box__wrapper"
-    role="dialog"
     tabindex="-1"
   >
     <div

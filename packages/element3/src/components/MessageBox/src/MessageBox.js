@@ -7,23 +7,19 @@ let currentMsg, instance
 let msgQueue = []
 
 const defaultCallback = (action) => {
-  if (currentMsg) {
-    if (currentMsg.resolve) {
-      if (action === 'confirm') {
-        if (instance.proxy.showInput) {
-          currentMsg.resolve({
-            value: instance.proxy.inputValue,
-            action
-          })
-        } else {
-          currentMsg.resolve({ action })
-        }
-      } else if (
-        currentMsg.reject &&
-        (action === 'cancel' || action === 'close')
-      ) {
-        currentMsg.reject({ action })
-      }
+  if (currentMsg && currentMsg.resolve) {
+    const isConfirm = action === 'confirm'
+    const isCancelOrClose = action === 'cancel' || action === 'close'
+    const isReject = currentMsg.reject && isCancelOrClose
+    if (isReject) {
+      currentMsg.reject({ action })
+      return
+    }
+    const isShow = instance.proxy.showInput
+    const value = instance.proxy.inputValue
+    const result = isShow ? { value, action } : { action }
+    if (isConfirm) {
+      currentMsg.resolve(result)
     }
   }
 }
@@ -38,7 +34,7 @@ const showNextMsg = () => {
     currentMsg = msgQueue.shift()
     const options = currentMsg.options
 
-    if (options.callback === undefined) {
+    if (isUndefined(options.callback)) {
       options.callback = defaultCallback
     }
 
@@ -74,7 +70,7 @@ const MessageBox = function (options) {
   return promiseInstance
 }
 
-const MergeCondition = (message, title, options) => {
+const mergeCondition = (message, title, options) => {
   if (isObject(title)) {
     options = title
     title = ''
@@ -96,7 +92,7 @@ const MergeCondition = (message, title, options) => {
   )
 }
 
-const messageBoxList = {
+const kindOfMessageBox = {
   alert: {
     type: null,
     category: 'alert',
@@ -116,16 +112,14 @@ const messageBoxList = {
   }
 }
 
-function init() {
-  for (let key in messageBoxList) {
-    MessageBox[key] = (message, title, options) => {
-      return MessageBox(
-        Object.assign(
-          messageBoxList[key],
-          MergeCondition(message, title, options)
-        )
+for (let key in kindOfMessageBox) {
+  MessageBox[key] = (message, title, options) => {
+    return MessageBox(
+      Object.assign(
+        kindOfMessageBox[key],
+        mergeCondition(message, title, options)
       )
-    }
+    )
   }
 }
 
@@ -134,8 +128,6 @@ MessageBox.close = () => {
   msgQueue = []
   currentMsg = null
 }
-
-init()
 
 export default MessageBox
 export { MessageBox }

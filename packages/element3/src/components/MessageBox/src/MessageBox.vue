@@ -4,10 +4,7 @@
       v-show="visible"
       class="el-message-box__wrapper"
       tabindex="-1"
-      role="dialog"
-      aria-modal="true"
       @click.self="handleWrapperClick"
-      :aria-label="title || 'dialog'"
     >
       <div
         class="el-message-box"

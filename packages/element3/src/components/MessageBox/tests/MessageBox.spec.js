@@ -1,7 +1,6 @@
-// import { mount } from '@vue/test-utils'
+import { flushPromises } from '@vue/test-utils'
 import { nextTick, h } from 'vue'
 import messageBox from '../src/MessageBox.js'
-const sleep = (time = 0) => new Promise((resolve) => setTimeout(resolve, time))
 const selector = '.el-message-box__wrapper'
 describe('MessageBox.js', () => {
   afterEach(() => {
@@ -80,11 +79,11 @@ describe('MessageBox.js', () => {
     const btn = document.querySelector('.mmm')
     instance.instance.proxy.inputValue = '4091'
     await btn.click()
-    await sleep()
+    await flushPromises()
     expect(callback).not.toHaveBeenCalled()
     instance.instance.proxy.inputValue = '409187100@qq.com'
     await btn.click()
-    await sleep()
+    await flushPromises()
     expect(callback).toHaveBeenCalled()
     expect(v).toBeTruthy()
   })
@@ -101,7 +100,7 @@ describe('MessageBox.js', () => {
     await nextTick()
     const btn = document.querySelector('.mmm')
     await btn.click()
-    await sleep()
+    await flushPromises()
     expect(callback).toHaveBeenCalled()
   })
   test('paramter', async () => {
@@ -119,7 +118,7 @@ describe('MessageBox.js', () => {
     instance.then(callback)
     const btn = document.querySelector('.mmm')
     await btn.click()
-    await sleep()
+    await flushPromises()
     expect(callback).toHaveBeenCalled()
   })
   test('message is vnode', async () => {

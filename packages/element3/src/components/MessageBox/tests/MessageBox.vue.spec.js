@@ -125,18 +125,16 @@ describe('MessageBox.vue', () => {
       expect(warpper.find('.el-message-box__message > p').text()).toBe('333')
     })
     it('meesage is VNode', () => {
-      const warpper = mount(MessageBox, {
+      const v = h('p', null, [
+        h('span', null, '内容可以是 '),
+        h('i', { style: 'color: teal' }, 'VNode')
+      ])
+      const wrapper = mount(MessageBox, {
         slots: {
-          default: h('p', null, [
-            h('span', null, '内容可以是 '),
-            h('i', { style: 'color: teal' }, 'VNode')
-          ])
+          default: v
         }
       })
-
-      expect(warpper.find('.el-message-box__message > p').text()).toBe(
-        `内容可以是 VNode`
-      )
+      expect(wrapper.componentVM.$slots.default()[0]).toEqual(v)
     })
     it('dangerouslyUseHTMLString', () => {
       const warpper = mount(MessageBox, {

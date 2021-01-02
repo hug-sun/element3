@@ -72,7 +72,7 @@ const props = {
     type: String,
     default: 'alert',
     validator(val) {
-      return ['confirm', 'prompt', 'alert'].indexOf(val) > -1
+      return ['confirm', 'prompt', 'alert'].includes(val)
     }
   },
   inputValue: {
@@ -130,8 +130,7 @@ const props = {
     default: 'info',
     validator(val) {
       return (
-        ['success', 'warning', 'info', 'error'].indexOf(val) > -1 ||
-        val === null
+        ['success', 'warning', 'info', 'error'].includes(val) || val === null
       )
     }
   },
