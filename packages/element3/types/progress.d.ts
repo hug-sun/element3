@@ -1,7 +1,9 @@
 import { ElementUIComponent } from './component'
 
-export type ProgressType = 'line' | 'circle'
-export type ProgressStatus = 'success' | 'exception'
+export type ProgressType = 'line' | 'circle' | 'dashboard'
+export type ProgressStatus = 'success' | 'warning' | 'exception'
+export type ProgressLinecap = 'butt' | 'round' | 'square'
+export type FnPercentToString = (percentage: number) => string
 
 /** Progress Component */
 export const ElProgress: IProgress
@@ -16,7 +18,7 @@ interface IProgress extends ElementUIComponent {
   strokeWidth: number
 
   /** Circle progress bar stroke line cap */
-  strokeLinecap: string
+  strokeLinecap: ProgressLinecap
 
   /** Whether to place the percentage inside progress bar, only works when type is 'line' */
   textInside: boolean
@@ -27,7 +29,7 @@ interface IProgress extends ElementUIComponent {
   /** Background color of progress bar. Overrides `status` prop */
   color:
     | string
-    | Function
+    | FnPercentToString
     | Array<string | { color: string; percentage: number }>
 
   /** The canvas width of circle progress bar */
@@ -37,5 +39,5 @@ interface IProgress extends ElementUIComponent {
   showText: boolean
 
   /** Template function of the content	*/
-  format(percentage: number): string
+  format: FnPercentToString
 }
