@@ -72,7 +72,7 @@ export default {
       default: ''
     }
   },
-  emits: ['update:modelValue', 'update:change'],
+  emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
     const {
       activeValue,
@@ -167,7 +167,7 @@ const useClick = ({
     const newValue =
       isChecked && isChecked.value ? inactiveValue.value : activeValue.value
     emit('update:modelValue', newValue)
-    emit('update:change', newValue)
+    emit('change', newValue)
   }
 
   return {
