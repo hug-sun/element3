@@ -9235,10 +9235,10 @@ jest-validate@^26.6.2:
     leven "^3.1.0"
     pretty-format "^26.6.2"
 
-jest-vtu@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npm.taobao.org/jest-vtu/download/jest-vtu-1.0.5.tgz?cache=0&sync_timestamp=1608893468028&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fjest-vtu%2Fdownload%2Fjest-vtu-1.0.5.tgz#c392556d55d7e405221d02592541cf2c63aeb4e7"
-  integrity sha1-w5JVbVXX5AUiHQJZJUHPLGOutOc=
+jest-vtu@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npm.taobao.org/jest-vtu/download/jest-vtu-1.0.6.tgz?cache=0&sync_timestamp=1609674357693&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fjest-vtu%2Fdownload%2Fjest-vtu-1.0.6.tgz#e0a4d042572012570f0bc2c80d12753810cd4dae"
+  integrity sha1-4KTQQlcgElcPC8LIDRJ1OBDNTa4=
   dependencies:
     expect "^26.6.2"
 

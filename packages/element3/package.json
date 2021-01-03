@@ -74,7 +74,6 @@
     "gulp-autoprefixer": "^7.0.1",
     "gulp-cssmin": "^0.2.0",
     "gulp-sass": "^4.1.0",
-    "jest-vtu": "^1.0.5",
     "rollup": "^2.34.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-scss": "^2.6.1",
