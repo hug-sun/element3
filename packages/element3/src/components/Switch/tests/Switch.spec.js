@@ -36,9 +36,9 @@ describe('Switch', () => {
       }
     })
 
-    expect(wrapper.find('.el-switch__core').attributes('style')).toContain(
-      'width: 50px'
-    )
+    expect(wrapper.get('.el-switch__core')).toHaveStyle({
+      width: '50px'
+    })
   })
 
   it('should show text on the right label when set activeText', () => {
@@ -133,9 +133,9 @@ describe('Switch', () => {
       }
     })
 
-    expect(wrapper.find('.el-switch__core').attributes('style')).toContain(
-      'border-color: #ff0000'
-    )
+    expect(wrapper.get('.el-switch__core')).toHaveStyle({
+      borderColor: '#ff0000'
+    })
   })
 
   it('core style contain border-color equal to #ff0000 when set inactiveColor', () => {
@@ -146,9 +146,9 @@ describe('Switch', () => {
       }
     })
 
-    expect(wrapper.find('.el-switch__core').attributes('style')).toContain(
-      'border-color: #ff0000'
-    )
+    expect(wrapper.get('.el-switch__core')).toHaveStyle({
+      borderColor: '#ff0000'
+    })
   })
 
   it('modelValue should be forced to be equal to inactiveValue when modelValue not equal activeValue and inactiveValue ', () => {
