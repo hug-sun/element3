@@ -7,7 +7,7 @@ import {
   watch,
   toRefs
 } from 'vue'
-import _ from 'lodash'
+import { merge } from 'lodash-es'
 import PopupManager from '../../src/utils/popup/popup-manager'
 import getScrollBarWidth from '../../src/utils/scrollbar-width'
 import { getStyle, addClass, removeClass, hasClass } from '../../src/utils/dom'
@@ -70,7 +70,7 @@ function usePopup(props) {
       rendered.value = true
     }
     // instance.proxy, options)
-    const props = _.merge(instance.proxy, options)
+    const props = merge(instance.proxy, options)
     if (_closeTimer) {
       clearTimeout(_closeTimer)
       _closeTimer = 0

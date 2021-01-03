@@ -94,7 +94,6 @@ const mergeCondition = (message, title, options) => {
 
 const kindOfMessageBox = {
   alert: {
-    type: null,
     category: 'alert',
     closeOnPressEscape: false
   },
@@ -104,12 +103,12 @@ const kindOfMessageBox = {
     showCancelButton: true
   },
   prompt: {
-    type: null,
     showInput: true,
     category: 'prompt',
     showCancelButton: true,
     inputErrorMessage: '输入的数据不合法!'
-  }
+  },
+  msgbox: MessageBox
 }
 
 for (let key in kindOfMessageBox) {

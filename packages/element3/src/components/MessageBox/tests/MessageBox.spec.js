@@ -2,6 +2,31 @@ import { flushPromises } from '@vue/test-utils'
 import { nextTick, h } from 'vue'
 import messageBox from '../src/MessageBox.js'
 const selector = '.el-message-box__wrapper'
+function testCatchCallback(name, options = {}) {
+  const message = '请输入邮箱'
+  const o = {
+    prompt: {
+      message,
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      cancelButtonClass: 'mmm'
+    },
+    confirm: {
+      message,
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      confirmButtonClass: 'mmm'
+    },
+    msgbox: {
+      message,
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      confirmButtonClass: 'mmm'
+    }
+  }
+  const instance = messageBox[name](Object.assign(o[name], options))
+  return instance
+}
 describe('MessageBox.js', () => {
   afterEach(() => {
     const el = document.querySelector('.el-message-box__wrapper')
@@ -27,7 +52,7 @@ describe('MessageBox.js', () => {
   })
   test('messageBox of message is html', async () => {
     let instanceProprety = ''
-    const callback = jest.fn((action, instance) => {
+    const callback = jest.fn((instance) => {
       instanceProprety = instance
     })
     const { instance } = messageBox.alert(
@@ -67,9 +92,7 @@ describe('MessageBox.js', () => {
     const callback = jest.fn(({ value }) => {
       v = value
     })
-    const instance = messageBox.prompt('请输入邮箱', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    const instance = testCatchCallback('prompt', {
       confirmButtonClass: 'mmm',
       inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
       inputErrorMessage: '邮箱格式不正确'
@@ -89,13 +112,10 @@ describe('MessageBox.js', () => {
   })
   test('was invoked', async () => {
     const callback = jest.fn(() => {})
-    const instance = messageBox.prompt('请输入邮箱', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      cancelButtonClass: 'mmm',
-      inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-      inputErrorMessage: '邮箱格式不正确'
+    const instance = testCatchCallback('prompt', {
+      message: '请输入邮箱'
     })
+
     instance.catch(callback)
     await nextTick()
     const btn = document.querySelector('.mmm')
@@ -108,13 +128,10 @@ describe('MessageBox.js', () => {
     expect(instance.instance.proxy.title).toBe('aaa')
     expect(instance.instance.proxy.message).toBe('请输入邮箱')
   })
+
   test('showInput is false', async () => {
     const callback = jest.fn(() => {})
-    const instance = messageBox.confirm('请输入邮箱', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      confirmButtonClass: 'mmm'
-    })
+    const instance = testCatchCallback('confirm')
     instance.then(callback)
     const btn = document.querySelector('.mmm')
     await btn.click()
@@ -122,10 +139,10 @@ describe('MessageBox.js', () => {
     expect(callback).toHaveBeenCalled()
   })
   test('message is vnode', async () => {
-    const v = h('div', '4')
-    const { instance } = messageBox.alert({
-      message: v
+    const message = h('div', '4')
+    const { instance } = testCatchCallback('alert', {
+      message
     })
-    expect(instance.proxy.$slots.default()[0]).toEqual(v)
+    expect(instance.proxy.$slots.default()[0]).toEqual(message)
   })
 })

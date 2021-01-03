@@ -189,6 +189,7 @@ const install = (app, opts = {}) => {
 
 function applyOptions(app) {
   app.config.globalProperties.$loading = ElLoading.service
+  app.config.globalProperties.$msgbox = MessageBox.msgbox
   app.config.globalProperties.$alert = MessageBox.alert
   app.config.globalProperties.$confirm = MessageBox.confirm
   app.config.globalProperties.$prompt = MessageBox.prompt

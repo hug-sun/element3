@@ -127,7 +127,7 @@ const props = {
   },
   type: {
     type: [String, null],
-    default: 'info',
+    default: null,
     validator(val) {
       return (
         ['success', 'warning', 'info', 'error'].includes(val) || val === null
