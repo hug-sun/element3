@@ -1,7 +1,7 @@
 <template>
   <transition name="el-loading-fade" @after-leave="handleAfterLeave">
     <div
-      v-show="visible"
+      v-show="internalVisible"
       class="el-loading-mask"
       :style="{ backgroundColor: background || '' }"
       :class="[customClass, { 'is-fullscreen': fullscreen }]"
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { toRefs, reactive } from 'vue'
+import { ref } from 'vue'
 export default {
   inheritAttrs: false,
 
@@ -50,23 +50,25 @@ export default {
   },
 
   setup(props, { emit }) {
-    const $data = reactive({ ...props })
     const handleAfterLeave = () => {
       // TODO 这里的 emit 修改会造成对 api 的更改
       // eslint-disable-next-line vue/custom-event-name-casing
       emit('afterLeave')
     }
+    const internalVisible = ref(props.visible)
+    const internalText = ref(props.text)
     const show = () => {
-      $data.visible = true
+      internalVisible.value = true
     }
     const close = () => {
-      $data.visible = false
+      internalVisible.value = false
     }
     const setText = (text) => {
-      $data.text = text
+      internalText.value = text
     }
     return {
-      ...toRefs($data),
+      internalVisible,
+      internalText,
       handleAfterLeave,
       show,
       close,
