@@ -55,11 +55,11 @@ describe('MessageBox.vue', () => {
       const warpper = mount(MessageBox, {
         props: {
           title: 'title',
-          center: true
+          center: true,
+          type: 'info'
         }
       })
-
-      expect(warpper.get('.el-icon-info').exists()).toBeTruthy()
+      expect(warpper.find('.el-icon-info').exists()).toBeTruthy()
     })
     it('showClose', () => {
       const warpper = mount(MessageBox, {
@@ -192,7 +192,6 @@ describe('MessageBox.vue', () => {
       expect(warpper.get('.el-message-box__wrapper').isVisible()).toBeTruthy()
       expect(warpper.componentVM.visible).toBeFalsy()
     })
-
     it('showInput', () => {
       const warpper = mount(MessageBox, {
         props: {
@@ -214,7 +213,6 @@ describe('MessageBox.vue', () => {
         '555'
       )
     })
-
     it('cancelButtonText, showCancelButton', () => {
       const warpper = mount(MessageBox, {
         props: {
@@ -226,7 +224,6 @@ describe('MessageBox.vue', () => {
       expect(warpper.get('.vvv')).toHaveTextContent('cancel')
       expect(warpper.get('.vvv').isVisible()).toBeTruthy()
     })
-
     it('confirmButtonClass showConfirmButton, confirmButtonText', () => {
       const warpper = mount(MessageBox, {
         props: {
@@ -239,7 +236,6 @@ describe('MessageBox.vue', () => {
       expect(warpper.get('.mmm')).toHaveTextContent('cancel')
       expect(warpper.get('.el-message-box__btns').isVisible()).toBeTruthy()
     })
-
     it('proprety callback', async () => {
       let object = ref(null)
       const warpper = mount(MessageBox, {
@@ -313,7 +309,6 @@ describe('MessageBox.vue', () => {
       })
       await nextTick()
       expect(warpper.get('.v-modal').exists()).toBeTruthy()
-
       await warpper.get('.v-modal').trigger('click')
       await nextTick()
       expect(warpper.find('.v-moda').exists()).toBeFalsy()
@@ -327,7 +322,6 @@ describe('MessageBox.vue', () => {
       })
       await nextTick()
       expect(warpper.get('.v-modal').exists()).toBeTruthy()
-
       await warpper.get('.v-modal').trigger('keyup', { keyCode: 'Escape' })
       await nextTick()
       expect(warpper.find('.v-moda').exists()).toBeFalsy()
@@ -341,7 +335,6 @@ describe('MessageBox.vue', () => {
       })
       await nextTick()
       expect(warpper.get('.v-modal').exists()).toBeTruthy()
-
       await warpper.get('.v-modal').trigger('hashchange')
       await nextTick()
       expect(warpper.find('.v-moda').exists()).toBeFalsy()

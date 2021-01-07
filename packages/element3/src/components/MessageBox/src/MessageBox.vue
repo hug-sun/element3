@@ -108,15 +108,14 @@ import {
   computed,
   onMounted,
   onUnmounted,
-  ref,
-  watch
+  ref
 } from 'vue'
 import propsObject from './props.js'
 import { isFunction } from '@vue/shared'
 import { usePopup } from '../../../use/popup'
 import { ElInput } from '../../Input'
 import { ElButton } from '../../Button'
-import { addClass, removeClass } from '../../../utils/dom'
+import validateFunction from './validate'
 
 export default defineComponent({
   props: propsObject,
@@ -226,62 +225,6 @@ export default defineComponent({
         handleAction,
         handleWrapperClick,
         handleInputEnter
-      }
-    }
-    function validateFunction(state, instance) {
-      const editorErrorMessage = ref(null)
-      const {
-        category,
-        inputPattern,
-        inputValue,
-        inputValidator,
-        inputErrorMessage
-      } = toRefs(state)
-      const getInputElement = () => {
-        const inputRefs = instance.refs.input.$refs
-        return inputRefs.input || inputRefs.textarea
-      }
-
-      const validate = () => {
-        if (unref(category) === 'prompt') {
-          if (
-            unref(inputPattern) &&
-            !unref(inputPattern).test(unref(inputValue))
-          ) {
-            editorErrorMessage.value = unref(inputErrorMessage)
-
-            addClass(getInputElement(), 'invalid')
-            return false
-          }
-          const _inputValidator = unref(inputValidator)
-          if (typeof _inputValidator === 'function') {
-            const validateResult = _inputValidator(unref(inputValue))
-            if (validateResult === false) {
-              editorErrorMessage.value = unref(inputErrorMessage)
-              addClass(getInputElement(), 'invalid')
-              return false
-            }
-            if (typeof validateResult === 'string') {
-              editorErrorMessage.value = validateResult
-              addClass(getInputElement(), 'invalid')
-              return false
-            }
-          }
-        }
-        editorErrorMessage.value = ''
-        removeClass(getInputElement(), 'invalid')
-        return true
-      }
-      watch(inputValue, (val) => {
-        nextTick(() => {
-          if (unref(category) === 'prompt' && val !== null) {
-            validate()
-          }
-        })
-      })
-      return {
-        validate,
-        editorErrorMessage
       }
     }
   }

@@ -16,9 +16,7 @@ exports[` 1`] = `
         <div
           class="el-message-box__container"
         >
-          <div
-            class="el-message-box__status el-icon-info"
-          />
+          <!--v-if-->
           <div
             class="el-message-box__message"
           >

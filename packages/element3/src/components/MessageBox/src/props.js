@@ -5,8 +5,8 @@ const props = {
     default: null
   },
   inputValidator: {
-    type: Function,
-    default: () => {}
+    type: [Function],
+    default: null
   },
   inputErrorMessage: {
     type: String,
