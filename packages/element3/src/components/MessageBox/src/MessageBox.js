@@ -127,3 +127,6 @@ MessageBox.close = () => {
   msgQueue = []
   currentMsg = null
 }
+
+export default MessageBox
+export { MessageBox }
