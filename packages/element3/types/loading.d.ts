@@ -1,9 +1,4 @@
-import Vue, { VNodeDirective, PluginObject } from 'vue'
-
 import { ElementUIComponent } from './component'
-
-export const useLoading = () => (options: LoadingServiceOptions) =>
-  ILoadingComponent
 
 /** Options used in Loading service */
 export interface LoadingServiceOptions {
@@ -39,7 +34,7 @@ export interface ILoadingComponent {
 }
 
 /** Loading directive definition */
-export interface ElLoadingDirective extends VNodeDirective {
+export interface ElLoadingDirective {
   name: 'loading'
   value: boolean
   modifiers: {
@@ -47,13 +42,12 @@ export interface ElLoadingDirective extends VNodeDirective {
     fullscreen: boolean
   }
 }
-export const ElLoading: IlLoading
+export const ElLoading: IElLoading
 /** Show animation while loading data */
-interface IlLoading extends ElementUIComponent {
+interface IElLoading extends ElementUIComponent {
   /** If you do not have a specific DOM node to attach the Loading directive, or if you simply prefer not to use Loading as a directive, you can call this service with some configs to open a Loading instance. */
-  service(options: LoadingServiceOptions): ElLoadingComponent
-
-  directive: PluginObject<never>
+  service(options: LoadingServiceOptions): ILoadingComponent
+  directive: any
 }
 
 declare module '@vue/runtime-core' {

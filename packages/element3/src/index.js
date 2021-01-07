@@ -49,7 +49,7 @@ import { ElAvatar } from './components/Avatar'
 // Notice
 import ElAlert from '../packages/alert'
 
-import ElLoading, { useLoading } from '../packages/loading'
+import ElLoading from '../packages/loading'
 
 import { Message } from './components/Message'
 
@@ -285,7 +285,6 @@ export {
   ElAutocomplete,
   Message,
   Msgbox,
-  useLoading,
   Notification,
   install,
   setupGlobalOptions
