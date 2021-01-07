@@ -15,7 +15,7 @@ describe('Message', () => {
     expect(instanceProxy.$props.type).toBe('info')
     expect(instanceProxy.$props.message).toBe('foo')
     expect(instanceProxy.$props.duration).toBe(4500)
-    expect(instanceProxy.$props.verticalOffset).toBe(20)
+    expect(instanceProxy.$props.offset).toBe(20)
   })
 
   test('message is vnode', () => {
@@ -54,10 +54,10 @@ describe('Message', () => {
 
   test('calculateVerticalOffset', () => {
     const instanceProxy1 = Message('foo1')
-    expect(instanceProxy1.verticalOffset).toBe(20)
+    expect(instanceProxy1.offset).toBe(20)
 
     const instanceProxy2 = Message('foo2')
-    expect(instanceProxy2.verticalOffset).toBe(36)
+    expect(instanceProxy2.offset).toBe(36)
   })
 
   describe('message.info', () => {

@@ -53,7 +53,7 @@ import ElLoading, { useLoading } from '../packages/loading'
 
 import { Message } from './components/Message'
 
-import { MessageBox } from './components/MessageBox'
+import { Msgbox } from '../packages/message-box'
 
 import { Notification } from './components/Notification'
 // Navigation
@@ -189,10 +189,10 @@ const install = (app, opts = {}) => {
 
 function applyOptions(app) {
   app.config.globalProperties.$loading = ElLoading.service
-  app.config.globalProperties.$msgbox = MessageBox.msgbox
-  app.config.globalProperties.$alert = MessageBox.alert
-  app.config.globalProperties.$confirm = MessageBox.confirm
-  app.config.globalProperties.$prompt = MessageBox.prompt
+  app.config.globalProperties.$msgbox = Msgbox
+  app.config.globalProperties.$alert = Msgbox.alert
+  app.config.globalProperties.$confirm = Msgbox.confirm
+  app.config.globalProperties.$prompt = Msgbox.prompt
   app.config.globalProperties.$notify = Notification
   app.config.globalProperties.$message = Message
 }
@@ -284,8 +284,8 @@ export {
   ElScrollbar,
   ElAutocomplete,
   Message,
+  Msgbox,
   useLoading,
-  MessageBox,
   Notification,
   install,
   setupGlobalOptions
