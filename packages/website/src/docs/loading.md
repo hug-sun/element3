@@ -22,10 +22,9 @@
 
 <script>
   import { ref } from 'vue'
-  import { useLoading } from 'element3'
+  import { ElLoading } from 'element3'
   export default {
     setup() {
-      let $loading = useLoading()
       let fullscreenLoading = ref(false)
       function openFullScreen1() {
         fullscreenLoading.value = true
@@ -34,7 +33,7 @@
         }, 2000)
       }
       function openFullScreen2(e) {
-        const loading = $loading({
+        const loading = ElLoading.service({
           // lock: true,
           // target: e.target,
           text: 'Loading...',
@@ -69,21 +68,21 @@ import { nextTick } from 'vue'
 ElLoading.service(options)
 ```
 
-其中 `options` 参数为 Loading 的配置项，具体见下表。`LoadingService` 会返回一个 Loading 实例，可通过调用该实例的 `close` 方法来关闭它：
+其中 `options` 参数为 Loading 的配置项，具体见下表。`ElLoading.service` 会返回一个 Loading 实例，可通过调用该实例的 `close` 方法来关闭它：
 
 ```javascript
-let loadingInstance = Loading.service(options)
+let loadingInstance = ElLoading.service(options)
 nextTick(() => {
-  // 以服务的方式调用的 Loading 需要异步关闭
+  // 以服务的方式调用的 ElLoading 需要异步关闭
   loadingInstance.close()
 })
 ```
 
-需要注意的是，以服务的方式调用的全屏 Loading 是单例的：若在前一个全屏 Loading 关闭前再次调用全屏 Loading，并不会创建一个新的 Loading 实例，而是返回现有全屏 Loading 的实例：
+需要注意的是，以服务的方式调用的全屏 ElLoading 是单例的：若在前一个全屏 ElLoading 关闭前再次调用全屏 ElLoading，并不会创建一个新的 ElLoading 实例，而是返回现有全屏 ElLoading 的实例：
 
 ```javascript
-let loadingInstance1 = Loading.service({ fullscreen: true })
-let loadingInstance2 = Loading.service({ fullscreen: true })
+let loadingInstance1 = ElLoading.service({ fullscreen: true })
+let loadingInstance2 = ElLoading.service({ fullscreen: true })
 console.log(loadingInstance1 === loadingInstance2) // true
 ```
 
