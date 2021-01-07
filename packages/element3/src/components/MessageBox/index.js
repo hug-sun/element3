@@ -1,1 +1,1 @@
-export { MessageBox } from './src/MessageBox.js'
+export { MessageBox as Msgbox } from './src/MessageBox.js'
