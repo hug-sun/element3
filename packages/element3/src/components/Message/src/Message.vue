@@ -2,8 +2,8 @@
   <transition name="el-message-fade" @after-leave="handleAfterLeave" appear>
     <div
       v-show="isShow"
-      class="el-message"
       :class="[
+        'el-message',
         isShowType ? `el-message--${type}` : '',
         showClose ? 'is-closable' : '',
         center ? 'is-center' : '',
@@ -54,7 +54,7 @@ export default {
     center: Boolean,
     customClass: String,
     dangerouslyUseHTMLString: Boolean,
-    verticalOffset: Number
+    offset: Number
   },
   emits: ['close'],
   setup(props, { emit }) {
@@ -62,11 +62,11 @@ export default {
 
     const isShow = ref(true)
     // @public
-    const verticalOffsetVal = ref(props.verticalOffset)
+    const offsetVal = ref(props.offset)
 
     const isShowType = computed(() => props.type && !props.iconClass)
     const positionStyle = computed(() => ({
-      top: `${verticalOffsetVal.value}px`
+      top: `${offsetVal.value}px`
     }))
 
     let timer
@@ -112,7 +112,7 @@ export default {
       isShow,
       isShowType,
       positionStyle,
-      verticalOffsetVal,
+      offsetVal,
       handleClose,
       handleAfterLeave,
       handleMouseenter,

@@ -33,15 +33,14 @@
 
 <script>
   import { ref } from 'vue'
-  import { useMsgbox } from 'element3'
+  import { Msgbox } from 'element3'
   export default {
     setup() {
-      let msgbox = useMsgbox()
       let drawer = ref(false)
       let direction = ref('rtl')
 
       function handleClose(done) {
-        msgbox
+        Msgbox
           .confirm('确认关闭？')
           .then((_) => {
             done()
@@ -137,10 +136,9 @@
 
 <script>
   import { ref } from 'vue'
-  import { useMsgbox } from 'element3'
+  import { Msgbox } from 'element3'
   export default {
     setup() {
-      let msgbox = useMsgbox()
       let dialog = ref(false)
       let loading = ref(false)
       let form = ref({
@@ -160,7 +158,7 @@
         if (loading.value) {
           return
         }
-        msgbox
+        Msgbox
           .confirm('确定要提交表单吗？')
           .then((_) => {
             loading.value = true
@@ -217,15 +215,14 @@
 
 <script>
   import { ref } from 'vue'
-  import { useMsgbox } from 'element3'
+  import { Msgbox } from 'element3'
   export default {
     setup() {
-      let msgbox = useMsgbox()
       let drawer = ref(false)
       let innerDrawer = ref(false)
 
       function handleClose(done) {
-        msgbox
+        Msgbox
           .confirm('还有未保存的工作哦确定关闭吗？')
           .then((_) => {
             done()

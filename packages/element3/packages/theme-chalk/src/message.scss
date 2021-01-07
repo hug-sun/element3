@@ -114,7 +114,7 @@
 }
 
 .el-message-fade-enter-from,
-.el-message-fade-leave-active {
+.el-message-fade-leave-to {
   opacity: 0;
   transform: translate(-50%, -100%);
 }

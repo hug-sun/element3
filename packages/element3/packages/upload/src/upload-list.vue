@@ -86,7 +86,7 @@
 </template>
 <script>
 import Locale from '../../../src/mixins/locale'
-import ElProgress from '../../progress'
+import { ElProgress } from '../../../src/components/Progress'
 import { ref } from 'vue'
 
 export default {

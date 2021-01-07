@@ -201,7 +201,7 @@
         openHTML() {
           Message({
             dangerouslyUseHTMLString: true,
-            verticalOffset: 100,
+            offset: 100,
             message: '<strong>这是 <i>HTML</i> 片段</strong>'
           })
         }
@@ -240,7 +240,7 @@ import { Message } from 'element3'
 | showClose                | 是否显示关闭按钮                              | boolean        | —                          | false  |
 | center                   | 文字是否居中                                  | boolean        | —                          | false  |
 | onClose                  | 关闭时的回调函数, 参数为被关闭的 message 实例 | function       | —                          | —      |
-| verticalOffset           | Message 距离窗口顶部的偏移量                  | number         | —                          | 20     |
+| offset           | Message 距离窗口顶部的偏移量                  | number         | —                          | 20     |
 
 ### 方法
 
