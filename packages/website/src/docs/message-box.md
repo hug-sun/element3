@@ -18,14 +18,13 @@
 </template>
 
 <script>
-  import { useMsgbox, Message } from 'element3'
+  import { Msgbox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
 
       return {
         open() {
-          messageBox.alert('这是一段内容', '标题名称', {
+          Msgbox.alert('这是一段内容', '标题名称', {
             confirmButtonText: '确定',
             callback: (action) => {
               Message({
@@ -55,14 +54,13 @@
 </template>
 
 <script>
-  import { useMsgbox, Message } from 'element3'
+  import { Msgbox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
 
       return {
         open() {
-          messageBox
+          Msgbox
             .confirm('此操作将永久删除该文件, 是否继续?', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -101,14 +99,13 @@
 </template>
 
 <script>
-  import { useMsgbox, Message } from 'element3'
+  import { Msgbox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
 
       return {
         open() {
-          messageBox
+          Msgbox
             .prompt('请输入邮箱', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -140,7 +137,7 @@
 
 可自定义配置不同内容。
 
-:::demo 以上三个方法都是对`msgbox`方法的再包装。本例直接调用`msgbox`方法，使用了`showCancelButton`字段，用于显示取消按钮。另外可使用`cancelButtonClass`为其添加自定义样式，使用`cancelButtonText`来自定义按钮文本（Confirm 按钮也具有相同的字段，在文末的字段说明中有完整的字段列表）。此例还使用了`beforeClose`属性，它的值是一个方法，会在 MessageBox 的实例关闭前被调用，同时暂停实例的关闭。它有三个参数：`action`、实例本身和`done`方法。使用它能够在关闭前对实例进行一些操作，比如为确定按钮添加`loading`状态等；此时若需要关闭实例，可以调用`done`方法（若在`beforeClose`中没有调用`done`，则实例不会关闭）。
+:::demo 以上三个方法都是对`Msgbox`方法的再包装。本例直接调用`Msgbox`方法，使用了`showCancelButton`字段，用于显示取消按钮。另外可使用`cancelButtonClass`为其添加自定义样式，使用`cancelButtonText`来自定义按钮文本（Confirm 按钮也具有相同的字段，在文末的字段说明中有完整的字段列表）。此例还使用了`beforeClose`属性，它的值是一个方法，会在 MessageBox 的实例关闭前被调用，同时暂停实例的关闭。它有三个参数：`action`、实例本身和`done`方法。使用它能够在关闭前对实例进行一些操作，比如为确定按钮添加`loading`状态等；此时若需要关闭实例，可以调用`done`方法（若在`beforeClose`中没有调用`done`，则实例不会关闭）。
 
 ```html
 <template>
@@ -149,14 +146,13 @@
 
 <script>
   import { h } from 'vue'
-  import { useMsgbox, Message } from 'element3'
+  import { Msgbox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
 
       return {
         open() {
-          messageBox({
+          Msgbox({
             title: '消息',
             message: h('p', null, [
               h('span', null, '内容可以是 '),
@@ -210,14 +206,12 @@
 </template>
 
 <script>
-  import { useMsgbox } from 'element3'
+  import { Msgbox } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
-
       return {
         open() {
-          messageBox.alert(
+          Msgbox.alert(
             '<strong>这是 <i>HTML</i> 片段</strong>',
             'HTML 片段',
             {
@@ -249,14 +243,13 @@
 </template>
 
 <script>
-  import { useMsgbox, Message } from 'element3'
+  import { Msgbox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
 
       return {
         open() {
-          messageBox
+          Msgbox
             .confirm(
               '检测到未保存的内容，是否在离开页面前保存修改？',
               '确认信息',
@@ -300,14 +293,13 @@
 </template>
 
 <script>
-  import { useMsgbox, Message } from 'element3'
+  import { Msgbox, Message } from 'element3'
   export default {
     setup() {
-      const messageBox = useMsgbox()
 
       return {
         open() {
-          messageBox
+          Msgbox
             .confirm('此操作将永久删除该文件, 是否继续?', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',

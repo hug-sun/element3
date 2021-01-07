@@ -31,14 +31,13 @@ Dialog 弹出一个对话框，适合需要定制性更大的场景。
 
 <script>
   import { ref } from 'vue'
-  import { useMsgbox } from 'element3'
+  import { Msgbox } from 'element3'
   export default {
     setup() {
-      let msgbox = useMsgbox()
       let dialogVisible = ref(false)
 
       function handleClose(done) {
-        msgbox
+        Msgbox
           .confirm('确认关闭？')
           .then((_) => {
             done()

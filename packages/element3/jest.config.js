@@ -15,6 +15,8 @@ module.exports = {
   ],
   moduleNameMapper: {
     '^element-ui(.*)$': '<rootDir>$1',
-    '^main(.*)$': '<rootDir>/src$1'
-  }
+    '^main(.*)$': '<rootDir>/src$1',
+    '^lodash-es$': 'lodash'
+  },
+  transformIgnorePatterns: ['<rootDir>/node_modules/(?!lodash-es)']
 }

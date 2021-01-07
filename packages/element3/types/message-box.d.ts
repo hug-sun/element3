@@ -13,7 +13,7 @@ export interface MessageBoxInputValidator {
   (value: string): boolean | string
 }
 
-export const useMsgbox: () => ElMessageBox
+export const Msgbox: ElMessageBox
 
 interface IMessageBox {
   title: string
