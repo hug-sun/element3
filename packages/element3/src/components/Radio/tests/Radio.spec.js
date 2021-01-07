@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { ref, h, reactive } from 'vue'
-import RadioGroup from 'element-ui/packages/radio-group/RadioGroup'
+import RadioGroup from '../../RadioGroup/src/RadioGroup.vue'
 import Radio from '../src/Radio.vue'
 
 describe('Radio.vue', () => {
