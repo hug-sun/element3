@@ -11,7 +11,7 @@
     "deploy": "yarn build && node scripts/deploy.js"
   },
   "dependencies": {
-    "element3": "0.0.38",
+    "element3": "0.0.39",
     "mitt": "^2.1.0",
     "vue": "^3.0.4"
   },
