@@ -6,6 +6,10 @@ import { ref, h, nextTick, reactive } from 'vue'
 const content = ['上海', '北京']
 
 describe('radioButton.vue', () => {
+  it('snapshot', () => {
+    const wrapper = mount(RadioButton)
+    expect(wrapper.element).toMatchSnapshot()
+  })
   it('should show content', () => {
     const wrapper = mount(RadioGroup, {
       props: {
