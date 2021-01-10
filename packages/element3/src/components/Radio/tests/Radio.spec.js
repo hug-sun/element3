@@ -4,6 +4,10 @@ import RadioGroup from 'element-ui/packages/radio-group/RadioGroup'
 import Radio from '../src/Radio.vue'
 
 describe('Radio.vue', () => {
+  it('snapshot', () => {
+    const wrapper = mount(Radio)
+    expect(wrapper.element).toMatchSnapshot()
+  })
   describe('props', () => {
     it('disabled', () => {
       const wrapper = mount(Radio, {
