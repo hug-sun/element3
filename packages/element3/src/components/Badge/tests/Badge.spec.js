@@ -2,6 +2,10 @@ import Badge from '../src/Badge.vue'
 import { mount } from '@vue/test-utils'
 
 describe('Badge', () => {
+  it('snapshot', () => {
+    const wrapper = mount(Badge)
+    expect(wrapper.element).toMatchSnapshot()
+  })
   describe('props', () => {
     it('should render props.value', () => {
       const wrapper = mount(Badge, {
