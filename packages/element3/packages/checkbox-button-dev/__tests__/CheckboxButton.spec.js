@@ -2,6 +2,7 @@ import ElCheckboxButton from '../index'
 import { mount } from '@vue/test-utils'
 import { reactive } from 'vue'
 import { setupGlobalOptions } from '../../../src'
+import Checkbox from '../../checkbox-dev/Checkbox'
 
 describe('ElCheckboxButton', function () {
   test('default slot', () => {
@@ -120,4 +121,14 @@ describe('ElCheckboxButton', function () {
       expect(wrapper.classes()).toContain('is-disabled')
     })
   })
+
+  test('name', async () => {
+    const name = 'ElCheckboxButton'
+    const wrapper = mount(ElCheckboxButton)
+    await wrapper.setProps({ name })
+
+    expect(wrapper.get('input').attributes('name')).toBe(name)
+  })
+
+  test('true-label', () => {})
 })

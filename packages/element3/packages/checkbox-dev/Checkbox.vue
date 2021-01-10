@@ -30,6 +30,22 @@
     >
       <span class="el-checkbox__inner"></span>
       <input
+        v-if="trueLabel || falseLabel"
+        class="el-checkbox__original"
+        ref="checkboxRef"
+        :name="name"
+        :disabled="isDisabled"
+        :true-value="trueLabel"
+        :false-value="falseLabel"
+        type="checkbox"
+        @input="model = { checked: $event.target.checked }"
+        @focus="isFocus = true"
+        @blur="isFocus = false"
+        @change="changeHandle"
+        :aria-hidden="indeterminate ? 'true' : 'false'"
+      />
+      <input
+        v-else
         class="el-checkbox__original"
         ref="checkboxRef"
         :name="name"

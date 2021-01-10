@@ -12,6 +12,7 @@
       class="el-checkbox-button__original"
       type="checkbox"
       :disabled="isDisabled"
+      :name="name"
     />
     <span class="el-checkbox-button__inner" v-if="$slots.default || label">
       <slot>{{ label }}</slot>
@@ -33,7 +34,8 @@ export default {
         return ['medium', 'small', 'mini'].includes(val)
       }
     },
-    disabled: Boolean
+    disabled: Boolean,
+    name: String
   },
   setup(props) {
     const { size, disabled } = toRefs(props)
