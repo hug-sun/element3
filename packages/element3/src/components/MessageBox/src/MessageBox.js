@@ -30,25 +30,22 @@ const initInstance = (currentMsg, VNode = null) => {
 }
 
 const showNextMsg = () => {
-  if (msgQueue.length > 0) {
-    currentMsg = msgQueue.shift()
-    const options = currentMsg.options
+  if (msgQueue.length <= 0) return
+  currentMsg = msgQueue.shift()
+  const options = currentMsg.options
 
-    if (isUndefined(options.callback)) {
-      options.callback = defaultCallback
-    }
+  if (isUndefined(options.callback)) options.callback = defaultCallback
 
-    const oldCb = options.callback
-    options.callback = (action, instance) => {
-      oldCb(action, instance)
-    }
-
-    initInstance(
-      currentMsg,
-      isVNode(options.message) ? () => options.message : null
-    )
-    document.body.appendChild(instance.vnode.el)
+  const oldCb = options.callback
+  options.callback = (action, instance) => {
+    oldCb(action, instance)
   }
+
+  initInstance(
+    currentMsg,
+    isVNode(options.message) ? () => options.message : null
+  )
+  document.body.appendChild(instance.vnode.el)
 }
 
 const MessageBox = function (options) {

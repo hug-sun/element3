@@ -8,79 +8,79 @@ describe('MessageBox.vue', () => {
   })
   describe('proprety', () => {
     it('proprety title', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           title: 'chushihua'
         }
       })
-      expect(warpper.get('.el-message-box__title')).toHaveTextContent(
+      expect(wrapper.get('.el-message-box__title')).toHaveTextContent(
         'chushihua'
       )
     })
     it('proprety center', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           center: true
         }
       })
-      expect(warpper.get('.el-message-box--center').exists()).toBeTruthy()
+      expect(wrapper.get('.el-message-box--center').exists()).toBeTruthy()
     })
     it('proprety customClass', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           customClass: 'customClass'
         }
       })
-      expect(warpper.get('.customClass').exists()).toBeTruthy()
+      expect(wrapper.get('.customClass').exists()).toBeTruthy()
     })
     it('proprety iconClass', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           iconClass: 'iconClass'
         }
       })
-      expect(warpper.vm.icon).toBe('iconClass')
+      expect(wrapper.vm.icon).toBe('iconClass')
     })
     it('iconclass with center', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           iconClass: 'iconClass',
           center: true,
           title: 'title'
         }
       })
-      expect(warpper.get('.iconClass').exists()).toBeTruthy()
+      expect(wrapper.get('.iconClass').exists()).toBeTruthy()
     })
     it('proprety type', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           title: 'title',
           center: true,
           type: 'info'
         }
       })
-      expect(warpper.find('.el-icon-info').exists()).toBeTruthy()
+      expect(wrapper.find('.el-icon-info').exists()).toBeTruthy()
     })
     it('showClose', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           title: '12',
           showClose: false
         }
       })
-      expect(warpper.find('.el-message-box__headerbtn').exists()).toBeFalsy()
+      expect(wrapper.find('.el-message-box__headerbtn').exists()).toBeFalsy()
     })
     it('showClose toBeTruthy', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           title: '12'
         }
       })
-      expect(warpper.get('.el-message-box__headerbtn').exists()).toBeTruthy()
+      expect(wrapper.get('.el-message-box__headerbtn').exists()).toBeTruthy()
     })
     it('proprety beforeClose', async () => {
       let object = {}
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           title: '12',
           beforeClose: (action, instance, done) => {
@@ -90,12 +90,12 @@ describe('MessageBox.vue', () => {
           }
         }
       })
-      await warpper.get('.el-message-box__headerbtn').trigger('click')
-      expect(warpper.componentVM).toEqual(object.instance)
+      await wrapper.get('.el-message-box__headerbtn').trigger('click')
+      expect(wrapper.componentVM).toEqual(object.instance)
       expect(object.action).toBe('cancel')
     })
     it('review messageBox when value was done', async () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           title: '12',
           beforeClose: (action, instance, done) => {
@@ -103,9 +103,9 @@ describe('MessageBox.vue', () => {
           }
         }
       })
-      await warpper.get('.el-message-box__headerbtn').trigger('click')
-      expect(warpper.get('.el-message-box__headerbtn').isVisible()).toBeFalsy()
-      expect(warpper.find('.v-modal').exists()).toBeFalsy()
+      await wrapper.get('.el-message-box__headerbtn').trigger('click')
+      expect(wrapper.get('.el-message-box__headerbtn').isVisible()).toBeFalsy()
+      expect(wrapper.find('.v-modal').exists()).toBeFalsy()
     })
     it('showClose lockScroll', () => {
       document.body.classList.remove('el-popup-parent--hidden')
@@ -119,12 +119,12 @@ describe('MessageBox.vue', () => {
       expect(document.body.className).not.toBe('el-popup-parent--hidden')
     })
     it('meesage of normal', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           message: '333'
         }
       })
-      expect(warpper.get('.el-message-box__message > p')).toHaveTextContent(
+      expect(wrapper.get('.el-message-box__message > p')).toHaveTextContent(
         '333'
       )
     })
@@ -141,26 +141,26 @@ describe('MessageBox.vue', () => {
       expect(wrapper.componentVM.$slots.default()[0]).toEqual(v)
     })
     it('dangerouslyUseHTMLString', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           dangerouslyUseHTMLString: true,
           message: '<div class="mmm">444</div>'
         }
       })
-      expect(warpper.get('.mmm').exists()).toBeTruthy()
+      expect(wrapper.get('.mmm').exists()).toBeTruthy()
     })
     it('handleInputEnter', async () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           inputType: 'texg'
         }
       })
-      warpper.componentVM.handleInputEnter()
+      wrapper.componentVM.handleInputEnter()
       await nextTick()
-      expect(warpper.componentVM.visible).toBeFalsy()
+      expect(wrapper.componentVM.visible).toBeFalsy()
     })
     it('closeOnPressEscape', async () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           closeOnPressEscape: true
         }
@@ -169,76 +169,76 @@ describe('MessageBox.vue', () => {
         code: 'Escape'
       })
       window.dispatchEvent(event)
-      expect(warpper.get('.el-message-box__wrapper').isVisible()).toBeTruthy()
-      expect(warpper.componentVM.visible).toBeFalsy()
+      expect(wrapper.get('.el-message-box__wrapper').isVisible()).toBeTruthy()
+      expect(wrapper.componentVM.visible).toBeFalsy()
     })
     it('handleWrapperClick', async () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           closeOnClickModal: true
         }
       })
-      await warpper.get('.el-message-box__wrapper').trigger('click')
+      await wrapper.get('.el-message-box__wrapper').trigger('click')
       await nextTick()
-      expect(warpper.componentVM.action).toBe('cancel')
+      expect(wrapper.componentVM.action).toBe('cancel')
     })
     it('closeOnHashChange', async () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           closeOnHashChange: true
         }
       })
       window.dispatchEvent(new Event('hashchange'))
-      expect(warpper.get('.el-message-box__wrapper').isVisible()).toBeTruthy()
-      expect(warpper.componentVM.visible).toBeFalsy()
+      expect(wrapper.get('.el-message-box__wrapper').isVisible()).toBeTruthy()
+      expect(wrapper.componentVM.visible).toBeFalsy()
     })
     it('showInput', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           showInput: true
         }
       })
-      expect(warpper.get('.el-message-box__input').isVisible()).toBeTruthy()
+      expect(wrapper.get('.el-message-box__input').isVisible()).toBeTruthy()
     })
     it('inputValue inputPlaceholder', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           showInput: true,
           inputValue: '444',
           inputPlaceholder: '555'
         }
       })
-      expect(warpper.get('.el-input__inner').element.value).toEqual('444')
-      expect(warpper.get('.el-input__inner').attributes('placeholder')).toEqual(
+      expect(wrapper.get('.el-input__inner').element.value).toEqual('444')
+      expect(wrapper.get('.el-input__inner').attributes('placeholder')).toEqual(
         '555'
       )
     })
     it('cancelButtonText, showCancelButton', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           cancelButtonText: 'cancel',
           showCancelButton: true,
           cancelButtonClass: 'vvv'
         }
       })
-      expect(warpper.get('.vvv')).toHaveTextContent('cancel')
-      expect(warpper.get('.vvv').isVisible()).toBeTruthy()
+      expect(wrapper.get('.vvv')).toHaveTextContent('cancel')
+      expect(wrapper.get('.vvv').isVisible()).toBeTruthy()
     })
     it('confirmButtonClass showConfirmButton, confirmButtonText', () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           confirmButtonText: 'cancel',
           showConfirmButton: true,
           confirmButtonClass: 'mmm'
         }
       })
-      expect(warpper.get('.el-button--primary').classes()).toContain('mmm')
-      expect(warpper.get('.mmm')).toHaveTextContent('cancel')
-      expect(warpper.get('.el-message-box__btns').isVisible()).toBeTruthy()
+      expect(wrapper.get('.el-button--primary').classes()).toContain('mmm')
+      expect(wrapper.get('.mmm')).toHaveTextContent('cancel')
+      expect(wrapper.get('.el-message-box__btns').isVisible()).toBeTruthy()
     })
     it('proprety callback', async () => {
       let object = ref(null)
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           title: '12',
           callback(action) {
@@ -246,12 +246,12 @@ describe('MessageBox.vue', () => {
           }
         }
       })
-      await warpper.get('.el-message-box__headerbtn').trigger('click')
+      await wrapper.get('.el-message-box__headerbtn').trigger('click')
       await nextTick()
       expect(object.value).toBe('cancel')
     })
     it('validate correct', async () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           title: '12',
           category: 'prompt',
@@ -260,13 +260,13 @@ describe('MessageBox.vue', () => {
           cancelButtonText: '取消'
         }
       })
-      await warpper.findComponent({ ref: 'input' }).setValue('2323')
+      await wrapper.findComponent({ ref: 'input' }).setValue('2323')
       await nextTick()
-      expect(warpper.componentVM.editorErrorMessage).toBe('输入的数据不合法!')
-      expect(warpper.get('.el-input__inner').classes()).toHaveLength(2)
+      expect(wrapper.componentVM.editorErrorMessage).toBe('输入的数据不合法!')
+      expect(wrapper.get('.el-input__inner').classes()).toHaveLength(2)
     })
     it('validate fail', async () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           title: '12',
           category: 'prompt',
@@ -277,13 +277,13 @@ describe('MessageBox.vue', () => {
           cancelButtonText: '取消'
         }
       })
-      await warpper.findComponent({ ref: 'input' }).setValue('2323')
+      await wrapper.findComponent({ ref: 'input' }).setValue('2323')
       await nextTick()
-      expect(warpper.get('.el-input__inner').classes()).toHaveLength(2)
-      expect(warpper.componentVM.editorErrorMessage).toBe('失败')
+      expect(wrapper.get('.el-input__inner').classes()).toHaveLength(2)
+      expect(wrapper.componentVM.editorErrorMessage).toBe('失败')
     })
     it('inputValidator', async () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           title: '12',
           category: 'prompt',
@@ -294,50 +294,50 @@ describe('MessageBox.vue', () => {
           cancelButtonText: '取消'
         }
       })
-      await warpper.findComponent({ ref: 'input' }).setValue('2323')
+      await wrapper.findComponent({ ref: 'input' }).setValue('2323')
       await nextTick()
-      expect(warpper.get('.el-input__inner').classes()).toHaveLength(2)
+      expect(wrapper.get('.el-input__inner').classes()).toHaveLength(2)
     })
   })
   describe('test modal closeOnClickModal', () => {
     it('open modal', async () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           modal: true,
           closeOnClickModal: true
         }
       })
       await nextTick()
-      expect(warpper.get('.v-modal').exists()).toBeTruthy()
-      await warpper.get('.v-modal').trigger('click')
+      expect(wrapper.get('.v-modal').exists()).toBeTruthy()
+      await wrapper.get('.v-modal').trigger('click')
       await nextTick()
-      expect(warpper.find('.v-moda').exists()).toBeFalsy()
+      expect(wrapper.find('.v-moda').exists()).toBeFalsy()
     })
     it('open modal', async () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           modal: true,
           closeOnClickModal: true
         }
       })
       await nextTick()
-      expect(warpper.get('.v-modal').exists()).toBeTruthy()
-      await warpper.get('.v-modal').trigger('keyup', { keyCode: 'Escape' })
+      expect(wrapper.get('.v-modal').exists()).toBeTruthy()
+      await wrapper.get('.v-modal').trigger('keyup', { keyCode: 'Escape' })
       await nextTick()
-      expect(warpper.find('.v-moda').exists()).toBeFalsy()
+      expect(wrapper.find('.v-moda').exists()).toBeFalsy()
     })
     it('open modal', async () => {
-      const warpper = mount(MessageBox, {
+      const wrapper = mount(MessageBox, {
         props: {
           modal: true,
           closeOnClickModal: true
         }
       })
       await nextTick()
-      expect(warpper.get('.v-modal').exists()).toBeTruthy()
-      await warpper.get('.v-modal').trigger('hashchange')
+      expect(wrapper.get('.v-modal').exists()).toBeTruthy()
+      await wrapper.get('.v-modal').trigger('hashchange')
       await nextTick()
-      expect(warpper.find('.v-moda').exists()).toBeFalsy()
+      expect(wrapper.find('.v-moda').exists()).toBeFalsy()
     })
   })
 })
