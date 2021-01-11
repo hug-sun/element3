@@ -30,6 +30,22 @@
     >
       <span class="el-checkbox__inner"></span>
       <input
+        v-if="trueLabel || falseLabel"
+        class="el-checkbox__original"
+        ref="checkboxRef"
+        :name="name"
+        :disabled="isDisabled"
+        :true-value="trueLabel"
+        :false-value="falseLabel"
+        type="checkbox"
+        @input="model = { checked: $event.target.checked }"
+        @focus="isFocus = true"
+        @blur="isFocus = false"
+        @change="changeHandle"
+        :aria-hidden="indeterminate ? 'true' : 'false'"
+      />
+      <input
+        v-else
         class="el-checkbox__original"
         ref="checkboxRef"
         :name="name"
@@ -60,10 +76,9 @@ import {
   onMounted,
   ref,
   toRefs,
-  nextTick,
-  unref
+  nextTick
 } from 'vue'
-import { useGlobalOptions } from '../../src/use/globalConfig'
+import { useSize, useDisabled } from './common'
 import { useEmitter } from '../../src/use/emitter'
 
 export default {
@@ -127,53 +142,6 @@ function useBorder(border) {
 
   return {
     isBorder
-  }
-}
-
-function useSize(size) {
-  const globalConfig = useGlobalOptions()
-  const { elCheckboxGroup, elFormItem } = useInject()
-  const checkboxSize = computed(() => {
-    return (
-      size?.value ||
-      elCheckboxGroup.proxy.size ||
-      elFormItem.size ||
-      globalConfig.size
-    )
-  })
-
-  return {
-    checkboxSize
-  }
-}
-
-function useDisabled(disabled, isChecked) {
-  const { elCheckboxGroup, elFormItem } = useInject()
-  const modelValue = computed(() => elCheckboxGroup.proxy.modelValue)
-  const min = computed(() => elCheckboxGroup.proxy.min)
-  const max = computed(() => elCheckboxGroup.proxy.max)
-  const disabledValue = computed(() => {
-    return (
-      disabled?.value ||
-      unref(elCheckboxGroup.proxy.disabled) ||
-      unref(elFormItem.disabled) ||
-      false
-    )
-  })
-
-  const isDisabled = computed(() => {
-    let limit = false
-    if (modelValue.value) {
-      limit =
-        (modelValue.value.length <= min.value && isChecked.value) ||
-        (modelValue.value.length >= max.value && !isChecked.value)
-    }
-
-    return disabledValue.value || limit
-  })
-
-  return {
-    isDisabled
   }
 }
 
