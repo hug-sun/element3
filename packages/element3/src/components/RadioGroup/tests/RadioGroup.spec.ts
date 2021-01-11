@@ -13,8 +13,11 @@ describe('radioGroup.vue', () => {
     expect(wrapper).toHaveTextContent('radioGroup')
   })
 
-  it('form-item size', () => {
+  it('form-item size', async () => {
     const wrapper = mount(RadioGroup, {
+      props: {
+        size: ''
+      },
       global: {
         provide: {
           elFormItem: {
@@ -25,9 +28,14 @@ describe('radioGroup.vue', () => {
     })
 
     expect(wrapper.vm.radioGroupSize).toEqual('small')
+
+    await wrapper.setProps({
+      size: 'medium'
+    })
+    expect(wrapper.vm.radioGroupSize).toEqual('medium')
   })
 
-  it('size', () => {
+  it('size', async () => {
     const wrapper = mount(RadioGroup, {
       props: {
         size: 'mini'
@@ -35,6 +43,11 @@ describe('radioGroup.vue', () => {
     })
 
     expect(wrapper.vm.radioGroupSize).toEqual('mini')
+
+    await wrapper.setProps({
+      size: 'small'
+    })
+    expect(wrapper.vm.radioGroupSize).toEqual('small')
   })
 
   it('modelValue', async () => {
