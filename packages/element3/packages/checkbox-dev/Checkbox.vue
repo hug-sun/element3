@@ -69,17 +69,14 @@
 </template>
 
 <script>
+import { ref, toRefs } from 'vue'
 import {
-  computed,
-  getCurrentInstance,
-  inject,
-  onMounted,
-  ref,
-  toRefs,
-  nextTick
-} from 'vue'
-import { useSize, useDisabled } from './common'
-import { useEmitter } from '../../src/use/emitter'
+  useSize,
+  useDisabled,
+  useModel,
+  useInitSelect,
+  useBorder
+} from './common'
 
 export default {
   name: 'ElCheckbox',
@@ -132,100 +129,6 @@ export default {
     id: String,
     controls: String
   }
-}
-
-function useBorder(border) {
-  const { elCheckboxGroup } = useInject()
-  const isBorder = computed(() => {
-    return border?.value || elCheckboxGroup.proxy.border
-  })
-
-  return {
-    isBorder
-  }
-}
-
-function useModel() {
-  const { modelValue, trueLabel, falseLabel, label } = onlyProps()
-  const { elCheckboxGroup } = useInject()
-  const vm = getCurrentInstance()
-  const { dispatch } = useEmitter()
-  /**
-   * elCheckboxGroup.modelValue may be a normal array or a reactive array
-   */
-  const parentModelValue = computed(() => elCheckboxGroup.proxy.modelValue)
-  const state = computed(() => {
-    return modelValue.value || parentModelValue.value || false
-  })
-
-  const model = computed({
-    get() {
-      return state.value
-    },
-    set({ checked }) {
-      let modelValue = model.value
-      if (label && label.value && Array.isArray(model.value)) {
-        const index = modelValue.indexOf(label.value)
-        index === -1 && checked
-          ? modelValue.push(label.value)
-          : modelValue.splice(index, 1)
-        dispatch('update:modelValue', modelValue)
-      } else {
-        modelValue = checked ? trueLabel.value : falseLabel.value
-        vm.emit('update:modelValue', modelValue)
-      }
-    }
-  })
-
-  const changeHandle = async () => {
-    await nextTick()
-    vm.emit('change', model.value)
-    dispatch('change', model.value)
-  }
-
-  return {
-    model,
-    changeHandle
-  }
-}
-
-function useInitSelect(model) {
-  const { trueLabel, checked, label } = onlyProps()
-  const checkboxRef = ref(null)
-
-  onMounted(() => {
-    if (checked.value) {
-      model.value = { checked: checked.value }
-    }
-  })
-
-  const isChecked = computed(() => {
-    const _isChecked = Array.isArray(model.value)
-      ? model.value.includes(label.value)
-      : model.value === trueLabel.value
-
-    checkboxRef.value && (checkboxRef.value.checked = _isChecked)
-    return _isChecked
-  })
-
-  return {
-    checkboxRef,
-    isChecked
-  }
-}
-
-function useInject() {
-  const elCheckboxGroup = inject('elCheckboxGroup', { proxy: {} })
-  const elFormItem = inject('elFormItem', {})
-
-  return {
-    elCheckboxGroup,
-    elFormItem
-  }
-}
-
-function onlyProps() {
-  return toRefs(getCurrentInstance().props)
 }
 </script>
 

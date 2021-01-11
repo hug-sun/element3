@@ -37,7 +37,15 @@ export default {
     border: Boolean,
     disabled: Boolean,
     min: Number,
-    max: Number
+    max: Number,
+    textColor: {
+      type: String,
+      default: '#ffffff'
+    },
+    fill: {
+      type: String,
+      default: '#409EFF'
+    }
   }
 }
 </script>

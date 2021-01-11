@@ -1,6 +1,6 @@
 import ElCheckboxButton from '../index'
 import { mount } from '@vue/test-utils'
-import { reactive } from 'vue'
+import { nextTick, reactive, ref } from 'vue'
 import { setupGlobalOptions } from '../../../src'
 import Checkbox from '../../checkbox-dev/Checkbox'
 
@@ -130,5 +130,72 @@ describe('ElCheckboxButton', function () {
     expect(wrapper.get('input').attributes('name')).toBe(name)
   })
 
-  test('true-label', () => {})
+  test('update:modelValue', async () => {
+    const value = ref(false)
+    const wrapper = mount(ElCheckboxButton, {
+      props: {
+        modelValue: value,
+        'onUpdate:modelValue': function (newModelValue) {
+          value.value = newModelValue
+        }
+      }
+    })
+
+    await wrapper.get('input').trigger('click')
+    expect(wrapper.emitted()).toHaveProperty('update:modelValue')
+    expect(wrapper.emitted()['update:modelValue'][0][0]).toBeTruthy()
+    await wrapper.get('input').trigger('click')
+    expect(wrapper.emitted()['update:modelValue'][0][1]).toBeFalsy()
+  })
+
+  test('true-label', async () => {
+    const value = ref(false)
+    const trueLabel = ref('yes')
+    const wrapper = mount(ElCheckboxButton, {
+      props: { modelValue: value, trueLabel }
+    })
+
+    await nextTick()
+    await wrapper.get('input').trigger('click')
+    expect(wrapper.emitted()['update:modelValue'][0][0]).toBe(trueLabel.value)
+  })
+
+  test('false-label', async () => {
+    const value = ref(true)
+    const falseLabel = ref('no')
+    const wrapper = mount(ElCheckboxButton, {
+      props: { modelValue: value, falseLabel }
+    })
+
+    await nextTick()
+    await wrapper.get('input').trigger('click')
+    expect(wrapper.emitted()['update:modelValue'][0][0]).toBe(falseLabel.value)
+  })
+
+  test('props.checked', async () => {
+    const wrapper = mount(ElCheckboxButton, {
+      props: { checked: true }
+    })
+
+    expect(wrapper.emitted()).toHaveProperty('update:modelValue')
+    expect(wrapper.emitted()['update:modelValue'][0][0]).toBeTruthy()
+  })
+
+  describe('focus', () => {
+    test('checkbox is focused', async () => {
+      const wrapper = mount(ElCheckboxButton)
+
+      expect(wrapper.classes()).not.toContain('is-focus')
+      await wrapper.get('input').trigger('focus')
+      expect(wrapper.classes()).toContain('is-focus')
+    })
+
+    test('checkbox is not focused', async () => {
+      const wrapper = mount(ElCheckboxButton)
+
+      await wrapper.get('input').trigger('focus')
+      await wrapper.get('input').trigger('blur')
+      expect(wrapper.classes()).not.toContain('is-focus')
+    })
+  })
 })
