@@ -162,7 +162,7 @@
             "title": "Message 消息提示"
           },
           {
-            "path": "/messageBox",
+            "path": "/message-box",
             "title": "MessageBox 弹框"
           },
           {
