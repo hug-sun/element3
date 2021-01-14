@@ -103,20 +103,16 @@ import {
   reactive,
   toRefs,
   getCurrentInstance,
-  nextTick,
   unref,
   computed,
-  onMounted,
-  onUnmounted,
   ref
 } from 'vue'
 import propsObject from './props.js'
-import { isFunction } from '@vue/shared'
-import { usePopup } from '../../../use/popup'
+
 import { ElInput } from '../../Input'
 import { ElButton } from '../../Button'
 import validateFunction from './validate'
-
+import { handleList, initBeforeAndAfterOnMounte, useClass } from './use'
 export default defineComponent({
   props: propsObject,
   components: {
@@ -124,6 +120,7 @@ export default defineComponent({
     ElButton
   },
   setup(props) {
+    const confirmButtonLoading = ref(false)
     const state = reactive({
       action: null,
       visible: true,
@@ -138,10 +135,8 @@ export default defineComponent({
       handleInputEnter,
       handleWrapperClick
     } = handleList(state, instance, validate)
-    const confirmButtonLoading = ref(false)
-    const icon = computed(() => {
-      return unref(iconClass) || (unref(type) ? `el-icon-${unref(type)}` : '')
-    })
+    const icon = useClass(iconClass, type)
+    initBeforeAndAfterOnMounte(state, handleAction, closeHandle)
     return {
       ...toRefs(state),
       editorErrorMessage,
@@ -151,81 +146,6 @@ export default defineComponent({
       handleWrapperClick,
       closeHandle,
       confirmButtonLoading
-    }
-    function handleList(state, instance, validate) {
-      const { open, close } = usePopup(state)
-      const {
-        visible,
-        callback,
-        category,
-        inputType,
-        closeOnHashChange,
-        closeOnPressEscape,
-        distinguishCancelAndClose,
-        closeOnClickModal,
-        action,
-        beforeClose
-      } = toRefs(state)
-      const closeHandle = () => {
-        visible.value = false
-        close()
-        nextTick(() => {
-          unref(callback)(state.action, instance.proxy)
-        })
-      }
-      const handleAction = (_action) => {
-        if (
-          unref(category) === 'prompt' &&
-          _action === 'confirm' &&
-          !validate()
-        ) {
-          return
-        }
-        action.value = _action
-        if (isFunction(beforeClose.value)) {
-          beforeClose.value(_action, instance.proxy, closeHandle)
-        } else {
-          closeHandle()
-        }
-      }
-      const handleKeyup = (element = {}) => {
-        if (element.code !== 'Escape') return
-        if (unref(closeOnPressEscape)) {
-          handleAction(unref(distinguishCancelAndClose) ? 'close' : 'cancel')
-        }
-      }
-      const handleInputEnter = () => {
-        if (unref(inputType) !== 'textarea') {
-          return handleAction('confirm')
-        }
-      }
-
-      const handleWrapperClick = () => {
-        if (unref(closeOnClickModal)) {
-          handleAction(unref(distinguishCancelAndClose) ? 'close' : 'cancel')
-        }
-      }
-      onMounted(() => {
-        if (unref(closeOnHashChange)) {
-          window.addEventListener('hashchange', closeHandle)
-        }
-        window.addEventListener('keyup', handleKeyup)
-        nextTick(() => {
-          open()
-        })
-      })
-      onUnmounted(() => {
-        if (unref(closeOnHashChange)) {
-          window.removeEventListener('hashchange', closeHandle)
-        }
-        window.removeEventListener('keyup', handleKeyup)
-      })
-      return {
-        closeHandle,
-        handleAction,
-        handleWrapperClick,
-        handleInputEnter
-      }
     }
   }
 })
