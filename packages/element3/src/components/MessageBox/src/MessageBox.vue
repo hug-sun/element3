@@ -98,21 +98,13 @@
 </template>
 
 <script type="text/babel">
-import {
-  defineComponent,
-  reactive,
-  toRefs,
-  getCurrentInstance,
-  unref,
-  computed,
-  ref
-} from 'vue'
+import { defineComponent, reactive, toRefs, getCurrentInstance, ref } from 'vue'
 import propsObject from './props.js'
 
 import { ElInput } from '../../Input'
 import { ElButton } from '../../Button'
 import validateFunction from './validate'
-import { handleList, initBeforeAndAfterOnMounte, useClass } from './use'
+import { useHandleList, initBeforeAndAfterOnMounte, useClass } from './use'
 export default defineComponent({
   props: propsObject,
   components: {
@@ -134,7 +126,7 @@ export default defineComponent({
       handleAction,
       handleInputEnter,
       handleWrapperClick
-    } = handleList(state, instance, validate)
+    } = useHandleList(state, instance, validate)
     const icon = useClass(iconClass, type)
     initBeforeAndAfterOnMounte(state, handleAction, closeHandle)
     return {
