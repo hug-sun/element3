@@ -23,6 +23,10 @@ const colorPercents = [
 colorPercents.sort(sortByPercentage)
 
 describe('Progress.vue', () => {
+  it('snapshot', () => {
+    const wrapper = initProgress()
+    expect(wrapper.element).toMatchSnapshot()
+  })
   it('should create default Progress component and HTML structure', () => {
     const percentage = 55
     const wrapper = initProgress({ percentage })

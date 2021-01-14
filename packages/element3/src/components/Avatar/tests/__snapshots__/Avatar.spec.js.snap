@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Avatar.props snapshot 1`] = `
+<span
+  class="el-avatar el-avatar--large el-avatar--circle"
+>
+  
+  
+</span>
+`;

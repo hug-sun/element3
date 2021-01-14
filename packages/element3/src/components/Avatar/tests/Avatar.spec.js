@@ -8,6 +8,11 @@ export const IMAGE_SUCCESS =
 export const IMAGE_FAIL = 'data:image/png;base64,fail'
 
 describe('Avatar.props', () => {
+  it('snapshot', () => {
+    const wrapper = mount(Avatar)
+    expect(wrapper.element).toMatchSnapshot()
+  })
+
   describe('icon', () => {
     it('should render props.icon', () => {
       const wrapper = mount(Avatar, {

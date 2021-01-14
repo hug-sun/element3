@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Progress.vue snapshot 1`] = `
+<div
+  class="el-progress el-progress--line"
+>
+  <div
+    class="el-progress-bar"
+  >
+    <div
+      class="el-progress-bar__outer"
+      style="height: 6px;"
+    >
+      <div
+        class="el-progress-bar__inner"
+        style="width: 85%;"
+      >
+        <!--v-if-->
+      </div>
+    </div>
+  </div>
+  <div
+    class="el-progress__text"
+  >
+    
+    85%
+    
+  </div>
+</div>
+`;

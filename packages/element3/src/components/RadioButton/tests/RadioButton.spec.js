@@ -1,11 +1,15 @@
 import RadioButton from '../src/RadioButton.vue'
-import RadioGroup from 'element-ui/packages/radio-group/RadioGroup'
+import RadioGroup from '../../RadioGroup/src/RadioGroup.vue'
 import { mount } from '@vue/test-utils'
 import { ref, h, nextTick, reactive } from 'vue'
 
 const content = ['上海', '北京']
 
 describe('radioButton.vue', () => {
+  it('snapshot', () => {
+    const wrapper = mount(RadioButton)
+    expect(wrapper.element).toMatchSnapshot()
+  })
   it('should show content', () => {
     const wrapper = mount(RadioGroup, {
       props: {

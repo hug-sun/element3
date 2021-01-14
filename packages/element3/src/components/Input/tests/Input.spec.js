@@ -4,6 +4,10 @@ import { nextTick, ref } from 'vue'
 import { props } from '../src/props'
 
 describe('test props size valiate', () => {
+  it('snapshot', () => {
+    const wrapper = mount(Input)
+    expect(wrapper.element).toMatchSnapshot()
+  })
   it('test props size valiate ', () => {
     expect(props.size.validator('mini')).toBeTruthy()
     expect(props.size.validator('small')).toBeTruthy()

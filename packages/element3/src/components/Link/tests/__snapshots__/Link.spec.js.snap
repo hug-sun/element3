@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link snapshot 1`] = `
+<a
+  class="el-link el-link--default  is-underline"
+>
+  <!--v-if-->
+  <!--v-if-->
+</a>
+`;

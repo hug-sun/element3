@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Switch snapshot 1`] = `
+<div
+  class="el-switch"
+>
+  <!--v-if-->
+  <span
+    class="el-switch__core"
+    style="width: 40px;"
+  />
+  <!--v-if-->
+</div>
+`;
