@@ -1,70 +1,66 @@
-import Card from '../src/Card.vue'
+import Card from '../Card.vue'
 import { mount } from '@vue/test-utils'
-
 describe('Card.vue', () => {
-  it('snapshot', () => {
-    const wrapper = mount(Card)
-    expect(wrapper.element).toMatchSnapshot()
-  })
-  it('should show content', () => {
-    const content = 'body'
+  describe('header', () => {
+    it('text', () => {
+      const wrapper = mount(Card, {
+        props: {
+          header: 'Header1'
+        }
+      })
 
-    const wrapper = mount(Card, {
-      slots: {
-        default: content
-      }
+      expect(wrapper.find('.el-card__header').text()).toBe('Header1')
     })
 
-    expect(wrapper).toHaveTextContent(content)
-  })
+    it('slot', () => {
+      const wrapper = mount(Card, {
+        slots: {
+          header: 'SoltHeader'
+        }
+      })
 
-  it('shadow', async () => {
-    const wrapper = mount(Card)
-
-    expect(wrapper).toHaveClass(`is-always-shadow`)
-
-    await wrapper.setProps({ shadow: 'hover' })
-    expect(wrapper).toHaveClass(`is-hover-shadow`)
-
-    await wrapper.setProps({ shadow: 'never' })
-    expect(wrapper).toHaveClass(`is-never-shadow`)
-
-    await wrapper.setProps({ shadow: 'always' })
-    expect(wrapper).toHaveClass(`is-always-shadow`)
-  })
-
-  it('header props', async () => {
-    const content = 'header'
-    const wrapper = mount(Card)
-
-    await wrapper.setProps({ header: content })
-    expect(wrapper.find('.el-card__header')).toHaveTextContent(content)
-  })
-
-  it('header slot', () => {
-    const content = 'header'
-
-    const wrapper = mount(Card, {
-      slots: {
-        header: content
-      }
+      expect(wrapper.find('.el-card__header').text()).toBe('SoltHeader')
     })
-
-    expect(wrapper.find('.el-card__header')).toHaveTextContent(content)
   })
 
-  it('body-style', () => {
+  it('bodyStyle', () => {
     const wrapper = mount(Card, {
       props: {
-        bodyStyle: {
-          padding: '30px'
-        }
+        bodyStyle: { padding: '10px' }
       }
     })
-
-    expect(wrapper.find('.el-card__body')).toHaveAttribute(
-      'style',
-      'padding: 30px;'
+    expect(wrapper.find('.el-card__body').attributes().style).toBe(
+      'padding: 10px;'
     )
   })
+
+  describe('shadow', () => {
+    it('alwarys', () => {
+      const wrapper = mount(Card, {
+        props: {
+          shadow: 'always'
+        }
+      })
+      expect(wrapper.classes()).toContain('is-always-shadow')
+    })
+
+    it('hover', () => {
+      const wrapper = mount(Card, {
+        props: {
+          shadow: 'hover'
+        }
+      })
+      expect(wrapper.classes()).toContain('is-hover-shadow')
+    })
+
+    it('never', () => {
+      const wrapper = mount(Card, {
+        props: {
+          shadow: 'never'
+        }
+      })
+      expect(wrapper.classes()).toContain('is-never-shadow')
+    })
+  })
 })
+
