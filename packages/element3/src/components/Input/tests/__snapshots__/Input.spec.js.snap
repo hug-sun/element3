@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test props size valiate snapshot 1`] = `
+<div
+  class="el-input"
+>
+  
+  <!--v-if-->
+  <input
+    class="el-input__inner"
+    type="text"
+  />
+  <!--v-if-->
+  <!--v-if-->
+  <!-- 后置元素 -->
+  <!--v-if-->
+  
+</div>
+`;

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Badge snapshot 1`] = `
+<div
+  class="el-badge"
+>
+  
+  
+  <transition-stub>
+    <sup
+      class="el-badge__content el-badge__content--danger"
+    />
+  </transition-stub>
+</div>
+`;

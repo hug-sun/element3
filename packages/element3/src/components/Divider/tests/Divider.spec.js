@@ -2,6 +2,10 @@ import Divider from '../src/Divider.vue'
 import { mount } from '@vue/test-utils'
 
 describe('Divider.vue', () => {
+  it('snapshot', () => {
+    const wrapper = mount(Divider)
+    expect(wrapper.element).toMatchSnapshot()
+  })
   it('content', () => {
     const vm = mount(Divider, {
       slots: {

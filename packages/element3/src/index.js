@@ -15,7 +15,7 @@ import { ElLink } from './components/Link'
 // Form
 import { ElRadio } from './components/Radio'
 import { ElRadioButton } from './components/RadioButton'
-import ElRadioGroup from '../packages/radio-group'
+import { ElRadioGroup } from './components/RadioGroup'
 import ElCheckbox from '../packages/checkbox'
 import ElCheckboxButton from '../packages/checkbox-button'
 import ElCheckboxGroup from '../packages/checkbox-group'

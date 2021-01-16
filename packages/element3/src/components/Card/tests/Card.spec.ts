@@ -2,6 +2,10 @@ import Card from '../src/Card.vue'
 import { mount } from '@vue/test-utils'
 
 describe('Card.vue', () => {
+  it('snapshot', () => {
+    const wrapper = mount(Card)
+    expect(wrapper.element).toMatchSnapshot()
+  })
   it('should show content', () => {
     const content = 'body'
 

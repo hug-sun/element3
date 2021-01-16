@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card.vue snapshot 1`] = `
+<div
+  class="el-card is-always-shadow"
+>
+  <!--v-if-->
+  <div
+    class="el-card__body"
+    style="padding: 20px;"
+  >
+    
+    
+  </div>
+</div>
+`;

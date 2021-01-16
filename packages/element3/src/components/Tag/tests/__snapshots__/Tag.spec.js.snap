@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tag.vue snapshot 1`] = `
+<transition-stub>
+  <span
+    class="el-tag   el-tag--light"
+  >
+    <!---->
+    <!---->
+  </span>
+</transition-stub>
+`;

@@ -1,6 +1,10 @@
 import { mount } from '@vue/test-utils'
 import Link from '../src/Link.vue'
 describe('Link', () => {
+  it('snapshot', () => {
+    const wrapper = mount(Link)
+    expect(wrapper.element).toMatchSnapshot()
+  })
   describe('props', () => {
     it('initialize the Link component', () => {
       const wrapper = mount(Link)

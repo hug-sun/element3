@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`radioButton.vue snapshot 1`] = `
+<label
+  aria-checked="false"
+  class="el-radio-button"
+  role="radio"
+  tabindex="0"
+>
+  <input
+    class="el-radio-button__orig-radio"
+    tabindex="-1"
+    type="radio"
+    value="false"
+  />
+  <span
+    class="el-radio-button__inner"
+  >
+    
+    false
+    
+  </span>
+</label>
+`;

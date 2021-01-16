@@ -1,6 +1,10 @@
 import Switch from '../src/Switch.vue'
 import { mount } from '@vue/test-utils'
 describe('Switch', () => {
+  it('snapshot', () => {
+    const wrapper = mount(Switch)
+    expect(wrapper.element).toMatchSnapshot()
+  })
   it('modelValue', async () => {
     const wrapper = mount(Switch, {
       props: {

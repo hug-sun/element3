@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Radio.vue snapshot 1`] = `
+<label
+  aria-checked="true"
+  class="el-radio is-checked"
+  role="radio"
+  tabindex="0"
+>
+  <span
+    class="el-radio__input is-checked"
+  >
+    <span
+      class="el-radio__inner"
+    />
+    <input
+      aria-hidden="true"
+      class="el-radio__original"
+      name=""
+      tabindex="-1"
+      type="radio"
+      value=""
+    />
+  </span>
+  <span
+    class="el-radio__label"
+  >
+    
+    
+    
+  </span>
+</label>
+`;
