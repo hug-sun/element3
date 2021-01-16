@@ -25,7 +25,6 @@
       @change="changeHandle"
       @focus="focus = true"
       @blur="focus = false"
-      :aria-hidden="indeterminate ? 'true' : 'false'"
     />
     <span
       class="el-checkbox-button__inner"
