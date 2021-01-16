@@ -134,12 +134,14 @@ export const useInitSelect = (model) => {
 export function useActiveStyle() {
   const { elCheckboxGroup } = useInject()
 
-  return {
-    backgroundColor: elCheckboxGroup.proxy.fill ?? '',
-    borderColor: elCheckboxGroup.proxy.fill ?? '',
-    color: elCheckboxGroup.proxy.textColor ?? '',
-    'box-shadow': '-1px 0 0 0 ' + elCheckboxGroup.proxy.fill
-  }
+  return computed(() => {
+    return {
+      backgroundColor: elCheckboxGroup.proxy.fill ?? '',
+      borderColor: elCheckboxGroup.proxy.fill ?? '',
+      color: elCheckboxGroup.proxy.textColor ?? '',
+      'box-shadow': '-1px 0 0 0 ' + elCheckboxGroup.proxy.fill
+    }
+  })
 }
 
 export const useBorder = (border) => {

@@ -1,5 +1,6 @@
 import CheckboxGroup from '../CheckboxGroup'
 import Checkbox from '../../checkbox/Checkbox'
+import CheckboxButton from '../../checkbox-button/CheckboxButton'
 import { mount } from '@vue/test-utils'
 import { h, ref } from 'vue'
 
@@ -220,5 +221,32 @@ describe('CheckboxGroup.vue', () => {
         wrapper.findAllComponents({ name: 'ElCheckbox' })[3].classes()
       ).not.toContain('is-disabled')
     })
+  })
+
+  test('custom select style', async () => {
+    const textColor = 'red'
+    const fill = 'green'
+    const value = ['A', 'C']
+    const result = `box-shadow: -1px 0 0 0 ${fill}; background-color: ${fill}; border-color: ${fill}; color: ${textColor};`
+
+    const wrapper = mount(CheckboxGroup, {
+      props: {
+        modelValue: value
+      },
+      slots: {
+        default: ['A', 'B', 'C', 'D'].map((label) =>
+          h(CheckboxButton, { label })
+        )
+      }
+    })
+
+    await wrapper.setProps({ 'text-color': textColor, fill })
+    const components = wrapper.findAllComponents(CheckboxButton)
+    expect(
+      components[0].find('.el-checkbox-button__inner').attributes().style
+    ).toBe(result)
+    expect(
+      components[2].find('.el-checkbox-button__inner').attributes().style
+    ).toBe(result)
   })
 })
