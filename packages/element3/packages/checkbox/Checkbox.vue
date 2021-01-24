@@ -62,8 +62,7 @@
       />
     </span>
     <span class="el-checkbox__label" v-if="$slots.default || label">
-      <slot></slot>
-      <template v-if="!$slots.default">{{ label }}</template>
+      <slot>{{ label }}</slot>
     </span>
   </label>
 </template>
