@@ -1,10 +1,23 @@
 <template>
-  <div>column</div>
+  <div></div>
 </template>
-
 <script>
-export default {
-  name: 'ElNewTableColumn'
+import { defineComponent, getCurrentInstance, inject, onMounted } from 'vue'
+export default defineComponent({
+  name: 'ElNewTableColumn',
+  props: ['prop', 'label'],
+  setup() {
+    registrySelfToParent()
+  }
+})
+
+function registrySelfToParent() {
+  const instance = getCurrentInstance()
+  const table = inject('table')
+
+  if (table) {
+    table.registryColumn(instance)
+  }
 }
 </script>
 
