@@ -52,7 +52,7 @@
 <script>
 import { useMenu } from './src/menu-use'
 import ElTooltip from '../tooltip'
-import { useEmitter } from '../../src/use/emitter'
+import { useEmitter } from '../../src/composables/emitter'
 import {
   computed,
   getCurrentInstance,

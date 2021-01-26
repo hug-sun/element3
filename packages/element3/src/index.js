@@ -40,6 +40,10 @@ import ElFormItem from '../packages/form-item'
 // Data
 import ElTable from '../packages/table'
 import ElTableColumn from '../packages/table-column'
+
+import { ElNewTable } from '../src/components/Table'
+import { ElNewTableColumn } from '../src/components/TableColumn'
+
 import { ElTag } from './components/Tag'
 import { ElProgress } from './components/Progress'
 import ElTree from '../packages/tree'
@@ -93,13 +97,15 @@ import ElScrollbar from '../packages/scrollbar'
 import ElAutocomplete from '../packages/autocomplete'
 
 import { version } from '../package.json'
-import { setupGlobalOptions } from './use/globalConfig.js'
+import { setupGlobalOptions } from './composables/globalConfig'
 
 const components = [
   ElRow,
   ElCol,
   ElHeader,
   ElFooter,
+  ElNewTable,
+  ElNewTableColumn,
   ElAside,
   ElMain,
   ElAlert,
@@ -204,6 +210,8 @@ const element3 = {
 
 export {
   version,
+  ElNewTable,
+  ElNewTableColumn,
   ElRow,
   ElCol,
   ElContainer,

@@ -18,7 +18,7 @@
 
 <script type="text/babel">
 import { getValueByPath, escapeRegexpString } from '../../src/utils/util'
-import { useEmitter } from '../../src/use/emitter'
+import { useEmitter } from '../../src/composables/emitter'
 import {
   inject,
   getCurrentInstance,

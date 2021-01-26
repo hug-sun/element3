@@ -1,4 +1,4 @@
-import { migrating } from '../../../src/use/migrating'
+import { migrating } from '../../../src/composables/migrating'
 import { mount } from '@vue/test-utils'
 
 jest.spyOn(global.console, 'warn')

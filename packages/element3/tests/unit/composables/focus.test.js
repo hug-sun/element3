@@ -1,4 +1,4 @@
-import useFocus from '../../../src/use/focus'
+import useFocus from '../../../src/composables/focus'
 import { mount } from '@vue/test-utils'
 import { onMounted, ref } from 'vue'
 

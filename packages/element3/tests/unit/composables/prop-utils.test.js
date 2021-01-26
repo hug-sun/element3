@@ -1,4 +1,4 @@
-import { usePropUtils } from '../../../src/use/prop-utils'
+import { usePropUtils } from '../../../src/composables/prop-utils'
 import { mount } from '@vue/test-utils'
 import { h, ref } from 'vue'
 

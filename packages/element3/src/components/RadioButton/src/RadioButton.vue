@@ -32,7 +32,7 @@
 <script>
 import { toRefs, ref, inject, computed, watch, getCurrentInstance } from 'vue'
 import { props } from './props'
-import { useGlobalOptions } from '../../../use/globalConfig'
+import { useGlobalOptions } from '../../../composables/globalConfig'
 
 export default {
   name: 'ElRadioButton',
