@@ -2,7 +2,7 @@
   <table>
     <thead>
       <tr>
-        <template v-for="(column, index) in columns" :key="index">
+        <template v-for="(column, index) in tableHeads" :key="index">
           <th>{{ column.label }}</th>
         </template>
       </tr>
@@ -14,43 +14,86 @@
         </tr>
       </template>
     </tbody>
+    <slot></slot>
   </table>
 </template>
-
 <script>
-import { computed, defineComponent, unref } from 'vue'
+import {
+  computed,
+  defineComponent,
+  ref,
+  provide,
+  getCurrentInstance,
+  toRefs
+} from 'vue'
 export default defineComponent({
   name: 'ElNewTable',
   props: ['data'],
-  setup(props, { slots }) {
-    const columns = computed(() => {
-      const tableColumns = slots.default()
+  setup(props) {
+    const { data } = toRefs(props)
 
-      return tableColumns.map((columnsVnode) => {
-        const { prop, label } = columnsVnode.props
-        return {
-          prop,
-          label
-        }
-      })
-    })
+    useProvide()
 
-    function createRows(columns) {
-      return computed(() => {
-        return props.data.map((item) => {
-          return columns.reduce((result, { prop: key }) => {
-            result[key] = item[key]
-            return result
-          }, {})
-        })
-      })
+    const { columns, registryColumn } = useColumns()
+    const { tableHeads } = useTableHeads(columns)
+    const { rows } = useRows(data, tableHeads)
+
+    return {
+      registryColumn,
+      tableHeads,
+      rows
     }
-
-    const rows = createRows(unref(columns))
-
-    return { columns, rows }
   }
 })
+
+function useProvide() {
+  const instance = getCurrentInstance()
+
+  provide('table', instance.proxy)
+}
+
+function useColumns() {
+  const columns = ref([])
+  function registryColumn(column) {
+    columns.value.push(column)
+  }
+
+  return {
+    columns,
+    registryColumn
+  }
+}
+
+function useTableHeads(columns) {
+  const tableHeads = computed(() => {
+    return columns.value.map((columnVM) => {
+      const { prop, label } = columnVM.props
+      return {
+        prop,
+        label
+      }
+    })
+  })
+
+  return {
+    tableHeads
+  }
+}
+
+function useRows(data, tableHeads) {
+  const rows = computed(() => {
+    return data.value.map((item) => {
+      return tableHeads.value.reduce((result, { prop: key }) => {
+        result[key] = item[key]
+        return result
+      }, {})
+    })
+  })
+
+  return {
+    rows
+  }
+}
 </script>
 
 <style></style>
