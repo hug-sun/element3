@@ -16,7 +16,9 @@
   >
     <el-tooltip
       v-if="
-        parentMenu.type.name === 'ElMenu' && rootMenu.collapse && $slots.title
+        parentMenu.type.name === 'ElMenu' &&
+        rootMenu.proxy.collapse &&
+        $slots.title
       "
       effect="dark"
       placement="right"
