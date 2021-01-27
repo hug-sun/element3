@@ -24,9 +24,9 @@ export const STATUSES = Object.keys(STATUS_SETTING)
 export const TYPES = ['line', 'circle', 'dashboard']
 export const LINECAPS = ['butt', 'round', 'square']
 
-export const statusValid = (val: string) =>
+export const statusValid = (val: string): boolean =>
   isEmpty(val) || (!isEmpty(val) && STATUSES.includes(val))
-export const percentageValid = (val: number) =>
+export const percentageValid = (val: number): boolean =>
   isNumber(val) && val >= 0 && val <= 100
 export const typeValid = (val: string) => TYPES.includes(val)
 export const linecapValid = (val: string) => LINECAPS.includes(val)
@@ -60,7 +60,9 @@ export const props = {
     required: false,
     validator: statusValid
   },
+  /* eslint-disable*/
   color: { type: [String, Function, Array], default: '' },
+  /* eslint-enable*/
   showText: {
     type: Boolean,
     default: true
@@ -139,7 +141,7 @@ export function toFixedStr(f: number) {
 }
 
 export function calcRelativeSvgSize(size: number, width: number) {
-  return toFixedStr(genFnToRelativeSvgSize(width)(size))
+  return Number.parseFloat(toFixedStr(genFnToRelativeSvgSize(width)(size)))
 }
 
 export function calcSvgRadius(strokeWidth: number) {
@@ -150,7 +152,7 @@ export function calcPerimeter(radius: number) {
   return 2 * Math.PI * radius
 }
 
-export function genTrailPathStyle(perimeter, type = 'circle') {
+export function genTrailPathStyle(perimeter: number, type = 'circle') {
   const rate = getRate(type)
   const offset = toFixedStr(getOffset(perimeter, rate))
   const range = toFixedStr(perimeter * rate)
@@ -164,7 +166,7 @@ export function getRate(type) {
   return type === 'dashboard' ? DASHBOARD_RATE : 1
 }
 
-export function genArcPathStyle(perimeter, percentage = 0, type = 'circle') {
+export function genArcPathStyle(perimeter: number, percentage = 0, type = 'circle') {
   const rate = getRate(type)
   const offset = toFixedStr(getOffset(perimeter, rate))
   const p = toFixedStr(perimeter * (percentage / FULL_PERCENT) * rate)
