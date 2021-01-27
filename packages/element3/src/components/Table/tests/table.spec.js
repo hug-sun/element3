@@ -1,7 +1,6 @@
 import Table from '../src/Table.vue'
 import TableColumn from '../../TableColumn/src/TableColumn.vue'
 import { mount, flushPromises } from '@vue/test-utils'
-import { nextTick } from 'vue'
 
 describe('Table', () => {
   describe('基础表格', () => {
