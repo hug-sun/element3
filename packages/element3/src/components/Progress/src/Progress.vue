@@ -58,13 +58,12 @@ import {
   getSvgStrokeColor,
   getColorBy
 } from '../src/props'
-import { ProgressProps } from './types'
 import type { AnyColor, FnFormat } from './types'
 
 export default defineComponent({
   name: 'ElProgress',
   props,
-  setup(props: ProgressProps) {
+  setup(props: any) {
     const {
       percentage,
       format,
