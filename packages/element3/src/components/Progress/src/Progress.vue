@@ -59,6 +59,7 @@ import {
   getColorBy
 } from '../src/props'
 import { ProgressProps } from './Progress'
+import type { AnyColor, FormatCallBackFunction } from './types'
 
 export default defineComponent({
   name: 'ElProgress',
@@ -131,10 +132,7 @@ const useRootClass = (
   })
 }
 
-const useBarStyle = (
-  percentage: Ref<number>,
-  color: Ref<string | Function | unknown[]>
-) => {
+const useBarStyle = (percentage: Ref<number>, color: Ref<AnyColor>) => {
   return computed(() => {
     const pv = autoFixPercentage(unref(percentage))
     const cv = unref(color)
@@ -150,7 +148,10 @@ const useBarOuterStyle = (strokeWidth: Ref<number>) => {
   })
 }
 
-const useContent = (format: Ref<Function>, percentage: Ref<number>) => {
+const useContent = (
+  format: Ref<FormatCallBackFunction>,
+  percentage: Ref<number>
+) => {
   return computed(() => {
     const fv = unref(format)
     const pv = autoFixPercentage(unref(percentage))
@@ -227,7 +228,7 @@ const useArcPathStyle = (
 
 const useSvgStrokeColor = (
   status: Ref<string>,
-  color: Ref<string | Function | unknown[]>,
+  color: Ref<AnyColor>,
   percentage: Ref<number>
 ) => {
   return computed(() => {

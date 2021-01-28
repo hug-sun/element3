@@ -1,6 +1,6 @@
 import { isArray, isNumber, isString, isFunction } from '../../../utils/types'
 import { isEmpty } from '../../../utils/util'
-import { AnyColor, FnColor, LevelColor, ProgressProps } from './Progress'
+import { AnyColor, FnColor, LevelColor, ProgressProps } from './types'
 
 export const DEFAULT_COLOR = '#409EFF'
 export const STATUS_SETTING = {
@@ -28,8 +28,8 @@ export const statusValid = (val: string): boolean =>
   isEmpty(val) || (!isEmpty(val) && STATUSES.includes(val))
 export const percentageValid = (val: number): boolean =>
   isNumber(val) && val >= 0 && val <= 100
-export const typeValid = (val: string) => TYPES.includes(val)
-export const linecapValid = (val: string) => LINECAPS.includes(val)
+export const typeValid = (val: string): boolean => TYPES.includes(val)
+export const linecapValid = (val: string): boolean => LINECAPS.includes(val)
 
 export const FULL_PERCENT = 100
 export const DEFAULT_SVG_PX = 126
@@ -166,7 +166,11 @@ export function getRate(type) {
   return type === 'dashboard' ? DASHBOARD_RATE : 1
 }
 
-export function genArcPathStyle(perimeter: number, percentage = 0, type = 'circle') {
+export function genArcPathStyle(
+  perimeter: number,
+  percentage = 0,
+  type = 'circle'
+) {
   const rate = getRate(type)
   const offset = toFixedStr(getOffset(perimeter, rate))
   const p = toFixedStr(perimeter * (percentage / FULL_PERCENT) * rate)

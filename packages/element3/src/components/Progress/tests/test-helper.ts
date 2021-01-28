@@ -3,7 +3,7 @@ import Progress from '../src/Progress.vue'
 import Color from '../../../../packages/color-picker/src/color'
 import { merge } from 'lodash-es'
 import { STATUS_SETTING } from '../src/props'
-import { ProgressProps } from '../src/Progress'
+import { ProgressProps } from '../src/types'
 
 export const DEFAULT_PERCENTAGE = 85
 
@@ -29,7 +29,10 @@ export function fromHexToRgb(hex) {
   return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`
 }
 
-export function assertSetPercentage(wrapper: VueWrapper<any>, percentage: number) {
+export function assertSetPercentage(
+  wrapper: VueWrapper<any>,
+  percentage: number
+) {
   expect(wrapper.get('.el-progress__text')).toHaveTextContent(`${percentage}%`)
   assertContainStyle(
     wrapper,
@@ -38,18 +41,29 @@ export function assertSetPercentage(wrapper: VueWrapper<any>, percentage: number
   )
 }
 
-export function assertContainStyle(wrapper: VueWrapper<any>, selector: string, strStyle: string) {
+export function assertContainStyle(
+  wrapper: VueWrapper<any>,
+  selector: string,
+  strStyle: string
+) {
   const elem = wrapper.find(selector)
   expect(elem.attributes().style).toBeDefined()
   expect(elem.attributes().style).toContain(strStyle)
 }
 
-export function assertNotContainStyle(wrapper: VueWrapper<any>, selector: string, strStyle: string) {
+export function assertNotContainStyle(
+  wrapper: VueWrapper<any>,
+  selector: string,
+  strStyle: string
+) {
   const elem = wrapper.find(selector)
   expect(elem.attributes().style).not.toContain(strStyle)
 }
 
-export async function assertArcStyleOk(wrapper: VueWrapper<any>, percentage?: number) {
+export async function assertArcStyleOk(
+  wrapper: VueWrapper<any>,
+  percentage?: number
+) {
   const percent = percentage || wrapper.props('percentage')
   await wrapper.setProps({ percentage: percent })
   const testArcs = { 50: '149.5', 0: '299.1', 85: '254.2', 25: '74.8' }
