@@ -195,7 +195,7 @@ const useSvgPathD = (
 }
 
 const useTrailPathStyle = (
-  svgStrokeWidth: ComputedRef<any>,
+  svgStrokeWidth: ComputedRef<number>,
   type: Ref<string>
 ) => {
   return computed(() => {
@@ -208,7 +208,7 @@ const useTrailPathStyle = (
 }
 
 const useArcPathStyle = (
-  svgStrokeWidth: ComputedRef<any>,
+  svgStrokeWidth: ComputedRef<number>,
   percentage: Ref<number>,
   type: Ref<string>
 ) => {
