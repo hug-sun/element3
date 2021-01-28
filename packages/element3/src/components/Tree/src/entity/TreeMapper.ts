@@ -7,8 +7,8 @@ export class TreeMapper<
   RawNode extends UnknownObject,
   RK extends keyof RawNode
 > {
-  private _toTreeNode: Map<RawNode, TreeNode>
-  private _toRawNode: Map<TreeNode, RawNode>
+  private _toTreeNode: WeakMap<RawNode, TreeNode>
+  private _toRawNode: WeakMap<TreeNode, RawNode>
   private _toRawNodeKey: Map<TK, string>
   private _toTreeNodeKey: Map<RK, TK>
   private _rawNodeWatcher: Watcher<RawNode>
@@ -17,8 +17,8 @@ export class TreeMapper<
   treeNode: TreeNode
 
   constructor(rawNode: RawNode, keyMap) {
-    this._toTreeNode = new Map()
-    this._toRawNode = new Map()
+    this._toTreeNode = new WeakMap()
+    this._toRawNode = new WeakMap()
     this._toRawNodeKey = Tools.createMap(keyMap)
     this._toTreeNodeKey = Tools.reversalNodeKeyMap(this._toRawNodeKey)
     // init
