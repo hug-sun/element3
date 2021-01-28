@@ -1,9 +1,18 @@
+import { UnknownObject } from '../types'
+
 export class Tools {
-  static reversalNodeKeyMap(nodeKeyMap: any) {
-    const obj = {}
-    for (const key in nodeKeyMap) {
-      obj[nodeKeyMap[key]] = key
+  static reversalNodeKeyMap<T extends Map<unknown, unknown>>(nodeKeyMap: T) {
+    const map = new Map()
+    for (const [key, value] of nodeKeyMap) {
+      map.set(value, key)
     }
-    return obj
+    return map
+  }
+  static createMap(obj: UnknownObject) {
+    const map = new Map()
+    for (const key in obj) {
+      map.set(key, obj[key])
+    }
+    return map
   }
 }

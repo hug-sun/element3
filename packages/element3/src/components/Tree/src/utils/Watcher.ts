@@ -1,5 +1,8 @@
-import { isArray, isObject } from '../utils/types'
+import { TypeAssert } from './TypeAssert'
 import { Event } from '../utils/Event'
+import { UnknownObject } from '../types'
+
+const { isArray, isObject } = TypeAssert
 
 type GetterType = 'get/obj' | 'get/arr'
 type SetterObjectType =
@@ -26,7 +29,7 @@ export type WatcherCbArgs<T> = {
 
 export type WatchCb<T> = (args: WatcherCbArgs<T>) => void
 
-export class Watcher<T extends Record<string, unknown>> {
+export class Watcher<T extends UnknownObject> {
   private _toProxy = new WeakMap<T, T>()
   private _proxy: T
   private _event = new Event<WatcherType>()
@@ -81,21 +84,26 @@ export class Watcher<T extends Record<string, unknown>> {
       }
       if (isArray(target) && key === 'length') {
         this.trigger('set/arr/len', currentNode, target, key, value)
+        return Reflect.set(target, key, value)
       }
       if (isArray(target) && Reflect.has(target, key)) {
         this.trigger('set/arr/put', currentNode, target, key, value)
+        return Reflect.set(target, key, value)
       }
       if (isArray(target) && !Reflect.has(target, key)) {
         this.trigger('set/arr/add', currentNode, target, key, value)
+        return Reflect.set(target, key, value)
       }
-      if (isObject(target) && !isArray(target)) {
+      if (isObject(target)) {
         this.trigger('set/obj', currentNode, target, key, value)
       }
-      if (isObject(target) && !isArray(target) && Reflect.has(target, key)) {
+      if (isObject(target) && Reflect.has(target, key)) {
         this.trigger('set/obj/put', currentNode, target, key, value)
+        return Reflect.set(target, key, value)
       }
-      if (isObject(target) && !isArray(target) && !Reflect.has(target, key)) {
+      if (isObject(target) && !Reflect.has(target, key)) {
         this.trigger('set/obj/add', currentNode, target, key, value)
+        return Reflect.set(target, key, value)
       }
       return Reflect.set(target, key, value)
     }
@@ -104,9 +112,11 @@ export class Watcher<T extends Record<string, unknown>> {
     return (target: T, key: Key) => {
       if (isArray(target)) {
         this.trigger('set/arr/del', currentNode, target, key)
+        return Reflect.deleteProperty(target, key)
       }
       if (isObject(target) && !isArray(target)) {
         this.trigger('set/obj/del', currentNode, target, key)
+        return Reflect.deleteProperty(target, key)
       }
       return Reflect.deleteProperty(target, key)
     }
