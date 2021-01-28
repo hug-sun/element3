@@ -1,6 +1,13 @@
 import { isArray, isNumber, isString, isFunction } from '../../../utils/types'
+import { PropType } from 'vue'
 import { isEmpty } from '../../../utils/util'
-import { AnyColor, FnColor, LevelColor, ProgressProps } from './types'
+import {
+  AnyColor,
+  FnColor,
+  LevelColor,
+  ProgressProps,
+  FormatCallBackFunction
+} from './types'
 
 export const DEFAULT_COLOR = '#409EFF'
 export const STATUS_SETTING = {
@@ -53,7 +60,9 @@ export const props = {
     required: true,
     validator: percentageValid
   },
-  format: Function,
+  format: {
+    type: Function as PropType<FormatCallBackFunction>
+  },
   status: {
     type: String,
     default: '',

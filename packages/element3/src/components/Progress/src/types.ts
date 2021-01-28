@@ -10,7 +10,7 @@ export type FnColor = (percentage: number) => string
 export type AnyColor = string | Function | unknown[]
 /* eslint-enable*/
 
-export type FormatCallBackFunction = (percentage: number) => void
+export type FormatCallBackFunction = (percentage: number) => string
 
 export interface ProgressProps {
   percentage?: number

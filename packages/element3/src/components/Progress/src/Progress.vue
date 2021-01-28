@@ -58,13 +58,12 @@ import {
   getSvgStrokeColor,
   getColorBy
 } from '../src/props'
-import { ProgressProps } from './Progress'
 import type { AnyColor, FormatCallBackFunction } from './types'
 
 export default defineComponent({
   name: 'ElProgress',
   props,
-  setup(props: ProgressProps) {
+  setup(props) {
     const {
       percentage,
       format,
@@ -155,11 +154,10 @@ const useContent = (
   return computed(() => {
     const fv = unref(format)
     const pv = autoFixPercentage(unref(percentage))
-    if (typeof fv === 'function') {
+    if (format) {
       return fv(pv) || ''
-    } else {
-      return `${pv}%`
     }
+    return `${pv}%`
   })
 }
 
