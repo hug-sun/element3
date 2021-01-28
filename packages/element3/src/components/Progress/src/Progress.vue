@@ -58,7 +58,7 @@ import {
   getSvgStrokeColor,
   getColorBy
 } from '../src/props'
-import type { AnyColor, FormatCallBackFunction } from './types'
+import type { AnyColor, FnFormat } from './types'
 
 export default defineComponent({
   name: 'ElProgress',
@@ -147,10 +147,7 @@ const useBarOuterStyle = (strokeWidth: Ref<number>) => {
   })
 }
 
-const useContent = (
-  format: Ref<FormatCallBackFunction>,
-  percentage: Ref<number>
-) => {
+const useContent = (format: Ref<FnFormat>, percentage: Ref<number>) => {
   return computed(() => {
     const fv = unref(format)
     const pv = autoFixPercentage(unref(percentage))
@@ -197,7 +194,7 @@ const useSvgPathD = (
 }
 
 const useTrailPathStyle = (
-  svgStrokeWidth: ComputedRef<any>,
+  svgStrokeWidth: ComputedRef<number>,
   type: Ref<string>
 ) => {
   return computed(() => {
@@ -210,7 +207,7 @@ const useTrailPathStyle = (
 }
 
 const useArcPathStyle = (
-  svgStrokeWidth: ComputedRef<any>,
+  svgStrokeWidth: ComputedRef<number>,
   percentage: Ref<number>,
   type: Ref<string>
 ) => {

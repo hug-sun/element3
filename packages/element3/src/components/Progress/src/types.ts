@@ -6,11 +6,15 @@ export interface LevelColor {
 export type FnColor = (percentage: number) => string
 
 // export type AnyColor = string | string[] | LevelColor[] | FnColor
-/* eslint-disable*/
-export type AnyColor = string | Function | unknown[]
-/* eslint-enable*/
+export type AnyColor = string | FnColor | unknown[]
 
-export type FormatCallBackFunction = (percentage: number) => string
+export type FnFormat = (percentage: number) => string
+
+export interface StrokeStyle {
+  strokeDasharray: string
+  strokeDashoffset: string
+  transition?: string
+}
 
 export interface ProgressProps {
   percentage?: number
@@ -18,7 +22,7 @@ export interface ProgressProps {
   status?: string
   strokeWidth?: number
   type?: string
-  format?: FormatCallBackFunction
+  format?: FnFormat
   showText?: boolean
   textInside?: boolean
   width?: number

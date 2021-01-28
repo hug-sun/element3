@@ -6,7 +6,8 @@ import {
   FnColor,
   LevelColor,
   ProgressProps,
-  FormatCallBackFunction
+  StrokeStyle,
+  FnFormat
 } from './types'
 
 export const DEFAULT_COLOR = '#409EFF'
@@ -61,7 +62,7 @@ export const props = {
     validator: percentageValid
   },
   format: {
-    type: Function as PropType<FormatCallBackFunction>
+    type: Function as PropType<FnFormat>
   },
   status: {
     type: String,
@@ -69,9 +70,10 @@ export const props = {
     required: false,
     validator: statusValid
   },
-  /* eslint-disable*/
-  color: { type: [String, Function, Array], default: '' },
-  /* eslint-enable*/
+  color: {
+    type: [String, Function, Array] as PropType<AnyColor>,
+    default: ''
+  },
   showText: {
     type: Boolean,
     default: true
@@ -95,16 +97,19 @@ export const props = {
   }
 }
 
-export function getColorsIndex(colors: LevelColor[], percent: number) {
+export function getColorsIndex(colors: LevelColor[], percent: number): number {
   const i = colors.findIndex((c) => percent < c.percentage)
   return i < 0 ? colors.length - 1 : i
 }
 
-export function sortByPercentage(pre: ProgressProps, next: ProgressProps) {
+export function sortByPercentage(
+  pre: ProgressProps,
+  next: ProgressProps
+): number {
   return pre.percentage - next.percentage
 }
 
-export function toPercentageColors(colors: any[]) {
+export function toPercentageColors(colors: any[]): any[] {
   const span = FULL_PERCENT / colors.length
   return colors.map((color, i) => {
     if (isString(color)) {
@@ -114,7 +119,7 @@ export function toPercentageColors(colors: any[]) {
   })
 }
 
-export function autoFixPercentage(percentage: number) {
+export function autoFixPercentage(percentage: number): number {
   if (percentage < 0) {
     return 0
   }
@@ -124,11 +129,11 @@ export function autoFixPercentage(percentage: number) {
   return percentage
 }
 
-export function generateViewBox(size: number) {
+export function generateViewBox(size: number): string {
   return `0 0 ${size} ${size}`
 }
 
-export function generateSvgPathD(strokeWidth: number, type?: string) {
+export function generateSvgPathD(strokeWidth: number, type?: string): string {
   const half = SVG_MAX_SIZE / 2
   const radius = calcSvgRadius(strokeWidth)
   const diameter = radius * 2
@@ -139,29 +144,34 @@ export function generateSvgPathD(strokeWidth: number, type?: string) {
   return d
 }
 
-export function genFnToRelativeSvgSize(width: number) {
-  return (size: number) => {
+export function genFnToRelativeSvgSize(
+  width: number
+): (size: number) => number {
+  return (size: number): number => {
     return (size / width) * SVG_MAX_SIZE
   }
 }
 
-export function toFixedStr(f: number) {
+export function toFixedStr(f: number): string {
   return f.toFixed(DEFAULT_FIXED)
 }
 
-export function calcRelativeSvgSize(size: number, width: number) {
+export function calcRelativeSvgSize(size: number, width: number): number {
   return Number.parseFloat(toFixedStr(genFnToRelativeSvgSize(width)(size)))
 }
 
-export function calcSvgRadius(strokeWidth: number) {
+export function calcSvgRadius(strokeWidth: number): number {
   return SVG_MAX_SIZE / 2 - strokeWidth / 2
 }
 
-export function calcPerimeter(radius: number) {
+export function calcPerimeter(radius: number): number {
   return 2 * Math.PI * radius
 }
 
-export function genTrailPathStyle(perimeter: number, type = 'circle') {
+export function genTrailPathStyle(
+  perimeter: number,
+  type = 'circle'
+): StrokeStyle {
   const rate = getRate(type)
   const offset = toFixedStr(getOffset(perimeter, rate))
   const range = toFixedStr(perimeter * rate)
@@ -171,7 +181,7 @@ export function genTrailPathStyle(perimeter: number, type = 'circle') {
   return { strokeDasharray, strokeDashoffset }
 }
 
-export function getRate(type) {
+export function getRate(type: string): number {
   return type === 'dashboard' ? DASHBOARD_RATE : 1
 }
 
@@ -179,7 +189,7 @@ export function genArcPathStyle(
   perimeter: number,
   percentage = 0,
   type = 'circle'
-) {
+): StrokeStyle {
   const rate = getRate(type)
   const offset = toFixedStr(getOffset(perimeter, rate))
   const p = toFixedStr(perimeter * (percentage / FULL_PERCENT) * rate)
@@ -194,7 +204,7 @@ export function getSvgStrokeColor(
   status?: string,
   color?: AnyColor,
   percentage?: number
-) {
+): AnyColor {
   if (!isEmpty(color)) {
     return getColorBy(color, percentage)
   }
@@ -204,11 +214,11 @@ export function getSvgStrokeColor(
   return DEFAULT_COLOR
 }
 
-export function getOffset(perimeter: number, rate: number) {
+export function getOffset(perimeter: number, rate: number): number {
   return (-1 * perimeter * (1 - rate)) / 2
 }
 
-export function getColorBy(color: AnyColor, percentage: number) {
+export function getColorBy(color: AnyColor, percentage: number): AnyColor {
   if (isArray(color)) {
     const colors = color as LevelColor[]
     const cs = toPercentageColors(colors).sort(sortByPercentage)
