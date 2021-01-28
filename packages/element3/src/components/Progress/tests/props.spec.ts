@@ -103,7 +103,7 @@ describe('Progress.props', () => {
     const width = DEFAULT_SVG_PX
     const toRelativeSvgSize = genFnToRelativeSvgSize(width)
     expect(toRelativeSvgSize(width)).toBe(SVG_MAX_SIZE)
-    expect(calcRelativeSvgSize(strokeWidth, width)).toBe('4.8')
+    expect(calcRelativeSvgSize(strokeWidth, width)).toBe(4.8)
   })
 
   it('getRate, getOffset, getPermi', () => {
