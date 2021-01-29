@@ -25,7 +25,7 @@ export class Tree<RawNode extends RawNodeBase> {
   }
 
   constructor(rawNodes: RawNode[], defaultNodeKey: DefaultNodeKey<RawNode>) {
-    const _defaultNodeKey = Object.assign(
+    this._defaultNodeKey = Object.assign(
       {
         id: 'id',
         label: 'label',
@@ -40,13 +40,11 @@ export class Tree<RawNode extends RawNodeBase> {
       defaultNodeKey
     )
 
-    this._defaultNodeKey = defaultNodeKey
-
     this._mapper = new TreeMapper<RawNode>(
       {
-        [_defaultNodeKey.children]: rawNodes
+        [this._defaultNodeKey.children]: rawNodes
       } as RawNode,
-      defaultNodeKey
+      this._defaultNodeKey
     )
 
     this._root = this._mapper.getTreeNodeProxy()
