@@ -1,16 +1,15 @@
 import { UnknownObject } from '../types'
 import { Tools } from '../utils/Tools'
 import { Watcher } from '../utils/Watcher'
-import { TK, TreeNode } from './TreeNode'
+import { TreeNode } from './TreeNode'
 
-export class TreeMapper<
-  RawNode extends UnknownObject,
-  RK extends keyof RawNode
-> {
+const { createMap, reversalNodeKeyMap } = Tools
+
+export class TreeMapper<RawNode extends UnknownObject> {
   private _toTreeNode: WeakMap<RawNode, TreeNode>
   private _toRawNode: WeakMap<TreeNode, RawNode>
-  private _toRawNodeKey: Map<TK, string>
-  private _toTreeNodeKey: Map<RK, TK>
+  private _toRawNodeKey: Map<string, string>
+  private _toTreeNodeKey: Map<string, string>
   private _rawNodeWatcher: Watcher<RawNode>
   private _treeNodeWatcher: Watcher<TreeNode>
   rawNode: RawNode
@@ -19,8 +18,8 @@ export class TreeMapper<
   constructor(rawNode: RawNode, keyMap) {
     this._toTreeNode = new WeakMap()
     this._toRawNode = new WeakMap()
-    this._toRawNodeKey = Tools.createMap(keyMap)
-    this._toTreeNodeKey = Tools.reversalNodeKeyMap(this._toRawNodeKey)
+    this._toRawNodeKey = createMap(keyMap)
+    this._toTreeNodeKey = reversalNodeKeyMap(this._toRawNodeKey)
     // init
 
     this.rawNode = rawNode
@@ -44,14 +43,12 @@ export class TreeMapper<
 
   convertToTreeNode(rawNode: RawNode): TreeNode {
     const treeNode = new TreeNode(
-      rawNode[this._toRawNodeKey.get('id')] as number,
-      rawNode[this._toRawNodeKey.get('label')] as string,
-      this.convertToTreeNodes(
-        rawNode[this._toRawNodeKey.get('children')] as RawNode[]
-      ),
+      rawNode[this._toRawNodeKey.get('id')],
+      rawNode[this._toRawNodeKey.get('label')],
+      this.convertToTreeNodes(rawNode[this._toRawNodeKey.get('children')]),
       {
-        isChecked: rawNode[this._toRawNodeKey.get('isChecked')] as boolean,
-        isLeaf: rawNode[this._toRawNodeKey.get('isLeaf')] as boolean
+        isChecked: rawNode[this._toRawNodeKey.get('isChecked')],
+        isLeaf: rawNode[this._toRawNodeKey.get('isLeaf')]
       }
     )
     this._toTreeNode.set(rawNode, treeNode)
@@ -60,7 +57,7 @@ export class TreeMapper<
   }
 
   convertToRawNode(treeNode: TreeNode): RawNode {
-    const rawNode = {}
+    const rawNode: any = {}
 
     if (this._toRawNodeKey.get('id')) {
       rawNode[this._toRawNodeKey.get('id')] = treeNode.id
@@ -74,9 +71,9 @@ export class TreeMapper<
       )
     }
 
-    this._toTreeNode.set(rawNode as RawNode, treeNode)
-    this._toRawNode.set(treeNode, rawNode as RawNode)
-    return rawNode as RawNode
+    this._toTreeNode.set(rawNode, treeNode)
+    this._toRawNode.set(treeNode, rawNode)
+    return rawNode
   }
 
   convertToTreeNodes(rawNodes: RawNode[]): TreeNode[] {
@@ -101,7 +98,7 @@ export class TreeMapper<
 
     this._rawNodeWatcher.bindHandler('set/arr/del', ({ currentNode, key }) => {
       const currentTreeNode = this._toTreeNode.get(currentNode)
-      this.forTreeNodeRemoveChild(currentTreeNode, key as number)
+      this.forTreeNodeRemoveChild(currentTreeNode, Number(key))
     })
 
     this._rawNodeWatcher.bindHandler(
@@ -110,7 +107,7 @@ export class TreeMapper<
         const currentTreeNode = this._toTreeNode.get(currentNode)
         this.forTreeNodeUpdateChild(
           currentTreeNode,
-          key as number,
+          Number(key),
           this._toTreeNode.get(value) ?? this.convertToTreeNode(value)
         )
       }
@@ -122,7 +119,7 @@ export class TreeMapper<
         const currentTreeNode = this._toTreeNode.get(currentNode)
         this.forTreeNodeUpdateValue(
           currentTreeNode,
-          this._toTreeNodeKey.get(key as RK),
+          this._toTreeNodeKey.get(key),
           value
         )
       }
@@ -134,7 +131,7 @@ export class TreeMapper<
         const currentTreeNode = this._toTreeNode.get(currentNode)
         this.forTreeNodeUpdateValue(
           currentTreeNode,
-          this._toTreeNodeKey.get(key as RK),
+          this._toTreeNodeKey.get(key),
           value
         )
       }
@@ -152,7 +149,7 @@ export class TreeMapper<
 
     this._treeNodeWatcher.bindHandler('set/arr/del', ({ currentNode, key }) => {
       const currentRawNode = this._toRawNode.get(currentNode)
-      this.forRawNodeRemoveChild(currentRawNode, key as number)
+      this.forRawNodeRemoveChild(currentRawNode, Number(key))
     })
 
     this._treeNodeWatcher.bindHandler(
@@ -161,7 +158,7 @@ export class TreeMapper<
         const currentRawNode = this._toRawNode.get(currentNode)
         this.forRawNodeUpdateChild(
           currentRawNode,
-          key as number,
+          Number(key),
           this.convertToRawNode(value)
         )
       }
@@ -173,7 +170,7 @@ export class TreeMapper<
         const currentRawNode = this._toRawNode.get(currentNode)
         this.forRawNodeUpdateValue(
           currentRawNode,
-          this._toRawNodeKey.get(key as TK),
+          this._toRawNodeKey.get(key),
           value
         )
       }
@@ -185,7 +182,7 @@ export class TreeMapper<
         const currentRawNode = this._toRawNode.get(currentNode)
         this.forRawNodeUpdateValue(
           currentRawNode,
-          this._toRawNodeKey.get(key as TK),
+          this._toRawNodeKey.get(key),
           value
         )
       }
@@ -212,7 +209,7 @@ export class TreeMapper<
   }
 
   forTreeNodeRemoveChild(currentTreeNode: TreeNode, index: number): void {
-    // TODO: 这里还得对toRawNode 与 toTreeNode 进行处理，不然会内存泄漏
+    // Here, the unused nodes of ToRawNode and ToTreeNode are automatically released through the WeakMap feature
     currentTreeNode.children.splice(index, 1)
   }
 
@@ -241,7 +238,7 @@ export class TreeMapper<
   }
 
   forRawNodeRemoveChild(currentRawNode: RawNode, index: number): void {
-    // TODO: 这里还得对toRawNode 与 toTreeNode 进行处理，不然会内存泄漏
+    // Here, the unused nodes of ToRawNode and ToTreeNode are automatically released through the WeakMap feature
     currentRawNode[this._toRawNodeKey.get('children')].splice(index, 1)
   }
 

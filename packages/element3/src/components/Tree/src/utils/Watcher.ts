@@ -18,11 +18,11 @@ type SetterArrayType =
   | 'set/arr/len'
 export type WatcherType = GetterType | SetterObjectType | SetterArrayType
 
-export type Key = string | number | symbol
+export type Key<T> = T extends T[] ? number : string
 
 export type WatcherCbArgs<T> = {
   target: T
-  key: Key
+  key: Key<T>
   value?: any
   currentNode?: T
 }
@@ -64,8 +64,8 @@ export class Watcher<T extends UnknownObject> {
       return isArray(lastTarget) ? target : lastTarget
     }
   }
-  createGetter(currentNode: T): (target: T, key: Key) => void {
-    return (target: T, key: Key) => {
+  createGetter(currentNode: T): (target: T, key: Key<T>) => void {
+    return (target: T, key: Key<T>) => {
       if (isArray(target)) {
         this.trigger('get/arr', currentNode, target, key)
       }
@@ -77,8 +77,10 @@ export class Watcher<T extends UnknownObject> {
       return isObject(result) ? this.reactive(result, target) : result
     }
   }
-  createSetter(currentNode: T): (target: T, key: Key, value: any) => boolean {
-    return (target: T, key: Key, value: any) => {
+  createSetter(
+    currentNode: T
+  ): (target: T, key: Key<T>, value: any) => boolean {
+    return (target: T, key: Key<T>, value: any) => {
       if (isArray(target)) {
         this.trigger('set/arr', currentNode, target, key, value)
       }
@@ -108,8 +110,8 @@ export class Watcher<T extends UnknownObject> {
       return Reflect.set(target, key, value)
     }
   }
-  createDeleteProperty(currentNode: T): (target: T, key: Key) => boolean {
-    return (target: T, key: Key) => {
+  createDeleteProperty(currentNode: T): (target: T, key: Key<T>) => boolean {
+    return (target: T, key: Key<T>) => {
       if (isArray(target)) {
         this.trigger('set/arr/del', currentNode, target, key)
         return Reflect.deleteProperty(target, key)
@@ -130,7 +132,7 @@ export class Watcher<T extends UnknownObject> {
     type: WatcherType,
     currentNode: T,
     target: T,
-    key: Key,
+    key: Key<T>,
     value = null
   ): void {
     this._event.emit(type, {
