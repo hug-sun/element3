@@ -1,4 +1,4 @@
-import { UnknownObject } from '../types'
+import { RawNodeBase } from '../types'
 
 export class Tools {
   static reversalNodeKeyMap<T extends Map<unknown, unknown>>(nodeKeyMap: T) {
@@ -8,7 +8,7 @@ export class Tools {
     }
     return map
   }
-  static createMap(obj: UnknownObject) {
+  static createMap(obj: RawNodeBase) {
     const map = new Map()
     for (const key in obj) {
       map.set(key, obj[key])

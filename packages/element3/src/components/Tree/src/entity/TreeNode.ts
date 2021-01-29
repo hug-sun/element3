@@ -1,4 +1,4 @@
-type ID = string | number
+export type ID = string | number
 
 let idSeed = 0
 

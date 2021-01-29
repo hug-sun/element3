@@ -1,6 +1,6 @@
 import { TypeAssert } from './TypeAssert'
 import { Event } from '../utils/Event'
-import { UnknownObject } from '../types'
+import { RawNodeBase } from '../types'
 
 const { isArray, isObject } = TypeAssert
 
@@ -29,7 +29,7 @@ export type WatcherCbArgs<T> = {
 
 export type WatchCb<T> = (args: WatcherCbArgs<T>) => void
 
-export class Watcher<T extends UnknownObject> {
+export class Watcher<T extends RawNodeBase> {
   private _toProxy = new WeakMap<T, T>()
   private _proxy: T
   private _event = new Event<WatcherType>()

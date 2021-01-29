@@ -1,11 +1,12 @@
-import { UnknownObject } from '../types'
+import { RawNodeBase } from '../types'
 import { Tools } from '../utils/Tools'
 import { Watcher } from '../utils/Watcher'
 import { TreeNode } from './TreeNode'
+import { DefaultNodeKey } from '../types'
 
 const { createMap, reversalNodeKeyMap } = Tools
 
-export class TreeMapper<RawNode extends UnknownObject> {
+export class TreeMapper<RawNode extends RawNodeBase> {
   private _toTreeNode: WeakMap<RawNode, TreeNode>
   private _toRawNode: WeakMap<TreeNode, RawNode>
   private _toRawNodeKey: Map<string, string>
@@ -15,7 +16,7 @@ export class TreeMapper<RawNode extends UnknownObject> {
   rawNode: RawNode
   treeNode: TreeNode
 
-  constructor(rawNode: RawNode, keyMap) {
+  constructor(rawNode: RawNode, keyMap: DefaultNodeKey<RawNode>) {
     this._toTreeNode = new WeakMap()
     this._toRawNode = new WeakMap()
     this._toRawNodeKey = createMap(keyMap)
