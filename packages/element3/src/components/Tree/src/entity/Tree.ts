@@ -6,6 +6,7 @@ export class Tree<RawNode extends RawNodeBase> {
   private _root: TreeNode
   private _mapper: TreeMapper<RawNode>
   private _rawRoot: RawNode
+  private _defaultNodeKey: DefaultNodeKey<RawNode>
 
   get root(): TreeNode {
     return this._root
@@ -13,6 +14,10 @@ export class Tree<RawNode extends RawNodeBase> {
 
   get rawRoot(): RawNode {
     return this._rawRoot
+  }
+
+  get rawNodesProxy(): RawNode[] {
+    return this._rawRoot[this._defaultNodeKey.children]
   }
 
   get isEmpty() {
@@ -34,6 +39,8 @@ export class Tree<RawNode extends RawNodeBase> {
       },
       defaultNodeKey
     )
+
+    this._defaultNodeKey = defaultNodeKey
 
     this._mapper = new TreeMapper<RawNode>(
       {
