@@ -18,7 +18,7 @@ describe('Watcher.ts', () => {
     }
 
     const watcher = new Watcher(tree)
-    const _tree = watcher.getProxy()
+    const _tree = watcher.proxy
 
     const cb = jest.fn()
     watcher.bindHandler('set/obj/put', cb)
@@ -59,7 +59,7 @@ describe('Watcher.ts', () => {
     }
 
     const watcher = new Watcher(tree)
-    const _tree = watcher.getProxy()
+    const _tree = watcher.proxy
 
     const cb = jest.fn()
     watcher.bindHandler('set/obj/add', cb)
@@ -93,7 +93,7 @@ describe('Watcher.ts', () => {
     }
 
     const watcher = new Watcher(tree)
-    const _tree = watcher.getProxy()
+    const _tree = watcher.proxy
 
     const cb = jest.fn()
     watcher.bindHandler('set/obj/del', cb)
@@ -127,7 +127,7 @@ describe('Watcher.ts', () => {
     }
 
     const watcher = new Watcher(tree)
-    const _tree = watcher.getProxy()
+    const _tree = watcher.proxy
 
     const cb = jest.fn()
     watcher.bindHandler('get/obj', cb)
@@ -161,7 +161,7 @@ describe('Watcher.ts', () => {
     }
 
     const watcher = new Watcher(tree)
-    const _tree = watcher.getProxy()
+    const _tree = watcher.proxy
 
     const cb = jest.fn()
     watcher.bindHandler('get/arr', cb)
@@ -195,7 +195,7 @@ describe('Watcher.ts', () => {
     }
 
     const watcher = new Watcher(tree)
-    const _tree = watcher.getProxy()
+    const _tree = watcher.proxy
 
     const cb = jest.fn()
     watcher.bindHandler('set/arr/put', cb)
@@ -235,7 +235,7 @@ describe('Watcher.ts', () => {
     }
 
     const watcher = new Watcher(tree)
-    const _tree = watcher.getProxy()
+    const _tree = watcher.proxy
 
     const cb = jest.fn()
     watcher.bindHandler('set/arr/add', cb)
@@ -275,7 +275,7 @@ describe('Watcher.ts', () => {
     }
 
     const watcher = new Watcher(tree)
-    const _tree = watcher.getProxy()
+    const _tree = watcher.proxy
 
     const cb = jest.fn()
     watcher.bindHandler('set/arr/del', cb)
@@ -289,5 +289,37 @@ describe('Watcher.ts', () => {
       value: null,
       currentNode: tree
     })
+  })
+
+  it('about obj1->arr->arr->obj2->arr currentNode expect obj1 next obj2', () => {
+    const obj = {
+      id: 1,
+      arr: [
+        [
+          {
+            id: 2,
+            arr: [
+              [
+                {
+                  id: 3
+                }
+              ]
+            ]
+          }
+        ]
+      ]
+    }
+
+    const watcher = new Watcher(obj)
+
+    watcher.bindHandler('get/obj', (e) => {
+      console.log(e)
+    })
+
+    watcher.bindHandler('get/arr', (e) => {
+      console.log(e)
+    })
+
+    console.log(watcher.proxy.arr[0][0].arr[0][0].id)
   })
 })

@@ -25,8 +25,8 @@ describe('TreeMapper.ts', () => {
       isChecked: 'checked'
     })
 
-    const rawNodeProxy = mapper.getRawNodeProxy()
-    const treeNodeProxy = mapper.getTreeNodeProxy()
+    const rawNodeProxy = mapper.rawNodeProxy
+    const treeNodeProxy = mapper.treeNodeProxy
 
     expect(rawNodeProxy.text).toEqual(treeNodeProxy.label)
     expect(rawNodeProxy.checked).toEqual(treeNodeProxy.isChecked)
@@ -59,8 +59,8 @@ describe('TreeMapper.ts', () => {
       isChecked: 'checked'
     })
 
-    const rawNodeProxy = mapper.getRawNodeProxy()
-    const treeNodeProxy = mapper.getTreeNodeProxy()
+    const rawNodeProxy = mapper.rawNodeProxy
+    const treeNodeProxy = mapper.treeNodeProxy
 
     rawNodeProxy.text = 'HELLO'
     rawNodeProxy.childs[0].text = 'HELLO2'
@@ -97,8 +97,8 @@ describe('TreeMapper.ts', () => {
       isChecked: 'checked'
     })
 
-    const rawNodeProxy = mapper.getRawNodeProxy()
-    const treeNodeProxy = mapper.getTreeNodeProxy()
+    const rawNodeProxy = mapper.rawNodeProxy
+    const treeNodeProxy = mapper.treeNodeProxy
 
     treeNodeProxy.label = 'HELLO'
     treeNodeProxy.children[0].label = 'HELLO2'
@@ -133,8 +133,8 @@ describe('TreeMapper.ts', () => {
       children: 'childs'
     })
 
-    const rawNodeProxy = mapper.getRawNodeProxy()
-    const treeNodeProxy = mapper.getTreeNodeProxy()
+    const rawNodeProxy = mapper.rawNodeProxy
+    const treeNodeProxy = mapper.treeNodeProxy
 
     rawNodeProxy.childs[0] = {
       text: 'Test',
@@ -181,8 +181,8 @@ describe('TreeMapper.ts', () => {
       children: 'childs'
     })
 
-    const rawNodeProxy = mapper.getRawNodeProxy()
-    const treeNodeProxy = mapper.getTreeNodeProxy()
+    const rawNodeProxy = mapper.rawNodeProxy
+    const treeNodeProxy = mapper.treeNodeProxy
 
     treeNodeProxy.children[0] = new TreeNode(88, 'Test', [
       new TreeNode(99, 'Test1')

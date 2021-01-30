@@ -33,12 +33,13 @@ export class Watcher<T extends RawNodeBase> {
   private _toProxy = new WeakMap<T, T>()
   private _proxy: T
   private _event = new Event<WatcherType>()
-  constructor(target: T) {
-    this._proxy = this.reactive(target, target)
+
+  get proxy(): T {
+    return this._proxy
   }
 
-  getProxy(): T {
-    return this._proxy
+  constructor(target: T) {
+    this._proxy = this.reactive(target, target)
   }
 
   reactive(target: T, lastTarget: T = null): T {
@@ -74,7 +75,12 @@ export class Watcher<T extends RawNodeBase> {
       }
 
       const result = Reflect.get(target, key)
-      return isObject(result) ? this.reactive(result, target) : result
+      return isObject(result)
+        ? this.reactive(
+            result,
+            isObject(result) && !isArray(result) ? result : currentNode
+          )
+        : result
     }
   }
   createSetter(
