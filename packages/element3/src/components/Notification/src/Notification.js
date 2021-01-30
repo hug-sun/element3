@@ -1,6 +1,6 @@
 import { isVNode } from 'vue'
 import notificationComponent from './Notification.vue'
-import { createComponent } from '../../../../src/use/component.js'
+import { createComponent } from '../../../../src/composables/component.js'
 import { PopupManager } from '../../../../src/utils/popup'
 
 const instanceList = []

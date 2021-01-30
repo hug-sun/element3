@@ -1,8 +1,8 @@
 <script>
 import ElCollapseTransition from '../../src/transitions/collapse-transition'
 import { useMenu, useItems } from './src/menu-use'
-import { useEmitter } from '../../src/use/emitter'
-import { usePopper, popperProps } from '../../src/use/popper'
+import { useEmitter } from '../../src/composables/emitter'
+import { usePopper, popperProps } from '../../src/composables/popper'
 import {
   computed,
   nextTick,

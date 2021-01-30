@@ -21,7 +21,7 @@
 <script>
 import ElSelect from '../../select'
 import ElOption from '../../option'
-import { useLocale } from '../../../src/use/locale'
+import { useLocale } from '../../../src/composables/locale'
 import { computed, watch, toRefs } from 'vue'
 
 export default {

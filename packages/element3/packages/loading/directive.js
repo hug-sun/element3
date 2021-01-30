@@ -2,7 +2,7 @@ import { nextTick } from 'vue'
 import Loading from './Loading.vue'
 import { removeClass } from '../../src/utils/dom'
 
-import { createComponent } from '../../src/use/component'
+import { createComponent } from '../../src/composables/component'
 import merge from '../../src/utils/merge'
 import { addStyle } from './lib'
 

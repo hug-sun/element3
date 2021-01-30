@@ -29,6 +29,12 @@ function getComponentNameList(componentPath) {
   return fs
     .readdirSync(componentPath)
     .filter((name) => {
+      // 临时处理 忽略 src/component 内的组件
+      if (componentPath.includes('src/component')) {
+        if (name === 'Table' || name === 'TableColumn') {
+          return false
+        }
+      }
       return !blacklist.includes(name)
     })
     .filter((name) => {

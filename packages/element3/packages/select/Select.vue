@@ -184,7 +184,7 @@ import scrollIntoView from '../../src/utils/scroll-into-view'
 import { getValueByPath, valueEquals, isIE, isEdge } from '../../src/utils/util'
 import NavigationMixin from './navigation-mixin'
 import { isKorean } from '../../src/utils/shared'
-import { useEmitter } from '../../src/use/emitter'
+import { useEmitter } from '../../src/composables/emitter'
 
 export default {
   mixins: [Locale, Focus('reference'), NavigationMixin],

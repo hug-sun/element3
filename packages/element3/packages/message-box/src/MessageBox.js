@@ -1,6 +1,6 @@
 // #todo
 import { defineComponent, isVNode } from 'vue'
-import { createComponent } from '../../../src/use/component'
+import { createComponent } from '../../../src/composables/component'
 import msgboxVue from './MessageBox.vue'
 import merge from '../../../src/utils/merge'
 const messageBoxConstructor = defineComponent(msgboxVue)

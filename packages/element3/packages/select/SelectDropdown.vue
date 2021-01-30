@@ -9,8 +9,8 @@
 </template>
 
 <script type="text/babel">
-import { popperProps, usePopper } from '../../src/use/popper'
-import { useEmitter } from '../../src/use/emitter'
+import { popperProps, usePopper } from '../../src/composables/popper'
+import { useEmitter } from '../../src/composables/emitter'
 import {
   onMounted,
   inject,

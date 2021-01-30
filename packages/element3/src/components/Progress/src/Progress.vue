@@ -41,8 +41,8 @@
   </div>
 </template>
 
-<script>
-import { computed, defineComponent, toRefs, unref } from 'vue'
+<script lang="ts">
+import { computed, ComputedRef, defineComponent, Ref, toRefs, unref } from 'vue'
 import {
   props,
   statusValid,
@@ -57,7 +57,8 @@ import {
   genArcPathStyle,
   getSvgStrokeColor,
   getColorBy
-} from './props'
+} from '../src/props'
+import type { AnyColor, FnFormat } from './types'
 
 export default defineComponent({
   name: 'ElProgress',
@@ -105,7 +106,12 @@ export default defineComponent({
   }
 })
 
-const useRootClass = (type, status, showText, textInside) => {
+const useRootClass = (
+  type: Ref<string>,
+  status: Ref<string>,
+  showText: Ref<boolean>,
+  textInside: Ref<boolean>
+) => {
   return computed(() => {
     const valType = unref(type)
     const valStatus = unref(status)
@@ -125,7 +131,7 @@ const useRootClass = (type, status, showText, textInside) => {
   })
 }
 
-const useBarStyle = (percentage, color) => {
+const useBarStyle = (percentage: Ref<number>, color: Ref<AnyColor>) => {
   return computed(() => {
     const pv = autoFixPercentage(unref(percentage))
     const cv = unref(color)
@@ -134,26 +140,25 @@ const useBarStyle = (percentage, color) => {
   })
 }
 
-const useBarOuterStyle = (strokeWidth) => {
+const useBarOuterStyle = (strokeWidth: Ref<number>) => {
   return computed(() => {
     const sw = unref(strokeWidth)
     return { height: sw + 'px' }
   })
 }
 
-const useContent = (format, percentage) => {
+const useContent = (format: Ref<FnFormat>, percentage: Ref<number>) => {
   return computed(() => {
     const fv = unref(format)
     const pv = autoFixPercentage(unref(percentage))
-    if (typeof fv === 'function') {
+    if (format) {
       return fv(pv) || ''
-    } else {
-      return `${pv}%`
     }
+    return `${pv}%`
   })
 }
 
-const useIconClass = (status, type) => {
+const useIconClass = (status: Ref<string>, type: Ref<string>) => {
   return computed(() => {
     const st = unref(status)
     const t = unref(type) === 'line' ? 'lineIconClass' : 'arcIconClass'
@@ -162,14 +167,14 @@ const useIconClass = (status, type) => {
   })
 }
 
-const useCircleStyle = (width) => {
+const useCircleStyle = (width: Ref<number>) => {
   return computed(() => {
     const val = unref(width) + 'px'
     return { width: val, height: val }
   })
 }
 
-const useSvgStrokeWidth = (strokeWidth, width) => {
+const useSvgStrokeWidth = (strokeWidth: Ref<number>, width: Ref<number>) => {
   return computed(() => {
     const sw = unref(strokeWidth)
     const w = unref(width)
@@ -177,7 +182,10 @@ const useSvgStrokeWidth = (strokeWidth, width) => {
   })
 }
 
-const useSvgPathD = (svgStrokeWidth, type) => {
+const useSvgPathD = (
+  svgStrokeWidth: ComputedRef<number>,
+  type: Ref<string>
+) => {
   return computed(() => {
     const ssw = unref(svgStrokeWidth)
     const tv = unref(type)
@@ -185,7 +193,10 @@ const useSvgPathD = (svgStrokeWidth, type) => {
   })
 }
 
-const useTrailPathStyle = (svgStrokeWidth, type) => {
+const useTrailPathStyle = (
+  svgStrokeWidth: ComputedRef<number>,
+  type: Ref<string>
+) => {
   return computed(() => {
     const ssw = unref(svgStrokeWidth)
     const radius = calcSvgRadius(ssw)
@@ -195,7 +206,11 @@ const useTrailPathStyle = (svgStrokeWidth, type) => {
   })
 }
 
-const useArcPathStyle = (svgStrokeWidth, percentage, type) => {
+const useArcPathStyle = (
+  svgStrokeWidth: ComputedRef<number>,
+  percentage: Ref<number>,
+  type: Ref<string>
+) => {
   return computed(() => {
     const ssw = unref(svgStrokeWidth)
     const radius = calcSvgRadius(ssw)
@@ -206,7 +221,11 @@ const useArcPathStyle = (svgStrokeWidth, percentage, type) => {
   })
 }
 
-const useSvgStrokeColor = (status, color, percentage) => {
+const useSvgStrokeColor = (
+  status: Ref<string>,
+  color: Ref<AnyColor>,
+  percentage: Ref<number>
+) => {
   return computed(() => {
     const s = unref(status)
     const c = unref(color)
@@ -218,7 +237,7 @@ const useSvgStrokeColor = (status, color, percentage) => {
 /**
  * Only change when type is not 'line'
  */
-const useTextStyle = (type, width) => {
+const useTextStyle = (type: Ref<string>, width: Ref<number>) => {
   return computed(() => {
     const t = unref(type)
     const w = unref(width)

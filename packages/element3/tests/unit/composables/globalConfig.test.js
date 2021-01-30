@@ -2,7 +2,7 @@
 import {
   useGlobalOptions,
   setupGlobalOptions
-} from '../../../src/use/globalConfig'
+} from '../../../src/composables/globalConfig'
 import * as Vue from 'vue'
 
 describe('globalConfig', () => {

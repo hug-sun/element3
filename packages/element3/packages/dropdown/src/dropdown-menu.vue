@@ -18,8 +18,8 @@ import {
   onMounted,
   nextTick
 } from 'vue'
-import { usePopper, popperProps } from '../../../src/use/popper'
-import { useEmitter } from '../../../src/use/emitter'
+import { usePopper, popperProps } from '../../../src/composables/popper'
+import { useEmitter } from '../../../src/composables/emitter'
 
 export default {
   name: 'ElDropdownMenu',
