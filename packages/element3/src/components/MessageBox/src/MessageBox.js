@@ -1,6 +1,6 @@
 import { isVNode } from 'vue'
 import { isObject, isUndefined } from '../../../utils/types'
-import { createComponent } from '../../../use/component'
+import { createComponent } from '../../../composables/component'
 import msgboxVue from './MessageBox.vue'
 
 let currentMsg, instance

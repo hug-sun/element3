@@ -1,5 +1,5 @@
 import { toRefs, nextTick, unref, onMounted, onUnmounted, computed } from 'vue'
-import { usePopup } from '../../../use/popup'
+import { usePopup } from '../../../composables/popup'
 import { isFunction } from '@vue/shared'
 export function useHandleList(state, instance, validate) {
   const { close } = usePopup(state)
