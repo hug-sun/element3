@@ -214,7 +214,9 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     value: any
   ): void {
     if (key === 'children') {
-      currentTreeNode[key] = this.convertToTreeNodes(value)
+      const treeNodes = this.convertToTreeNodes(value)
+      treeNodes.forEach((node) => (node.parent = currentTreeNode))
+      currentTreeNode[key] = treeNodes
     } else {
       currentTreeNode[key] = value
     }

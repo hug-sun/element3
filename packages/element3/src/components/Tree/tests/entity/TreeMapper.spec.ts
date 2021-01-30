@@ -203,4 +203,25 @@ describe('TreeMapper.ts', () => {
     treeNodeProxy.children[0].children.pop()
     expect(treeNodeProxy.children[0].children).toHaveLength(1)
   })
+
+  it('Test whether the parent value of the child node is the current node when overwriting children', () => {
+    const rawNode = {
+      text: 'Node1',
+      childs: []
+    }
+
+    const mapper = new TreeMapper(rawNode, {
+      label: 'text',
+      children: 'childs'
+    })
+
+    const rawNodeProxy = mapper.rawNodeProxy
+    const treeNodeProxy = mapper.treeNodeProxy
+    rawNodeProxy.childs = [
+      {
+        text: 'test'
+      }
+    ]
+    expect(treeNodeProxy.children[0].parent).toEqual(treeNodeProxy)
+  })
 })
