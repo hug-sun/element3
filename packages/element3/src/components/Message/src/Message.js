@@ -1,4 +1,4 @@
-import messageComponent from './Message.vue'
+import messageComponent from './Index.vue'
 import { createComponent } from '../../../composables/component'
 import { isVNode } from 'vue'
 
@@ -14,11 +14,11 @@ Message.closeAll = () => {
     removeInstance(instance)
   })
 }
-;['info', 'success', 'warning', 'error'].forEach((type) => {
-  Message[type] = (opts) => {
-    return createMessage(mergeOptions(opts, type))
-  }
-})
+  ;['info', 'success', 'warning', 'error'].forEach((type) => {
+    Message[type] = (opts) => {
+      return createMessage(mergeOptions(opts, type))
+    }
+  })
 
 function createMessage(opts) {
   const instance = createMessageComponentByOpts(opts)

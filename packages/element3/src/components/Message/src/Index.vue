@@ -1,37 +1,20 @@
 <template>
-  <div
+  <PopupComponent
     :visiable="isShow"
-    :style="positionStyle"
-    :class="[
-      'el-message',
-      isShowType ? `el-message--${type}` : '',
-      showClose ? 'is-closable' : '',
-      center ? 'is-center' : '',
-      customClass
-    ]"
+    ref="self"
+    @mouseenter="handleMouseenter"
+    @mouseleave="handleMouseleave"
+    :afterLeaveHandler="handleAfterLeave"
+    transitionClass="el-message-fade"
   >
-    <i v-if="iconClass" :class="iconClass"></i>
-    <i v-else :class="['el-message__icon', `el-icon-${type}`]"></i>
-    <slot>
-      <p
-        class="el-message__content"
-        v-if="dangerouslyUseHTMLString"
-        v-html="message"
-      ></p>
-      <p class="el-message__content" v-else>
-        {{ message }}
-      </p>
-    </slot>
-    <i
-      v-if="showClose"
-      class="el-message__closeBtn el-icon-close"
-      @click="handleClose"
-    ></i>
-  </div>
+    <Message />
+  </PopupComponent>
 </template>
+
 <script>
 import { PopupComponent } from '../../../utils/popup1/index'
 import { getCurrentInstance, computed, ref } from 'vue'
+import Message from './Message.vue'
 export default {
   props: {
     message: {
@@ -53,7 +36,8 @@ export default {
     offset: Number
   },
   components: {
-    PopupComponent
+    PopupComponent,
+    Message
   },
   emits: ['close'],
   setup(props, { emit }) {
