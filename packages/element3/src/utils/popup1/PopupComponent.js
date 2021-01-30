@@ -38,7 +38,7 @@ export default {
       }
     })
     return (
-      <Teleport to="tody">
+      <Teleport to="body">
         <Transition
           ref="target"
           name={$props.transitionClass}
