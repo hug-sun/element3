@@ -3,25 +3,27 @@ import { TreeNode } from './TreeNode'
 import { TreeMapper } from './TreeMapper'
 
 export class Tree<RawNode extends RawNodeBase> {
-  private _root: TreeNode
   private _mapper: TreeMapper<RawNode>
-  private _rawRoot: RawNode
   private _defaultNodeKey: DefaultNodeKey<RawNode>
 
   get root(): TreeNode {
-    return this._root
+    return this._mapper.treeNode
   }
 
-  get rawRoot(): RawNode {
-    return this._rawRoot
+  get rootProxy(): TreeNode {
+    return this._mapper.treeNodeProxy
+  }
+
+  get rawRootProxy(): RawNode {
+    return this._mapper.rawNodeProxy
   }
 
   get rawNodesProxy(): RawNode[] {
-    return this._rawRoot[this._defaultNodeKey.children]
+    return this.rawRootProxy[this._defaultNodeKey.children]
   }
 
   get isEmpty() {
-    return this._root.children.length === 0
+    return this.root.children.length === 0
   }
 
   constructor(rawNodes: RawNode[], defaultNodeKey: DefaultNodeKey<RawNode>) {
@@ -42,12 +44,10 @@ export class Tree<RawNode extends RawNodeBase> {
 
     this._mapper = new TreeMapper<RawNode>(
       {
+        [this._defaultNodeKey.label]: 'ROOT',
         [this._defaultNodeKey.children]: rawNodes
       } as RawNode,
       this._defaultNodeKey
     )
-
-    this._root = this._mapper.getTreeNodeProxy()
-    this._rawRoot = this._mapper.getRawNodeProxy()
   }
 }
