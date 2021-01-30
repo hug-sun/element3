@@ -200,7 +200,7 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     )
   }
 
-  forTreeNodeAppendChild(
+  private forTreeNodeAppendChild(
     currentTreeNode: TreeNode,
     newTreeNode: TreeNode
   ): void {
@@ -208,7 +208,7 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     currentTreeNode.children.push(newTreeNode)
   }
 
-  forTreeNodeUpdateValue(
+  private forTreeNodeUpdateValue(
     currentTreeNode: TreeNode,
     key: string,
     value: any
@@ -222,12 +222,15 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     }
   }
 
-  forTreeNodeRemoveChild(currentTreeNode: TreeNode, index: number): void {
+  private forTreeNodeRemoveChild(
+    currentTreeNode: TreeNode,
+    index: number
+  ): void {
     // Here, the unused nodes of ToRawNode and ToTreeNode are automatically released through the WeakMap feature
     currentTreeNode.children.splice(index, 1)
   }
 
-  forTreeNodeUpdateChild(
+  private forTreeNodeUpdateChild(
     currentTreeNode: TreeNode,
     index: number,
     childNode: TreeNode
@@ -236,11 +239,14 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     currentTreeNode.children[index] = childNode
   }
 
-  forRawNodeAppendChild(currentRawNode: RawNode, newRawNode: RawNode): void {
+  private forRawNodeAppendChild(
+    currentRawNode: RawNode,
+    newRawNode: RawNode
+  ): void {
     currentRawNode[this._toRawNodeKey.get('children')].push(newRawNode)
   }
 
-  forRawNodeUpdateValue(
+  private forRawNodeUpdateValue(
     currentRawNode: RawNode,
     key: string,
     value: any
@@ -252,12 +258,12 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     }
   }
 
-  forRawNodeRemoveChild(currentRawNode: RawNode, index: number): void {
+  private forRawNodeRemoveChild(currentRawNode: RawNode, index: number): void {
     // Here, the unused nodes of ToRawNode and ToTreeNode are automatically released through the WeakMap feature
     currentRawNode[this._toRawNodeKey.get('children')].splice(index, 1)
   }
 
-  forRawNodeUpdateChild(
+  private forRawNodeUpdateChild(
     currentRawNode: RawNode,
     index: number,
     childNode: RawNode
