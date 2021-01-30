@@ -62,8 +62,8 @@ export class TreeNode implements TreeNodePublicProp {
         throw new Error('insertChild not TreeNode')
       }
       node.parent = this
-      this.children.splice(index, 0, node)
     })
+    this.children.splice(index, 0, ...nodes)
   }
 
   removeChild(index: number, num = 1) {
