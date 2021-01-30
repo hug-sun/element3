@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { nextTick, reactive } from 'vue'
+import { nextTick, reactive, ref } from 'vue'
 import { t } from '../../../locale'
 import TreeMain from '../src/TreeMain.vue'
 
@@ -49,7 +49,7 @@ describe('TreeMain.vue', () => {
       `,
       components: { elTreeMain: TreeMain },
       setup() {
-        const nodes = reactive([
+        const nodes = ref([
           {
             id: 1,
             label: 'Node1',
@@ -124,5 +124,41 @@ describe('TreeMain.vue', () => {
     })
     await nextTick()
     expect(wrapper.find('#TreeNode3').exists()).toBeTruthy()
+  })
+
+  it('Realize node multi - selection function', () => {
+    const wrapper = mount({
+      template: `
+        <el-Tree-main v-model="nodes" v-model:checked="checked"></el-Tree-main>
+      `,
+      components: { elTreeMain: TreeMain },
+      setup() {
+        const nodes = ref([
+          {
+            id: 1,
+            label: 'Node1',
+            children: [
+              {
+                id: 11,
+                label: 'Node1-1'
+              }
+            ]
+          },
+          {
+            id: 2,
+            label: 'Node2'
+          }
+        ])
+        const checked = ref([1])
+        return {
+          nodes,
+          checked
+        }
+      }
+    })
+
+    expect(wrapper.find('#TreeNode1').classes()).toContain('is-checked')
+    expect(wrapper.find('#TreeNode11').classes()).toContain('is-checked')
+    expect(wrapper.vm.checked).toEqual([1, 11])
   })
 })

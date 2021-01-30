@@ -1,7 +1,11 @@
 <template>
   <div
     class="el-tree-node"
+    :class="{
+      'is-checked': node.isChecked
+    }"
     role="TreeNode"
+    :aria-checked="node.isChecked"
     tabindex="-1"
     :id="'TreeNode' + node.id"
     :data-node-id="node.id"
@@ -10,6 +14,14 @@
       class="el-tree-node__content"
       :style="{ 'padding-left': node.level * elTree.indent + 'px' }"
     >
+      <el-checkbox
+        v-if="elTree.showCheckbox"
+        :modelValue="node.isChecked"
+        :indeterminate="node.isIndeterminate"
+        :disabled="node.isDisabled"
+        @update:modelValue="node.setChecked($event)"
+      >
+      </el-checkbox>
       <span
         v-if="node.asyncState === 'loading'"
         class="el-tree-node__loading-icon el-icon-loading"

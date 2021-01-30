@@ -1,5 +1,6 @@
 <template>
   <el-tree-main
+    ref="treeMain"
     v-model="_modelValue"
     :defaultNodeKey="_defaultNodeKey"
   ></el-tree-main>

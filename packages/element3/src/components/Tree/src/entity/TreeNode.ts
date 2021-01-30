@@ -1,6 +1,14 @@
+import { isFunction } from '../../../../utils/types'
+
 export type ID = string | number
 
 let idSeed = 0
+
+// export enum CheckboxState {
+//   NONE = 0,
+//   CHECKED = 1,
+//   INDETERMINATE = 2
+// }
 
 export interface TreeNodePublicProp {
   id: ID
@@ -17,8 +25,29 @@ export class TreeNode implements TreeNodePublicProp {
   label: string
   parent: TreeNode
   children: TreeNode[] = []
-  isChecked = false
   private _isLeaf = false
+  private _isChecked = false
+
+  get isIndeterminate(): boolean {
+    const checkedLen = this.getCheckedNodes().length
+    if (this.isLeaf || checkedLen === 0) {
+      return false
+    }
+    if (this.getCheckedNodes().length !== this.children.length) {
+      return true
+    }
+    return false
+  }
+
+  get isChecked(): boolean {
+    if (this.isLeaf) {
+      return this._isChecked
+    }
+    if (this.getCheckedNodes().length === this.children.length) {
+      return true
+    }
+    return false
+  }
 
   get level(): number {
     return (this.parent?.level ?? -1) + 1
@@ -41,9 +70,18 @@ export class TreeNode implements TreeNodePublicProp {
     this.id = id ?? idSeed++
     this.label = label
     this._isLeaf = isLeaf
-    this.isChecked = isChecked
+    this.setChecked(isChecked)
 
     this.appendChild(...children)
+  }
+
+  setChecked(v = !this.isChecked): void {
+    this._isChecked = v
+    this.children.forEach((node) => node.setChecked(v))
+  }
+
+  getCheckedNodes(): TreeNode[] {
+    return this.children.filter((node) => node.isChecked)
   }
 
   appendChild(...nodes: TreeNode[]) {
@@ -68,5 +106,65 @@ export class TreeNode implements TreeNodePublicProp {
 
   removeChild(index: number, num = 1) {
     this.children.splice(index, num)
+  }
+
+  findOne(id: ID | TreeNode): TreeNode {
+    let node
+    this.depthEach((currentNode) => {
+      if (id === currentNode.id || id === currentNode) {
+        node = currentNode
+      }
+    })
+    return node
+  }
+
+  findChild(id: ID | TreeNode): TreeNode {
+    return this.children.find((node) => node.id === id || node === id)
+  }
+
+  /**
+   * Traverse upward
+   */
+  upwardEach(
+    callback: (node: TreeNode) => boolean,
+    { isSkipSelf = true } = {}
+  ): void {
+    let current = isSkipSelf ? this.parent : this
+    while (current) {
+      if (callback(current)) {
+        return
+      }
+      current = current.parent
+    }
+  }
+
+  /**
+   * from current node start, down each
+   */
+  depthEach(
+    upToDownCallBack: (
+      currentNode: TreeNode,
+      parentNode?: TreeNode,
+      deep?: number
+    ) => boolean | void,
+    downToUpCallBack?: (
+      currentNode: TreeNode,
+      parentNode?: TreeNode,
+      deep?: number
+    ) => boolean | void
+  ): void {
+    const dfs = (node, deep) => {
+      for (let i = 0; i < node.children.length; i++) {
+        const _node = node.children[i]
+        if (isFunction(upToDownCallBack) && upToDownCallBack(_node, node, deep))
+          return
+        dfs(_node, deep + 1)
+        if (isFunction(downToUpCallBack) && downToUpCallBack(node, _node, deep))
+          return
+      }
+    }
+    isFunction(upToDownCallBack) && upToDownCallBack(this, this.parent, 0)
+    dfs(this, 1)
+    isFunction(downToUpCallBack) && downToUpCallBack(this, this.parent, 0)
   }
 }

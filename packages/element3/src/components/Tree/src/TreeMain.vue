@@ -9,26 +9,45 @@
 </template>
 
 <script lang="ts">
-import { computed, getCurrentInstance, provide } from 'vue'
+import {
+  computed,
+  getCurrentInstance,
+  PropType,
+  provide,
+  watch,
+  watchEffect
+} from 'vue'
 import { t } from '../../../locale'
 import ElTreeNode from './TreeNode.vue'
 import { Tree } from './entity/Tree'
+import { ID } from './entity/TreeNode'
+import { DefaultNodeKey, RawNodeBase } from './types'
 export default {
   name: 'ElTreeMain',
   components: { ElTreeNode },
   props: {
     modelValue: { type: Array, default: () => [] },
     emptyText: { type: String, default: () => t('el.tree.emptyText') },
-    defaultNodeKey: Object,
-    indent: { type: Number, default: 18 }
+    defaultNodeKey: Object as PropType<DefaultNodeKey<RawNodeBase>>,
+    indent: { type: Number, default: 18 },
+
+    checked: { type: Array as PropType<ID[]>, default: () => [] },
+    showCheckbox: Boolean
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'update:checked'],
   setup(props, ctx) {
     const elTree = getCurrentInstance().proxy
     provide('elTree', elTree)
     const tree = new Tree(props.modelValue, props.defaultNodeKey)
     ctx.emit('update:modelValue', tree.rawNodesProxy)
     const rootChildren = computed(() => tree.root.children)
+
+    watchEffect(() => {
+      tree.setCheckedByIds(props.checked)
+    })
+    watchEffect(() => {
+      ctx.emit('update:checked', tree.getCheckedIds())
+    })
 
     return {
       tree,

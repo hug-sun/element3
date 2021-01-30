@@ -71,4 +71,63 @@ describe('TreeNode.ts', () => {
     expect(treeNode.children).toHaveLength(1)
     expect(treeNode.children[0].id).toEqual(11)
   })
+
+  it('test isChecked and isIndeterminate state', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1'),
+      new TreeNode(3, 'Node1-2', [
+        new TreeNode(4, 'Node1-2-1'),
+        new TreeNode(5, 'Node1-2-2')
+      ])
+    ])
+
+    root.setChecked(true)
+    expect(root.isChecked).toBeTruthy()
+    expect(root.isIndeterminate).toBeFalsy()
+    expect(root.findOne(2).isChecked).toBeTruthy()
+    expect(root.findOne(3).isChecked).toBeTruthy()
+    expect(root.findOne(4).isChecked).toBeTruthy()
+    expect(root.findOne(5).isChecked).toBeTruthy()
+
+    const node3 = root.findOne(3)
+    node3.setChecked(false)
+    expect(root.isChecked).toBeFalsy()
+    expect(node3.isChecked).toBeFalsy()
+    expect(node3.findOne(3).isChecked).toBeFalsy()
+    expect(node3.findOne(4).isChecked).toBeFalsy()
+    expect(node3.findOne(5).isChecked).toBeFalsy()
+    expect(root.isIndeterminate).toBeTruthy()
+
+    const node2 = root.findOne(2)
+    expect(node2.isChecked).toBeTruthy()
+    node2.setChecked(false)
+    expect(root.isChecked).toBeFalsy()
+    expect(root.isIndeterminate).toBeFalsy()
+  })
+
+  it('find one node', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1'),
+      new TreeNode(3, 'Node1-2', [new TreeNode(4, 'Node1-2-1')])
+    ])
+
+    expect(root.findOne(1)).toBe(root)
+    expect(root.findOne(2)).toBe(root.children[0])
+    expect(root.findOne(3)).toBe(root.children[1])
+    expect(root.findOne(4)).toBe(root.children[1].children[0])
+    expect(root.findOne(5)).toBeUndefined()
+  })
+
+  it('test method getCheckedNodes', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1', [], {
+        isChecked: true
+      }),
+      new TreeNode(3, 'Node1-2', [], {
+        isChecked: true
+      })
+    ])
+
+    expect(root.getCheckedNodes()).toHaveLength(2)
+  })
 })

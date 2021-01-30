@@ -1,5 +1,5 @@
 import { DefaultNodeKey, RawNodeBase } from '../types'
-import { TreeNode } from './TreeNode'
+import { ID, TreeNode } from './TreeNode'
 import { TreeMapper } from './TreeMapper'
 
 export class Tree<RawNode extends RawNodeBase> {
@@ -49,5 +49,24 @@ export class Tree<RawNode extends RawNodeBase> {
       } as RawNode,
       this._defaultNodeKey
     )
+  }
+
+  setCheckedByIds(ids: ID[]): void {
+    this.rootProxy.depthEach((currentNode: TreeNode) => {
+      if (ids.includes(currentNode.id)) {
+        currentNode.setChecked(true)
+      }
+    })
+  }
+
+  getCheckedIds(): ID[] {
+    const ids = []
+    this.rootProxy.depthEach((currentNode: TreeNode) => {
+      if (currentNode.isChecked) {
+        ids.push(currentNode.id)
+      }
+    })
+
+    return ids
   }
 }
