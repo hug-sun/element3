@@ -262,4 +262,44 @@ describe('TreeMain.vue', () => {
     await wrapper.find('#TreeNode1').trigger('click')
     expect(wrapper.find('#TreeNode1').classes()).toContain('is-expanded')
   })
+
+  it('expand a node and vModel expanded', async () => {
+    const rawNodes = [
+      {
+        id: 1,
+        label: 'Node1',
+        children: [
+          {
+            id: 11,
+            label: 'Node1-1'
+          }
+        ]
+      },
+      {
+        id: 2,
+        label: 'Node2',
+        children: [
+          {
+            id: 21,
+            label: 'Node2-1'
+          }
+        ]
+      }
+    ]
+    const expanded = ref([1])
+    const wrapper = mount(TreeMain, {
+      props: {
+        modelValue: rawNodes,
+        renderAfterExpand: false,
+        expanded: expanded,
+        'onUpdate:expanded'(v) {
+          expanded.value = v
+        }
+      }
+    })
+    await nextTick()
+    await wrapper.find('#TreeNode2').trigger('click')
+    expect(wrapper.find('#TreeNode1').classes()).toContain('is-expanded')
+    expect(expanded.value).toEqual([1, 2])
+  })
 })

@@ -39,17 +39,18 @@ export default {
     renderAfterExpand: { type: Boolean, default: true },
     accordion: Boolean,
     autoExpandParent: { type: Boolean, default: true },
-    expandOnClickNode: { type: Boolean, default: true }
+    expandOnClickNode: { type: Boolean, default: true },
+    expanded: { type: Array as PropType<ID[]>, default: () => [] }
   },
-  emits: ['update:modelValue', 'update:checked'],
+  emits: ['update:modelValue', 'update:checked', 'update:expanded'],
   setup(props, ctx) {
     const elTree = getCurrentInstance().proxy
     provide('elTree', elTree)
     const tree = new Tree(props.modelValue, props.defaultNodeKey)
     ctx.emit('update:modelValue', tree.rawNodesProxy)
     const rootChildren = computed(() => tree.root.children)
-
     tree.rootProxy.setStrictly(props.checkStrictly)
+
     watchEffect(
       () => {
         tree.setCheckedByIds(props.checked)
@@ -61,6 +62,19 @@ export default {
     )
     watchEffect(() => {
       ctx.emit('update:checked', tree.getCheckedIds())
+    })
+
+    watchEffect(
+      () => {
+        tree.expandNodeByIds(props.expanded)
+      },
+      {
+        flush: 'post'
+        // exec after wait component flush
+      }
+    )
+    watchEffect(() => {
+      ctx.emit('update:expanded', tree.getExpandedNodeIds())
     })
 
     return {

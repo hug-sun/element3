@@ -1,12 +1,12 @@
 <template>
   <el-tree
     v-model="nodes"
-    v-model:checked="checked"
+    v-model:expanded="checked"
     ref="tree"
     :show-checkbox="true"
     :accordion="false"
     :checkOnClickNode="false"
-    :checkStrictly="ftalse"
+    :checkStrictly="false"
     :defaultNodeKey="{
       isDisabled: 'disabled'
     }"
