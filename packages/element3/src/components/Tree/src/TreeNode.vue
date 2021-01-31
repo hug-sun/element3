@@ -25,6 +25,7 @@
           'el-tree-node__expand-icon',
           elTree.iconClass
         ]"
+        @click.stop="onClickTreeNodeExpand"
       >
       </span>
       <el-checkbox
@@ -87,7 +88,8 @@ export default {
       indent: 10,
       checkOnClickNode: false,
       accordion: false,
-      autoExpandParent: true
+      autoExpandParent: true,
+      expandOnClickNode: true
     })
     const onClickTreeNodeContent = () => {
       if (!elTree.checkOnClickNode) {
@@ -101,15 +103,21 @@ export default {
       }
       props.node.setChecked()
     }
-    const onClickTreeNode = () => {
+    const onClickTreeNodeExpand = () => {
       if (elTree.accordion) props.node.collapse()
       else props.node.expand(undefined, elTree.autoExpandParent)
+    }
+    const onClickTreeNode = () => {
+      if (elTree.expandOnClickNode) {
+        onClickTreeNodeExpand()
+      }
     }
     return {
       elTree,
       onClickCheckbox,
       onClickTreeNodeContent,
-      onClickTreeNode
+      onClickTreeNode,
+      onClickTreeNodeExpand
     }
   }
 }

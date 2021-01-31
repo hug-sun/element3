@@ -38,7 +38,8 @@ export default {
     iconClass: { type: String, default: 'el-icon-caret-right' },
     renderAfterExpand: { type: Boolean, default: true },
     accordion: Boolean,
-    autoExpandParent: { type: Boolean, default: true }
+    autoExpandParent: { type: Boolean, default: true },
+    expandOnClickNode: { type: Boolean, default: true }
   },
   emits: ['update:modelValue', 'update:checked'],
   setup(props, ctx) {
