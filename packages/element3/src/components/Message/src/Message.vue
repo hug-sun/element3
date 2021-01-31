@@ -1,6 +1,6 @@
 <template>
   <div
-    :visiable="isShow"
+    :visiable="visiable"
     :style="positionStyle"
     :class="[
       'el-message',
@@ -36,6 +36,10 @@ export default {
   props: {
     message: {
       type: [String, Object]
+    },
+    visiable: {
+      type: Boolean,
+      default: true
     },
     type: {
       type: String,

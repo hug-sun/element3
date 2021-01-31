@@ -7,7 +7,7 @@
     :afterLeaveHandler="handleAfterLeave"
     transitionClass="el-message-fade"
   >
-    <Message />
+    <Message :visiable="isShow" />
   </PopupComponent>
 </template>
 

@@ -31,7 +31,7 @@ export default {
       close
     }
   },
-  render({ $props, $attrs, $slots, zIndex, close }) {
+  render({ $props, $attrs, $slots, zIndex, close }) {  console.log($slots)
     const attrs = computed(() => {
       return {
         ...$attrs

@@ -1,4 +1,4 @@
-import messageComponent from './Index.vue'
+import messageComponent from './Message.vue'
 import { createComponent } from '../../../composables/component'
 import { isVNode } from 'vue'
 
@@ -37,7 +37,7 @@ function createMessageComponentByOpts(opts) {
 function mergeOptions(opts, type = 'info') {
   const defaultOptions = {
     target,
-    duration: 4500,
+    duration: 204500,
     type,
     offset: calculateVerticalOffset(opts.offset)
   }
