@@ -33,20 +33,17 @@ export class TreeNode implements TreeNodePublicProp {
     if (this.isLeaf || checkedLen === 0) {
       return false
     }
-    if (this.getCheckedNodes().length !== this.children.length) {
-      return true
-    }
-    return false
+
+    return this.getCheckedNodes().length !== this.children.length
   }
 
   get isChecked(): boolean {
     if (this.isLeaf) {
       return this._isChecked
     }
-    if (this.getCheckedNodes().length === this.children.length) {
-      return true
-    }
-    return false
+
+    return (this._isChecked =
+      this.getCheckedNodes().length === this.children.length)
   }
 
   get level(): number {
@@ -75,7 +72,7 @@ export class TreeNode implements TreeNodePublicProp {
     this.appendChild(...children)
   }
 
-  setChecked(v = !this.isChecked): void {
+  setChecked(v = !this._isChecked): void {
     this._isChecked = v
     this.children.forEach((node) => node.setChecked(v))
   }

@@ -62,7 +62,7 @@ export class Tree<RawNode extends RawNodeBase> {
   getCheckedIds(): ID[] {
     const ids = []
     this.rootProxy.depthEach((currentNode: TreeNode) => {
-      if (currentNode.isChecked) {
+      if (currentNode !== this.rootProxy && currentNode.isChecked) {
         ids.push(currentNode.id)
       }
     })

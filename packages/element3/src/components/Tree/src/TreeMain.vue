@@ -12,6 +12,7 @@
 import {
   computed,
   getCurrentInstance,
+  nextTick,
   PropType,
   provide,
   watch,
@@ -42,9 +43,16 @@ export default {
     ctx.emit('update:modelValue', tree.rawNodesProxy)
     const rootChildren = computed(() => tree.root.children)
 
-    watchEffect(() => {
-      tree.setCheckedByIds(props.checked)
-    })
+    watchEffect(
+      () => {
+        tree.setCheckedByIds(props.checked)
+      },
+      {
+        flush: 'post'
+        // exec after wait component flush
+      }
+    )
+
     watchEffect(() => {
       ctx.emit('update:checked', tree.getCheckedIds())
     })

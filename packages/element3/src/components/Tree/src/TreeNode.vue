@@ -18,7 +18,6 @@
         v-if="elTree.showCheckbox"
         :modelValue="node.isChecked"
         :indeterminate="node.isIndeterminate"
-        :disabled="node.isDisabled"
         @update:modelValue="node.setChecked($event)"
       >
       </el-checkbox>
@@ -47,6 +46,7 @@
 <script lang="ts">
 import ElCollapseTransition from '../../../transitions/collapse-transition'
 import ElNodeContent from './NodeContent.vue'
+import { ElCheckbox } from '../../../index'
 import { TreeNode } from './entity/TreeNode'
 import { inject } from 'vue'
 export default {
@@ -54,7 +54,8 @@ export default {
 
   components: {
     ElCollapseTransition,
-    ElNodeContent
+    ElNodeContent,
+    ElCheckbox
   },
 
   props: {

@@ -126,10 +126,10 @@ describe('TreeMain.vue', () => {
     expect(wrapper.find('#TreeNode3').exists()).toBeTruthy()
   })
 
-  it('Realize node multi - selection function', () => {
+  it('Realize node multi - selection function', async () => {
     const wrapper = mount({
       template: `
-        <el-Tree-main v-model="nodes" v-model:checked="checked"></el-Tree-main>
+        <el-Tree-main v-model="nodes" v-model:checked="checked" show-checkbox></el-Tree-main>
       `,
       components: { elTreeMain: TreeMain },
       setup() {
@@ -157,8 +157,16 @@ describe('TreeMain.vue', () => {
       }
     })
 
+    await nextTick()
     expect(wrapper.find('#TreeNode1').classes()).toContain('is-checked')
     expect(wrapper.find('#TreeNode11').classes()).toContain('is-checked')
     expect(wrapper.vm.checked).toEqual([1, 11])
+
+    const node2Checkbox = wrapper
+      .findComponent('#TreeNode2')
+      .findComponent({ name: 'ElCheckbox' })
+
+    await node2Checkbox.trigger('click')
+    expect(wrapper.vm.checked).toEqual([1, 11, 2])
   })
 })
