@@ -5,6 +5,7 @@
     ref="tree"
     :show-checkbox="true"
     :checkOnClickNode="true"
+    :checkStrictly="true"
   ></el-tree>
 </template>
 

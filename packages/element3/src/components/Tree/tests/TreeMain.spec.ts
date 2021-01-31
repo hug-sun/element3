@@ -202,4 +202,39 @@ describe('TreeMain.vue', () => {
     await node2.trigger('click')
     expect(wrapper.vm.checked).toEqual([2])
   })
+
+  it('Implement, in the case of displaying checkboxes, whether to strictly follow the parent-child discordant practice', async () => {
+    const wrapper = mount({
+      template: `
+        <el-tree-main v-model="nodes" v-model:checked="checked" show-checkbox check-strictly></el-tree-main>
+      `,
+      components: { elTreeMain: TreeMain },
+      setup() {
+        const nodes = ref([
+          {
+            id: 1,
+            label: 'Node1',
+            children: [
+              {
+                id: 2,
+                label: 'Node2'
+              }
+            ]
+          }
+        ])
+        const checked = ref([])
+        return {
+          nodes,
+          checked
+        }
+      }
+    })
+
+    await nextTick()
+
+    const node2 = wrapper.find('#TreeNode2 .el-tree-node__content input')
+
+    await node2.trigger('click')
+    expect(wrapper.vm.checked).toEqual([2])
+  })
 })

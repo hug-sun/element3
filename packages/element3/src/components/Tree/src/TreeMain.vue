@@ -32,7 +32,8 @@ export default {
 
     checked: { type: Array as PropType<ID[]>, default: () => [] },
     showCheckbox: Boolean,
-    checkOnClickNode: Boolean
+    checkOnClickNode: Boolean,
+    checkStrictly: Boolean
   },
   emits: ['update:modelValue', 'update:checked'],
   setup(props, ctx) {
@@ -42,6 +43,7 @@ export default {
     ctx.emit('update:modelValue', tree.rawNodesProxy)
     const rootChildren = computed(() => tree.root.children)
 
+    tree.rootProxy.setStrictly(props.checkStrictly)
     watchEffect(
       () => {
         tree.setCheckedByIds(props.checked)
@@ -51,7 +53,6 @@ export default {
         // exec after wait component flush
       }
     )
-
     watchEffect(() => {
       ctx.emit('update:checked', tree.getCheckedIds())
     })

@@ -130,4 +130,43 @@ describe('TreeNode.ts', () => {
 
     expect(root.getCheckedNodes()).toHaveLength(2)
   })
+
+  it('test isStrictly', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(
+        2,
+        'Node1-1',
+        [new TreeNode(3, 'Node1-1-1', [new TreeNode(4, 'Node1-1-1-1')])],
+        {
+          isStrictly: true
+        }
+      )
+    ])
+
+    expect(root.findOne(4).isStrictly).toBeTruthy()
+    expect(root.findOne(2).isStrictly).toBeTruthy()
+    expect(root.isStrictly).toBeFalsy()
+  })
+
+  it('test strictly and setChecked', () => {
+    const root = new TreeNode(
+      1,
+      'Node1',
+      [new TreeNode(2, 'Node1-1', [new TreeNode(4, 'Node1-1-1')])],
+      {
+        isStrictly: true
+      }
+    )
+
+    root.findOne(2).setChecked(true)
+    expect(root.findOne(2).isChecked).toBeTruthy()
+    expect(root.isChecked).toBeFalsy()
+    expect(root.isIndeterminate).toBeFalsy()
+    expect(root.findOne(4).isChecked).toBeFalsy()
+
+    root.setChecked(true)
+    expect(root.isChecked).toBeTruthy()
+    expect(root.findOne(2).isChecked).toBeTruthy()
+    expect(root.findOne(4).isChecked).toBeFalsy()
+  })
 })

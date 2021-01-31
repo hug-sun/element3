@@ -27,18 +27,30 @@ export class TreeNode implements TreeNodePublicProp {
   children: TreeNode[] = []
   private _isLeaf = false
   private _isChecked = false
+  private _isStrictly = false
+
+  get isStrictly(): boolean {
+    if (this._isStrictly) {
+      return true
+    }
+
+    return (this._isStrictly = this.parent?.isStrictly ?? false)
+  }
 
   get isIndeterminate(): boolean {
+    if (this.isStrictly) {
+      return false
+    }
     const checkedLen = this.getCheckedNodes().length
     if (this.isLeaf || checkedLen === 0) {
       return false
     }
 
-    return this.getCheckedNodes().length !== this.children.length
+    return checkedLen !== this.children.length
   }
 
   get isChecked(): boolean {
-    if (this.isLeaf) {
+    if (this.isLeaf || this.isStrictly) {
       return this._isChecked
     }
 
@@ -62,11 +74,12 @@ export class TreeNode implements TreeNodePublicProp {
     id: ID,
     label: string,
     children: TreeNode[] = [],
-    { isLeaf = false, isChecked = false } = {}
+    { isLeaf = false, isChecked = false, isStrictly = false } = {}
   ) {
     this.id = id ?? idSeed++
     this.label = label
     this._isLeaf = isLeaf
+    this._isStrictly = isStrictly
     this.setChecked(isChecked)
 
     this.appendChild(...children)
@@ -74,7 +87,13 @@ export class TreeNode implements TreeNodePublicProp {
 
   setChecked(v = !this._isChecked): void {
     this._isChecked = v
-    this.children.forEach((node) => node.setChecked(v))
+    if (!this.isStrictly) {
+      this.children.forEach((node) => node.setChecked(v))
+    }
+  }
+
+  setStrictly(v: boolean): void {
+    this._isStrictly = v
   }
 
   getCheckedNodes(): TreeNode[] {
