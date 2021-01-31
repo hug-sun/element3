@@ -12,10 +12,8 @@
 import {
   computed,
   getCurrentInstance,
-  nextTick,
   PropType,
   provide,
-  watch,
   watchEffect
 } from 'vue'
 import { t } from '../../../locale'
@@ -33,7 +31,8 @@ export default {
     indent: { type: Number, default: 18 },
 
     checked: { type: Array as PropType<ID[]>, default: () => [] },
-    showCheckbox: Boolean
+    showCheckbox: Boolean,
+    checkOnClickNode: Boolean
   },
   emits: ['update:modelValue', 'update:checked'],
   setup(props, ctx) {

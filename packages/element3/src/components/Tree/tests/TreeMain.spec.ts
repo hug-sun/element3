@@ -169,4 +169,37 @@ describe('TreeMain.vue', () => {
     await node2Checkbox.trigger('click')
     expect(wrapper.vm.checked).toEqual([1, 11, 2])
   })
+
+  it('Based on the check-on-click-node implementation, whether the node is selected when the node is clicked', async () => {
+    const wrapper = mount({
+      template: `
+        <el-tree-main v-model="nodes" v-model:checked="checked" show-checkbox check-on-click-node></el-tree-main>
+      `,
+      components: { elTreeMain: TreeMain },
+      setup() {
+        const nodes = ref([
+          {
+            id: 1,
+            label: 'Node1'
+          },
+          {
+            id: 2,
+            label: 'Node2'
+          }
+        ])
+        const checked = ref([])
+        return {
+          nodes,
+          checked
+        }
+      }
+    })
+
+    await nextTick()
+
+    const node2 = wrapper.find('#TreeNode2 .el-tree-node__content')
+
+    await node2.trigger('click')
+    expect(wrapper.vm.checked).toEqual([2])
+  })
 })

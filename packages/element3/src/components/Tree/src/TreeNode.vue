@@ -13,12 +13,13 @@
     <div
       class="el-tree-node__content"
       :style="{ 'padding-left': node.level * elTree.indent + 'px' }"
+      @click="onClickTreeNodeContent"
     >
       <el-checkbox
         v-if="elTree.showCheckbox"
         :modelValue="node.isChecked"
         :indeterminate="node.isIndeterminate"
-        @update:modelValue="node.setChecked($event)"
+        @click.prevent="onClickCheckbox"
       >
       </el-checkbox>
       <span
@@ -62,10 +63,23 @@ export default {
     node: TreeNode
   },
 
-  setup() {
-    const elTree = inject('elTree', { indent: 10 })
+  setup(props) {
+    const elTree = inject('elTree', { indent: 10, checkOnClickNode: false })
+    const onClickTreeNodeContent = () => {
+      if (elTree.checkOnClickNode) {
+        props.node.setChecked()
+      }
+    }
+    const onClickCheckbox = () => {
+      if (elTree.checkOnClickNode) {
+        return
+      }
+      props.node.setChecked()
+    }
     return {
-      elTree
+      elTree,
+      onClickCheckbox,
+      onClickTreeNodeContent
     }
   }
 }
