@@ -83,7 +83,11 @@ export default {
   },
 
   setup(props) {
-    const elTree = inject('elTree', { indent: 10, checkOnClickNode: false })
+    const elTree = inject('elTree', {
+      indent: 10,
+      checkOnClickNode: false,
+      accordion: false
+    })
     const onClickTreeNodeContent = () => {
       if (!elTree.checkOnClickNode) {
         return
@@ -97,7 +101,8 @@ export default {
       props.node.setChecked()
     }
     const onClickTreeNode = () => {
-      props.node.expand()
+      if (elTree.accordion) props.node.collapse()
+      else props.node.expand()
     }
     return {
       elTree,

@@ -199,4 +199,19 @@ describe('TreeNode.ts', () => {
     root.expand(true)
     expect(root.isRendered).toBeTruthy()
   })
+
+  it('test collapse', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1', [new TreeNode(4, 'Node1-1-1')]),
+      new TreeNode(3, 'Node1-2', [new TreeNode(5, 'Node1-2-1')])
+    ])
+
+    root.findOne(2).collapse(true)
+    expect(root.findOne(2).isExpanded).toBeTruthy()
+    expect(root.findOne(3).isExpanded).toBeFalsy()
+
+    root.findOne(3).collapse(true)
+    expect(root.findOne(3).isExpanded).toBeTruthy()
+    expect(root.findOne(2).isExpanded).toBeFalsy()
+  })
 })

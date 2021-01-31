@@ -222,6 +222,17 @@ export class TreeNode implements TreeNodePublicProp {
 
   expand(v = !this._isExpanded): void {
     this._isExpanded = v
-    this._isRendered = true
+    if (v) {
+      this._isRendered = true
+    }
+  }
+
+  collapse(v = !this._isExpanded): void {
+    const parent = this.parent
+    if (!parent) {
+      return
+    }
+    parent.children.forEach((node) => node.expand(false))
+    this.expand(v)
   }
 }

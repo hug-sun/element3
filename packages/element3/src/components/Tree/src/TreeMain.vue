@@ -36,7 +36,8 @@ export default {
     checkStrictly: Boolean,
 
     iconClass: { type: String, default: 'el-icon-caret-right' },
-    renderAfterExpand: { type: Boolean, default: true }
+    renderAfterExpand: { type: Boolean, default: true },
+    accordion: Boolean
   },
   emits: ['update:modelValue', 'update:checked'],
   setup(props, ctx) {

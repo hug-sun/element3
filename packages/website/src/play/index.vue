@@ -4,6 +4,7 @@
     v-model:checked="checked"
     ref="tree"
     :show-checkbox="true"
+    :accordion="true"
     :checkOnClickNode="false"
     :checkStrictly="ftalse"
     :defaultNodeKey="{
