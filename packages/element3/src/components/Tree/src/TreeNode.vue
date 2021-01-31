@@ -86,7 +86,8 @@ export default {
     const elTree = inject('elTree', {
       indent: 10,
       checkOnClickNode: false,
-      accordion: false
+      accordion: false,
+      autoExpandParent: true
     })
     const onClickTreeNodeContent = () => {
       if (!elTree.checkOnClickNode) {
@@ -102,7 +103,7 @@ export default {
     }
     const onClickTreeNode = () => {
       if (elTree.accordion) props.node.collapse()
-      else props.node.expand()
+      else props.node.expand(undefined, elTree.autoExpandParent)
     }
     return {
       elTree,

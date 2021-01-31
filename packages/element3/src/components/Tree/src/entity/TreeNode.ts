@@ -220,10 +220,13 @@ export class TreeNode implements TreeNodePublicProp {
     isFunction(downToUpCallBack) && downToUpCallBack(this, this.parent, 0)
   }
 
-  expand(v = !this._isExpanded): void {
+  expand(v = !this._isExpanded, isAutoExpandParent = true): void {
     this._isExpanded = v
     if (v) {
       this._isRendered = true
+    }
+    if (isAutoExpandParent) {
+      this.parent?.expand(true, true)
     }
   }
 
