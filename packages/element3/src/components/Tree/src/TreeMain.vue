@@ -35,7 +35,8 @@ export default {
     checkOnClickNode: Boolean,
     checkStrictly: Boolean,
 
-    iconClass: { type: String, default: 'el-icon-caret-right' }
+    iconClass: { type: String, default: 'el-icon-caret-right' },
+    renderAfterExpand: { type: Boolean, default: true }
   },
   emits: ['update:modelValue', 'update:checked'],
   setup(props, ctx) {

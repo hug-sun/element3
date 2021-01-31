@@ -30,6 +30,11 @@ export class TreeNode implements TreeNodePublicProp {
   private _isStrictly: boolean
   private _isDisabled: boolean
   private _isExpanded: boolean
+  private _isRendered = false
+
+  get isRendered(): boolean {
+    return this._isRendered
+  }
 
   get isExpanded(): boolean {
     return this._isExpanded
@@ -217,5 +222,6 @@ export class TreeNode implements TreeNodePublicProp {
 
   expand(v = !this._isExpanded): void {
     this._isExpanded = v
+    this._isRendered = true
   }
 }

@@ -47,6 +47,7 @@
     <el-collapse-transition>
       <div
         v-show="node.isExpanded"
+        v-if="!elTree.renderAfterExpand || node.isRendered"
         class="el-tree-node__children"
         role="group"
         :aria-expanded="node.isExpanded"

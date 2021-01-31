@@ -189,4 +189,14 @@ describe('TreeNode.ts', () => {
     root.expand(true)
     expect(root.isExpanded).toBeTruthy()
   })
+
+  it('test isRendered', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1', [new TreeNode(4, 'Node1-1-1')])
+    ])
+
+    expect(root.isRendered).toBeFalsy()
+    root.expand(true)
+    expect(root.isRendered).toBeTruthy()
+  })
 })
