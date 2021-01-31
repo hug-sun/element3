@@ -237,4 +237,26 @@ describe('TreeMain.vue', () => {
     await node2.trigger('click')
     expect(wrapper.vm.checked).toEqual([2])
   })
+
+  it('expand a node', async () => {
+    const rawNodes = [
+      {
+        id: 1,
+        label: 'Node1',
+        children: [
+          {
+            id: 11,
+            label: 'Node1-1'
+          }
+        ]
+      }
+    ]
+    const wrapper = mount(TreeMain, {
+      props: {
+        modelValue: rawNodes
+      }
+    })
+    await wrapper.find('#TreeNode1').trigger('click')
+    expect(wrapper.find('#TreeNode1').classes()).toContain('is-expanded')
+  })
 })

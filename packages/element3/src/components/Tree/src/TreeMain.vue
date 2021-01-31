@@ -33,7 +33,9 @@ export default {
     checked: { type: Array as PropType<ID[]>, default: () => [] },
     showCheckbox: Boolean,
     checkOnClickNode: Boolean,
-    checkStrictly: Boolean
+    checkStrictly: Boolean,
+
+    iconClass: { type: String, default: 'el-icon-caret-right' }
   },
   emits: ['update:modelValue', 'update:checked'],
   setup(props, ctx) {

@@ -4,8 +4,8 @@
     v-model:checked="checked"
     ref="tree"
     :show-checkbox="true"
-    :checkOnClickNode="true"
-    :checkStrictly="false"
+    :checkOnClickNode="false"
+    :checkStrictly="ftalse"
     :defaultNodeKey="{
       isDisabled: 'disabled'
     }"
