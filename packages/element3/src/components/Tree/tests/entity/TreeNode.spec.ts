@@ -169,4 +169,15 @@ describe('TreeNode.ts', () => {
     expect(root.findOne(2).isChecked).toBeTruthy()
     expect(root.findOne(4).isChecked).toBeFalsy()
   })
+
+  it('test isDisabled is true setChecked method', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1', [new TreeNode(4, 'Node1-1-1')], {
+        isDisabled: true
+      })
+    ])
+
+    root.findOne(2).setChecked(true)
+    expect(root.findOne(2).isChecked).toBeFalsy()
+  })
 })

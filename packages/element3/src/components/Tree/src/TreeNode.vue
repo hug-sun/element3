@@ -2,10 +2,12 @@
   <div
     class="el-tree-node"
     :class="{
-      'is-checked': node.isChecked
+      'is-checked': node.isChecked,
+      'is-focusable': !node.isDisabled
     }"
     role="TreeNode"
     :aria-checked="node.isChecked"
+    :aria-disabled="node.isDisabled"
     tabindex="-1"
     :id="'TreeNode' + node.id"
     :data-node-id="node.id"
@@ -19,6 +21,7 @@
         v-if="elTree.showCheckbox"
         :modelValue="node.isChecked"
         :indeterminate="node.isIndeterminate"
+        :disabled="node.isDisabled"
         @click.prevent="onClickCheckbox"
       >
       </el-checkbox>
@@ -66,9 +69,10 @@ export default {
   setup(props) {
     const elTree = inject('elTree', { indent: 10, checkOnClickNode: false })
     const onClickTreeNodeContent = () => {
-      if (elTree.checkOnClickNode) {
-        props.node.setChecked()
+      if (!elTree.checkOnClickNode) {
+        return
       }
+      props.node.setChecked()
     }
     const onClickCheckbox = () => {
       if (elTree.checkOnClickNode) {

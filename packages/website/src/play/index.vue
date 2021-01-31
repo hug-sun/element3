@@ -5,7 +5,10 @@
     ref="tree"
     :show-checkbox="true"
     :checkOnClickNode="true"
-    :checkStrictly="true"
+    :checkStrictly="false"
+    :defaultNodeKey="{
+      isDisabled: 'disabled'
+    }"
   ></el-tree>
 </template>
 
@@ -55,6 +58,7 @@ export default {
         children: [
           {
             label: '二级 3-1',
+            disabled: true,
             children: [
               {
                 label: '三级 3-1-1'
@@ -73,22 +77,8 @@ export default {
       }
     ])
 
-    const checked = ref([1])
+    const checked = ref([])
 
-    // setTimeout(() => {
-    //   console.log(nodes, vm.nodes)
-    //   nodes.value[0].label = 'TTT'
-    //   nodes.value[0].children[0].label = 'TTT'
-    //   nodes.value.push({
-    //     label: 'Hello'
-    //   })
-    //   const tree = vm.$refs.tree.$refs.treeMain.tree
-    //   tree.root.removeChild(0)
-    //   nodes.value[0].children.push({
-    //     label: 'Hello'
-    //   })
-    //   console.log(checked)
-    // }, 3000)
     setTimeout(() => {
       checked.value.push(11)
     }, 1000)

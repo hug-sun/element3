@@ -57,7 +57,7 @@ export class TreeMapper<RawNode extends RawNodeBase> {
         rawNode[this._toRawNodeKey.get('label')],
         this.convertToTreeNodes(rawNode[this._toRawNodeKey.get('children')]),
         {
-          isChecked: rawNode[this._toRawNodeKey.get('isChecked')],
+          isDisabled: rawNode[this._toRawNodeKey.get('isDisabled')],
           isLeaf: rawNode[this._toRawNodeKey.get('isLeaf')]
         }
       )
