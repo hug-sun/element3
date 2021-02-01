@@ -224,4 +224,14 @@ describe('TreeNode.ts', () => {
     expect(root.isExpanded).toBeTruthy()
     expect(root.findOne(2).isExpanded).toBeTruthy()
   })
+
+  it('set node isVisible', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1', [new TreeNode(4, 'Node1-1-1')])
+    ])
+    root.hide()
+    expect(root.isVisible).toBeFalsy()
+    root.show()
+    expect(root.isVisible).toBeTruthy()
+  })
 })

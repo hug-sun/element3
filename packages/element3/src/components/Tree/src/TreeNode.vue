@@ -1,14 +1,18 @@
 <template>
   <div
+    v-show="node.isVisible"
     class="el-tree-node"
     :class="{
       'is-checked': node.isChecked,
       'is-focusable': !node.isDisabled,
-      'is-expanded': node.isExpanded
+      'is-expanded': node.isExpanded,
+      'is-hidden': !node.isVisible
     }"
     role="TreeNode"
-    :aria-checked="node.isChecked"
+    :aria-expanded="node.isExpanded"
     :aria-disabled="node.isDisabled"
+    :aria-checked="node.isChecked"
+    :aria-visible="node.isVisible"
     tabindex="-1"
     :id="'TreeNode' + node.id"
     :data-node-id="node.id"
@@ -16,7 +20,7 @@
   >
     <div
       class="el-tree-node__content"
-      :style="{ 'padding-left': node.level * elTree.indent + 'px' }"
+      :style="{ 'padding-left': (node.level - 1) * elTree.indent + 'px' }"
       @click="onClickTreeNodeContent"
     >
       <span

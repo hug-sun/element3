@@ -83,6 +83,8 @@ export default {
 
     setTimeout(() => {
       checked.value.push(11)
+      const root = vm.$refs.tree.$refs.treeMain.tree.root
+      console.log(root.findOne(7).hide())
     }, 1000)
 
     return {

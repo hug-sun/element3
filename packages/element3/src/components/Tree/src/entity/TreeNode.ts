@@ -31,6 +31,15 @@ export class TreeNode implements TreeNodePublicProp {
   private _isDisabled: boolean
   private _isExpanded: boolean
   private _isRendered = false
+  private _isVisible: boolean
+
+  get isVisible(): boolean {
+    return this._isVisible
+  }
+
+  set isVisible(v: boolean) {
+    this._isVisible = v
+  }
 
   get isRendered(): boolean {
     return this._isRendered
@@ -99,7 +108,8 @@ export class TreeNode implements TreeNodePublicProp {
       isChecked = false,
       isStrictly = false,
       isDisabled = false,
-      isExpanded = false
+      isExpanded = false,
+      isVisible = true
     } = {}
   ) {
     this.id = id ?? idSeed++
@@ -108,6 +118,7 @@ export class TreeNode implements TreeNodePublicProp {
     this._isStrictly = isStrictly
     this._isDisabled = isDisabled
     this._isExpanded = isExpanded
+    this._isVisible = isVisible
 
     this.setChecked(isChecked)
 
@@ -240,5 +251,12 @@ export class TreeNode implements TreeNodePublicProp {
     }
     parent.children.forEach((node) => node.expand(false))
     this.expand(v)
+  }
+
+  show() {
+    this._isVisible = true
+  }
+  hide() {
+    this._isVisible = false
   }
 }
