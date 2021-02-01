@@ -2,7 +2,7 @@
  * Checkbox and CheckboxButton are connected logically
  */
 
-import { useGlobalOptions } from '../../src/use/globalConfig'
+import { useGlobalOptions } from '../../src/composables/globalConfig'
 import {
   computed,
   getCurrentInstance,
@@ -13,7 +13,7 @@ import {
   toRefs,
   unref
 } from 'vue'
-import { useEmitter } from '../../src/use/emitter'
+import { useEmitter } from '../../src/composables/emitter'
 
 export const useSize = (size) => {
   const globalConfig = useGlobalOptions()

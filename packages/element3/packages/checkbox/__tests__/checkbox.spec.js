@@ -1,7 +1,7 @@
 import Checkbox from '../Checkbox'
 import { mount } from '@vue/test-utils'
 import { ref, reactive, nextTick } from 'vue'
-import { setupGlobalOptions } from '../../../src/use/globalConfig'
+import { setupGlobalOptions } from '../../../src/composables/globalConfig'
 
 describe('Checkbox.vue', () => {
   test('default slot', () => {

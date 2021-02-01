@@ -6,7 +6,7 @@
 
 <script>
 import { useEmitter } from '../../src/composables/emitter'
-import { provide, getCurrentInstance, computed, inject } from 'vue'
+import { provide, getCurrentInstance } from 'vue'
 export default {
   name: 'ElCheckboxGroup',
   emits: ['update:modelValue', 'change'],
@@ -43,5 +43,3 @@ export default {
   }
 }
 </script>
-
-<style scoped></style>
