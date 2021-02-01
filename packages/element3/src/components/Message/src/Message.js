@@ -1,6 +1,6 @@
 import messageComponent from './Message.vue'
 import { createPopupComponent } from '../../../composables/component'
-import { isVNode } from 'vue'
+import { isVNode, render } from 'vue'
 
 const instanceRefs = []
 const target = 'body'
@@ -29,6 +29,8 @@ function createMessage(opts) {
 
 function createMessageComponentByOpts(opts) {
   if (isVNode(opts.message)) {
+    render(opts.message, document.createElement('div'))
+
     return createPopupComponent(messageComponent, opts, () => opts.message)
   }
   return createPopupComponent(messageComponent, opts)

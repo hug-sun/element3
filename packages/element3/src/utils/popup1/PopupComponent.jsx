@@ -13,7 +13,7 @@ const useStyle = () => {
       setStyle
    }
 }
-const PopupComponent = (component, componentProps) => defineComponent({
+const PopupComponent = (component, componentProps, children) => defineComponent({
   props,
   emits: ['close'],
   setup(props) {
@@ -63,7 +63,9 @@ const PopupComponent = (component, componentProps) => defineComponent({
              style={styleText}
              {...$attrs} 
              {...componentProps}
-          />
+          >
+            { children ? <children/> : null }
+          </component>
         </Transition>
       </Teleport>
     )

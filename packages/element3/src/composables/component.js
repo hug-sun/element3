@@ -17,8 +17,8 @@ export function createComponent(Component, props, children) {
   return vnode.component
 }
 
-export function createPopupComponent(Component, props) {
-  const vnode = h(PopupComponent(Component, props))
+export function createPopupComponent(Component, props, children) {
+  const vnode = h(PopupComponent(Component, props, children))
 
   const container = document.createElement('div')
   vnode[COMPONENT_CONTAINER_SYMBOL] = container
