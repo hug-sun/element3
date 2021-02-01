@@ -7,6 +7,7 @@
     :accordion="false"
     :checkOnClickNode="false"
     :checkStrictly="false"
+    :defaultExpandAll="true"
     :defaultNodeKey="{
       isDisabled: 'disabled'
     }"

@@ -40,7 +40,8 @@ export default {
     accordion: Boolean,
     autoExpandParent: { type: Boolean, default: true },
     expandOnClickNode: { type: Boolean, default: true },
-    expanded: { type: Array as PropType<ID[]>, default: () => [] }
+    expanded: { type: Array as PropType<ID[]>, default: () => [] },
+    defaultExpandAll: Boolean
   },
   emits: ['update:modelValue', 'update:checked', 'update:expanded'],
   setup(props, ctx) {
@@ -64,6 +65,9 @@ export default {
       ctx.emit('update:checked', tree.getCheckedIds())
     })
 
+    if (props.defaultExpandAll) {
+      tree.expandAll()
+    }
     watchEffect(
       () => {
         tree.expandNodeByIds(props.expanded)

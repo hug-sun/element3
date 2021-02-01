@@ -88,4 +88,10 @@ export class Tree<RawNode extends RawNodeBase> {
 
     return ids
   }
+
+  expandAll(v = true): void {
+    this.root.depthEach((currentNode) => {
+      currentNode.expand(v, false)
+    })
+  }
 }
