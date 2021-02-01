@@ -71,4 +71,47 @@ describe('Tree.ts', () => {
     expect(tree.root.findOne(1).isExpanded).toBeTruthy()
     expect(tree.root.findOne(2).isExpanded).toBeTruthy()
   })
+
+  it('filter show node', () => {
+    type RawNode = { key: number; text: string; childs?: RawNode[] }
+    const rawNodes: RawNode[] = [
+      {
+        key: 1,
+        text: 'Node1',
+        childs: [
+          {
+            key: 11,
+            text: 'Node011'
+          }
+        ]
+      },
+      {
+        key: 2,
+        text: 'Node2',
+        childs: [
+          {
+            key: 21,
+            text: 'Node021'
+          }
+        ]
+      }
+    ]
+
+    const tree = new Tree(rawNodes, {
+      id: 'key',
+      label: 'text',
+      children: 'childs'
+    })
+
+    const search = '11'
+
+    tree.filter((node) => {
+      return node.label.includes(search)
+    })
+
+    expect(tree.root.findOne(1).isVisible).toBeTruthy()
+    expect(tree.root.findOne(11).isVisible).toBeTruthy()
+    expect(tree.root.findOne(2).isVisible).toBeFalsy()
+    expect(tree.root.findOne(21).isVisible).toBeFalsy()
+  })
 })

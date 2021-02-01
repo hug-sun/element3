@@ -270,4 +270,12 @@ export class TreeMapper<RawNode extends RawNodeBase> {
   ): void {
     currentRawNode[this._toRawNodeKey.get('children')][index] = childNode
   }
+
+  getRawNode(treeNode: TreeNode): RawNode {
+    return this._toRawNode.get(treeNode)
+  }
+
+  getTreeNode(rawNode: RawNode): TreeNode {
+    return this._toTreeNode.get(rawNode)
+  }
 }

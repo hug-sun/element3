@@ -258,6 +258,7 @@ export class TreeNode implements TreeNodePublicProp {
 
   show() {
     this._isVisible = true
+    this.parent?.show()
   }
   hide() {
     this._isVisible = false

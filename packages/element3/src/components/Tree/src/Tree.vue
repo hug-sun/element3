@@ -19,7 +19,9 @@ export default defineComponent({
     modelValue: Array,
 
     defaultNodeKey: Object,
-    props: Object
+    props: Object,
+
+    filterNodeMethod: Function
   },
   emits: ['update:modelValue', 'update:data'],
   computed: {
@@ -34,6 +36,22 @@ export default defineComponent({
     },
     _defaultNodeKey() {
       return this.defaultNodeKey ?? this.props
+    }
+  },
+  methods: {
+    filter(value) {
+      const tree = this.$refs.treeMain.tree
+      if (typeof this.filterNodeMethod === 'function') {
+        return tree.filter((currentNode) =>
+          this.filterNodeMethod(
+            value,
+            tree.getRawNode(currentNode),
+            currentNode
+          )
+        )
+      } else {
+        return tree.filter(value)
+      }
     }
   }
 })
