@@ -51,7 +51,7 @@ import {
   getCurrentInstance
 } from 'vue'
 import { hasClass } from '../../src/utils/dom'
-import { migrating } from '../../src/use/migrating'
+import { migrating } from '../../src/composables/migrating'
 
 export default {
   name: 'ElRate',

@@ -1,5 +1,8 @@
 import loadingVue from './Loading.vue'
-import { createComponent, unmountComponent } from '../../src/use/component'
+import {
+  createComponent,
+  unmountComponent
+} from '../../src/composables/component'
 import { removeClass } from '../../src/utils/dom'
 import merge from '../../src/utils/merge'
 import { addStyle } from './lib'

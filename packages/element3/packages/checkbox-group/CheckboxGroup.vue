@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import { useEmitter } from '../../src/use/emitter'
-import { provide, getCurrentInstance } from 'vue'
+import { useEmitter } from '../../src/composables/emitter'
+import { provide, getCurrentInstance, computed, inject } from 'vue'
 export default {
   name: 'ElCheckboxGroup',
   emits: ['update:modelValue', 'change'],
