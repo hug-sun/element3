@@ -1,3 +1,3 @@
-import PopupComponent from './PopupComponent'
+import PopupComponent from './PopupComponent.jsx'
 // import './style.scss'
 export { PopupComponent }

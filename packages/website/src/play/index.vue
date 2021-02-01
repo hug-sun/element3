@@ -1,5 +1,6 @@
 <template>
   <el-button :plain="true" @click="open">打开消息提示</el-button>
+  <el-button :plain="true" @click="open">打开消息提示</el-button>
   <el-button :plain="true" @click="openVn">VNode</el-button>
 </template>
 

@@ -1,5 +1,5 @@
 import { h, render } from 'vue'
-import {PopupComponent} from '../../src/utils/popup1/index'
+import { PopupComponent } from '../../src/utils/popup1/index'
 
 const MOUNT_COMPONENT_REF = 'el_component'
 const COMPONENT_CONTAINER_SYMBOL = Symbol('el_component_container')
@@ -10,13 +10,21 @@ const COMPONENT_CONTAINER_SYMBOL = Symbol('el_component_container')
  * @param {*} Component
  */
 export function createComponent(Component, props, children) {
-  let vnode = h(Component, { ...props, ref: MOUNT_COMPONENT_REF }, children)
-  vnode = h(PopupComponent, {visiable: true}, vnode)
+  const vnode = h(Component, { ...props, ref: MOUNT_COMPONENT_REF }, children)
   const container = document.createElement('div')
   vnode[COMPONENT_CONTAINER_SYMBOL] = container
   render(vnode, container)
-  
   return vnode.component
+}
+
+export function createPopupComponent(Component, props) {
+  const vnode = h(PopupComponent(Component, props))
+
+  const container = document.createElement('div')
+  vnode[COMPONENT_CONTAINER_SYMBOL] = container
+  render(vnode, container)
+
+  return vnode.component.proxy.popup
 }
 
 /**

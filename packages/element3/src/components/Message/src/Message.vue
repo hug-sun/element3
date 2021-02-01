@@ -1,6 +1,5 @@
 <template>
   <div
-    :visiable="visiable"
     :style="positionStyle"
     :class="[
       'el-message',
@@ -30,7 +29,6 @@
   </div>
 </template>
 <script>
-import { PopupComponent } from '../../../utils/popup1/index'
 import { getCurrentInstance, computed, ref } from 'vue'
 export default {
   props: {
@@ -54,16 +52,13 @@ export default {
     center: Boolean,
     customClass: String,
     dangerouslyUseHTMLString: Boolean,
-    offset: Number
-  },
-  components: {
-    PopupComponent
+    offset: Number,
+    onCloseHook: Function
   },
   emits: ['close'],
   setup(props, { emit }) {
     const instance = getCurrentInstance()
 
-    const isShow = ref(true)
     // @public
     const offsetTop = ref(props.offset)
 
@@ -82,9 +77,9 @@ export default {
     }
 
     function _close() {
-      clearTimeout(timer)
       emit('close', instance)
-      isShow.value = false
+      props.onCloseHook(instance)
+      clearTimeout(timer)
     }
 
     function handleAfterLeave(el) {
@@ -111,7 +106,6 @@ export default {
     delayClose()
     return {
       close,
-      isShow,
       isShowType,
       positionStyle,
       offsetTop,

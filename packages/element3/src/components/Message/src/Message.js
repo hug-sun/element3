@@ -1,24 +1,24 @@
 import messageComponent from './Message.vue'
-import { createComponent } from '../../../composables/component'
+import { createPopupComponent } from '../../../composables/component'
 import { isVNode } from 'vue'
 
-const instanceList = []
+const instanceRefs = []
 const target = 'body'
 export function Message(opts) {
   return createMessage(mergeOptions(opts))
 }
 
 Message.closeAll = () => {
-  instanceList.forEach((instance) => {
+  instanceRefs.forEach((instance) => {
     instance.proxy.close()
     removeInstance(instance)
   })
 }
-  ;['info', 'success', 'warning', 'error'].forEach((type) => {
-    Message[type] = (opts) => {
-      return createMessage(mergeOptions(opts, type))
-    }
-  })
+;['info', 'success', 'warning', 'error'].forEach((type) => {
+  Message[type] = (opts) => {
+    return createMessage(mergeOptions(opts, type))
+  }
+})
 
 function createMessage(opts) {
   const instance = createMessageComponentByOpts(opts)
@@ -29,15 +29,15 @@ function createMessage(opts) {
 
 function createMessageComponentByOpts(opts) {
   if (isVNode(opts.message)) {
-    return createComponent(messageComponent, opts, () => opts.message)
+    return createPopupComponent(messageComponent, opts, () => opts.message)
   }
-  return createComponent(messageComponent, opts)
+  return createPopupComponent(messageComponent, opts)
 }
 
 function mergeOptions(opts, type = 'info') {
   const defaultOptions = {
     target,
-    duration: 204500,
+    duration: 1500,
     type,
     offset: calculateVerticalOffset(opts.offset)
   }
@@ -46,7 +46,7 @@ function mergeOptions(opts, type = 'info') {
   // opts.onClose Cannot be merged into the default options
   delete opts?.onClose
   delete opts?.offset
-  defaultOptions.onClose = (instance) => {
+  defaultOptions.onCloseHook = (instance) => {
     closeMessage(instance)
     if (userOnClose) userOnClose(instance.proxy)
   }
@@ -61,8 +61,8 @@ function mergeOptions(opts, type = 'info') {
 
 function calculateVerticalOffset(offset = 20) {
   let result = offset
-  instanceList.forEach((instance) => {
-    result += getNextElementInterval(instance)
+  instanceRefs.forEach((instance) => {
+    result += getNextRefInterval(instance)
   })
 
   return result
@@ -80,28 +80,38 @@ function updatePosition(closeInstance) {
 
   for (
     let index = currentInstanceIndex + 1;
-    index < instanceList.length;
+    index < instanceRefs.length;
     index++
   ) {
-    const instance = instanceList[index]
-    instance.proxy.offsetVal -= getNextElementInterval(closeInstance)
+    const instance = instanceRefs[index]
+    const offsetTop =
+      instance.$el.offsetHeight - getNextElementInterval(closeInstance)
+
+    instance.$el.style.top = offsetTop + 'px'
   }
+}
+
+function getNextRefInterval(instance) {
+  const INTERVAL_HEIGHT = 16
+  const target = instance.$el
+  return target.offsetHeight + INTERVAL_HEIGHT
 }
 
 function getNextElementInterval(instance) {
   const INTERVAL_HEIGHT = 16
-  const target = instance.proxy.$refs.self.$refs.target
+  const target = instance.proxy.$el
+
   return target.offsetHeight + INTERVAL_HEIGHT
 }
 
 function addInstance(instance) {
-  instanceList.push(instance)
+  instanceRefs.push(instance)
 }
 
 function removeInstance(instance) {
-  instanceList.splice(getIndexByInstance(instance), 1)
+  instanceRefs.splice(getIndexByInstance(instance), 1)
 }
 
 function getIndexByInstance(instance) {
-  return instanceList.findIndex((i) => i.uid == instance.uid)
+  return instanceRefs.findIndex((i) => i.$el == instance.proxy.$el)
 }
