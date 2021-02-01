@@ -234,4 +234,35 @@ describe('TreeNode.ts', () => {
     root.show()
     expect(root.isVisible).toBeTruthy()
   })
+
+  it('findOne Introduced to the callback ', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1', [new TreeNode(4, 'Node1-1-1')])
+    ])
+    const cb = jest.fn((node) => node.id === 2)
+    const result = root.findOne(cb)
+    expect(cb).toBeCalledTimes(2)
+    expect(result.id).toBe(2)
+  })
+
+  it('findMary Introduced to the callback ', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(
+        2,
+        'Node1-1',
+        [
+          new TreeNode(4, 'Node1-1-1', [], {
+            isExpanded: true
+          })
+        ],
+        {
+          isExpanded: true
+        }
+      )
+    ])
+    const cb = jest.fn((node) => node.isExpanded)
+    const result = root.findMany(cb)
+    expect(cb).toBeCalledTimes(3)
+    expect(result.map((node) => node.id)).toEqual([2, 4])
+  })
 })

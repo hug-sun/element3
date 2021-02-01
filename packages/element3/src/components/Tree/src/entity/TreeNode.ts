@@ -4,11 +4,11 @@ export type ID = string | number
 
 let idSeed = 0
 
-// export enum CheckboxState {
-//   NONE = 0,
-//   CHECKED = 1,
-//   INDETERMINATE = 2
-// }
+export type HandlerCb = (
+  currentNode: TreeNode,
+  parentNode: TreeNode,
+  level: number
+) => boolean | void
 
 export interface TreeNodePublicProp {
   id: ID
@@ -171,14 +171,34 @@ export class TreeNode implements TreeNodePublicProp {
     this.children.splice(index, num)
   }
 
-  findOne(id: ID | TreeNode): TreeNode {
-    let node
+  findOne(target: ID | TreeNode | HandlerCb): TreeNode {
+    let result
     this.depthEach((currentNode) => {
-      if (id === currentNode.id || id === currentNode) {
-        node = currentNode
+      if (
+        target === currentNode.id ||
+        target === currentNode ||
+        (typeof target === 'function' &&
+          target(currentNode, currentNode.parent, currentNode.level))
+      ) {
+        result = currentNode
+        return true
       }
     })
-    return node
+    return result
+  }
+
+  findMany(target: string | HandlerCb) {
+    const result = []
+    this.depthEach((currentNode) => {
+      if (
+        (typeof target === 'string' && currentNode.label.includes(target)) ||
+        (typeof target === 'function' &&
+          target(currentNode, currentNode.parent, currentNode.level))
+      ) {
+        result.push(currentNode)
+      }
+    })
+    return result
   }
 
   findChild(id: ID | TreeNode): TreeNode {
@@ -188,13 +208,10 @@ export class TreeNode implements TreeNodePublicProp {
   /**
    * Traverse upward
    */
-  upwardEach(
-    callback: (node: TreeNode) => boolean,
-    { isSkipSelf = true } = {}
-  ): void {
+  upwardEach(callback: HandlerCb, { isSkipSelf = true } = {}): void {
     let current = isSkipSelf ? this.parent : this
     while (current) {
-      if (callback(current)) {
+      if (callback(current, current.parent, current.level)) {
         return
       }
       current = current.parent
@@ -204,18 +221,7 @@ export class TreeNode implements TreeNodePublicProp {
   /**
    * from current node start, down each
    */
-  depthEach(
-    upToDownCallBack: (
-      currentNode: TreeNode,
-      parentNode?: TreeNode,
-      deep?: number
-    ) => boolean | void,
-    downToUpCallBack?: (
-      currentNode: TreeNode,
-      parentNode?: TreeNode,
-      deep?: number
-    ) => boolean | void
-  ): void {
+  depthEach(upToDownCallBack: HandlerCb, downToUpCallBack?: HandlerCb): void {
     const dfs = (node, deep) => {
       for (let i = 0; i < node.children.length; i++) {
         const _node = node.children[i]
@@ -232,9 +238,6 @@ export class TreeNode implements TreeNodePublicProp {
   }
 
   expand(v = !this._isExpanded, isAutoExpandParent = false): void {
-    if (this.isLeaf) {
-      return
-    }
     this._isExpanded = v
     if (v) {
       this._isRendered = true
@@ -259,4 +262,6 @@ export class TreeNode implements TreeNodePublicProp {
   hide() {
     this._isVisible = false
   }
+
+  filter() {}
 }
