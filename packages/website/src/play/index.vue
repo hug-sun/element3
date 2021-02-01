@@ -1,4 +1,5 @@
 <template>
+  <input v-model="text" type="text" />
   <el-tree
     v-model="nodes"
     v-model:expanded="checked"
@@ -8,6 +9,7 @@
     :checkOnClickNode="false"
     :checkStrictly="false"
     :defaultExpandAll="true"
+    :filterNodeMethod="null"
     :defaultNodeKey="{
       isDisabled: 'disabled'
     }"
@@ -15,7 +17,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, reactive, ref } from 'vue'
+import { getCurrentInstance, reactive, ref, watch } from 'vue'
 export default {
   setup() {
     const vm = getCurrentInstance().proxy
@@ -80,16 +82,21 @@ export default {
     ])
 
     const checked = ref([])
+    const text = ref('')
 
     setTimeout(() => {
       checked.value.push(11)
       const root = vm.$refs.tree.$refs.treeMain.tree.root
-      console.log(root.findOne(7).hide())
     }, 1000)
+
+    watch(text, (v) => {
+      vm.$refs.tree.filter(v)
+    })
 
     return {
       nodes,
-      checked
+      checked,
+      text
     }
   }
 }
