@@ -1,7 +1,7 @@
 import ElCheckboxButton from '../index'
 import { mount } from '@vue/test-utils'
 import { nextTick, reactive, ref } from 'vue'
-import { setupGlobalOptions } from '../../../src'
+import { setupGlobalOptions } from '../../../src/use/globalConfig'
 
 describe('ElCheckboxButton', function () {
   test('default slot', () => {
