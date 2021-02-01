@@ -262,6 +262,4 @@ export class TreeNode implements TreeNodePublicProp {
   hide() {
     this._isVisible = false
   }
-
-  filter() {}
 }

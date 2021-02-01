@@ -60,14 +60,9 @@ export class Tree<RawNode extends RawNodeBase> {
   }
 
   getCheckedIds(): ID[] {
-    const ids = []
-    this.rootProxy.depthEach((currentNode: TreeNode) => {
-      if (currentNode !== this.rootProxy && currentNode.isChecked) {
-        ids.push(currentNode.id)
-      }
-    })
-
-    return ids
+    return this.root
+      .findMany((node) => node !== this.root && node.isChecked)
+      .map((node) => node.id)
   }
 
   expandNodeByIds(ids: ID[]): void {
@@ -79,14 +74,9 @@ export class Tree<RawNode extends RawNodeBase> {
   }
 
   getExpandedNodeIds(): ID[] {
-    const ids = []
-    this.rootProxy.depthEach((currentNode: TreeNode) => {
-      if (currentNode !== this.rootProxy && currentNode.isExpanded) {
-        ids.push(currentNode.id)
-      }
-    })
-
-    return ids
+    return this.root
+      .findMany((node) => node !== this.root && node.isExpanded)
+      .map((node) => node.id)
   }
 
   expandAll(v = true): void {
