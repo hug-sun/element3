@@ -33,17 +33,25 @@ export default {
     checked: { type: Array as PropType<ID[]>, default: () => [] },
     showCheckbox: Boolean,
     checkOnClickNode: Boolean,
-    checkStrictly: Boolean
+    checkStrictly: Boolean,
+
+    iconClass: { type: String, default: 'el-icon-caret-right' },
+    renderAfterExpand: { type: Boolean, default: true },
+    accordion: Boolean,
+    autoExpandParent: { type: Boolean, default: true },
+    expandOnClickNode: { type: Boolean, default: true },
+    expanded: { type: Array as PropType<ID[]>, default: () => [] },
+    defaultExpandAll: Boolean
   },
-  emits: ['update:modelValue', 'update:checked'],
+  emits: ['update:modelValue', 'update:checked', 'update:expanded'],
   setup(props, ctx) {
     const elTree = getCurrentInstance().proxy
     provide('elTree', elTree)
     const tree = new Tree(props.modelValue, props.defaultNodeKey)
     ctx.emit('update:modelValue', tree.rawNodesProxy)
     const rootChildren = computed(() => tree.root.children)
-
     tree.rootProxy.setStrictly(props.checkStrictly)
+
     watchEffect(
       () => {
         tree.setCheckedByIds(props.checked)
@@ -55,6 +63,22 @@ export default {
     )
     watchEffect(() => {
       ctx.emit('update:checked', tree.getCheckedIds())
+    })
+
+    if (props.defaultExpandAll) {
+      tree.expandAll()
+    }
+    watchEffect(
+      () => {
+        tree.expandNodeByIds(props.expanded)
+      },
+      {
+        flush: 'post'
+        // exec after wait component flush
+      }
+    )
+    watchEffect(() => {
+      ctx.emit('update:expanded', tree.getExpandedNodeIds())
     })
 
     return {

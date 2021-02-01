@@ -23,7 +23,8 @@ describe('TreeMain.vue', () => {
     ]
     const wrapper = mount(TreeMain, {
       props: {
-        modelValue: rawNodes
+        modelValue: rawNodes,
+        renderAfterExpand: false
       }
     })
 
@@ -36,7 +37,8 @@ describe('TreeMain.vue', () => {
     const rawNodes = []
     const wrapper = mount(TreeMain, {
       props: {
-        modelValue: rawNodes
+        modelValue: rawNodes,
+        renderAfterExpand: false
       }
     })
 
@@ -45,7 +47,7 @@ describe('TreeMain.vue', () => {
   it('reactive tree data', async () => {
     const wrapper = mount({
       template: `
-        <el-Tree-main v-model="nodes"></el-Tree-main>
+        <el-Tree-main v-model="nodes" :renderAfterExpand="false"></el-Tree-main>
       `,
       components: { elTreeMain: TreeMain },
       setup() {
@@ -90,7 +92,7 @@ describe('TreeMain.vue', () => {
   it('reactive tree data(OptionsAPI)', async () => {
     const wrapper = mount({
       template: `
-        <el-Tree-main v-model="nodes"></el-Tree-main>
+        <el-Tree-main v-model="nodes" :renderAfterExpand="false"></el-Tree-main>
       `,
       components: { elTreeMain: TreeMain },
       data() {
@@ -129,7 +131,7 @@ describe('TreeMain.vue', () => {
   it('Realize node multi - selection function', async () => {
     const wrapper = mount({
       template: `
-        <el-Tree-main v-model="nodes" v-model:checked="checked" show-checkbox></el-Tree-main>
+        <el-Tree-main v-model="nodes" v-model:checked="checked" show-checkbox :renderAfterExpand="false"></el-Tree-main>
       `,
       components: { elTreeMain: TreeMain },
       setup() {
@@ -173,7 +175,7 @@ describe('TreeMain.vue', () => {
   it('Based on the check-on-click-node implementation, whether the node is selected when the node is clicked', async () => {
     const wrapper = mount({
       template: `
-        <el-tree-main v-model="nodes" v-model:checked="checked" show-checkbox check-on-click-node></el-tree-main>
+        <el-tree-main v-model="nodes" v-model:checked="checked" show-checkbox check-on-click-node :renderAfterExpand="false"></el-tree-main>
       `,
       components: { elTreeMain: TreeMain },
       setup() {
@@ -206,7 +208,7 @@ describe('TreeMain.vue', () => {
   it('Implement, in the case of displaying checkboxes, whether to strictly follow the parent-child discordant practice', async () => {
     const wrapper = mount({
       template: `
-        <el-tree-main v-model="nodes" v-model:checked="checked" show-checkbox check-strictly></el-tree-main>
+        <el-tree-main v-model="nodes" v-model:checked="checked" show-checkbox check-strictly :renderAfterExpand="false"></el-tree-main>
       `,
       components: { elTreeMain: TreeMain },
       setup() {
@@ -236,5 +238,68 @@ describe('TreeMain.vue', () => {
 
     await node2.trigger('click')
     expect(wrapper.vm.checked).toEqual([2])
+  })
+
+  it('expand a node', async () => {
+    const rawNodes = [
+      {
+        id: 1,
+        label: 'Node1',
+        children: [
+          {
+            id: 11,
+            label: 'Node1-1'
+          }
+        ]
+      }
+    ]
+    const wrapper = mount(TreeMain, {
+      props: {
+        modelValue: rawNodes,
+        renderAfterExpand: false
+      }
+    })
+    await wrapper.find('#TreeNode1').trigger('click')
+    expect(wrapper.find('#TreeNode1').classes()).toContain('is-expanded')
+  })
+
+  it('expand a node and vModel expanded', async () => {
+    const rawNodes = [
+      {
+        id: 1,
+        label: 'Node1',
+        children: [
+          {
+            id: 11,
+            label: 'Node1-1'
+          }
+        ]
+      },
+      {
+        id: 2,
+        label: 'Node2',
+        children: [
+          {
+            id: 21,
+            label: 'Node2-1'
+          }
+        ]
+      }
+    ]
+    const expanded = ref([1])
+    const wrapper = mount(TreeMain, {
+      props: {
+        modelValue: rawNodes,
+        renderAfterExpand: false,
+        expanded: expanded,
+        'onUpdate:expanded'(v) {
+          expanded.value = v
+        }
+      }
+    })
+    await nextTick()
+    await wrapper.find('#TreeNode2').trigger('click')
+    expect(wrapper.find('#TreeNode1').classes()).toContain('is-expanded')
+    expect(expanded.value).toEqual([1, 2])
   })
 })

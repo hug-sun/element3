@@ -69,4 +69,29 @@ export class Tree<RawNode extends RawNodeBase> {
 
     return ids
   }
+
+  expandNodeByIds(ids: ID[]): void {
+    this.rootProxy.depthEach((currentNode: TreeNode) => {
+      if (ids.includes(currentNode.id)) {
+        currentNode.expand(true)
+      }
+    })
+  }
+
+  getExpandedNodeIds(): ID[] {
+    const ids = []
+    this.rootProxy.depthEach((currentNode: TreeNode) => {
+      if (currentNode !== this.rootProxy && currentNode.isExpanded) {
+        ids.push(currentNode.id)
+      }
+    })
+
+    return ids
+  }
+
+  expandAll(v = true): void {
+    this.root.depthEach((currentNode) => {
+      currentNode.expand(v, false)
+    })
+  }
 }

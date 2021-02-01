@@ -25,10 +25,20 @@ export class TreeNode implements TreeNodePublicProp {
   label: string
   parent: TreeNode
   children: TreeNode[] = []
-  private _isLeaf = false
-  private _isChecked = false
-  private _isStrictly = false
-  private _isDisabled = false
+  private _isLeaf: boolean
+  private _isChecked: boolean
+  private _isStrictly: boolean
+  private _isDisabled: boolean
+  private _isExpanded: boolean
+  private _isRendered = false
+
+  get isRendered(): boolean {
+    return this._isRendered
+  }
+
+  get isExpanded(): boolean {
+    return this._isExpanded
+  }
 
   get isDisabled(): boolean {
     return this._isDisabled
@@ -88,7 +98,8 @@ export class TreeNode implements TreeNodePublicProp {
       isLeaf = false,
       isChecked = false,
       isStrictly = false,
-      isDisabled = false
+      isDisabled = false,
+      isExpanded = false
     } = {}
   ) {
     this.id = id ?? idSeed++
@@ -96,6 +107,8 @@ export class TreeNode implements TreeNodePublicProp {
     this._isLeaf = isLeaf
     this._isStrictly = isStrictly
     this._isDisabled = isDisabled
+    this._isExpanded = isExpanded
+
     this.setChecked(isChecked)
 
     this.appendChild(...children)
@@ -205,5 +218,27 @@ export class TreeNode implements TreeNodePublicProp {
     isFunction(upToDownCallBack) && upToDownCallBack(this, this.parent, 0)
     dfs(this, 1)
     isFunction(downToUpCallBack) && downToUpCallBack(this, this.parent, 0)
+  }
+
+  expand(v = !this._isExpanded, isAutoExpandParent = false): void {
+    if (this.isLeaf) {
+      return
+    }
+    this._isExpanded = v
+    if (v) {
+      this._isRendered = true
+    }
+    if (isAutoExpandParent) {
+      this.parent?.expand(true, true)
+    }
+  }
+
+  collapse(v = !this._isExpanded): void {
+    const parent = this.parent
+    if (!parent) {
+      return
+    }
+    parent.children.forEach((node) => node.expand(false))
+    this.expand(v)
   }
 }

@@ -33,4 +33,42 @@ describe('Tree.ts', () => {
       rawNodes[0].childs[0].key
     )
   })
+
+  it('expand all node', () => {
+    type RawNode = { key: number; text: string; childs?: RawNode[] }
+    const rawNodes: RawNode[] = [
+      {
+        key: 1,
+        text: 'Node1',
+        childs: [
+          {
+            key: 11,
+            text: 'Node011'
+          }
+        ]
+      },
+      {
+        key: 2,
+        text: 'Node2',
+        childs: [
+          {
+            key: 21,
+            text: 'Node021'
+          }
+        ]
+      }
+    ]
+
+    const tree = new Tree(rawNodes, {
+      id: 'key',
+      label: 'text',
+      children: 'childs'
+    })
+
+    tree.expandAll(true)
+
+    expect(tree.root.isExpanded).toBeTruthy()
+    expect(tree.root.findOne(1).isExpanded).toBeTruthy()
+    expect(tree.root.findOne(2).isExpanded).toBeTruthy()
+  })
 })
