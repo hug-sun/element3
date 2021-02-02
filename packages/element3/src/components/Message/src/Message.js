@@ -10,8 +10,8 @@ export function Message(opts) {
 
 Message.closeAll = () => {
   instanceRefs.forEach((instance) => {
-    instance.proxy.close()
-    removeInstance(instance)
+    instance.close()
+    removeRef(instance)
   })
 }
 ;['info', 'success', 'warning', 'error'].forEach((type) => {
@@ -22,15 +22,12 @@ Message.closeAll = () => {
 
 function createMessage(opts) {
   const instance = createMessageComponentByOpts(opts)
-
   addInstance(instance)
-  return instance.proxy
+  return instance
 }
 
 function createMessageComponentByOpts(opts) {
   if (isVNode(opts.message)) {
-    render(opts.message, document.createElement('div'))
-
     return createPopupComponent(messageComponent, opts, () => opts.message)
   }
   return createPopupComponent(messageComponent, opts)
@@ -39,7 +36,7 @@ function createMessageComponentByOpts(opts) {
 function mergeOptions(opts, type = 'info') {
   const defaultOptions = {
     target,
-    duration: 1500,
+    duration: 4500,
     type,
     offset: calculateVerticalOffset(opts.offset)
   }
@@ -112,6 +109,11 @@ function addInstance(instance) {
 
 function removeInstance(instance) {
   instanceRefs.splice(getIndexByInstance(instance), 1)
+}
+
+function removeRef(ref) {
+  const index = instanceRefs.findIndex((el) => el.$el !== ref.$e)
+  instanceRefs.splice(index, 1)
 }
 
 function getIndexByInstance(instance) {
