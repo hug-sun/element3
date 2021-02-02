@@ -44,7 +44,9 @@ export default {
     defaultExpandAll: Boolean,
 
     async: Boolean,
-    asyncLoader: Function as PropType<AsyncLoader>
+    asyncLoader: Function as PropType<AsyncLoader>,
+
+    renderContent: Function
   },
   emits: ['update:modelValue', 'update:checked', 'update:expanded'],
   setup(props, ctx) {

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { nextTick, ref } from 'vue'
+import { h, nextTick, ref } from 'vue'
 import { t } from '../../../locale'
 import TreeMain from '../src/TreeMain.vue'
 
@@ -355,5 +355,67 @@ describe('TreeMain.vue', () => {
         ]
       }
     ])
+  })
+
+  it('render-content method DIY node content', () => {
+    const rawNodes = [
+      {
+        id: 1,
+        label: 'Node1',
+        children: [
+          {
+            id: 11,
+            label: 'Node1-1'
+          }
+        ]
+      },
+      {
+        id: 2,
+        label: 'Node2'
+      }
+    ]
+    const wrapper = mount(TreeMain, {
+      props: {
+        modelValue: rawNodes,
+        renderAfterExpand: false,
+        renderContent({ node, data }) {
+          return h('span', node.level + data.label)
+        }
+      }
+    })
+
+    expect(wrapper.text()).toBe('1Node12Node1-11Node2')
+  })
+
+  it('#default slot method DIY node content', () => {
+    const rawNodes = [
+      {
+        id: 1,
+        label: 'Node1',
+        children: [
+          {
+            id: 11,
+            label: 'Node1-1'
+          }
+        ]
+      },
+      {
+        id: 2,
+        label: 'Node2'
+      }
+    ]
+    const wrapper = mount(TreeMain, {
+      props: {
+        modelValue: rawNodes,
+        renderAfterExpand: false
+      },
+      slots: {
+        default({ node, data }) {
+          return h('span', node.level + data.label)
+        }
+      }
+    })
+
+    expect(wrapper.text()).toBe('1Node12Node1-11Node2')
   })
 })

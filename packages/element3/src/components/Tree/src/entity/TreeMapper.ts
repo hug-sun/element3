@@ -252,7 +252,7 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     key: string,
     value: any
   ): void {
-    if (!currentRawNode) return // TODO: 暂时这样，有个未知的BUG，对懒加载有影响
+    if (!currentRawNode) return // TODO: 暂时这样，有个未知的BUG，对懒加载的性能有影响
     if (key === this._toRawNodeKey.get('children')) {
       Reflect.set(currentRawNode, key, this.convertToRawNodes(value))
     } else if (Reflect.has(currentRawNode, key)) {
@@ -274,10 +274,10 @@ export class TreeMapper<RawNode extends RawNodeBase> {
   }
 
   getRawNode(treeNode: TreeNode): RawNode {
-    return this._toRawNode.get(treeNode)
+    return this._toRawNode.get(this._treeNodeWatcher.getRaw(treeNode))
   }
 
   getTreeNode(rawNode: RawNode): TreeNode {
-    return this._toTreeNode.get(rawNode)
+    return this._toTreeNode.get(this._rawNodeWatcher.getRaw(rawNode))
   }
 }
