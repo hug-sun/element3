@@ -33,7 +33,7 @@ describe('Message', () => {
     expect(document.querySelector('.el-message--info')).toBeTruthy()
   })
 
-  test.skip('should called onClose ', () => {
+  test('should called onClose ', () => {
     let proxy
     const onClose = jest.fn((instanceProxy) => {
       proxy = instanceProxy
@@ -49,7 +49,7 @@ describe('Message', () => {
     expect(onClose).toHaveBeenCalled()
   })
 
-  test.skip('calculateVerticalOffset', () => {
+  test('calculateVerticalOffset', () => {
     const instanceProxy1 = Message('foo1')
     expect(instanceProxy1.offset).toBe(20)
 
@@ -58,14 +58,14 @@ describe('Message', () => {
   })
 
   describe('message.info', () => {
-    test.skip('string', () => {
+    test('string', () => {
       const instanceProxy = Message.info('foo')
 
       expect(instanceProxy.$props.type).toBe('info')
       expect(instanceProxy.$props.message).toBe('foo')
     })
 
-    test.skip('options', () => {
+    test('options', () => {
       const instanceProxy = Message.info({
         message: 'foo'
       })
@@ -75,21 +75,21 @@ describe('Message', () => {
     })
   })
 
-  test.skip('message.success', () => {
+  test('message.success', () => {
     const instanceProxy = Message.success('foo')
 
     expect(instanceProxy.$props.type).toBe('success')
     expect(instanceProxy.$props.message).toBe('foo')
   })
 
-  test.skip('message.warning', () => {
+  test('message.warning', () => {
     const instanceProxy = Message.warning('foo')
 
     expect(instanceProxy.$props.type).toBe('warning')
     expect(instanceProxy.$props.message).toBe('foo')
   })
 
-  test.skip('message.error', () => {
+  test('message.error', () => {
     const instanceProxy = Message.error('foo')
 
     expect(instanceProxy.$props.type).toBe('error')
