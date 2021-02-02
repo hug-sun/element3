@@ -38,7 +38,8 @@ function mergeOptions(opts, type = 'info') {
     target,
     duration: 4500,
     type,
-    offset: calculateVerticalOffset(opts.offset)
+    offset: calculateVerticalOffset(opts.offset),
+    transitionClass: 'el-message-fade'
   }
 
   const userOnClose = opts?.onClose
@@ -84,9 +85,13 @@ function updatePosition(closeInstance) {
   ) {
     const instance = instanceRefs[index]
     const offsetTop =
-      instance.$el.offsetHeight - getNextElementInterval(closeInstance)
+      instance.$el.offsetTop - getNextElementInterval(closeInstance)
+    console.log(index, instance.$el.offsetTop, offsetTop)
 
-    instance.$el.style.top = offsetTop + 'px'
+    console.log(instance)
+    // instance.proxy.setStyle({top: offsetTop + 'px'})
+    //  document.querySelector('.el-message')[1].style.top = '20px'
+    setTimeout(() => (instance.$el.style.top = offsetTop + 'px'), 0)
   }
 }
 

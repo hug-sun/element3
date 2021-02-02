@@ -20,6 +20,8 @@ const PopupComponent = (component, componentProps, children) =>
     setup(props) {
       const show = ref(true)
 
+      const showTeleport = ref(true)
+
       const zIndex = useZindex()
 
       useBodyScroll(props)
@@ -27,6 +29,10 @@ const PopupComponent = (component, componentProps, children) =>
       const popup = ref(null)
 
       const { style, setStyle } = useStyle()
+
+      const afterLeaveHandler = () => {
+        showTeleport.value = false
+      }
       const closePopup = () => {
         show.value = false
       }
@@ -37,23 +43,31 @@ const PopupComponent = (component, componentProps, children) =>
         closePopup,
         style,
         setStyle,
-        popup
+        popup,
+        showTeleport,
+        afterLeaveHandler
       }
     },
-    render({ $props, $attrs, zIndex, closePopup, style, popup, show }) {
-      const attrs = computed(() => {
-        return {
-          ...$attrs
-        }
-      })
-
+    render({
+      $props,
+      $attrs,
+      zIndex,
+      closePopup,
+      style,
+      popup,
+      show,
+      showTeleport,
+      afterLeaveHandler
+    }) {
       const styleText = { ...style, zIndex }
-
+      if (!showTeleport) {
+        // return null
+      }
       return (
         <Teleport to="body">
           <Transition
             name={$props.transitionClass}
-            onAfterLeave={$props.afterLeaveHandler}
+            onAfterLeave={afterLeaveHandler}
             appear
           >
             <component
