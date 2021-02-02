@@ -2,19 +2,15 @@ import { mount, flushPromises } from '@vue/test-utils'
 import Message from '../src/Message.vue'
 import { h } from 'vue'
 
-Element.prototype.trigger = function (eventName) {
-  this.dispatchEvent(new Event(eventName))
-}
-
 describe('Message.vue', () => {
   beforeEach(() => {
     document.body.innerHTML = ''
   })
 
   test('snapshot', () => {
-    mount(Message)
+    const wrapper = mount(Message)
 
-    expect(document.querySelector('.el-message').innerHTML).toMatchSnapshot()
+    expect(wrapper.element).toMatchSnapshot()
   })
   test('message', () => {
     const message = 'this is a message'
@@ -25,9 +21,7 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(document.querySelector('.el-message__content').innerHTML).toContain(
-      message
-    )
+    expect(wrapper.html()).toContain(message)
   })
 
   test('message is vnode', () => {
@@ -39,9 +33,7 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(document.querySelector('.el-message').innerHTML).toContain(
-      '<p class="el-message__content">foo</p>'
-    )
+    expect(wrapper.html()).toContain('<p class="el-message__content">foo</p>')
   })
 
   describe('type', () => {
@@ -53,11 +45,9 @@ describe('Message.vue', () => {
         }
       })
 
-      expect(document.querySelector(`.el-icon-${type}`)).not.toBeNull()
-      expect(document.querySelector('.el-message__icon')).not.toBeNull()
-      expect(document.querySelector('.el-message').classList).toContain(
-        `el-message--info`
-      )
+      expect(wrapper.find(`.el-icon-${type}`).exists()).toBe(true)
+      expect(wrapper.find('.el-message__icon').exists()).toBe(true)
+      expect(wrapper.get('.el-message').classes()).toContain(`el-message--info`)
     })
   })
 
@@ -69,7 +59,7 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(document.querySelector('.el-icon-setting')).not.toBeNull()
+    expect(wrapper.find('.el-icon-setting').exists()).toBe(true)
   })
 
   test('should just icon is exists ', () => {
@@ -80,9 +70,9 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(document.querySelector('.el-icon-setting')).not.toBeNull()
-    expect(document.querySelector('.el-icon-info')).toBeNull()
-    expect(document.querySelector('.el-message').classList).not.toContain(
+    expect(wrapper.find('.el-icon-setting').exists()).toBe(true)
+    expect(wrapper.find('.el-icon-info').exists()).toBe(false)
+    expect(wrapper.get('.el-message').classes()).not.toContain(
       'el-message--info'
     )
   })
@@ -95,13 +85,9 @@ describe('Message.vue', () => {
         }
       })
 
-      expect(
-        document.querySelector('.el-message__closeBtn').classList
-      ).not.toBeNull()
-      expect(document.querySelector('.el-icon-close').classList).not.toBeNull()
-      expect(document.querySelector('.el-message').classList).toContain(
-        'is-closable'
-      )
+      expect(wrapper.find('.el-message__closeBtn').exists()).toBe(true)
+      expect(wrapper.find('.el-icon-close').exists()).toBe(true)
+      expect(wrapper.get('.el-message').classes()).toContain('is-closable')
     })
 
     test('click close btn', async () => {
@@ -111,9 +97,9 @@ describe('Message.vue', () => {
         }
       })
 
-      const closeBtn = document.querySelector('.el-message__closeBtn')
+      const closeBtn = wrapper.find('.el-message__closeBtn')
       await closeBtn.trigger('click')
-      expect(document.querySelector('.el-message').style.display).toBe('none')
+      expect(wrapper.find('.el-message').isVisible()).toBe(false)
     })
 
     test('duration: message is closed when in 1000ms', async () => {
@@ -126,7 +112,8 @@ describe('Message.vue', () => {
       })
       jest.runTimersToTime(1000)
       await flushPromises()
-      expect(document.querySelector('.el-message').style.display).toBe('none')
+
+      expect(wrapper.get('.el-message').isVisible()).toBe(false)
     })
 
     test('should called onClose', () => {
@@ -141,7 +128,7 @@ describe('Message.vue', () => {
         }
       })
 
-      document.querySelector('.el-message__closeBtn').trigger('click')
+      wrapper.get('.el-message__closeBtn').trigger('click')
       expect(proxy.close).toBeTruthy()
     })
 
@@ -150,7 +137,7 @@ describe('Message.vue', () => {
 
       wrapper.vm.close()
       await flushPromises()
-      expect(document.querySelector('.el-message').style.display).toBe('none')
+      expect(wrapper.get('.el-message').isVisible()).toBe(false)
     })
 
     test('should clear timeout', () => {
@@ -163,7 +150,7 @@ describe('Message.vue', () => {
         }
       })
 
-      document.querySelector('.el-message__closeBtn').trigger('click')
+      wrapper.get('.el-message__closeBtn').trigger('click')
       jest.runTimersToTime(1000)
       expect(wrapper.emitted('close')).toBeTruthy()
       expect(wrapper.emitted('close')[0][0].proxy.close).toBeTruthy()
@@ -177,9 +164,7 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(document.querySelector('.el-message').classList).toContain(
-      'is-center'
-    )
+    expect(wrapper.get('.el-message').classes()).toContain('is-center')
   })
 
   test('customize the name of the class', () => {
@@ -189,7 +174,7 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(document.querySelector('.el-message').classList).toContain('foo')
+    expect(wrapper.get('.el-message').classes()).toContain('foo')
   })
 
   test('dangerouslyUseHTMLString', () => {
@@ -200,17 +185,20 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(document.querySelector('#foo')).not.toBeNull()
+    expect(wrapper.find('#foo').exists()).toBe(true)
   })
 
   test('verticalOffset', () => {
     const wrapper = mount(Message, {
       props: {
-        offset: 50
+        offset: 50,
+        message: 'message'
       }
     })
 
-    expect(document.querySelector('.el-message').style.top).toEqual('50px')
+    expect(wrapper.find('.el-message')).toHaveStyle({
+      top: '50px'
+    })
   })
 
   test('update offset when called updateVerticalOffset', async () => {
@@ -220,10 +208,15 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(document.querySelector('.el-message').style.top).toEqual('50px')
+    expect(wrapper.find('.el-message')).toHaveStyle({
+      top: '50px'
+    })
+
     wrapper.vm.offsetTop = 100
     await flushPromises()
-    expect(document.querySelector('.el-message').style.top).toEqual('100px')
+    expect(wrapper.find('.el-message')).toHaveStyle({
+      top: '100px'
+    })
   })
 
   test('should not closed when mouseenter ', async () => {
@@ -235,7 +228,7 @@ describe('Message.vue', () => {
       }
     })
 
-    document.querySelector('.el-message').trigger('mouseenter')
+    wrapper.find('.el-message').trigger('mouseenter')
     jest.runTimersToTime(1000)
     expect(wrapper.emitted('close')).toBeFalsy()
   })
@@ -249,8 +242,8 @@ describe('Message.vue', () => {
       }
     })
 
-    document.querySelector('.el-message').trigger('mouseenter')
-    document.querySelector('.el-message').trigger('mouseleave')
+    wrapper.get('.el-message').trigger('mouseenter')
+    wrapper.get('.el-message').trigger('mouseleave')
     jest.runTimersToTime(1000)
     expect(wrapper.emitted('close')).toBeTruthy()
   })

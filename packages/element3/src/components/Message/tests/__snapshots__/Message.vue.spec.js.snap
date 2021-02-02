@@ -1,3 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Message.vue snapshot 1`] = `"<i class=\\"el-message__icon el-icon-undefined\\"></i><p class=\\"el-message__content\\"></p><!--v-if-->"`;
+exports[`Message.vue snapshot 1`] = `
+<div
+  class="el-message"
+>
+  <i
+    class="el-message__icon el-icon-undefined"
+  />
+  
+  <p
+    class="el-message__content"
+  />
+  
+  <!--v-if-->
+</div>
+`;

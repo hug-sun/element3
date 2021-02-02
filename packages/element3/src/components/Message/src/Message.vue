@@ -8,6 +8,8 @@
       center ? 'is-center' : '',
       customClass
     ]"
+    @mouseenter="handleMouseenter"
+    @mouseleave="handleMouseleave"
   >
     <i v-if="iconClass" :class="iconClass"></i>
     <i v-else :class="['el-message__icon', `el-icon-${type}`]"></i>
@@ -78,7 +80,7 @@ export default {
 
     function _close() {
       emit('close', instance)
-      props.onCloseHook(instance)
+      props.onCloseHook && props.onCloseHook(instance)
       clearTimeout(timer)
     }
 
