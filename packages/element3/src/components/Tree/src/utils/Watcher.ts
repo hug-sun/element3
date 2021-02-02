@@ -31,6 +31,7 @@ export type WatchCb<T> = (args: WatcherCbArgs<T>) => void
 
 export class Watcher<T extends RawNodeBase> {
   private _toProxy = new WeakMap<T, T>()
+  private _toRaw = new WeakMap<T, T>()
   private _proxy: T
   private _event = new Event<WatcherType>()
 
@@ -43,7 +44,7 @@ export class Watcher<T extends RawNodeBase> {
   }
 
   reactive(target: T, lastTarget: T = null): T {
-    if (!isObject(target)) {
+    if (!isObject(target) || this._toRaw.has(target)) {
       return target
     }
     if (this._toProxy.has(target)) {
@@ -59,6 +60,7 @@ export class Watcher<T extends RawNodeBase> {
     const proxy = new Proxy(target, handler)
 
     this._toProxy.set(target, proxy)
+    this._toRaw.set(proxy, target)
 
     return proxy
     function forCurrentNode() {
@@ -147,5 +149,9 @@ export class Watcher<T extends RawNodeBase> {
       currentNode,
       value
     } as WatcherCbArgs<T>)
+  }
+
+  getRaw(proxy) {
+    return this._toRaw.get(proxy)
   }
 }

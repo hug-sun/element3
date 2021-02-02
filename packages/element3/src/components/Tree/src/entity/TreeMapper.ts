@@ -58,7 +58,8 @@ export class TreeMapper<RawNode extends RawNodeBase> {
         this.convertToTreeNodes(rawNode[this._toRawNodeKey.get('children')]),
         {
           isDisabled: rawNode[this._toRawNodeKey.get('isDisabled')],
-          isLeaf: rawNode[this._toRawNodeKey.get('isLeaf')]
+          isLeaf: rawNode[this._toRawNodeKey.get('isLeaf')],
+          isAsync: rawNode[this._toRawNodeKey.get('isAsync')]
         }
       )
     ) as TreeNode
@@ -251,6 +252,7 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     key: string,
     value: any
   ): void {
+    if (!currentRawNode) return // TODO: 暂时这样，有个未知的BUG，对懒加载的性能有影响
     if (key === this._toRawNodeKey.get('children')) {
       Reflect.set(currentRawNode, key, this.convertToRawNodes(value))
     } else if (Reflect.has(currentRawNode, key)) {
@@ -269,5 +271,13 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     childNode: RawNode
   ): void {
     currentRawNode[this._toRawNodeKey.get('children')][index] = childNode
+  }
+
+  getRawNode(treeNode: TreeNode): RawNode {
+    return this._toRawNode.get(this._treeNodeWatcher.getRaw(treeNode))
+  }
+
+  getTreeNode(rawNode: RawNode): TreeNode {
+    return this._toTreeNode.get(this._rawNodeWatcher.getRaw(rawNode))
   }
 }

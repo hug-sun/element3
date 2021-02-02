@@ -3,6 +3,8 @@
     ref="treeMain"
     v-model="_modelValue"
     :defaultNodeKey="_defaultNodeKey"
+    :async="_async"
+    :asyncLoader="_asyncLoader"
   ></el-tree-main>
 </template>
 <script lang="ts">
@@ -19,7 +21,15 @@ export default defineComponent({
     modelValue: Array,
 
     defaultNodeKey: Object,
-    props: Object
+    props: Object,
+
+    filterNodeMethod: Function,
+
+    async: Boolean,
+    lazy: Boolean,
+
+    asyncLoader: Function,
+    load: Function
   },
   emits: ['update:modelValue', 'update:data'],
   computed: {
@@ -34,6 +44,28 @@ export default defineComponent({
     },
     _defaultNodeKey() {
       return this.defaultNodeKey ?? this.props
+    },
+    _async() {
+      return this.async || this.lazy
+    },
+    _asyncLoader() {
+      return this.asyncLoader ?? this.load
+    }
+  },
+  methods: {
+    filter(value) {
+      const tree = this.$refs.treeMain.tree
+      if (typeof this.filterNodeMethod === 'function') {
+        return tree.filter((currentNode) =>
+          this.filterNodeMethod(
+            value,
+            tree.getRawNode(currentNode),
+            currentNode
+          )
+        )
+      } else {
+        return tree.filter(value)
+      }
     }
   }
 })

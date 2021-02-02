@@ -19,7 +19,7 @@ import {
 import { t } from '../../../locale'
 import ElTreeNode from './TreeNode.vue'
 import { Tree } from './entity/Tree'
-import { ID } from './entity/TreeNode'
+import { AsyncLoader, ID } from './entity/TreeNode'
 import { DefaultNodeKey, RawNodeBase } from './types'
 export default {
   name: 'ElTreeMain',
@@ -41,7 +41,12 @@ export default {
     autoExpandParent: { type: Boolean, default: true },
     expandOnClickNode: { type: Boolean, default: true },
     expanded: { type: Array as PropType<ID[]>, default: () => [] },
-    defaultExpandAll: Boolean
+    defaultExpandAll: Boolean,
+
+    async: Boolean,
+    asyncLoader: Function as PropType<AsyncLoader>,
+
+    renderContent: Function
   },
   emits: ['update:modelValue', 'update:checked', 'update:expanded'],
   setup(props, ctx) {
@@ -49,9 +54,24 @@ export default {
     provide('elTree', elTree)
     const tree = new Tree(props.modelValue, props.defaultNodeKey)
     ctx.emit('update:modelValue', tree.rawNodesProxy)
-    const rootChildren = computed(() => tree.root.children)
-    tree.rootProxy.setStrictly(props.checkStrictly)
+    const rootChildren = computed(() => tree.rootProxy.children)
 
+    watchEffect(
+      () => {
+        tree.expandNodeByIds(props.expanded)
+      },
+      {
+        flush: 'post'
+        // exec after wait component flush
+      }
+    )
+    watchEffect(() => {
+      ctx.emit('update:expanded', tree.getExpandedNodeIds())
+    })
+
+    if (props.async) tree.bindAsyncLoader(props.asyncLoader)
+
+    tree.setStrictly(props.checkStrictly)
     watchEffect(
       () => {
         tree.setCheckedByIds(props.checked)
@@ -65,21 +85,7 @@ export default {
       ctx.emit('update:checked', tree.getCheckedIds())
     })
 
-    if (props.defaultExpandAll) {
-      tree.expandAll()
-    }
-    watchEffect(
-      () => {
-        tree.expandNodeByIds(props.expanded)
-      },
-      {
-        flush: 'post'
-        // exec after wait component flush
-      }
-    )
-    watchEffect(() => {
-      ctx.emit('update:expanded', tree.getExpandedNodeIds())
-    })
+    if (props.defaultExpandAll) tree.expandAll(true)
 
     return {
       tree,

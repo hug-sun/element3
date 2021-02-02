@@ -224,4 +224,64 @@ describe('TreeNode.ts', () => {
     expect(root.isExpanded).toBeTruthy()
     expect(root.findOne(2).isExpanded).toBeTruthy()
   })
+
+  it('set node isVisible', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1', [new TreeNode(4, 'Node1-1-1')])
+    ])
+    root.hide()
+    expect(root.isVisible).toBeFalsy()
+    root.show()
+    expect(root.isVisible).toBeTruthy()
+  })
+
+  it('findOne Introduced to the callback ', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1', [new TreeNode(4, 'Node1-1-1')])
+    ])
+    const cb = jest.fn((node) => node.id === 2)
+    const result = root.findOne(cb)
+    expect(cb).toBeCalledTimes(2)
+    expect(result.id).toBe(2)
+  })
+
+  it('findMary Introduced to the callback ', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(
+        2,
+        'Node1-1',
+        [
+          new TreeNode(4, 'Node1-1-1', [], {
+            isExpanded: true
+          })
+        ],
+        {
+          isExpanded: true
+        }
+      )
+    ])
+    const cb = jest.fn((node) => node.isExpanded)
+    const result = root.findMany(cb)
+    expect(cb).toBeCalledTimes(3)
+    expect(result.map((node) => node.id)).toEqual([2, 4])
+  })
+
+  it('async load node', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1', [
+        new TreeNode(4, 'Node1-1-1', [], {
+          isAsync: true,
+          asyncLoader(node, resolve) {
+            expect(root.findOne(4).asyncState).toEqual('loading')
+            resolve([new TreeNode(5, 'AsyncNode')])
+          }
+        })
+      ])
+    ])
+    expect(root.findOne(4).asyncState).toEqual('notLoaded')
+    expect(root.findOne(4).isAsync).toBeTruthy()
+    root.findOne(4).expand(true)
+    expect(root.findOne(4).children).toHaveLength(1)
+    expect(root.findOne(4).asyncState).toEqual('loaded')
+  })
 })

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { nextTick, reactive, ref } from 'vue'
+import { h, nextTick, ref } from 'vue'
 import { t } from '../../../locale'
 import TreeMain from '../src/TreeMain.vue'
 
@@ -301,5 +301,121 @@ describe('TreeMain.vue', () => {
     await wrapper.find('#TreeNode2').trigger('click')
     expect(wrapper.find('#TreeNode1').classes()).toContain('is-expanded')
     expect(expanded.value).toEqual([1, 2])
+  })
+
+  it('Test asynchronously loaded data', async () => {
+    const rawNodes = ref([])
+    const wrapper = mount(TreeMain, {
+      props: {
+        modelValue: rawNodes.value,
+        defaultExpandAll: true,
+        async: true,
+        asyncLoader(node, resolve) {
+          if (node.level > 1) {
+            return resolve([])
+          }
+          if (node.level === 0) {
+            return resolve([{ id: 1, label: 'test' }])
+          }
+          resolve([
+            {
+              id: 2,
+              label: 'test'
+            },
+            {
+              id: 3,
+              label: 'test',
+              isLeaf: true
+            }
+          ])
+        },
+        renderAfterExpand: false,
+        'onUpdate:modelValue'(v) {
+          rawNodes.value = v
+        }
+      }
+    })
+    await nextTick()
+    expect(wrapper.find('#TreeNode1').exists()).toBeTruthy()
+    expect(rawNodes.value).toEqual([
+      {
+        id: 1,
+        label: 'test',
+        children: [
+          {
+            id: 2,
+            label: 'test',
+            children: []
+          },
+          {
+            id: 3,
+            label: 'test',
+            children: []
+          }
+        ]
+      }
+    ])
+  })
+
+  it('render-content method DIY node content', () => {
+    const rawNodes = [
+      {
+        id: 1,
+        label: 'Node1',
+        children: [
+          {
+            id: 11,
+            label: 'Node1-1'
+          }
+        ]
+      },
+      {
+        id: 2,
+        label: 'Node2'
+      }
+    ]
+    const wrapper = mount(TreeMain, {
+      props: {
+        modelValue: rawNodes,
+        renderAfterExpand: false,
+        renderContent({ node, data }) {
+          return h('span', node.level + data.label)
+        }
+      }
+    })
+
+    expect(wrapper.text()).toBe('1Node12Node1-11Node2')
+  })
+
+  it('#default slot method DIY node content', () => {
+    const rawNodes = [
+      {
+        id: 1,
+        label: 'Node1',
+        children: [
+          {
+            id: 11,
+            label: 'Node1-1'
+          }
+        ]
+      },
+      {
+        id: 2,
+        label: 'Node2'
+      }
+    ]
+    const wrapper = mount(TreeMain, {
+      props: {
+        modelValue: rawNodes,
+        renderAfterExpand: false
+      },
+      slots: {
+        default({ node, data }) {
+          return h('span', node.level + data.label)
+        }
+      }
+    })
+
+    expect(wrapper.text()).toBe('1Node12Node1-11Node2')
   })
 })

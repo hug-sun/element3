@@ -1,5 +1,5 @@
 import { DefaultNodeKey, RawNodeBase } from '../types'
-import { ID, TreeNode } from './TreeNode'
+import { AsyncLoader, HandlerCb, ID, TreeNode } from './TreeNode'
 import { TreeMapper } from './TreeMapper'
 
 export class Tree<RawNode extends RawNodeBase> {
@@ -34,10 +34,10 @@ export class Tree<RawNode extends RawNodeBase> {
         children: 'children',
         isDisabled: 'isDisabled',
         isAsync: 'isAsync',
-        isChecked: 'isChecked',
-        isVisible: 'isVisible',
-        isExpanded: 'isExpanded',
         isLeaf: 'isLeaf'
+        // isChecked: 'isChecked',
+        // isVisible: 'isVisible',
+        // isExpanded: 'isExpanded',
       },
       defaultNodeKey
     )
@@ -60,14 +60,9 @@ export class Tree<RawNode extends RawNodeBase> {
   }
 
   getCheckedIds(): ID[] {
-    const ids = []
-    this.rootProxy.depthEach((currentNode: TreeNode) => {
-      if (currentNode !== this.rootProxy && currentNode.isChecked) {
-        ids.push(currentNode.id)
-      }
-    })
-
-    return ids
+    return this.root
+      .findMany((node) => node !== this.root && node.isChecked)
+      .map((node) => node.id)
   }
 
   expandNodeByIds(ids: ID[]): void {
@@ -79,19 +74,52 @@ export class Tree<RawNode extends RawNodeBase> {
   }
 
   getExpandedNodeIds(): ID[] {
-    const ids = []
-    this.rootProxy.depthEach((currentNode: TreeNode) => {
-      if (currentNode !== this.rootProxy && currentNode.isExpanded) {
-        ids.push(currentNode.id)
-      }
-    })
-
-    return ids
+    return this.root
+      .findMany((node) => node !== this.root && node.isExpanded)
+      .map((node) => node.id)
   }
 
   expandAll(v = true): void {
-    this.root.depthEach((currentNode) => {
-      currentNode.expand(v, false)
+    this.rootProxy.depthEach((currentNode) => {
+      currentNode.expand(v, false, () => this.expandAll(v))
     })
+  }
+
+  filter(target: HandlerCb | string): TreeNode[] {
+    const nodes = this.root.findMany(target)
+    this.root.depthEach((currentNode) => {
+      currentNode.hide()
+    })
+    nodes.forEach((node) => node.show())
+    return nodes
+  }
+
+  getRawNode(treeNode: TreeNode): RawNode {
+    return this._mapper.getRawNode(treeNode)
+  }
+
+  getTreeNode(rawNode: RawNode): TreeNode {
+    return this._mapper.getTreeNode(rawNode)
+  }
+
+  setStrictly(isStrictly: boolean): void {
+    this.root.setStrictly(isStrictly)
+  }
+
+  bindAsyncLoader(asyncLoader: AsyncLoader): void {
+    const _asyncLoader = (node, resolve) => {
+      const _resolve = (nodes: RawNode[] | TreeNode[]) => {
+        if (nodes.length === 0) {
+          return resolve([])
+        }
+        if (node[0] instanceof TreeNode) {
+          return resolve(nodes)
+        }
+        return resolve(this._mapper.convertToTreeNodes(nodes as RawNode[]))
+      }
+      asyncLoader(node, _resolve)
+    }
+    this.root.bindAsyncLoader(_asyncLoader)
+    // this.rootProxy.expand(true)
   }
 }
