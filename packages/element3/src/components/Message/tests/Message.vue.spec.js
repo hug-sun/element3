@@ -99,7 +99,7 @@ describe('Message.vue', () => {
 
       const closeBtn = wrapper.find('.el-message__closeBtn')
       await closeBtn.trigger('click')
-      expect(wrapper.find('.el-message').isVisible()).toBe(false)
+      expect(wrapper.emitted('close')).toBeTruthy()
     })
 
     test('duration: message is closed when in 1000ms', async () => {
@@ -113,7 +113,7 @@ describe('Message.vue', () => {
       jest.runTimersToTime(1000)
       await flushPromises()
 
-      expect(wrapper.get('.el-message').isVisible()).toBe(false)
+      expect(wrapper.emitted('close')).toBeTruthy()
     })
 
     test('should called onClose', () => {
@@ -132,12 +132,13 @@ describe('Message.vue', () => {
       expect(proxy.close).toBeTruthy()
     })
 
-    test('should close message when call close function in the componentInstance ', async () => {
+    test('should emit close  when call close function in the componentInstance ', async () => {
       const wrapper = mount(Message)
 
       wrapper.vm.close()
       await flushPromises()
-      expect(wrapper.get('.el-message').isVisible()).toBe(false)
+
+      expect(wrapper.emitted('close')).toBeTruthy()
     })
 
     test('should clear timeout', () => {

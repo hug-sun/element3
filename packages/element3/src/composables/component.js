@@ -24,7 +24,7 @@ export function createPopupComponent(Component, props, children) {
   vnode[COMPONENT_CONTAINER_SYMBOL] = container
   render(vnode, container)
 
-  return vnode.component.proxy.popup
+  return vnode.component
 }
 
 /**

@@ -61,7 +61,7 @@ const PopupComponent = (component, componentProps, children) =>
     }) {
       const styleText = { ...style, zIndex }
       if (!showTeleport) {
-        // return null
+        return null
       }
       return (
         <Teleport to="body">

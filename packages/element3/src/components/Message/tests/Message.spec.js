@@ -6,15 +6,15 @@ describe('Message', () => {
   })
   test('should have close function in the message instance', () => {
     const instanceProxy = Message('foo')
-    expect(instanceProxy.close).toBeTruthy()
+    expect(instanceProxy.proxy.popup.close).toBeTruthy()
   })
   test('default options ', () => {
     const instanceProxy = Message('foo')
 
-    expect(instanceProxy.$props.type).toBe('info')
-    expect(instanceProxy.$props.message).toBe('foo')
-    expect(instanceProxy.$props.duration).toBe(4500)
-    expect(instanceProxy.$props.offset).toBe(20)
+    expect(instanceProxy.proxy.popup.$props.type).toBe('info')
+    expect(instanceProxy.proxy.popup.$props.message).toBe('foo')
+    expect(instanceProxy.proxy.popup.$props.duration).toBe(4500)
+    expect(instanceProxy.proxy.popup.$props.offset).toBe(20)
   })
 
   test('message is vnode', () => {
@@ -43,7 +43,7 @@ describe('Message', () => {
       message: 'foo',
       onClose
     })
-    instanceProxy.close()
+    instanceProxy.proxy.popup.close()
 
     expect(proxy.close).toBeTruthy()
     expect(onClose).toHaveBeenCalled()
@@ -51,18 +51,18 @@ describe('Message', () => {
 
   test('calculateVerticalOffset', () => {
     const instanceProxy1 = Message('foo1')
-    expect(instanceProxy1.offset).toBe(20)
+    expect(instanceProxy1.proxy.popup.offset).toBe(20)
 
     const instanceProxy2 = Message('foo2')
-    expect(instanceProxy2.offset).toBe(36)
+    expect(instanceProxy2.proxy.popup.offset).toBe(36)
   })
 
   describe('message.info', () => {
     test('string', () => {
       const instanceProxy = Message.info('foo')
 
-      expect(instanceProxy.$props.type).toBe('info')
-      expect(instanceProxy.$props.message).toBe('foo')
+      expect(instanceProxy.proxy.popup.$props.type).toBe('info')
+      expect(instanceProxy.proxy.popup.$props.message).toBe('foo')
     })
 
     test('options', () => {
@@ -70,29 +70,29 @@ describe('Message', () => {
         message: 'foo'
       })
 
-      expect(instanceProxy.$props.type).toBe('info')
-      expect(instanceProxy.$props.message).toBe('foo')
+      expect(instanceProxy.proxy.popup.$props.type).toBe('info')
+      expect(instanceProxy.proxy.popup.$props.message).toBe('foo')
     })
   })
 
   test('message.success', () => {
     const instanceProxy = Message.success('foo')
 
-    expect(instanceProxy.$props.type).toBe('success')
-    expect(instanceProxy.$props.message).toBe('foo')
+    expect(instanceProxy.proxy.popup.$props.type).toBe('success')
+    expect(instanceProxy.proxy.popup.$props.message).toBe('foo')
   })
 
   test('message.warning', () => {
     const instanceProxy = Message.warning('foo')
 
-    expect(instanceProxy.$props.type).toBe('warning')
-    expect(instanceProxy.$props.message).toBe('foo')
+    expect(instanceProxy.proxy.popup.$props.type).toBe('warning')
+    expect(instanceProxy.proxy.popup.$props.message).toBe('foo')
   })
 
   test('message.error', () => {
     const instanceProxy = Message.error('foo')
 
-    expect(instanceProxy.$props.type).toBe('error')
-    expect(instanceProxy.$props.message).toBe('foo')
+    expect(instanceProxy.proxy.popup.$props.type).toBe('error')
+    expect(instanceProxy.proxy.popup.$props.message).toBe('foo')
   })
 })

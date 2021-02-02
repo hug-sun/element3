@@ -1,16 +1,16 @@
 import messageComponent from './Message.vue'
 import { createPopupComponent } from '../../../composables/component'
-import { isVNode, render } from 'vue'
+import { isVNode, render, nextTick } from 'vue'
 
-const instanceRefs = []
+const instances = []
 const target = 'body'
 export function Message(opts) {
   return createMessage(mergeOptions(opts))
 }
 
 Message.closeAll = () => {
-  instanceRefs.forEach((instance) => {
-    instance.close()
+  instances.forEach((instance) => {
+    instance.proxy.popup.close()
     removeRef(instance)
   })
 }
@@ -61,7 +61,7 @@ function mergeOptions(opts, type = 'info') {
 
 function calculateVerticalOffset(offset = 20) {
   let result = offset
-  instanceRefs.forEach((instance) => {
+  instances.forEach((instance) => {
     result += getNextRefInterval(instance)
   })
 
@@ -80,24 +80,22 @@ function updatePosition(closeInstance) {
 
   for (
     let index = currentInstanceIndex + 1;
-    index < instanceRefs.length;
+    index < instances.length;
     index++
   ) {
-    const instance = instanceRefs[index]
+    const instance = instances[index]
     const offsetTop =
-      instance.$el.offsetTop - getNextElementInterval(closeInstance)
-    console.log(index, instance.$el.offsetTop, offsetTop)
+      instance.proxy.popup.$el.offsetTop - getNextElementInterval(closeInstance)
 
-    console.log(instance)
-    // instance.proxy.setStyle({top: offsetTop + 'px'})
-    //  document.querySelector('.el-message')[1].style.top = '20px'
-    setTimeout(() => (instance.$el.style.top = offsetTop + 'px'), 0)
+    instance.proxy.setStyle({
+      top: offsetTop + 'px'
+    })
   }
 }
 
 function getNextRefInterval(instance) {
   const INTERVAL_HEIGHT = 16
-  const target = instance.$el
+  const target = instance.proxy.popup.$el
   return target.offsetHeight + INTERVAL_HEIGHT
 }
 
@@ -109,18 +107,18 @@ function getNextElementInterval(instance) {
 }
 
 function addInstance(instance) {
-  instanceRefs.push(instance)
+  instances.push(instance)
 }
 
 function removeInstance(instance) {
-  instanceRefs.splice(getIndexByInstance(instance), 1)
+  instances.splice(getIndexByInstance(instance), 1)
 }
 
 function removeRef(ref) {
-  const index = instanceRefs.findIndex((el) => el.$el !== ref.$e)
-  instanceRefs.splice(index, 1)
+  const index = instances.findIndex((el) => el.proxy.popup.$el !== ref.$e)
+  instances.splice(index, 1)
 }
 
 function getIndexByInstance(instance) {
-  return instanceRefs.findIndex((i) => i.$el == instance.proxy.$el)
+  return instances.findIndex((i) => i.proxy.popup.$el == instance.proxy.$el)
 }
