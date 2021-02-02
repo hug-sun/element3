@@ -312,14 +312,57 @@ describe('Watcher.ts', () => {
 
     const watcher = new Watcher(obj)
 
-    watcher.bindHandler('get/obj', (e) => {
-      console.log(e)
-    })
+    const fn1 = jest.fn()
+    watcher.bindHandler('get/obj', fn1)
 
-    watcher.bindHandler('get/arr', (e) => {
-      console.log(e)
-    })
+    const fn2 = jest.fn()
+    watcher.bindHandler('get/arr', fn2)
 
-    console.log(watcher.proxy.arr[0][0].arr[0][0].id)
+    watcher.proxy.arr[0][0].arr[0][0].id
+
+    expect(fn1).toBeCalledTimes(3)
+    expect(fn1).toHaveBeenNthCalledWith(1, {
+      target: obj,
+      key: 'arr',
+      value: null,
+      currentNode: obj
+    })
+    expect(fn1).toHaveBeenNthCalledWith(2, {
+      target: obj.arr[0][0],
+      key: 'arr',
+      value: null,
+      currentNode: obj.arr[0][0]
+    })
+    expect(fn1).toHaveBeenNthCalledWith(3, {
+      target: obj.arr[0][0].arr[0][0],
+      key: 'id',
+      value: null,
+      currentNode: obj.arr[0][0].arr[0][0]
+    })
+    expect(fn2).toBeCalledTimes(4)
+    expect(fn2).toHaveBeenNthCalledWith(1, {
+      target: obj.arr,
+      key: '0',
+      value: null,
+      currentNode: obj
+    })
+    expect(fn2).toHaveBeenNthCalledWith(2, {
+      target: obj.arr[0],
+      key: '0',
+      value: null,
+      currentNode: obj
+    })
+    expect(fn2).toHaveBeenNthCalledWith(3, {
+      target: obj.arr[0][0].arr,
+      key: '0',
+      value: null,
+      currentNode: obj.arr[0][0]
+    })
+    expect(fn2).toHaveBeenNthCalledWith(4, {
+      target: obj.arr[0][0].arr[0],
+      key: '0',
+      value: null,
+      currentNode: obj.arr[0][0]
+    })
   })
 })
