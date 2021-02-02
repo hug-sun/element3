@@ -1,5 +1,5 @@
 import { DefaultNodeKey, RawNodeBase } from '../types'
-import { HandlerCb, ID, TreeNode } from './TreeNode'
+import { AsyncLoader, HandlerCb, ID, TreeNode } from './TreeNode'
 import { TreeMapper } from './TreeMapper'
 
 export class Tree<RawNode extends RawNodeBase> {
@@ -31,13 +31,13 @@ export class Tree<RawNode extends RawNodeBase> {
       {
         id: 'id',
         label: 'label',
-        children: 'children'
-        // isDisabled: 'isDisabled',
-        // isAsync: 'isAsync',
+        children: 'children',
+        isDisabled: 'isDisabled',
+        isAsync: 'isAsync',
+        isLeaf: 'isLeaf'
         // isChecked: 'isChecked',
         // isVisible: 'isVisible',
         // isExpanded: 'isExpanded',
-        // isLeaf: 'isLeaf'
       },
       defaultNodeKey
     )
@@ -80,8 +80,8 @@ export class Tree<RawNode extends RawNodeBase> {
   }
 
   expandAll(v = true): void {
-    this.root.depthEach((currentNode) => {
-      currentNode.expand(v, false)
+    this.rootProxy.depthEach((currentNode) => {
+      currentNode.expand(v, false, () => this.expandAll(v))
     })
   }
 
@@ -100,5 +100,26 @@ export class Tree<RawNode extends RawNodeBase> {
 
   getTreeNode(rawNode: RawNode): TreeNode {
     return this._mapper.getTreeNode(rawNode)
+  }
+
+  setStrictly(isStrictly: boolean): void {
+    this.root.setStrictly(isStrictly)
+  }
+
+  bindAsyncLoader(asyncLoader: AsyncLoader): void {
+    const _asyncLoader = (node, resolve) => {
+      const _resolve = (nodes: RawNode[] | TreeNode[]) => {
+        if (nodes.length === 0) {
+          return resolve([])
+        }
+        if (node[0] instanceof TreeNode) {
+          return resolve(nodes)
+        }
+        return resolve(this._mapper.convertToTreeNodes(nodes as RawNode[]))
+      }
+      asyncLoader(node, _resolve)
+    }
+    this.root.bindAsyncLoader(_asyncLoader)
+    // this.rootProxy.expand(true)
   }
 }

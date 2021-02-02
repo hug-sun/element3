@@ -265,4 +265,23 @@ describe('TreeNode.ts', () => {
     expect(cb).toBeCalledTimes(3)
     expect(result.map((node) => node.id)).toEqual([2, 4])
   })
+
+  it('async load node', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node1-1', [
+        new TreeNode(4, 'Node1-1-1', [], {
+          isAsync: true,
+          asyncLoader(node, resolve) {
+            expect(root.findOne(4).asyncState).toEqual('loading')
+            resolve([new TreeNode(5, 'AsyncNode')])
+          }
+        })
+      ])
+    ])
+    expect(root.findOne(4).asyncState).toEqual('notLoaded')
+    expect(root.findOne(4).isAsync).toBeTruthy()
+    root.findOne(4).expand(true)
+    expect(root.findOne(4).children).toHaveLength(1)
+    expect(root.findOne(4).asyncState).toEqual('loaded')
+  })
 })

@@ -8,7 +8,13 @@ export type HandlerCb = (
   currentNode: TreeNode,
   parentNode: TreeNode,
   level: number
-) => boolean | void
+) => boolean | void | Promise<void>
+
+export type AsyncState = 'notLoaded' | 'loaded' | 'loading'
+
+export type AsyncLoader = (node: TreeNode, resolve: Resolver) => void
+
+export type Resolver = (nodes: TreeNode[]) => void
 
 export interface TreeNodePublicProp {
   id: ID
@@ -32,6 +38,27 @@ export class TreeNode implements TreeNodePublicProp {
   private _isExpanded: boolean
   private _isRendered = false
   private _isVisible: boolean
+  private _isAsync: boolean
+  private _asyncLoader: AsyncLoader
+  private _asyncState: AsyncState
+
+  get asyncState(): AsyncState {
+    return this._asyncState
+  }
+
+  get asyncLoader() {
+    if (typeof this._asyncLoader === 'function') {
+      return this._asyncLoader
+    }
+    return (this._asyncLoader = this.parent?.asyncLoader)
+  }
+
+  get isAsync(): boolean {
+    if (this._isAsync) {
+      return this._isAsync
+    }
+    return (this._isAsync = this.parent?.isAsync ?? false)
+  }
 
   get isVisible(): boolean {
     return this._isVisible
@@ -79,7 +106,11 @@ export class TreeNode implements TreeNodePublicProp {
   }
 
   get isChecked(): boolean {
-    if (this.isLeaf || this.isStrictly) {
+    if (
+      this.isLeaf ||
+      this.isStrictly ||
+      (this.isAsync && this._asyncState !== 'loaded')
+    ) {
       return this._isChecked
     }
 
@@ -92,6 +123,9 @@ export class TreeNode implements TreeNodePublicProp {
   }
 
   get isLeaf(): boolean {
+    if (this.isAsync && this._asyncState !== 'loaded') {
+      return this._isLeaf
+    }
     return this.children.length === 0 || this._isLeaf
   }
 
@@ -109,7 +143,9 @@ export class TreeNode implements TreeNodePublicProp {
       isStrictly = false,
       isDisabled = false,
       isExpanded = false,
-      isVisible = true
+      isVisible = true,
+      isAsync = false,
+      asyncLoader = null
     } = {}
   ) {
     this.id = id ?? idSeed++
@@ -119,6 +155,9 @@ export class TreeNode implements TreeNodePublicProp {
     this._isDisabled = isDisabled
     this._isExpanded = isExpanded
     this._isVisible = isVisible
+    this._isAsync = isAsync
+    this._asyncLoader = asyncLoader
+    this._asyncState = 'notLoaded'
 
     this.setChecked(isChecked)
 
@@ -208,7 +247,7 @@ export class TreeNode implements TreeNodePublicProp {
   /**
    * Traverse upward
    */
-  upwardEach(callback: HandlerCb, { isSkipSelf = true } = {}): void {
+  upwardEach(callback: HandlerCb, { isSkipSelf = true } = {}): Promise<void> {
     let current = isSkipSelf ? this.parent : this
     while (current) {
       if (callback(current, current.parent, current.level)) {
@@ -237,11 +276,31 @@ export class TreeNode implements TreeNodePublicProp {
     isFunction(downToUpCallBack) && downToUpCallBack(this, this.parent, 0)
   }
 
-  expand(v = !this._isExpanded, isAutoExpandParent = false): void {
+  execAsyncLoader(cb = () => null) {
+    if (this.isLeaf || !this.isAsync || this._asyncState !== 'notLoaded') {
+      return
+    }
+
+    const resolver = (nodes: TreeNode[]) => {
+      this.appendChild(...nodes)
+      this._asyncState = 'loaded'
+      cb()
+    }
+    this._asyncState = 'loading'
+    this.asyncLoader(this, resolver)
+  }
+
+  expand(
+    v = !this._isExpanded,
+    isAutoExpandParent = false,
+    cb = () => null
+  ): void {
     this._isExpanded = v
     if (v) {
       this._isRendered = true
+      this.execAsyncLoader(cb)
     }
+
     if (isAutoExpandParent) {
       this.parent?.expand(true, true)
     }
@@ -262,5 +321,10 @@ export class TreeNode implements TreeNodePublicProp {
   }
   hide() {
     this._isVisible = false
+  }
+
+  bindAsyncLoader(asyncLoader: AsyncLoader): void {
+    this._isAsync = true
+    this._asyncLoader = asyncLoader
   }
 }
