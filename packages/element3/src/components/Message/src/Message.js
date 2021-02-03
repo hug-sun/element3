@@ -102,7 +102,7 @@ function getNextRefInterval(instance) {
 function getNextElementInterval(instance) {
   const INTERVAL_HEIGHT = 16
   const target = instance.proxy.$el
-
+  console.log(instance)
   return target.offsetHeight + INTERVAL_HEIGHT
 }
 

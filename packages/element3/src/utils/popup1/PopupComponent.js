@@ -1,6 +1,14 @@
-import { Teleport, ref, Transition, computed, defineComponent } from 'vue'
+import {
+  Teleport,
+  ref,
+  Transition,
+  getCurrentInstance,
+  computed,
+  defineComponent
+} from 'vue'
 import { props } from './props'
 import { useZindex, useBodyScroll } from './use'
+import { getRefInstance } from '../../utils/util'
 
 const useStyle = () => {
   const style = ref({})
@@ -13,12 +21,23 @@ const useStyle = () => {
     setStyle
   }
 }
-const PopupComponent = (component, componentProps, children) =>
+
+const omit = (obj, keys) => {
+  const ret = Object.assign({}, obj)
+
+  keys.forEach((key) => delete ret[key])
+
+  return ret
+}
+
+const PopupComponent = (component, children) =>
   defineComponent({
     props,
-    emits: ['close'],
-    setup(props) {
+    //emits: ['close'],
+    setup(props, { slots }) {
       const show = ref(true)
+
+      const instance = getCurrentInstance()
 
       const showTeleport = ref(true)
 
@@ -33,8 +52,15 @@ const PopupComponent = (component, componentProps, children) =>
       const afterLeaveHandler = () => {
         showTeleport.value = false
       }
-      const closePopup = () => {
+
+      const handleClick = () => {
         show.value = false
+
+        props.onClose && props.onClose(getRefInstance(instance, 'popup')[0])
+      }
+      const closePopup = (instance) => {
+        show.value = false
+        props.onClose && props.onClose(instance)
       }
 
       return {
@@ -45,6 +71,7 @@ const PopupComponent = (component, componentProps, children) =>
         setStyle,
         popup,
         showTeleport,
+        handleClick,
         afterLeaveHandler
       }
     },
@@ -53,6 +80,7 @@ const PopupComponent = (component, componentProps, children) =>
       $attrs,
       zIndex,
       closePopup,
+      handleClick,
       style,
       popup,
       show,
@@ -60,9 +88,13 @@ const PopupComponent = (component, componentProps, children) =>
       afterLeaveHandler
     }) {
       const styleText = { ...style, zIndex }
+
       if (!showTeleport) {
         return null
       }
+
+      const childernProps = omit($props, ['onClose'])
+
       return (
         <Teleport to="body">
           <Transition
@@ -73,11 +105,11 @@ const PopupComponent = (component, componentProps, children) =>
             <component
               v-show={show}
               ref="popup"
-              onClick={closePopup}
+              onClick={handleClick}
               onClose={closePopup}
               style={styleText}
               {...$attrs}
-              {...componentProps}
+              {...childernProps}
             >
               {children ? <children /> : null}
             </component>

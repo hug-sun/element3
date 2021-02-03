@@ -13,6 +13,8 @@ export default {
     function open() {
       // message('这是一条消息提示')
       Message({
+        duration: 2000,
+        closeOnClickModal: true,
         message: 'verticalOffset'
       })
     }

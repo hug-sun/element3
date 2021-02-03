@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import { getCurrentInstance, computed, ref } from 'vue'
+import { getCurrentInstance, computed, ref, onUpdated } from 'vue'
 import { props } from './props'
 export default {
   props,

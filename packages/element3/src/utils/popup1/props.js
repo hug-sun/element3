@@ -19,5 +19,6 @@ export const props = {
   },
   afterLeaveHandler: {
     type: Function
-  }
+  },
+  onClose: Function
 }
