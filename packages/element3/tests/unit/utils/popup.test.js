@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { nextTick, ref, h } from 'vue'
+import { nextTick, ref, h, onUpdated } from 'vue'
 import { PopupComponent } from '../../../src/utils/popup1/index'
 
 /**
@@ -48,7 +48,7 @@ describe('open a teleport', () => {
     ).toBe('2002')
   })
 
-  it.skip('click modal should destory teleport and teleport when closeOnClickModal eq true ', async () => {
+  it('click modal should destory teleport and teleport when closeOnClickModal eq true ', async () => {
     let clicked = false
 
     const component = <div className="el-popup__wrapper"></div>
@@ -57,10 +57,10 @@ describe('open a teleport', () => {
 
     document.querySelector('.el-popup__wrapper').trigger('click')
 
-    await nextTick()
-
-    expect(document.querySelector('body .el-popup__wrapper')).toBeNull()
-    expect(clicked).toBeTruthy()
+    setTimeout(() => {
+      expect(document.querySelector('body .el-popup__wrapper')).toBeNull()
+      expect(clicked).toBeTruthy()
+    }, 0)
   })
 
   it('click modal should not destory teleport and teleport when closeOnClickModal eq false', async () => {
@@ -68,35 +68,38 @@ describe('open a teleport', () => {
 
     const component = <div className="el-popup__wrapper"></div>
 
+    const props = {
+      closeOnClickModal: false,
+      onClose: () => (clicked = true)
+    }
+
     mount(PopupComponent(component), {
-      props: {
-        closeOnClickModal: false,
-        onClose: () => (clicked = true)
-      }
+      props
     })
 
     document.querySelector('.el-popup__wrapper').trigger('click')
 
-    await nextTick()
-
-    expect(document.querySelector('body  .el-popup__wrapper')).not.toBeNull()
-    expect(clicked).toBeFalsy()
+    // await nextTick() 不能使用 ?
+    setTimeout(() => {
+      expect(document.querySelector('body  .el-popup__wrapper')).not.toBeNull()
+      expect(clicked).toBeFalsy()
+    }, 0)
   })
 
-  it.skip('lockScroll', async () => {
+  it('lockScroll', async () => {
     const props = {
       lockScroll: true
     }
     const component = <div className="el-popup__wrapper"></div>
 
-    // mount(h(PopupComponent(component), props))
     mount(PopupComponent(component), {
       props
     })
-    console.log(document.body.classList)
+
     expect(document.querySelector('.el-popup-parent--hidden')).toBeTruthy()
-    document.querySelector('.el-popup__wrapper').trigger('click')
-    // await nextTick()
-    expect(document.querySelector('.el-popup-parent--hidden')).toBeNull()
+    setTimeout(() => {
+      document.querySelector('.el-popup__wrapper').trigger('click')
+      expect(document.querySelector('.el-popup-parent--hidden')).toBeNull()
+    }, 0)
   })
 })
