@@ -19,14 +19,21 @@ export default {
           node: props.node,
           data: elTree.tree.getRawNode(props.node)
         })
-      } else if (typeof elTree.renderContent === 'function') {
+      }
+      if (typeof elTree.renderContent === 'function') {
         return elTree.renderContent({
           node: props.node,
           data: elTree.tree.getRawNode(props.node)
         })
       }
 
-      return h('span', props.node.label)
+      return h(
+        'span',
+        {
+          class: 'el-tree-node__label'
+        },
+        props.node.label
+      )
     }
   }
 }

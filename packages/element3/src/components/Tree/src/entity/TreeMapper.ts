@@ -274,10 +274,16 @@ export class TreeMapper<RawNode extends RawNodeBase> {
   }
 
   getRawNode(treeNode: TreeNode): RawNode {
-    return this._toRawNode.get(this._treeNodeWatcher.getRaw(treeNode))
+    return (
+      this._toRawNode.get(this._treeNodeWatcher.getRaw(treeNode)) ??
+      this._toRawNode.get(treeNode)
+    )
   }
 
   getTreeNode(rawNode: RawNode): TreeNode {
-    return this._toTreeNode.get(this._rawNodeWatcher.getRaw(rawNode))
+    return (
+      this._toTreeNode.get(this._rawNodeWatcher.getRaw(rawNode)) ??
+      this._toTreeNode.get(rawNode)
+    )
   }
 }
