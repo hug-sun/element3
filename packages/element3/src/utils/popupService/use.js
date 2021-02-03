@@ -1,5 +1,5 @@
 import { computed, onBeforeMount, onBeforeUnmount, onUnmounted } from 'vue'
-import { addClass, removeClass, hasClass } from '../../utils/dom'
+import { addClass, removeClass, hasClass } from '../dom'
 
 let zIndex = 2000
 

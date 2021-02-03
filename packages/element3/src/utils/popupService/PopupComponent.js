@@ -8,7 +8,7 @@ import {
 } from 'vue'
 import { props } from './props'
 import { useZindex, useBodyScroll } from './use'
-import { getRefInstance } from '../../utils/util'
+import { getRefInstance } from '../util'
 
 const useStyle = () => {
   const style = ref({})

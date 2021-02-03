@@ -1,5 +1,5 @@
 import { h, render } from 'vue'
-import { PopupComponent } from '../../src/utils/popup1/index'
+import { PopupComponent } from '../utils/popupService/index'
 
 const MOUNT_COMPONENT_REF = 'el_component'
 const COMPONENT_CONTAINER_SYMBOL = Symbol('el_component_container')

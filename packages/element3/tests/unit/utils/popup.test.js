@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { nextTick, ref, h, onUpdated } from 'vue'
-import { PopupComponent } from '../../../src/utils/popup1/index'
+import { PopupComponent } from '../../../src/utils/popupService/index'
 
 /**
  * mock 原生的tigger
