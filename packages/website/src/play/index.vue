@@ -7,7 +7,12 @@
     show-checkbox
     defaultExpandAll
   >
+    <template #default="{ node, data }">
+      <span style="color: red">{{ node.label }}</span>
+      <span style="color: blue">{{ data.name }}</span>
+    </template>
   </el-tree>
+  <button @click="onClick">ADD</button>
 </template>
 
 <script>
@@ -23,6 +28,13 @@ export default {
     }
   },
   methods: {
+    onClick() {
+      this.data[0].zones[1].zones = [
+        { name: 'Hello1' },
+        { name: 'Hello2' },
+        { name: 'Hello3' }
+      ]
+    },
     loadNode(node, resolve) {
       if (node.level === 0) {
         return resolve([{ name: 'region' }])

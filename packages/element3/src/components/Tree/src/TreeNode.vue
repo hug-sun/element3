@@ -44,10 +44,7 @@
         v-if="node.asyncState === 'loading'"
         class="el-tree-node__loading-icon el-icon-loading"
       ></span>
-      <el-node-content
-        class="el-tree-node__label"
-        :node="node"
-      ></el-node-content>
+      <el-node-content :node="node"></el-node-content>
     </div>
     <el-collapse-transition>
       <div

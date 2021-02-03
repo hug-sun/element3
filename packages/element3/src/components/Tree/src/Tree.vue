@@ -5,7 +5,9 @@
     :defaultNodeKey="_defaultNodeKey"
     :async="_async"
     :asyncLoader="_asyncLoader"
-  ></el-tree-main>
+    :renderContent="_renderContent"
+  >
+  </el-tree-main>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -29,7 +31,9 @@ export default defineComponent({
     lazy: Boolean,
 
     asyncLoader: Function,
-    load: Function
+    load: Function,
+
+    renderContent: Function
   },
   emits: ['update:modelValue', 'update:data'],
   computed: {
@@ -50,6 +54,15 @@ export default defineComponent({
     },
     _asyncLoader() {
       return this.asyncLoader ?? this.load
+    },
+    _renderContent() {
+      if (this.renderContent) {
+        return this.renderContent
+      }
+      if (this.$slots.default) {
+        return this.$slots.default
+      }
+      return null
     }
   },
   methods: {
