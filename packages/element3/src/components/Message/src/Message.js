@@ -46,7 +46,7 @@ function mergeOptions(opts, type = 'info') {
   // opts.onClose Cannot be merged into the default options
   delete opts?.onClose
   delete opts?.offset
-  defaultOptions.onCloseHook = (instance) => {
+  defaultOptions.onClose = (instance) => {
     closeMessage(instance)
     if (userOnClose) userOnClose(instance.proxy)
   }

@@ -32,31 +32,9 @@
 </template>
 <script>
 import { getCurrentInstance, computed, ref } from 'vue'
+import { props } from './props'
 export default {
-  props: {
-    message: {
-      type: [String, Object]
-    },
-    visiable: {
-      type: Boolean,
-      default: true
-    },
-    type: {
-      type: String,
-      defalut: 'info',
-      validator(val) {
-        return ['success', 'warning', 'info', 'error'].includes(val)
-      }
-    },
-    iconClass: String,
-    showClose: Boolean,
-    duration: Number,
-    center: Boolean,
-    customClass: String,
-    dangerouslyUseHTMLString: Boolean,
-    offset: Number,
-    onCloseHook: Function
-  },
+  props,
   emits: ['close'],
   setup(props, { emit }) {
     const instance = getCurrentInstance()
@@ -80,7 +58,7 @@ export default {
 
     function _close() {
       emit('close', instance)
-      props.onCloseHook && props.onCloseHook(instance)
+      props.onClose && props.onClose(instance)
       clearTimeout(timer)
     }
 
