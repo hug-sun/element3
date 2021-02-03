@@ -16,6 +16,8 @@ export type AsyncLoader = (node: TreeNode, resolve: Resolver) => void
 
 export type Resolver = (nodes: TreeNode[]) => void
 
+export type MoveRelative = 'prev' | 'inner' | 'next'
+
 export interface TreeNodePublicProp {
   id: ID
   label: string
@@ -131,6 +133,10 @@ export class TreeNode implements TreeNodePublicProp {
 
   set isLeaf(v: boolean) {
     this._isLeaf = v
+  }
+
+  get index(): number {
+    return this.parent.children.findIndex((node) => node === this)
   }
 
   constructor(
@@ -326,5 +332,42 @@ export class TreeNode implements TreeNodePublicProp {
   bindAsyncLoader(asyncLoader: AsyncLoader): void {
     this._isAsync = true
     this._asyncLoader = asyncLoader
+  }
+
+  remove() {
+    if (!this.parent) {
+      return
+    }
+
+    const index = this.parent.children.findIndex((node) => node === this)
+    if (index === -1) {
+      return
+    }
+
+    this.parent.removeChild(index)
+  }
+
+  move(target: TreeNode, relative: MoveRelative): boolean {
+    if (target === this) {
+      return false
+    }
+
+    if (this.findOne(target)) {
+      return false
+    }
+
+    this.remove()
+    switch (relative) {
+      case 'prev':
+        target.parent.insertChild(target.index, this)
+        return true
+      case 'inner':
+        target.appendChild(this)
+        target.expand(true, true)
+        return true
+      case 'next':
+        target.parent.insertChild(target.index + 1, this)
+        return true
+    }
   }
 }
