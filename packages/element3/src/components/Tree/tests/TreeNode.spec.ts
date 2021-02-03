@@ -12,6 +12,13 @@ describe('TreeNode.vue', () => {
     const wrapper = mount(ElTreeNode, {
       props: {
         node: treeNode
+      },
+      global: {
+        provide: {
+          elTree: {
+            $slots: {}
+          }
+        }
       }
     })
     expect(wrapper.find('#TreeNode1').exists()).toBeTruthy()
