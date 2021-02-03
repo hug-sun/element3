@@ -67,8 +67,8 @@ export class Watcher<T extends RawNodeBase> {
       return isArray(lastTarget) ? target : lastTarget
     }
   }
-  createGetter(currentNode: T): (target: T, key: Key<T>) => void {
-    return (target: T, key: Key<T>) => {
+  createGetter(currentNode: T): (target: T, key: Key<T>, receiver: T) => void {
+    return (target: T, key: Key<T>, receiver) => {
       if (isArray(target)) {
         this.trigger('get/arr', currentNode, target, key)
       }
@@ -76,7 +76,7 @@ export class Watcher<T extends RawNodeBase> {
         this.trigger('get/obj', currentNode, target, key)
       }
 
-      const result = Reflect.get(target, key)
+      const result = Reflect.get(target, key, receiver)
       return isObject(result)
         ? this.reactive(
             result,
