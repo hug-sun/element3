@@ -84,11 +84,11 @@ function updatePosition(closeInstance) {
     index++
   ) {
     const instance = instances[index]
-    const offsetTop =
-      instance.proxy.popup.$el.offsetTop - getNextElementInterval(closeInstance)
+    const instanceTop = getProxyElTop(instance)
+    const top = instanceTop - getNextElementInterval(closeInstance)
 
     instance.proxy.setStyle({
-      top: offsetTop + 'px'
+      top: top + 'px'
     })
   }
 }
@@ -120,4 +120,9 @@ function removeRef(ref) {
 
 function getIndexByInstance(instance) {
   return instances.findIndex((i) => i.proxy.popup.$el == instance.proxy.$el)
+}
+
+function getProxyElTop(instance) {
+  const { top } = instance.proxy.popup.$el.style
+  return top.replace(/px/, '')
 }

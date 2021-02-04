@@ -54,9 +54,11 @@ const PopupComponent = (component, children) =>
       }
 
       const handleClick = () => {
-        show.value = false
+        if (props.closeOnClickModal) {
+          show.value = false
 
-        props.onClose && props.onClose(getRefInstance(instance, 'popup')[0])
+          props.onClose && props.onClose(getRefInstance(instance, 'popup')[0])
+        }
       }
       const closePopup = (instance) => {
         show.value = false
