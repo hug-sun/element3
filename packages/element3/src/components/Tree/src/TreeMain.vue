@@ -100,6 +100,7 @@ export default {
     const tree = new Tree(props.modelValue, props.defaultNodeKey)
     ctx.emit('update:modelValue', tree.rawNodesProxy)
 
+    tree.expandNodeByIds(props.expanded)
     watchEffect(
       () => {
         tree.expandNodeByIds(props.expanded)
@@ -116,6 +117,7 @@ export default {
     if (props.async) tree.bindAsyncLoader(props.asyncLoader)
 
     tree.setStrictly(props.checkStrictly)
+    tree.setCheckedByIds(props.checked)
     watchEffect(
       () => {
         tree.setCheckedByIds(props.checked)

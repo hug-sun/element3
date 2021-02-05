@@ -68,7 +68,7 @@ export class Tree<RawNode extends RawNodeBase> {
   expandNodeByIds(ids: ID[]): void {
     this.rootProxy.depthEach((currentNode: TreeNode) => {
       if (ids.includes(currentNode.id)) {
-        currentNode.expand(true)
+        currentNode.expand(true, true)
       }
     })
   }

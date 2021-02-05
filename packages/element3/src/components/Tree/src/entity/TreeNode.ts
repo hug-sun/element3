@@ -306,7 +306,7 @@ export class TreeNode implements TreeNodePublicProp {
     this._isExpanded = v
     if (v) {
       this._isRendered = true
-      this.execAsyncLoader(cb)
+      // this.execAsyncLoader(cb)
     }
 
     if (isAutoExpandParent) {
