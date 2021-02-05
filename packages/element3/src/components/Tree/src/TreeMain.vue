@@ -27,15 +27,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  getCurrentInstance,
-  PropType,
-  provide,
-  reactive,
-  ref,
-  watchEffect
-} from 'vue'
+import { getCurrentInstance, PropType, provide, ref, watchEffect } from 'vue'
 import { t } from '../../../locale'
 import ElTreeNode from './TreeNode.vue'
 import { Tree } from './entity/Tree'
@@ -100,6 +92,8 @@ export default {
     const tree = new Tree(props.modelValue, props.defaultNodeKey)
     ctx.emit('update:modelValue', tree.rawNodesProxy)
 
+    if (props.async) tree.bindAsyncLoader(props.asyncLoader)
+
     tree.expandNodeByIds(props.expanded)
     watchEffect(
       () => {
@@ -113,8 +107,6 @@ export default {
     watchEffect(() => {
       ctx.emit('update:expanded', tree.getExpandedNodeIds())
     })
-
-    if (props.async) tree.bindAsyncLoader(props.asyncLoader)
 
     tree.setStrictly(props.checkStrictly)
     tree.setCheckedByIds(props.checked)
@@ -141,8 +133,6 @@ export default {
       handleDragEnd,
       handleDrop
     } = useDrag()
-
-    console.log(elTree)
 
     return {
       tree,
