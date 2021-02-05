@@ -11,7 +11,7 @@ export function Message(opts) {
 Message.closeAll = () => {
   instances.forEach((instance) => {
     instance.proxy.popup.close()
-    removeRef(instance)
+    removeInstance(instance)
   })
 }
 ;['info', 'success', 'warning', 'error'].forEach((type) => {
@@ -111,11 +111,6 @@ function addInstance(instance) {
 
 function removeInstance(instance) {
   instances.splice(getIndexByInstance(instance), 1)
-}
-
-function removeRef(ref) {
-  const index = instances.findIndex((el) => el.proxy.popup.$el !== ref.$e)
-  instances.splice(index, 1)
 }
 
 function getIndexByInstance(instance) {

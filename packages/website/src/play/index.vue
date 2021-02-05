@@ -17,6 +17,7 @@ export default {
         closeOnClickModal: true,
         message: 'verticalOffset'
       })
+      // Message.closeAll()
     }
 
     function openVn() {

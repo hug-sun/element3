@@ -3,24 +3,11 @@ import {
   ref,
   Transition,
   getCurrentInstance,
-  computed,
   defineComponent
 } from 'vue'
 import { props } from './props'
-import { useZindex, useBodyScroll } from './use'
+import { useZindex, useBodyScroll, useStyle, useProvide } from './use'
 import { getRefInstance } from '../util'
-
-const useStyle = () => {
-  const style = ref({})
-
-  function setStyle(options) {
-    style.value = Object.assign({}, style, options)
-  }
-  return {
-    style,
-    setStyle
-  }
-}
 
 const omit = (obj, keys) => {
   const ret = Object.assign({}, obj)
@@ -56,11 +43,13 @@ const PopupComponent = (component, children) =>
       const handleClick = () => {
         if (props.closeOnClickModal) {
           show.value = false
-
           props.onClose && props.onClose(getRefInstance(instance, 'popup')[0])
         }
       }
       const closePopup = (instance) => {
+        if (!props.showTeleport) {
+          showTeleport.value = false
+        }
         show.value = false
         props.onClose && props.onClose(instance)
       }
@@ -97,13 +86,31 @@ const PopupComponent = (component, children) =>
 
       const childernProps = omit($props, ['onClose'])
 
-      return (
-        <Teleport to="body">
-          <Transition
-            name={$props.transitionClass}
-            onAfterLeave={afterLeaveHandler}
-            appear
-          >
+      if ($props.transitionClass) {
+        return (
+          <Teleport to="body">
+            <Transition
+              name={$props.transitionClass}
+              onAfterLeave={afterLeaveHandler}
+              appear
+            >
+              <component
+                v-show={show}
+                ref="popup"
+                onClick={handleClick}
+                onClose={closePopup}
+                style={styleText}
+                {...$attrs}
+                {...childernProps}
+              >
+                {children ? <children /> : null}
+              </component>
+            </Transition>
+          </Teleport>
+        )
+      } else {
+        return (
+          <Teleport to="body">
             <component
               v-show={show}
               ref="popup"
@@ -115,9 +122,9 @@ const PopupComponent = (component, children) =>
             >
               {children ? <children /> : null}
             </component>
-          </Transition>
-        </Teleport>
-      )
+          </Teleport>
+        )
+      }
     }
   })
 
