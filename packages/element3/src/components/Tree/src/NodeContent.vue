@@ -17,13 +17,13 @@ export default {
       if (typeof elTree.$slots.default === 'function') {
         return elTree.$slots.default({
           node: props.node,
-          data: elTree.tree.getRawNode(props.node)
+          data: props.node.data
         })
       }
       if (typeof elTree.renderContent === 'function') {
         return elTree.renderContent({
           node: props.node,
-          data: elTree.tree.getRawNode(props.node)
+          data: props.node.data
         })
       }
 

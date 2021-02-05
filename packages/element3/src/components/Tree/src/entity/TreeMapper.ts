@@ -58,7 +58,8 @@ export class TreeMapper<RawNode extends RawNodeBase> {
       {
         isDisabled: rawNode[this._toRawNodeKey.get('isDisabled')],
         isLeaf: rawNode[this._toRawNodeKey.get('isLeaf')],
-        isAsync: rawNode[this._toRawNodeKey.get('isAsync')]
+        isAsync: rawNode[this._toRawNodeKey.get('isAsync')],
+        mapper: this
       }
     )
     const _rawNode = reactive(rawNode) as RawNode

@@ -1,5 +1,6 @@
-import { reactive, toRaw } from 'vue'
+import { reactive } from 'vue'
 import { isFunction } from '../../../../utils/types'
+import { RawNodeBase } from '../types'
 import { Watcher } from '../utils/Watcher'
 
 export type ID = string | number
@@ -30,7 +31,7 @@ export interface TreeNodePublicProp {
 
 export type TK = Extract<keyof TreeNode, keyof TreeNodePublicProp>
 
-export class TreeNode implements TreeNodePublicProp {
+export class TreeNode<RawNode = any> implements TreeNodePublicProp {
   id: ID
   label: string
   parent: TreeNode
@@ -45,6 +46,15 @@ export class TreeNode implements TreeNodePublicProp {
   private _isAsync: boolean
   private _asyncLoader: AsyncLoader
   private _asyncState: AsyncState
+  private _data: RawNode
+  private _mapper: any
+
+  get data(): RawNode {
+    if (!this._data && this._mapper) {
+      this._data = this._mapper.getRawNode(this)
+    }
+    return this._data
+  }
 
   get asyncState(): AsyncState {
     return this._asyncState
@@ -153,7 +163,9 @@ export class TreeNode implements TreeNodePublicProp {
       isExpanded = false,
       isVisible = true,
       isAsync = false,
-      asyncLoader = null
+      asyncLoader = null,
+      data = null,
+      mapper = null
     } = {}
   ) {
     this.id = id ?? idSeed++
@@ -166,6 +178,8 @@ export class TreeNode implements TreeNodePublicProp {
     this._isAsync = isAsync
     this._asyncLoader = asyncLoader
     this._asyncState = 'notLoaded'
+    this._data = data
+    this._mapper = mapper
 
     this.setChecked(isChecked)
 
@@ -194,24 +208,24 @@ export class TreeNode implements TreeNodePublicProp {
     return this.children.filter((node) => node.isChecked)
   }
 
-  appendChild(...nodes: TreeNode[]) {
+  appendChild(...nodes: TreeNode[] | RawNode[]) {
     nodes.forEach((node) => {
       if (!(node instanceof TreeNode)) {
-        throw new Error('appendChild not TreeNode')
+        node = this._mapper.convertToTreeNode(node)
       }
       node.parent = Watcher.getRaw(this)
       this.children.push(node)
     })
   }
 
-  insertChild(index: number, ...nodes: TreeNode[]) {
+  insertChild(index: number, ...nodes: TreeNode[] | RawNode[]) {
     nodes.forEach((node) => {
       if (!(node instanceof TreeNode)) {
-        throw new Error('insertChild not TreeNode')
+        node = this._mapper.convertToTreeNode(node)
       }
       node.parent = Watcher.getRaw(this)
     })
-    this.children.splice(index, 0, ...nodes)
+    this.children.splice(index, 0, ...(nodes as TreeNode[]))
   }
 
   removeChild(index: number, num = 1) {
@@ -289,7 +303,7 @@ export class TreeNode implements TreeNodePublicProp {
       return
     }
 
-    const resolver = (nodes: TreeNode[]) => {
+    const resolver = (nodes: TreeNode[] | RawNode[]) => {
       this.appendChild(...nodes)
       this._asyncState = 'loaded'
       cb()
@@ -306,7 +320,7 @@ export class TreeNode implements TreeNodePublicProp {
     this._isExpanded = v
     if (v) {
       this._isRendered = true
-      // this.execAsyncLoader(cb)
+      this.execAsyncLoader(cb)
     }
 
     if (isAutoExpandParent) {

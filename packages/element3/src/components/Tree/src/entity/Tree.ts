@@ -107,19 +107,7 @@ export class Tree<RawNode extends RawNodeBase> {
   }
 
   bindAsyncLoader(asyncLoader: AsyncLoader): void {
-    const _asyncLoader = (node, resolve) => {
-      const _resolve = (nodes: RawNode[] | TreeNode[]) => {
-        if (nodes.length === 0) {
-          return resolve([])
-        }
-        if (node[0] instanceof TreeNode) {
-          return resolve(nodes)
-        }
-        return resolve(this._mapper.convertToTreeNodes(nodes as RawNode[]))
-      }
-      asyncLoader(node, _resolve)
-    }
-    this.rootProxy.bindAsyncLoader(_asyncLoader)
+    this.rootProxy.bindAsyncLoader(asyncLoader)
     this.rootProxy.expand(true)
   }
 }
