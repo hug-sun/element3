@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { h, nextTick, ref } from 'vue'
+import { h, nextTick, reactive, ref } from 'vue'
 import { t } from '../../../locale'
 import TreeMain from '../src/TreeMain.vue'
 
@@ -120,10 +120,12 @@ describe('TreeMain.vue', () => {
     expect(wrapper.find('#TreeNode1').exists()).toBeTruthy()
     expect(wrapper.find('#TreeNode11').exists()).toBeTruthy()
     expect(wrapper.find('#TreeNode2').exists()).toBeTruthy()
-    wrapper.vm.nodes.push({
-      id: 3,
-      label: 'Node3'
-    })
+    wrapper.vm.nodes.push(
+      reactive({
+        id: 3,
+        label: 'Node3'
+      })
+    )
     await nextTick()
     expect(wrapper.find('#TreeNode3').exists()).toBeTruthy()
   })

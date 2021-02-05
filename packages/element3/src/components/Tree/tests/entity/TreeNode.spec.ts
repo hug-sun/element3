@@ -284,4 +284,15 @@ describe('TreeNode.ts', () => {
     expect(root.findOne(4).children).toHaveLength(1)
     expect(root.findOne(4).asyncState).toEqual('loaded')
   })
+
+  it('move a node', () => {
+    const root = new TreeNode(1, 'Node1', [
+      new TreeNode(2, 'Node2'),
+      new TreeNode(3, 'Node3')
+    ])
+
+    root.findOne(3).move(root.findOne(2), 'inner')
+    expect(root.findOne(2).children[0]).toBe(root.findOne(3))
+    expect(root.children).toHaveLength(1)
+  })
 })

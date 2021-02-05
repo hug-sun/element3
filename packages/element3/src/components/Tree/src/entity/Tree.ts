@@ -52,7 +52,7 @@ export class Tree<RawNode extends RawNodeBase> {
   }
 
   setCheckedByIds(ids: ID[]): void {
-    this.rootProxy.depthEach((currentNode: TreeNode) => {
+    this.root.depthEach((currentNode: TreeNode) => {
       if (ids.includes(currentNode.id)) {
         currentNode.setChecked(true)
       }
@@ -68,7 +68,7 @@ export class Tree<RawNode extends RawNodeBase> {
   expandNodeByIds(ids: ID[]): void {
     this.rootProxy.depthEach((currentNode: TreeNode) => {
       if (ids.includes(currentNode.id)) {
-        currentNode.expand(true)
+        currentNode.expand(true, true)
       }
     })
   }
@@ -107,19 +107,7 @@ export class Tree<RawNode extends RawNodeBase> {
   }
 
   bindAsyncLoader(asyncLoader: AsyncLoader): void {
-    const _asyncLoader = (node, resolve) => {
-      const _resolve = (nodes: RawNode[] | TreeNode[]) => {
-        if (nodes.length === 0) {
-          return resolve([])
-        }
-        if (node[0] instanceof TreeNode) {
-          return resolve(nodes)
-        }
-        return resolve(this._mapper.convertToTreeNodes(nodes as RawNode[]))
-      }
-      asyncLoader(node, _resolve)
-    }
-    this.root.bindAsyncLoader(_asyncLoader)
-    // this.rootProxy.expand(true)
+    this.rootProxy.bindAsyncLoader(asyncLoader)
+    this.rootProxy.expand(true)
   }
 }

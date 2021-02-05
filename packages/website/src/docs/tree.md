@@ -2,10 +2,6 @@
 
 用清晰的层级结构展示信息，可展开或折叠。
 
-:::warning
-添加节点、删除节点等操作必须使用 ElTree 提供的方法进行。
-:::
-
 ### 基础用法
 
 基础的树形结构展示。
@@ -81,7 +77,7 @@
           }
         ],
         defaultNodeKey: {
-          childNodes: 'children',
+          children: 'children',
           label: 'label'
         }
       }
@@ -106,7 +102,7 @@
 ```html
 <el-tree
   :defaultNodeKey="defaultNodeKey"
-  :async-load-fn="loadNode"
+  :async-loader="loadNode"
   async
   show-checkbox
   @check-change="handleCheckChange"
@@ -119,7 +115,7 @@
       return {
         defaultNodeKey: {
           label: 'name',
-          childNodes: 'zones'
+          children: 'zones'
         },
         count: 1
       }
@@ -138,9 +134,9 @@
         if (node.level > 3) return resolve([])
 
         var hasChild
-        if (node.data.raw.name === 'region1') {
+        if (node.label === 'region1') {
           hasChild = true
-        } else if (node.data.raw.name === 'region2') {
+        } else if (node.label=== 'region2') {
           hasChild = false
         } else {
           hasChild = Math.random() > 0.5
@@ -178,7 +174,7 @@
 ```html
 <el-tree
   :defaultNodeKey="defaultNodeKey"
-  :async-load-fn="loadNode"
+  :async-loader="loadNode"
   async
   show-checkbox
 >
@@ -190,7 +186,7 @@
       return {
         defaultNodeKey: {
           label: 'name',
-          childNodes: 'zones',
+          children: 'zones',
           isLeaf: 'leaf'
         }
       }
@@ -227,7 +223,7 @@
 
 可将 Tree 的某些节点设置为默认展开或默认选中
 
-:::demo 分别通过`expanded`和`checked`设置默认展开和默认选中的节点, 并且可以使用 vMdel 来同步当前树的展开节点状态和选中节点状态。需要注意的是，此时必须设置`defaultNodeKey.id`，其值为节点数据中的一个字段名，该字段在整棵树中是唯一的。
+:::demo 分别通过`expanded`和`checked`设置默认展开和默认选中的节点, 并且可以使用 vModel 来同步当前树的展开节点状态和选中节点状态。需要注意的是，此时必须设置`defaultNodeKey.id`，其值为节点数据中的一个字段名，该字段在整棵树中是唯一的。
 
 ```html
 <el-tree
@@ -296,7 +292,7 @@
           }
         ],
         defaultNodeKey: {
-          childNodes: 'children',
+          children: 'children',
           label: 'label'
         }
       }
@@ -382,7 +378,7 @@
           }
         ],
         defaultNodeKey: {
-          childNodes: 'children',
+          children: 'children',
           isDisabled: 'disabled',
           label: 'label'
         }
@@ -482,7 +478,7 @@
           }
         ],
         defaultNodeKey: {
-          childNodes: 'children',
+          children: 'children',
           label: 'label'
         }
       }
@@ -524,8 +520,8 @@
         <span class="custom-tree-node">
           <span>{{ data.label }}</span>
           <span>
-            <el-button type="text" size="mini" @click="append(node, data)">
-              Append
+            <el-button type="text" size="mini" @click="appendChild(node, data)">
+              appendChild
             </el-button>
             <el-button type="text" size="mini" @click="remove(node, data)">
               Delete
@@ -546,11 +542,11 @@
         {
           id: 1,
           label: '一级 1',
-          childNodes: [
+          children: [
             {
               id: 4,
               label: '二级 1-1',
-              childNodes: [
+              children: [
                 {
                   id: 9,
                   label: '三级 1-1-1'
@@ -566,7 +562,7 @@
         {
           id: 2,
           label: '一级 2',
-          childNodes: [
+          children: [
             {
               id: 5,
               label: '二级 2-1'
@@ -580,7 +576,7 @@
         {
           id: 3,
           label: '一级 3',
-          childNodes: [
+          children: [
             {
               id: 7,
               label: '二级 3-1'
@@ -599,9 +595,9 @@
     },
 
     methods: {
-      append(node, data) {
-        const newChild = { id: id++, label: 'testtest', childNodes: [] }
-        node.append(newChild)
+      appendChild(node, data) {
+        const newChild = { id: id++, label: 'testtest', children: [] }
+        node.appendChild(newChild)
       },
 
       remove(node, data) {
@@ -616,9 +612,9 @@
               <el-button
                 size="mini"
                 type="text"
-                onClick={() => this.append(node, data)}
+                onClick={() => this.appendChild(node, data)}
               >
-                Append
+                appendChild
               </el-button>
               <el-button
                 size="mini"
@@ -738,7 +734,7 @@
           }
         ],
         defaultNodeKey: {
-          childNodes: 'children',
+          children: 'children',
           label: 'label'
         }
       }
@@ -826,7 +822,7 @@
           }
         ],
         defaultNodeKey: {
-          childNodes: 'children',
+          children: 'children',
           label: 'label'
         }
       }
@@ -932,7 +928,7 @@
           }
         ],
         defaultNodeKey: {
-          childNodes: 'children',
+          children: 'children',
           label: 'label'
         }
       }
@@ -957,14 +953,14 @@
         console.log('tree drop: ', dropNode, dropType)
       },
       allowDrop(draggingNode, dropNode, type) {
-        if (dropNode.data.raw.label === '二级 3-1') {
+        if (dropNode.label === '二级 3-1') {
           return type !== 'inner'
         } else {
           return true
         }
       },
       allowDrag(draggingNode) {
-        return draggingNode.data.raw.label.indexOf('三级 3-2-2') === -1
+        return draggingNode.label.indexOf('三级 3-2-2') === -1
       }
     }
   }
@@ -985,9 +981,9 @@ interface TreeNode {
 
   parent: TreeNode
 
-  childNodes: TreeNode[]
+  children: TreeNode[]
 
-  isVisable: boolean
+  isVisible: boolean
 
   isChecked: boolean
 
@@ -997,11 +993,10 @@ interface TreeNode {
 
   isDisabled: boolean
 
-  isDraggable: boolean
 
   isRendered: boolean
 
-  data: { raw: RawNode } // Additional data carried by the node
+  data:  RawNode  // Additional data carried by the node
 
   isLeaf: boolean
 
@@ -1011,17 +1006,15 @@ interface TreeNode {
 
   asyncLoadFn: (currentNode: TreeNode, resolveFn: ResolveFn) => void // (currentNode, resolveFn) async load child node
 
-  append: (node: TreeNode | RawNode) => void
+  appendChild: (node: TreeNode | RawNode) => void
 
   remove: () => void
 
-  insert: (index: number, node: TreeNode | RawNode) => void
+  insertChild: (index: number, node: TreeNode | RawNode) => void
 
   removeChild: (index: number) => void
 
   setChecked: (value?: boolean, strictly?: boolean) => void
-
-  setChildChildren: (value: boolean) => void
 
   upwardEach: (callback: Function, opt: { isSkipSelf: boolean }) => void
 
@@ -1046,7 +1039,7 @@ interface TreeNode {
 
   expand: (value: boolean, ...extraNodes: TreeNode[] | RawNode[]) => void
 
-  setVsiable: (value: boolean) => void
+  setVisible: (value: boolean) => void
 
   move: (target: TreeNode, relative: Relative) => boolean
 
@@ -1068,7 +1061,7 @@ interface TreeNode {
 | empty-text           | 内容为空的时候展示的文本                                                                                                                    | String                                    | —      | —      |
 | default-node-key     | 配置选项，具体看下表                                                                                                                        | DefaultNodeKey                            | —      | —      |
 | render-after-expand  | 是否在第一次展开某个树节点后才渲染其子节点                                                                                                  | boolean                                   | —      | true   |
-| async-load-fn        | 异步加载子树数据的方法，仅当 async 属性为 true 时生效                                                                                       | function(node:TreeNode, resolve:Function) | —      | —      |
+| async-loader \| load    | 异步加载子树数据的方法，仅当 async 属性为 true 时生效                                                                                       | function(node:TreeNode, resolve:Function) | —      | —      |
 | render-content       | 树节点的内容区的渲染 Function                                                                                                               | Function({ treeNode, rawNode })           | —      | —      |
 | highlight-current    | 是否高亮当前选中节点，默认值是 false。                                                                                                      | boolean                                   | —      | false  |
 | default-expand-all   | 是否默认展开所有节点                                                                                                                        | boolean                                   | —      | false  |
@@ -1093,11 +1086,11 @@ interface TreeNode {
 | ---------- | -------------------------------------------------- | ------ | ------ | ---------- |
 | id         | 每个节点用来作为唯一标识的属性，整棵树应该是唯一的 | string | —      | id         |
 | label      | 指定节点标签为节点对象的某个属性值                 | string | —      | label      |
-| childNodes | 指定子树为节点对象的某个属性值                     | string | —      | children   |
+| children | 指定子树为节点对象的某个属性值                     | string | —      | children   |
 | isDisabled | 指定节点选择框是否禁用为节点对象的某个属性值       | string | —      | isDisabled |
 | isAsync    | 指定节点是否为异步节点                             | string | —      | isAsync    |
 | isChecked  | 指定节点是否为选中状态                             | string | —      | isChecked  |
-| isVisable  | 指定节点是否可显示                                 | string | —      | isVisable  |
+| isVisible  | 指定节点是否可显示                                 | string | —      | isVisible  |
 | isExpanded | 指定节点是否为展开状态                             | string | —      | isExpanded |
 
 ### Methods
@@ -1112,9 +1105,9 @@ interface TreeNode {
 
 | 方法名                                        | 参数                                                                                                                                                     | 说明                                                                                       |
 | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| append(node)                                  | node:TreeNode\|RawNode                                                                                                                                   | 为当前节点添加子节点                                                                       |
+| appendChild(node)                                  | node:TreeNode\|RawNode                                                                                                                                   | 为当前节点添加子节点                                                                       |
 | remove()                                      | NULL                                                                                                                                                     | 删除当前节点                                                                               |
-| insert(index, node)                           | index:Number, node:TreeNode\|RawNode                                                                                                                     | 为当前节点的插入一个子元素，到 index 位置                                                  |
+| insertChild(index, node)                           | index:Number, node:TreeNode\|RawNode                                                                                                                     | 为当前节点的插入一个子元素，到 index 位置                                                  |
 | removeChild(index)                            | index:Number                                                                                                                                             | 移除 index 位置的子元素                                                                    |
 | setChecked(value, strictly)                   | value:Boolean = !value, stricly:Boolean = false                                                                                                          | 设置元素为选中状态，strictly 表示是否只选中当前节点                                        |
 | setChildChecked(value)                        | value:Boolean                                                                                                                                            | 设置子节点为 value                                                                         |
@@ -1124,7 +1117,7 @@ interface TreeNode {
 | findMany(label) => TreeNode[]                 | label:String                                                                                                                                             | 通过 label 查找节点                                                                        |
 | findChildIndex(target) => Number              | target:TreeNode                                                                                                                                          | 只查找子节点                                                                               |
 | expand(value, ...extraNodes)                  | value:Boolean = !value, extraNodes: TreeNodo\|RawNode = []                                                                                               | 展开该节点，在展开的时候可以添加节点                                                       |
-| setVsiable(value)                             | value:Boolean = !value                                                                                                                                   | 设置当前节点是否可见                                                                       |
+| setVisible(value)                             | value:Boolean = !value                                                                                                                                   | 设置当前节点是否可见                                                                       |
 | move(target, relative)                        | target:TreeNode, relative:String                                                                                                                         | 移动当前节点到目标节点的相对位置（上,内，下），relative _top, bottom, inner_               |
 | filter(callback)                              | callback(node, parentNode, deep) => Boolean                                                                                                              | 筛选节点，callback 返回 true 表示显示，返回 false 表示隐藏                                 |
 

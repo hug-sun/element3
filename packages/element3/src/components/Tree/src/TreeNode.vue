@@ -6,7 +6,10 @@
       'is-checked': node.isChecked,
       'is-focusable': !node.isDisabled,
       'is-expanded': node.isExpanded,
-      'is-hidden': !node.isVisible
+      'is-hidden': !node.isVisible,
+      'is-current': elTree.dragState.current === node,
+      'is-drop-inner':
+        elTree.dragState.drop === 'inner' && elTree.dragState.current === node
     }"
     role="TreeNode"
     :aria-expanded="node.isExpanded"
@@ -16,7 +19,12 @@
     tabindex="-1"
     :id="'TreeNode' + node.id"
     :data-node-id="node.id"
+    :draggable="elTree.draggable"
     @click.stop="onClickTreeNode"
+    @dragstart.stop="elTree.handleDragStart(node, $event)"
+    @dragover.stop="elTree.handleDragOver(node, $event)"
+    @dragend.stop="elTree.handleDragEnd(node, $event)"
+    @drop.stop="elTree.handleDrop(node, $event)"
   >
     <div
       class="el-tree-node__content"

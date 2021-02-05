@@ -1,6 +1,7 @@
 import { TypeAssert } from './TypeAssert'
 import { Event } from '../utils/Event'
 import { RawNodeBase } from '../types'
+import { TreeMapper } from '../entity/TreeMapper'
 
 const { isArray, isObject } = TypeAssert
 
@@ -29,9 +30,10 @@ export type WatcherCbArgs<T> = {
 
 export type WatchCb<T> = (args: WatcherCbArgs<T>) => void
 
+const _toProxy = new WeakMap<any, any>()
+const _toRaw = new WeakMap<any, any>()
+
 export class Watcher<T extends RawNodeBase> {
-  private _toProxy = new WeakMap<T, T>()
-  private _toRaw = new WeakMap<T, T>()
   private _proxy: T
   private _event = new Event<WatcherType>()
 
@@ -44,11 +46,15 @@ export class Watcher<T extends RawNodeBase> {
   }
 
   reactive(target: T, lastTarget: T = null): T {
-    if (!isObject(target) || this._toRaw.has(target)) {
+    if (!isObject(target) || _toRaw.has(target)) {
       return target
     }
-    if (this._toProxy.has(target)) {
-      return this._toProxy.get(target)
+    if (_toProxy.has(target)) {
+      return _toProxy.get(target)
+    }
+
+    if (target instanceof TreeMapper) {
+      return target
     }
 
     const handler: ProxyHandler<T> = {
@@ -59,16 +65,16 @@ export class Watcher<T extends RawNodeBase> {
 
     const proxy = new Proxy(target, handler)
 
-    this._toProxy.set(target, proxy)
-    this._toRaw.set(proxy, target)
+    _toProxy.set(target, proxy)
+    _toRaw.set(proxy, target)
 
     return proxy
     function forCurrentNode() {
       return isArray(lastTarget) ? target : lastTarget
     }
   }
-  createGetter(currentNode: T): (target: T, key: Key<T>) => void {
-    return (target: T, key: Key<T>) => {
+  createGetter(currentNode: T): (target: T, key: Key<T>, receiver: T) => void {
+    return (target: T, key: Key<T>, receiver) => {
       if (isArray(target)) {
         this.trigger('get/arr', currentNode, target, key)
       }
@@ -76,7 +82,8 @@ export class Watcher<T extends RawNodeBase> {
         this.trigger('get/obj', currentNode, target, key)
       }
 
-      const result = Reflect.get(target, key)
+      const result = Reflect.get(target, key, receiver)
+
       return isObject(result)
         ? this.reactive(
             result,
@@ -87,8 +94,14 @@ export class Watcher<T extends RawNodeBase> {
   }
   createSetter(
     currentNode: T
-  ): (target: T, key: Key<T>, value: any) => boolean {
-    return (target: T, key: Key<T>, value: any) => {
+  ): (target: T, key: Key<T>, value: any, receiver: T) => boolean {
+    return (target: T, key: Key<T>, value: any, receiver: T) => {
+      if (_toRaw.get(value)) value = _toRaw.get(value)
+      if (key[0] === '_') {
+        // skip private props
+        return Reflect.set(target, key, value)
+      }
+
       if (isArray(target)) {
         this.trigger('set/arr', currentNode, target, key, value)
       }
@@ -151,7 +164,7 @@ export class Watcher<T extends RawNodeBase> {
     } as WatcherCbArgs<T>)
   }
 
-  getRaw(proxy) {
-    return this._toRaw.get(proxy)
+  static getRaw(proxy) {
+    return _toRaw.get(proxy) ?? proxy
   }
 }
