@@ -215,4 +215,47 @@ describe('TreeMapper.ts', () => {
     ]
     expect(treeNodeProxy.children[0].parent).toEqual(treeNodeProxy)
   })
+
+  it('move a node', () => {
+    const rawNode = {
+      id: 1,
+      text: 'Node1',
+      childs: [
+        {
+          id: 2,
+          text: 'Node11',
+          childs: [
+            {
+              id: 3,
+              text: 'Node111',
+              childs: []
+            }
+          ]
+        }
+      ]
+    }
+
+    const mapper = new TreeMapper(rawNode, {
+      id: 'id',
+      label: 'text',
+      children: 'childs'
+    })
+
+    const rawNodeProxy = mapper.rawNodeProxy
+    const treeNodeProxy = mapper.treeNodeProxy
+
+    const node3 = treeNodeProxy.findOne(3)
+
+    node3.move(treeNodeProxy, 'inner')
+    expect(treeNodeProxy.children[1]).toBe(node3)
+    expect(rawNodeProxy.childs[1].id).toBe(node3.id)
+
+    node3.move(treeNodeProxy.findOne(2), 'prev')
+    expect(treeNodeProxy.children[0]).toBe(node3)
+    expect(rawNodeProxy.childs[0].id).toBe(node3.id)
+
+    node3.move(treeNodeProxy.findOne(2), 'inner')
+    expect(treeNodeProxy.children[0].children[0]).toBe(node3)
+    expect(rawNodeProxy.childs[0].childs[0].id).toBe(node3.id)
+  })
 })

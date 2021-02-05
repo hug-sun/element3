@@ -1,4 +1,5 @@
 import { isFunction } from '../../../../utils/types'
+import { Watcher } from '../utils/Watcher'
 
 export type ID = string | number
 
@@ -128,7 +129,7 @@ export class TreeNode implements TreeNodePublicProp {
     if (this.isAsync && this._asyncState !== 'loaded') {
       return this._isLeaf
     }
-    return this.children.length === 0 || this._isLeaf
+    return this.children.length === 0
   }
 
   set isLeaf(v: boolean) {
@@ -197,7 +198,7 @@ export class TreeNode implements TreeNodePublicProp {
       if (!(node instanceof TreeNode)) {
         throw new Error('appendChild not TreeNode')
       }
-      node.parent = this
+      node.parent = Watcher.getRaw(this)
       this.children.push(node)
     })
   }
@@ -207,7 +208,7 @@ export class TreeNode implements TreeNodePublicProp {
       if (!(node instanceof TreeNode)) {
         throw new Error('insertChild not TreeNode')
       }
-      node.parent = this
+      node.parent = Watcher.getRaw(this)
     })
     this.children.splice(index, 0, ...nodes)
   }
@@ -338,13 +339,8 @@ export class TreeNode implements TreeNodePublicProp {
     if (!this.parent) {
       return
     }
-
-    const index = this.parent.children.findIndex((node) => node === this)
-    if (index === -1) {
-      return
-    }
-
-    this.parent.removeChild(index)
+    this.parent.removeChild(this.index)
+    this.parent = null
   }
 
   move(target: TreeNode, relative: MoveRelative): boolean {
