@@ -1,10 +1,28 @@
 <template>
-  <div class="el-tree" role="Tree">
-    <el-tree-node v-for="child in rootChildren" :node="child" :key="child.id">
+  <div
+    class="el-tree"
+    :class="{
+      'el-tree--highlight-current': highlightCurrent
+    }"
+    role="Tree"
+  >
+    <el-tree-node
+      v-for="child in tree.rootProxy.children"
+      :node="child"
+      :key="child.id"
+    >
     </el-tree-node>
     <div class="el-tree__empty-block" v-if="tree.isEmpty">
       <span class="el-tree__empty-text">{{ emptyText }}</span>
     </div>
+    <div
+      v-show="
+        dragState.current &&
+        (dragState.drop === 'top' || dragState.drop === 'bottom')
+      "
+      class="el-tree__drop-indicator"
+      ref="dropIndicator"
+    ></div>
   </div>
 </template>
 
@@ -14,6 +32,8 @@ import {
   getCurrentInstance,
   PropType,
   provide,
+  reactive,
+  ref,
   watchEffect
 } from 'vue'
 import { t } from '../../../locale'
@@ -21,6 +41,7 @@ import ElTreeNode from './TreeNode.vue'
 import { Tree } from './entity/Tree'
 import { AsyncLoader, ID } from './entity/TreeNode'
 import { DefaultNodeKey, RawNodeBase } from './types'
+import { isFunction } from '../../../utils/types'
 export default {
   name: 'ElTreeMain',
   components: { ElTreeNode },
@@ -46,15 +67,38 @@ export default {
     async: Boolean,
     asyncLoader: Function as PropType<AsyncLoader>,
 
-    renderContent: Function
+    renderContent: Function,
+
+    highlightCurrent: Boolean,
+    currentNodeKey: [String, Number],
+
+    draggable: { type: Boolean, default: false },
+    allowDrag: Function,
+    allowDrop: Function
   },
-  emits: ['update:modelValue', 'update:checked', 'update:expanded'],
+  emits: [
+    'update:modelValue',
+    'update:checked',
+    'update:expanded',
+    'node-click',
+    'node-contextmenu',
+    'check-change',
+    'check',
+    'current-change',
+    'node-expand',
+    'node-collapse',
+    'node-drag-start',
+    'node-drag-enter',
+    'node-drag-leave',
+    'node-drag-over',
+    'node-drag-end',
+    'node-drop'
+  ],
   setup(props, ctx) {
     const elTree = getCurrentInstance().proxy
     provide('elTree', elTree)
     const tree = new Tree(props.modelValue, props.defaultNodeKey)
     ctx.emit('update:modelValue', tree.rawNodesProxy)
-    const rootChildren = computed(() => tree.rootProxy.children)
 
     watchEffect(
       () => {
@@ -87,10 +131,113 @@ export default {
 
     if (props.defaultExpandAll) tree.expandAll(true)
 
+    const {
+      dragState,
+      dropIndicator,
+      handleDragStart,
+      handleDragOver,
+      handleDragEnd,
+      handleDrop
+    } = useDrag()
+
+    console.log(elTree)
+
     return {
       tree,
-      rootChildren
+
+      dragState,
+      dropIndicator,
+      handleDragStart,
+      handleDragOver,
+      handleDragEnd,
+      handleDrop
     }
+  }
+}
+
+function useDrag() {
+  const instance = getCurrentInstance()
+  const { emit, proxy } = instance
+  const props: any = proxy.$props
+
+  const dropIndicator = ref()
+
+  const dragState = {
+    start: null /* TreeNode */,
+    current: null /* TreeNode */,
+    last: null /* TreeNode */,
+    drop: '' /* String => prev | inner | next */
+  }
+  const handleDragStart = (node, e) => {
+    if (isFunction(props.allowDrag) && !props.allowDrag(node, e)) {
+      e.preventDefault()
+      return false
+    }
+    dragState.start = node
+    emit('node-drag-start', node, e)
+  }
+  const handleDragOver = (node, e) => {
+    dragState.current = node
+    if (dragState.start === node) return
+    const margin = 7 /*px*/
+    const target = e.path.find((item) => item.id === 'TreeNode' + node.id)
+    const currentBound = target.getBoundingClientRect()
+    const mourseY = e.clientY
+
+    if (currentBound.top + margin > mourseY) {
+      dropIndicator.value.style.top = target.offsetTop + 'px'
+      dropIndicator.value.style.left = node.level * props.indent + 'px'
+      dragState.drop = 'prev'
+    } else if (currentBound.top + currentBound.height - margin < mourseY) {
+      dropIndicator.value.style.top =
+        target.offsetTop + currentBound.height + 'px'
+      dropIndicator.value.style.left = node.level * props.indent + 'px'
+      dragState.drop = 'next'
+    } else {
+      dragState.drop = 'inner'
+      node.expand(true)
+    }
+
+    // wrap in try catch to address IE's error when first param is 'text/plain'
+    // setData is required for draggable to work in FireFox
+    // the content has to be '' so dragging a node out of the tree won't open a new tab in FireFox
+    e &&
+      e.dataTransfer &&
+      isFunction(e.dataTransfer.setData) &&
+      e.dataTransfer.setData('text/plain', '')
+    e.preventDefault()
+
+    emit('node-drag-enter', dragState.start, node, e)
+    emit('node-drag-over', dragState.start, node, e)
+    emit('node-drag-leave', dragState.start, dragState.last, e)
+    dragState.last = node
+  }
+
+  const handleDragEnd = (node, e) => {
+    dragState.current = null
+    emit('node-drag-end', dragState.start, node, e)
+  }
+
+  const handleDrop = (node, e) => {
+    if (
+      isFunction(typeof props.allowDrog) &&
+      !props.allowDrog(dragState.start, node, dragState.drop, e)
+    ) {
+      e.preventDefault()
+      return false
+    }
+    dragState.last = node
+    dragState.start.move(node, dragState.drop)
+    emit('node-drop', dragState.start, node, e)
+  }
+
+  return {
+    dragState,
+    dropIndicator,
+    handleDragStart,
+    handleDragOver,
+    handleDragEnd,
+    handleDrop
   }
 }
 </script>

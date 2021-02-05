@@ -1,3 +1,4 @@
+import { reactive, toRaw } from 'vue'
 import { isFunction } from '../../../../utils/types'
 import { Watcher } from '../utils/Watcher'
 
@@ -365,5 +366,14 @@ export class TreeNode implements TreeNodePublicProp {
         target.parent.insertChild(target.index + 1, this)
         return true
     }
+  }
+
+  static create(
+    id: ID,
+    label: string,
+    children: TreeNode[] = [],
+    state: any = {}
+  ): TreeNode {
+    return reactive(new TreeNode(id, label, children, state)) as TreeNode
   }
 }

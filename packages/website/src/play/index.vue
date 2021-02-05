@@ -3,15 +3,16 @@
     v-model="data"
     :props="props"
     :load="loadNode"
-    lazy
+    :lazy="false"
     show-checkbox
     defaultExpandAll
+    draggable
   >
-    <template #default="{ node, data }">
-      <span style="color: red">{{ node.label }}</span>
-      <span style="color: blue">{{ data.name }}</span>
-    </template>
   </el-tree>
+  <!-- <template #default="{ node, data }">
+      <span style="color: red">{{ node.level }}</span>
+      <span style="color: blue">{{ data.name }}</span>
+    </template> -->
   <button @click="onClick">ADD</button>
 </template>
 
@@ -19,7 +20,14 @@
 export default {
   data() {
     return {
-      data: [],
+      data: [
+        {
+          name: 'hello'
+        },
+        {
+          name: 'hello1'
+        }
+      ],
       props: {
         label: 'name',
         children: 'zones',
