@@ -132,7 +132,7 @@ describe('Watcher.ts', () => {
     const cb = jest.fn()
     watcher.bindHandler('get/obj', cb)
 
-    console.log(_tree.text)
+    _tree.text
 
     expect(cb).toHaveBeenCalledTimes(1)
     expect(cb).toHaveBeenNthCalledWith(1, {
@@ -166,7 +166,7 @@ describe('Watcher.ts', () => {
     const cb = jest.fn()
     watcher.bindHandler('get/arr', cb)
 
-    console.log(_tree.childs[0])
+    _tree.childs[0]
 
     expect(cb).toHaveBeenCalledTimes(1)
     expect(cb).toHaveBeenNthCalledWith(1, {
