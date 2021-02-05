@@ -1,6 +1,7 @@
 import { TypeAssert } from './TypeAssert'
 import { Event } from '../utils/Event'
 import { RawNodeBase } from '../types'
+import { TreeMapper } from '../entity/TreeMapper'
 
 const { isArray, isObject } = TypeAssert
 
@@ -50,6 +51,10 @@ export class Watcher<T extends RawNodeBase> {
     }
     if (_toProxy.has(target)) {
       return _toProxy.get(target)
+    }
+
+    if (target instanceof TreeMapper) {
+      return target
     }
 
     const handler: ProxyHandler<T> = {
