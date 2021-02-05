@@ -102,4 +102,27 @@ describe('open a teleport', () => {
       expect(document.querySelector('.el-popup-parent--hidden')).toBeNull()
     }, 0)
   })
+
+  describe('transition', () => {
+    it('should render transition when props transitionClass exist', async () => {
+      const props = {
+        transitionClass: 'el-out'
+      }
+      const component = <div></div>
+
+      mount(PopupComponent(component), {
+        props
+      })
+
+      expect(document.body.innerHTML).toContain('transition-stub')
+    })
+
+    it('should not render transition when props transitionClass not exist', async () => {
+      const component = <div></div>
+
+      mount(PopupComponent(component))
+
+      expect(document.body.innerHTML).not.toContain('transition-stub')
+    })
+  })
 })
