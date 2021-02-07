@@ -7,8 +7,8 @@
 <script lang="ts">
 import { props } from './props'
 import { defineComponent, inject, computed, toRefs, watch } from 'vue'
-import { useGlobalOptions } from '../../../use/globalConfig'
-import { useEmitter } from '../../../use/emitter'
+import { useGlobalOptions } from '../../../composables/globalConfig'
+import { useEmitter } from '../../../composables/emitter'
 
 export default defineComponent({
   name: 'ElRadioGroup',

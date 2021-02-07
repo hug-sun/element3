@@ -10,7 +10,7 @@
 </template>
 
 <script type="text/babel">
-import { useEmitter } from '../../src/use/emitter'
+import { useEmitter } from '../../src/composables/emitter'
 import {
   watch,
   getCurrentInstance,

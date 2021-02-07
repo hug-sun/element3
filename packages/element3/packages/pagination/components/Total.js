@@ -1,4 +1,4 @@
-import { useLocale } from '../../../src/use/locale'
+import { useLocale } from '../../../src/composables/locale'
 import { h } from 'vue'
 
 const Total = (props) => {

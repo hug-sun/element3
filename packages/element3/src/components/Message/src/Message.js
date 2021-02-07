@@ -1,5 +1,5 @@
 import messageComponent from './Message.vue'
-import { createComponent } from '../../../use/component'
+import { createComponent } from '../../../composables/component'
 import { PopupManager } from '../../../utils/popup'
 import { isVNode } from 'vue'
 

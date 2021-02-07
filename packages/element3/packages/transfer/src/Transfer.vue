@@ -52,7 +52,7 @@
 <script>
 import TransferPanel from './TransferPanel.vue'
 import { ElButton } from '../../../src/components/Button'
-import { useLocale } from '../../../src/use/locale'
+import { useLocale } from '../../../src/composables/locale'
 import { ref, computed, watch, provide } from 'vue'
 
 export default {

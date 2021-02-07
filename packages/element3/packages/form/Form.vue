@@ -11,7 +11,7 @@
 </template>
 <script>
 import { reactive, computed, watch, toRefs, unref, provide } from 'vue'
-import { useEmitter } from '../../src/use/emitter'
+import { useEmitter } from '../../src/composables/emitter'
 import objectAssign from '../../src/utils/merge'
 
 export default {

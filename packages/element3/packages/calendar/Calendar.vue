@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { useLocale } from '../../src/use/locale'
+import { useLocale } from '../../src/composables/locale'
 import fecha from '../../src/utils/date'
 import { ElButton } from '../../src/components/Button'
 import ElButtonGroup from '../button-group'

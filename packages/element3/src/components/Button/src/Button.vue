@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { props } from './props'
-import { useGlobalOptions } from '../../../use/globalConfig'
+import { useGlobalOptions } from '../../../composables/globalConfig'
 import { toRefs, inject, computed, defineComponent, Ref } from 'vue'
 export default defineComponent({
   name: 'ElButton',

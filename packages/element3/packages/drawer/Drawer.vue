@@ -63,7 +63,7 @@ import {
   onMounted,
   onUnmounted
 } from 'vue'
-import { popupProps, usePopup } from '../../src/use/popup'
+import { popupProps, usePopup } from '../../src/composables/popup'
 import Utils from '../../src/utils/aria-utils'
 
 export default {

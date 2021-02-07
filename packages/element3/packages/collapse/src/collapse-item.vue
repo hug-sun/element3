@@ -51,7 +51,7 @@
 import { computed, getCurrentInstance, inject, reactive, toRefs } from 'vue'
 import ElCollapseTransition from '../../../src/transitions/collapse-transition'
 import { generateId } from '../../../src/utils/util'
-import { useEmitter } from '../../../src/use/emitter'
+import { useEmitter } from '../../../src/composables/emitter'
 
 export default {
   name: 'ElCollapseItem',

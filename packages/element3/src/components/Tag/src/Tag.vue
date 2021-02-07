@@ -1,5 +1,5 @@
 <script lang="jsx">
-import { useGlobalOptions } from '../../../use/globalConfig.js'
+import { useGlobalOptions } from '../../../composables/globalConfig.js'
 import { ref, computed, toRefs, Transition } from 'vue'
 
 const useShow = (emit) => {
