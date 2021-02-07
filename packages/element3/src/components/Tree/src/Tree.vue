@@ -88,7 +88,7 @@ export default defineComponent({
       }
     },
     updateKeyChildren(key, data) {
-      this.$refs.treeMain.findOne(key).appendChild(data)
+      this.findOne(key).appendChild(data)
     },
     getCheckedNodes() {
       this.$refs.treeMain.tree.getCheckedNodes()
@@ -105,7 +105,7 @@ export default defineComponent({
       this.$refs.treeMain.tree.setCheckedByIds(ids)
     },
     setChecked(id, checked, deep) {
-      const node = this.$refs.treeMain.findOne(id)
+      const node = this.findOne(id)
       node.setStrictly(deep)
       node.setChecked(checked)
     },
@@ -119,7 +119,7 @@ export default defineComponent({
       return this.currentKey
     },
     getCurrentNode() {
-      return this.$refs.treeMain.findOne(this.currentKey)
+      return this.findOne(this.currentKey)
     },
     setCurrentKey(key) {
       this.currentKey = key
@@ -128,10 +128,10 @@ export default defineComponent({
       this.currentKey = node[this._defaultNodeKey.id]
     },
     getNode(target) {
-      return this.$refs.treeMain.findOne(target)
+      return this.findOne(target)
     },
     remove(target) {
-      this.$refs.treeMain.findOne(target).remove()
+      this.findOne(target).remove()
     },
     append(data, parentNode) {
       parentNode.appendChild(data)
@@ -143,10 +143,10 @@ export default defineComponent({
       node.parent.insertChild(node.index + 1, data)
     },
     findOne(target) {
-      return this.$refs.treeMain.findOne(target)
+      return this.$refs.treeMain.rootProxy.findOne(target)
     },
     findMany(callback) {
-      return this.$refs.treeMain.findMany(callback)
+      return this.$refs.treeMain.rootProxy.findMany(callback)
     }
   },
   created() {

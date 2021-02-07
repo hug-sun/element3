@@ -261,7 +261,7 @@ describe('TreeMain.vue', () => {
         renderAfterExpand: false
       }
     })
-    await wrapper.find('#TreeNode1').trigger('click')
+    await wrapper.find('#TreeNode1 .el-tree-node__expand-icon').trigger('click')
     expect(wrapper.find('#TreeNode1').classes()).toContain('is-expanded')
   })
 
@@ -300,7 +300,7 @@ describe('TreeMain.vue', () => {
       }
     })
     await nextTick()
-    await wrapper.find('#TreeNode2').trigger('click')
+    await wrapper.find('#TreeNode2 .el-tree-node__expand-icon').trigger('click')
     expect(wrapper.find('#TreeNode1').classes()).toContain('is-expanded')
     expect(expanded.value).toEqual([1, 2])
   })
