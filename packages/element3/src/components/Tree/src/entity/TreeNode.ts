@@ -179,11 +179,14 @@ export class TreeNode<RawNode = any> implements TreeNodePublicProp {
     this._asyncLoader = asyncLoader
     this._asyncState = 'notLoaded'
     this._data = data
-    this._mapper = mapper
+    this._mapper = mapper ?? this.parent.getMapper()
 
     this.setChecked(isChecked)
 
     this.appendChild(...children)
+  }
+  getMapper(): any {
+    return this._mapper ?? this.parent.getMapper()
   }
 
   setChecked(v = !this._isChecked) {
@@ -322,8 +325,11 @@ export class TreeNode<RawNode = any> implements TreeNodePublicProp {
       this._isRendered = true
       this.execAsyncLoader(cb)
     }
+    if (!v && isAutoExpandParent) {
+      this.children.forEach((node) => node.expand(false))
+    }
 
-    if (isAutoExpandParent) {
+    if (v && isAutoExpandParent) {
       this.parent?.expand(true, true)
     }
   }

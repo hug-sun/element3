@@ -60,9 +60,21 @@ export class Tree<RawNode extends RawNodeBase> {
   }
 
   getCheckedIds(): ID[] {
-    return this.root
-      .findMany((node) => node !== this.root && node.isChecked)
-      .map((node) => node.id)
+    return this.getCheckedNodes().map((node) => node.id)
+  }
+
+  getCheckedNodes(): TreeNode[] {
+    return this.root.findMany((node) => node !== this.root && node.isChecked)
+  }
+
+  getHalfCheckedNodes(): TreeNode[] {
+    return this.root.findMany(
+      (node) => node !== this.root && node.isIndeterminate
+    )
+  }
+
+  getHalfCheckedIds(): ID[] {
+    return this.getHalfCheckedNodes().map((node) => node.id)
   }
 
   expandNodeByIds(ids: ID[]): void {

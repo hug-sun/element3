@@ -6,6 +6,7 @@
     :async="_async"
     :asyncLoader="_asyncLoader"
     :renderContent="_renderContent"
+    :currentNodeKey="currentKey"
   >
   </el-tree-main>
 </template>
@@ -33,7 +34,8 @@ export default defineComponent({
     asyncLoader: Function,
     load: Function,
 
-    renderContent: Function
+    renderContent: Function,
+    currentNodeKey: [String, Number]
   },
   emits: ['update:modelValue', 'update:data'],
   computed: {
@@ -65,6 +67,11 @@ export default defineComponent({
       return null
     }
   },
+  data() {
+    return {
+      currentKey: ''
+    }
+  },
   methods: {
     filter(value) {
       const tree = this.$refs.treeMain.tree
@@ -79,7 +86,71 @@ export default defineComponent({
       } else {
         return tree.filter(value)
       }
+    },
+    updateKeyChildren(key, data) {
+      this.$refs.treeMain.findOne(key).appendChild(data)
+    },
+    getCheckedNodes() {
+      this.$refs.treeMain.tree.getCheckedNodes()
+    },
+    setCheckedNodes(nodes) {
+      this.$refs.treeMain.tree.setCheckedByIds(
+        nodes.map((node) => node[this._defaultNodeKey.id])
+      )
+    },
+    getCheckedKeys() {
+      return this.$refs.treeMain.tree.getCheckedIds()
+    },
+    setCheckedKeys(ids) {
+      this.$refs.treeMain.tree.setCheckedByIds(ids)
+    },
+    setChecked(id, checked, deep) {
+      const node = this.$refs.treeMain.findOne(id)
+      node.setStrictly(deep)
+      node.setChecked(checked)
+    },
+    getHalfCheckedNodes() {
+      return this.$refs.treeMain.tree.getHalfCheckedNodes()
+    },
+    getHalfCheckedKeys() {
+      return this.$refs.treeMain.tree.getHalfCheckedIds()
+    },
+    getCurrentKey() {
+      return this.currentKey
+    },
+    getCurrentNode() {
+      return this.$refs.treeMain.findOne(this.currentKey)
+    },
+    setCurrentKey(key) {
+      this.currentKey = key
+    },
+    setCurrentNode(node) {
+      this.currentKey = node[this._defaultNodeKey.id]
+    },
+    getNode(target) {
+      return this.$refs.treeMain.findOne(target)
+    },
+    remove(target) {
+      this.$refs.treeMain.findOne(target).remove()
+    },
+    append(data, parentNode) {
+      parentNode.appendChild(data)
+    },
+    insertBefore(data, node) {
+      node.parent.insertChild(node.index, data)
+    },
+    insertAfter(node, data) {
+      node.parent.insertChild(node.index + 1, data)
+    },
+    findOne(target) {
+      return this.$refs.treeMain.findOne(target)
+    },
+    findMany(callback) {
+      return this.$refs.treeMain.findMany(callback)
     }
+  },
+  created() {
+    this.currentKey = this.currentNodeKey
   }
 })
 </script>

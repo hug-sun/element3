@@ -53,10 +53,6 @@ export class Watcher<T extends RawNodeBase> {
       return _toProxy.get(target)
     }
 
-    if (target instanceof TreeMapper) {
-      return target
-    }
-
     const handler: ProxyHandler<T> = {
       get: this.createGetter(forCurrentNode()),
       set: this.createSetter(forCurrentNode()),
@@ -75,6 +71,11 @@ export class Watcher<T extends RawNodeBase> {
   }
   createGetter(currentNode: T): (target: T, key: Key<T>, receiver: T) => void {
     return (target: T, key: Key<T>, receiver) => {
+      if (key[0] === '_') {
+        // skip private props
+        return Reflect.get(target, key, receiver)
+      }
+
       if (isArray(target)) {
         this.trigger('get/arr', currentNode, target, key)
       }

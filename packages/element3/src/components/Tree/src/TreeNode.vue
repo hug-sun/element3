@@ -20,6 +20,7 @@
     :id="'TreeNode' + node.id"
     :data-node-id="node.id"
     :draggable="elTree.draggable"
+    @click.right.prevent="onRightEvent"
     @click.stop="onClickTreeNode"
     @dragstart.stop="elTree.handleDragStart(node, $event)"
     @dragover.stop="elTree.handleDragOver(node, $event)"
@@ -78,7 +79,7 @@ import ElCollapseTransition from '../../../transitions/collapse-transition'
 import ElNodeContent from './NodeContent.vue'
 import { ElCheckbox } from '../../../index'
 import { TreeNode } from './entity/TreeNode'
-import { inject } from 'vue'
+import { getCurrentInstance, inject } from 'vue'
 export default {
   name: 'ElTreeNode',
 
@@ -93,40 +94,73 @@ export default {
   },
 
   setup(props) {
-    const elTree = inject('elTree', {
+    const vm = getCurrentInstance().proxy
+    const elTree: any = inject('elTree', {
       indent: 10,
       checkOnClickNode: false,
       accordion: false,
       autoExpandParent: true,
       expandOnClickNode: true
     })
-    const onClickTreeNodeContent = () => {
-      if (!elTree.checkOnClickNode) {
-        return
-      }
-      props.node.setChecked()
-    }
     const onClickCheckbox = () => {
-      if (elTree.checkOnClickNode) {
-        return
-      }
+      elTree.$emit(
+        'check',
+        elTree.tree.getCheckedNodes(),
+        elTree.tree.getCheckedIds(),
+        elTree.tree.getHalfCheckedNodes(),
+        elTree.tree.getHalfCheckedIds()
+      )
       props.node.setChecked()
+      elTree.$emit(
+        'check-change',
+        props.node.data,
+        props.node.isChecked,
+        props.node.findMany((node) => node.isChecked)
+      )
     }
+
     const onClickTreeNodeExpand = () => {
       if (elTree.accordion) props.node.collapse()
-      else props.node.expand(undefined, elTree.autoExpandParent)
+      else props.node.expand(!props.node.isExpanded, elTree.autoExpandParent)
     }
-    const onClickTreeNode = () => {
+
+    const onClickTreeNodeContent = () => {
+      if (elTree.checkOnClickNode) {
+        onClickCheckbox()
+      }
       if (elTree.expandOnClickNode) {
         onClickTreeNodeExpand()
       }
+      if (elTree.currentNodeKey === props.node.id) {
+        elTree.$emit('current-change', props.node.data, props.node)
+      }
+      props.node.isExpanded
+        ? elTree.$emit('node-expand', props.node.data, props.node)
+        : elTree.$emit('node-collapse', props.node.data, props.node)
+
+      elTree.$emit(
+        'check-change',
+        props.node.data,
+        props.node.isChecked,
+        props.node.findMany((node) => node.isChecked)
+      )
     }
+
+    const onClickTreeNode = () => {
+      elTree.$emit('node-click', props.node.data, props.node, vm)
+    }
+
+    const onRightEvent = (e) => {
+      elTree.$emit('node-contextmenu', props.node, e)
+    }
+
     return {
       elTree,
       onClickCheckbox,
       onClickTreeNodeContent,
       onClickTreeNode,
-      onClickTreeNodeExpand
+      onClickTreeNodeExpand,
+      onRightEvent
     }
   }
 }

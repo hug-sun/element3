@@ -91,6 +91,7 @@ export default {
     provide('elTree', elTree)
     const tree = new Tree(props.modelValue, props.defaultNodeKey)
     ctx.emit('update:modelValue', tree.rawNodesProxy)
+    ctx.expose(tree.rootProxy)
 
     if (props.async) tree.bindAsyncLoader(props.asyncLoader)
 
