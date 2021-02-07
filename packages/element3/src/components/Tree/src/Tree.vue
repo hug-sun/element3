@@ -143,10 +143,10 @@ export default defineComponent({
       node.parent.insertChild(node.index + 1, data)
     },
     findOne(target) {
-      return this.$refs.treeMain.rootProxy.findOne(target)
+      return this.$refs.treeMain.tree.rootProxy.findOne(target)
     },
     findMany(callback) {
-      return this.$refs.treeMain.rootProxy.findMany(callback)
+      return this.$refs.treeMain.tree.rootProxy.findMany(callback)
     }
   },
   created() {

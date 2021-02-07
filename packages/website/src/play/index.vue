@@ -1,77 +1,69 @@
 <template>
-  <el-tree
-    v-model="data"
-    :props="props"
-    :load="loadNode"
-    :lazy="false"
-    show-checkbox
-    defaultExpandAll
-    draggable
-    ref="test"
-  >
-  </el-tree>
-  <!-- <template #default="{ node, data }">
-      <span style="color: red">{{ node.level }}</span>
-      <span style="color: blue">{{ data.name }}</span>
-    </template> -->
-  <button @click="onClick">ADD</button>
+  <el-tree :data="data" show-checkbox ref="tree"> </el-tree>
+  <el-button @click="onClick">点击获取ID=3的节点</el-button>
 </template>
-
 <script>
 import { useTree } from 'element3'
-import { onMounted } from 'vue'
 export default {
-  data() {
-    return {
-      data: [
-        {
-          name: 'hello'
-        },
-        {
-          name: 'hello1'
-        }
-      ],
-      props: {
-        label: 'name',
-        children: 'zones',
-        isLeaf: 'leaf'
-      }
-    }
-  },
-  methods: {
-    onClick() {
-      this.data[0].zones[1].zones = [
-        { name: 'Hello1' },
-        { name: 'Hello2' },
-        { name: 'Hello3' }
-      ]
-    },
-    loadNode(node, resolve) {
-      if (node.level === 0) {
-        return resolve([{ name: 'region' }])
-      }
-      if (node.level > 2) return resolve([])
-
-      setTimeout(() => {
-        const data = [
+  setup() {
+    const { findOne } = useTree('tree')
+    const data = [
+      {
+        id: 1,
+        label: '一级 1',
+        children: [
           {
-            name: 'leaf',
-            leaf: true
-          },
-          {
-            name: 'zone'
+            id: 4,
+            label: '二级 1-1',
+            children: [
+              {
+                id: 9,
+                label: '三级 1-1-1'
+              },
+              {
+                id: 10,
+                label: '三级 1-1-2'
+              }
+            ]
           }
         ]
-
-        resolve(data)
-      }, 500)
+      },
+      {
+        id: 2,
+        label: '一级 2',
+        children: [
+          {
+            id: 5,
+            label: '二级 2-1'
+          },
+          {
+            id: 6,
+            label: '二级 2-2'
+          }
+        ]
+      },
+      {
+        id: 3,
+        label: '一级 3',
+        children: [
+          {
+            id: 7,
+            label: '二级 3-1'
+          },
+          {
+            id: 8,
+            label: '二级 3-2'
+          }
+        ]
+      }
+    ]
+    const onClick = () => {
+      console.log(findOne(3).appendChild({ id: 100, label: 'test' }))
     }
-  },
-  setup() {
-    const { findOne } = useTree('test')
-    onMounted(() => {
-      console.log(findOne(1))
-    })
+    return {
+      data,
+      onClick
+    }
   }
 }
 </script>
