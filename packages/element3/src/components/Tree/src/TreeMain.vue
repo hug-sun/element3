@@ -104,36 +104,8 @@ export default {
 
     if (props.async) tree.bindAsyncLoader(props.asyncLoader)
 
-    tree.expandNodeByIds(props.expanded)
-    watchEffect(
-      () => {
-        tree.expandNodeByIds(props.expanded)
-      },
-      {
-        flush: 'post'
-        // exec after wait component flush
-      }
-    )
-    watchEffect(() => {
-      ctx.emit('update:expanded', tree.getExpandedNodeIds())
-    })
-
-    tree.setStrictly(props.checkStrictly)
-    tree.setCheckedByIds(props.checked)
-    watchEffect(
-      () => {
-        tree.setCheckedByIds(props.checked)
-      },
-      {
-        flush: 'post'
-        // exec after wait component flush
-      }
-    )
-    watchEffect(() => {
-      ctx.emit('update:checked', tree.getCheckedIds())
-    })
-
-    if (props.defaultExpandAll) tree.expandAll(true)
+    useExpanded(tree)
+    useCheckbox(tree)
 
     const {
       dragState,
@@ -160,6 +132,45 @@ export default {
       handleKeydown
     }
   }
+}
+
+function useExpanded(tree) {
+  const ctx = getCurrentInstance()
+  const props: any = ctx.proxy.$props
+  tree.expandNodeByIds(props.expanded)
+  watchEffect(
+    () => {
+      tree.expandNodeByIds(props.expanded)
+    },
+    {
+      flush: 'post'
+      // exec after wait component flush
+    }
+  )
+  watchEffect(() => {
+    ctx.emit('update:expanded', tree.getExpandedNodeIds())
+  })
+}
+
+function useCheckbox(tree) {
+  const ctx = getCurrentInstance()
+  const props: any = ctx.proxy.$props
+  tree.setStrictly(props.checkStrictly)
+  tree.setCheckedByIds(props.checked)
+  watchEffect(
+    () => {
+      tree.setCheckedByIds(props.checked)
+    },
+    {
+      flush: 'post'
+      // exec after wait component flush
+    }
+  )
+  watchEffect(() => {
+    ctx.emit('update:checked', tree.getCheckedIds())
+  })
+
+  if (props.defaultExpandAll) tree.expandAll(true)
 }
 
 function useTabKeyDown() {
