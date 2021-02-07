@@ -5,6 +5,7 @@
       'el-tree--highlight-current': highlightCurrent
     }"
     role="Tree"
+    @keydown="handleKeydown"
   >
     <el-tree-node
       v-for="child in tree.rootProxy.children"
@@ -27,7 +28,15 @@
 </template>
 
 <script lang="ts">
-import { getCurrentInstance, PropType, provide, ref, watchEffect } from 'vue'
+import {
+  getCurrentInstance,
+  onMounted,
+  onUpdated,
+  PropType,
+  provide,
+  ref,
+  watchEffect
+} from 'vue'
 import { t } from '../../../locale'
 import ElTreeNode from './TreeNode.vue'
 import { Tree } from './entity/Tree'
@@ -135,6 +144,10 @@ export default {
       handleDrop
     } = useDrag()
 
+    useTabKeyDown()
+
+    const { handleKeydown } = useDirectionKeyDown()
+
     return {
       tree,
 
@@ -143,8 +156,74 @@ export default {
       handleDragStart,
       handleDragOver,
       handleDragEnd,
-      handleDrop
+      handleDrop,
+      handleKeydown
     }
+  }
+}
+
+function useTabKeyDown() {
+  const instance = getCurrentInstance()
+  const { proxy } = instance
+
+  const initCheckbox = () => {
+    const checkboxItems = proxy.$el.querySelectorAll('input[type=checkbox]')
+    Array.prototype.forEach.call(checkboxItems, (checkbox) => {
+      checkbox.setAttribute('tabindex', -1)
+    })
+  }
+  const initTabIndex = () => {
+    const treeItems = proxy.$el.querySelectorAll('.is-focusable[role=TreeItem]')
+    const checkedItem = proxy.$el.querySelectorAll('.is-checked[role=TreeItem]')
+    if (checkedItem.length) {
+      checkedItem[0].setAttribute('tabindex', 0)
+      return
+    }
+    treeItems[0] && treeItems[0].setAttribute('tabindex', 0)
+  }
+
+  onMounted(initTabIndex)
+  onUpdated(initCheckbox)
+}
+
+function useDirectionKeyDown() {
+  const instance = getCurrentInstance()
+  const { proxy } = instance
+  const handleKeydown = (ev) => {
+    const currentItem = ev.target
+    if (currentItem.className.indexOf('el-tree-node') === -1) return
+    const { key } = ev
+    const treeItems = proxy.$el.querySelectorAll('.is-focusable[role=TreeNode]')
+    const treeItemArray = Array.prototype.slice.call(treeItems)
+    const currentIndex = treeItemArray.indexOf(currentItem)
+    let nextIndex
+    if (['ArrowUp', 'ArrowDown'].indexOf(key) > -1) {
+      // up、down
+      ev.preventDefault()
+      if (key === 'ArrowUp') {
+        // up
+        nextIndex = currentIndex !== 0 ? currentIndex - 1 : 0
+      } else {
+        nextIndex =
+          currentIndex < treeItemArray.length - 1 ? currentIndex + 1 : 0
+      }
+      treeItemArray[nextIndex].focus() // 选中
+    }
+    if (['ArrowLeft', 'ArrowRight'].indexOf(key) > -1) {
+      // left、right 展开
+      currentItem.click() // 选中
+      ev.preventDefault()
+    }
+    const hasInput = currentItem.querySelector('[type="checkbox"]')
+    if (['Enter', 'Space'].indexOf(key) > -1 && hasInput) {
+      // space enter选中checkbox
+      hasInput.click()
+      ev.preventDefault()
+    }
+  }
+
+  return {
+    handleKeydown
   }
 }
 
