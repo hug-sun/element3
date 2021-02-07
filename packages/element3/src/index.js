@@ -98,6 +98,7 @@ import ElAutocomplete from '../packages/autocomplete'
 
 import { version } from '../package.json'
 import { setupGlobalOptions } from './composables/globalConfig'
+import { useTree } from './components/Tree/src/useTree'
 
 const components = [
   ElRow,
@@ -295,7 +296,8 @@ export {
   Msgbox,
   Notification,
   install,
-  setupGlobalOptions
+  setupGlobalOptions,
+  useTree
 }
 
 export default element3

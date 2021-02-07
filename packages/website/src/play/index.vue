@@ -7,6 +7,7 @@
     show-checkbox
     defaultExpandAll
     draggable
+    ref="test"
   >
   </el-tree>
   <!-- <template #default="{ node, data }">
@@ -17,6 +18,8 @@
 </template>
 
 <script>
+import { useTree } from 'element3'
+import { onMounted } from 'vue'
 export default {
   data() {
     return {
@@ -63,6 +66,12 @@ export default {
         resolve(data)
       }, 500)
     }
+  },
+  setup() {
+    const { findOne } = useTree('test')
+    onMounted(() => {
+      console.log(findOne(1))
+    })
   }
 }
 </script>
