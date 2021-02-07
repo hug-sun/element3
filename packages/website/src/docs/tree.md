@@ -422,7 +422,7 @@
       },
       setCheckedNodes() {
         this.$refs.tree.findOne(10).setChecked(true)
-        this.$refs.tree.findOne(10).expand(true)
+        this.$refs.tree.findOne(10).expand(true, true)
       }
     },
 
