@@ -16,7 +16,9 @@
   >
     <el-tooltip
       v-if="
-        parentMenu.type.name === 'ElMenu' && rootMenu.collapse && $slots.title
+        parentMenu.type.name === 'ElMenu' &&
+        rootMenu.proxy.collapse &&
+        $slots.title
       "
       effect="dark"
       placement="right"
@@ -50,7 +52,7 @@
 <script>
 import { useMenu } from './src/menu-use'
 import ElTooltip from '../tooltip'
-import { useEmitter } from '../../src/use/emitter'
+import { useEmitter } from '../../src/composables/emitter'
 import {
   computed,
   getCurrentInstance,

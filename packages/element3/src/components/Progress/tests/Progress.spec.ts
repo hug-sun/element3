@@ -90,7 +90,7 @@ describe('Progress.vue', () => {
     })
 
     it('color function', async () => {
-      const color = (percentage) => {
+      const color = (percentage: number) => {
         if (percentage < 30) {
           return '#33ff99'
         } else if (percentage < 70) {

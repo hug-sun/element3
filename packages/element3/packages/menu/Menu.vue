@@ -9,7 +9,7 @@ import {
   watch
 } from 'vue'
 import Menubar from '../../src/utils/menu/aria-menubar'
-import { useEmitter } from '../../src/use/emitter'
+import { useEmitter } from '../../src/composables/emitter'
 import { useItems } from './src/menu-use'
 import MenuCollapseTransition from './MenuCollapseTransition.vue'
 

@@ -20,7 +20,7 @@ import {
   toRefs,
   watch
 } from 'vue'
-import { useEmitter } from '../../../src/use/emitter'
+import { useEmitter } from '../../../src/composables/emitter'
 
 export default {
   name: 'ElCollapse',

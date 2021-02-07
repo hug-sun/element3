@@ -1,4 +1,4 @@
-import { useEmitter } from '../../../src/use/emitter'
+import { useEmitter } from '../../../src/composables/emitter'
 import { mount } from '@vue/test-utils'
 import { onMounted } from 'vue'
 

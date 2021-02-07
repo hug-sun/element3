@@ -8,7 +8,7 @@ import {
   watch,
   h
 } from 'vue'
-import { useEmitter } from '../../../src/use/emitter.js'
+import { useEmitter } from '../../../src/composables/emitter.js'
 import Clickoutside from '../../../src/directives/clickoutside.js'
 
 import { ElButton } from '../../../src/components/Button'

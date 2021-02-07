@@ -135,8 +135,8 @@ import {
   onUnmounted
 } from 'vue'
 import Popper from '../../src/utils/vue-popper'
-import { useEmitter } from '../../src/use/emitter'
-import { migrating } from '../../src/use/migrating'
+import { useEmitter } from '../../src/composables/emitter'
+import { migrating } from '../../src/composables/migrating'
 import Clickoutside from '../../src/directives/clickoutside'
 import { ElInput } from '../../src/components/Input'
 import { ElTag } from '../../src/components/Tag'
@@ -146,7 +146,7 @@ import AriaUtils from '../../src/utils/aria-utils'
 import { t } from '../../src/locale'
 import { isEqual, isEmpty, kebabCase } from '../../src/utils/util'
 import { isDef } from '../../src/utils/shared'
-import { useLocale } from '../../src/use/locale'
+import { useLocale } from '../../src/composables/locale'
 import {
   addResizeListener,
   removeResizeListener

@@ -66,7 +66,7 @@ import {
 } from 'vue'
 
 import AsyncValidator from 'async-validator'
-import { useEmitter } from '../../src/use/emitter'
+import { useEmitter } from '../../src/composables/emitter'
 import objectAssign from '../../src/utils/merge'
 import { noop, getPropByPath } from '../../src/utils/util'
 import LabelWrap from './LabelWrap.vue'

@@ -77,7 +77,7 @@
 import ElInputNumber from '../input-number'
 import SliderButton from './src/button.vue'
 import SliderMarker from './src/marker'
-import { useEmitter } from '../../src/use/emitter'
+import { useEmitter } from '../../src/composables/emitter'
 import { isUndefined } from '../../src/utils/types'
 
 import {

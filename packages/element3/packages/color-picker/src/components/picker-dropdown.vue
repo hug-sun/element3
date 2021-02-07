@@ -72,8 +72,8 @@ import {
   watch
 } from 'vue'
 
-import { popperProps, usePopper } from '../../../../src/use/popper.js'
-import { useLocale } from '../../../../src/use/locale.js'
+import { popperProps, usePopper } from '../../../../src/composables/popper.js'
+import { useLocale } from '../../../../src/composables/locale.js'
 import SvPanel from './sv-panel'
 import HueSlider from './hue-slider'
 import AlphaSlider from './alpha-slider'
