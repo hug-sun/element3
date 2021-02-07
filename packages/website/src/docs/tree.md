@@ -970,6 +970,88 @@
 
 :::
 
+
+
+### 使用组合式API
+
+:::demo 通过导入`useTree`来使用Methods方法
+
+```html
+<template>
+  <el-tree :data="data" show-checkbox ref="tree"> </el-tree>
+  <el-button @click="onClick">点击获取ID=3的节点</el-button>
+</template>
+<script>
+import { useTree } from 'element3'
+export default {
+  setup() {
+    const { findOne } = useTree('tree')
+    const data = [
+      {
+        id: 1,
+        label: '一级 1',
+        children: [
+          {
+            id: 4,
+            label: '二级 1-1',
+            children: [
+              {
+                id: 9,
+                label: '三级 1-1-1'
+              },
+              {
+                id: 10,
+                label: '三级 1-1-2'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 2,
+        label: '一级 2',
+        children: [
+          {
+            id: 5,
+            label: '二级 2-1'
+          },
+          {
+            id: 6,
+            label: '二级 2-2'
+          }
+        ]
+      },
+      {
+        id: 3,
+        label: '一级 3',
+        children: [
+          {
+            id: 7,
+            label: '二级 3-1'
+          },
+          {
+            id: 8,
+            label: '二级 3-2'
+          }
+        ]
+      }
+    ]
+    const onClick = () => {
+      console.log(findOne(3))
+    }
+    return {
+      data,
+      onClick
+    }
+  }
+}
+</script>
+```
+
+:::
+
+
+
 ### Structure
 
 TreeNode 是整个 `ElTree` 组件内部的节点类，在调用 `ElTree` 提供的方法的时候优先为用户返回的是 TreeNode 节点。
@@ -1090,9 +1172,11 @@ interface TreeNode {
 | isDisabled | 指定节点选择框是否禁用为节点对象的某个属性值       | string | —      | isDisabled |
 | isLeaf     | 指定节点是否为叶子节点                             | string | —      | isLeaf     |
 
-### Methods
+### Methods(useTree)
 
 `Tree` 内部使用了 `TreeNode` 类型的对象来包装用户传入（`RawNode`）的数据，用来保存目前节点的状态。
+
+如果使用组合式API的方式，您可以导入`useTree`方法来使用下面的函数。
 
 | 方法名                         | 说明                                                         | 参数                                                         |
 | :----------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
