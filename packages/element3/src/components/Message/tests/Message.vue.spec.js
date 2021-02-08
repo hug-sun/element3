@@ -197,7 +197,7 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(wrapper.find('.el-message')).toHaveStyle({
+    expect(wrapper.get('.el-message')).toHaveStyle({
       top: '50px'
     })
   })
@@ -209,13 +209,13 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(wrapper.find('.el-message')).toHaveStyle({
+    expect(wrapper.get('.el-message')).toHaveStyle({
       top: '50px'
     })
 
     wrapper.vm.offsetTop = 100
     await flushPromises()
-    expect(wrapper.find('.el-message')).toHaveStyle({
+    expect(wrapper.get('.el-message')).toHaveStyle({
       top: '100px'
     })
   })

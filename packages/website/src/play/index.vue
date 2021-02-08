@@ -1,38 +1,25 @@
 <template>
-  <el-button :plain="true" @click="open">打开消息提示</el-button>
-  <el-button :plain="true" @click="open">打开消息提示</el-button>
-  <el-button :plain="true" @click="openVn">VNode</el-button>
+  <el-radio-group v-model="tabPosition" style="margin-bottom: 30px">
+    <el-radio-button label="top">top</el-radio-button>
+    <el-radio-button label="right">right</el-radio-button>
+    <el-radio-button label="bottom">bottom</el-radio-button>
+    <el-radio-button label="left">left</el-radio-button>
+  </el-radio-group>
+
+  <el-tabs :tab-position="tabPosition" style="height: 200px">
+    <el-tab-pane label="用户管理">用户管理</el-tab-pane>
+    <el-tab-pane label="配置管理">配置管理</el-tab-pane>
+    <el-tab-pane label="角色管理">角色管理</el-tab-pane>
+    <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
+  </el-tabs>
 </template>
-
 <script>
-import { h } from 'vue'
-import { Message } from 'element3'
-
-export default {
-  setup() {
-    function open() {
-      // message('这是一条消息提示')
-      Message({
-        duration: 2000,
-        closeOnClickModal: true,
-        message: 'verticalOffset'
-      })
-      // Message.closeAll()
-    }
-
-    function openVn() {
-      Message({
-        message: h('p', null, [
-          h('span', null, '内容可以是 '),
-          h('i', { style: 'color: teal' }, 'VNode')
-        ])
-      })
-    }
-
+import { defineComponent } from 'vue'
+export default defineComponent({
+  data() {
     return {
-      open,
-      openVn
+      tabPosition: 'top'
     }
   }
-}
+})
 </script>
