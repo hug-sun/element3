@@ -3,7 +3,8 @@ import {
   ref,
   Transition,
   getCurrentInstance,
-  defineComponent
+  defineComponent,
+  h
 } from 'vue'
 import { props } from './props'
 import { useZindex, useBodyScroll, useStyle, useProvide } from './use'
@@ -41,8 +42,11 @@ const PopupComponent = (component, children) =>
       }
 
       const handleClick = () => {
-        if (props.closeOnClickModal) {
+        if (props.closeOnClickModal && props.transitionClass) {
           show.value = false
+          props.onClose && props.onClose(getRefInstance(instance, 'popup')[0])
+        } else if (props.closeOnClickModal && !props.transitionClass) {
+          showTeleport.value = false
           props.onClose && props.onClose(getRefInstance(instance, 'popup')[0])
         }
       }
@@ -112,7 +116,6 @@ const PopupComponent = (component, children) =>
         return (
           <Teleport to="body">
             <component
-              v-show={show}
               ref="popup"
               onClick={handleClick}
               onClose={closePopup}
