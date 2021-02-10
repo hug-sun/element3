@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
-import { nextTick, ref, h, onUpdated } from 'vue'
+import { flushPromises, mount } from '@vue/test-utils'
+import { nextTick, ref, h, defineComponent } from 'vue'
 import { PopupComponent } from '../../../src/utils/popupService/index'
 
 /**
@@ -48,22 +48,26 @@ describe('open a teleport', () => {
     ).toBe('2002')
   })
 
-  it('click modal should destory teleport and teleport when closeOnClickModal eq true ', async () => {
+  it('click modal should destory component and teleport when closeOnClickModal eq true ', async () => {
     let clicked = false
+
+    const props = {
+      closeOnClickModal: true,
+      onClose: () => (clicked = true)
+    }
 
     const component = <div className="el-popup__wrapper"></div>
 
-    mount(PopupComponent(component))
+    mount(PopupComponent(component), { props })
 
     document.querySelector('.el-popup__wrapper').trigger('click')
 
-    setTimeout(() => {
-      expect(document.querySelector('body .el-popup__wrapper')).toBeNull()
-      expect(clicked).toBeTruthy()
-    }, 0)
+    await nextTick()
+    expect(document.querySelector('body .el-popup__wrapper')).toBeNull()
+    expect(clicked).toBeTruthy()
   })
 
-  it('click modal should not destory teleport and teleport when closeOnClickModal eq false', async () => {
+  it('click modal should not destory component and teleport when closeOnClickModal eq false', async () => {
     let clicked = false
 
     const component = <div className="el-popup__wrapper"></div>
@@ -79,28 +83,46 @@ describe('open a teleport', () => {
 
     document.querySelector('.el-popup__wrapper').trigger('click')
 
-    // await nextTick() 不能使用 ?
-    setTimeout(() => {
-      expect(document.querySelector('body  .el-popup__wrapper')).not.toBeNull()
-      expect(clicked).toBeFalsy()
-    }, 0)
+    await flushPromises()
+    expect(document.querySelector('body  .el-popup__wrapper')).not.toBeNull()
+    expect(clicked).toBeFalsy()
   })
 
   it('lockScroll', async () => {
-    const props = {
-      lockScroll: true
-    }
     const component = <div className="el-popup__wrapper"></div>
 
-    mount(PopupComponent(component), {
-      props
+    const popupComponent = PopupComponent(component)
+
+    const parentCompoent = defineComponent({
+      setup() {
+        const show = ref(true)
+        const onClose = () => (show.value = false)
+        return {
+          show,
+          onClose
+        }
+      },
+      render({ show, onClose }) {
+        if (!show) {
+          return null
+        }
+
+        return (
+          <popupComponent
+            lockScroll={true}
+            closeOnClickModal={true}
+            onClose={onClose}
+          />
+        )
+      }
     })
+    mount(parentCompoent)
 
     expect(document.querySelector('.el-popup-parent--hidden')).toBeTruthy()
-    setTimeout(() => {
-      document.querySelector('.el-popup__wrapper').trigger('click')
-      expect(document.querySelector('.el-popup-parent--hidden')).toBeNull()
-    }, 0)
+    document.querySelector('.el-popup__wrapper').trigger('click')
+    await flushPromises()
+
+    expect(document.querySelector('.el-popup-parent--hidden')).toBeNull()
   })
 
   describe('transition', () => {

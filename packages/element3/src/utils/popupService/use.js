@@ -24,17 +24,21 @@ export const useStyle = () => {
 function useBodyScroll({ lockScroll }) {
   const body = document.body
 
-  useBodyScrollCounter++
   onBeforeMount(() => {
-    if (lockScroll && !hasClass(body, 'el-popup-parent--hidden')) {
-      addClass(body, 'el-popup-parent--hidden')
+    if (lockScroll) {
+      useBodyScrollCounter++
+      if (!hasClass(body, 'el-popup-parent--hidden')) {
+        addClass(body, 'el-popup-parent--hidden')
+      }
     }
   })
 
   onUnmounted(() => {
-    useBodyScrollCounter--
-    if (lockScroll || useBodyScrollCounter <= 1) {
-      removeClass(document.body, 'el-popup-parent--hidden')
+    if (lockScroll) {
+      useBodyScrollCounter--
+      if (useBodyScrollCounter <= 1) {
+        removeClass(document.body, 'el-popup-parent--hidden')
+      }
     }
   })
 }

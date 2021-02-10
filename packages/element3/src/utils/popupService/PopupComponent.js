@@ -42,11 +42,17 @@ const PopupComponent = (component, children) =>
       }
 
       const handleClick = () => {
-        if (props.closeOnClickModal && props.transitionClass) {
+        if (!props.closeOnClickModal) {
+          return
+        }
+
+        if (props.transitionClass) {
           show.value = false
+
           props.onClose && props.onClose(getRefInstance(instance, 'popup')[0])
-        } else if (props.closeOnClickModal && !props.transitionClass) {
+        } else if (!props.transitionClass) {
           showTeleport.value = false
+
           props.onClose && props.onClose(getRefInstance(instance, 'popup')[0])
         }
       }
