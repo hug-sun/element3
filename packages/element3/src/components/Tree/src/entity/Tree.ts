@@ -35,20 +35,16 @@ export class Tree<RawNode extends RawNodeBase> {
         isDisabled: 'isDisabled',
         isAsync: 'isAsync',
         isLeaf: 'isLeaf'
-        // isChecked: 'isChecked',
-        // isVisible: 'isVisible',
-        // isExpanded: 'isExpanded',
       },
       defaultNodeKey
     )
 
-    this._mapper = new TreeMapper<RawNode>(
-      {
-        [this._defaultNodeKey.label]: 'ROOT',
-        [this._defaultNodeKey.children]: rawNodes
-      } as RawNode,
-      this._defaultNodeKey
-    )
+    const root = {
+      [this._defaultNodeKey.label]: 'ROOT',
+      [this._defaultNodeKey.children]: rawNodes
+    } as RawNode
+
+    this._mapper = new TreeMapper<RawNode>(root, this._defaultNodeKey)
   }
 
   setCheckedByIds(ids: ID[]): void {

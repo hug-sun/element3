@@ -8,8 +8,8 @@ import { reactive, toRaw } from 'vue'
 const { createMap, reversalNodeKeyMap } = Tools
 
 export class TreeMapper<RawNode extends RawNodeBase> {
-  private _toTreeNode: WeakMap<RawNode, TreeNode>
-  private _toRawNode: WeakMap<TreeNode, RawNode>
+  private _toTreeNode: WeakMap<RawNode, TreeNode> = new WeakMap()
+  private _toRawNode: WeakMap<TreeNode, RawNode> = new WeakMap()
   private _toRawNodeKey: Map<string, string>
   private _toTreeNodeKey: Map<string, string>
   private _rawNodeWatcher: Watcher<RawNode>
@@ -34,20 +34,26 @@ export class TreeMapper<RawNode extends RawNodeBase> {
   }
 
   constructor(rawNode: RawNode, keyMap: DefaultNodeKey<RawNode>) {
-    this._toTreeNode = new WeakMap()
-    this._toRawNode = new WeakMap()
-    this._toRawNodeKey = createMap(keyMap)
-    this._toTreeNodeKey = reversalNodeKeyMap(this._toRawNodeKey)
-    // init
-    this._rawNode = rawNode
-    this._treeNode = this.convertToTreeNode(rawNode)
-    // build TreeNode
-
-    this._rawNodeWatcher = new Watcher(this._rawNode)
-    this._treeNodeWatcher = new Watcher(this._treeNode)
+    this.initNodeKey(keyMap)
+    this.convertNode(rawNode)
+    this.reactiveNode()
     this.withRawNodeHandler()
     this.withTreeNodeHandler()
-    // for rawNode and treeNode reactive
+  }
+
+  private initNodeKey(keyMap: DefaultNodeKey<RawNode>) {
+    this._toRawNodeKey = createMap(keyMap)
+    this._toTreeNodeKey = reversalNodeKeyMap(this._toRawNodeKey)
+  }
+
+  private convertNode(rawNode: RawNode) {
+    this._rawNode = rawNode
+    this._treeNode = this.convertToTreeNode(rawNode)
+  }
+
+  private reactiveNode() {
+    this._rawNodeWatcher = new Watcher(this._rawNode)
+    this._treeNodeWatcher = new Watcher(this._treeNode)
   }
 
   convertToTreeNode(rawNode: RawNode): TreeNode {
@@ -101,31 +107,22 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     this._rawNodeWatcher.bindHandler(
       'set/arr/add',
       ({ currentNode, value }) => {
-        const currentTreeNode = this._toTreeNode.get(
-          reactive(currentNode) as RawNode
-        )
         this.forTreeNodeAppendChild(
-          currentTreeNode,
+          this.getTreeNode(currentNode),
           this.convertToTreeNode(value)
         )
       }
     )
 
     this._rawNodeWatcher.bindHandler('set/arr/del', ({ currentNode, key }) => {
-      const currentTreeNode = this._toTreeNode.get(
-        reactive(currentNode) as RawNode
-      )
-      this.forTreeNodeRemoveChild(currentTreeNode, Number(key))
+      this.forTreeNodeRemoveChild(this.getTreeNode(currentNode), Number(key))
     })
 
     this._rawNodeWatcher.bindHandler(
       'set/arr/put',
       ({ currentNode, key, value }) => {
-        const currentTreeNode = this._toTreeNode.get(
-          reactive(currentNode) as RawNode
-        )
         this.forTreeNodeUpdateChild(
-          currentTreeNode,
+          this.getTreeNode(currentNode),
           Number(key),
           this._toTreeNode.get(value) ?? this.convertToTreeNode(value)
         )
@@ -135,11 +132,8 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     this._rawNodeWatcher.bindHandler(
       'set/obj/put',
       ({ currentNode, key, value }) => {
-        const currentTreeNode = this._toTreeNode.get(
-          reactive(currentNode) as RawNode
-        )
         this.forTreeNodeUpdateValue(
-          currentTreeNode,
+          this.getTreeNode(currentNode),
           this._toTreeNodeKey.get(key),
           value
         )
@@ -149,11 +143,8 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     this._rawNodeWatcher.bindHandler(
       'set/obj/add',
       ({ currentNode, key, value }) => {
-        const currentTreeNode = this._toTreeNode.get(
-          reactive(currentNode) as RawNode
-        )
         this.forTreeNodeUpdateValue(
-          currentTreeNode,
+          this.getTreeNode(currentNode),
           this._toTreeNodeKey.get(key),
           value
         )
@@ -165,24 +156,22 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     this._treeNodeWatcher.bindHandler(
       'set/arr/add',
       ({ currentNode, value }) => {
-        const currentRawNode = this._toRawNode.get(
-          reactive(currentNode) as TreeNode
+        this.forRawNodeAppendChild(
+          this.getRawNode(currentNode),
+          this.convertToRawNode(value)
         )
-        this.forRawNodeAppendChild(currentRawNode, this.convertToRawNode(value))
       }
     )
 
     this._treeNodeWatcher.bindHandler('set/arr/del', ({ currentNode, key }) => {
-      const currentRawNode = this._toRawNode.get(currentNode)
-      this.forRawNodeRemoveChild(currentRawNode, Number(key))
+      this.forRawNodeRemoveChild(this.getRawNode(currentNode), Number(key))
     })
 
     this._treeNodeWatcher.bindHandler(
       'set/arr/put',
       ({ currentNode, key, value }) => {
-        const currentRawNode = this._toRawNode.get(currentNode)
         this.forRawNodeUpdateChild(
-          currentRawNode,
+          this.getRawNode(currentNode),
           Number(key),
           this.convertToRawNode(value)
         )
@@ -192,9 +181,8 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     this._treeNodeWatcher.bindHandler(
       'set/obj/put',
       ({ currentNode, key, value }) => {
-        const currentRawNode = this._toRawNode.get(currentNode)
         this.forRawNodeUpdateValue(
-          currentRawNode,
+          this.getRawNode(currentNode),
           this._toRawNodeKey.get(key),
           value
         )
@@ -204,9 +192,8 @@ export class TreeMapper<RawNode extends RawNodeBase> {
     this._treeNodeWatcher.bindHandler(
       'set/obj/add',
       ({ currentNode, key, value }) => {
-        const currentRawNode = this._toRawNode.get(currentNode)
         this.forRawNodeUpdateValue(
-          currentRawNode,
+          this.getRawNode(currentNode),
           this._toRawNodeKey.get(key),
           value
         )
@@ -293,14 +280,16 @@ export class TreeMapper<RawNode extends RawNodeBase> {
   getRawNode(treeNode: TreeNode): RawNode {
     return (
       this._toRawNode.get(Watcher.getRaw(treeNode)) ??
-      this._toRawNode.get(treeNode)
+      this._toRawNode.get(treeNode) ??
+      this._toRawNode.get(reactive(treeNode) as TreeNode)
     )
   }
 
   getTreeNode(rawNode: RawNode): TreeNode {
     return (
       this._toTreeNode.get(Watcher.getRaw(rawNode)) ??
-      this._toTreeNode.get(rawNode)
+      this._toTreeNode.get(rawNode) ??
+      this._toTreeNode.get(reactive(rawNode) as RawNode)
     )
   }
 }
