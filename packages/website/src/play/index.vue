@@ -1,24 +1,46 @@
 <template>
-  <el-radio-group v-model="tabPosition" style="margin-bottom: 30px">
-    <el-radio-button label="top">top</el-radio-button>
-    <el-radio-button label="right">right</el-radio-button>
-    <el-radio-button label="bottom">bottom</el-radio-button>
-    <el-radio-button label="left">left</el-radio-button>
-  </el-radio-group>
-
-  <el-tabs :tab-position="tabPosition" style="height: 200px">
-    <el-tab-pane label="用户管理">用户管理</el-tab-pane>
-    <el-tab-pane label="配置管理">配置管理</el-tab-pane>
-    <el-tab-pane label="角色管理">角色管理</el-tab-pane>
-    <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
-  </el-tabs>
+  <!-- <el-new-table :data="tableData">
+    <el-new-table-column prop="date" label="日期" width="180">
+    </el-new-table-column>
+  </el-new-table> -->
+  <div>
+    <el-button>默认按钮</el-button>
+    <!-- {{ state.list }} -->
+    {{ list }}
+    <button @click="handleClick">click</button>
+  </div>
 </template>
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 export default defineComponent({
   data() {
     return {
-      tabPosition: 'top'
+      tableData: [
+        {
+          date: '2016-05-02',
+          time: 10
+        },
+        {
+          date: '2016-05-03',
+          time: 11
+        }
+      ]
+    }
+  },
+  setup() {
+    // let state = reactive({
+    //   list: []
+    // })
+    let list = reactive([])
+    const handleClick = () => {
+      // state.list = [1, 2, 3]
+      list = [1, 2, 3]
+    }
+
+    return {
+      // state,
+      list,
+      handleClick
     }
   }
 })
