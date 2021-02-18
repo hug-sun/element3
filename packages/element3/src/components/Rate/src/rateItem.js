@@ -1,42 +1,59 @@
-import { computed, reactive, ref, watchEffect } from 'vue'
+import { ItemState } from './ItemState'
+import { computed, reactive } from 'vue'
 
 export const useRateItem = (max) => {
   const rateItems = reactive([])
 
   const createRateItem = () => {
     const item = reactive({
-      state: 'el-icon-star-off',
+      state: new ItemState(),
       hover: false
     })
 
     item.classes = computed(() => {
-      return [
+      const result = [
         {
           hover: item.hover
         },
-        item.state
+        toIconClass(item.state.getState().state)
       ]
+      return result
     })
 
     return item
   }
 
+  function toIconClass(state) {
+    if (state === 'starOn') {
+      return 'el-icon-star-on'
+    }
+    return 'el-icon-star-off'
+  }
+
   function init() {
-    for (let index = 0; index < max.value; index++) {
+    for (let index = 0; index < max; index++) {
       rateItems.push(createRateItem())
     }
   }
 
-  function lightUp(index) {
+  function click(index) {
+    toStarOn(index, (item) => {
+      item.state.click()
+    })
+  }
+
+  function toStarOn(index, callback) {
     rateItems.forEach((item, itemIndex) => {
       if (itemIndex <= index) {
-        item.state = 'el-icon-star-on'
+        callback(item)
       }
     })
   }
 
   function hover(item, index) {
-    lightUp(index)
+    toStarOn(index, (item) => {
+      item.state.hover()
+    })
     _hover(item)
   }
 
@@ -46,12 +63,12 @@ export const useRateItem = (max) => {
 
   function putOut(item) {
     rateItems.forEach((item) => {
-      item.state = 'el-icon-star-off'
+      item.state.putOut()
     })
     item.hover = false
   }
 
   init()
 
-  return { rateItems, lightUp, hover, putOut }
+  return { rateItems, click, hover, putOut }
 }

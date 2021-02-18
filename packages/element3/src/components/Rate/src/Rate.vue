@@ -3,7 +3,7 @@
     <template v-for="(item, index) in rateItems" :key="index">
       <span
         class="el-rate__item"
-        @click="lightUp(index)"
+        @click="rateItemClick(index)"
         @mouseover="hover(item, index)"
         @mouseout="putOut(item)"
       >
@@ -26,12 +26,14 @@ export default {
   setup(props) {
     const { max } = toRefs(props)
 
-    const { rateItems, lightUp, hover, putOut } = useRateItem(max)
+    const { rateItems, click: rateItemClick, hover, putOut } = useRateItem(
+      max.value
+    )
 
     return {
       hover,
       rateItems,
-      lightUp,
+      rateItemClick,
       putOut
     }
   }

@@ -75,8 +75,24 @@ describe('Rate', () => {
   })
 
   // todo -> 之前选中了 2 个 ，  划出的时候应该恢复之前的
-  // it.todo(
-  //   '当之前的状态是前两个选中的时候，鼠标悬浮离开后需要回到之前的状态',
-  //   async () => {}
-  // )
+  // it('当之前的状态是前两个选中的时候，鼠标悬浮离开后需要回到之前的状态', async () => {
+  //   const wrapper = mount(Rate)
+
+  //   // 选中第二个 item
+  //   const secondItem = wrapper.findAll('.el-rate__item')[1]
+  //   secondItem.trigger('click')
+  //   await flushPromises()
+
+  //   const fourthItem = wrapper.findAll('.el-rate__item')[3]
+  //   fourthItem.trigger('mouseover')
+  //   fourthItem.trigger('mouseout')
+
+  //   await flushPromises()
+  //   const items = wrapper.findAll('.el-rate__item')
+  //   expect(items[0].get('i').classes('el-icon-star-on')).toBe(true)
+  //   expect(items[1].get('i').classes('el-icon-star-on')).toBe(true)
+  //   expect(items[2].get('i').classes('el-icon-star-off')).toBe(true)
+  //   expect(items[3].get('i').classes('el-icon-star-off')).toBe(true)
+  //   expect(items[4].get('i').classes('el-icon-star-off')).toBe(true)
+  // })
 })
