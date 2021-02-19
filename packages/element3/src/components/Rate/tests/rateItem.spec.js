@@ -1,5 +1,28 @@
 import { useRateItem } from '../src/rateItem'
+import { StarState, TriggerType } from '../src/consts'
 describe('rateItem', () => {
+  function expectRateItemState(item, starState, trigged) {
+    expect(item).toEqual(
+      expect.objectContaining({
+        state: {
+          starState,
+          trigged
+        }
+      })
+    )
+  }
+
+  function expectRateItemStateWithHover(item, starState, trigged, hover) {
+    expect(item).toEqual(
+      expect.objectContaining({
+        hover,
+        state: {
+          starState,
+          trigged
+        }
+      })
+    )
+  }
   it('click -> hover -> putOut', () => {
     const { putOut, hover, click, rateItems } = useRateItem(5)
 
@@ -8,32 +31,13 @@ describe('rateItem', () => {
 
     putOut(rateItems[2])
 
-    expect(rateItems[0]).toEqual(
-      expect.objectContaining({
-        state: {
-          state: 'starOn',
-          trigged: 'click'
-        }
-      })
-    )
-
-    expect(rateItems[1]).toEqual(
-      expect.objectContaining({
-        state: {
-          state: 'starOn',
-          trigged: 'click'
-        }
-      })
-    )
-
-    expect(rateItems[2]).toEqual(
-      expect.objectContaining({
-        hover: false,
-        state: {
-          state: 'starOff',
-          trigged: ''
-        }
-      })
+    expectRateItemState(rateItems[0], StarState.STAR_ON, TriggerType.CLICK)
+    expectRateItemState(rateItems[1], StarState.STAR_ON, TriggerType.CLICK)
+    expectRateItemStateWithHover(
+      rateItems[2],
+      StarState.STAR_OFF,
+      TriggerType.EMPTY,
+      false
     )
   })
 
@@ -42,32 +46,13 @@ describe('rateItem', () => {
     click(1)
     hover(rateItems[2], 2)
 
-    expect(rateItems[0]).toEqual(
-      expect.objectContaining({
-        state: {
-          state: 'starOn',
-          trigged: 'click'
-        }
-      })
-    )
-
-    expect(rateItems[1]).toEqual(
-      expect.objectContaining({
-        state: {
-          state: 'starOn',
-          trigged: 'click'
-        }
-      })
-    )
-
-    expect(rateItems[2]).toEqual(
-      expect.objectContaining({
-        hover: true,
-        state: {
-          state: 'starOn',
-          trigged: 'hover'
-        }
-      })
+    expectRateItemState(rateItems[0], StarState.STAR_ON, TriggerType.CLICK)
+    expectRateItemState(rateItems[1], StarState.STAR_ON, TriggerType.CLICK)
+    expectRateItemStateWithHover(
+      rateItems[2],
+      StarState.STAR_ON,
+      TriggerType.HOVER,
+      true
     )
   })
 })

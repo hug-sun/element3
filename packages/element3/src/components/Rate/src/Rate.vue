@@ -3,18 +3,18 @@
     <template v-for="(item, index) in rateItems" :key="index">
       <span
         class="el-rate__item"
-        @click="rateItemClick(index)"
-        @mouseover="hover(item, index)"
-        @mouseout="putOut(item)"
+        @click="onClick(index)"
+        @mouseover="onHover(item, index)"
+        @mouseout="onPutOut(item)"
       >
-        <i :class="item.classes"></i>
+        <i :class="itemClasses(item)"></i>
       </span>
     </template>
   </div>
 </template>
 
 <script>
-import { toRefs } from 'vue'
+import { computed, toRefs } from 'vue'
 import { useRateItem } from './rateItem'
 export default {
   props: {
@@ -26,16 +26,46 @@ export default {
   setup(props) {
     const { max } = toRefs(props)
 
-    const { rateItems, click: rateItemClick, hover, putOut } = useRateItem(
-      max.value
-    )
+    const { itemClasses } = useItemClasses()
+
+    const {
+      rateItems,
+      click: onClick,
+      hover: onHover,
+      putOut: onPutOut
+    } = useRateItem(max.value)
 
     return {
-      hover,
+      itemClasses,
+      onHover,
       rateItems,
-      rateItemClick,
-      putOut
+      onClick,
+      onPutOut
     }
+  }
+}
+
+const useItemClasses = () => {
+  function toIconClass(item) {
+    const iconName = 'el-icon'
+    return item.isStarOn() ? `${iconName}-star-on` : `${iconName}-star-off`
+  }
+
+  const itemClasses = computed(() => {
+    return (item) => {
+      const result = [
+        {
+          hover: item.hover
+        },
+        toIconClass(item)
+      ]
+
+      return result
+    }
+  })
+
+  return {
+    itemClasses
   }
 }
 </script>

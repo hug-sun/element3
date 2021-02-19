@@ -1,34 +1,38 @@
 import { ItemState } from './ItemState'
-import { computed, reactive } from 'vue'
+import { reactive } from 'vue'
+
+const createRateItem = () => {
+  const item = reactive({
+    state: new ItemState(),
+    hover: false,
+    mouseOver() {
+      this.hover = true
+    },
+    mouseOut() {
+      this.hover = false
+    },
+    click() {
+      this.state.click()
+    },
+    reset() {
+      this.state.reset()
+    },
+    highlight() {
+      this.state.highlight()
+    },
+    putOut() {
+      this.state.putOut()
+    },
+    isStarOn() {
+      return this.state.isStarOn()
+    }
+  })
+
+  return item
+}
 
 export const useRateItem = (max) => {
   const rateItems = reactive([])
-
-  const createRateItem = () => {
-    const item = reactive({
-      state: new ItemState(),
-      hover: false
-    })
-
-    item.classes = computed(() => {
-      const result = [
-        {
-          hover: item.hover
-        },
-        toIconClass(item.state.getState().state)
-      ]
-      return result
-    })
-
-    return item
-  }
-
-  function toIconClass(state) {
-    if (state === 'starOn') {
-      return 'el-icon-star-on'
-    }
-    return 'el-icon-star-off'
-  }
 
   function init() {
     for (let index = 0; index < max; index++) {
@@ -36,9 +40,17 @@ export const useRateItem = (max) => {
     }
   }
 
+  function resetAllItems() {
+    rateItems.forEach((item) => {
+      item.reset()
+    })
+  }
+
   function click(index) {
+    resetAllItems()
+
     toStarOn(index, (item) => {
-      item.state.click()
+      item.click()
     })
   }
 
@@ -52,20 +64,16 @@ export const useRateItem = (max) => {
 
   function hover(item, index) {
     toStarOn(index, (item) => {
-      item.state.hover()
+      item.highlight()
     })
-    _hover(item)
-  }
-
-  function _hover(item) {
-    item.hover = true
+    item.mouseOver()
   }
 
   function putOut(item) {
     rateItems.forEach((item) => {
-      item.state.putOut()
+      item.putOut()
     })
-    item.hover = false
+    item.mouseOut()
   }
 
   init()
