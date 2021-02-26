@@ -6,7 +6,7 @@ let zIndex = 2000
 let useBodyScrollCounter = 0
 
 function useZindex() {
-  return computed(() => zIndex++)
+  return zIndex++
 }
 
 export const useStyle = () => {
@@ -36,7 +36,7 @@ function useBodyScroll({ lockScroll }) {
   onUnmounted(() => {
     if (lockScroll) {
       useBodyScrollCounter--
-      if (useBodyScrollCounter <= 1) {
+      if (useBodyScrollCounter <= 0) {
         removeClass(document.body, 'el-popup-parent--hidden')
       }
     }

@@ -3,10 +3,6 @@ import Message from '../src/Message.vue'
 import { h } from 'vue'
 
 describe('Message.vue', () => {
-  beforeEach(() => {
-    document.body.innerHTML = ''
-  })
-
   test('snapshot', () => {
     const wrapper = mount(Message)
 

@@ -14,7 +14,7 @@ describe('open a teleport', () => {
   beforeEach(() => {
     document.body.innerHTML = ''
   })
-  it('should render teleport when call PopupComponent component', () => {
+  it('should append div to body when call PopupComponent component', () => {
     const component = <div></div>
     const children = h('h1', 'test')
 
@@ -28,6 +28,13 @@ describe('open a teleport', () => {
         null
       ).getPropertyValue('z-index')
     ).toBe('2000')
+  })
+
+  it('should render children when pass chidlren to PopupComponent ', () => {
+    const component = <div></div>
+    const children = h('h1', 'test')
+
+    mount(PopupComponent(component, children))
 
     expect(document.body.innerHTML).toContain(`<h1>test</h1>`)
   })
@@ -45,7 +52,7 @@ describe('open a teleport', () => {
         document.querySelectorAll('body  .el-popup__wrapper')[1],
         null
       ).getPropertyValue('z-index')
-    ).toBe('2002')
+    ).toBe('2003')
   })
 
   it('click modal should destory component and teleport when closeOnClickModal eq true ', async () => {
@@ -123,6 +130,69 @@ describe('open a teleport', () => {
     await flushPromises()
 
     expect(document.querySelector('.el-popup-parent--hidden')).toBeNull()
+  })
+
+  it.only('should lock-scroll if exist popupComponent', async () => {
+    const component = <div className="el-popup__wrapper"></div>
+
+    const popupComponent = PopupComponent(component)
+
+    const parentCompoent = defineComponent({
+      setup() {
+        const show = ref(true)
+        const onClose = () => (show.value = false)
+        return {
+          show,
+          onClose
+        }
+      },
+      render({ show, onClose }) {
+        if (!show) {
+          return null
+        }
+
+        return (
+          <popupComponent
+            lockScroll={true}
+            closeOnClickModal={true}
+            onClose={onClose}
+          />
+        )
+      }
+    })
+
+    const parentCompoent1 = defineComponent({
+      setup() {
+        const show = ref(true)
+        const onClose = () => (show.value = false)
+        return {
+          show,
+          onClose
+        }
+      },
+      render({ show, onClose }) {
+        if (!show) {
+          return null
+        }
+
+        return (
+          <popupComponent
+            lockScroll={true}
+            closeOnClickModal={true}
+            onClose={onClose}
+          />
+        )
+      }
+    })
+
+    mount(popupComponent)
+    mount(parentCompoent1)
+
+    expect(document.querySelector('.el-popup-parent--hidden')).toBeTruthy()
+    document.querySelectorAll('.el-popup__wrapper')[0].trigger('click')
+    await flushPromises()
+
+    expect(document.querySelector('.el-popup-parent--hidden')).not.toBeNull()
   })
 
   describe('transition', () => {

@@ -64,6 +64,9 @@ const PopupComponent = (component, children) =>
         props.onClose && props.onClose(instance)
       }
 
+      const getPopupProps = (key) => popup.value.$props[key]
+
+      const getPopupAttrs = (key) => popup.value[key]
       return {
         zIndex,
         show,
@@ -73,7 +76,9 @@ const PopupComponent = (component, children) =>
         popup,
         showTeleport,
         handleClick,
-        afterLeaveHandler
+        afterLeaveHandler,
+        getPopupProps,
+        getPopupAttrs
       }
     },
     render({
@@ -118,22 +123,21 @@ const PopupComponent = (component, children) =>
             </Transition>
           </Teleport>
         )
-      } else {
-        return (
-          <Teleport to="body">
-            <component
-              ref="popup"
-              onClick={handleClick}
-              onClose={closePopup}
-              style={styleText}
-              {...$attrs}
-              {...childernProps}
-            >
-              {children ? <children /> : null}
-            </component>
-          </Teleport>
-        )
       }
+      return (
+        <Teleport to="body">
+          <component
+            ref="popup"
+            onClick={handleClick}
+            onClose={closePopup}
+            style={styleText}
+            {...$attrs}
+            {...childernProps}
+          >
+            {children ? <children /> : null}
+          </component>
+        </Teleport>
+      )
     }
   })
 
