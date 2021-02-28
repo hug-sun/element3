@@ -9,7 +9,19 @@
     </li>
     <li
       v-if="pager.count > pager.viewCount && pager.leftCount > pager.halfPager"
-      class="el-icon more btn-quickprev"
+      class="el-icon more btn-quickprev el-icon-more"
+      @mouseenter="
+        switchClass($event.target, true, [
+          'el-icon-d-arrow-left',
+          'el-icon-more'
+        ])
+      "
+      @mouseleave="
+        switchClass($event.target, false, [
+          'el-icon-d-arrow-left',
+          'el-icon-more'
+        ])
+      "
     ></li>
     <li
       v-for="page in pager.midViewPages"
@@ -22,7 +34,19 @@
     ></li>
     <li
       v-if="pager.count > pager.viewCount && pager.rightCount > pager.halfPager"
-      class="el-icon more btn-quicknext"
+      class="el-icon more btn-quicknext el-icon-more"
+      @mouseenter="
+        switchClass($event.target, true, [
+          'el-icon-d-arrow-right',
+          'el-icon-more'
+        ])
+      "
+      @mouseleave="
+        switchClass($event.target, false, [
+          'el-icon-d-arrow-right',
+          'el-icon-more'
+        ])
+      "
     ></li>
     <li
       v-if="pager.count >= 2"
@@ -42,6 +66,18 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   props: {
     pager: Pager
+  },
+  setup() {
+    const switchClass = (el, flag, [a, b]) => {
+      if (flag) {
+        el.classList.add(a)
+        el.classList.remove(b)
+      } else {
+        el.classList.remove(a)
+        el.classList.add(b)
+      }
+    }
+    return { switchClass }
   }
 })
 </script>
