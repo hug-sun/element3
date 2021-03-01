@@ -78,4 +78,29 @@ describe('Pager.vue', () => {
     ])
     expect(wrapper.find('.number.active').text()).toBe('1')
   })
+
+  it('more btn mouse enter and leave', async () => {
+    const pager = new Pager({ total: 100, size: 1, current: 50, viewCount: 7 })
+
+    const wrapper = mount(ElPager, {
+      props: {
+        pager
+      }
+    })
+
+    const quickPrev = wrapper.find('.btn-quickprev')
+    const quickNext = wrapper.find('.btn-quicknext')
+
+    await quickPrev.trigger('mouseenter')
+    await quickNext.trigger('mouseenter')
+
+    expect(quickPrev.classes()).toContain('el-icon-d-arrow-left')
+    expect(quickNext.classes()).toContain('el-icon-d-arrow-right')
+
+    await quickPrev.trigger('mouseleave')
+    await quickNext.trigger('mouseleave')
+
+    expect(quickPrev.classes()).toContain('el-icon-more')
+    expect(quickNext.classes()).toContain('el-icon-more')
+  })
 })
