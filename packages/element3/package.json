@@ -69,6 +69,7 @@
     "@vue/compiler-sfc": "^3.0.4",
     "@vue/test-utils": "^2.0.0-beta.13",
     "babel-jest": "^26.6.3",
+    "@testing-library/vue": "next",
     "cp-cli": "^2.0.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
