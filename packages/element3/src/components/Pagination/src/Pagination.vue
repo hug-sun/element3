@@ -13,7 +13,8 @@ import {
   reactive,
   toRefs,
   watch,
-  watchEffect
+  watchEffect,
+  Ref
 } from 'vue'
 import { ElPaginationProps } from '../types'
 import { Pager as PagerCore } from './entity/Pager'
@@ -63,18 +64,22 @@ export default defineComponent({
     Total
   },
   setup(props: ElPaginationProps) {
-    const { currentPage, total, pageSize, pagerCount, pageCount } = toRefs(
-      props
-    )
-    const layoutPart = computed(() => parseLayout(props.layout))
-    const pager = reactive(
-      new PagerCore({
-        total: total?.value ?? pageCount.value,
-        size: pageSize.value,
-        viewCount: pagerCount.value,
-        current: currentPage.value
-      })
-    )
+    const {
+      currentPage,
+      total,
+      pageSize,
+      pagerCount,
+      pageCount,
+      layout
+    } = toRefs(props)
+    const { layoutPart } = useLayout(layout)
+    const { pager } = usePager({
+      currentPage,
+      total,
+      pageSize,
+      pagerCount,
+      pageCount
+    })
 
     return {
       layoutPart,
@@ -82,6 +87,23 @@ export default defineComponent({
     }
   }
 })
-</script>
 
-<style></style>
+function usePager({ total, pageCount, pageSize, pagerCount, currentPage }) {
+  const pager = reactive(
+    new PagerCore({
+      total: total?.value ?? pageCount.value,
+      size: pageSize.value,
+      viewCount: pagerCount.value,
+      current: currentPage.value
+    })
+  )
+  return { pager }
+}
+
+function useLayout(layout: Ref<string>) {
+  const layoutPart = computed(() => parseLayout(layout.value))
+  return {
+    layoutPart
+  }
+}
+</script>
