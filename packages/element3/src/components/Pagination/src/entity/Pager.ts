@@ -1,9 +1,21 @@
 import { makerArray } from '../tools/makerArray'
 
+export interface PagerParam {
+  size: number
+  total: number
+  current: number
+  viewCount: number
+}
+
 export class Pager {
   private _current: number
-  private _count: number
+  private _total: number
+  private _size: number
   private _viewCount: number
+
+  get total(): number {
+    return this._total
+  }
 
   get pagerCountNotSelf(): number {
     return this._viewCount - 1
@@ -18,7 +30,7 @@ export class Pager {
   }
 
   get rightCount(): number {
-    return Math.max(this._count - this._current, 0)
+    return Math.max(this.count - this._current, 0)
   }
 
   get current(): number {
@@ -35,7 +47,7 @@ export class Pager {
   }
 
   get count(): number {
-    return this._count
+    return Math.ceil(this._total / this._size)
   }
 
   get viewCount(): number {
@@ -43,7 +55,7 @@ export class Pager {
   }
 
   get pages(): number[] {
-    return makerArray(1, this._count)
+    return makerArray(1, this.count)
   }
 
   get viewPages(): number[] {
@@ -71,13 +83,14 @@ export class Pager {
     return result
   }
 
-  constructor(pageCount: number, currentPage: number, pagerCount: number) {
-    this._count = pageCount
-    this._current = currentPage
-    this._viewCount = pagerCount
+  constructor(pagerParam: PagerParam) {
+    this._size = pagerParam.size
+    this._total = pagerParam.total
+    this._current = pagerParam.current
+    this._viewCount = pagerParam.viewCount
   }
 
   catOut(start: number, end: number): number[] {
-    return this.pages.slice(Math.max(start - 1, 0), Math.min(end, this._count))
+    return this.pages.slice(Math.max(start - 1, 0), Math.min(end, this.count))
   }
 }

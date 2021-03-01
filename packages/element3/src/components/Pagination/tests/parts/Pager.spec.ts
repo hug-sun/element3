@@ -4,7 +4,7 @@ import ElPager from '../../src/parts/Pager.vue'
 
 describe('Pager.vue', () => {
   it('show page pageCount <= pagerCount', () => {
-    const pager = new Pager(5, 3, 7)
+    const pager = new Pager({ total: 5, size: 1, current: 3, viewCount: 7 })
     const wrapper = mount(ElPager, {
       props: {
         pager
@@ -23,7 +23,7 @@ describe('Pager.vue', () => {
     expect(wrapper.findAll('.el-icon.more')).toHaveLength(0)
   })
   it('show page pageCount > pagerCount currentPage is 4', () => {
-    const pager = new Pager(30, 4, 7)
+    const pager = new Pager({ total: 30, size: 1, current: 4, viewCount: 7 })
 
     const wrapper = mount(ElPager, {
       props: {
@@ -36,7 +36,7 @@ describe('Pager.vue', () => {
     expect(wrapper.find('.el-icon.more.btn-quicknext').exists()).toBeTruthy()
   })
   it('show page pageCount > pagerCount currentPage is 27', () => {
-    const pager = new Pager(30, 27, 7)
+    const pager = new Pager({ total: 30, size: 1, current: 27, viewCount: 7 })
 
     const wrapper = mount(ElPager, {
       props: {
@@ -49,7 +49,7 @@ describe('Pager.vue', () => {
     expect(wrapper.find('.el-icon.more.btn-quicknext').exists()).toBeFalsy()
   })
   it('show page pageCount > pagerCount', () => {
-    const pager = new Pager(30, 10, 7)
+    const pager = new Pager({ total: 30, size: 1, current: 10, viewCount: 7 })
 
     const wrapper = mount(ElPager, {
       props: {
@@ -63,12 +63,11 @@ describe('Pager.vue', () => {
   })
 
   it('when pageCount less', () => {
-    const currentPage = 1
-    const pageCount = 2
-    const pagerCount = 7
+    const pager = new Pager({ total: 2, size: 1, current: 1, viewCount: 7 })
+
     const wrapper = mount(ElPager, {
       props: {
-        pager: new Pager(pageCount, currentPage, pagerCount)
+        pager
       }
     })
 

@@ -5,7 +5,12 @@ describe('Pager.ts', () => {
     const pageCount = 6
     const currentPage = 2
     const pagerCount = 7
-    const pager = new Pager(pageCount, currentPage, pagerCount)
+    const pager = new Pager({
+      total: pageCount,
+      size: 1,
+      current: currentPage,
+      viewCount: pagerCount
+    })
 
     expect(pager.pages).toHaveLength(6)
   })
@@ -14,7 +19,12 @@ describe('Pager.ts', () => {
     const pageCount = 10
     const currentPage = 1
     const pagerCount = 7
-    const pager = new Pager(pageCount, currentPage, pagerCount)
+    const pager = new Pager({
+      total: pageCount,
+      size: 1,
+      current: currentPage,
+      viewCount: pagerCount
+    })
 
     expect(pager.midViewPages).toEqual([2, 3, 4, 5, 6])
 
@@ -44,7 +54,12 @@ describe('Pager.ts', () => {
     const pageCount = 10
     const currentPage = 2
     const pagerCount = 7
-    const pager = new Pager(pageCount, currentPage, pagerCount)
+    const pager = new Pager({
+      total: pageCount,
+      size: 1,
+      current: currentPage,
+      viewCount: pagerCount
+    })
 
     expect(pager.catOut(1, 2)).toEqual([1, 2])
     expect(pager.catOut(4, 7)).toEqual([4, 5, 6, 7])
@@ -55,7 +70,12 @@ describe('Pager.ts', () => {
     const pageCount = 10
     const currentPage = 2
     const pagerCount = 10
-    const pager = new Pager(pageCount, currentPage, pagerCount)
+    const pager = new Pager({
+      total: pageCount,
+      size: 1,
+      current: currentPage,
+      viewCount: pagerCount
+    })
 
     expect(pager.viewPages).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     expect(pager.leftCount).toBe(1)
@@ -66,7 +86,12 @@ describe('Pager.ts', () => {
     const pageCount = 10
     const currentPage = 1
     const pagerCount = 5
-    const pager = new Pager(pageCount, currentPage, pagerCount)
+    const pager = new Pager({
+      total: pageCount,
+      size: 1,
+      current: currentPage,
+      viewCount: pagerCount
+    })
 
     expect(pager.viewPages).toEqual([1, 2, 3, 4, 5])
 
@@ -102,5 +127,19 @@ describe('Pager.ts', () => {
 
     pager.current = 11
     expect(pager.viewPages).toEqual([6, 7, 8, 9, 10])
+  })
+  it('test total', () => {
+    const total = 100
+    const currentPage = 2
+    const pagerCount = 7
+    const pageSize = 10
+    const pager = new Pager({
+      total: total,
+      size: pageSize,
+      current: currentPage,
+      viewCount: pagerCount
+    })
+
+    expect(pager.count).toBe(10)
   })
 })
