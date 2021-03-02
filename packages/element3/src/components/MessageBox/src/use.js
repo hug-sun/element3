@@ -52,7 +52,7 @@ export function useHandleList(state, instance, validate) {
   }
 }
 
-export function initBeforeAndAfterOnMounte(state, handleAction, closeHandle) {
+export function watchElement(state, handleAction, closeHandle) {
   const {
     closeOnHashChange,
     closeOnPressEscape,

@@ -34,21 +34,15 @@ describe('MessageBox.js', () => {
     if (el.parentNode) {
       el.parentNode.removeChild(el)
     }
-    messageBox.close()
   })
   test('alert', async () => {
-    messageBox.alert({
+    const { instance } = messageBox.alert({
       title: '消息',
       message: '这是一段内容'
     })
-    const msgbox = document.querySelector(selector)
-    expect(
-      msgbox.querySelector('.el-message-box__title span').textContent
-    ).toEqual('消息')
-    expect(
-      msgbox.querySelector('.el-message-box__message').querySelector('p')
-        .textContent
-    ).toEqual('这是一段内容')
+
+    expect(instance.props.title).toBe('消息')
+    expect(instance.props.message).toEqual('这是一段内容')
   })
   test('messageBox of message is html', async () => {
     let instanceProprety = ''
@@ -66,9 +60,6 @@ describe('MessageBox.js', () => {
     expect(instance.proxy.message).toBe(
       '<strong>这是 <i>HTML</i> 片段</strong>'
     )
-    expect(
-      document.querySelector('.el-message-box__message').textContent
-    ).toContain('HTML')
     expect(instance.proxy.title).toBe('html片段')
     expect(instance.proxy.dangerouslyUseHTMLString).toBeTruthy()
     instance.proxy.closeHandle()
@@ -77,15 +68,12 @@ describe('MessageBox.js', () => {
     expect(callback).toHaveBeenCalled()
   })
   test('confirm', async () => {
-    messageBox.confirm({
+    const { instance } = messageBox.confirm({
       type: 'warning',
       title: '消息',
       message: '这是一段内容'
     })
-    const msgbox = document.querySelector(selector)
-    const calsslist = msgbox.querySelector('.el-message-box__status').classList
-    expect(calsslist.length).toEqual(2)
-    expect(calsslist.contains('el-icon-warning')).toBeTruthy()
+    expect(instance.props.type).toBe('warning')
   })
   test('kind of prompt', async () => {
     let v = ''
@@ -122,9 +110,9 @@ describe('MessageBox.js', () => {
     expect(callback).toHaveBeenCalled()
   })
   test('paramter', async () => {
-    const instance = messageBox.alert('请输入邮箱', { title: 'aaa' })
-    expect(instance.instance.proxy.title).toBe('aaa')
-    expect(instance.instance.proxy.message).toBe('请输入邮箱')
+    const { instance } = messageBox.alert('请输入邮箱', { title: 'aaa' })
+    expect(instance.proxy.title).toBe('aaa')
+    expect(instance.proxy.message).toBe('请输入邮箱')
   })
 
   test('showInput is false', async () => {

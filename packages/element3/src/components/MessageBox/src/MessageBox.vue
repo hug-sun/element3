@@ -104,7 +104,7 @@ import propsObject from './props.js'
 import { ElInput } from '../../Input'
 import { ElButton } from '../../Button'
 import validateFunction from './validate'
-import { useHandleList, initBeforeAndAfterOnMounte, useClass } from './use'
+import { useHandleList, watchElement, useClass } from './use'
 export default defineComponent({
   props: propsObject,
   components: {
@@ -128,7 +128,7 @@ export default defineComponent({
       handleWrapperClick
     } = useHandleList(state, instance, validate)
     const icon = useClass(iconClass, type)
-    initBeforeAndAfterOnMounte(state, handleAction, closeHandle)
+    watchElement(state, handleAction, closeHandle)
     return {
       ...toRefs(state),
       editorErrorMessage,
