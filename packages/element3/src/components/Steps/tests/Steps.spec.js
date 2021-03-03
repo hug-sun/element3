@@ -1,8 +1,31 @@
-import { render, screen } from '@testing-library/vue'
+import { render, screen, userEvent } from '@testing-library/vue'
 import { flushPromises, mount } from '@vue/test-utils'
 import Step from '../src/Step'
 import Steps from '../src/Steps'
-import { renderSteps } from './Steps.stories'
+
+// todo
+// test('should click 2nd step and show me the success, process and wait status', () => {
+//   const Comp = {
+//     template: `
+//     <el-steps :active="1">
+//       <el-step title="步骤1"></el-step>
+//       <el-step title="步骤2"></el-step>
+//       <el-step title="步骤3"></el-step>
+//     </el-steps>
+//     `,
+//     components: {
+//       'el-steps': Steps,
+//       'el-step': Step
+//     }
+//   }
+
+//   render(Comp)
+//   userEvent.click(screen.getByText(/步骤2/i))
+
+//   expect(screen.getByText(/步骤1/i)).toHaveClass('el-success')
+//   expect(screen.getByText(/步骤2/i)).toHaveClass('el-process')
+//   expect(screen.getByText(/步骤3/i)).toHaveStyle('el-wait')
+// })
 
 describe('Steps', () => {
   test('should have three step elements', () => {
@@ -83,16 +106,4 @@ describe('Steps', () => {
     expect(stepList[1].find('.is-process')).toBeExist()
     expect(stepList[2].find('.is-wait')).toBeExist()
   })
-
-  // test('should click 2nd step and show me the success, process and wait status', () => {
-  //   render(renderSteps())
-
-  //   userEvent.click(screen.getByText(/步骤2/i))
-
-  //   screen.debug()
-
-  //   expect(screen.getByText(/步骤1/i)).toHaveClass('el-success')
-  //   expect(screen.getByText(/步骤2/i)).toHaveClass('el-process')
-  //   expect(screen.getByText(/步骤3/i)).toHaveStyle('el-wait')
-  // })
 })

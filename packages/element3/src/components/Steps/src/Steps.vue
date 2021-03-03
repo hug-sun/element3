@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { provide, ref, onMounted } from 'vue'
+import { provide, ref, onMounted, toRefs } from 'vue'
 export default {
   name: 'Steps',
   props: {
@@ -15,26 +15,40 @@ export default {
   },
   setup(props) {
     //响应式对象
+    const { active } = toRefs(props)
     const stepList = ref([])
 
-    provide('steps', {
-      add(step) {
-        stepList.value.push(step)
+    useStepsProvide(stepList)
+    useChangeStepStatus(stepList, active)
+  }
+}
+
+function useStepsProvide(stepList) {
+  function createStepsProvide() {
+    return {
+      add(stepProxy) {
+        stepList.value.push(stepProxy)
+      }
+    }
+  }
+
+  provide('steps', createStepsProvide())
+}
+
+function useChangeStepStatus(stepList, active) {
+  function changeStepStatus() {
+    stepList.value.forEach((stepProxy, index) => {
+      if (index < active.value) {
+        stepProxy.changeStatus('success')
+        return
+      }
+      if (index === active.value) {
+        stepProxy.changeStatus('process')
       }
     })
-
-    onMounted(() => {
-      stepList.value.forEach((stepProxy, index) => {
-        if (index < props.active) {
-          stepProxy.changeStatus('success')
-          return
-        }
-        if (index === props.active) {
-          stepProxy.changeStatus('process')
-        }
-      })
-    })
   }
+
+  onMounted(() => changeStepStatus())
 }
 </script>
 

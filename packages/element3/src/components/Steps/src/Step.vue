@@ -13,23 +13,32 @@ export default {
     title: String
   },
   setup() {
-    // api
-    // changeStatus
-    // vue provide/inject
-    const { proxy } = getCurrentInstance()
-    const steps = inject('steps', {})
-    steps.add?.(proxy)
-
-    const status = ref('wait')
-    const changeStatus = (val) => {
-      status.value = val
-    }
+    useAddSelfToParent()
+    const { status, changeStatus } = useChangeStatus()
 
     return {
       status,
       changeStatus
     }
   }
+}
+
+function useChangeStatus() {
+  const status = ref('wait')
+  const changeStatus = (val) => {
+    status.value = val
+  }
+
+  return {
+    status,
+    changeStatus
+  }
+}
+
+function useAddSelfToParent() {
+  const { proxy } = getCurrentInstance()
+  const steps = inject('steps', {})
+  steps.add?.(proxy)
 }
 </script>
 
