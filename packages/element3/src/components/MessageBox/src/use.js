@@ -82,7 +82,7 @@ export function watchElement(state, handleAction, closeHandle) {
   })
 }
 
-export function useClass(iconClass, type) {
+export function classIcon(iconClass, type) {
   return computed(() => {
     return unref(iconClass) || (unref(type) ? `el-icon-${unref(type)}` : '')
   })

@@ -104,7 +104,7 @@ import propsObject from './props.js'
 import { ElInput } from '../../Input'
 import { ElButton } from '../../Button'
 import validateFunction from './validate'
-import { useHandleList, watchElement, useClass } from './use'
+import { useHandleList, watchElement, classIcon } from './use'
 export default defineComponent({
   props: propsObject,
   components: {
@@ -127,7 +127,7 @@ export default defineComponent({
       handleInputEnter,
       handleWrapperClick
     } = useHandleList(state, instance, validate)
-    const icon = useClass(iconClass, type)
+    const icon = classIcon(iconClass, type)
     watchElement(state, handleAction, closeHandle)
     return {
       ...toRefs(state),
