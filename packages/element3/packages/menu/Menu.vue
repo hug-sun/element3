@@ -6,7 +6,8 @@ import {
   provide,
   ref,
   toRefs,
-  watch
+  watch,
+  unref
 } from 'vue'
 import Menubar from '../../src/utils/menu/aria-menubar'
 import { useEmitter } from '../../src/composables/emitter'
@@ -161,11 +162,14 @@ export default {
       // 将不在该菜单路径下的其余菜单收起
       // collapse all menu that are not under current menu item
       if (uniqueOpened.value) {
-        openedMenus.value = openedMenus.value.filter((index) => {
-          return indexPath.indexOf(index) !== -1
-        })
+        openedMenus.value.splice(
+          0,
+          openedMenus.value.length,
+          ...unref(indexPath)
+        )
+      } else {
+        openedMenus.value.push(index)
       }
-      openedMenus.value.push(index)
     }
     const closeMenu = (index) => {
       const i = openedMenus.value.indexOf(index)

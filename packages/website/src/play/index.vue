@@ -1,47 +1,28 @@
 <template>
-  <!-- <el-new-table :data="tableData">
-    <el-new-table-column prop="date" label="日期" width="180">
-    </el-new-table-column>
-  </el-new-table> -->
-  <div>
-    <el-button>默认按钮</el-button>
-    <!-- {{ state.list }} -->
-    {{ list }}
-    <button @click="handleClick">click</button>
-  </div>
+  <el-menu unique-opened>
+    <el-submenu index="2">
+      <template v-slot:title>我的工作台</template>
+      <el-menu-item index="2-1">选项1</el-menu-item>
+    </el-submenu>
+    <el-submenu index="5">
+      <template v-slot:title>我的工作台</template>
+      <el-menu-item index="5-1">选项1</el-menu-item>
+    </el-submenu>
+  </el-menu>
 </template>
+
 <script>
-import { defineComponent, reactive } from 'vue'
-export default defineComponent({
-  data() {
-    return {
-      tableData: [
-        {
-          date: '2016-05-02',
-          time: 10
-        },
-        {
-          date: '2016-05-03',
-          time: 11
-        }
-      ]
-    }
-  },
+import { ref } from 'vue'
+export default {
   setup() {
-    // let state = reactive({
-    //   list: []
-    // })
-    let list = reactive([])
-    const handleClick = () => {
-      // state.list = [1, 2, 3]
-      list = [1, 2, 3]
+    let activeIndex = ref('1')
+    let activeIndex2 = ref('1')
+
+    function handleSelect(key, keyPath) {
+      console.log(key, keyPath)
     }
 
-    return {
-      // state,
-      list,
-      handleClick
-    }
+    return { activeIndex, activeIndex2, handleSelect }
   }
-})
+}
 </script>
