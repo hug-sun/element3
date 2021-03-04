@@ -1,4 +1,13 @@
+import mitt from 'mitt'
 import { makerArray } from '../tools/makerArray'
+
+export enum PagerEventType {
+  CHANGE = 'change',
+  PREV = 'prev',
+  NEXT = 'next'
+}
+
+export type PagerEventCb = (pageNumber: number) => void
 
 export interface PagerParam {
   size: number
@@ -12,9 +21,22 @@ export class Pager {
   private _total: number
   private _size: number
   private _viewCount: number
+  private _event = mitt()
+
+  get size(): number {
+    return this._size
+  }
+
+  set size(v: number) {
+    this.changeSize(v)
+  }
 
   get total(): number {
     return this._total
+  }
+
+  set total(v: number) {
+    this._total = v
   }
 
   get pagerCountNotSelf(): number {
@@ -38,12 +60,7 @@ export class Pager {
   }
 
   set current(v: number) {
-    if (v > this.count || v < 1) {
-      console.warn(`[Pager Warn] class Pager.current not over value ${v}.`)
-    }
-    v = Math.min(this.count, v)
-    v = Math.max(1, v)
-    this._current = v
+    this.jump(v)
   }
 
   get count(): number {
@@ -52,6 +69,10 @@ export class Pager {
 
   get viewCount(): number {
     return this._viewCount
+  }
+
+  set viewCount(v: number) {
+    this._viewCount = v
   }
 
   get pages(): number[] {
@@ -92,5 +113,33 @@ export class Pager {
 
   catOut(start: number, end: number): number[] {
     return this.pages.slice(Math.max(start - 1, 0), Math.min(end, this.count))
+  }
+
+  jump(v: number): void {
+    if (v > this.count || v < 1) {
+      console.warn(`[Pager Warn] class Pager.current not over value ${v}.`)
+    }
+    v = Math.min(this.count, v)
+    v = Math.max(1, v)
+    this._current = v
+    this._event.emit(PagerEventType.CHANGE, v)
+  }
+
+  prev(): void {
+    this.jump(this._current - 1)
+    this._event.emit(PagerEventType.PREV, this._current)
+  }
+
+  next(): void {
+    this.jump(this._current + 1)
+    this._event.emit(PagerEventType.NEXT, this._current)
+  }
+
+  on(type: PagerEventType, cb: PagerEventCb): void {
+    this._event.on(type, cb)
+  }
+
+  changeSize(v: number): void {
+    this._size = v
   }
 }

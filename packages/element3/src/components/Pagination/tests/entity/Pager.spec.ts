@@ -1,4 +1,4 @@
-import { Pager } from '../../src/entity/Pager'
+import { Pager, PagerEventType } from '../../src/entity/Pager'
 
 describe('Pager.ts', () => {
   it('instance Pager', () => {
@@ -141,5 +141,89 @@ describe('Pager.ts', () => {
     })
 
     expect(pager.count).toBe(10)
+  })
+
+  it('jump page', () => {
+    const pageCount = 6
+    const currentPage = 2
+    const pagerCount = 7
+    const pager = new Pager({
+      total: pageCount,
+      size: 1,
+      current: currentPage,
+      viewCount: pagerCount
+    })
+
+    pager.jump(5)
+    expect(pager.current).toBe(5)
+  })
+
+  it('jump page when currentPage Crossing the line', () => {
+    const pageCount = 6
+    const currentPage = 2
+    const pagerCount = 7
+    const pager = new Pager({
+      total: pageCount,
+      size: 1,
+      current: currentPage,
+      viewCount: pagerCount
+    })
+
+    pager.jump(7)
+    expect(pager.current).toBe(6)
+    pager.jump(0)
+    expect(pager.current).toBe(1)
+  })
+
+  it('change prev/next page', () => {
+    const pageCount = 6
+    const currentPage = 2
+    const pagerCount = 7
+    const pager = new Pager({
+      total: pageCount,
+      size: 1,
+      current: currentPage,
+      viewCount: pagerCount
+    })
+
+    pager.prev()
+    expect(pager.current).toBe(1)
+    pager.next()
+    expect(pager.current).toBe(2)
+  })
+
+  it('when current change, trigger event', () => {
+    const changeHandler = jest.fn()
+    const prevHandler = jest.fn()
+    const nextHandler = jest.fn()
+
+    const pageCount = 6
+    const currentPage = 2
+    const pagerCount = 7
+    const pager = new Pager({
+      total: pageCount,
+      size: 1,
+      current: currentPage,
+      viewCount: pagerCount
+    })
+
+    pager.on(PagerEventType.CHANGE, changeHandler)
+    pager.on(PagerEventType.PREV, prevHandler)
+    pager.on(PagerEventType.NEXT, nextHandler)
+
+    pager.jump(5)
+    pager.prev()
+    pager.next()
+
+    expect(changeHandler).toBeCalledTimes(3)
+    expect(changeHandler).toHaveBeenNthCalledWith(1, 5)
+    expect(changeHandler).toHaveBeenNthCalledWith(2, 4)
+    expect(changeHandler).toHaveBeenNthCalledWith(3, 5)
+
+    expect(prevHandler).toBeCalledTimes(1)
+    expect(prevHandler).toHaveBeenNthCalledWith(1, 4)
+
+    expect(nextHandler).toBeCalledTimes(1)
+    expect(nextHandler).toHaveBeenNthCalledWith(1, 5)
   })
 })
