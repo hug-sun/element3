@@ -4,6 +4,7 @@ import Prev from '../src/parts/Prev.vue'
 import Next from '../src/parts/Next.vue'
 import Pager from '../src/parts/Pager.vue'
 import Total from '../src/parts/Total.vue'
+import { nextTick, ref } from 'vue'
 
 describe('Pagination.vue', () => {
   it('Realize layout prev,pager,next', () => {
@@ -64,5 +65,77 @@ describe('Pagination.vue', () => {
     })
 
     expect(wrapper.findComponent(Pager).exists()).toBeFalsy()
+  })
+
+  it('click prev/next button currentPage', async () => {
+    const currentPage = ref(2)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'prev, next',
+        currentPage: (currentPage as unknown) as number,
+        pageCount: 10,
+        'onUpdate:currentPage': (v) => (currentPage.value = v)
+      }
+    })
+
+    await wrapper.findComponent(Prev).trigger('click')
+    expect(currentPage.value).toBe(1)
+    await wrapper.findComponent(Next).trigger('click')
+    expect(currentPage.value).toBe(2)
+  })
+
+  it('vModel currentPage', async () => {
+    const currentPage = ref(2)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'pager',
+        currentPage: (currentPage as unknown) as number,
+        pageCount: 10,
+        'onUpdate:currentPage': (v) => (currentPage.value = v)
+      }
+    })
+
+    currentPage.value = 3
+    await nextTick()
+    expect(wrapper.find('.active').text()).toBe('3')
+  })
+
+  it('change size by ref', async () => {
+    const currentPage = ref(2)
+    const total = ref(100)
+    const size = ref(10)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'pager',
+        currentPage: (currentPage as unknown) as number,
+        total: (total as unknown) as number,
+        pageSize: (size as unknown) as number,
+        'onUpdate:currentPage': (v) => (currentPage.value = v)
+      }
+    })
+
+    expect(wrapper.vm.pager.count).toBe(10)
+    size.value = 20
+    await nextTick()
+    expect(wrapper.vm.pager.count).toBe(5)
+  })
+
+  it('click pager button currentPage', async () => {
+    const currentPage = ref(2)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'pager',
+        currentPage: (currentPage as unknown) as number,
+        pageCount: 100,
+        'onUpdate:currentPage': (v) => (currentPage.value = v)
+      }
+    })
+    const pages = wrapper.findAll('.number')
+
+    await pages[0].trigger('click')
+    expect(currentPage.value).toBe(1)
+
+    await wrapper.find('.btn-quicknext').trigger('click')
+    expect(currentPage.value).toBe(4)
   })
 })

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pager.count > 1" class="el-pagination">
+  <div v-if="!(hideOnSinglePage && pager.count <= 1)" class="el-pagination">
     <template v-for="(part, index) in layoutPart" :key="index">
       <component :is="part" :pager="pager"></component>
     </template>
@@ -13,11 +13,11 @@ import {
   reactive,
   toRefs,
   watch,
-  watchEffect,
-  Ref
+  Ref,
+  getCurrentInstance
 } from 'vue'
 import { ElPaginationProps } from '../types'
-import { Pager as PagerCore } from './entity/Pager'
+import { Pager as PagerCore, PagerEventType } from './entity/Pager'
 import { parseLayout } from './tools/parseLayout'
 
 import Pager from './parts/Pager.vue'
@@ -42,21 +42,27 @@ export default defineComponent({
       default: 1
     },
     pageCount: {
-      type: Number,
-      default: 0
+      type: Number
     },
     total: {
       type: Number
     },
     pageSize: {
       type: Number,
-      default: 1
+      default: 10
     },
     hideOnSinglePage: {
       type: Boolean,
       default: false
     }
   },
+  emits: [
+    'update:currentPage',
+    'prev-click',
+    'next-click',
+    'size-change',
+    'update:pageSize'
+  ],
   components: {
     Pager,
     Prev,
@@ -89,14 +95,46 @@ export default defineComponent({
 })
 
 function usePager({ total, pageCount, pageSize, pagerCount, currentPage }) {
+  const { emit } = getCurrentInstance()
   const pager = reactive(
     new PagerCore({
       total: total?.value ?? pageCount.value,
-      size: pageSize.value,
+      size: total?.value ? pageSize.value : 1,
       viewCount: pagerCount.value,
       current: currentPage.value
     })
   )
+  pager.on(PagerEventType.CHANGE, (v) => {
+    emit('update:currentPage', v)
+  })
+  pager.on(PagerEventType.PREV, (v) => {
+    emit('prev-click', v)
+  })
+  pager.on(PagerEventType.NEXT, (v) => {
+    emit('next-click', v)
+  })
+  pager.on(PagerEventType.SIZE_CHANGE, (v) => {
+    emit('size-change', v)
+    emit('update:pageSize', v)
+  })
+  if (total)
+    watch(total, (v: number) => {
+      pager.total = v
+    })
+  if (pageCount)
+    watch(pageCount, (v: number) => {
+      pager.total = v
+      pager.changeSize(1)
+    })
+  watch(pagerCount, (v: number) => {
+    pager.viewCount = v
+  })
+  watch(pageSize, (v: number) => {
+    pager.size = v
+  })
+  watch(currentPage, (v: number) => {
+    pager.current = v
+  })
   return { pager }
 }
 
