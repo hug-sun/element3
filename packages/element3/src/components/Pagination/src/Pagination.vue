@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pager.count > 1" class="el-pagination">
+  <div v-if="!(hideOnSinglePage && pager.count <= 1)" class="el-pagination">
     <template v-for="(part, index) in layoutPart" :key="index">
       <component :is="part" :pager="pager"></component>
     </template>
@@ -49,7 +49,7 @@ export default defineComponent({
     },
     pageSize: {
       type: Number,
-      default: 1
+      default: 10
     },
     hideOnSinglePage: {
       type: Boolean,
@@ -99,7 +99,7 @@ function usePager({ total, pageCount, pageSize, pagerCount, currentPage }) {
   const pager = reactive(
     new PagerCore({
       total: total?.value ?? pageCount.value,
-      size: pageSize.value,
+      size: total?.value ? pageSize.value : 1,
       viewCount: pagerCount.value,
       current: currentPage.value
     })
