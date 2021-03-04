@@ -57,7 +57,13 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['update:currentPage', 'prev-click', 'next-click'],
+  emits: [
+    'update:currentPage',
+    'prev-click',
+    'next-click',
+    'size-change',
+    'update:pageSize'
+  ],
   components: {
     Pager,
     Prev,
@@ -107,6 +113,10 @@ function usePager({ total, pageCount, pageSize, pagerCount, currentPage }) {
   })
   pager.on(PagerEventType.NEXT, (v) => {
     emit('next-click', v)
+  })
+  pager.on(PagerEventType.SIZE_CHANGE, (v) => {
+    emit('size-change', v)
+    emit('update:pageSize', v)
   })
   if (total)
     watch(total, (v: number) => {

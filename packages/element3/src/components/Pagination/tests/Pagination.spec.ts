@@ -99,4 +99,24 @@ describe('Pagination.vue', () => {
     await nextTick()
     expect(wrapper.find('.active').text()).toBe('3')
   })
+
+  it('change size by ref', async () => {
+    const currentPage = ref(2)
+    const total = ref(100)
+    const size = ref(10)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'pager',
+        currentPage: (currentPage as unknown) as number,
+        total: (total as unknown) as number,
+        pageSize: (size as unknown) as number,
+        'onUpdate:currentPage': (v) => (currentPage.value = v)
+      }
+    })
+
+    expect(wrapper.vm.pager.count).toBe(10)
+    size.value = 20
+    await nextTick()
+    expect(wrapper.vm.pager.count).toBe(5)
+  })
 })

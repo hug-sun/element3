@@ -4,7 +4,8 @@ import { makerArray } from '../tools/makerArray'
 export enum PagerEventType {
   CHANGE = 'change',
   PREV = 'prev',
-  NEXT = 'next'
+  NEXT = 'next',
+  SIZE_CHANGE = 'size_change'
 }
 
 export type PagerEventCb = (pageNumber: number) => void
@@ -141,5 +142,6 @@ export class Pager {
 
   changeSize(v: number): void {
     this._size = v
+    this._event.emit(PagerEventType.SIZE_CHANGE, v)
   }
 }
