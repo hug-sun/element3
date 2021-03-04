@@ -126,13 +126,13 @@ export class Pager {
     this._event.emit(PagerEventType.CHANGE, v)
   }
 
-  prev(): void {
-    this.jump(this._current - 1)
+  prev(step = 1): void {
+    this.jump(this._current - step)
     this._event.emit(PagerEventType.PREV, this._current)
   }
 
-  next(): void {
-    this.jump(this._current + 1)
+  next(step = 1): void {
+    this.jump(this._current + step)
     this._event.emit(PagerEventType.NEXT, this._current)
   }
 

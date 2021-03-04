@@ -119,4 +119,23 @@ describe('Pagination.vue', () => {
     await nextTick()
     expect(wrapper.vm.pager.count).toBe(5)
   })
+
+  it('click pager button currentPage', async () => {
+    const currentPage = ref(2)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'pager',
+        currentPage: (currentPage as unknown) as number,
+        pageCount: 100,
+        'onUpdate:currentPage': (v) => (currentPage.value = v)
+      }
+    })
+    const pages = wrapper.findAll('.number')
+
+    await pages[0].trigger('click')
+    expect(currentPage.value).toBe(1)
+
+    await wrapper.find('.btn-quicknext').trigger('click')
+    expect(currentPage.value).toBe(4)
+  })
 })
