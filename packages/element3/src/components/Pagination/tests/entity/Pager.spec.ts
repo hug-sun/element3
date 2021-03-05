@@ -226,4 +226,21 @@ describe('Pager.ts', () => {
     expect(nextHandler).toBeCalledTimes(1)
     expect(nextHandler).toHaveBeenNthCalledWith(1, 5)
   })
+
+  it('update size', () => {
+    const sizeHandler = jest.fn()
+
+    const pager = new Pager({
+      total: 100,
+      size: 1,
+      current: 90,
+      viewCount: 7
+    })
+
+    pager.on(PagerEventType.SIZE_CHANGE, sizeHandler)
+    pager.size = 10
+    expect(sizeHandler).toBeCalledTimes(1)
+    expect(sizeHandler).toHaveBeenNthCalledWith(1, 10)
+    expect(pager.current).toBe(10)
+  })
 })

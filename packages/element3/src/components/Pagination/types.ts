@@ -6,6 +6,7 @@ export interface ElPaginationProps {
   total?: number
   pageSize?: number
   hideOnSinglePage?: boolean
+  pageSizes?: number[]
 }
 
 declare class ElPagination {
