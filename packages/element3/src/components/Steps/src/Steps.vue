@@ -5,21 +5,40 @@
 </template>
 
 <script>
-import { provide, ref, onMounted, toRefs } from 'vue'
+import { computed } from '@vue/reactivity'
+import { useStepList } from './stepList'
+import { onMounted, provide, toRefs, watchEffect } from 'vue'
+
 export default {
   name: 'Steps',
   props: {
     active: {
       default: 0
+    },
+    finishStatus: {
+      type: String,
+      default: 'finish'
+    },
+    processStatus: {
+      type: String,
+      default: 'process'
     }
   },
   setup(props) {
     //响应式对象
     const { active } = toRefs(props)
-    const stepList = ref([])
+
+    const stepStatusConfig = computed(() => {
+      return {
+        finish: props.finishStatus,
+        process: props.processStatus
+      }
+    })
+
+    const { stepList } = useStepList(stepStatusConfig)
 
     useStepsProvide(stepList)
-    useChangeStepStatus(stepList, active)
+    useChangeStepStatus(active, stepList)
   }
 }
 
@@ -27,7 +46,7 @@ function useStepsProvide(stepList) {
   function createStepsProvide() {
     return {
       add(stepProxy) {
-        stepList.value.push(stepProxy)
+        stepList.add(stepProxy)
       }
     }
   }
@@ -35,20 +54,12 @@ function useStepsProvide(stepList) {
   provide('steps', createStepsProvide())
 }
 
-function useChangeStepStatus(stepList, active) {
-  function changeStepStatus() {
-    stepList.value.forEach((stepProxy, index) => {
-      if (index < active.value) {
-        stepProxy.changeStatus('success')
-        return
-      }
-      if (index === active.value) {
-        stepProxy.changeStatus('process')
-      }
+function useChangeStepStatus(active, stepList) {
+  onMounted(() => {
+    watchEffect(() => {
+      stepList.changeStatus(active)
     })
-  }
-
-  onMounted(() => changeStepStatus())
+  })
 }
 </script>
 

@@ -29,36 +29,24 @@ describe('Step', () => {
     expect(registryFn).toBeCalled()
     expect(registryFn).toHaveBeenCalledWith(wrapper.vm)
   })
-})
 
-describe.skip('Steps', () => {
-  it('should have 1 element', function () {
-    let steps = mount(Steps, {
-      slots: {
-        default: [Step, '<div class=".el-step"></div>']
-      }
-    })
-    let step = steps.findAll('.el-step')
-    expect(step.length).toBe(1)
-  })
-})
-describe.skip('Can create a Step component', () => {
-  it('should have "Hello" as content', () => {
+  it('title by prop.title', () => {
     const wrapper = mount(Step, {
       props: {
-        title: 'Hello'
+        title: '步骤一'
       }
     })
-    let element = wrapper.find('.el-step__title')
-    expect(element.text()).toBe('Hello')
+
+    expect(wrapper.text()).toContain('步骤一')
   })
-  it('should have "World" as content', () => {
+
+  it('description by prop.title', () => {
     const wrapper = mount(Step, {
       props: {
-        title: 'World'
+        description: '这是一个描述性文字'
       }
     })
-    let element = wrapper.find('.el-step__title')
-    expect(element.text()).toBe('World')
+
+    expect(wrapper.text()).toContain('这是一个描述性文字')
   })
 })
