@@ -2,6 +2,7 @@ import Button from '../src/Button.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick, reactive } from 'vue'
 import { setupGlobalOptions } from '../../../composables/globalConfig'
+import { expectHaveClass, expectNotHaveClass } from '../../../../tests/helper'
 
 describe('Button.vue', () => {
   it('snapshot', () => {
@@ -42,12 +43,12 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper).toHaveClass(`el-button--${size}`)
+      expectHaveClass(wrapper, `el-button--${size}`)
 
       await wrapper.setProps({
         size: 'mini'
       })
-      expect(wrapper).toHaveClass(`el-button--mini`)
+      expectHaveClass(wrapper, `el-button--mini`)
     })
 
     it('by elFormItem.elFormItemSize', async () => {
@@ -68,10 +69,10 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper).toHaveClass(`el-button--${size}`)
+      expectHaveClass(wrapper, `el-button--${size}`)
       elFormItem.elFormItemSize = 'mini'
       await nextTick()
-      expect(wrapper).toHaveClass(`el-button--mini`)
+      expectHaveClass(wrapper, `el-button--mini`)
     })
 
     it('by global config ', () => {
@@ -89,7 +90,7 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper).toHaveClass(`el-button--${size}`)
+      expectHaveClass(wrapper, `el-button--${size}`)
     })
   })
 
@@ -102,7 +103,7 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper).toHaveClass(`el-button--${type}`)
+    expectHaveClass(wrapper, `el-button--${type}`)
   })
 
   it('set button plain ', async () => {
@@ -112,13 +113,13 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper).toHaveClass('is-plain')
+    expectHaveClass(wrapper, `is-plain`)
 
     await wrapper.setProps({
       plain: false
     })
 
-    expect(wrapper).not.toHaveClass('is-plain')
+    expectNotHaveClass(wrapper, `is-plain`)
   })
   it('set button round ', async () => {
     const wrapper = mount(Button, {
@@ -127,13 +128,13 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper).toHaveClass('is-round')
+    expectHaveClass(wrapper, `is-round`)
 
     await wrapper.setProps({
       round: false
     })
 
-    expect(wrapper).not.toHaveClass('is-round')
+    expectNotHaveClass(wrapper, 'is-round')
   })
 
   it('set button circle ', async () => {
@@ -143,13 +144,13 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper).toHaveClass('is-circle')
+    expectHaveClass(wrapper, `is-circle`)
 
     await wrapper.setProps({
       circle: false
     })
 
-    expect(wrapper).not.toHaveClass('is-circle')
+    expectNotHaveClass(wrapper, `is-circle`)
   })
 
   it('set button loading ', async () => {
@@ -159,13 +160,13 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper).toHaveClass('is-loading')
+    expectHaveClass(wrapper, `is-loading`)
 
     await wrapper.setProps({
       loading: false
     })
 
-    expect(wrapper).not.toHaveClass('is-loading')
+    expectNotHaveClass(wrapper, `is-loading`)
   })
 
   describe('set button disabled', () => {
@@ -176,14 +177,14 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper).toHaveClass('is-disabled')
+      expectHaveClass(wrapper, `is-disabled`)
       expect(wrapper).toHaveAttribute('disabled')
 
       await wrapper.setProps({
         disabled: false
       })
 
-      expect(wrapper).not.toHaveClass('is-disabled')
+      expectNotHaveClass(wrapper, `is-disabled`)
       expect(wrapper).not.toHaveAttribute('disabled')
     })
 
@@ -200,13 +201,13 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper).toHaveClass('is-disabled')
+      expectHaveClass(wrapper, `is-disabled`)
       expect(wrapper).toHaveAttribute('disabled')
 
       elForm.disabled = false
       await nextTick()
 
-      expect(wrapper).not.toHaveClass('is-disabled')
+      expectNotHaveClass(wrapper, `is-disabled`)
       expect(wrapper).not.toHaveAttribute('disabled')
     })
   })

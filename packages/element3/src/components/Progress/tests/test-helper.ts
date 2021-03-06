@@ -1,5 +1,6 @@
 import { DOMWrapper, mount, VueWrapper } from '@vue/test-utils'
 import Progress from '../src/Progress.vue'
+import { expectHaveClass } from '../../../../tests/helper'
 import Color from '../../../../packages/color-picker/src/color'
 import { merge } from 'lodash-es'
 import { STATUS_SETTING } from '../src/props'
@@ -101,5 +102,5 @@ export function assertIconClassOk(
   status: string
 ): void {
   const icon = wrapper.find('.el-progress__text > i')
-  expect(icon).toHaveClass(STATUS_SETTING[status]['arcIconClass'])
+  expectHaveClass(icon, STATUS_SETTING[status]['arcIconClass'])
 }
