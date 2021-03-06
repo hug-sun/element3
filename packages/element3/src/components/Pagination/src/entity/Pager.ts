@@ -17,12 +17,36 @@ export interface PagerParam {
   viewCount: number
 }
 
+export interface PagerStyle {
+  popperClass?: string
+}
+
 export class Pager {
   private _current: number
   private _total: number
   private _size: number
   private _viewCount: number
   private _event = mitt()
+  private _sizes = []
+  private _style: PagerStyle = {
+    popperClass: ''
+  }
+
+  get style(): PagerStyle {
+    return this._style
+  }
+
+  set style(v: PagerStyle) {
+    this._style = v
+  }
+
+  get sizes(): number[] {
+    return this._sizes
+  }
+
+  set sizes(v: number[]) {
+    this._sizes = v
+  }
 
   get size(): number {
     return this._size
@@ -117,9 +141,6 @@ export class Pager {
   }
 
   jump(v: number): void {
-    if (v > this.count || v < 1) {
-      console.warn(`[Pager Warn] class Pager.current not over value ${v}.`)
-    }
     v = Math.min(this.count, v)
     v = Math.max(1, v)
     this._current = v
@@ -143,5 +164,6 @@ export class Pager {
   changeSize(v: number): void {
     this._size = v
     this._event.emit(PagerEventType.SIZE_CHANGE, v)
+    this.jump(this._current)
   }
 }

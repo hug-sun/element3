@@ -14,7 +14,9 @@ import {
   toRefs,
   watch,
   Ref,
-  getCurrentInstance
+  getCurrentInstance,
+  PropType,
+  watchEffect
 } from 'vue'
 import { ElPaginationProps } from '../types'
 import { Pager as PagerCore, PagerEventType } from './entity/Pager'
@@ -24,6 +26,7 @@ import Pager from './parts/Pager.vue'
 import Prev from './parts/Prev.vue'
 import Next from './parts/Next.vue'
 import Total from './parts/Total.vue'
+import Sizes from './parts/Sizes.vue'
 
 export default defineComponent({
   name: 'ElPagination',
@@ -36,7 +39,6 @@ export default defineComponent({
       type: Number,
       default: 7
     },
-
     currentPage: {
       type: Number,
       default: 1
@@ -54,6 +56,14 @@ export default defineComponent({
     hideOnSinglePage: {
       type: Boolean,
       default: false
+    },
+    pageSizes: {
+      type: Array as PropType<number[]>,
+      default: [10, 50, 100]
+    },
+    popperClass: {
+      type: String,
+      default: ''
     }
   },
   emits: [
@@ -67,7 +77,8 @@ export default defineComponent({
     Pager,
     Prev,
     Next,
-    Total
+    Total,
+    Sizes
   },
   setup(props: ElPaginationProps) {
     const {
@@ -76,6 +87,8 @@ export default defineComponent({
       pageSize,
       pagerCount,
       pageCount,
+      pageSizes,
+      popperClass,
       layout
     } = toRefs(props)
     const { layoutPart } = useLayout(layout)
@@ -86,6 +99,8 @@ export default defineComponent({
       pagerCount,
       pageCount
     })
+    useSises({ pager, pageSizes })
+    useStyle({ pager, popperClass })
 
     return {
       layoutPart,
@@ -146,6 +161,20 @@ function usePager({ total, pageCount, pageSize, pagerCount, currentPage }) {
   bindVariableHandler(pager)
 
   return { pager }
+}
+
+function useStyle({ pager, popperClass }) {
+  watchEffect(() => {
+    pager.style = {
+      popperClass: popperClass.value
+    }
+  })
+}
+
+function useSises({ pager, pageSizes }) {
+  watchEffect(() => {
+    pager.sizes = pageSizes.value
+  })
 }
 
 function useLayout(layout: Ref<string>) {
