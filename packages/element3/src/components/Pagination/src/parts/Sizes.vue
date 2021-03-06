@@ -4,6 +4,7 @@
       :modelValue="pager.size"
       :popperClass="pager.style.popperClass"
       @update:modelValue="pager.changeSize($event)"
+      :size="'mini'"
     >
       <el-option
         v-for="item in pager.sizes"
