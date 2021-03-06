@@ -30,3 +30,11 @@ export function expectNotHaveAttribute(wrapper, key, value) {
 export function expectHaveStyle(wrapper, styleInfo) {
   expect(wrapper).toHaveStyle(styleInfo)
 }
+
+export function expectToBeExist(wrapper) {
+  expect(wrapper).toBeExist()
+}
+
+export function expectNotToBeExist(wrapper) {
+  expect(wrapper).not.toBeExist()
+}

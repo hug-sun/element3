@@ -2,7 +2,9 @@ import { DEFAULT_COLOR, sortByPercentage } from '../src/props'
 import {
   expectHaveClass,
   expectNotHaveAttribute,
-  expectNotHaveClass
+  expectNotHaveClass,
+  expectNotToBeExist,
+  expectToBeExist
 } from '../../../../tests/helper'
 
 import {
@@ -39,14 +41,13 @@ describe('Progress.vue', () => {
     expectHaveClass(wrapper, 'el-progress--line')
     expectNotHaveClass(wrapper, 'is-undefined')
 
-    expect(wrapper.find('.el-progress > .el-progress-bar')).toBeExist()
-    expect(wrapper.find('.el-progress > .el-progress__text')).toBeExist()
-    expect(
-      wrapper.find('.el-progress-bar > .el-progress-bar__outer')
-    ).toBeExist()
-    expect(
+    expectToBeExist(wrapper.find('.el-progress > .el-progress-bar'))
+    expectToBeExist(wrapper.find('.el-progress > .el-progress__text'))
+    expectToBeExist(wrapper.find('.el-progress-bar > .el-progress-bar__outer'))
+
+    expectToBeExist(
       wrapper.find('.el-progress-bar__outer .el-progress-bar__inner')
-    ).toBeExist()
+    )
 
     assertSetPercentage(wrapper, percentage)
   })
@@ -155,17 +156,20 @@ describe('Progress.vue', () => {
     it('status add "is-xxx" class', async () => {
       const wrapper = initProgress({ status: 'success' })
       expectHaveClass(wrapper, 'is-success')
-      expect(
+
+      expectToBeExist(
         wrapper.find('.el-progress__text > i.el-icon-circle-check')
-      ).toBeExist()
+      )
+
       await wrapper.setProps({ status: 'exception' })
       expectHaveClass(wrapper, 'is-exception')
-      expect(
+
+      expectToBeExist(
         wrapper.find('.el-progress__text > i.el-icon-circle-close')
-      ).toBeExist()
+      )
       await wrapper.setProps({ status: 'warning' })
       expectHaveClass(wrapper, 'is-warning')
-      expect(wrapper.find('.el-progress__text > i.el-icon-warning')).toBeExist()
+      expectToBeExist(wrapper.find('.el-progress__text > i.el-icon-warning'))
 
       await wrapper.setProps({ status: 'error' })
       expectNotHaveClass(wrapper, 'is-error')
@@ -173,12 +177,12 @@ describe('Progress.vue', () => {
 
     it('show-text', async () => {
       const wrapper = initProgress()
-      expect(wrapper.find('.el-progress__text')).toBeExist()
+      expectToBeExist(wrapper.find('.el-progress__text'))
       expect(wrapper.get('.el-progress__text')).toHaveTextContent('85%')
 
       await wrapper.setProps({ showText: false })
-      expect(wrapper.find('.el-progress__text')).not.toBeExist()
-      expect(wrapper.find('.el-progress-bar__innerText')).not.toBeExist()
+      expectNotToBeExist(wrapper.find('.el-progress__text'))
+      expectNotToBeExist(wrapper.find('.el-progress-bar__innerText'))
       expectHaveClass(wrapper, 'el-progress--without-text')
     })
 
@@ -200,15 +204,15 @@ describe('Progress.vue', () => {
     it('textInside', async () => {
       const wrapper = initProgress()
       expectNotHaveClass(wrapper, 'el-progress--text-inside')
-      expect(
+      expectToBeExist(
         wrapper.find('.el-progress-bar__outer > .el-progress-bar__inner')
-      ).toBeExist()
-      expect(wrapper.find('.el-progress-bar__innerText')).not.toBeExist()
+      )
+      expectNotToBeExist(wrapper.find('.el-progress-bar__innerText'))
 
       await wrapper.setProps({ textInside: true })
       expectHaveClass(wrapper, 'el-progress--text-inside')
-      expect(wrapper.find('.el-progress-bar__innerText')).toBeExist()
-      expect(wrapper.find('.el-progress__text')).not.toBeExist()
+      expectToBeExist(wrapper.find('.el-progress-bar__innerText'))
+      expectNotToBeExist(wrapper.find('.el-progress__text'))
     })
   })
 
@@ -217,13 +221,13 @@ describe('Progress.vue', () => {
       const wrapper = initProgress({ type: 'circle' })
       expectNotHaveClass(wrapper, 'el-progress--line')
       expectHaveClass(wrapper, 'el-progress--circle')
-      expect(wrapper.find('.el-progress-bar')).not.toBeExist()
-      expect(wrapper.find('.el-progress-circle')).toBeExist()
+      expectNotToBeExist(wrapper.find('.el-progress-bar'))
+      expectToBeExist(wrapper.find('.el-progress-circle'))
     })
 
     it('circle html and svg etc', () => {
       const wrapper = initProgress({ type: 'circle' })
-      expect(wrapper.find('.el-progress-circle > svg')).toBeExist()
+      expectToBeExist(wrapper.find('.el-progress-circle > svg'))
       const circle = wrapper.find('.el-progress-circle')
       expect(circle.attributes().style).toBe('width: 126px; height: 126px;')
       const svg = wrapper.find('.el-progress-circle > svg')

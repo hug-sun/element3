@@ -6,7 +6,9 @@ import {
   expectHaveClass,
   expectNotHaveClass,
   expectHaveAttribute,
-  expectNotHaveAttribute
+  expectNotHaveAttribute,
+  expectToBeExist,
+  expectNotToBeExist
 } from '../../../../tests/helper'
 
 describe('Button.vue', () => {
@@ -225,7 +227,7 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper.find('.el-icon-edit')).toBeExist()
+      expectToBeExist(wrapper.find('.el-icon-edit'))
     })
 
     it("don't show icon when loading eq true", () => {
@@ -236,8 +238,8 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper.find('.el-icon-edit')).not.toBeExist()
-      expect(wrapper.find('.el-icon-loading')).toBeExist()
+      expectNotToBeExist(wrapper.find('.el-icon-edit'))
+      expectToBeExist(wrapper.find('.el-icon-loading'))
     })
   })
 

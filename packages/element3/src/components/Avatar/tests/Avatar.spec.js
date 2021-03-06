@@ -4,7 +4,9 @@ import { nextTick } from 'vue'
 import {
   expectHaveClass,
   expectHaveAttribute,
-  expectHaveStyle
+  expectHaveStyle,
+  expectToBeExist,
+  expectNotToBeExist
 } from '../../../../tests/helper'
 
 export const IMAGE_SUCCESS =
@@ -51,7 +53,8 @@ describe('Avatar.props', () => {
           size: 'large'
         }
       })
-      expect(wrapper.find('.el-avatar--large')).toBeExist()
+
+      expectToBeExist(wrapper.find('.el-avatar--large'))
     })
   })
   describe('shape', () => {
@@ -61,7 +64,7 @@ describe('Avatar.props', () => {
           shape: 'circle'
         }
       })
-      expect(wrapper.find('.el-avatar--circle')).toBeExist()
+      expectToBeExist(wrapper.find('.el-avatar--circle'))
     })
   })
 
@@ -131,7 +134,8 @@ describe('Avatar.props', () => {
 
       wrapper.find('img').trigger('error')
       await nextTick()
-      expect(wrapper.find('img')).toBeExist()
+      expectToBeExist(wrapper.find('img'))
+
       expect(callback).toHaveBeenCalled()
     })
 
@@ -146,7 +150,7 @@ describe('Avatar.props', () => {
 
       wrapper.find('img').trigger('error')
       await nextTick()
-      expect(wrapper.find('img')).not.toBeExist()
+      expectNotToBeExist(wrapper.find('img'))
       expect(callback).toHaveBeenCalled()
     })
   })
