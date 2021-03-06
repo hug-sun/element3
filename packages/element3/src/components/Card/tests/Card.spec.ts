@@ -1,6 +1,6 @@
 import Card from '../src/Card.vue'
 import { mount } from '@vue/test-utils'
-import { expectHaveClass } from '../../../../tests/helper'
+import { expectHaveAttribute, expectHaveClass } from '../../../../tests/helper'
 
 describe('Card.vue', () => {
   it('snapshot', () => {
@@ -63,7 +63,8 @@ describe('Card.vue', () => {
       }
     })
 
-    expect(wrapper.find('.el-card__body')).toHaveAttribute(
+    expectHaveAttribute(
+      wrapper.find('.el-card__body'),
       'style',
       'padding: 30px;'
     )

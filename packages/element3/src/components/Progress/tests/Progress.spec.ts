@@ -1,5 +1,9 @@
 import { DEFAULT_COLOR, sortByPercentage } from '../src/props'
-import { expectHaveClass, expectNotHaveClass } from '../../../../tests/helper'
+import {
+  expectHaveClass,
+  expectNotHaveAttribute,
+  expectNotHaveClass
+} from '../../../../tests/helper'
 
 import {
   initProgress,
@@ -295,9 +299,9 @@ describe('Progress.vue', () => {
 
     it('font size', async () => {
       const wrapper = initProgress()
-      expect(wrapper.get('.el-progress__text')).not.toHaveAttribute('style')
+      expectNotHaveAttribute(wrapper.get('.el-progress__text'), 'style')
       await wrapper.setProps({ strokeWidth: 50 })
-      expect(wrapper.get('.el-progress__text')).not.toHaveAttribute('style')
+      expectNotHaveAttribute(wrapper.get('.el-progress__text'), 'style')
       await wrapper.setProps({ type: 'circle' })
       assertContainStyle(wrapper, '.el-progress__text', 'font-size: 16px;')
       await wrapper.setProps({ width: 200 })

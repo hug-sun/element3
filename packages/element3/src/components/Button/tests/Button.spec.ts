@@ -2,7 +2,12 @@ import Button from '../src/Button.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick, reactive } from 'vue'
 import { setupGlobalOptions } from '../../../composables/globalConfig'
-import { expectHaveClass, expectNotHaveClass } from '../../../../tests/helper'
+import {
+  expectHaveClass,
+  expectNotHaveClass,
+  expectHaveAttribute,
+  expectNotHaveAttribute
+} from '../../../../tests/helper'
 
 describe('Button.vue', () => {
   it('snapshot', () => {
@@ -30,7 +35,7 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper).toHaveAttribute('autofocus')
+    expectHaveAttribute(wrapper, 'autofocus')
   })
 
   describe('set button size', () => {
@@ -178,14 +183,14 @@ describe('Button.vue', () => {
       })
 
       expectHaveClass(wrapper, `is-disabled`)
-      expect(wrapper).toHaveAttribute('disabled')
+      expectHaveAttribute(wrapper, 'disabled')
 
       await wrapper.setProps({
         disabled: false
       })
 
       expectNotHaveClass(wrapper, `is-disabled`)
-      expect(wrapper).not.toHaveAttribute('disabled')
+      expectNotHaveAttribute(wrapper, 'disabled')
     })
 
     it('by elForm.disabled', async () => {
@@ -202,13 +207,13 @@ describe('Button.vue', () => {
       })
 
       expectHaveClass(wrapper, `is-disabled`)
-      expect(wrapper).toHaveAttribute('disabled')
+      expectHaveAttribute(wrapper, 'disabled')
 
       elForm.disabled = false
       await nextTick()
 
       expectNotHaveClass(wrapper, `is-disabled`)
-      expect(wrapper).not.toHaveAttribute('disabled')
+      expectNotHaveAttribute(wrapper, 'disabled')
     })
   })
 
@@ -245,6 +250,6 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper).toHaveAttribute('type', nativeType)
+    expectHaveAttribute(wrapper, 'type', nativeType)
   })
 })
