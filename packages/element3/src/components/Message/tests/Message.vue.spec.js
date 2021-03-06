@@ -1,6 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import Message from '../src/Message.vue'
 import { h } from 'vue'
+import { expectHaveStyle } from '../../../../tests/helper'
 
 describe('Message.vue', () => {
   test('snapshot', () => {
@@ -191,7 +192,7 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(wrapper.get('.el-message')).toHaveStyle({
+    expectHaveStyle(wrapper.get('.el-message'), {
       top: '50px'
     })
   })
@@ -203,12 +204,12 @@ describe('Message.vue', () => {
       }
     })
 
-    expect(wrapper.get('.el-message')).toHaveStyle({
+    expectHaveStyle(wrapper.get('.el-message'), {
       top: '50px'
     })
     wrapper.vm.offsetVal = 100
     await flushPromises()
-    expect(wrapper.get('.el-message')).toHaveStyle({
+    expectHaveStyle(wrapper.get('.el-message'), {
       top: '100px'
     })
   })

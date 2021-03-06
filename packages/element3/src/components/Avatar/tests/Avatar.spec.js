@@ -38,13 +38,7 @@ describe('Avatar.props', () => {
         }
       })
 
-      // expectHaveStyle(wrapper.get('span'), {
-      //   width: '100px',
-      //   height: '100px',
-      //   lineHeight: '100px'
-      // })
-
-      expect(wrapper.get('span')).toHaveStyle({
+      expectHaveStyle(wrapper.get('span'), {
         width: '100px',
         height: '100px',
         lineHeight: '100px'
@@ -119,7 +113,7 @@ describe('Avatar.props', () => {
         }
       })
 
-      expect(wrapper.get('img')).toHaveStyle({
+      expectHaveStyle(wrapper.get('img'), {
         objectFit: 'contain'
       })
     })
