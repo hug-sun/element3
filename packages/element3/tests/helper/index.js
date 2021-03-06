@@ -38,3 +38,7 @@ export function expectToBeExist(wrapper) {
 export function expectNotToBeExist(wrapper) {
   expect(wrapper).not.toBeExist()
 }
+
+export function expectHaveTextContent(wrapper, content) {
+  expect(wrapper).toHaveTextContent(content)
+}

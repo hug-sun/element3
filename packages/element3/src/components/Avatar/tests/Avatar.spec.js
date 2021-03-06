@@ -6,7 +6,8 @@ import {
   expectHaveAttribute,
   expectHaveStyle,
   expectToBeExist,
-  expectNotToBeExist
+  expectNotToBeExist,
+  expectHaveTextContent
 } from '../../../../tests/helper'
 
 export const IMAGE_SUCCESS =
@@ -163,9 +164,8 @@ describe('Avatar.props', () => {
           }
         }
       })
-      expect(wrapper.find('span')).toHaveTextContent(
-        `<span>default slot</span>`
-      )
+
+      expectHaveTextContent(wrapper.find('span'), '<span>default slot</span>')
     })
   })
 })

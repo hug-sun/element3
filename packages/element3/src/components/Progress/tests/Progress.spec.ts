@@ -1,6 +1,7 @@
 import { DEFAULT_COLOR, sortByPercentage } from '../src/props'
 import {
   expectHaveClass,
+  expectHaveTextContent,
   expectNotHaveAttribute,
   expectNotHaveClass,
   expectNotToBeExist,
@@ -74,7 +75,7 @@ describe('Progress.vue', () => {
       const percentage = 100
       const props = { percentage, format }
       const wrapper = initProgress(props)
-      expect(wrapper.get('.el-progress__text')).toHaveTextContent('满')
+      expectHaveTextContent(wrapper.get('.el-progress__text'), '满')
     })
 
     it('color string', async () => {
@@ -178,7 +179,7 @@ describe('Progress.vue', () => {
     it('show-text', async () => {
       const wrapper = initProgress()
       expectToBeExist(wrapper.find('.el-progress__text'))
-      expect(wrapper.get('.el-progress__text')).toHaveTextContent('85%')
+      expectHaveTextContent(wrapper.get('.el-progress__text'), '85%')
 
       await wrapper.setProps({ showText: false })
       expectNotToBeExist(wrapper.find('.el-progress__text'))

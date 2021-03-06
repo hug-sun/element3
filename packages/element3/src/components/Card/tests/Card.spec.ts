@@ -1,6 +1,10 @@
 import Card from '../src/Card.vue'
 import { mount } from '@vue/test-utils'
-import { expectHaveAttribute, expectHaveClass } from '../../../../tests/helper'
+import {
+  expectHaveAttribute,
+  expectHaveClass,
+  expectHaveTextContent
+} from '../../../../tests/helper'
 
 describe('Card.vue', () => {
   it('snapshot', () => {
@@ -16,7 +20,7 @@ describe('Card.vue', () => {
       }
     })
 
-    expect(wrapper).toHaveTextContent(content)
+    expectHaveTextContent(wrapper, content)
   })
 
   it('shadow', async () => {
@@ -39,7 +43,7 @@ describe('Card.vue', () => {
     const wrapper = mount(Card)
 
     await wrapper.setProps({ header: content })
-    expect(wrapper.find('.el-card__header')).toHaveTextContent(content)
+    expectHaveTextContent(wrapper.find('.el-card__header'), content)
   })
 
   it('header slot', () => {
@@ -51,7 +55,7 @@ describe('Card.vue', () => {
       }
     })
 
-    expect(wrapper.find('.el-card__header')).toHaveTextContent(content)
+    expectHaveTextContent(wrapper.find('.el-card__header'), content)
   })
 
   it('body-style', () => {

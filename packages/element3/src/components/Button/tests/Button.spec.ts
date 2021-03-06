@@ -8,7 +8,8 @@ import {
   expectHaveAttribute,
   expectNotHaveAttribute,
   expectToBeExist,
-  expectNotToBeExist
+  expectNotToBeExist,
+  expectHaveTextContent
 } from '../../../../tests/helper'
 
 describe('Button.vue', () => {
@@ -26,7 +27,7 @@ describe('Button.vue', () => {
       }
     })
 
-    expect(wrapper).toHaveTextContent(content)
+    expectHaveTextContent(wrapper, content)
   })
 
   it('autofocus', () => {
