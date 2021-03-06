@@ -110,7 +110,44 @@ export default defineComponent({
 })
 
 function usePager({ total, pageCount, pageSize, pagerCount, currentPage }) {
+  const pagerEventHandler = (pager) => {
+    pager.on(PagerEventType.CHANGE, (v) => {
+      emit('update:currentPage', v)
+    })
+    pager.on(PagerEventType.PREV, (v) => {
+      emit('prev-click', v)
+    })
+    pager.on(PagerEventType.NEXT, (v) => {
+      emit('next-click', v)
+    })
+    pager.on(PagerEventType.SIZE_CHANGE, (v) => {
+      emit('size-change', v)
+      emit('update:pageSize', v)
+    })
+  }
+  const bindVariableHandler = (pager) => {
+    if (total)
+      watch(total, (v: number) => {
+        pager.total = v
+      })
+    if (pageCount)
+      watch(pageCount, (v: number) => {
+        pager.total = v
+        pager.changeSize(1)
+      })
+    watch(pagerCount, (v: number) => {
+      pager.viewCount = v
+    })
+    watch(pageSize, (v: number) => {
+      pager.size = v
+    })
+    watch(currentPage, (v: number) => {
+      pager.current = v
+    })
+  }
+
   const { emit } = getCurrentInstance()
+
   const pager = reactive(
     new PagerCore({
       total: total?.value ?? pageCount.value,
@@ -119,37 +156,9 @@ function usePager({ total, pageCount, pageSize, pagerCount, currentPage }) {
       current: currentPage.value
     })
   )
-  pager.on(PagerEventType.CHANGE, (v) => {
-    emit('update:currentPage', v)
-  })
-  pager.on(PagerEventType.PREV, (v) => {
-    emit('prev-click', v)
-  })
-  pager.on(PagerEventType.NEXT, (v) => {
-    emit('next-click', v)
-  })
-  pager.on(PagerEventType.SIZE_CHANGE, (v) => {
-    emit('size-change', v)
-    emit('update:pageSize', v)
-  })
-  if (total)
-    watch(total, (v: number) => {
-      pager.total = v
-    })
-  if (pageCount)
-    watch(pageCount, (v: number) => {
-      pager.total = v
-      pager.changeSize(1)
-    })
-  watch(pagerCount, (v: number) => {
-    pager.viewCount = v
-  })
-  watch(pageSize, (v: number) => {
-    pager.size = v
-  })
-  watch(currentPage, (v: number) => {
-    pager.current = v
-  })
+
+  pagerEventHandler(pager)
+  bindVariableHandler(pager)
 
   return { pager }
 }
