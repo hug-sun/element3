@@ -2,6 +2,7 @@
   <span class="el-pagination__sizes">
     <el-select
       :modelValue="pager.size"
+      :popperClass="pager.style.popperClass"
       @update:modelValue="pager.changeSize($event)"
     >
       <el-option

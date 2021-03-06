@@ -17,6 +17,10 @@ export interface PagerParam {
   viewCount: number
 }
 
+export interface PagerStyle {
+  popperClass?: string
+}
+
 export class Pager {
   private _current: number
   private _total: number
@@ -24,6 +28,17 @@ export class Pager {
   private _viewCount: number
   private _event = mitt()
   private _sizes = []
+  private _style: PagerStyle = {
+    popperClass: ''
+  }
+
+  get style(): PagerStyle {
+    return this._style
+  }
+
+  set style(v: PagerStyle) {
+    this._style = v
+  }
 
   get sizes(): number[] {
     return this._sizes

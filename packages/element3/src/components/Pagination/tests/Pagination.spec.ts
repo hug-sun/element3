@@ -160,4 +160,25 @@ describe('Pagination.vue', () => {
 
     expect(wrapper.vm.pager.count).toBe(5)
   })
+
+  it('sizes part popperClass', () => {
+    const currentPage = ref(2)
+    const total = ref(100)
+    const size = ref(10)
+
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'sizes',
+        currentPage: (currentPage as unknown) as number,
+        total: (total as unknown) as number,
+        pageSize: (size as unknown) as number,
+        pageSizes: [10, 20, 30],
+        popperClass: 'test',
+        'onUpdate:currentPage': (v) => (currentPage.value = v),
+        'onUpdate:pageSize': (v) => (size.value = v)
+      }
+    })
+
+    expect(wrapper.find('.test').exists()).toBeTruthy()
+  })
 })
