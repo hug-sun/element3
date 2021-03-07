@@ -42,29 +42,6 @@ describe('Drawer.vue', () => {
     expect(wrapper.find('.el-drawer__body').exists()).toBe(false)
   })
 
-  it('should close dialog by clicking the close button', async () => {
-    const Comp = {
-      template: `
-          <Drawer :title='title' :visible.sync='visible' :append-to-body='true' :destroy-on-close='true' ref='drawer'>
-             <span>${content}</span>
-          </Drawer>
-        `,
-      data() {
-        return {
-          title,
-          visible: true
-        }
-      },
-      components: { Drawer }
-    }
-
-    const wrapper = mount(Comp)
-    await nextTick()
-    const drawer = wrapper.findComponent({ name: 'ElDrawer' })
-    await drawer.find('.el-drawer__close-btn').trigger('click')
-    expect(drawer.componentVM.visible).toBe(true)
-  })
-
   it('should invoke before-close', async () => {
     const beforeClose = jest.fn()
     const Comp = {
