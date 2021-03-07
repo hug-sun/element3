@@ -25,3 +25,4 @@ src/index.js
 dist
 element-ui
 
+packages/website/src/play/index.vue

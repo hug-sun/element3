@@ -1,6 +1,7 @@
 import RadioGroup from '../src/RadioGroup.vue'
 import { mount } from '@vue/test-utils'
 import { ref } from 'vue'
+import { expectHaveTextContent } from '../../../../tests/helper'
 
 describe('radioGroup.vue', () => {
   it('should show content', () => {
@@ -10,7 +11,7 @@ describe('radioGroup.vue', () => {
       }
     })
 
-    expect(wrapper).toHaveTextContent('radioGroup')
+    expectHaveTextContent(wrapper, 'radioGroup')
   })
 
   it('form-item size', async () => {
