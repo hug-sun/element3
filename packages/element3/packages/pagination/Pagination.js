@@ -103,6 +103,8 @@ const useInternalPageCount = ({ pageCount, total, pageSize }) => {
       return Math.max(1, Math.ceil(total.value / pageSize.value))
     } else if (typeof pageCount?.value === 'number') {
       return Math.max(1, pageCount.value)
+    } else {
+      return 0
     }
   })
 

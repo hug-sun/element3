@@ -9,8 +9,7 @@ import {
   expectHaveAttribute,
   expectNotHaveAttribute,
   expectToBeExist,
-  expectNotToBeExist,
-  expectHaveTextContent
+  expectNotToBeExist
 } from '../../../../tests/helper'
 
 describe('Button.vue', () => {

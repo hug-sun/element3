@@ -2,7 +2,7 @@
   <div></div>
 </template>
 <script>
-import { defineComponent, getCurrentInstance, inject, onMounted } from 'vue'
+import { defineComponent, getCurrentInstance, inject } from 'vue'
 export default defineComponent({
   name: 'ElNewTableColumn',
   props: ['prop', 'label'],
