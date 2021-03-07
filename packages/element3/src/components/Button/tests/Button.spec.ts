@@ -2,6 +2,7 @@ import Button from '../src/Button.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick, reactive } from 'vue'
 import { setupGlobalOptions } from '../../../composables/globalConfig'
+import { render } from '@testing-library/vue'
 import {
   expectHaveClass,
   expectNotHaveClass,
@@ -21,13 +22,13 @@ describe('Button.vue', () => {
   it('should show content', () => {
     const content = 'foo'
 
-    const wrapper = mount(Button, {
+    const { getByText } = render(Button, {
       slots: {
         default: content
       }
     })
 
-    expectHaveTextContent(wrapper, content)
+    expect(getByText('foo')).toBeInTheDocument()
   })
 
   it('autofocus', () => {
