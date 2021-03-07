@@ -12,7 +12,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "allowJs": true,
-    "types": ["jest", "jest-vtu"],
+    "types": ["jest", "testing-library__jest-dom"],
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
   "include": ["src"],
