@@ -111,3 +111,10 @@ export type ComponentSize = ElementUIComponentSize
 
 /** Horizontal alignment */
 export type HorizontalAlignment = ElementUIHorizontalAlignment
+
+/** set GlobalOptions */
+export type GlobalOptions = {
+  size?: number | string
+  zIndex?: number
+}
+export function setupGlobalOptions(opts: GlobalOptions): void

@@ -1,53 +1,54 @@
 import Button from '../src/Button.vue'
-import { mount } from '@vue/test-utils'
-import { nextTick, reactive } from 'vue'
+import { reactive } from 'vue'
 import { setupGlobalOptions } from '../../../composables/globalConfig'
+import { render, waitFor } from '@testing-library/vue'
 
 describe('Button.vue', () => {
   it('snapshot', () => {
-    const wrapper = mount(Button)
-    expect(wrapper.element).toMatchSnapshot()
+    const { baseElement } = render(Button)
+    expect(baseElement).toMatchSnapshot()
   })
 
   it('should show content', () => {
     const content = 'foo'
 
-    const wrapper = mount(Button, {
+    const { getByText } = render(Button, {
       slots: {
         default: content
       }
     })
 
-    expect(wrapper).toHaveTextContent(content)
+    expect(getByText('foo')).toBeInTheDocument()
   })
 
   it('autofocus', () => {
-    const wrapper = mount({
+    const Comp = {
       template: '<Button autofocus></Button>',
       components: {
         Button
       }
-    })
+    }
 
-    expect(wrapper).toHaveAttribute('autofocus')
+    const { getByRole } = render(Comp)
+
+    expect(getByRole('button')).toHaveAttribute('autofocus')
   })
 
   describe('set button size', () => {
     it('by props.size', async () => {
-      const size = 'small'
-
-      const wrapper = mount(Button, {
+      const { getByRole, rerender } = render(Button, {
         props: {
-          size
+          size: 'small'
         }
       })
 
-      expect(wrapper).toHaveClass(`el-button--${size}`)
+      expect(getByRole('button')).toHaveClass('el-button--small')
 
-      await wrapper.setProps({
+      await rerender({
         size: 'mini'
       })
-      expect(wrapper).toHaveClass(`el-button--mini`)
+
+      expect(getByRole('button')).toHaveClass('el-button--mini')
     })
 
     it('by elFormItem.elFormItemSize', async () => {
@@ -57,7 +58,7 @@ describe('Button.vue', () => {
         elFormItemSize: size
       })
 
-      const wrapper = mount(Button, {
+      const { getByRole } = render(Button, {
         props: {
           size: ''
         },
@@ -68,15 +69,19 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper).toHaveClass(`el-button--${size}`)
+      expect(getByRole('button')).toHaveClass(`el-button--${size}`)
+
+      // update
       elFormItem.elFormItemSize = 'mini'
-      await nextTick()
-      expect(wrapper).toHaveClass(`el-button--mini`)
+      await waitFor(() => {
+        expect(getByRole('button')).toHaveClass(`el-button--mini`)
+      })
     })
 
     it('by global config ', () => {
       const size = 'small'
-      const wrapper = mount(Button, {
+
+      const { getByRole } = render(Button, {
         props: {
           size: ''
         },
@@ -89,102 +94,108 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper).toHaveClass(`el-button--${size}`)
+      expect(getByRole('button')).toHaveClass(`el-button--${size}`)
     })
   })
 
   it('set button type ', () => {
     const type = 'success'
-
-    const wrapper = mount(Button, {
+    const { getByRole } = render(Button, {
       props: {
         type
       }
     })
 
-    expect(wrapper).toHaveClass(`el-button--${type}`)
+    expect(getByRole('button')).toHaveClass(`el-button--${type}`)
   })
 
   it('set button plain ', async () => {
-    const wrapper = mount(Button, {
+    const { getByRole, rerender } = render(Button, {
       props: {
         plain: true
       }
     })
 
-    expect(wrapper).toHaveClass('is-plain')
+    expect(getByRole('button')).toHaveClass('is-plain')
 
-    await wrapper.setProps({
+    // update
+    await rerender({
       plain: false
     })
 
-    expect(wrapper).not.toHaveClass('is-plain')
+    expect(getByRole('button')).not.toHaveClass('is-plain')
   })
   it('set button round ', async () => {
-    const wrapper = mount(Button, {
+    const { getByRole, rerender } = render(Button, {
       props: {
         round: true
       }
     })
 
-    expect(wrapper).toHaveClass('is-round')
+    expect(getByRole('button')).toHaveClass('is-round')
 
-    await wrapper.setProps({
+    // update
+    await rerender({
       round: false
     })
 
-    expect(wrapper).not.toHaveClass('is-round')
+    expect(getByRole('button')).not.toHaveClass('is-round')
   })
 
   it('set button circle ', async () => {
-    const wrapper = mount(Button, {
+    const { getByRole, rerender } = render(Button, {
       props: {
         circle: true
       }
     })
 
-    expect(wrapper).toHaveClass('is-circle')
+    expect(getByRole('button')).toHaveClass('is-circle')
 
-    await wrapper.setProps({
+    // update
+    await rerender({
       circle: false
     })
 
-    expect(wrapper).not.toHaveClass('is-circle')
+    expect(getByRole('button')).not.toHaveClass('is-circle')
   })
 
   it('set button loading ', async () => {
-    const wrapper = mount(Button, {
+    const { getByRole, rerender } = render(Button, {
       props: {
         loading: true
       }
     })
 
-    expect(wrapper).toHaveClass('is-loading')
+    expect(getByRole('button')).toHaveClass('is-loading')
 
-    await wrapper.setProps({
+    // update
+    await rerender({
       loading: false
     })
 
-    expect(wrapper).not.toHaveClass('is-loading')
+    expect(getByRole('button')).not.toHaveClass('is-loading')
   })
 
   describe('set button disabled', () => {
     it('by props.disabled', async () => {
-      const wrapper = mount(Button, {
+      const { getByRole, rerender } = render(Button, {
         props: {
           disabled: true
         }
       })
 
-      expect(wrapper).toHaveClass('is-disabled')
-      expect(wrapper).toHaveAttribute('disabled')
+      const buttonElement = getByRole('button')
 
-      await wrapper.setProps({
+      expect(buttonElement).toHaveClass('is-disabled')
+      expect(buttonElement).toHaveAttribute('disabled')
+
+      // update
+      await rerender({
         disabled: false
       })
 
-      expect(wrapper).not.toHaveClass('is-disabled')
-      expect(wrapper).not.toHaveAttribute('disabled')
+      expect(buttonElement).not.toHaveClass('is-disabled')
+      expect(buttonElement).not.toHaveAttribute('disabled')
     })
 
     it('by elForm.disabled', async () => {
@@ -192,7 +203,7 @@ describe('Button.vue', () => {
         disabled: true
       })
 
-      const wrapper = mount(Button, {
+      const { getByRole } = render(Button, {
         global: {
           provide: {
             elForm
@@ -200,50 +211,52 @@ describe('Button.vue', () => {
         }
       })
 
-      expect(wrapper).toHaveClass('is-disabled')
-      expect(wrapper).toHaveAttribute('disabled')
+      expect(getByRole('button')).toHaveClass('is-disabled')
+      expect(getByRole('button')).toHaveAttribute('disabled')
 
+      // update
       elForm.disabled = false
-      await nextTick()
 
-      expect(wrapper).not.toHaveClass('is-disabled')
-      expect(wrapper).not.toHaveAttribute('disabled')
+      await waitFor(() => {
+        expect(getByRole('button')).not.toHaveClass('is-disabled')
+        expect(getByRole('button')).not.toHaveAttribute('disabled')
+      })
     })
   })
 
   describe('set button icon', () => {
     it(' by props.icon', () => {
-      const wrapper = mount(Button, {
+      const { getByTestId } = render(Button, {
         props: {
           icon: 'el-icon-edit'
         }
       })
 
-      expect(wrapper.find('.el-icon-edit')).toBeExist()
+      expect(getByTestId('icon')).toBeInTheDocument()
     })
 
     it("don't show icon when loading eq true", () => {
-      const wrapper = mount(Button, {
+      const { getByTestId, queryByTestId } = render(Button, {
         props: {
-          icon: 'el-icon-edit',
-          loading: true
+          loading: true,
+          icon: 'el-icon-edit'
         }
       })
 
-      expect(wrapper.find('.el-icon-edit')).not.toBeExist()
-      expect(wrapper.find('.el-icon-loading')).toBeExist()
+      expect(queryByTestId('icon')).not.toBeInTheDocument()
+      expect(getByTestId('loadingIcon')).toBeInTheDocument()
     })
   })
 
   it('set native-type ', () => {
     const nativeType = 'reset'
 
-    const wrapper = mount(Button, {
+    const { getByRole } = render(Button, {
       props: {
         nativeType
       }
     })
 
-    expect(wrapper).toHaveAttribute('type', nativeType)
+    expect(getByRole('button')).toHaveAttribute('type', nativeType)
   })
 })

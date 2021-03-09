@@ -1,5 +1,9 @@
 import { DOMWrapper, mount, VueWrapper } from '@vue/test-utils'
 import Progress from '../src/Progress.vue'
+import {
+  expectHaveClass,
+  expectHaveTextContent
+} from '../../../../tests/helper'
 import Color from '../../../../packages/color-picker/src/color'
 import { merge } from 'lodash-es'
 import { STATUS_SETTING } from '../src/props'
@@ -36,7 +40,7 @@ export function assertSetPercentage(
   wrapper: VueWrapper<any>,
   percentage: number
 ): void {
-  expect(wrapper.get('.el-progress__text')).toHaveTextContent(`${percentage}%`)
+  expectHaveTextContent(wrapper.get('.el-progress__text'), `${percentage}%`)
   assertContainStyle(
     wrapper,
     '.el-progress-bar__inner',
@@ -101,5 +105,5 @@ export function assertIconClassOk(
   status: string
 ): void {
   const icon = wrapper.find('.el-progress__text > i')
-  expect(icon).toHaveClass(STATUS_SETTING[status]['arcIconClass'])
+  expectHaveClass(icon, STATUS_SETTING[status]['arcIconClass'])
 }

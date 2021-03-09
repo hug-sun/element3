@@ -3,7 +3,7 @@
 exports[`Tag.vue snapshot 1`] = `
 <transition-stub>
   <span
-    class="el-tag   el-tag--light"
+    class="el-tag el-tag--light"
   >
     <!---->
     <!---->

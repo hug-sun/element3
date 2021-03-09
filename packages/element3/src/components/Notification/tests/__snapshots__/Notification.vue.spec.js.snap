@@ -3,7 +3,7 @@
 exports[`Notification.vue snapshot 1`] = `
 <transition-stub>
   <div
-    class="el-notification  right"
+    class="el-notification right"
     role="alert"
     style="top: 0px;"
   >

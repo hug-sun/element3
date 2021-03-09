@@ -5,8 +5,8 @@
     :type="nativeType"
     :disabled="buttonDisabled || loading"
   >
-    <i class="el-icon-loading" v-if="loading"></i>
-    <i :class="icon" v-else-if="icon"></i>
+    <i class="el-icon-loading" v-if="loading" data-testid="loadingIcon"></i>
+    <i :class="icon" v-else-if="icon" data-testid="icon"></i>
     <span v-if="$slots.default">
       <slot></slot>
     </span>

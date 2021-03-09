@@ -1,5 +1,6 @@
 import Switch from '../src/Switch.vue'
 import { mount } from '@vue/test-utils'
+import { expectHaveStyle } from '../../../../tests/helper'
 describe('Switch', () => {
   it('snapshot', () => {
     const wrapper = mount(Switch)
@@ -40,7 +41,7 @@ describe('Switch', () => {
       }
     })
 
-    expect(wrapper.get('.el-switch__core')).toHaveStyle({
+    expectHaveStyle(wrapper.get('.el-switch__core'), {
       width: '50px'
     })
   })
@@ -137,7 +138,7 @@ describe('Switch', () => {
       }
     })
 
-    expect(wrapper.get('.el-switch__core')).toHaveStyle({
+    expectHaveStyle(wrapper.get('.el-switch__core'), {
       borderColor: '#ff0000'
     })
   })
@@ -150,7 +151,7 @@ describe('Switch', () => {
       }
     })
 
-    expect(wrapper.get('.el-switch__core')).toHaveStyle({
+    expectHaveStyle(wrapper.get('.el-switch__core'), {
       borderColor: '#ff0000'
     })
   })

@@ -1,1 +1,1 @@
-import 'jest-vtu'
+import '@testing-library/jest-dom'

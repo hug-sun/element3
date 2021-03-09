@@ -1,6 +1,7 @@
 import RadioButton from '../src/RadioButton.vue'
 import RadioGroup from '../../RadioGroup/src/RadioGroup.vue'
 import { mount } from '@vue/test-utils'
+import { expectHaveClass } from '../../../../tests/helper'
 import { ref, h, nextTick, reactive } from 'vue'
 
 const content = ['上海', '北京']
@@ -33,17 +34,22 @@ describe('radioButton.vue', () => {
     })
 
     await wrapper.setProps({ size: 'mini' })
-    expect(wrapper.findComponent({ name: 'ElRadioButton' })).toHaveClass(
+    expectHaveClass(
+      wrapper.findComponent({ name: 'ElRadioButton' }),
       `el-radio-button--mini`
     )
 
     await wrapper.setProps({ size: 'small' })
-    expect(wrapper.findComponent({ name: 'ElRadioButton' })).toHaveClass(
+
+    expectHaveClass(
+      wrapper.findComponent({ name: 'ElRadioButton' }),
       `el-radio-button--small`
     )
 
     await wrapper.setProps({ size: 'medium' })
-    expect(wrapper.findComponent({ name: 'ElRadioButton' })).toHaveClass(
+
+    expectHaveClass(
+      wrapper.findComponent({ name: 'ElRadioButton' }),
       `el-radio-button--medium`
     )
   })
@@ -88,7 +94,8 @@ describe('radioButton.vue', () => {
     })
 
     await wrapper.setProps({ disabled: true })
-    expect(wrapper.findComponent({ name: 'ElRadioButton' })).toHaveClass(
+    expectHaveClass(
+      wrapper.findComponent({ name: 'ElRadioButton' }),
       'is-disabled'
     )
 
@@ -129,7 +136,8 @@ describe('radioButton.vue', () => {
       .findAllComponents({ name: 'ElRadioButton' })[0]
       .trigger('click')
 
-    expect(wrapper.findAllComponents({ name: 'ElRadioButton' })[0]).toHaveClass(
+    expectHaveClass(
+      wrapper.findAllComponents({ name: 'ElRadioButton' })[0],
       'is-active'
     )
   })
