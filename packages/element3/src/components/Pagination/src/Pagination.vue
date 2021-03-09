@@ -171,7 +171,9 @@ function useSises({ pager, pageSizes }) {
 }
 
 function useLayout(layout: Ref<string>) {
+  const instance = getCurrentInstance()
   const layoutParts = computed(() => parseLayout(layout.value))
+  provide('pagination/slot/default', instance.slots.default)
   return {
     layoutParts
   }

@@ -4,7 +4,7 @@ import Prev from '../src/parts/Prev.vue'
 import Next from '../src/parts/Next.vue'
 import Pager from '../src/parts/Pager.vue'
 import Total from '../src/parts/Total.vue'
-import { nextTick, ref } from 'vue'
+import { h, nextTick, ref } from 'vue'
 
 describe('Pagination.vue', () => {
   it('Realize layout prev,pager,next', () => {
@@ -197,5 +197,29 @@ describe('Pagination.vue', () => {
     expect(wrapper.find('.btn-next').exists()).toBeTruthy()
     expect(wrapper.find('.el-pagination__rightwrapper').exists()).toBeTruthy()
     expect(wrapper.find('.el-pagination__total').exists()).toBeTruthy()
+  })
+
+  it('When layout is set to slot, customize slots based on #default', () => {
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'slot',
+        currentPage: 2,
+        pageCount: 5
+      },
+      slots: {
+        default(pager) {
+          return h(
+            'div',
+            {
+              class: 'slot'
+            },
+            'Current: ' + pager.current
+          )
+        }
+      }
+    })
+
+    expect(wrapper.find('.slot').exists()).toBeTruthy()
+    expect(wrapper.find('.slot').text()).toBe('Current: 2')
   })
 })
