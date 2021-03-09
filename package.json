@@ -37,9 +37,6 @@
     "node": ">=14.0.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/vue": "^6.4.0",
-    "@types/testing-library__jest-dom": "^5.9.5",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.11.0",
     "@vue/cli-plugin-eslint": "~4.5.0",

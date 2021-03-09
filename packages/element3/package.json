@@ -51,9 +51,12 @@
     "throttle-debounce": "^3.0.1"
   },
   "peerDependencies": {
-    "vue": "^3.0.4"
+    "vue": "^3.0.7"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/vue": "^6.4.0",
+    "@types/testing-library__jest-dom": "^5.9.5",
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",
@@ -66,8 +69,8 @@
     "@rollup/plugin-replace": "^2.3.4",
     "@types/jest": "^26.0.18",
     "@vue/babel-plugin-jsx": "^1.0.0-rc.4",
-    "@vue/compiler-sfc": "^3.0.4",
-    "@vue/test-utils": "^2.0.0-beta.13",
+    "@vue/compiler-sfc": "^3.0.7",
+    "@vue/test-utils": "^2.0.0-rc.3",
     "babel-jest": "^26.6.3",
     "cp-cli": "^2.0.0",
     "gulp": "^4.0.2",
@@ -81,7 +84,7 @@
     "rollup-plugin-typescript2": "^0.29.0",
     "rollup-plugin-vue": "^6.0.0",
     "typescript": "^4.1.2",
-    "vue": "^3.0.4",
+    "vue": "^3.0.7",
     "vue-jest": "^5.0.0-alpha.7"
   }
 }
