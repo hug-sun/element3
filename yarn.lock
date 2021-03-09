@@ -2268,7 +2268,7 @@
     "@vue/compiler-core" "3.0.7"
     "@vue/shared" "3.0.7"
 
-"@vue/compiler-sfc@^3.0.3", "@vue/compiler-sfc@^3.0.4":
+"@vue/compiler-sfc@^3.0.3", "@vue/compiler-sfc@^3.0.7":
   version "3.0.7"
   resolved "https://registry.npm.taobao.org/@vue/compiler-sfc/download/@vue/compiler-sfc-3.0.7.tgz?cache=0&sync_timestamp=1614614418116&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fcompiler-sfc%2Fdownload%2F%40vue%2Fcompiler-sfc-3.0.7.tgz#900414750cc726553b870490f48073451fd14f07"
   integrity sha1-kAQUdQzHJlU7hwSQ9IBzRR/RTwc=
@@ -2378,7 +2378,7 @@
   resolved "https://registry.npm.taobao.org/@vue/shared/download/@vue/shared-3.0.7.tgz?cache=0&sync_timestamp=1614614419935&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fshared%2Fdownload%2F%40vue%2Fshared-3.0.7.tgz#96d52988efc07444c108c7c6803ba7cc93e40045"
   integrity sha1-ltUpiO/AdETBCMfGgDunzJPkAEU=
 
-"@vue/test-utils@^2.0.0-0", "@vue/test-utils@^2.0.0-beta.13", "@vue/test-utils@^2.0.0-rc.0":
+"@vue/test-utils@^2.0.0-0", "@vue/test-utils@^2.0.0-rc.0", "@vue/test-utils@^2.0.0-rc.3":
   version "2.0.0-rc.3"
   resolved "https://registry.npm.taobao.org/@vue/test-utils/download/@vue/test-utils-2.0.0-rc.3.tgz#11b97d56d786bec60431b00888b3264e334b83c8"
   integrity sha1-Ebl9VteGvsYEMbAIiLMmTjNLg8g=
@@ -15532,7 +15532,7 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha1-HuO8mhbsv1EYvjNLsV+cRvgvWCU=
 
-vue@^3.0.4:
+vue@^3.0.4, vue@^3.0.7:
   version "3.0.7"
   resolved "https://registry.npm.taobao.org/vue/download/vue-3.0.7.tgz?cache=0&sync_timestamp=1614614651009&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue%2Fdownload%2Fvue-3.0.7.tgz#8bcff51f8be570f9e4ce8cc5f52e2ab0fe3c74a1"
   integrity sha1-i8/1H4vlcPnkzozF9S4qsP48dKE=
