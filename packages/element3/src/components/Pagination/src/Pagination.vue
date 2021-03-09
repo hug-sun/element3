@@ -1,8 +1,6 @@
 <template>
   <div v-if="!(hideOnSinglePage && pager.count <= 1)" class="el-pagination">
-    <template v-for="(part, index) in layoutPart" :key="index">
-      <component :is="part" :pager="pager"></component>
-    </template>
+    <layout-part :layout-parts="layoutParts"></layout-part>
   </div>
 </template>
 
@@ -16,24 +14,21 @@ import {
   Ref,
   getCurrentInstance,
   PropType,
-  watchEffect
+  watchEffect,
+  provide
 } from 'vue'
 import { ElPaginationProps } from '../types'
 import { Pager as PagerCore, PagerEventType } from './entity/Pager'
 import { parseLayout } from './tools/parseLayout'
 
-import Pager from './parts/Pager.vue'
-import Prev from './parts/Prev.vue'
-import Next from './parts/Next.vue'
-import Total from './parts/Total.vue'
-import Sizes from './parts/Sizes.vue'
+import LayoutPart from './Layout.vue'
 
 export default defineComponent({
   name: 'ElPagination',
   props: {
     layout: {
       type: String,
-      default: 'prev, pager, next, jumper, total'
+      default: 'prev, pager, next, jumper, ->, total'
     },
     pagerCount: {
       type: Number,
@@ -74,11 +69,7 @@ export default defineComponent({
     'update:pageSize'
   ],
   components: {
-    Pager,
-    Prev,
-    Next,
-    Total,
-    Sizes
+    LayoutPart
   },
   setup(props: ElPaginationProps) {
     const {
@@ -91,7 +82,7 @@ export default defineComponent({
       popperClass,
       layout
     } = toRefs(props)
-    const { layoutPart } = useLayout(layout)
+    const { layoutParts } = useLayout(layout)
     const { pager } = usePager({
       currentPage,
       total,
@@ -103,8 +94,8 @@ export default defineComponent({
     useStyle({ pager, popperClass })
 
     return {
-      layoutPart,
-      pager
+      pager,
+      layoutParts
     }
   }
 })
@@ -160,6 +151,8 @@ function usePager({ total, pageCount, pageSize, pagerCount, currentPage }) {
   pagerEventHandler(pager)
   bindVariableHandler(pager)
 
+  provide('pagination/pager', pager)
+
   return { pager }
 }
 
@@ -178,9 +171,9 @@ function useSises({ pager, pageSizes }) {
 }
 
 function useLayout(layout: Ref<string>) {
-  const layoutPart = computed(() => parseLayout(layout.value))
+  const layoutParts = computed(() => parseLayout(layout.value))
   return {
-    layoutPart
+    layoutParts
   }
 }
 </script>

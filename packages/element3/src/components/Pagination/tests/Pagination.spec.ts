@@ -181,4 +181,21 @@ describe('Pagination.vue', () => {
 
     expect(wrapper.find('.test').exists()).toBeTruthy()
   })
+
+  it('Achieve right-aligned layout', () => {
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'prev, pager, next, ->, total',
+        currentPage: 2,
+        pageCount: 5
+      }
+    })
+
+    expect(wrapper.find('.btn-prev').exists()).toBeTruthy()
+    expect(wrapper.findAll('.el-pager .number')).toHaveLength(5)
+    expect(wrapper.find('.el-pager .number.active').text()).toBe('2')
+    expect(wrapper.find('.btn-next').exists()).toBeTruthy()
+    expect(wrapper.find('.el-pagination__rightwrapper').exists()).toBeTruthy()
+    expect(wrapper.find('.el-pagination__total').exists()).toBeTruthy()
+  })
 })
