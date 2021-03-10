@@ -307,4 +307,19 @@ describe('Pagination.vue', () => {
     })
     expect(wrapper.find('.is-background').exists()).toBeTruthy()
   })
+
+  it('When the page number changes, so does the Jumper', async () => {
+    const currentPage = ref(1)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'jumper, next',
+        currentPage: (currentPage as unknown) as number,
+        'onUpdate:currentPage': (v) => (currentPage.value = v),
+        pageCount: 5,
+        background: true
+      }
+    })
+    await wrapper.find('button').trigger('click')
+    expect(wrapper.find('input').element.value).toBe('2')
+  })
 })

@@ -2,18 +2,18 @@
   <span class="el-pagination__jump">
     {{ t('el.pagination.goto') }}
     <el-input
-      v-model="model"
+      :modelValue="pager.current"
       class="el-pagination__editor is-in-pagination"
       :min="1"
       :max="pager.count"
       type="number"
       :disbaled="pager.style.disabled"
+      @update:modelValue="pager.jump(Number($event))"
     />
     {{ t('el.pagination.pageClassifier') }}
   </span>
 </template>
 <script lang="ts">
-import { computed } from '@vue/runtime-core'
 import { ElInput } from '../../../../components/Input'
 import { useLocale } from '../../../../composables/locale'
 import { Pager } from '../entity/Pager'
@@ -23,18 +23,9 @@ export default {
     pager: Pager
   },
   components: { ElInput },
-  setup(props) {
+  setup() {
     const t = useLocale()
-    const model = computed({
-      get() {
-        return props.pager.current
-      },
-      set(v: number) {
-        props.pager.jump(v)
-      }
-    })
     return {
-      model,
       t
     }
   }
