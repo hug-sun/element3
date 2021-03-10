@@ -222,4 +222,19 @@ describe('Pagination.vue', () => {
     expect(wrapper.find('.slot').exists()).toBeTruthy()
     expect(wrapper.find('.slot').text()).toBe('Current: 2')
   })
+
+  it('Customize Prev and Next content', () => {
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'prev, next',
+        currentPage: 2,
+        pageCount: 5,
+        prevText: 'PrevPage',
+        nextText: 'NextPage'
+      }
+    })
+
+    expect(wrapper.findComponent(Prev).text()).toBe('PrevPage')
+    expect(wrapper.findComponent(Next).text()).toBe('NextPage')
+  })
 })

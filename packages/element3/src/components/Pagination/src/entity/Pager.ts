@@ -1,4 +1,5 @@
 import mitt from 'mitt'
+import { ElPaginationProps, Keep } from '../../types'
 import { makerArray } from '../tools/makerArray'
 
 export enum PagerEventType {
@@ -17,9 +18,7 @@ export interface PagerParam {
   viewCount: number
 }
 
-export interface PagerStyle {
-  popperClass?: string
-}
+export type PagerStyle = Keep<'prevText' | 'nextText' | 'popperClass'>
 
 export class Pager {
   private _current: number
@@ -29,7 +28,9 @@ export class Pager {
   private _event = mitt()
   private _sizes = []
   private _style: PagerStyle = {
-    popperClass: ''
+    popperClass: '',
+    prevText: '',
+    nextText: ''
   }
 
   get style(): PagerStyle {

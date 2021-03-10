@@ -59,6 +59,14 @@ export default defineComponent({
     popperClass: {
       type: String,
       default: ''
+    },
+    nextText: {
+      type: String,
+      default: ''
+    },
+    prevText: {
+      type: String,
+      default: ''
     }
   },
   emits: [
@@ -80,7 +88,9 @@ export default defineComponent({
       pageCount,
       pageSizes,
       popperClass,
-      layout
+      layout,
+      nextText,
+      prevText
     } = toRefs(props)
     const { layoutParts } = useLayout(layout)
     const { pager } = usePager({
@@ -91,7 +101,7 @@ export default defineComponent({
       pageCount
     })
     useSises({ pager, pageSizes })
-    useStyle({ pager, popperClass })
+    useStyle({ pager, popperClass, nextText, prevText })
 
     return {
       pager,
@@ -156,10 +166,12 @@ function usePager({ total, pageCount, pageSize, pagerCount, currentPage }) {
   return { pager }
 }
 
-function useStyle({ pager, popperClass }) {
+function useStyle({ pager, popperClass, nextText, prevText }) {
   watchEffect(() => {
     pager.style = {
-      popperClass: popperClass.value
+      popperClass: popperClass.value,
+      nextText: nextText.value,
+      prevText: prevText.value
     }
   })
 }
