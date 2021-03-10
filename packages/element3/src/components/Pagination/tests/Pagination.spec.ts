@@ -293,4 +293,18 @@ describe('Pagination.vue', () => {
     })
     expect(wrapper.find('.el-pagination--small').exists()).toBeTruthy()
   })
+
+  it('Pager with background', () => {
+    const currentPage = ref(1)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'pager',
+        currentPage: (currentPage as unknown) as number,
+        'onUpdate:currentPage': (v) => (currentPage.value = v),
+        pageCount: 5,
+        background: true
+      }
+    })
+    expect(wrapper.find('.is-background').exists()).toBeTruthy()
+  })
 })
