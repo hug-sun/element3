@@ -1,8 +1,6 @@
 <template>
   <div v-if="!(hideOnSinglePage && pager.count <= 1)" class="el-pagination">
-    <template v-for="(part, index) in layoutPart" :key="index">
-      <component :is="part" :pager="pager"></component>
-    </template>
+    <layout-part :layout-parts="layoutParts"></layout-part>
   </div>
 </template>
 
@@ -16,24 +14,21 @@ import {
   Ref,
   getCurrentInstance,
   PropType,
-  watchEffect
+  watchEffect,
+  provide
 } from 'vue'
 import { ElPaginationProps } from '../types'
 import { Pager as PagerCore, PagerEventType } from './entity/Pager'
 import { parseLayout } from './tools/parseLayout'
 
-import Pager from './parts/Pager.vue'
-import Prev from './parts/Prev.vue'
-import Next from './parts/Next.vue'
-import Total from './parts/Total.vue'
-import Sizes from './parts/Sizes.vue'
+import LayoutPart from './Layout.vue'
 
 export default defineComponent({
   name: 'ElPagination',
   props: {
     layout: {
       type: String,
-      default: 'prev, pager, next, jumper, total'
+      default: 'prev, pager, next, jumper, ->, total'
     },
     pagerCount: {
       type: Number,
@@ -64,6 +59,14 @@ export default defineComponent({
     popperClass: {
       type: String,
       default: ''
+    },
+    nextText: {
+      type: String,
+      default: ''
+    },
+    prevText: {
+      type: String,
+      default: ''
     }
   },
   emits: [
@@ -74,11 +77,7 @@ export default defineComponent({
     'update:pageSize'
   ],
   components: {
-    Pager,
-    Prev,
-    Next,
-    Total,
-    Sizes
+    LayoutPart
   },
   setup(props: ElPaginationProps) {
     const {
@@ -89,9 +88,11 @@ export default defineComponent({
       pageCount,
       pageSizes,
       popperClass,
-      layout
+      layout,
+      nextText,
+      prevText
     } = toRefs(props)
-    const { layoutPart } = useLayout(layout)
+    const { layoutParts } = useLayout(layout)
     const { pager } = usePager({
       currentPage,
       total,
@@ -100,11 +101,11 @@ export default defineComponent({
       pageCount
     })
     useSises({ pager, pageSizes })
-    useStyle({ pager, popperClass })
+    useStyle({ pager, popperClass, nextText, prevText })
 
     return {
-      layoutPart,
-      pager
+      pager,
+      layoutParts
     }
   }
 })
@@ -160,13 +161,17 @@ function usePager({ total, pageCount, pageSize, pagerCount, currentPage }) {
   pagerEventHandler(pager)
   bindVariableHandler(pager)
 
+  provide('pagination/pager', pager)
+
   return { pager }
 }
 
-function useStyle({ pager, popperClass }) {
+function useStyle({ pager, popperClass, nextText, prevText }) {
   watchEffect(() => {
     pager.style = {
-      popperClass: popperClass.value
+      popperClass: popperClass.value,
+      nextText: nextText.value,
+      prevText: prevText.value
     }
   })
 }
@@ -178,9 +183,11 @@ function useSises({ pager, pageSizes }) {
 }
 
 function useLayout(layout: Ref<string>) {
-  const layoutPart = computed(() => parseLayout(layout.value))
+  const instance = getCurrentInstance()
+  const layoutParts = computed(() => parseLayout(layout.value))
+  provide('pagination/slot/default', instance.slots.default)
   return {
-    layoutPart
+    layoutParts
   }
 }
 </script>
