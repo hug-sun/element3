@@ -1,5 +1,11 @@
 <template>
-  <div v-if="!(hideOnSinglePage && pager.count <= 1)" class="el-pagination">
+  <div
+    v-if="!(hideOnSinglePage && pager.count <= 1)"
+    class="el-pagination"
+    :class="{
+      'el-pagination--small': small
+    }"
+  >
     <layout-part :layout-parts="layoutParts"></layout-part>
   </div>
 </template>
@@ -68,7 +74,8 @@ export default defineComponent({
       type: String,
       default: ''
     },
-    disabled: Boolean
+    disabled: Boolean,
+    small: Boolean
   },
   emits: [
     'update:currentPage',

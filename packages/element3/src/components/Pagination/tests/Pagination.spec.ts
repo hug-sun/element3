@@ -279,4 +279,18 @@ describe('Pagination.vue', () => {
     await nextTick()
     expect(wrapper.vm.pager.style.disabled).toBeTruthy()
   })
+
+  it('small pager', () => {
+    const currentPage = ref(1)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'pager',
+        currentPage: (currentPage as unknown) as number,
+        'onUpdate:currentPage': (v) => (currentPage.value = v),
+        pageCount: 5,
+        small: true
+      }
+    })
+    expect(wrapper.find('.el-pagination--small').exists()).toBeTruthy()
+  })
 })

@@ -11,6 +11,7 @@ export interface ElPaginationProps {
   nextText?: string
   prevText?: string
   disabled?: boolean
+  small?: boolean
 }
 
 declare class ElPagination {
