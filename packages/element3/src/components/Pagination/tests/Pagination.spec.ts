@@ -237,4 +237,21 @@ describe('Pagination.vue', () => {
     expect(wrapper.findComponent(Prev).text()).toBe('PrevPage')
     expect(wrapper.findComponent(Next).text()).toBe('NextPage')
   })
+
+  it('jump page number', async () => {
+    const currentPage = ref(1)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'jumper',
+        currentPage: (currentPage as unknown) as number,
+        'onUpdate:currentPage': (v) => (currentPage.value = v),
+        pageCount: 5
+      }
+    })
+
+    const jumperInput = wrapper.find('input')
+    await jumperInput.setValue('5')
+
+    expect(currentPage.value).toBe(5)
+  })
 })
