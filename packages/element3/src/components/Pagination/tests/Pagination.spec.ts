@@ -254,4 +254,29 @@ describe('Pagination.vue', () => {
 
     expect(currentPage.value).toBe(5)
   })
+
+  it('test disable effect', async () => {
+    const disabled = ref(false)
+    const currentPage = ref(1)
+    const wrapper = mount(Pagination, {
+      props: {
+        currentPage: (currentPage as unknown) as number,
+        pageCount: 5,
+        disabled: (disabled as unknown) as boolean,
+        'onUpdate:currentPage': (v) => (currentPage.value = v)
+      }
+    })
+
+    const [leftBtn, rightBtn] = wrapper.findAll('button')
+
+    expect(leftBtn.element.disabled).toBeTruthy()
+
+    currentPage.value = 5
+    await nextTick()
+    expect(rightBtn.element.disabled).toBeTruthy()
+
+    disabled.value = true
+    await nextTick()
+    expect(wrapper.vm.pager.style.disabled).toBeTruthy()
+  })
 })
