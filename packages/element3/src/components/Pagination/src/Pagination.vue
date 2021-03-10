@@ -67,7 +67,8 @@ export default defineComponent({
     prevText: {
       type: String,
       default: ''
-    }
+    },
+    disabled: Boolean
   },
   emits: [
     'update:currentPage',
@@ -90,7 +91,8 @@ export default defineComponent({
       popperClass,
       layout,
       nextText,
-      prevText
+      prevText,
+      disabled
     } = toRefs(props)
     const { layoutParts } = useLayout(layout)
     const { pager } = usePager({
@@ -101,7 +103,7 @@ export default defineComponent({
       pageCount
     })
     useSises({ pager, pageSizes })
-    useStyle({ pager, popperClass, nextText, prevText })
+    useStyle({ pager, popperClass, nextText, prevText, disabled })
 
     return {
       pager,
@@ -166,12 +168,13 @@ function usePager({ total, pageCount, pageSize, pagerCount, currentPage }) {
   return { pager }
 }
 
-function useStyle({ pager, popperClass, nextText, prevText }) {
+function useStyle({ pager, popperClass, nextText, prevText, disabled }) {
   watchEffect(() => {
     pager.style = {
       popperClass: popperClass.value,
       nextText: nextText.value,
-      prevText: prevText.value
+      prevText: prevText.value,
+      disabled: disabled.value
     }
   })
 }

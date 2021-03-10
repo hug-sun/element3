@@ -1,5 +1,10 @@
 <template>
-  <button type="button" class="btn-next" @click="pager.next()">
+  <button
+    type="button"
+    class="btn-next"
+    @click="pager.next()"
+    :disabled="!pager.rightCount || pager.style.disabled"
+  >
     <i class="el-icon el-icon-arrow-right"></i>
     <span v-if="pager.style.nextText" v-text="pager.style.nextText"></span>
   </button>

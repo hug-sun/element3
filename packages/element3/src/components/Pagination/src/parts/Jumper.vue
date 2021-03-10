@@ -7,6 +7,7 @@
       :min="1"
       :max="pager.count"
       type="number"
+      :disbaled="pager.style.disabled"
     />
     {{ t('el.pagination.pageClassifier') }}
   </span>

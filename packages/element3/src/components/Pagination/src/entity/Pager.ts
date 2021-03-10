@@ -18,7 +18,9 @@ export interface PagerParam {
   viewCount: number
 }
 
-export type PagerStyle = Keep<'prevText' | 'nextText' | 'popperClass'>
+export type PagerStyle = Keep<
+  'prevText' | 'nextText' | 'popperClass' | 'disabled'
+>
 
 export class Pager {
   private _current: number
@@ -30,7 +32,8 @@ export class Pager {
   private _style: PagerStyle = {
     popperClass: '',
     prevText: '',
-    nextText: ''
+    nextText: '',
+    disabled: false
   }
 
   get style(): PagerStyle {
@@ -142,6 +145,9 @@ export class Pager {
   }
 
   jump(v: number): void {
+    if (this._style.disabled) {
+      return
+    }
     v = Math.min(this.count, v)
     v = Math.max(1, v)
     this._current = v
