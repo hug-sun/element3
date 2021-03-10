@@ -237,4 +237,74 @@ describe('Pagination.vue', () => {
     expect(wrapper.findComponent(Prev).text()).toBe('PrevPage')
     expect(wrapper.findComponent(Next).text()).toBe('NextPage')
   })
+
+  it('jump page number', async () => {
+    const currentPage = ref(1)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'jumper',
+        currentPage: (currentPage as unknown) as number,
+        'onUpdate:currentPage': (v) => (currentPage.value = v),
+        pageCount: 5
+      }
+    })
+
+    const jumperInput = wrapper.find('input')
+    await jumperInput.setValue('5')
+
+    expect(currentPage.value).toBe(5)
+  })
+
+  it('test disable effect', async () => {
+    const disabled = ref(false)
+    const currentPage = ref(1)
+    const wrapper = mount(Pagination, {
+      props: {
+        currentPage: (currentPage as unknown) as number,
+        pageCount: 5,
+        disabled: (disabled as unknown) as boolean,
+        'onUpdate:currentPage': (v) => (currentPage.value = v)
+      }
+    })
+
+    const [leftBtn, rightBtn] = wrapper.findAll('button')
+
+    expect(leftBtn.element.disabled).toBeTruthy()
+
+    currentPage.value = 5
+    await nextTick()
+    expect(rightBtn.element.disabled).toBeTruthy()
+
+    disabled.value = true
+    await nextTick()
+    expect(wrapper.vm.pager.style.disabled).toBeTruthy()
+  })
+
+  it('small pager', () => {
+    const currentPage = ref(1)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'pager',
+        currentPage: (currentPage as unknown) as number,
+        'onUpdate:currentPage': (v) => (currentPage.value = v),
+        pageCount: 5,
+        small: true
+      }
+    })
+    expect(wrapper.find('.el-pagination--small').exists()).toBeTruthy()
+  })
+
+  it('Pager with background', () => {
+    const currentPage = ref(1)
+    const wrapper = mount(Pagination, {
+      props: {
+        layout: 'pager',
+        currentPage: (currentPage as unknown) as number,
+        'onUpdate:currentPage': (v) => (currentPage.value = v),
+        pageCount: 5,
+        background: true
+      }
+    })
+    expect(wrapper.find('.is-background').exists()).toBeTruthy()
+  })
 })

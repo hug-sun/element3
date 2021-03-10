@@ -20,6 +20,7 @@ import Next from './parts/Next.vue'
 import Total from './parts/Total.vue'
 import Sizes from './parts/Sizes.vue'
 import Slot from './parts/Slot.vue'
+import Jumper from './parts/Jumper.vue'
 
 import { Pager as PagerCore } from './entity/Pager'
 
@@ -34,7 +35,8 @@ export default {
     Next,
     Prev,
     Sizes,
-    Slot
+    Slot,
+    Jumper
   },
   setup() {
     const pager = inject<PagerCore>('pagination/pager')

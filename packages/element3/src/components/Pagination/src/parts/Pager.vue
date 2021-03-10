@@ -3,7 +3,7 @@
     <li
       v-if="pager.count >= 1"
       class="number"
-      :class="{ active: pager.current === 1 }"
+      :class="{ active: pager.current === 1, disabled: pager.style.disabled }"
       @click="pager.jump(1)"
     >
       1
@@ -11,6 +11,7 @@
     <li
       v-if="pager.count > pager.viewCount && pager.leftCount > pager.halfPager"
       class="el-icon more btn-quickprev el-icon-more"
+      :class="{ disabled: pager.style.disabled }"
       @mouseenter="switchLeft($event.target)"
       @mouseleave="switchLeft($event.target)"
       @click="pager.prev(pager.halfPager)"
@@ -21,13 +22,15 @@
       :key="page"
       class="number"
       :class="{
-        active: pager.current === page
+        active: pager.current === page,
+        disabled: pager.style.disabled
       }"
       @click="pager.jump(page)"
     ></li>
     <li
       v-if="pager.count > pager.viewCount && pager.rightCount > pager.halfPager"
       class="el-icon more btn-quicknext el-icon-more"
+      :class="{ disabled: pager.style.disabled }"
       @mouseenter="switchRight($event.target)"
       @mouseleave="switchRight($event.target)"
       @click="pager.next(pager.halfPager)"
@@ -37,7 +40,8 @@
       v-text="pager.count"
       class="number"
       :class="{
-        active: pager.current === pager.count
+        active: pager.current === pager.count,
+        disabled: pager.style.disabled
       }"
       @click="pager.jump(pager.count)"
     ></li>

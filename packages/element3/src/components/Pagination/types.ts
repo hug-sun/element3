@@ -10,6 +10,9 @@ export interface ElPaginationProps {
   popperClass?: string
   nextText?: string
   prevText?: string
+  disabled?: boolean
+  small?: boolean
+  background?: boolean
 }
 
 declare class ElPagination {
