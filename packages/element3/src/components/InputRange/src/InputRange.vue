@@ -3,7 +3,7 @@
   <div
     class="el-date-editor el-range-editor el-input__inner"
     :class="classes"
-    role="inputrange"
+    data-testid="input-range"
   >
     <input
       :value="modelValue && modelValue[0]"
@@ -24,8 +24,7 @@
 
 <script lang="ts">
 import { props } from './props'
-import { toRefs, computed, Ref, inject } from 'vue'
-import { useGlobalOptions } from '../../../composables/globalConfig'
+import { toRefs, computed } from 'vue'
 export default {
   name: 'InputRange',
   props,
@@ -56,7 +55,7 @@ export default {
 
 const useClasses = ({ size }) => {
   return computed(() => {
-    return [size ? `el-range-editor--${size}` : '']
+    return [size ? `el-range-editor--${size.value}` : '']
   })
 }
 </script>
