@@ -11,6 +11,7 @@
       @focus="handleFocus"
       :readonly="!editable || readonly"
       :disabled="disabled"
+      :placeholder="startPlaceholder"
     />
     <input
       :value="modelValue && modelValue[1]"
@@ -18,6 +19,7 @@
       @focus="handleFocus"
       :readonly="!editable || readonly"
       :disabled="disabled"
+      :placeholder="endPlaceholder"
     />
   </div>
 </template>

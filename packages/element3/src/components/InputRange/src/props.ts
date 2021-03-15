@@ -20,5 +20,7 @@ export const props = {
     validator(val: string): boolean {
       return ['medium', 'small', 'mini', ''].includes(val)
     }
-  }
+  },
+  startPlaceholder: { type: String },
+  endPlaceholder: { type: String }
 }

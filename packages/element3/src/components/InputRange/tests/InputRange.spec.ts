@@ -85,4 +85,19 @@ describe('InputRange.vue', () => {
 
     expect(getByTestId('input-range')).toHaveClass('el-range-editor--mini')
   })
+
+  it('placeholders should be displayed', () => {
+    const startPlaceholder = '起始时间'
+    const endPlaceholder = '起始时间'
+    const { getAllByRole } = render(InputRange, {
+      props: {
+        startPlaceholder: startPlaceholder,
+        endPlaceholder: endPlaceholder
+      }
+    })
+    const inputs = getAllByRole('textbox') as HTMLInputElement[]
+
+    expect(inputs[0].placeholder).toBe(startPlaceholder)
+    expect(inputs[1].placeholder).toBe(endPlaceholder)
+  })
 })
