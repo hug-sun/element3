@@ -1,3 +1,6 @@
+import { PropType } from '@vue/runtime-core'
+import { inputRangeSize } from './types'
+
 export const props = {
   modelValue: {
     type: Array
@@ -11,5 +14,11 @@ export const props = {
   editable: {
     type: Boolean,
     default: true
+  },
+  size: {
+    type: String as PropType<inputRangeSize>,
+    validator(val: string): boolean {
+      return ['medium', 'small', 'mini', ''].includes(val)
+    }
   }
 }

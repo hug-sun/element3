@@ -70,4 +70,19 @@ describe('InputRange.vue', () => {
     expect(inputs[0]).toHaveAttribute('readonly')
     expect(inputs[1]).toHaveAttribute('readonly')
   })
+
+  it('set InputRange size', async () => {
+    const { getByRole, rerender } = render(InputRange, {
+      props: {
+        size: 'small'
+      }
+    })
+    expect(getByRole('inputrange')).toHaveClass('el-range-editor--small')
+
+    await rerender({
+      size: 'mini'
+    })
+
+    expect(getByRole('inputrange')).toHaveClass('el-range-editor--mini')
+  })
 })
