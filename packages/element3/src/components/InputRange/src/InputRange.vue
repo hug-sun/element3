@@ -5,14 +5,14 @@
       :value="modelValue && modelValue[0]"
       @input="handleStartInput"
       @focus="handleFocus"
-      :readonly="readonly"
+      :readonly="!editable || readonly"
       :disabled="disabled"
     />
     <input
       :value="modelValue && modelValue[1]"
       @input="handleEndInput"
       @focus="handleFocus"
-      :readonly="readonly"
+      :readonly="!editable || readonly"
       :disabled="disabled"
     />
   </div>

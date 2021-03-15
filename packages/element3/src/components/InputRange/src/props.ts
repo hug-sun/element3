@@ -7,5 +7,9 @@ export const props = {
   },
   disabled: {
     type: Boolean
+  },
+  editable: {
+    type: Boolean,
+    default: true
   }
 }

@@ -61,4 +61,13 @@ describe('InputRange.vue', () => {
     expect(inputs[0]).toHaveAttribute('disabled')
     expect(inputs[1]).toHaveAttribute('disabled')
   })
+
+  it('should not be editable', () => {
+    const { getAllByRole } = render(InputRange, {
+      props: { editable: false }
+    })
+    const inputs = getAllByRole('textbox')
+    expect(inputs[0]).toHaveAttribute('readonly')
+    expect(inputs[1]).toHaveAttribute('readonly')
+  })
 })
