@@ -4,5 +4,8 @@ export const props = {
   },
   readonly: {
     type: Boolean
+  },
+  disabled: {
+    type: Boolean
   }
 }

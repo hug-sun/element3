@@ -6,12 +6,14 @@
       @input="handleStartInput"
       @focus="handleFocus"
       :readonly="readonly"
+      :disabled="disabled"
     />
     <input
       :value="modelValue && modelValue[1]"
       @input="handleEndInput"
       @focus="handleFocus"
       :readonly="readonly"
+      :disabled="disabled"
     />
   </div>
 </template>
