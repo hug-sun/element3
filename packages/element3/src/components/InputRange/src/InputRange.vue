@@ -5,11 +5,13 @@
       :value="modelValue && modelValue[0]"
       @input="handleStartInput"
       @focus="handleFocus"
+      :readonly="readonly"
     />
     <input
       :value="modelValue && modelValue[1]"
       @input="handleEndInput"
       @focus="handleFocus"
+      :readonly="readonly"
     />
   </div>
 </template>

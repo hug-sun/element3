@@ -39,4 +39,15 @@ describe('InputRange.vue', () => {
     await fireEvent.focus(inputs[0])
     expect(inputs[0]).toHaveProperty('focus')
   })
+
+  it('should be readonly', () => {
+    const { getAllByRole } = render(InputRange, {
+      props: {
+        readonly: true
+      }
+    })
+    const inputs = getAllByRole('textbox')
+    expect(inputs[0]).toHaveAttribute('readonly')
+    expect(inputs[1]).toHaveAttribute('readonly')
+  })
 })
