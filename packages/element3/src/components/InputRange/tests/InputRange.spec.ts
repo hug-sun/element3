@@ -21,4 +21,22 @@ describe('InputRange.vue', () => {
     await fireEvent.update(inputs[1], '21:30:00')
     expect(inputs[1]).toHaveValue('21:30:00')
   })
+
+  it('should get focus', async () => {
+    const temp = {
+      template: '<InputRange @focus="handleFocus"></InputRange>',
+      components: {
+        InputRange
+      },
+      methods: {
+        handleFocus() {
+          console.log('trigger focus event')
+        }
+      }
+    }
+    const { getAllByRole } = render(temp)
+    const inputs = getAllByRole('textbox')
+    await fireEvent.focus(inputs[0])
+    expect(inputs[0]).toHaveProperty('focus')
+  })
 })
