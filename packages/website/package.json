@@ -8,7 +8,8 @@
     "build:icon": "node scripts/iconInit.js",
     "dev": "vue-cli-service serve src/main.js",
     "dev:play": "vue-cli-service serve src/play.js",
-    "deploy": "yarn build && node scripts/deploy.js"
+    "deploy": "yarn build && node scripts/deploy.js",
+    "preview": "node scripts/preview.js"
   },
   "dependencies": {
     "element3": "0.0.39",
