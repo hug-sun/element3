@@ -280,11 +280,12 @@ function useTabScroll({ tabElList }) {
 
     scrollSize.value = 0
 
-    dirFlag === 'X'
-      ? instance.refs.hander &&
-        instance.refs.hander.before(instance.refs.content)
-      : instance.refs.content &&
+    if (instance.props.tabPosition === 'bottom') {
+      instance.refs.hander && instance.refs.hander.before(instance.refs.content)
+    } else {
+      instance.refs.content &&
         instance.refs.content.before(instance.refs.hander)
+    }
 
     return {
       dirFlag,
