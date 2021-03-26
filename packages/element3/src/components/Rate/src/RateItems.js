@@ -1,35 +1,5 @@
-import { ItemState } from './ItemState'
 import { reactive } from 'vue'
-
-const createRateItem = () => {
-  const item = reactive({
-    state: new ItemState(),
-    hover: false,
-    mouseOver() {
-      this.hover = true
-    },
-    mouseOut() {
-      this.hover = false
-    },
-    click() {
-      this.state.click()
-    },
-    reset() {
-      this.state.reset()
-    },
-    highlight() {
-      this.state.highlight()
-    },
-    putOut() {
-      this.state.putOut()
-    },
-    isStarOn() {
-      return this.state.isStarOn()
-    }
-  })
-
-  return item
-}
+import { createRateItem } from './createRateItem'
 
 export class RateItems {
   constructor(max) {
