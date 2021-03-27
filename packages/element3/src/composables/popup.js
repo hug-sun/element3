@@ -69,7 +69,10 @@ function usePopup(props) {
       rendered.value = true
     }
 
-    const props = merge({}, instance.proxy, options)
+    const props = merge(instance.proxy, options)
+    /**
+     * fix bug (#577)
+     */
 
     if (_closeTimer) {
       clearTimeout(_closeTimer)
