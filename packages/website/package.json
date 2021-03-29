@@ -12,7 +12,7 @@
     "preview": "node scripts/preview.js"
   },
   "dependencies": {
-    "element3": "0.0.39",
+    "element3": "0.0.40",
     "mitt": "^2.1.0",
     "vue": "^3.0.4"
   },
