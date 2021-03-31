@@ -6,6 +6,7 @@
   "scripts": {
     "bootstrap": "yarn",
     "build": "yarn workspace element3 build && yarn workspace website build",
+    "build#website": "yarn workspace website build",
     "test": "yarn workspace element3 test",
     "test:coverage": "yarn workspace element3 test:coverage",
     "lint": "eslint --ext .js --ext .vue --ext .ts packages/element3/packages/** packages/*/src/** --no-error-on-unmatched-pattern",

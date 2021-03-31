@@ -2268,7 +2268,7 @@
     "@vue/compiler-core" "3.0.7"
     "@vue/shared" "3.0.7"
 
-"@vue/compiler-sfc@^3.0.3", "@vue/compiler-sfc@^3.0.7":
+"@vue/compiler-sfc@^3.0.7":
   version "3.0.7"
   resolved "https://registry.npm.taobao.org/@vue/compiler-sfc/download/@vue/compiler-sfc-3.0.7.tgz?cache=0&sync_timestamp=1614614418116&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fcompiler-sfc%2Fdownload%2F%40vue%2Fcompiler-sfc-3.0.7.tgz#900414750cc726553b870490f48073451fd14f07"
   integrity sha1-kAQUdQzHJlU7hwSQ9IBzRR/RTwc=
