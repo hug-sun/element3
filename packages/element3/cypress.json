@@ -1,0 +1,4 @@
+{
+  "testFiles": "**/*cy.*",
+  "componentFolder": "src"
+}
