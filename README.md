@@ -58,6 +58,8 @@ Detailed changes for each release are documented in the [CHANGELOG](https://gith
 
 ## Contribution ✨
 
+use yarn instead of npm
+
 Please make sure to read the [Contributing Guide](https://juejin.im/post/6864462363039531022) before making a pull request. If you have a Element3-related project/component/tool, add it with a pull request to [this curated list](TODO)!
 
 Thank you to all the people who already contributed to Element3!
