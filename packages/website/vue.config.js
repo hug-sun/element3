@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = {
   devServer: {
-    port: 8088
+    port: 24678
   },
   chainWebpack: (config) => {
     config

@@ -6,6 +6,11 @@ import ElTooltip from 'element-ui/packages/tooltip'
 import { ref } from '@vue/reactivity'
 import { nextTick } from '@vue/runtime-core'
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+  // application specific logging, throwing an error, or other logic here
+})
+
 const runWayCls = '.el-slider__runway'
 // https://github.com/jsdom/jsdom/issues/1590#issuecomment-578350151
 function mockSliderRunWayGetBoundingClientRect(wrapper, rect = null) {
