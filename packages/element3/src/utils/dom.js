@@ -41,13 +41,13 @@ export const on = (function () {
 export const off = (function () {
   if (!isServer && document.removeEventListener) {
     return function (element, event, handler) {
-      if (element && event) {
+      if (element && event && handler) {
         element.removeEventListener(event, handler, false)
       }
     }
   } else {
     return function (element, event, handler) {
-      if (element && event) {
+      if (element && event && handler) {
         element.detachEvent('on' + event, handler)
       }
     }
