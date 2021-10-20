@@ -30,7 +30,7 @@ export default {
     onMounted(() => {
       const items = root.value.querySelectorAll('.el-breadcrumb__item')
       if (items.length) {
-        items[items.length - 1].setAttribute('aria-current', 'page')
+        items[--items.length].setAttribute('aria-current', 'page')
       }
     })
     return {
