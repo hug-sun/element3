@@ -102,9 +102,10 @@ export class Tree {
     )
   }
 
-  update() {
+  update(list) {
     // rebuild tree
     // TODO: 这里可以做diff优化
+    this.raw = list
     this.initRoot()
   }
 
