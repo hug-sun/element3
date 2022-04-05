@@ -271,11 +271,12 @@ export default {
         '.el-dropdown-selfdefine'
       )
       if (selfDefine) {
+        const originClassName = selfDefine.getAttribute('class')
         // 自定义
         if (val) {
-          selfDefine.className += ' focusing'
+          selfDefine.setAttribute('class', `${originClassName} focusing`)
         } else {
-          selfDefine.className = selfDefine.className.replace('focusing', '')
+          selfDefine.setAttribute('class', originClassName.replace('focusing', ''))
         }
       }
     })
