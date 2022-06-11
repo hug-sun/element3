@@ -1,18 +1,23 @@
 <p align="center">
-  <img src="https://gitee.com/pandafe/element3/raw/master/element_logo.svg">
+  <img src="https://cdn.jsdelivr.net/gh/shengxinjing/static/element3.svg">
 </p>
 
 ## Introduction
 
 A Vue.js 3.0 UI Toolkit for Web.
 
-## Install
+## Rewrite WIP
 
-```shell
-npm install element3 -S
-```
+0. vue3 script setup
+1. pnpm workspace
+2. typescript
+3. vitepress
+4. vitest
+5. tailwind.css
 
-## Quick Start
+
+@todo
+## Quick Start 
 
 ```js
 import { createApp } from 'vue'
@@ -37,12 +42,10 @@ createApp(App).use(ElLink).use(ElButton)
 ## About
 
 - base on [element-ui](https://github.com/ElemeFE/element)
-- Table Component base on [element-plus](https://github.com/element-plus/element-plus)
-  - rewrite Table is WIP
 
 ## Documentation
 
-To check out live docs, visit [website](https://element3-ui.com/)
+To check out live docs, visit [website](e3.shengxinjing.cn/)
 
 ## Questions
 
@@ -57,8 +60,6 @@ Please make sure to read the [Issue Reporting Checklist](TODO) before opening an
 Detailed changes for each release are documented in the [CHANGELOG](https://github.com/kkbjs/element3/blob/master/CHANGELOG.md).
 
 ## Contribution ✨
-
-use yarn instead of npm
 
 Please make sure to read the [Contributing Guide](https://juejin.im/post/6864462363039531022) before making a pull request. If you have a Element3-related project/component/tool, add it with a pull request to [this curated list](TODO)!
 

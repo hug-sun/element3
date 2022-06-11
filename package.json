@@ -4,20 +4,6 @@
     "packages/*"
   ],
   "scripts": {
-    "bootstrap": "yarn",
-    "build": "yarn workspace element3 build && yarn workspace website build",
-    "build#website": "yarn workspace website build",
-    "test": "yarn workspace element3 test",
-    "test:coverage": "yarn workspace element3 test:coverage",
-    "lint": "eslint --ext .js --ext .vue --ext .ts packages/element3/packages/** packages/*/src/** --no-error-on-unmatched-pattern",
-    "release": "node scripts/release.js",
-    "clean": "rm -rf node_modules && rm -rf packages/*/node_modules && yarn cache clean",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "dev#element3": "yarn workspace element3 dev",
-    "dev#website": "yarn workspace website dev",
-    "dev:play#website": "yarn workspace website dev:play",
-    "dev": "node scripts/runCmd.js \"yarn dev#element3\" \"yarn dev#website\"",
-    "dev:play": "node scripts/runCmd.js \"yarn dev#element3\" \"yarn dev:play#website\""
   },
   "license": "MIT",
   "gitHooks": {
@@ -26,40 +12,15 @@
   },
   "lint-staged": {
     "*.{js,vue}": [
-      "eslint",
-      "prettier --write"
+      "eslint"
     ],
     "*.ts?(x)": [
-      "eslint",
-      "prettier --parser=typescript --write"
+      "eslint"
     ]
   },
   "engines": {
     "node": ">=14.0.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.11.0",
-    "@typescript-eslint/parser": "^4.11.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/eslint-config-typescript": "^7.0.0",
-    "babel-eslint": "^10.1.0",
-    "chalk": "^4.1.0",
-    "conventional-changelog-cli": "^2.1.1",
-    "cross-env": "^7.0.3",
-    "enquirer": "^2.3.6",
-    "eslint": "^7.15.0",
-    "eslint-plugin-json": "^2.1.2",
-    "eslint-plugin-prettier": "^3.2.0",
-    "eslint-plugin-vue": "^7.2.0",
-    "execa": "^5.0.0",
-    "jest": "^26.6.3",
-    "jest-environment-jsdom-sixteen": "^1.0.3",
-    "lint-staged": "^10.5.3",
-    "minimist": "^1.2.5",
-    "prettier": "^2.2.1",
-    "ts-jest": "26.4.4",
-    "typescript": "^4.1.3",
-    "yorkie": "^2.0.0"
   }
 }
