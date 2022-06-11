@@ -22,6 +22,7 @@ waiter.config.js
 build/bin/algolia-key.js
 .envrc
 package-lock.json
+pnpm-lock.yaml
 src/index.js
 dist
 element-ui
