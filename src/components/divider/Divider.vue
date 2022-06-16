@@ -9,13 +9,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import {withDefaults} from 'vue'
-interface DividerTyoe {
+import { withDefaults } from 'vue'
+interface DividerType {
   direction?:'horizontal'|'vertical',
   contentPosition?:'left'|'center'|'right'
 }
 
-withDefaults(defineProps<DividerTyoe>(),{
+withDefaults(defineProps<DividerType>(),{
   direction:'horizontal',
   contentPosition:'center'
 })
