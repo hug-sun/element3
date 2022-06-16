@@ -1,0 +1,9 @@
+// Vitest Snapshot v1
+
+exports[`Divider.vue > snapshot 1`] = `
+<div
+  class="el-divider el-divider--horizontal"
+>
+  <!--v-if-->
+</div>
+`;

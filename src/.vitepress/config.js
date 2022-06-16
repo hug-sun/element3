@@ -11,7 +11,8 @@ export default {
       "/":[
         {text:'通用组件',items:[
           {text:'Button',link:'/components/button/'},
-          {text:'Avatar',link:'/components/avatar/'},
+          {text:'Divider',link:'/components/divider/'},
+          // {text:'Avatar',link:'/components/avatar/'},
         ]}
       ]
     }

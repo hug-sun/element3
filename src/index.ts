@@ -1,9 +1,11 @@
 import {ElButton} from './components/button/'
+import {ElDivider} from './components/divider/'
 import { version } from '../package.json'
 
 
 const components = [
-  ElButton
+  ElButton,
+  ElDivider
 ]
 function install (app) {
   components.forEach(component=>{

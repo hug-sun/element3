@@ -1,5 +1,18 @@
-import { ButtonType, ButtonSize, ButtonNativeType } from './types'
 import { PropType } from 'vue'
+
+export type ButtonType =
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'info'
+  | 'text'
+
+export type ButtonSize = 'large' | 'medium' | 'small' | 'mini'
+
+export type ButtonNativeType = 'button' | 'submit' | 'reset' | 'menu'
+
+
 
 export const props = {
   size: {
