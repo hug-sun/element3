@@ -68,3 +68,7 @@ const useButtonSize = (size: Ref) => {
   })
 }
 </script>
+<style lang="scss">
+@import '../../theme/src/button.scss'
+</style>>
+

@@ -5,6 +5,7 @@
     "packages/*"
   ],
   "scripts": {
+    "test": "vitest",
     "docs": "vitepress dev src/",
     "docs:build": "vitepress build src/",
     "docs:serve": "vitepress serve src/"
@@ -26,8 +27,16 @@
     "node": ">=14.0.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/vue": "^6.6.0",
+    "@vitejs/plugin-vue": "^2.3.3",
+    "@vue/test-utils": "^2.0.0",
+    "jsdom": "^19.0.0",
+    "sass": "^1.52.3",
+    "vite": "^2.9.12",
     "vitepress": "1.0.0-alpha.1",
     "vitepress-theme-demoblock": "^1.4.2",
-    "vitest": "^0.15.1"
+    "vitest": "^0.15.1",
+    "vue": "^3.2.37"
   }
 }
