@@ -22,12 +22,12 @@ export default defineComponent({
   props,
   setup(props) {
     const { size, disabled } = toRefs(props)
-    // const buttonSize = useButtonSize(size)
+    const buttonSize = useButtonSize(size)
     // const buttonDisabled = useButtonDisabled(disabled)
     const classes = useClasses({
       props,
-      size,
-      disabled
+      disabled,
+      size:buttonSize
     })
     return {
       buttonDisabled:disabled,
@@ -60,13 +60,14 @@ const useClasses = ({ props, size, disabled }) => {
 //   })
 // }
 
-// const useButtonSize = (size: Ref) => {
-//   const globalConfig = useGlobalOptions()
-//   return computed(() => {
-//     const elFormItem = inject('elFormItem', null)
-//     return size?.value || elFormItem?.elFormItemSize || globalConfig.size
-//   })
-// }
+const useButtonSize = (size: Ref) => {
+  const globalConfig = useGlobalOptions()
+  return computed(() => {
+    // const elFormItem = inject('elFormItem', null)
+    // || elFormItem?.elFormItemSize
+    return size?.value || globalConfig.size
+  })
+}
 </script>
 <style lang="scss">
 @import '../../theme/src/button.scss'

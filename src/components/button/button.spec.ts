@@ -76,7 +76,7 @@ describe('Button.vue', () => {
       })
     })
 
-    it.skip('by global config ', () => {
+    it('by global config ', () => {
       const size = 'small'
 
       const { getByRole } = render(Button, {
