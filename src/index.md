@@ -15,16 +15,13 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /guide/
+      link: /guide
     - theme: alt
-      text: Features
-      link: /guide/features
-    - theme: alt
-      text: Why Vitest?
-      link: /guide/why
+      text: Components
+      link: /src/
     - theme: alt
       text: View on GitHub
-      link: https://github.com/vitest-dev/vitest
+      link: https://github.com/hug-sun/element3
 
 features:
   - title: Vue3 component 
