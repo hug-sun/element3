@@ -3,7 +3,7 @@
     class="el-button"
     :class="classes"
     :type="nativeType"
-    :disabled="buttonDisabled || loading"
+    :disabled="disabled || loading"
   >
     <i class="el-icon-loading" v-if="loading" data-testid="loadingIcon"></i>
     <i :class="icon" v-else-if="icon" data-testid="icon"></i>
@@ -14,29 +14,55 @@
 </template>
 
 <script lang="ts">
-import { props } from './props'
-import { useGlobalOptions } from '../../hooks/globalConfig'
-import { toRefs, inject, computed, defineComponent, Ref } from 'vue'
+import {defineComponent} from 'vue'
 export default defineComponent({
-  name: 'ElButton',
-  props,
-  setup(props) {
-    const { size, disabled } = toRefs(props)
-    const buttonSize = useButtonSize(size)
-    // const buttonDisabled = useButtonDisabled(disabled)
-    const classes = useClasses({
-      props,
-      disabled,
-      size:buttonSize
-    })
-    return {
-      buttonDisabled:disabled,
-      classes
-    }
-  }
+  name: 'ElButton'
+})
+</script>
+<script setup lang="ts">
+// import { props } from './props'
+import { useGlobalOptions } from '../../hooks/globalConfig'
+import { toRefs, inject, computed, withDefaults } from 'vue'
+import type { Ref, ComputedRef } from 'vue'
+
+type ButtonType = 'primary'
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'info'
+  | 'text'
+
+type ButtonSize = 'large' | 'medium' | 'small' | 'mini'
+
+type ButtonNativeType = 'button' | 'submit' | 'reset' | 'menu'
+
+interface ButtonProps{
+  size?:ButtonSize
+  type?:ButtonType
+  nativeType?:ButtonNativeType
+  plain?:boolean
+  round?:boolean
+  circle?:boolean
+  loading?:boolean
+  disabled?:boolean
+  icon?:string
+}
+
+const props = withDefaults(defineProps<ButtonProps>(),{
+  nativeType:'button'
 })
 
-const useClasses = ({ props, size, disabled }) => {
+const useButtonSize = function(size: Ref<ButtonSize>):ComputedRef<ButtonSize>{
+  const globalConfig = useGlobalOptions()
+  return computed(() => {
+    // const elFormItem = inject('elFormItem', null)
+    // || elFormItem?.elFormItemSize
+    return size?.value || globalConfig.size
+  })
+}
+
+
+const useClasses = function({ props, size, disabled }){
   return computed(() => {
     return [
       size.value ? `el-button--${size.value}` : '',
@@ -52,6 +78,15 @@ const useClasses = ({ props, size, disabled }) => {
   })
 }
 
+const { size, disabled } = toRefs(props)
+const buttonSize = useButtonSize(size)
+// const buttonDisabled = useButtonDisabled(disabled)
+const classes = useClasses({
+  props,
+  disabled,
+  size:buttonSize
+})
+
 // const useButtonDisabled = (disabled: Ref) => {
 //   return computed(() => {
 //     const elForm = inject('elForm', null)
@@ -60,14 +95,7 @@ const useClasses = ({ props, size, disabled }) => {
 //   })
 // }
 
-const useButtonSize = (size: Ref) => {
-  const globalConfig = useGlobalOptions()
-  return computed(() => {
-    // const elFormItem = inject('elFormItem', null)
-    // || elFormItem?.elFormItemSize
-    return size?.value || globalConfig.size
-  })
-}
+
 </script>
 <style lang="scss">
 @import '../../theme/src/button.scss'
