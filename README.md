@@ -4,7 +4,7 @@
 
 ## Introduction
 
-A Vue.js 3.0 UI Toolkit for Web.
+样式参考 [Element3 文档](https://e3.shengxinjing.cn/#/component/button)
 
 ## Rewrite WIP
 
@@ -13,8 +13,7 @@ A Vue.js 3.0 UI Toolkit for Web.
 2. typescript
 3. vitepress
 4. vitest
-5. tailwind.css
-
+5. tailwind.css && sass
 
 @todo
 ## Quick Start 
