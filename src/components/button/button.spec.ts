@@ -16,7 +16,6 @@ describe('Button.vue', () => {
         default: content
       }
     })
-    console.log(getByText('foo'))
     expect(getByText('foo')).toBeInTheDocument()
   })
 
@@ -50,7 +49,7 @@ describe('Button.vue', () => {
       expect(getByRole('button')).toHaveClass('el-button--mini')
     })
 
-    it('by elFormItem.elFormItemSize', async () => {
+    it.skip('by elFormItem.elFormItemSize', async () => {
       const size = 'small'
 
       const elFormItem = reactive({
@@ -77,7 +76,7 @@ describe('Button.vue', () => {
       })
     })
 
-    it('by global config ', () => {
+    it.skip('by global config ', () => {
       const size = 'small'
 
       const { getByRole } = render(Button, {
@@ -197,7 +196,7 @@ describe('Button.vue', () => {
       expect(buttonElement).not.toHaveAttribute('disabled')
     })
 
-    it('by elForm.disabled', async () => {
+    it.skip('by elForm.disabled', async () => {
       const elForm = reactive({
         disabled: true
       })

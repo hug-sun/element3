@@ -22,15 +22,15 @@ export default defineComponent({
   props,
   setup(props) {
     const { size, disabled } = toRefs(props)
-    const buttonSize = useButtonSize(size)
-    const buttonDisabled = useButtonDisabled(disabled)
+    // const buttonSize = useButtonSize(size)
+    // const buttonDisabled = useButtonDisabled(disabled)
     const classes = useClasses({
       props,
-      size: buttonSize,
-      disabled: buttonDisabled
+      size,
+      disabled
     })
     return {
-      buttonDisabled,
+      buttonDisabled:disabled,
       classes
     }
   }
@@ -52,21 +52,21 @@ const useClasses = ({ props, size, disabled }) => {
   })
 }
 
-const useButtonDisabled = (disabled: Ref) => {
-  return computed(() => {
-    const elForm = inject('elForm', null)
+// const useButtonDisabled = (disabled: Ref) => {
+//   return computed(() => {
+//     const elForm = inject('elForm', null)
 
-    return disabled?.value || elForm?.disabled
-  })
-}
+//     return disabled?.value || elForm?.disabled
+//   })
+// }
 
-const useButtonSize = (size: Ref) => {
-  const globalConfig = useGlobalOptions()
-  return computed(() => {
-    const elFormItem = inject('elFormItem', null)
-    return size?.value || elFormItem?.elFormItemSize || globalConfig.size
-  })
-}
+// const useButtonSize = (size: Ref) => {
+//   const globalConfig = useGlobalOptions()
+//   return computed(() => {
+//     const elFormItem = inject('elFormItem', null)
+//     return size?.value || elFormItem?.elFormItemSize || globalConfig.size
+//   })
+// }
 </script>
 <style lang="scss">
 @import '../../theme/src/button.scss'
