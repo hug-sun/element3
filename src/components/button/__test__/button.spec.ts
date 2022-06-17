@@ -1,7 +1,9 @@
-import Button from '../Button.vue'
 import { reactive } from 'vue'
 import { setupGlobalOptions } from '../../../hooks/globalConfig'
 import { render, waitFor } from '@testing-library/vue'
+import { describe, it } from 'vitest'
+import Button from '../Button.vue'
+
 describe('Button.vue', () => {
   it('snapshot', () => {
     const { baseElement } = render(Button)
@@ -19,6 +21,18 @@ describe('Button.vue', () => {
     expect(getByText('foo')).toBeInTheDocument()
   })
 
+  it('button type', () => {
+    const Comp = {
+      template: '<Button type="primary"></Button>',
+      components: {
+        Button
+      }
+    }
+
+    const { getByRole } = render(Comp)
+    expect(getByRole('button')).toHaveClass('el-button--primary')
+  })
+
   it('autofocus', () => {
     const Comp = {
       template: '<Button autofocus></Button>',
@@ -28,7 +42,6 @@ describe('Button.vue', () => {
     }
 
     const { getByRole } = render(Comp)
-    console.log(getByRole('button'))
     expect(getByRole('button')).toHaveAttribute('autofocus')
   })
 
