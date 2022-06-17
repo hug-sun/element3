@@ -13,3 +13,4 @@ coverage
 *.md
 *.snap
 dist
+public
