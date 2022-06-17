@@ -16,7 +16,7 @@ type ButtonType = 'primary'
 
 type ButtonSize = 'large' | 'medium' | 'small' | 'mini'
 
-type ButtonNativeType = 'button' | 'submit' | 'reset' | 'menu'
+type ButtonNativeType = 'button' | 'submit' | 'reset'
 
 interface ButtonProps {
   size?: ButtonSize

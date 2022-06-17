@@ -7,8 +7,8 @@ export default {
   title: 'Element3',
   description: 'Vue3 components for learn',
   head: [
-    // ['link', { rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' }],
-    // ['link', { rel: 'alternate icon', href: '/favicon.ico', type: 'image/png', sizes: '16x16' }],
+    ['link', { rel: 'icon', href: 'https://cdn.jsdelivr.net/gh/shengxinjing/static/element3.ico', type: 'image/svg+xml' }],
+    ['link', { rel: 'alternate icon', href: 'https://cdn.jsdelivr.net/gh/shengxinjing/static/element3.png', type: 'image/png', sizes: '16x16' }],
   ],
   // base:"/src/"
   themeConfig: {
