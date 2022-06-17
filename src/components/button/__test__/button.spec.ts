@@ -1,6 +1,6 @@
-import Button from './Button.vue'
+import Button from '../Button.vue'
 import { reactive } from 'vue'
-import { setupGlobalOptions } from '../../hooks/globalConfig'
+import { setupGlobalOptions } from '../../../hooks/globalConfig'
 import { render, waitFor } from '@testing-library/vue'
 describe('Button.vue', () => {
   it('snapshot', () => {
