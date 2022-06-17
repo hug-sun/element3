@@ -1,9 +1,7 @@
 import { version } from '../package.json'
-import { ElButton } from './components/button/'
 import { ElDivider } from './components/divider/'
 
 const components = [
-  ElButton,
   ElDivider,
 ]
 function install(app) {
@@ -18,6 +16,6 @@ const element3 = {
 }
 
 export {
-  ElButton,
+  ElDivider,
 }
 export default element3
