@@ -1,11 +1,25 @@
+import { version } from '../../package.json'
+
+export const discord = 'https://chat.vitest.dev'
+export const twitter = 'https://twitter.com/vitest_dev'
+
 export default {
   title: 'Element3',
   description: 'Vue3 components for learn',
+  head: [
+    // ['link', { rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' }],
+    // ['link', { rel: 'alternate icon', href: '/favicon.ico', type: 'image/png', sizes: '16x16' }],
+  ],
   // base:"/src/"
   themeConfig: {
     logo: 'https://cdn.jsdelivr.net/gh/shengxinjing/static/element3.png',
     nav: [
       { text: '组件', link: '/guide' },
+      { text: version, link: 'https://www.npmjs.com/package/element3' },
+    ],
+    socialLinks: [
+      { icon: 'discord', link: 'https://discord.com/channels/987387170232868904/987387170794922005' },
+      { icon: 'github', link: 'https://github.com/hug-sun/element3' },
     ],
     sidebar: {
 
