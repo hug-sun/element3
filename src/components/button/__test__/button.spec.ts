@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
-import { setupGlobalOptions } from '../../../hooks/globalConfig'
 import { render, waitFor } from '@testing-library/vue'
 import { describe, it } from 'vitest'
+import { setupGlobalOptions } from '../../../hooks/globalConfig'
 import Button from '../Button.vue'
 
 describe('Button.vue', () => {
@@ -15,8 +15,8 @@ describe('Button.vue', () => {
 
     const { getByText } = render(Button, {
       slots: {
-        default: content
-      }
+        default: content,
+      },
     })
     expect(getByText('foo')).toBeInTheDocument()
   })
@@ -25,8 +25,8 @@ describe('Button.vue', () => {
     const Comp = {
       template: '<Button type="primary"></Button>',
       components: {
-        Button
-      }
+        Button,
+      },
     }
 
     const { getByRole } = render(Comp)
@@ -37,8 +37,8 @@ describe('Button.vue', () => {
     const Comp = {
       template: '<Button autofocus></Button>',
       components: {
-        Button
-      }
+        Button,
+      },
     }
 
     const { getByRole } = render(Comp)
@@ -49,14 +49,14 @@ describe('Button.vue', () => {
     it('by props.size', async () => {
       const { getByRole, rerender } = render(Button, {
         props: {
-          size: 'small'
-        }
+          size: 'small',
+        },
       })
 
       expect(getByRole('button')).toHaveClass('el-button--small')
 
       await rerender({
-        size: 'mini'
+        size: 'mini',
       })
 
       expect(getByRole('button')).toHaveClass('el-button--mini')
@@ -66,18 +66,18 @@ describe('Button.vue', () => {
       const size = 'small'
 
       const elFormItem = reactive({
-        elFormItemSize: size
+        elFormItemSize: size,
       })
 
       const { getByRole } = render(Button, {
         props: {
-          size: ''
+          size: '',
         },
         global: {
           provide: {
-            elFormItem
-          }
-        }
+            elFormItem,
+          },
+        },
       })
 
       expect(getByRole('button')).toHaveClass(`el-button--${size}`)
@@ -85,7 +85,7 @@ describe('Button.vue', () => {
       // update
       elFormItem.elFormItemSize = 'mini'
       await waitFor(() => {
-        expect(getByRole('button')).toHaveClass(`el-button--mini`)
+        expect(getByRole('button')).toHaveClass('el-button--mini')
       })
     })
 
@@ -94,15 +94,15 @@ describe('Button.vue', () => {
 
       const { getByRole } = render(Button, {
         props: {
-          size: ''
+          size: '',
         },
         global: {
           plugins: [
             setupGlobalOptions({
-              size
-            })
-          ]
-        }
+              size,
+            }),
+          ],
+        },
       })
 
       expect(getByRole('button')).toHaveClass(`el-button--${size}`)
@@ -113,8 +113,8 @@ describe('Button.vue', () => {
     const type = 'success'
     const { getByRole } = render(Button, {
       props: {
-        type
-      }
+        type,
+      },
     })
 
     expect(getByRole('button')).toHaveClass(`el-button--${type}`)
@@ -123,15 +123,15 @@ describe('Button.vue', () => {
   it('set button plain ', async () => {
     const { getByRole, rerender } = render(Button, {
       props: {
-        plain: true
-      }
+        plain: true,
+      },
     })
 
     expect(getByRole('button')).toHaveClass('is-plain')
 
     // update
     await rerender({
-      plain: false
+      plain: false,
     })
 
     expect(getByRole('button')).not.toHaveClass('is-plain')
@@ -139,15 +139,15 @@ describe('Button.vue', () => {
   it('set button round ', async () => {
     const { getByRole, rerender } = render(Button, {
       props: {
-        round: true
-      }
+        round: true,
+      },
     })
 
     expect(getByRole('button')).toHaveClass('is-round')
 
     // update
     await rerender({
-      round: false
+      round: false,
     })
 
     expect(getByRole('button')).not.toHaveClass('is-round')
@@ -156,15 +156,15 @@ describe('Button.vue', () => {
   it('set button circle ', async () => {
     const { getByRole, rerender } = render(Button, {
       props: {
-        circle: true
-      }
+        circle: true,
+      },
     })
 
     expect(getByRole('button')).toHaveClass('is-circle')
 
     // update
     await rerender({
-      circle: false
+      circle: false,
     })
 
     expect(getByRole('button')).not.toHaveClass('is-circle')
@@ -173,15 +173,15 @@ describe('Button.vue', () => {
   it('set button loading ', async () => {
     const { getByRole, rerender } = render(Button, {
       props: {
-        loading: true
-      }
+        loading: true,
+      },
     })
 
     expect(getByRole('button')).toHaveClass('is-loading')
 
     // update
     await rerender({
-      loading: false
+      loading: false,
     })
 
     expect(getByRole('button')).not.toHaveClass('is-loading')
@@ -191,8 +191,8 @@ describe('Button.vue', () => {
     it('by props.disabled', async () => {
       const { getByRole, rerender } = render(Button, {
         props: {
-          disabled: true
-        }
+          disabled: true,
+        },
       })
 
       const buttonElement = getByRole('button')
@@ -202,7 +202,7 @@ describe('Button.vue', () => {
 
       // update
       await rerender({
-        disabled: false
+        disabled: false,
       })
 
       expect(buttonElement).not.toHaveClass('is-disabled')
@@ -211,15 +211,15 @@ describe('Button.vue', () => {
 
     it.skip('by elForm.disabled', async () => {
       const elForm = reactive({
-        disabled: true
+        disabled: true,
       })
 
       const { getByRole } = render(Button, {
         global: {
           provide: {
-            elForm
-          }
-        }
+            elForm,
+          },
+        },
       })
 
       expect(getByRole('button')).toHaveClass('is-disabled')
@@ -239,19 +239,19 @@ describe('Button.vue', () => {
     it(' by props.icon', () => {
       const { getByTestId } = render(Button, {
         props: {
-          icon: 'el-icon-edit'
-        }
+          icon: 'el-icon-edit',
+        },
       })
 
       expect(getByTestId('icon')).toBeInTheDocument()
     })
 
-    it("don't show icon when loading eq true", () => {
+    it('don\'t show icon when loading eq true', () => {
       const { getByTestId, queryByTestId } = render(Button, {
         props: {
           loading: true,
-          icon: 'el-icon-edit'
-        }
+          icon: 'el-icon-edit',
+        },
       })
 
       expect(queryByTestId('icon')).not.toBeInTheDocument()
@@ -264,8 +264,8 @@ describe('Button.vue', () => {
 
     const { getByRole } = render(Button, {
       props: {
-        nativeType
-      }
+        nativeType,
+      },
     })
 
     expect(getByRole('button')).toHaveAttribute('type', nativeType)

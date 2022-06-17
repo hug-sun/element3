@@ -6,7 +6,7 @@ console.log('cwd: ', cwd())
 console.log('run: ', multiCmd)
 multiCmd.forEach((cmd) => {
   const sub = exec(cmd, {
-    cwd: cwd()
+    cwd: cwd(),
   })
   sub.stderr.on('data', (data) => {
     console.error(`[${cmd}]\n`, data)
