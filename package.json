@@ -1,13 +1,11 @@
 {
   "private": true,
   "version": "0.1.0",
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "test": "vitest",
     "test:once": "vitest run",
-    "lint": "eslint --fix  src/**.ts",
+    "lint": "eslint src/**.ts",
+    "lint:fix": "eslint --fix  src/**.ts",
     "coverage": "vitest run --coverage",
     "docs": "vitepress dev src/",
     "docs:build": "vitepress build src/",
@@ -31,17 +29,19 @@
     "node": ">=14.0.0"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^0.25.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/vue": "^6.6.0",
     "@vitejs/plugin-vue": "^2.3.3",
     "@vue/test-utils": "^2.0.0",
     "c8": "^7.11.3",
+    "chalk": "^4.1.0",
     "eslint": "^8.17.0",
     "eslint-plugin-vue": "^9.1.1",
     "husky": "^8.0.0",
     "jsdom": "^19.0.0",
-    "recommended": "link:@vue/typescript/recommended",
     "sass": "^1.52.3",
+    "typescript": "^4.7.3",
     "vite": "^2.9.12",
     "vitepress": "1.0.0-alpha.1",
     "vitepress-theme-demoblock": "^1.4.2",

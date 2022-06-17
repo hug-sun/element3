@@ -1,24 +1,23 @@
-import {ElButton} from './components/button/'
-import {ElDivider} from './components/divider/'
 import { version } from '../package.json'
-
+import { ElButton } from './components/button/'
+import { ElDivider } from './components/divider/'
 
 const components = [
   ElButton,
-  ElDivider
+  ElDivider,
 ]
-function install (app) {
-  components.forEach(component=>{
+function install(app) {
+  components.forEach((component) => {
     app.use(component)
   })
 }
 
 const element3 = {
   version,
-  install
+  install,
 }
 
 export {
-  ElButton
+  ElButton,
 }
 export default element3

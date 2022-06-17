@@ -1,7 +1,7 @@
 // Invoked on the commit-msg git hook by yorkie.
 
 const chalk = require('chalk')
-const msgPath = process.env.GIT_PARAMS
+const msgPath = '.git/COMMIT_EDITMSG'
 const msg = require('fs').readFileSync(msgPath, 'utf-8').trim()
 
 const commitRE = /^(revert: )?(dev|feat|fix|docs|dx|style|refactor|perf|test|workflow|build|ci|chore|types|wip|release)(\(.+\))?(.{1,10})?: .{1,50}/
