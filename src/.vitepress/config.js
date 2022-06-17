@@ -8,7 +8,15 @@ export default {
       { text: '组件', link: '/guide' },
     ],
     sidebar: {
+
       '/': [
+        {
+          text: '教程',
+          items: [
+            { text: '组件开发步骤', link: '/components/' },
+            { text: '开发规范', link: '/guide/scripts' },
+          ],
+        },
         {
           text: '通用组件',
           items: [
