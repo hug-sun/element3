@@ -15,36 +15,9 @@ describe('Avatar.vue', () => {
 
     expect(vm.text()).toBe('Im perfect avatar!')
   })
-
-  it('direction', () => {
+  it('size and shape', () => {
     const vm = mount(Avatar, {
-      props: { direction: 'vertical' }
+      props: { size: '50' }
     })
-
-    expect(vm.classes()).toContain('el-avatar--vertical')
-  })
-
-  it('contentPosition', () => {
-    const vm = mount(Avatar, {
-      props: { 'content-position': 'left' },
-      slots: {
-        default: () => {
-          return 'some text'
-        }
-      }
-    })
-    const text = vm.find('.el-avatar__text')
-    expect(text).toBeDefined()
-    expect(text.classes()).toContain('is-left')
-  })
-
-  it('apply class to avatar', () => {
-    const vm = mount(Avatar, {
-      attrs: {
-        class: 'my-avatar'
-      }
-    })
-
-    expect(vm.classes()).toContain('my-avatar')
   })
 })
