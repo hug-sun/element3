@@ -20,12 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: pnpm/action-setup@v2.0.1
       - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
         id: pnpm-install
         with:
           version: 7
-      - uses: actions/checkout@v2
       - name: Install modules
         run: pnpm i 
       - name: Run Lint
