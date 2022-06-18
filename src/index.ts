@@ -1,10 +1,8 @@
 import { version } from '../package.json'
-import { ElButton } from './components/button/'
 import { ElDivider } from './components/divider/'
 import { ElLink } from './components/link/'
 
 const components = [
-  ElButton,
   ElDivider,
   ElLink,
 ]
@@ -20,6 +18,6 @@ const element3 = {
 }
 
 export {
-  ElButton,
+  ElDivider,
 }
 export default element3

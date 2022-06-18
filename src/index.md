@@ -18,7 +18,7 @@ hero:
       link: /guide
     - theme: alt
       text: Components
-      link: /src/
+      link: /components/
     - theme: alt
       text: View on GitHub
       link: https://github.com/hug-sun/element3
