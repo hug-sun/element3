@@ -20,13 +20,8 @@ const element3 = {
 }
 
 export {
-<<<<<<< HEAD
-  ElButton,
-  ElDivider,
-  ElAvatar
-=======
   ElDivider,
   ElIcon,
->>>>>>> origin/next
+  ElAvatar,
 }
 export default element3
