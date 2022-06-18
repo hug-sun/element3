@@ -15,9 +15,20 @@ describe('Avatar.vue', () => {
 
     expect(vm.text()).toBe('Im perfect avatar!')
   })
-  it('size and shape', () => {
+  it('size', () => {
     const vm = mount(Avatar, {
-      props: { size: '50' }
+      props: { size: 'small' }
     })
+    expect(vm.classes).contain('el-avatar-small')
   })
+  it('shape', () => {
+    const vm = mount(Avatar, {
+      props: { shape: 'square' }
+    })
+    expect(vm.classes).contain('el-avatar-small')
+  })
+  it('fit', () => {
+    
+  })
+  it('last of props')
 })
