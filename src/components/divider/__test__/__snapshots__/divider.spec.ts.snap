@@ -2,7 +2,7 @@
 
 exports[`Divider.vue > snapshot 1`] = `
 <div
-  class="el-divider el-divider--horizontal"
+  class="el-divider el-divider--horizontal is-solid"
 >
   <!--v-if-->
 </div>
