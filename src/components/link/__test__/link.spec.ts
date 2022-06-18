@@ -14,13 +14,24 @@ describe('Link.vue', () => {
   })
 
   it('set the type, link displays the corresponding style', () => {
+    const type = 'primary'
     const Comp = {
-      template: '<Link type="primary"></Link>',
+      template: `<Link type="${type}"></Link>`,
       components: {
         Link,
       },
     }
     const { getByRole } = render(Comp)
-    expect(getByRole('a')).toHaveClass('el-link--primary')
+    expect(getByRole('a')).toHaveClass(`el-link--${type}`)
+  })
+
+  it('set the underline, link displays the corresponding style', () => {
+    const underline = true
+    const { getByRole } = render(Link, {
+      props: {
+        underline,
+      },
+    })
+    expect(getByRole('a')).toHaveClass('is-underline')
   })
 })

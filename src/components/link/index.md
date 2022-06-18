@@ -1,7 +1,5 @@
 ## Link 文字链接
-
 :::demo
-
 ```html
 <div>
   <el-link>默认链接</el-link>
@@ -12,5 +10,14 @@
   <el-link type="info">信息链接</el-link>
 </div>
 ```
+:::
 
+### 下划线
+:::demo
+```html
+<div>
+  <el-link :underline="false">无下划线</el-link>
+  <el-link>有下划线</el-link>
+</div>
+```
 :::
