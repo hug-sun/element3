@@ -18,7 +18,7 @@ export function setupGlobalOptions(opts = {}) {
   return (app) => {
     app.config.globalProperties.$ELEMENT = {
       size: opts.size || '',
-      zIndex: opts.zIndex || 2000
+      zIndex: opts.zIndex || 2000,
     }
   }
 }

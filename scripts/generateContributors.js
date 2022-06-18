@@ -1,4 +1,4 @@
-//generate contributors
+// generate contributors
 const contributors = require('../contributors.json')
 
 function tdTemplate(info) {
@@ -27,6 +27,6 @@ function tableTemplate(contributors) {
   return `<table><tr>${tds}</tr><table>`
 }
 
-;(function main() {
+(function main() {
   console.log(tableTemplate(contributors))
 })()

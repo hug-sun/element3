@@ -11,8 +11,8 @@ function compile() {
     .pipe(
       autoprefixer({
         overrideBrowserslist: ['ie > 9', 'last 2 versions'],
-        cascade: false
-      })
+        cascade: false,
+      }),
     )
     .pipe(cssmin())
     .pipe(dest('./lib'))

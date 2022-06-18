@@ -1,5 +1,5 @@
-import Divider from './Divider.vue'
 import { mount } from '@vue/test-utils'
+import Divider from '../Divider.vue'
 
 describe('Divider.vue', () => {
   it('snapshot', () => {
@@ -9,8 +9,8 @@ describe('Divider.vue', () => {
   it('content', () => {
     const vm = mount(Divider, {
       slots: {
-        default: () => 'Im perfect divider!'
-      }
+        default: () => 'Im perfect divider!',
+      },
     })
 
     expect(vm.text()).toBe('Im perfect divider!')
@@ -18,7 +18,7 @@ describe('Divider.vue', () => {
 
   it('direction', () => {
     const vm = mount(Divider, {
-      props: { direction: 'vertical' }
+      props: { direction: 'vertical' },
     })
 
     expect(vm.classes()).toContain('el-divider--vertical')
@@ -30,8 +30,8 @@ describe('Divider.vue', () => {
       slots: {
         default: () => {
           return 'some text'
-        }
-      }
+        },
+      },
     })
     const text = vm.find('.el-divider__text')
     expect(text).toBeDefined()
@@ -41,8 +41,8 @@ describe('Divider.vue', () => {
   it('apply class to divider', () => {
     const vm = mount(Divider, {
       attrs: {
-        class: 'my-divider'
-      }
+        class: 'my-divider',
+      },
     })
 
     expect(vm.classes()).toContain('my-divider')

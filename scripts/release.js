@@ -1,13 +1,13 @@
-const { prompt } = require('enquirer')
 const path = require('path')
 const fs = require('fs')
+const { prompt } = require('enquirer')
 const args = require('minimist')(process.argv.slice(2))
 const targetVersion = args.v
 const execa = require('execa')
 const chalk = require('chalk')
 const isDryRun = args.dry
 
-const step = (msg) => console.log(chalk.cyan(msg))
+const step = msg => console.log(chalk.cyan(msg))
 const run = (bin, args, opts = {}) =>
   execa(bin, args, { stdio: 'inherit', ...opts })
 const dryRun = (bin, args, opts = {}) =>
@@ -18,10 +18,11 @@ const runIfNotDry = isDryRun ? dryRun : run
   const { yes } = await prompt({
     type: 'confirm',
     name: 'yes',
-    message: `Releasing v${targetVersion}. Confirm?`
+    message: `Releasing v${targetVersion}. Confirm?`,
   })
 
-  if (!yes) return
+  if (!yes)
+    return
 
   step('\nRunning element3 tests...')
   await run('yarn', ['workspace', 'element3', 'test'])
@@ -36,7 +37,7 @@ const runIfNotDry = isDryRun ? dryRun : run
     'version',
     '--new-version',
     targetVersion,
-    '--no-git-tag-version'
+    '--no-git-tag-version',
   ])
 
   step('\nUpdating element3 cross dependencies...')
@@ -47,7 +48,8 @@ const runIfNotDry = isDryRun ? dryRun : run
     step('\nCommitting changes...')
     await runIfNotDry('git', ['add', '-A'])
     await runIfNotDry('git', ['commit', '-m', `release: v${targetVersion}`])
-  } else {
+  }
+  else {
     console.log('No changes to commit.')
   }
 
@@ -62,12 +64,12 @@ const runIfNotDry = isDryRun ? dryRun : run
       '--registry',
       'https://registry.npmjs.org',
       '--access',
-      'public'
+      'public',
     ],
     {
       cwd: path.resolve(__dirname, '../packages/element3'),
-      stdio: 'pipe'
-    }
+      stdio: 'pipe',
+    },
   )
 
   step('\nPushing to GitHub...')
@@ -76,7 +78,7 @@ const runIfNotDry = isDryRun ? dryRun : run
     'push',
     'origin',
     `refs/tags/v${targetVersion}`,
-    '--no-verify'
+    '--no-verify',
   ])
   await runIfNotDry('git', ['push', 'origin', 'master', '--no-verify'])
 
@@ -88,7 +90,7 @@ function updatePackageVersion(version) {
   getPackagePath().forEach((pkgPath) => {
     const pkg = JSON.parse(fs.readFileSync(pkgPath))
     updateDeps(pkg, 'dependencies', version)
-    fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
+    fs.writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`)
   })
 }
 
@@ -96,20 +98,20 @@ function getPackagePath() {
   const pkgRoot = path.resolve(__dirname, '../packages')
   const packages = fs
     .readdirSync(pkgRoot)
-    .filter((name) => !name.startsWith('.'))
+    .filter(name => !name.startsWith('.'))
 
-  return packages.map((packageName) =>
-    path.resolve(pkgRoot, packageName, 'package.json')
+  return packages.map(packageName =>
+    path.resolve(pkgRoot, packageName, 'package.json'),
   )
 }
 
 function updateDeps(packageJson, depType, version) {
   const dependencies = packageJson[depType]
-  if (!dependencies) return
+  if (!dependencies)
+    return
 
   Object.keys(dependencies).forEach((key) => {
-    if (key === 'element3') {
+    if (key === 'element3')
       dependencies[key] = version
-    }
   })
 }
