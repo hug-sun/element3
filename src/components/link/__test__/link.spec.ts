@@ -12,4 +12,15 @@ describe('Link.vue', () => {
     })
     expect(getByText('foo')).toBeInTheDocument()
   })
+
+  it('set the type, link displays the corresponding style', () => {
+    const Comp = {
+      template: '<Link type="primary"></Link>',
+      components: {
+        Link,
+      },
+    }
+    const { getByRole } = render(Comp)
+    expect(getByRole('a')).toHaveClass('el-link--primary')
+  })
 })
