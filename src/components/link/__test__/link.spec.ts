@@ -21,27 +21,27 @@ describe('Link.vue', () => {
         Link,
       },
     }
-    const { getByRole } = render(Comp)
-    expect(getByRole('a')).toHaveClass(`el-link--${type}`)
+    const { container } = render(Comp)
+    expect(container.querySelector('a')).toHaveClass(`el-link--${type}`)
   })
 
   it('set the underline, link displays the corresponding style', () => {
     const underline = true
-    const { getByRole } = render(Link, {
+    const { container } = render(Link, {
       props: {
         underline,
       },
     })
-    expect(getByRole('a')).toHaveClass('is-underline')
+    expect(container.querySelector('a')).toHaveClass('is-underline')
   })
 
   it('set the disabled, link displays the corresponding style', () => {
     const disabled = true
-    const { getByRole } = render(Link, {
+    const { container } = render(Link, {
       props: {
         disabled,
       },
     })
-    expect(getByRole('a')).toHaveClass('is-disabled')
+    expect(container.querySelector('a')).toHaveClass('is-disabled')
   })
 })

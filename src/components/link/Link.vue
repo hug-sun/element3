@@ -27,7 +27,7 @@ const classes = useClasses(props)
 </script>
 
 <template>
-  <a class="el-link" :class="classes" role="a">
+  <a class="el-link" :class="classes">
     <span v-if="$slots.default" class="el-link--inner">
       <slot />
     </span>
