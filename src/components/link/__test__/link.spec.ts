@@ -34,4 +34,14 @@ describe('Link.vue', () => {
     })
     expect(getByRole('a')).toHaveClass('is-underline')
   })
+
+  it('set the disabled, link displays the corresponding style', () => {
+    const disabled = true
+    const { getByRole } = render(Link, {
+      props: {
+        disabled,
+      },
+    })
+    expect(getByRole('a')).toHaveClass('is-disabled')
+  })
 })

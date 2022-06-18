@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import { computed, withDefaults } from 'vue'
-type LinkType = 'primary' | 'success' | 'warning' | 'danger' | 'info'
+type LinkType = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info'
 
 interface LinkProps {
   type?: LinkType
   underline?: boolean
+  disabled?: boolean
 }
 
 const props = withDefaults(defineProps<LinkProps>(), {
+  type: 'default',
   underline: true,
+  disabled: false,
 })
 
 function useClasses(props) {
   return computed(() => {
     return [
-      props.type ? `el-link--${props.type}` : 'el-link--default',
-      props.underline && 'is-underline',
+      props.type ? `el-link--${props.type}` : '',
+      props.underline && !props.disabled && 'is-underline',
+      props.disabled && 'is-disabled',
     ]
   })
 }
