@@ -36,7 +36,7 @@ export default {
           items: [
             { text: 'Button', link: '/components/button/' },
             { text: 'Divider', link: '/components/divider/' },
-          // {text:'Avatar',link:'/components/avatar/'},
+            { text: 'Icon', link: '/components/icon/' },
           ],
         },
       ],
