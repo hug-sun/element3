@@ -2,23 +2,25 @@
 @import 'mixins/mixins';
 
 @include b(divider) {
-  background-color: $--border-color-base;
+  color: $--border-color-base;
   position: relative;
+  border: 0px solid $--border-color-base;
 
   @include m(horizontal) {
     display: block;
     height: 1px;
     width: 100%;
     margin: 24px 0;
+    border-bottom: 1px;
   }
 
   @include m(vertical) {
     display: inline-block;
-    width: 1px;
     height: 1em;
     margin: 0 8px;
     vertical-align: middle;
     position: relative;
+    border-left: 1px;
   }
 
   @include e(text) {
@@ -26,7 +28,7 @@
     background-color: $--color-white;
     padding: 0 20px;
     font-weight: 500;
-    color: $--color-text-primary;
+    color: inherit;
     font-size: 14px;
 
     @include when(left) {
@@ -43,5 +45,26 @@
       right: 20px;
       transform: translateY(-50%);
     }
+
+    @include when(dark) {
+      background-color: $--background-color-dark;
+    }
+  }
+
+  @include when(solid) {
+    border-style: solid;
+  }
+
+  @include when(dotted) {
+    border-style: dotted;
+  }
+
+  @include when(dashed) {
+    border-style: dashed;
+  }
+
+  @include when(double) {
+    border-style: double;
+    border-bottom-width: 3px;
   }
 }
