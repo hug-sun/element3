@@ -8,7 +8,7 @@
 
 :::demo
 
-```vue
+```html
 <div>
   <span>轻轻敲醒沉睡的心灵，慢慢张开你的眼睛.</span>
   <el-divider></el-divider>
@@ -24,7 +24,7 @@
 
 :::demo
 
-```vue
+```html
 <div>
   <span>虽然说代码没什么意义，但是组件库可以让代码变得更加美丽</span>
   <el-divider content-position="left">Element3</el-divider>
@@ -41,7 +41,7 @@
 
 :::demo
 
-```vue
+```html
 <div>
   <span>王者荣耀</span>
   <el-divider direction="vertical"></el-divider>

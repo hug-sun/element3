@@ -38,7 +38,24 @@ export default {
             { text: 'Divider', link: '/components/divider/' },
             // {text:'Avatar',link:'/components/avatar/'},
             { text: 'Link', link: '/components/link/' },
+            { text: 'Icon', link: '/components/icon/' },
           ],
+        },
+        {
+          text: '表单组件',
+          items: [],
+        },
+        {
+          text: '提示组件',
+          items: [],
+        },
+        {
+          text: '数据展示组件',
+          items: [],
+        },
+        {
+          text: '其他组件',
+          items: [],
         },
       ],
     },
