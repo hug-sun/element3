@@ -3,7 +3,7 @@
 name: CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the next branch
+# events but only for the master branch
 on:
   push:
     branches: [next]
@@ -13,21 +13,23 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-
-
   Lint:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.0.1
-        id: pnpm-install
-        with:
-          version: 7
+      - uses: actions/checkout@v2
       - name: Install modules
-        run: pnpm i 
+        run: npm i
       - name: Run Lint
-        run: pnpm run lint
-      - name: Unit Test
-        run: pnpm run test:once
+        run: npm run lint
+  UnitTest:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: npm i
+      - name: Run tests
+        run: npm run test:lint
