@@ -59,7 +59,7 @@
 
 :::demo
 
-```vue
+```html
 <div>
   <span>我方了</span>
   <el-divider divider-style="dashed"></el-divider>
@@ -78,7 +78,7 @@
 
 :::demo
 
-```vue
+```html
 <div>
   <span>我绿了</span>
   <el-divider color="green">暗黑3</el-divider>
