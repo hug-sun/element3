@@ -32,4 +32,4 @@ jobs:
       - name: Install modules
         run: npm i
       - name: Run tests
-        run: npm run test:lint
+        run: npm run test:once
