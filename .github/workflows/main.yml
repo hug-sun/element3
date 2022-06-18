@@ -21,10 +21,10 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: pnpm/action-setup@v2.0.1
-              name: Install pnpm
-              id: pnpm-install
-              with:
-                version: 7
+      - name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
       - uses: actions/checkout@v2
       - name: Install modules
         run: pnpm i 
