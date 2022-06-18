@@ -8,17 +8,17 @@
     </span>
   </span>
   <!-- icon text -->
-  <span class="el-avatar" :style="{ height: size + 'px', width: size + 'px' }" :class="classes" v-else-if="typeof icon === 'string'">
-    <!-- icon + string -->
-    <!-- 此处应该是 <el-icon />，用 slot 暂时代替 -->
+  <!-- icon + string -->
+  <!-- 此处应该是 <el-icon />，用 slot 暂时代替 -->
+  <!-- <span class="el-avatar" :style="{ height: size + 'px', width: size + 'px' }" :class="classes" v-else-if="typeof icon === 'string'">
     <span v-if="$slots.default">
       <slot></slot>
     </span>
-  </span>
+  </span> -->
   <!-- 此处是传入的 icon component -->
-  <span class="el-avatar" :style="{ height: size + 'px', width: size + 'px' }" :class="classes" v-else>
+  <!-- <span class="el-avatar" :style="{ height: size + 'px', width: size + 'px' }" :class="classes" v-else>
     <slot></slot>
-  </span>
+  </span> -->
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
@@ -61,8 +61,8 @@ const useClasses = function(props: AvatarProps){
     return [
       shape ? `el-avatar--${shape}` : '',
       size
-        ? typeof size === 'string' 
-          ? `el-avatar--${size}` 
+        ? typeof size === 'string'
+          ? `el-avatar--${size}`
           : ''
         : `el-avatar--medium`
     ]
