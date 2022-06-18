@@ -39,6 +39,22 @@ export default {
             { text: 'Icon', link: '/components/icon/' },
           ],
         },
+        {
+          text: '表单组件',
+          items: [],
+        },
+        {
+          text: '提示组件',
+          items: [],
+        },
+        {
+          text: '数据展示组件',
+          items: [],
+        },
+        {
+          text: '其他组件',
+          items: [],
+        },
       ],
     },
   },
