@@ -1,13 +1,13 @@
-.source  i {
-  color: #606266;
-  margin: 0 20px;
-  font-size: 1.5em;
-  vertical-align: middle;
-}
+// .source  i {
+//   color: #606266;
+//   margin: 0 20px;
+//   font-size: 1.5em;
+//   vertical-align: middle;
+// }
 
-.source button {
-  margin: 0 20px;
-}
+// .source button {
+//   margin: 0 20px;
+// }
 
 .vp-doc  ul.icon-list {
   overflow: hidden;
@@ -66,4 +66,11 @@
       color: rgb(92, 182, 255);
     }
   }
+}
+
+.demo-block-control{
+  display: none !important;
+}
+.source{
+  padding:24px 24px 8px !important;
 }
