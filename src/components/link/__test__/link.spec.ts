@@ -44,5 +44,14 @@ describe('Link.vue', () => {
     })
     expect(container.querySelector('a')).toHaveClass('is-disabled')
   })
-  it.todo('href属性', () => {})
+
+  it('set the href', () => {
+    const href = 'https://e3.shengxinjing.cn/'
+    const { container } = render(Link, {
+      props: {
+        href,
+      },
+    })
+    expect(container.querySelector('a')).toHaveAttribute('href', href)
+  })
 })

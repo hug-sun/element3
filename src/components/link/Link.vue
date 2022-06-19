@@ -6,6 +6,7 @@ interface LinkProps {
   type?: LinkType
   underline?: boolean
   disabled?: boolean
+  href?: string
 }
 
 const props = withDefaults(defineProps<LinkProps>(), {
@@ -27,7 +28,11 @@ const classes = useClasses(props)
 </script>
 
 <template>
-  <a class="el-link" :class="classes">
+  <a
+    class="el-link"
+    :class="classes"
+    :href="disabled ? null : href"
+  >
     <span v-if="$slots.default" class="el-link--inner">
       <slot />
     </span>
