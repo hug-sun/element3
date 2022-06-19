@@ -25,10 +25,7 @@ const element3 = {
 export {
   ElDivider,
   ElIcon,
-<<<<<<< HEAD
   ElAvatar,
-=======
   ElLink,
->>>>>>> next
 }
 export default element3
