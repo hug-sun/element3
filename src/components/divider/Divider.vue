@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults } from 'vue'
+import { withDefaults, computed } from 'vue'
 interface DividerType {
   direction?: 'horizontal' | 'vertical'
   contentPosition?: 'left' | 'center' | 'right'
@@ -8,20 +8,22 @@ interface DividerType {
   color?: string
 }
 
-withDefaults(defineProps<DividerType>(), {
+const props = withDefaults(defineProps<DividerType>(), {
   direction: 'horizontal',
   contentPosition: 'center',
   dividerStyle: 'solid',
   dark: false,
   color: '',
 })
+
+const isDark = computed(() => props.dark)
 </script>
 
 <template>
   <div v-bind="$attrs" class="el-divider" :class="[`el-divider--${direction}`, `is-${dividerStyle}`]" :style="{ color }">
     <div
       v-if="$slots.default && direction !== 'vertical'"
-      class="el-divider__text" :class="[`is-${contentPosition}`, dark ? 'is-dark' : '']"
+      class="el-divider__text" :class="[`is-${contentPosition}`, isDark ? 'is-dark' : '']"
     >
       <slot />
     </div>
