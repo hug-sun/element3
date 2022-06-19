@@ -37,6 +37,7 @@ export default {
             { text: 'Button', link: '/components/button/' },
             { text: 'Divider', link: '/components/divider/' },
             { text: 'Avatar', link: '/components/avatar/' },
+            { text: 'Link', link: '/components/link/' },
             { text: 'Icon', link: '/components/icon/' },
           ],
         },
