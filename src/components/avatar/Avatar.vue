@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue'
 import type { Component } from 'vue'
 import { ElIcon } from '../icon/index'
 const props = withDefaults(defineProps<AvatarProps>(), {
@@ -13,7 +14,7 @@ type AvatarFitType = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 type AvatarShapeType = 'circle' | 'square'
 
 interface AvatarProps {
-  icon: string | Component
+  icon?: string | Component
   size?: number | AvatarSize
   shape?: AvatarShapeType
   src?: string
