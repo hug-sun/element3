@@ -1,5 +1,6 @@
 import { version } from '../package.json'
 import { ElDivider } from './components/divider/'
+import { ElAvatar } from './components/avatar'
 import { ElLink } from './components/link/'
 import { ElIcon } from './components/icon/'
 import '/theme/src/icon.scss'
@@ -7,6 +8,7 @@ import '/theme/src/icon.scss'
 const components = [
   ElDivider,
   ElIcon,
+  ElAvatar,
   ElLink,
 ]
 function install(app) {
@@ -23,6 +25,7 @@ const element3 = {
 export {
   ElDivider,
   ElIcon,
+  ElAvatar,
   ElLink,
 }
 export default element3

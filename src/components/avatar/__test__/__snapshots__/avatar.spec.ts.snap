@@ -1,0 +1,10 @@
+// Vitest Snapshot v1
+
+exports[`Avatar.vue > snapshot 1`] = `
+<span
+  class="el-avatar el-avatar--circle el-avatar--medium"
+  style=""
+>
+
+</span>
+`;
