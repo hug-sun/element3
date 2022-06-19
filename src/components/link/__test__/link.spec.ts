@@ -54,4 +54,17 @@ describe('Link.vue', () => {
     })
     expect(container.querySelector('a')).toHaveAttribute('href', href)
   })
+
+  it('set the icon, link displays the corresponding style', () => {
+    const icon = 'el-icon-search'
+    const { container } = render(Link, {
+      props: {
+        icon,
+      },
+    })
+    const a = container.querySelector('a')
+    const i = container.querySelector('i')
+    expect(a).toContainElement(i)
+    expect(i).toHaveClass(icon)
+  })
 })
