@@ -1,6 +1,5 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { computed, ref, watch, withDefaults } from 'vue'
+import { computed, defineComponent, ref, watch, withDefaults } from 'vue'
 import type { Component } from 'vue'
 import { ElIcon } from '../icon/index'
 export default defineComponent({
@@ -85,7 +84,7 @@ const errorHandler = (e: Event) => {
       :alt="alt"
       :style="{ objectFit: fit }"
       @error="errorHandler($event)"
-    />
+    >
     <slot v-else />
   </span>
   <span v-else-if="typeof icon === 'string'" class="el-avatar" :style="avatarStyle" :class="classes">
