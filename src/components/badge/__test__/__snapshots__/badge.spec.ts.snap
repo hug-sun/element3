@@ -1,0 +1,13 @@
+// Vitest Snapshot v1
+
+exports[`Badge.vue > snapshot 1`] = `
+<div
+  class="el-badge"
+>
+  
+  
+  <sup
+    class="el-badge__content el-badge__content--danger"
+  />
+</div>
+`;

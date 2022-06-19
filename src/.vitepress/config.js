@@ -49,7 +49,9 @@ export default {
         },
         {
           text: '数据展示组件',
-          items: [],
+          items: [
+            { text: 'Badge', link: '/components/badge/' },
+          ],
         },
         {
           text: '其他组件',
