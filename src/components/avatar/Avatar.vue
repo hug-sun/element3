@@ -97,18 +97,4 @@ const errorHandler = (e: Event) => {
 
 <style lang="scss">
 @import '../../theme/src/avatar.scss';
-
-[class^=el-icon-], [class*=" el-icon-"] {
-  --color: inherit;
-  height: 1em;
-  width: 1em;
-  line-height: 1em;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  fill: currentColor;
-  color: var(--color);
-  font-size: inherit;
-}
 </style>
