@@ -5,12 +5,11 @@ import { computed } from 'vue'
 type buttonType = 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text'
 type buttonSize = 'medium' | 'small' | 'mini'
 
-type ButtonRound = true | false
-
 interface ButtonProps {
   type?: buttonType
   size?: buttonSize
-  round?: ButtonRound
+  round?: boolean
+  plain?: boolean
 }
 
 const props = defineProps<ButtonProps>()
@@ -20,7 +19,10 @@ function useClasses(props) {
     return [
       props.type ? `el-button--${props.type}` : '',
       props.size ? `el-button--${props.size}` : '',
-      props.round ? 'is-round' : '',
+      {
+        'is-round': props.round,
+        'is-plain': props.plain,
+      },
     ]
   })
 }
