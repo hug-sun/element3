@@ -4,7 +4,7 @@ import { ElAvatar } from './components/avatar'
 import { ElLink } from './components/link/'
 import { ElIcon } from './components/icon/'
 import { ElBadge } from './components/badge/'
-import { ElButton } from './components/Button/'
+import { ElButton } from './components/button/'
 import '/theme/src/icon.scss'
 
 const components = [
