@@ -78,6 +78,60 @@ describe('Button.vue', () => {
     expect(getByRole('button')).not.toHaveClass('is-circle')
   })
 
+  describe('set button disabled', () => {
+    it('by props.disabled', async () => {
+      const { getByRole, rerender } = render(Button, {
+        props: {
+          disabled: true,
+        },
+      })
+
+      const buttonElement = getByRole('button')
+
+      expect(buttonElement).toHaveClass('is-disabled')
+      expect(buttonElement).toHaveAttribute('disabled')
+
+      await rerender({
+        disabled: false,
+      })
+      expect(getByRole('button')).not.toHaveClass('is-disabled')
+      expect(getByRole('button')).not.toHaveAttribute('disabled')
+    })
+  })
+
+  describe('set button icon', () => {
+    it('set props icon', () => {
+      const { getByTestId } = render(Button, {
+        props: {
+          icon: 'el-icon-edit',
+        },
+      })
+      expect(getByTestId('icon')).toBeInTheDocument()
+    })
+
+    it('if loading is true, the icon will not be displayed', () => {
+      const { getByTestId, queryByTestId } = render(Button, {
+        props: {
+          loading: true,
+          icon: 'el-icon-edit',
+        },
+      })
+      expect(queryByTestId('icon')).not.toBeInTheDocument()
+      expect(getByTestId('loadingIcon')).toBeInTheDocument()
+    })
+  })
+
+  // button autofocus
+  it('set button autofocus', () => {
+    const { getByRole } = render(Button, {
+      props: {
+        autofocus: true,
+      },
+    })
+
+    expect(getByRole('button')).toHaveAttribute('autofocus')
+  })
+
   // native type: button | reset | submit
   it('set button native type', () => {
     const { getByRole } = render(Button, {
