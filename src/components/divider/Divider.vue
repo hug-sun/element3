@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, computed } from 'vue'
+import { computed, withDefaults } from 'vue'
 interface DividerType {
   direction?: 'horizontal' | 'vertical'
   contentPosition?: 'left' | 'center' | 'right'
