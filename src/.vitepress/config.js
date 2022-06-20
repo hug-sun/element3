@@ -36,7 +36,7 @@ export default {
           items: [
             { text: 'Button', link: '/components/button/' },
             { text: 'Divider', link: '/components/divider/' },
-            // {text:'Avatar',link:'/components/avatar/'},
+            { text: 'Avatar', link: '/components/avatar/' },
             { text: 'Link', link: '/components/link/' },
             { text: 'Icon', link: '/components/icon/' },
           ],
@@ -51,7 +51,9 @@ export default {
         },
         {
           text: '数据展示组件',
-          items: [],
+          items: [
+            { text: 'Badge', link: '/components/badge/' },
+          ],
         },
         {
           text: '其他组件',

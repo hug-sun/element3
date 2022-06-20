@@ -44,5 +44,27 @@ describe('Link.vue', () => {
     })
     expect(container.querySelector('a')).toHaveClass('is-disabled')
   })
-  it.todo('href属性', () => {})
+
+  it('set the href', () => {
+    const href = 'https://e3.shengxinjing.cn/'
+    const { container } = render(Link, {
+      props: {
+        href,
+      },
+    })
+    expect(container.querySelector('a')).toHaveAttribute('href', href)
+  })
+
+  it('set the icon, link displays the corresponding style', () => {
+    const icon = 'el-icon-search'
+    const { container } = render(Link, {
+      props: {
+        icon,
+      },
+    })
+    const a = container.querySelector('a')
+    const i = container.querySelector('i')
+    expect(a).toContainElement(i)
+    expect(i).toHaveClass(icon)
+  })
 })

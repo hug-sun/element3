@@ -6,6 +6,8 @@ interface LinkProps {
   type?: LinkType
   underline?: boolean
   disabled?: boolean
+  href?: string
+  icon?: string
 }
 
 const props = withDefaults(defineProps<LinkProps>(), {
@@ -17,6 +19,7 @@ const props = withDefaults(defineProps<LinkProps>(), {
 function useClasses(props) {
   return computed(() => {
     return [
+      'el-link',
       props.type ? `el-link--${props.type}` : '',
       props.underline && !props.disabled && 'is-underline',
       props.disabled && 'is-disabled',
@@ -27,7 +30,11 @@ const classes = useClasses(props)
 </script>
 
 <template>
-  <a class="el-link" :class="classes">
+  <a
+    :class="classes"
+    :href="disabled ? null : href"
+  >
+    <i v-if="icon" :class="icon" />
     <span v-if="$slots.default" class="el-link--inner">
       <slot />
     </span>
