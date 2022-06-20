@@ -13,7 +13,7 @@ const components = [
   ElBadge,
   ElAvatar,
   ElLink,
-  ElCard
+  ElCard,
 ]
 function install(app) {
   components.forEach((component) => {
@@ -32,6 +32,6 @@ export {
   ElBadge,
   ElAvatar,
   ElLink,
-  ElCard
+  ElCard,
 }
 export default element3
