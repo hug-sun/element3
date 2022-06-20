@@ -42,15 +42,15 @@ describe('Divider.vue', () => {
 
   it('dividerStyle', () => {
     const vm = mount(Divider, {
-      props: { dividerStyle : 'double' }
+      props: { dividerStyle: 'double' },
     })
 
-    expect(vm.classes()).toContain(`is-double`)
+    expect(vm.classes()).toContain('is-double')
   })
 
   it('color', () => {
     const vm = mount(Divider, {
-      props: { color: 'rgb(23, 45, 52)' }
+      props: { color: 'rgb(23, 45, 52)' },
     })
 
     expect(vm.attributes('style')).toBe('color: rgb(23, 45, 52);')
@@ -59,15 +59,15 @@ describe('Divider.vue', () => {
   it('dark', async () => {
     const vm = mount(Divider, {
       slots: {
-        default: 'Divider'
+        default: 'Divider',
       },
-      props: { dark: true }
+      props: { dark: true },
     })
 
     expect(vm.find('.el-divider__text').classes()).toContain('is-dark')
 
     await vm.setProps({
-       dark: false
+      dark: false,
     })
 
     expect(vm.find('.el-divider__text').classes()).not.toContain('is-dark')
@@ -82,5 +82,4 @@ describe('Divider.vue', () => {
 
     expect(vm.classes()).toContain('my-divider')
   })
-
 })

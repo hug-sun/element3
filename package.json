@@ -16,6 +16,13 @@
     "docs:serve": "vitepress serve src/",
     "prepare": "husky install"
   },
+  "dependencies": {
+    "@types/react": ">= 16.8.0 < 19.0.0",
+    "@vue/compiler-sfc": ">= 3",
+    "pnpm": "^7.3.0",
+    "react": ">=16.8.0 <17.0.0-g",
+    "react-dom": ">=16.8.0 <17.0.0"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.1",
     "@testing-library/jest-dom": "^5.16.4",
