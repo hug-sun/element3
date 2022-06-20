@@ -4,15 +4,21 @@ import { computed } from 'vue'
 // 按钮类型
 type buttonType = 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text'
 type buttonSize = 'medium' | 'small' | 'mini'
+type buttonNativeType = 'button' | 'submit' | 'reset'
 
 interface ButtonProps {
   type?: buttonType
   size?: buttonSize
   round?: boolean
   plain?: boolean
+  nativeType?: buttonNativeType
+  circle?: boolean
 }
 
-const props = defineProps<ButtonProps>()
+// withDefaults 使用类型声明时的默认 props 值
+const props = withDefaults(defineProps<ButtonProps>(), {
+  nativeType: 'button',
+})
 
 function useClasses(props) {
   return computed(() => {
@@ -22,6 +28,7 @@ function useClasses(props) {
       {
         'is-round': props.round,
         'is-plain': props.plain,
+        'is-circle': props.circle,
       },
     ]
   })
@@ -31,7 +38,7 @@ const classes = useClasses(props)
 
 <template>
   <!-- props size  medium / small / mini -->
-  <button class="el-button" :class="classes" type="button">
+  <button class="el-button" :class="classes" :type="nativeType">
     <span v-if="$slots.default">
       <slot />
     </span>

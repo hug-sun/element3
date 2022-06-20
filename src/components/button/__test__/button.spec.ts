@@ -12,60 +12,79 @@ describe('Button.vue', () => {
     expect(getByText('默认按钮')).toBeInTheDocument()
   })
 
-  // primary / success / warning / danger / info / text
-  it('type 渲染不同类型按钮，正常、警告、错误', () => {
+  // type: primary | success | warning | danger | info | text
+  it('set button type', () => {
+    const type = 'primary'
     const { getByRole } = render(Button, {
       props: {
-        type: 'primary',
+        type,
       },
     })
-    expect(getByRole('button')).toHaveClass('el-button--primary')
+    expect(getByRole('button')).toHaveClass(`el-button--${type}`)
   })
 
-  // 'medium' | 'small' | 'mini';
-  it('根据size 渲染按钮大小', () => {
+  // size: medium | small  | mini;
+  it('set button size', () => {
+    const size = 'medium'
     const { getByRole } = render(Button, {
       props: {
-        size: 'medium',
+        size,
       },
     })
-    expect(getByRole('button')).toHaveClass('el-button--medium')
+    expect(getByRole('button')).toHaveClass(`el-button--${size}`)
   })
 
-  // 根据round 是否这种圆角
-  it('props round:true 按钮渲染有圆角', () => {
-    const { getByRole } = render(Button, {
+  it('set button round', async () => {
+    const { getByRole, rerender } = render(Button, {
       props: {
         round: true,
       },
     })
     expect(getByRole('button')).toHaveClass('is-round')
-  })
 
-  it('props round:false 按钮渲染无圆角', () => {
-    const { getByRole } = render(Button, {
-      props: {
-        round: false,
-      },
+    await rerender({
+      round: false,
     })
     expect(getByRole('button')).not.toHaveClass('is-round')
   })
 
-  // 渲染朴素按钮
-  it('渲染朴素按钮 plain true', () => {
-    const { getByRole } = render(Button, {
+  it('set button plain', async () => {
+    const { getByRole, rerender } = render(Button, {
       props: {
         plain: true,
       },
     })
     expect(getByRole('button')).toHaveClass('is-plain')
+
+    await rerender({
+      plain: false,
+    })
+
+    expect(getByRole('button')).not.toHaveClass('is-plain')
   })
-  it('渲染朴素按钮 plain', () => {
-    const { getByRole } = render(Button, {
+
+  it('set button circle', async () => {
+    const { getByRole, rerender } = render(Button, {
       props: {
-        plain: false,
+        circle: true,
       },
     })
-    expect(getByRole('button')).not.toHaveClass('is-plain')
+    expect(getByRole('button')).toHaveClass('is-circle')
+
+    await rerender({
+      circle: false,
+    })
+
+    expect(getByRole('button')).not.toHaveClass('is-circle')
+  })
+
+  // native type: button | reset | submit
+  it('set button native type', () => {
+    const { getByRole } = render(Button, {
+      props: {
+        nativeType: 'submit',
+      },
+    })
+    expect(getByRole('button')).toHaveAttribute('type', 'submit')
   })
 })
