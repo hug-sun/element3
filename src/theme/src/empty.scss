@@ -2,8 +2,8 @@
 @import 'common/var';
 
 @include b(empty) {
-  --empty-fill-color-0: $--color-white;
-  // TODO 把颜色定义到 var.scss 里再引入，不会生效，why?
+
+  --empty-fill-color-0: #{$--color-white};
   --empty-fill-color-1: #fcfcfd;
   --empty-fill-color-2: #f8f9fb;
   --empty-fill-color-3: #f7f8fc;
