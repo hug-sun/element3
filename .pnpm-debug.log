@@ -1,0 +1,21 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1
+  },
+  "1 error pnpm": {
+    "code": "ELIFECYCLE",
+    "errno": "ENOENT",
+    "syscall": "spawn",
+    "file": "sh",
+    "pkgid": "@0.1.0",
+    "stage": "lint:fix",
+    "script": "eslint --fix \"{src,scripts}/**/*.{ts,tsx,js,vue,md}\"",
+    "err": {
+      "name": "pnpm",
+      "message": "@0.1.0 lint:fix: `eslint --fix \"{src,scripts}/**/*.{ts,tsx,js,vue,md}\"`\nspawn ENOENT",
+      "code": "ELIFECYCLE",
+      "stack": "pnpm: @0.1.0 lint:fix: `eslint --fix \"{src,scripts}/**/*.{ts,tsx,js,vue,md}\"`\nspawn ENOENT\n    at ChildProcess.<anonymous> (/usr/local/lib/node_modules/pnpm/dist/pnpm.cjs:92204:22)\n    at ChildProcess.emit (node:events:520:28)\n    at maybeClose (node:internal/child_process:1092:16)\n    at Process.ChildProcess._handle.onexit (node:internal/child_process:302:5)"
+    }
+  },
+  "2 warn pnpm:global": " Local package.json exists, but node_modules missing, did you mean to install?"
+}

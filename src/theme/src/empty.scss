@@ -1,0 +1,56 @@
+@import 'mixins/mixins';
+@import 'common/var';
+
+@include b(empty) {
+  --empty-fill-color-0: #{$--color-white};
+  --empty-fill-color-1: #{$--empty-fill-color-1};
+  --empty-fill-color-2: #{$--empty-fill-color-2};
+  --empty-fill-color-3: #{$--empty-fill-color-3};
+  --empty-fill-color-4: #{$--empty-fill-color-4};
+  --empty-fill-color-5: #{$--empty-fill-color-5};
+  --empty-fill-color-6: #{$--empty-fill-color-6};
+  --empty-fill-color-7: #{$--empty-fill-color-7};
+  --empty-fill-color-8: #{$--empty-fill-color-8};
+  --empty-fill-color-9: #{$--empty-fill-color-9};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  box-sizing: border-box;
+  padding: $--empty-padding;
+
+  @include e(image) {
+    width: $--empty-image-width;
+
+    img {
+      user-select: none;
+      width: 100%;
+      height: 100%;
+      vertical-align: top;
+      object-fit: contain;
+    }
+
+    svg {
+      color: $--svg-monochrome-grey;
+      fill: currentColor;
+      width: 100%;
+      height: 100%;
+      vertical-align: top;
+    }
+  }
+
+  @include e(description) {
+    margin-top: $--empty-description-margin-top;
+
+    p {
+      margin: 0;
+      font-size: $--font-size-base;
+      color: $--text-color-secondary;
+    }
+  }
+
+  @include e(bottom) {
+    margin-top: $--empty-bottom-margin-top;
+  }
+}
