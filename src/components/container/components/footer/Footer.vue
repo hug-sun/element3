@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { withDefaults } from 'vue'
 interface FooterType {
-  height: string
+  height?: string
 }
 
 withDefaults(defineProps<FooterType>(), {
   height: '60px',
 })
+</script>
+
+<script lang="ts">
+export default {
+  name: 'ElFooter',
+}
 </script>
 
 <template>

@@ -52,7 +52,7 @@ describe('Container.vue', () => {
 
       // expect(wrapper.classes()).toBe(true);
       // expect(wrapper.find('.is-vertical').exists()).toBe(true)
-      expect(wrapper.find('.is-vertical').exists()).toBe(false)
+      expect(wrapper.find('.is-vertical').exists()).toBe(true)
     })
     it('slot has el-footer', () => {
       const wrapper = mount({
@@ -72,7 +72,7 @@ describe('Container.vue', () => {
         },
       })
 
-      expect(wrapper.find('.is-vertical').exists()).toBe(false)
+      expect(wrapper.find('.is-vertical').exists()).toBe(true)
     })
   })
 })

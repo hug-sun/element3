@@ -6,7 +6,7 @@ const props = withDefaults(defineProps<ContainerType>(), {
 })
 
 interface ContainerType {
-  direction: DirectionEnum.horizontal | DirectionEnum.vertical
+  direction?: DirectionEnum.horizontal | DirectionEnum.vertical
 }
 function useClasses(props) {
   // const { direction } = toRefs<ContainerType>(props)
@@ -16,8 +16,8 @@ function useClasses(props) {
     let isVertical = false
     if (slots && slots.default) {
       isVertical = slots.default().some((vNode) => {
-        const keyName = Object.keys(vNode.type || {})[0]
-        return ['ElHeader', 'ElFooter'].includes(keyName)
+        const tag = vNode.type && vNode.type.name
+        return ['ElHeader', 'ElFooter'].includes(tag)
       })
 
       // return slots.default().reduce((prev, cur) => {

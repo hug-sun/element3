@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { withDefaults } from 'vue'
 interface HeaderType {
-  height: string
+  height?: string
 }
 
 withDefaults(defineProps<HeaderType>(), {
   height: '60px',
 })
+</script>
+
+<script lang="ts">
+export default {
+  name: 'ElHeader',
+}
 </script>
 
 <template>
