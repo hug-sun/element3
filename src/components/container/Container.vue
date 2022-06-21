@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Component, VNode } from 'vue'
 import { computed, toRefs, useSlots, withDefaults } from 'vue'
 import { DirectionEnum } from './DirectionEnum'
 const props = withDefaults(defineProps<ContainerType>(), {
@@ -9,29 +10,25 @@ interface ContainerType {
   direction?: DirectionEnum.horizontal | DirectionEnum.vertical
 }
 function useClasses(props) {
-  // const { direction } = toRefs<ContainerType>(props)
+  const { direction } = toRefs<ContainerType>(props)
   const slots = useSlots()
 
   return computed(() => {
     let isVertical = false
     if (slots && slots.default) {
-      isVertical = slots.default().some((vNode) => {
-        const tag = vNode.type && vNode.type.name
-        return ['ElHeader', 'ElFooter'].includes(tag)
+      const vNodes: Array<VNode> = slots.default()
+      isVertical = vNodes.some((vNode) => {
+        const component = vNode.type as Component
+        return ['ElHeader', 'ElFooter'].includes(component.name)
       })
-
-      // return slots.default().reduce((prev, cur) => {
-      //   prev += '&&' + JSON.stringify(cur.type?.name)
-      //   return prev
-      // }, '')
     }
 
     if (isVertical)
       return 'is-vertical'
 
-    if (props.direction === DirectionEnum.vertical)
+    if (direction.value === DirectionEnum.vertical)
       return 'is-vertical'
-    if (props.direction === DirectionEnum.horizontal)
+    if (direction.value === DirectionEnum.horizontal)
       return ''
 
     return ''
