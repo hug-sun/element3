@@ -39,7 +39,6 @@ export default {
             { text: 'Avatar', link: '/components/avatar/' },
             { text: 'Link', link: '/components/link/' },
             { text: 'Icon', link: '/components/icon/' },
-            { text: 'Card', link: '/components/card/' },
           ],
         },
         {
@@ -54,6 +53,7 @@ export default {
           text: '数据展示组件',
           items: [
             { text: 'Badge', link: '/components/badge/' },
+            { text: 'Card', link: '/components/card/' },
           ],
         },
         {
