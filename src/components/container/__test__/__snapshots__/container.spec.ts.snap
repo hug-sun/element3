@@ -1,0 +1,10 @@
+// Vitest Snapshot v1
+
+exports[`Container.vue > Container snapshot 1`] = `
+<section
+  class="el-container"
+>
+  
+  
+</section>
+`;
