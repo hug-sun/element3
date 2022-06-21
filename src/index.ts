@@ -4,6 +4,7 @@ import { ElAvatar } from './components/avatar'
 import { ElLink } from './components/link/'
 import { ElIcon } from './components/icon/'
 import { ElBadge } from './components/badge/'
+import { ElTag } from './components/tag/'
 import { ElEmpty } from './components/empty/'
 import { ElCard } from './components/card/'
 import { ElButton } from './components/button/'
@@ -15,6 +16,7 @@ const components = [
   ElBadge,
   ElAvatar,
   ElLink,
+  ElTag,
   ElEmpty,
   ElCard,
   ElButton,
@@ -36,6 +38,7 @@ export {
   ElBadge,
   ElAvatar,
   ElLink,
+  ElTag,
   ElEmpty,
   ElCard,
   ElButton,
