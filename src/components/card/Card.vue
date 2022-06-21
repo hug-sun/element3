@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { withDefaults } from 'vue'
+import type { StyleValue } from 'vue'
 type CardType = 'always' | 'hover' | 'never'
 
 interface CardProps {
   header?: String
-  bodyStyle?: Object
+  bodyStyle?: StyleValue
   shadow?: CardType
 }
 

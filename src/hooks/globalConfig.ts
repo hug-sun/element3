@@ -3,6 +3,7 @@ import { getCurrentInstance } from 'vue'
 /**
  * get globalOptions $ELEMENT config object
  */
+
 export function useGlobalOptions() {
   const instance = getCurrentInstance()
 
@@ -14,7 +15,7 @@ export function useGlobalOptions() {
   return instance.appContext.config.globalProperties.$ELEMENT || {}
 }
 
-export function setupGlobalOptions(opts = {}) {
+export function setupGlobalOptions(opts: any = {}) {
   return (app) => {
     app.config.globalProperties.$ELEMENT = {
       size: opts.size || '',

@@ -14,7 +14,8 @@
     "docs": "vitepress dev src/",
     "docs:build": "vitepress build src/",
     "docs:serve": "vitepress serve src/",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "typecheck": "vue-tsc --noEmit"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.1",
@@ -35,7 +36,8 @@
     "vitepress": "1.0.0-alpha.1",
     "vitepress-theme-demoblock": "^1.4.2",
     "vitest": "^0.15.1",
-    "vue": "^3.2.37"
+    "vue": "^3.2.37",
+    "vue-tsc": "^0.38.1"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,vue,json,md,yml,yaml}": [
