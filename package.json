@@ -8,8 +8,8 @@
   "scripts": {
     "test": "vitest",
     "test:once": "vitest run",
-    "lint": "eslint \"{src,scripts}/**/*.{ts,tsx,js,vue,md}\"",
-    "lint:fix": "eslint --fix \"{src,scripts}/**/*.{ts,tsx,js,vue,md}\"",
+    "lint": "eslint './**/*.{ts,tsx,js,vue,md}'",
+    "lint:fix": "eslint --fix './**/*.{ts,tsx,js,vue,md}'",
     "coverage": "vitest run --coverage",
     "docs": "vitepress dev src/",
     "docs:build": "vitepress build src/",

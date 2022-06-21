@@ -2,7 +2,6 @@
 
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-
 export default defineConfig({
   plugins: [
     Vue(),
@@ -10,6 +9,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-   setupFiles: 'src/setupTests.ts'
+    setupFiles: 'src/setupTests.ts',
   },
 })
