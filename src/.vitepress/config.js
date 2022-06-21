@@ -39,6 +39,7 @@ export default {
             { text: 'Avatar', link: '/components/avatar/' },
             { text: 'Link', link: '/components/link/' },
             { text: 'Icon', link: '/components/icon/' },
+            { text: 'Tag', link: '/components/tag/' },
           ],
         },
         {
