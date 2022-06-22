@@ -1,8 +1,8 @@
-## Avatar 头像
+# Avatar 头像
 
 Avatar 组件可以表示人物或对象的基本信息，支持使用图标、文字和图片作为内容。
 
-### 基础用法
+## 基础用法
 使用`shape`、`size` 来设置 Avatar 的形状和大小
 :::demo 
 ```html
@@ -21,7 +21,7 @@ Avatar 组件可以表示人物或对象的基本信息，支持使用图标、�
 ```
 :::
 
-### 展示类型
+## 展示类型
 支持使用图片，图标或者文字作为 Avatar
 :::demo 
 ```html
@@ -36,7 +36,7 @@ Avatar 组件可以表示人物或对象的基本信息，支持使用图标、�
 :::
 
 
-### 回退行为
+## 回退行为
 当图片加载失败时，可设置回退行为。
 :::demo 
 ```html
@@ -54,7 +54,7 @@ const errorHandler = () => {
 ```
 :::
 
-### 适应容器
+## 适应容器
 当使用图片作为用户头像时，可设置该图片如何在容器中展示。与 CSS 属性 [object-fit](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit) 值一致
 :::demo 
 ```html

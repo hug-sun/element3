@@ -1,4 +1,4 @@
-## Container 布局组件
+# Container 布局组件
 
 用于布局的容器组件，方便快速搭建页面的基本结构：
 
@@ -16,7 +16,7 @@
 以上组件都采用了 flex 布局，使用前请确定浏览器是否兼容。此外，`<el-container>` 的子元素只能是后四者以及`<el-container>`，后四者的父元素只能是`<el-container>`。后四者的子元素可以是其它元素，比如普通元素`div`、组件 `el-menu`等。
 :::
 
-### 常见页面布局
+## 常见页面布局
 
 :::demo
 ```html
@@ -132,7 +132,7 @@ body > .el-container {
 ```
 :::
 
-### 实例
+## 实例
 
 :::demo
 ```html
@@ -189,25 +189,25 @@ const mainContentList = Array(20).fill(1).map((_, i) => ({
 ```
 :::
 
-### Container Attributes
+## Container Attributes
 
 | 参数      | 说明             | 类型   | 可选值                | 默认值                                                                 |
 | --------- | ---------------- | ------ | --------------------- | ---------------------------------------------------------------------- |
 | direction | 子元素的排列方向 | string | horizontal（水平） / vertical（垂直） | 子元素中有 `el-header` 或 `el-footer` 时为 vertical，否则为 horizontal |
 
-### Header Attributes
+## Header Attributes
 
 | 参数   | 说明     | 类型   | 可选值 | 默认值 |
 | ------ | -------- | ------ | ------ | ------ |
 | height | 顶栏高度 | string | —      | 60px   |
 
-### Aside Attributes
+## Aside Attributes
 
 | 参数  | 说明       | 类型   | 可选值 | 默认值 |
 | ----- | ---------- | ------ | ------ | ------ |
 | width | 侧边栏宽度 | string | —      | 300px  |
 
-### Footer Attributes
+## Footer Attributes
 
 | 参数   | 说明     | 类型   | 可选值 | 默认值 |
 | ------ | -------- | ------ | ------ | ------ |
