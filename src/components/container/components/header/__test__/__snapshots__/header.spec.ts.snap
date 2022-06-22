@@ -1,0 +1,11 @@
+// Vitest Snapshot v1
+
+exports[`Header.vue > Header snapshot 1`] = `
+<header
+  class="el-header"
+  style="height: 60px;"
+>
+  
+  
+</header>
+`;

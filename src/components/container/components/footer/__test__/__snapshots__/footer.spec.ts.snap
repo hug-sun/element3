@@ -1,0 +1,11 @@
+// Vitest Snapshot v1
+
+exports[`Footer.vue > Footer snapshot 1`] = `
+<footer
+  class="el-footer"
+  style="height: 60px;"
+>
+  
+  
+</footer>
+`;

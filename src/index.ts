@@ -4,10 +4,16 @@ import { ElAvatar } from './components/avatar'
 import { ElLink } from './components/link/'
 import { ElIcon } from './components/icon/'
 import { ElBadge } from './components/badge/'
+import {
+  ElAside,
+  ElContainer,
+  ElFooter,
+  ElHeader,
+  ElMain,
+} from './components/container/'
 import { ElEmpty } from './components/empty/'
 import { ElCard } from './components/card/'
 import { ElButton } from './components/button/'
-import '/theme/src/icon.scss'
 
 const components = [
   ElDivider,
@@ -15,6 +21,11 @@ const components = [
   ElBadge,
   ElAvatar,
   ElLink,
+  ElContainer,
+  ElHeader,
+  ElAside,
+  ElMain,
+  ElFooter,
   ElEmpty,
   ElCard,
   ElButton,
@@ -36,6 +47,11 @@ export {
   ElBadge,
   ElAvatar,
   ElLink,
+  ElContainer,
+  ElHeader,
+  ElAside,
+  ElMain,
+  ElFooter,
   ElEmpty,
   ElCard,
   ElButton,
