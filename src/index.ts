@@ -14,6 +14,7 @@ import {
 import { ElEmpty } from './components/empty/'
 import { ElCard } from './components/card/'
 import { ElButton } from './components/button/'
+import '/theme/src/icon.scss'
 
 const components = [
   ElDivider,
