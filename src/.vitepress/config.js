@@ -1,8 +1,5 @@
 import { version } from '../../package.json'
 
-export const discord = 'https://chat.vitest.dev'
-export const twitter = 'https://twitter.com/vitest_dev'
-
 export default {
   title: 'Element3',
   description: 'Vue3 components for learn',
@@ -51,12 +48,17 @@ export default {
         {
           text: '通用组件',
           items: [
-            { text: 'Button', link: '/components/button/' },
-            { text: 'Divider', link: '/components/divider/' },
-            { text: 'Avatar', link: '/components/avatar/' },
-            { text: 'Link', link: '/components/link/' },
-            { text: 'Icon', link: '/components/icon/' },
+            { text: 'Button 按钮', link: '/components/button/' },
+            { text: 'Divider 分割线', link: '/components/divider/' },
+            { text: 'Avatar 头像', link: '/components/avatar/' },
+            { text: 'Link 链接', link: '/components/link/' },
+            { text: 'Icon 图标', link: '/components/icon/' },
+            { text: 'Empty 无内容', link: '/components/empty/' },
           ],
+        },
+        {
+          text: '布局组件',
+          items: [{ text: 'Container 布局', link: '/components/container/' }],
         },
         {
           text: '表单组件',
@@ -64,11 +66,14 @@ export default {
         },
         {
           text: '提示组件',
-          items: [{ text: 'Alert', link: '/components/alert/' }],
+          items: [{ text: 'Alert 警告', link: '/components/alert/' }],
         },
         {
           text: '数据展示组件',
-          items: [{ text: 'Badge', link: '/components/badge/' }],
+          items: [
+            { text: 'Badge 标记', link: '/components/badge/' },
+            { text: 'Card 卡片', link: '/components/card/' },
+          ],
         },
         {
           text: '其他组件',

@@ -1,14 +1,13 @@
-<script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, ref, watch, withDefaults } from 'vue'
 import type { Component } from 'vue'
 import { ElIcon } from '../icon/index'
-const props = withDefaults(defineProps<AvatarProps>(), {
-  size: 'medium',
-  shape: 'circle',
-  fit: 'contain',
+export default defineComponent({
+  name: 'ElAvatar',
 })
+</script>
 
-const emit = defineEmits(['error'])
+<script setup lang="ts">
 type AvatarSize = 'large' | 'medium' | 'small'
 type AvatarFitType = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 type AvatarShapeType = 'circle' | 'square'
@@ -26,6 +25,13 @@ interface AvatarProps {
 interface AvatarEmits {
   error: (e: Event) => Event
 }
+
+const props = withDefaults(defineProps<AvatarProps>(), {
+  size: 'medium',
+  shape: 'circle',
+  fit: 'contain',
+})
+const emit = defineEmits(['error'])
 
 const useClasses = function (props: AvatarProps) {
   const shape = props.shape

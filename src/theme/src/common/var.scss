@@ -1060,4 +1060,25 @@ $--breakpoints-spec: (
 
 /* Dark theme
 --------------------------*/
-$--background-color-dark: #242424
+$--background-color-dark: #242424;
+
+/* Empty
+--------------------------*/
+$--empty-padding: 40px 0;
+$--empty-image-width: 160px;
+$--empty-description-margin-top: 20px;
+$--empty-bottom-margin-top: 20px;
+
+$--empty-fill-color-0: $--color-white;
+$--empty-fill-color-1: #fcfcfd;
+$--empty-fill-color-2: #f8f9fb;
+$--empty-fill-color-3: #f7f8fc;
+$--empty-fill-color-4: #eeeff3;
+$--empty-fill-color-5: #edeef2;
+$--empty-fill-color-6: #e9ebef;
+$--empty-fill-color-7: #e5e7e9;
+$--empty-fill-color-8: #e0e3e9;
+$--empty-fill-color-9: #d5d7de;
+
+$--svg-monochrome-grey: #dcdfe6;
+$--text-color-secondary: #909399;
