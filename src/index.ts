@@ -11,7 +11,9 @@ import {
   ElHeader,
   ElMain,
 } from './components/container/'
-import '/theme/src/icon.scss'
+import { ElEmpty } from './components/empty/'
+import { ElCard } from './components/card/'
+import { ElButton } from './components/button/'
 
 const components = [
   ElDivider,
@@ -24,6 +26,9 @@ const components = [
   ElAside,
   ElMain,
   ElFooter,
+  ElEmpty,
+  ElCard,
+  ElButton,
 ]
 function install(app) {
   components.forEach((component) => {
@@ -47,5 +52,8 @@ export {
   ElAside,
   ElMain,
   ElFooter,
+  ElEmpty,
+  ElCard,
+  ElButton,
 }
 export default element3
