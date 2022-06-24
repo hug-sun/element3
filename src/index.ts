@@ -4,16 +4,7 @@ import { ElAvatar } from './components/avatar'
 import { ElLink } from './components/link/'
 import { ElIcon } from './components/icon/'
 import { ElBadge } from './components/badge/'
-import {
-  ElAside,
-  ElContainer,
-  ElFooter,
-  ElHeader,
-  ElMain,
-} from './components/container/'
-import { ElEmpty } from './components/empty/'
-import { ElCard } from './components/card/'
-import { ElButton } from './components/button/'
+import { ElTag } from './components/tag/'
 import '/theme/src/icon.scss'
 
 const components = [
@@ -22,14 +13,7 @@ const components = [
   ElBadge,
   ElAvatar,
   ElLink,
-  ElContainer,
-  ElHeader,
-  ElAside,
-  ElMain,
-  ElFooter,
-  ElEmpty,
-  ElCard,
-  ElButton,
+  ElTag,
 ]
 function install(app) {
   components.forEach((component) => {
@@ -48,13 +32,6 @@ export {
   ElBadge,
   ElAvatar,
   ElLink,
-  ElContainer,
-  ElHeader,
-  ElAside,
-  ElMain,
-  ElFooter,
-  ElEmpty,
-  ElCard,
-  ElButton,
+  ElTag,
 }
 export default element3
