@@ -5,6 +5,7 @@ import { ElLink } from './components/link/'
 import { ElIcon } from './components/icon/'
 import { ElBadge } from './components/badge/'
 import { ElButton } from './components/button/'
+import { ElGrid, ElGridItem } from './components/grid/'
 import '/theme/src/icon.scss'
 
 const components = [
@@ -14,6 +15,8 @@ const components = [
   ElAvatar,
   ElLink,
   ElButton,
+  ElGrid,
+  ElGridItem,
 ]
 function install(app) {
   components.forEach((component) => {
@@ -33,5 +36,7 @@ export {
   ElAvatar,
   ElLink,
   ElButton,
+  ElGrid,
+  ElGridItem,
 }
 export default element3
