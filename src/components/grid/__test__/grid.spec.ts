@@ -1,168 +1,88 @@
 import { describe } from 'vitest'
-// import { render } from '@testing-library/vue'
-// import ElGrid from '../Grid.vue'
-// import ElGridItem from '../GridItem.vue'
+import { h } from 'vue'
+import { render } from '@testing-library/vue'
+import ElGrid from '../Grid.vue'
+import ElGridItem from '../GridItem.vue'
 
-describe.skip('Grid.vue', () => {
-  // it('should work with import on demand', () => {
-  //   render(ElGrid, {
-  //     slots: {
-  //       default: render(ElGridItem),
-  //     },
-  //   })
-  // })
+const renderElGi = new Array(6).fill(1).map((v, i) => {
+  return h(ElGridItem, null, { default: () => i })
+})
 
-  // it('should work with import on demand', () => {
-  //   mount(
-  //     defineComponent({
-  //       render () {
-  //         return (
-  //           <NGrid>
-  //             {{
-  //               default: () => [<NGi />]
-  //             }}
-  //           </NGrid>
-  //         )
-  //       }
-  //     })
-  //   )
-  // })
-  // it('用户可以通过 slot 的方式，定义组件的内容', () => {
-  //   const { getByText } = render(Button, {
-  //     slots: {
-  //       default: '默认按钮',
-  //     },
-  //   })
-  //   expect(getByText('默认按钮')).toBeInTheDocument()
-  // })
+describe('Grid.vue', () => {
+  it('should provide a default slot to display the component content', () => {
+    const { getByText } = render(ElGrid, {
+      slots: { default: 'test default slot' },
+    })
 
-  // // type: primary | success | warning | danger | info | text
-  // it('set button type', () => {
-  //   const type = 'primary'
-  //   const { getByRole } = render(Button, {
-  //     props: {
-  //       type,
-  //     },
-  //   })
-  //   expect(getByRole('button')).toHaveClass(`el-button--${type}`)
-  // })
+    expect(getByText('test default slot')).toBeInTheDocument()
+  })
 
-  // // size: medium | small  | mini;
-  // it('set button size', () => {
-  //   const size = 'medium'
-  //   const { getByRole } = render(Button, {
-  //     props: {
-  //       size,
-  //     },
-  //   })
-  //   expect(getByRole('button')).toHaveClass(`el-button--${size}`)
-  // })
+  it('should work with `gap` prop', async () => {
+    const { baseElement } = render(ElGrid, {
+      props: {
+        xGap: 10,
+        yGap: 20,
+      },
+      slots: {
+        default: [
+          () => h(ElGridItem, null, { default: 'test1' }),
+          () => h(ElGridItem, null, { default: 'test2' }),
+        ],
+      },
+    })
 
-  // it('set button round', async () => {
-  //   const { getByRole, rerender } = render(Button, {
-  //     props: {
-  //       round: true,
-  //     },
-  //   })
-  //   expect(getByRole('button')).toHaveClass('is-round')
+    expect(baseElement.querySelector('.el-grid').getAttribute('style')).toContain('column-gap: 10px; row-gap: 20px;')
+  })
 
-  //   await rerender({
-  //     round: false,
-  //   })
-  //   expect(getByRole('button')).not.toHaveClass('is-round')
-  // })
+  it('should work with `offset` prop', async () => {
+    const { baseElement } = render(ElGrid, {
+      slots: {
+        default: [
+          () => h(ElGridItem, { offset: 2 }, { default: 'test1' }),
+          () => h(ElGridItem, { offset: 1 }, { default: 'test1' }),
+        ],
+      },
+    })
+    const gridEl = baseElement.querySelector('.el-grid')
 
-  // it('set button plain', async () => {
-  //   const { getByRole, rerender } = render(Button, {
-  //     props: {
-  //       plain: true,
-  //     },
-  //   })
-  //   expect(getByRole('button')).toHaveClass('is-plain')
+    expect(gridEl.children[0].getAttribute('style')).toContain('grid-column: span 3 / span 3;')
+    expect(gridEl.children[1].getAttribute('style')).toContain('grid-column: span 2 / span 2;')
+  })
 
-  //   await rerender({
-  //     plain: false,
-  //   })
+  it('should work with `collapsed` prop', async () => {
+    const { baseElement, rerender } = render(ElGrid, {
+      props: {
+        cols: 4,
+        collapsed: false,
+      },
+      slots: {
+        default: renderElGi,
+      },
+    })
 
-  //   expect(getByRole('button')).not.toHaveClass('is-plain')
-  // })
-
-  // it('set button circle', async () => {
-  //   const { getByRole, rerender } = render(Button, {
-  //     props: {
-  //       circle: true,
-  //     },
-  //   })
-  //   expect(getByRole('button')).toHaveClass('is-circle')
-
-  //   await rerender({
-  //     circle: false,
-  //   })
-
-  //   expect(getByRole('button')).not.toHaveClass('is-circle')
-  // })
-
-  // describe('set button disabled', () => {
-  //   it('by props.disabled', async () => {
-  //     const { getByRole, rerender } = render(Button, {
-  //       props: {
-  //         disabled: true,
-  //       },
-  //     })
-
-  //     const buttonElement = getByRole('button')
-
-  //     expect(buttonElement).toHaveClass('is-disabled')
-  //     expect(buttonElement).toHaveAttribute('disabled')
-
-  //     await rerender({
-  //       disabled: false,
-  //     })
-  //     expect(getByRole('button')).not.toHaveClass('is-disabled')
-  //     expect(getByRole('button')).not.toHaveAttribute('disabled')
-  //   })
-  // })
-
-  // describe('set button icon', () => {
-  //   it('set props icon', () => {
-  //     const { getByTestId } = render(Button, {
-  //       props: {
-  //         icon: 'el-icon-edit',
-  //       },
-  //     })
-  //     expect(getByTestId('icon')).toBeInTheDocument()
-  //   })
-
-  //   it('if loading is true, the icon will not be displayed', () => {
-  //     const { getByTestId, queryByTestId } = render(Button, {
-  //       props: {
-  //         loading: true,
-  //         icon: 'el-icon-edit',
-  //       },
-  //     })
-  //     expect(queryByTestId('icon')).not.toBeInTheDocument()
-  //     expect(getByTestId('loadingIcon')).toBeInTheDocument()
-  //   })
-  // })
-
-  // // button autofocus
-  // it('set button autofocus', () => {
-  //   const { getByRole } = render(Button, {
-  //     props: {
-  //       autofocus: true,
-  //     },
-  //   })
-
-  //   expect(getByRole('button')).toHaveAttribute('autofocus')
-  // })
-
-  // // native type: button | reset | submit
-  // it('set button native type', () => {
-  //   const { getByRole } = render(Button, {
-  //     props: {
-  //       nativeType: 'submit',
-  //     },
-  //   })
-  //   expect(getByRole('button')).toHaveAttribute('type', 'submit')
-  // })
+    const children = baseElement.querySelectorAll('.el-grid .el-grid-item')
+    let len = 0
+    for (let i = 0; i < children.length; i++) {
+      if (
+        children[i]
+          .getAttribute('style')
+          ?.includes('grid-column: span 1 / span 1;')
+      )
+        len++
+    }
+    expect(len).toBe(6)
+    await rerender({
+      collapsed: true,
+    })
+    let len1 = 0
+    for (let i = 0; i < children.length; i++) {
+      if (
+        children[i]
+          .getAttribute('style')
+          ?.includes('grid-column: span 1 / span 1; display: none;')
+      )
+        len1++
+    }
+    expect(len1).toBe(2)
+  })
 })

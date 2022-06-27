@@ -15,8 +15,8 @@ interface GridItemProps {
 const props = withDefaults(defineProps<GridItemProps>(), {
   offset: 0,
 })
+
 const {
-  // isSsrRef,
   xGap,
   itemStyleRef,
   overflowRef,
@@ -38,6 +38,3 @@ const style = computed(() => {
   </div>
 </template>
 
-<style lang="scss">
-// @import "../../theme/src/grid.scss";
-</style>

@@ -40,7 +40,8 @@ function useStyle(props: GridProps) {
       width: '100%',
       display: 'grid',
       gridTemplateColumns: `repeat(${props.cols}, minmax(0px, 1fr))`,
-      gap: `${props.yGap}px ${props.xGap}px`,
+      columnGap: `${props.xGap}px`,
+      rowGap: `${props.yGap}px`,
     }
   })
 }
@@ -52,7 +53,3 @@ const gridStyle = useStyle(props)
     <slot />
   </div>
 </template>
-
-<style lang="scss">
-@import "../../theme/src/gird.scss";
-</style>

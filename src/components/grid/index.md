@@ -97,7 +97,7 @@
 ```html
 <template>
   <el-grid :x-gap="12" :cols="4">
-    <el-grid-item :offset="2">
+    <el-grid-item :offset="1">
       <div class="light-blue" />
     </el-grid-item>
     <el-grid-item :offset="1">
