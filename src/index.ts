@@ -5,6 +5,7 @@ import { ElLink } from './components/link/'
 import { ElIcon } from './components/icon/'
 import { ElBadge } from './components/badge/'
 import { ElAlert } from './components/alert'
+
 import {
   ElAside,
   ElContainer,
@@ -15,6 +16,7 @@ import {
 import { ElEmpty } from './components/empty/'
 import { ElCard } from './components/card/'
 import { ElButton } from './components/button/'
+import { ElForm } from './components/form/'
 import '/theme/src/icon.scss'
 
 const components = [
@@ -32,6 +34,7 @@ const components = [
   ElCard,
   ElButton,
   ElAlert,
+  ElForm,
 ]
 function install(app) {
   components.forEach((component) => {
@@ -59,5 +62,6 @@ export {
   ElCard,
   ElButton,
   ElAlert,
+  ElForm,
 }
 export default element3
