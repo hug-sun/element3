@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineEmits, ref } from 'vue'
+import { computed, ref } from 'vue'
 type AlertType = 'success' | 'info' | 'warning' | 'error'
 type AlertEffect = 'light' | 'dark'
 interface AlertProps {
