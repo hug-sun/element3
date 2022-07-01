@@ -62,7 +62,7 @@
 >
   {{tag}}
 </el-tag>
-<el-input
+<input  
   class="input-new-tag"
   v-if="inputVisible"
   v-model="inputValue"
@@ -70,8 +70,9 @@
   size="small"
   @keyup.enter.native="handleInputConfirm"
   @blur="handleInputConfirm"
->
-</el-input>
+/>
+
+
 <el-button v-else class="button-new-tag" size="small" @click="showInput"
   >+ New Tag</el-button
 >
@@ -91,6 +92,8 @@
     width: 90px;
     margin-left: 10px;
     vertical-align: bottom;
+    border: 1px solid #eee;
+    padding:5px;
   }
 </style>
 
@@ -110,7 +113,7 @@
       const showInput = () => {
         state.inputVisible = true
         nextTick((_) => {
-          saveTagInput.value.input.focus()
+          saveTagInput.value.focus()
         })
       }
       const handleInputConfirm = () => {
