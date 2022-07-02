@@ -15,6 +15,7 @@ import { ElEmpty } from './components/empty/'
 import { ElCard } from './components/card/'
 import { ElButton } from './components/button/'
 import { ElTag } from './components/tag/'
+import { ElForm } from './components/form/'
 import '/theme/src/icon.scss'
 
 const components = [
@@ -32,6 +33,7 @@ const components = [
   ElCard,
   ElButton,
   ElTag,
+  ElForm,
 ]
 function install(app) {
   components.forEach((component) => {
@@ -59,5 +61,6 @@ export {
   ElCard,
   ElButton,
   ElTag,
+  ElForm,
 }
 export default element3

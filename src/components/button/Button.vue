@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { computed, toRefs, withDefaults } from 'vue'
-
+import { computed, inject, toRefs, withDefaults } from 'vue'
+import type { Ref } from 'vue'
 // 按钮类型
-type buttonType = 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text'
-type buttonSize = 'medium' | 'small' | 'mini'
-type buttonNativeType = 'button' | 'submit' | 'reset'
+type ButtonType = 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text'
+type ButtonSize = 'medium' | 'small' | 'mini'
+type ButtonNativeType = 'button' | 'submit' | 'reset'
 
 interface ButtonProps {
-  type?: buttonType
-  size?: buttonSize
+  type?: ButtonType
+  size?: ButtonSize
   round?: boolean
   plain?: boolean
-  nativeType?: buttonNativeType
+  nativeType?: ButtonNativeType
   circle?: boolean
   icon?: string
   loading?: boolean
@@ -23,11 +23,19 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   nativeType: 'button',
 })
 
-function useClasses({ props }) {
+const { size, disabled } = toRefs(props)
+
+const useButtonSize = (size: Ref) => {
+  return computed(() => {
+    const elForm = inject('elForm', null)
+    return size?.value || elForm?.size
+  })
+}
+function useClasses({ props, size }) {
   return computed(() => {
     return [
       props.type ? `el-button--${props.type}` : '',
-      props.size ? `el-button--${props.size}` : '',
+      size.value ? `el-button--${size.value}` : '',
       {
         'is-round': props.round,
         'is-plain': props.plain,
@@ -37,7 +45,11 @@ function useClasses({ props }) {
     ]
   })
 }
-const classes = useClasses({ props })
+const buttonSize = useButtonSize(size)
+const classes = useClasses({
+  props,
+  size: buttonSize,
+})
 </script>
 
 <template>
