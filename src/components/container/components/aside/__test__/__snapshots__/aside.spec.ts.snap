@@ -1,0 +1,11 @@
+// Vitest Snapshot v1
+
+exports[`Aside.vue > Aside snapshot 1`] = `
+<aside
+  class="el-aside"
+  style="width: 300px;"
+>
+  
+  
+</aside>
+`;

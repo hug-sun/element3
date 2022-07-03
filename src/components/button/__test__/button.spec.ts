@@ -1,5 +1,7 @@
 import { describe } from 'vitest'
+import { h } from 'vue'
 import { render } from '@testing-library/vue'
+import ElForm from '../../form/Form.vue'
 import Button from '../Button.vue'
 
 describe('Button.vue', () => {
@@ -32,6 +34,18 @@ describe('Button.vue', () => {
       },
     })
     expect(getByRole('button')).toHaveClass(`el-button--${size}`)
+  })
+
+  it('get button size from el-form props', () => {
+    const { container } = render(ElForm, {
+      props: {
+        size: 'mini',
+      },
+      slots: {
+        default: () => h(Button, { slots: { default: 'el-button' } }),
+      },
+    })
+    expect(container.querySelector('button')).toHaveClass('el-button--mini')
   })
 
   it('set button round', async () => {
