@@ -4,10 +4,6 @@ import { render } from '@testing-library/vue'
 import ElGrid from '../Grid.vue'
 import ElGridItem from '../GridItem.vue'
 
-const renderElGi = new Array(6).fill(1).map((v, i) => {
-  return h(ElGridItem, null, { default: () => i })
-})
-
 describe('Grid.vue', () => {
   it('should provide a default slot to display the component content', () => {
     const { getByText } = render(ElGrid, {
@@ -47,42 +43,5 @@ describe('Grid.vue', () => {
 
     expect(gridEl.children[0].getAttribute('style')).toContain('grid-column: span 3 / span 3;')
     expect(gridEl.children[1].getAttribute('style')).toContain('grid-column: span 2 / span 2;')
-  })
-
-  it('should work with `collapsed` prop', async () => {
-    const { baseElement, rerender } = render(ElGrid, {
-      props: {
-        cols: 4,
-        collapsed: false,
-      },
-      slots: {
-        default: renderElGi,
-      },
-    })
-
-    const children = baseElement.querySelectorAll('.el-grid .el-grid-item')
-    let len = 0
-    for (let i = 0; i < children.length; i++) {
-      if (
-        children[i]
-          .getAttribute('style')
-          ?.includes('grid-column: span 1 / span 1;')
-      )
-        len++
-    }
-    expect(len).toBe(6)
-    await rerender({
-      collapsed: true,
-    })
-    let len1 = 0
-    for (let i = 0; i < children.length; i++) {
-      if (
-        children[i]
-          .getAttribute('style')
-          ?.includes('grid-column: span 1 / span 1; display: none;')
-      )
-        len1++
-    }
-    expect(len1).toBe(2)
   })
 })

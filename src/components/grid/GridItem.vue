@@ -2,10 +2,6 @@
 import { computed, inject, withDefaults } from 'vue'
 
 import { gridInjectionKey } from './config'
-// 按钮类型
-type buttonType = 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text'
-type buttonSize = 'medium' | 'small' | 'mini'
-type buttonNativeType = 'button' | 'submit' | 'reset'
 
 interface GridItemProps {
   offset?: number
@@ -27,14 +23,14 @@ const style = computed(() => {
 
   return {
     gridColumn: `span ${gridColumn} / span ${gridColumn}`,
-    marginLeft: `calc(((100% - ${xGap.value}px) / ${gridColumn}) * ${props.offset} + ${xGap.value}px)`,
+    marginLeft: props.offset > 0 ? `calc(((100% - ${xGap.value}px) / ${gridColumn}) * ${props.offset} + ${xGap.value}px)` : '',
   }
 })
 </script>
 
 <template>
-  <div class="el-grid-item" :style="style">
-    <slot />
+  <div class="el-grid-item" :style="[itemStyleRef, style]">
+    <slot :overflow="overflowRef" />
   </div>
 </template>
 

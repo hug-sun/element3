@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { computed, provide, ref, toRef, toRefs, withDefaults } from 'vue'
+import { computed, provide, ref, toRef, withDefaults } from 'vue'
 import type { CSSProperties, Ref } from 'vue'
 
-import { defaultSpan, gridInjectionKey } from './config'
+import { gridInjectionKey } from './config'
 
 export interface ElGridInjection {
   // isSsrRef: Ref<boolean>
