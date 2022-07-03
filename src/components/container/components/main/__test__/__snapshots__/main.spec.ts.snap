@@ -1,0 +1,10 @@
+// Vitest Snapshot v1
+
+exports[`Main.vue > Main snapshot 1`] = `
+<main
+  class="el-main"
+>
+  
+  
+</main>
+`;

@@ -3,3 +3,4 @@
 
 pnpm run test:once
 pnpm exec lint-staged
+pnpm run typecheck
