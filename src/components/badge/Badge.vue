@@ -49,16 +49,13 @@ const isShow = useShow(props)
   <div class="el-badge">
     <slot />
     <sup
-      v-if="isShow"
-      class="el-badge__content"
-      :class="[
+      v-if="isShow" class="el-badge__content" :class="[
         `el-badge__content--${type}`,
         {
           'is-dot': isDot,
           'is-fixed': $slots.default,
         },
-      ]"
-      v-text="badgeContent"
+      ]" v-text="badgeContent"
     />
   </div>
 </template>

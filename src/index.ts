@@ -4,6 +4,8 @@ import { ElAvatar } from './components/avatar'
 import { ElLink } from './components/link/'
 import { ElIcon } from './components/icon/'
 import { ElBadge } from './components/badge/'
+import { ElAlert } from './components/alert'
+
 import {
   ElAside,
   ElContainer,
@@ -33,6 +35,7 @@ const components = [
   ElCard,
   ElButton,
   ElTag,
+  ElAlert,
   ElForm,
 ]
 function install(app) {
@@ -61,6 +64,7 @@ export {
   ElCard,
   ElButton,
   ElTag,
+  ElAlert,
   ElForm,
 }
 export default element3
