@@ -16,6 +16,7 @@ import {
 import { ElEmpty } from './components/empty/'
 import { ElCard } from './components/card/'
 import { ElButton } from './components/button/'
+import { ElTag } from './components/tag/'
 import { ElForm } from './components/form/'
 import '/theme/src/icon.scss'
 
@@ -33,6 +34,7 @@ const components = [
   ElEmpty,
   ElCard,
   ElButton,
+  ElTag,
   ElAlert,
   ElForm,
 ]
@@ -61,6 +63,7 @@ export {
   ElEmpty,
   ElCard,
   ElButton,
+  ElTag,
   ElAlert,
   ElForm,
 }

@@ -54,6 +54,7 @@ export default {
             { text: 'Link 链接', link: '/components/link/' },
             { text: 'Icon 图标', link: '/components/icon/' },
             { text: 'Empty 无内容', link: '/components/empty/' },
+            { text: 'Tag 标签', link: '/components/tag/' },
           ],
         },
         {
