@@ -18,10 +18,13 @@ withDefaults(defineProps<DividerType>(), {
 </script>
 
 <template>
-  <div v-bind="$attrs" class="el-divider" :class="[`el-divider--${direction}`, `is-${dividerStyle}`]" :style="{ color }">
+  <div
+    v-bind="$attrs" class="el-divider" :class="[`el-divider--${direction}`, `is-${dividerStyle}`]"
+    :style="{ color }"
+  >
     <div
-      v-if="$slots.default && direction !== 'vertical'"
-      class="el-divider__text" :class="[`is-${contentPosition}`, dark ? 'is-dark' : '']"
+      v-if="$slots.default && direction !== 'vertical'" class="el-divider__text"
+      :class="[`is-${contentPosition}`, dark ? 'is-dark' : '']"
     >
       <slot />
     </div>

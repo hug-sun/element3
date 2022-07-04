@@ -4,8 +4,23 @@ export default {
   title: 'Element3',
   description: 'Vue3 components for learn',
   head: [
-    ['link', { rel: 'icon', href: 'https://cdn.jsdelivr.net/gh/shengxinjing/static/element3.ico', type: 'image/svg+xml' }],
-    ['link', { rel: 'alternate icon', href: 'https://cdn.jsdelivr.net/gh/shengxinjing/static/element3.png', type: 'image/png', sizes: '16x16' }],
+    [
+      'link',
+      {
+        rel: 'icon',
+        href: 'https://cdn.jsdelivr.net/gh/shengxinjing/static/element3.ico',
+        type: 'image/svg+xml',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate icon',
+        href: 'https://cdn.jsdelivr.net/gh/shengxinjing/static/element3.png',
+        type: 'image/png',
+        sizes: '16x16',
+      },
+    ],
   ],
   // base:"/src/"
   themeConfig: {
@@ -15,11 +30,13 @@ export default {
       { text: version, link: 'https://www.npmjs.com/package/element3' },
     ],
     socialLinks: [
-      { icon: 'discord', link: 'https://discord.com/channels/987387170232868904/987387170794922005' },
+      {
+        icon: 'discord',
+        link: 'https://discord.com/channels/987387170232868904/987387170794922005',
+      },
       { icon: 'github', link: 'https://github.com/hug-sun/element3' },
     ],
     sidebar: {
-
       '/': [
         {
           text: '教程',
@@ -51,7 +68,7 @@ export default {
         },
         {
           text: '提示组件',
-          items: [],
+          items: [{ text: 'Alert 警告', link: '/components/alert/' }],
         },
         {
           text: '数据展示组件',
