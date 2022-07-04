@@ -78,11 +78,7 @@ const errorHandler = (e: Event) => {
 <template>
   <span v-if="!icon" class="el-avatar" :style="avatarStyle" :class="classes">
     <img
-      v-if="(src || srcset) && !errorFlag"
-      :src="src"
-      :srcset="srcset"
-      :alt="alt"
-      :style="{ objectFit: fit }"
+      v-if="(src || srcset) && !errorFlag" :src="src" :srcset="srcset" :alt="alt" :style="{ objectFit: fit }"
       @error="errorHandler($event)"
     >
     <slot v-else />
