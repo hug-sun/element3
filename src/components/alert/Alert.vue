@@ -46,7 +46,7 @@ const customCloseText = computed(() => {
 })
 
 // 关闭Alert
-const showAlert = ref(true)
+const showAlert = ref<boolean>(true)
 function closeAlert() {
   emit('close')
   showAlert.value = false

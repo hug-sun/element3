@@ -1,4 +1,9 @@
 # Link 文字链接
+
+## 基础用法
+
+设置不同类型的链接
+
 :::demo
 ```html
 <div>
@@ -13,6 +18,9 @@
 :::
 
 ## 下划线
+
+链接不带下划线
+
 :::demo
 ```html
 <div>
@@ -23,6 +31,7 @@
 :::
 
 ## 禁用状态
+
 :::demo
 ```html
 <div>
@@ -37,6 +46,7 @@
 :::
 
 ## 图标
+
 :::demo
 ```html
 <div>
@@ -45,3 +55,13 @@
 </div>
 ```
 :::
+
+
+## Link Attributes
+
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| --- | --- | --- | --- | --- |
+| `type` | 设置不同类型的链接 | `string` | `default` \| `primary` \| `success` \| `warning` \| `danger` \| `info` | `default` |
+| `underline` | 控制是否显示下划线 | `boolean` | `true` \| `false` | `true` |
+| `disabled` | 设置链接是否禁用 | `boolean` | `true` \| `false` | `true` |
+| `icon` | 设置是否显示图标 | `string` | `IconProperties` | - |

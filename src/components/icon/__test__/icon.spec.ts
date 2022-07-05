@@ -3,7 +3,7 @@ import { render } from '@testing-library/vue'
 import Icon from '../Icon.vue'
 describe('icon', () => {
   // 组件渲染
-  it.skip('icon name', () => {
+  it('icon name', () => {
     const Comp = {
       template: '<Icon name="edit"></Icon>',
       components: {
@@ -11,8 +11,7 @@ describe('icon', () => {
       },
     }
 
-    const { getByRole } = render(Comp)
-    // console.log(getByRole('i'))
-    expect(getByRole('i')).toHaveClass('el-icon--primary')
+    const wrapper = render(Comp)
+    expect(wrapper.container.querySelector('i')).toHaveClass('el-icon-edit')
   })
 })
