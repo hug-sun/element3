@@ -27,7 +27,7 @@ jobs:
         with:
           version: 7.1.6
       - name: Install modules
-        run: pnpm i
+        run: pnpm i --no-frozen-lockfile
       - name: Run Lint
         run: pnpm run lint
       - name: unittest
