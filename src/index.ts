@@ -13,6 +13,10 @@ import {
   ElHeader,
   ElMain,
 } from './components/container/'
+import {
+  ElCol,
+  ElRow,
+} from './components/layout'
 import { ElEmpty } from './components/empty/'
 import { ElCard } from './components/card/'
 import { ElButton } from './components/button/'
@@ -31,6 +35,8 @@ const components = [
   ElAside,
   ElMain,
   ElFooter,
+  ElRow,
+  ElCol,
   ElEmpty,
   ElCard,
   ElButton,
@@ -60,6 +66,8 @@ export {
   ElAside,
   ElMain,
   ElFooter,
+  ElRow,
+  ElCol,
   ElEmpty,
   ElCard,
   ElButton,

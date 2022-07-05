@@ -61,6 +61,7 @@ export default {
           text: '布局组件',
           items: [
             { text: 'Container 布局', link: '/components/container/' },
+            { text: 'Layout 布局', link: '/components/layout/' },
           ],
         },
         {
