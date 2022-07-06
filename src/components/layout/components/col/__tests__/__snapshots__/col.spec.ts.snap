@@ -1,0 +1,10 @@
+// Vitest Snapshot v1
+
+exports[`Col.vue > Col snapshot 1`] = `
+<div
+  class="el-col el-col-24"
+>
+  
+  
+</div>
+`;
