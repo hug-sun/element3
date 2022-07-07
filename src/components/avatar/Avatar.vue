@@ -1,20 +1,13 @@
-<script lang="ts">
-import { computed, defineComponent, ref, watch, withDefaults } from 'vue'
-import type { Component } from 'vue'
-import { ElIcon } from '../icon/index'
-export default defineComponent({
-  name: 'ElAvatar',
-})
-</script>
-
 <script setup lang="ts">
+import { computed, ref, withDefaults } from 'vue'
+
 type AvatarSize = 'large' | 'medium' | 'small'
 type AvatarFitType = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 type AvatarShapeType = 'circle' | 'square'
 
 interface AvatarProps {
-  icon?: string | Component
-  size?: number | AvatarSize
+  icon?: string
+  size?: Number | AvatarSize
   shape?: AvatarShapeType
   src?: string
   srcset?: string
@@ -22,73 +15,66 @@ interface AvatarProps {
   fit?: AvatarFitType
 }
 
-interface AvatarEmits {
-  error: (e: Event) => Event
-}
-
 const props = withDefaults(defineProps<AvatarProps>(), {
+  icon: 'el-icon-user',
   size: 'medium',
   shape: 'circle',
   fit: 'contain',
 })
-const emit = defineEmits(['error'])
 
-const useClasses = function (props: AvatarProps) {
-  const shape = props.shape
-  const size = props.size
-  const icon = props.icon
+function useAvatarSize(props: AvatarProps) {
   return computed(() => {
+    const size = Number(props.size)
+    if (Number.isNaN(size))
+      return
+    return `
+            height: ${size}px;
+            width: ${size}px;
+            font-size: ${size / 2.6}px;
+            line-height: ${size}px;
+           `
+  })
+}
+
+function useClasses(props: AvatarProps) {
+  return computed(() => {
+    let avatarSize = ''
+    if (typeof props.size === 'string')
+      avatarSize = `el-avatar--${props.size}`
+
     return [
-      shape ? `el-avatar--${shape}` : '',
-      size
-        ? typeof size === 'string'
-          ? `el-avatar--${size}`
-          : ''
-        : 'el-avatar--medium',
-      icon ? 'el-avatar--icon' : '',
+      'el-avatar',
+      `el-avatar--${props.shape}`,
+      avatarSize,
     ]
   })
 }
-const useAvatarStyle = function (props: AvatarProps) {
-  const size = props.size
+
+function useFitStyle(props: AvatarProps) {
   return computed(() => {
-    return Number.isNaN(Number(size)) ? '' : { height: `${size}px`, width: `${size}px` }
-  })
-}
-const useFitStyle = function (props: AvatarProps) {
-  const fit = props.fit
-  return computed(() => {
-    return { objectFit: fit }
+    return `object-fit: ${props.fit}`
   })
 }
 
+const toggle = ref(true)
+
+const avatarSize = useAvatarSize(props)
 const classes = useClasses(props)
-const avatarStyle = useAvatarStyle(props)
 const fitStyle = useFitStyle(props)
 
-const errorFlag = ref(false)
-watch(() => props.src, () => (errorFlag.value = false))
-
-const errorHandler = (e: Event) => {
-  errorFlag.value = true
-  emit('error', e)
-}
+function imgLoaded() { toggle.value = false }
 </script>
 
 <template>
-  <span v-if="!icon" class="el-avatar" :style="avatarStyle" :class="classes">
-    <img
-      v-if="(src || srcset) && !errorFlag" :src="src" :srcset="srcset" :alt="alt" :style="{ objectFit: fit }"
-      @error="errorHandler($event)"
-    >
-    <slot v-else />
-  </span>
-  <span v-else-if="typeof icon === 'string'" class="el-avatar" :style="avatarStyle" :class="classes">
-    <el-icon :name="icon" />
-  </span>
-  <span v-else class="el-avatar" :style="avatarStyle" :class="classes">
-    <slot />
-  </span>
+  <div :class="classes" :style="avatarSize">
+    <span v-if="(src || srcset)">
+      <img v-show="!toggle" :src="src" :srcset="srcset" :alt="alt" :style="fitStyle" @load="imgLoaded">
+    </span>
+    <span v-else-if="$slots.default">
+      <slot />
+    </span>
+    <i v-show="toggle" :class="icon" />
+  </div>
 </template>
 
 <style lang="scss">
