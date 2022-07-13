@@ -45,6 +45,7 @@ function useClasses({ props, size }) {
     ]
   })
 }
+
 const buttonSize = useButtonSize(size)
 const classes = useClasses({
   props,

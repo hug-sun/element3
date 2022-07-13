@@ -1,0 +1,10 @@
+// Vitest Snapshot v1
+
+exports[`Row.vue > Row snapshot 1`] = `
+<div
+  class="el-row"
+>
+  
+  
+</div>
+`;

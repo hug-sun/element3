@@ -4,6 +4,8 @@ import { ElAvatar } from './components/avatar'
 import { ElLink } from './components/link/'
 import { ElIcon } from './components/icon/'
 import { ElBadge } from './components/badge/'
+import { ElAlert } from './components/alert'
+
 import {
   ElAside,
   ElContainer,
@@ -11,10 +13,15 @@ import {
   ElHeader,
   ElMain,
 } from './components/container/'
+import {
+  ElCol,
+  ElRow,
+} from './components/layout'
 import { ElEmpty } from './components/empty/'
 import { ElCard } from './components/card/'
 import { ElButton } from './components/button/'
 import { ElGrid, ElGridItem } from './components/grid/'
+import { ElTag } from './components/tag/'
 import { ElForm } from './components/form/'
 import '/theme/src/icon.scss'
 
@@ -29,11 +36,15 @@ const components = [
   ElAside,
   ElMain,
   ElFooter,
+  ElRow,
+  ElCol,
   ElEmpty,
   ElCard,
   ElButton,
   ElGrid,
   ElGridItem,
+  ElTag,
+  ElAlert,
   ElForm,
 ]
 function install(app) {
@@ -58,11 +69,15 @@ export {
   ElAside,
   ElMain,
   ElFooter,
+  ElRow,
+  ElCol,
   ElEmpty,
   ElCard,
   ElButton,
   ElGrid,
   ElGridItem,
+  ElTag,
+  ElAlert,
   ElForm,
 }
 export default element3
