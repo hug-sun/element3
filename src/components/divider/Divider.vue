@@ -43,7 +43,7 @@ const slotsClasses = calculateClasses.defaultSlot(props)
 
 <template>
   <div
-    v-bind="$attrs" :class="dividerClasses"
+    :class="dividerClasses"
     :style="{ color }"
   >
     <div
