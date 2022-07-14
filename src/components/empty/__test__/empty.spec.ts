@@ -47,24 +47,6 @@ describe('Empty.vue', () => {
     )
   })
 
-  test('should render image slots', () => {
-    const wrapper = mount(Empty, {
-      slots: {
-        image: () => TEXT,
-      },
-    })
-    expect(wrapper.find('.el-empty__image').text()).toEqual(TEXT)
-  })
-
-  test('should render description slots', () => {
-    const wrapper = mount(Empty, {
-      slots: {
-        description: () => TEXT,
-      },
-    })
-    expect(wrapper.find('.el-empty__description').text()).toEqual(TEXT)
-  })
-
   test('should render default slots', async () => {
     const wrapper = mount(Empty, {
       slots: {

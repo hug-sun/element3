@@ -78,14 +78,7 @@
 
 | 属性 | 说明 | 类型  | 可选值 | 默认值 |
 | - | - | - | - | - |
-| image | 图片地址 | string | - | - |
-| image-size | 图片大小（宽度）| number | - | - |
-| description | 描述 | string | - | - |
+| `image` | 图片地址 | `string` | - | - |
+| `image-size` | 图片大小（宽度）| `number` | - | - |
+| `description` | 描述 | `string` | - | `No Data` |
 
-## Empty 插槽
-
-| 插槽名 | 描述说明 |
-| - | - |
-| default | 自定义底部内容 |
-| image | 自定义图片 |
-| description | 自定义描述 |
