@@ -67,7 +67,6 @@
   :key="tag"
   v-for="tag in dynamicTags"
   closable
-  :disable-transitions="false"
   @close="handleClose(tag)"
 >
   {{tag}}
@@ -77,7 +76,6 @@
   v-if="inputVisible"
   v-model="inputValue"
   ref="saveTagInput"
-  size="small"
   @keyup.enter.native="handleInputConfirm"
   @blur="handleInputConfirm"
 />
