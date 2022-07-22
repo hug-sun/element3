@@ -102,6 +102,12 @@ const barSize = useBarSize(props)
 const circleStyle = useCircleStyle(props, barSize)
 const barStyle = useBarStyle(props, barSize)
 const fontSize = useFontSize(props)
+const circleAndBarStyle = computed(() => {
+  return {
+    ...circleStyle.value,
+    ...barStyle.value,
+  }
+})
 </script>
 
 <template>
@@ -120,7 +126,7 @@ const fontSize = useFontSize(props)
               a ${barSize.radius},${barSize.radius} 0 1 1 0,${barSize.radius * 2}
               a ${barSize.radius},${barSize.radius} 0 1 1 0,-${barSize.radius * 2}`"
           class="el-circle el-circle__bar"
-          :style="[circleStyle, barStyle]"
+          :style="circleAndBarStyle"
         />
         <path
           v-if="processing"
@@ -128,7 +134,7 @@ const fontSize = useFontSize(props)
               a ${barSize.radius},${barSize.radius} 0 1 1 0,${barSize.radius * 2}
               a ${barSize.radius},${barSize.radius} 0 1 1 0,-${barSize.radius * 2}`"
           class="el-circle el-circle__processing"
-          :style="[circleStyle, barStyle]"
+          :style="circleAndBarStyle"
         />
       </svg>
     </div>
