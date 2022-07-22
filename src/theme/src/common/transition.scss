@@ -34,7 +34,7 @@
   transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
 }
 .el-zoom-in-center-enter-from,
-.el-zoom-in-center-leave-active {
+.el-zoom-in-center-leave-to {
   opacity: 0;
   transform: scaleX(0);
 }

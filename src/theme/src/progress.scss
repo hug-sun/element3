@@ -37,6 +37,22 @@
         display: inline-block;
       }
     }
+
+    .el-circle {
+      fill: none;
+      stroke: $--border-color-lighter;
+      stroke-linecap: round;
+    }
+
+    .el-circle__bar {
+      stroke: $--color-primary;
+      transition: stroke-dashoffset 0.6s ease;
+    }
+
+    .el-circle__processing {
+      stroke: $--color-primary;
+    }
+
   }
 
   @include m(without-text) {
@@ -63,6 +79,14 @@
       background-color: $--color-success;
     }
 
+    .el-circle__bar {
+      stroke: $--color-success;
+    }
+
+    .el-circle__processing {
+      stroke: $--color-success;
+    }
+
     .el-progress__text {
       color: $--color-success;
     }
@@ -73,19 +97,48 @@
       background-color: $--color-warning;
     }
 
+    .el-circle__bar {
+      stroke: $--color-warning;
+    }
+
+    .el-circle__processing {
+      stroke: $--color-warning;
+    }
+
     .el-progress__text {
       color: $--color-warning;
     }
   }
 
-  @include when(exception) {
+  @include when(error) {
     .el-progress-bar__inner {
       background-color: $--color-danger;
+    }
+
+    .el-circle__bar {
+      stroke: $--color-danger;
+    }
+
+    .el-circle__processing {
+      stroke: $--color-danger;
     }
 
     .el-progress__text {
       color: $--color-danger;
     }
+  }
+
+  @include when(processing) {
+    .el-progress-bar__inner::before {
+      content: '';
+      background-image: linear-gradient(90deg, rgba(255, 255, 255, .3) 0%, rgba(255, 255, 255, 0.5) 100%);
+      animation: line-processing 2s infinite;
+    }
+
+    .el-circle__processing {
+      animation: circle-processing 2s infinite reverse;
+    }
+
   }
 }
 
@@ -136,5 +189,38 @@
 
   100% {
     background-position: 32px 0;
+  }
+}
+
+
+@keyframes line-processing {
+  0% {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 100%;
+    opacity: 1;
+  }
+
+  100% {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes circle-processing {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    opacity: 1;
+
   }
 }

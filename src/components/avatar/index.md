@@ -13,7 +13,7 @@ Avatar 组件可以表示人物或对象的基本信息，支持使用图标、�
     <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" size="small"></el-avatar>
     <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" size="medium"></el-avatar>
     <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" size="large"></el-avatar>
-    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" :size="50"></el-avatar>
+    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" size="50"></el-avatar>
     <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" shape="circle"></el-avatar>
     <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" shape="square"></el-avatar>
   </el-row>
@@ -41,7 +41,7 @@ Avatar 组件可以表示人物或对象的基本信息，支持使用图标、�
 :::demo 
 ```html
 <template>
-  <el-avatar :size="60" src="https://empty">
+  <el-avatar size="60" src="https://empty">
   </el-avatar>
 </template>
 ```

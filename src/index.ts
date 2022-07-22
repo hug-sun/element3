@@ -5,6 +5,7 @@ import { ElLink } from './components/link/'
 import { ElIcon } from './components/icon/'
 import { ElBadge } from './components/badge/'
 import { ElAlert } from './components/alert'
+import { ElProgress } from './components/progress'
 
 import {
   ElAside,
@@ -43,6 +44,7 @@ const components = [
   ElTag,
   ElAlert,
   ElForm,
+  ElProgress,
 ]
 function install(app) {
   components.forEach((component) => {
@@ -74,5 +76,6 @@ export {
   ElTag,
   ElAlert,
   ElForm,
+  ElProgress,
 }
 export default element3

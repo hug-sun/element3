@@ -65,7 +65,7 @@ describe('Tag.vue', () => {
     expect(ElTag.exists()).toBe(true)
   })
 
-  it('introduce hint prop will be effective', () => {
+  it('introduce hit prop will be effective', () => {
     const vm = mount(Tag, {
       props: {
         hit: true,
@@ -93,12 +93,6 @@ describe('Tag.vue', () => {
     })
     const ElTag = vm.find('.el-tag')
     expect(ElTag.classes()).toContain('el-tag--small')
-  })
-
-  it('introduce effect prop will be effective', () => {
-    const vm = mount(Tag)
-    const ElTag = vm.find('.el-tag')
-    expect(ElTag.classes()).toContain('el-tag--light')
   })
 
   it('introduce effect prop will be effective', () => {

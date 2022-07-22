@@ -28,7 +28,6 @@ function useClasses(props: TagProps) {
     return [
       'el-tag',
       props.type ? `el-tag--${props.type}` : '',
-      props.disableTransitions ? '' : '',
       props.hit ? 'is-hit' : '',
       globalSize
         ? `el-tag--${globalSize}`
