@@ -66,7 +66,9 @@ export default {
         },
         {
           text: '表单组件',
-          items: [],
+          items: [
+            { text: 'Radio 单选框', link: '/components/radio/' },
+          ],
         },
         {
           text: '提示组件',

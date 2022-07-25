@@ -23,6 +23,7 @@ import { ElCard } from './components/card/'
 import { ElButton } from './components/button/'
 import { ElTag } from './components/tag/'
 import { ElForm } from './components/form/'
+import { ElRadio } from './components/radio/'
 import '/theme/src/icon.scss'
 
 const components = [
@@ -45,6 +46,7 @@ const components = [
   ElAlert,
   ElForm,
   ElProgress,
+  ElRadio,
 ]
 function install(app) {
   components.forEach((component) => {
@@ -77,5 +79,6 @@ export {
   ElAlert,
   ElForm,
   ElProgress,
+  ElRadio,
 }
 export default element3
