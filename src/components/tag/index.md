@@ -4,7 +4,9 @@
 
 ### 基础用法
 
-:::demo 由`type`属性来选择 tag 的类型，也可以通过`color`属性来自定义背景色。
+由`type`属性来选择 tag 的类型，`hit`属性来选择是否显示边框，也可以通过`color`属性来自定义文字颜色。
+
+:::demo
 
 ```html
 <el-tag>标签一</el-tag>
@@ -12,16 +14,20 @@
 <el-tag type="info">标签三</el-tag>
 <el-tag type="warning">标签四</el-tag>
 <el-tag type="danger">标签五</el-tag>
+<el-tag hit>带边框标签</el-tag>
+<el-tag color="#FFA000">自定义文字颜色</el-tag>
 ```
 
 :::
 
 ### 可移除标签
 
-:::demo 设置`closable`属性可以定义一个标签是否可移除。默认的标签移除时会附带渐变动画，如果不想使用，可以设置`disable-transitions`属性，它接受一个`Boolean`，true 为关闭。
+设置`closable`属性可以定义一个标签是否可移除。默认的标签移除时会附带渐变动画，如果不想使用，可以设置`disable-transitions`属性，它接受一个`Boolean`，true 为关闭。
+
+:::demo
 
 ```html
-<el-tag v-for="tag in tags" :key="tag.name" closable :type="tag.type">
+<el-tag v-for="tag in tags" :key="tag.name" closable :type="tag.type" @close="handleClose(tag)">
   {{tag.name}}
 </el-tag>
 
@@ -38,7 +44,11 @@
           { name: '标签五', type: 'danger' }
         ]
       })
-      return { ...toRefs(state) }
+
+      function handleClose(tag) {
+        return state.tags.splice(state.tags.indexOf(tag),1)
+      }
+      return { ...toRefs(state), handleClose }
     }
   }
 </script>
@@ -57,7 +67,6 @@
   :key="tag"
   v-for="tag in dynamicTags"
   closable
-  :disable-transitions="false"
   @close="handleClose(tag)"
 >
   {{tag}}
@@ -67,7 +76,6 @@
   v-if="inputVisible"
   v-model="inputValue"
   ref="saveTagInput"
-  size="small"
   @keyup.enter.native="handleInputConfirm"
   @blur="handleInputConfirm"
 />
@@ -108,7 +116,7 @@
       })
       const saveTagInput = ref(null)
       const handleClose = (tag) => {
-        // state.dynamicTags.splice(state.dynamicTags.indexOf(tag), 1)
+        state.dynamicTags.splice(state.dynamicTags.indexOf(tag), 1)
       }
       const showInput = () => {
         state.inputVisible = true
@@ -212,7 +220,7 @@ Tag 组件提供了三个不同的主题：`dark`、`light` 和 `plain`
 | closable            | 是否可关闭       | boolean | —                           | false  |
 | disable-transitions | 是否禁用渐变动画 | boolean | —                           | false  |
 | hit                 | 是否有边框描边   | boolean | —                           | false  |
-| color               | 背景色           | string  | —                           | —      |
+| color               | 文字颜色           | string  | —                           | —      |
 | size                | 尺寸             | string  | medium / small / mini       | —      |
 | effect              | 主题             | string  | dark / light / plain        | light  |
 

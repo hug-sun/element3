@@ -77,6 +77,7 @@ export default {
           items: [
             { text: 'Badge 标记', link: '/components/badge/' },
             { text: 'Card 卡片', link: '/components/card/' },
+            { text: 'Progress 进度条', link: '/components/progress/' },
           ],
         },
         {
