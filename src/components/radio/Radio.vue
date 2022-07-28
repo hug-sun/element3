@@ -1,68 +1,62 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-type disabled = false | true
+type disabledType = false | true
 
 interface RadioProps {
+  modelValue?: string | number | boolean
   value?: string | number | boolean
   label?: string | number | boolean
+  disabled?: disabledType
 }
-const props = defineProps<RadioProps>()
 
-const emit = defineEmits(['update', 'change'])
+const props = withDefaults(defineProps<RadioProps>(), {
+  disabled: false,
+})
 
-const model = ref(props.value)
-const xxx = ref(1)
+const emit = defineEmits(['update:modelValue'])
+
+const model = ref(props.value || props.modelValue)
+// const disabled = useDisabled(props)
+const classes = useClasses(props)
+
+// function useDisabled(props: RadioProps) {
+//   return computed(() => props.disabled)
+// }
 
 function useClasses(props: RadioProps) {
   return computed(() => {
     return [
-      props.label === model.value ? 'is-checked' : '',
+      'el-radio__input',
+      (props.modelValue || props.value) === props.label ? 'is-checked' : '',
+      props.disabled ? 'is-disabled' : '',
     ]
   })
 }
 
-const classes = useClasses(props)
-
-function changeRadio(e) {
-  // console.log('电解铝', e);
-
-}
-
 function handleFocus() {
-}
-
-function handleChange() {
-  // console.log('电解铝12', props.label);
-  model.value = props.label
-  // console.log('电解铝12', model.value);
-  // console.log('电解铝12', props);
-  // xxx.value++
-  emit('change', model.value)
-  emit('update', model.value)
-  // dispatch('update:modelValue', modelValue)
+  emit('update:modelValue', props.label)
 }
 </script>
 
 <template>
-  <div>
-    <label
-      role="radio" aria-checked="true" tabindex="0" class="el-radio"
-      :class="[{ 'is-checked': model === props.label }]" @click="changeRadio"
-    >
-      <span class="el-radio__input" :class="[{ 'is-checked': model === props.label }]">
-        <span class="el-radio__inner" />
-        <input
-          ref="radio" type="radio" aria-hidden="true" tabindex="-1" autocomplete="off"
-          class="el-radio__original" :value="model" @focus="handleFocus" @change="handleChange"
-        >
+  <label
+    role="radio" aria-checked="true" tabindex="0" class="el-radio"
+    :class="[{ 'is-checked': model === props.label }]"
+  >
+    <!-- <span class="el-radio__input" :class="[{ 'is-checked': model === props.label, 'is-disabled': disabled }]"> -->
+    <span :class="classes">
+      <span class="el-radio__inner" />
+      <input
+        ref="radio" type="radio" aria-hidden="true" tabindex="-1" autocomplete="off" class="el-radio__original"
+        :value="model" :disabled="props.disabled" @focus="handleFocus"
+      >
+    </span>
+    <span class="el-radio__label">
+      <span v-if="$slots.default">
+        <slot />
       </span>
-      <span class="el-radio__label">
-        <span v-if="$slots.default">
-          <slot />
-        </span>
-      </span>
-    </label>
-  </div>
+    </span>
+  </label>
 </template>
 
 <style lang="scss">
