@@ -2,45 +2,26 @@
 import { computed, ref } from 'vue'
 type disabledType = false | true
 
-interface RadioProps {
+interface RadioGroupProps {
+  modelValue?: string | number | boolean
   value?: string | number | boolean
-  label?: string | number | boolean
   disabled?: disabledType
 }
 
-const props = withDefaults(defineProps<RadioProps>(), {
+const props = withDefaults(defineProps<RadioGroupProps>(), {
   disabled: false,
 })
 
-// const emit = defineEmits(['update', 'change'])
+const emit = defineEmits(['update:modelValue'])
 
-const model = ref(props.value)
-const xxx = ref('lk')
-
-function useDisabled(props: RadioProps) {
-  return computed(() => props.disabled)
-}
-
-const disabled = useDisabled(props)
-
-function changeRadio(e) {
-
-}
-
-function handleFocus() {
-}
-
-function handleChange() {
+function updateValue(value) {
+  // emit('update:modelValue', props.label)
 }
 </script>
 
 <template>
   <div class="el-radio-group" role="radiogroup">
-    <div style="width: 100px;height: 100px;color: pink;">
-      <input type="text" :value="$slots">
-    </div>
     <span v-if="$slots.default">
-
       <slot />
     </span>
   </div>
