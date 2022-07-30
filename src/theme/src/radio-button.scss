@@ -60,14 +60,14 @@
     position: absolute;
     z-index: -1;
 
-    &:checked {
-      & + .el-radio-button__inner {
-        color: $--radio-button-checked-font-color;
-        background-color: $--radio-button-checked-background-color;
-        border-color: $--radio-button-checked-border-color;
-        box-shadow: -1px 0 0 0 $--radio-button-checked-border-color;
-      }
-    }
+    // &:checked {
+    //   & + .el-radio-button__inner {
+    //     color: $--radio-button-checked-font-color;
+    //     background-color: $--radio-button-checked-background-color;
+    //     border-color: $--radio-button-checked-border-color;
+    //     box-shadow: -1px 0 0 0 $--radio-button-checked-border-color;
+    //   }
+    // }
 
     &:disabled {
       & + .el-radio-button__inner {

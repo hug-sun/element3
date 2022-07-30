@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ComponentInternalInstance } from 'vue'
-import { computed, getCurrentInstance, ref } from 'vue'
+import { computed, getCurrentInstance } from 'vue'
 type disabledType = false | true
 
 interface RadioProps {
@@ -58,16 +58,17 @@ function isActive(props: RadioProps) {
 function handleFocus() {
   emit('update:modelValue', props.label)
   emit('updateValue', props.label)
+  parent.emit('update:modelValue', props.label)
 }
 </script>
 
 <template>
-  <label :class="classes" role="radio" :aria-checked="active" tabindex="-1">
-    <input class="el-radio-button__orig-radio" :name="props.name" type="radio" :value="label" tabindex="-1" @focus="handleFocus">
-    <span
-      class="el-radio-button__inner"
-      :style="active ? spanStyle : ''"
-    >{{ label }}</span>
+  <label :class="classes" role="radio" :aria-checked="active" :tabindex="active ? 0 : -1">
+    <input
+      class="el-radio-button__orig-radio" :name="props.name" type="radio" :value="label" tabindex="-1"
+      @focus="handleFocus"
+    >
+    <span class="el-radio-button__inner" :style="active ? spanStyle : ''">{{ label }}</span>
   </label>
 </template>
 

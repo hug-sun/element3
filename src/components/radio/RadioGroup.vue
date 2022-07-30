@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { onUpdated } from 'vue'
 type disabledType = false | true
 type sizeType = 'medium' | 'small' | 'mini'
 
@@ -19,14 +19,13 @@ const props = withDefaults(defineProps<RadioGroupProps>(), {
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-function updateValue(value) {
-  // emit('update:modelValue', props.label)
-}
+onUpdated(() => {
+  emit('change', props.modelValue)
+})
 </script>
 
 <template>
   <div class="el-radio-group" role="radiogroup">
-    <!-- <input type="text" name="" id="" :value="props.modelValue"> -->
     <span v-if="$slots.default">
       <slot />
     </span>

@@ -1,4 +1,4 @@
-import ElRadioGroup from './RadioGroup.vue'
+import ElRadioGroup from '../radio/RadioGroup.vue'
 
 ElRadioGroup.install = function (app) {
   app.component('ElRadioGroup', ElRadioGroup)
