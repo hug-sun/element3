@@ -21,6 +21,7 @@ import {
 import { ElEmpty } from './components/empty/'
 import { ElCard } from './components/card/'
 import { ElButton } from './components/button/'
+import { ElGrid, ElGridItem } from './components/grid/'
 import { ElTag } from './components/tag/'
 import { ElForm } from './components/form/'
 import { ElRadio } from './components/radio/'
@@ -44,6 +45,8 @@ const components = [
   ElEmpty,
   ElCard,
   ElButton,
+  ElGrid,
+  ElGridItem,
   ElTag,
   ElAlert,
   ElForm,
@@ -79,6 +82,8 @@ export {
   ElEmpty,
   ElCard,
   ElButton,
+  ElGrid,
+  ElGridItem,
   ElTag,
   ElAlert,
   ElForm,

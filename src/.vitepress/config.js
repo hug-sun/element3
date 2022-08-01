@@ -48,12 +48,14 @@ export default {
         {
           text: '通用组件',
           items: [
+
             { text: 'Button 按钮', link: '/components/button/' },
             { text: 'Divider 分割线', link: '/components/divider/' },
             { text: 'Avatar 头像', link: '/components/avatar/' },
             { text: 'Link 链接', link: '/components/link/' },
             { text: 'Icon 图标', link: '/components/icon/' },
             { text: 'Empty 无内容', link: '/components/empty/' },
+            { text: 'Grid', link: '/components/grid/' },
             { text: 'Tag 标签', link: '/components/tag/' },
           ],
         },

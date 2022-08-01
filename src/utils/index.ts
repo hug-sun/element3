@@ -1,0 +1,3 @@
+export {
+  createInjectionKey,
+} from './vue'
