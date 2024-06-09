@@ -9,7 +9,7 @@ A Vue.js 3.0 UI Toolkit for Web.
 ## Install
 
 ```shell
-Open element3.exe
+npm install element3 -S
 ```
 
 ## Quick Start
