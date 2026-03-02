@@ -20,6 +20,9 @@ const serverHandle = (req, res) => {
   }
   const url = req.url === '/' ? config.indexFile : req.url
 
+    if (url.includes('..')) {
+        res.writeHead(403); res.end('request is blocked'); return;
+    }
   const urlInfo = path.parse(url)
 
   const filePath = path.join(__dirname, config.baseContent, url)
